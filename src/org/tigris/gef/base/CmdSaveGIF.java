@@ -27,8 +27,6 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.util.Enumeration;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
@@ -60,9 +58,9 @@ public class CmdSaveGIF extends CmdSaveGraphics {
     
     /** Write the diagram contained by the current editor into an OutputStream
      *  as a GIF image. */
-    protected void saveGraphics(OutputStream s, Editor ce,
-    Rectangle drawingArea)
-    throws IOException {
+    protected void saveGraphics(OutputStream s, 
+                                Editor ce, 
+                                Rectangle drawingArea) throws IOException {
         
         //	Create an offscreen image and render the diagram into it.
         
@@ -85,9 +83,8 @@ public class CmdSaveGIF extends CmdSaveGraphics {
             GifEncoder ge = new GifEncoder( fis, s );
             //GifEncoder ge = new GifEncoder( i, s );
             ge.encode();
-        }
-        catch( IOException e ) {
-            System.out.println( "GifEncoder failed: " + e );
+        } catch( IOException e ) {
+            e.printStackTrace();
         }
         
         g.dispose();

@@ -44,29 +44,26 @@ import org.tigris.gef.persistence.*;
 
 public class CmdSavePS extends CmdSaveGraphics {
 
-  public CmdSavePS() {
-    super("SavePostScript");
-  }
+    public CmdSavePS() {
+        super("SavePostScript");
+    }
 
-  protected void saveGraphics(OutputStream s, Editor ce,
+    protected void saveGraphics(OutputStream s, Editor ce,
 			      Rectangle drawingArea)
                  throws IOException {
-	  System.out.println("Writing PostScript...");
-      PostscriptWriter ps = new PostscriptWriter(s);
-      ps.translate(32,32+778);
-      double scale=Math.min(535.0/drawingArea.width,
-			    778.0/drawingArea.height);
-      if (scale < 1.0) {
-	  System.out.println("Scaling PS output by "+scale);
-	  ps.scale(scale,scale);
-      }
-      ps.translate(-drawingArea.x,-drawingArea.y);
-      ps.setClip(drawingArea.x, drawingArea.y,
-		 drawingArea.width, drawingArea.height);
-      // java bug if using Rectangle.shape() ???
-      ce.print(ps);
-      ps.dispose();
-	  System.out.println("Wrote PostScript.");
-  }
+        PostscriptWriter ps = new PostscriptWriter(s);
+        ps.translate(32,32+778);
+        double scale=Math.min(535.0/drawingArea.width,
+			      778.0/drawingArea.height);
+        if (scale < 1.0) {
+            ps.scale(scale,scale);
+        }
+        ps.translate(-drawingArea.x,-drawingArea.y);
+        ps.setClip(drawingArea.x, drawingArea.y,
+	           drawingArea.width, drawingArea.height);
+        // java bug if using Rectangle.shape() ???
+        ce.print(ps);
+        ps.dispose();
+    }
 
 } /* end class CmdSavePS */

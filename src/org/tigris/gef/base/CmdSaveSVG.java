@@ -26,35 +26,32 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.io.*;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import org.tigris.gef.persistence.*;
 
 
 public class CmdSaveSVG extends CmdSaveGraphics {
 
-  public CmdSaveSVG() {
-    super("SaveScalableVectorGraphics");
-  }
+    public CmdSaveSVG() {
+        super("SaveScalableVectorGraphics");
+    }
 
-  protected void saveGraphics(OutputStream s, Editor ce,
-			      Rectangle drawingArea)
+    protected void saveGraphics(OutputStream s, Editor ce,
+                                Rectangle drawingArea)
                  throws IOException {
-	  System.out.println("Writing Scalable Vector Graphics...");
-	  SVGWriter writer = null;
-	  try {
-	      writer = new SVGWriter(s, drawingArea);
-	  } catch (Exception e) {
-	      System.out.println("Whatever this exception may be..." +e);
-	      e.printStackTrace();
-	  }
-	  if (writer != null) {   
-	      ce.print(writer);
-	      writer.dispose();
-	      System.out.println("Wrote Scalable Vector Graphics...");
-	  }
-  }
+        SVGWriter writer = null;
+        try {
+	    writer = new SVGWriter(s, drawingArea);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (writer != null) {   
+            ce.print(writer);
+            writer.dispose();
+        }
+    }
 
 } /* end class CmdSaveSVG */
