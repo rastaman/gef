@@ -103,7 +103,7 @@ public class ModeSelect extends FigModifyingModeImpl {
      *  the shift key is not down, then go to ModeModify. If the mouse
      *  down event happens on a port, to to ModeCreateEdge.   */
     public void mousePressed(MouseEvent me) {
-        System.out.println("in ModeSelect.mousePressed()");
+        //System.out.println("in ModeSelect.mousePressed()");
         if(me.isConsumed() || me.isAltDown()) {
             return;
         }
@@ -259,13 +259,13 @@ public class ModeSelect extends FigModifyingModeImpl {
      *  but it is too tighly integrated with ModeSelect. */
     protected void gotoModifyMode(MouseEvent me) {
         FigModifyingModeImpl nextMode = new ModeModify(editor);
-        editor.mode(nextMode);
+        editor.pushMode(nextMode);
         nextMode.mousePressed(me);
     }
 
     protected void gotoBroomMode(MouseEvent me) {
         FigModifyingModeImpl nextMode = new ModeBroom(editor);
-        editor.mode(nextMode);
+        editor.pushMode(nextMode);
         nextMode.mousePressed(me);
     }
     
