@@ -246,7 +246,7 @@ public class Geometry {
 
     private static Rectangle tempRect1 = new Rectangle();
 
-    /** Reply true iff the given point is within grip pixels of the
+    /** Reply true if the given point is within grip pixels of the
      *  given segment. Needs-more-work: this is never used, I don't know
      *  that it is needed now that I use hit rectangles instead. */
     public static synchronized boolean nearSegment(int x1, int y1, int x2, int y2, int x, int y, int grip) {
@@ -254,28 +254,12 @@ public class Geometry {
         return intersects(tempRect1, x1, y1, x2, y2);
     }
 
-    private static Rectangle tempRect2 = new Rectangle();
-
     /** 
-     * Reply true iff the given Rectangle intersects the given line
-     *  segment. 
-     *
-     * @deprecated Doesn't work with JDK 1.4. Use Rectangle.intersectsLine instead.
+     * Reply true if the given Rectangle intersects the given line
+     * segment.
      */
     public static synchronized boolean intersects(Rectangle r, int x1, int y1, int x2, int y2) {
-        tempRect2.setBounds(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
-        if(!r.intersects(tempRect2))
-            return false;
-
-        int ccw1 = counterClockWise(x1, y1, x2, y2, r.x, r.y);
-        int ccw2 = counterClockWise(x1, y1, x2, y2, r.x, r.y + r.height);
-        int ccw3 = counterClockWise(x1, y1, x2, y2, r.x + r.width, r.y);
-        int ccw4 = counterClockWise(x1, y1, x2, y2, r.x + r.width, r.y + r.height);
-
-        // reply true iff any of the points are on opposite sides of the
-        // line, or if any of them are on the line
-
-        return ((ccw1 == 1 || ccw2 == 1 || ccw3 == 1 || ccw4 == 1) && (ccw1 == -1 || ccw2 == -1 || ccw3 == -1 || ccw4 == -1) || ccw1 == 0 || ccw2 == 0 || ccw3 == 0 || ccw4 == 0);
+        return r.intersectsLine(x1, y1, x2, y2);
     }
 
     /** Reply true if the given point is counter-clockwise from the
@@ -298,5 +282,4 @@ public class Geometry {
             return +1;
         return 0;
     }
-
 } /* end class Geometry */
