@@ -29,12 +29,12 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
 import java.awt.*;
 import java.io.*;
 
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.ocl.*;
+import org.tigris.gef.ocl.ExpansionException;
+import org.tigris.gef.ocl.OCLExpander;
+import org.tigris.gef.ocl.TemplateReader;
 
 /** Cmd to save the current document to a binary file using Sun's
  *  ObjectSerialization library. The written file contains the Editor
@@ -97,7 +97,7 @@ public class CmdSavePGML extends Cmd implements FilenameFilter {
              	FileWriter fw = new FileWriter(path + filename);
             	System.out.println("Cmd save in PGML...");
                 
-                _expander.expand(fw, d, "", "");
+                _expander.expand(fw, d);
             	System.out.println("save done");
             	Globals.showStatus("Wrote " + path + filename);
             	fw.close();

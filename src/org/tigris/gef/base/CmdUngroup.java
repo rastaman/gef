@@ -36,7 +36,6 @@ import org.tigris.gef.presentation.FigGroup;
 
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
 /** Cmd to ungroup a selected group object.
@@ -59,7 +58,7 @@ public class CmdUngroup extends Cmd {
             Object o = eachDE.nextElement();
             if(o instanceof FigGroup) {
                 FigGroup fg = (FigGroup)o;
-                Iterator it = fg.getFigs(null).iterator();
+                Iterator it = fg.getFigs().iterator();
                 while(it.hasNext()) {
                     Fig f = (Fig)it.next();
                     currentEditor.add(f);

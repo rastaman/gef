@@ -4,6 +4,8 @@ package org.tigris.gef.presentation;
 //import javax.swing.*;
 //import java.util.Hashtable;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 /** Contains utility methods for solving std geometry problems.
@@ -75,11 +77,11 @@ public class AnnotationHelper{
         
         // get a new Vector with the points - very memory consuming :-(
         // to improve this, the class FigPoly must provide better accessors
-        Vector points;
+        List points;
         try{
-            points = ((FigPoly)to._fig).getPointsVector();
+            points = ((FigPoly)to._fig).getPointsList();
         }catch(Exception e) { // NullPtr or ClassCast
-            points = new Vector();
+            points = new ArrayList();
         }
         
         // workaround when the fig has no points
@@ -89,15 +91,15 @@ public class AnnotationHelper{
         }
         
         // the point for the first part
-        Point bestPoint = getClosestPointOnEdge(from, (Point)points.elementAt(0),
-						(Point)points.elementAt(1));
+        Point bestPoint = getClosestPointOnEdge(from, (Point)points.get(0),
+						(Point)points.get(1));
         // we do not want to do this every time
         int bestDistance = sqr_distance(from, bestPoint);
         
         // second to last part
         for (int i=1; i<points.size()-1; i++) {
-            Point one = (Point)points.elementAt(i);
-            Point two = (Point)points.elementAt(i+1);
+            Point one = (Point)points.get(i);
+            Point two = (Point)points.get(i+1);
             Point candidate = getClosestPointOnEdge(from, one, two);
             // better: use the new point and distance
             if (sqr_distance(from, candidate) < bestDistance) {
