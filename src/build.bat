@@ -1,19 +1,11 @@
 @echo off
 
-if not "%ANT_HOME%"=="" goto CHECKJAVA
-rem missing variable: ANT_HOME
-echo ******************************************************************
-echo      Warning: ANT_HOME environment variable is not set.
-echo   Please set ANT_HOME to the installation directory of the build
-echo   utility Ant (this should be the one containing \bin and \lib
-echo   directories). The latest version of ANT can be found on the
-echo   Apache Jakarta Project site: http://jakarta.apache.org/
-echo ******************************************************************
-goto END
+
+set ANT_HOME=..\tools\ant-1.4.1
 
 :CHECKJAVA
 if "%JAVACMD%" == "" set JAVACMD=JAVA
-set LOCALCP=%CLASSPATH%;%ANT_HOME%\lib\ant.jar;%ANT_HOME%\lib\jaxp.jar;%ANT_HOME%\lib\parser.jar
+set LOCALCP=%CLASSPATH%;..\lib\log4j-1.2.6.jar;%ANT_HOME%\lib\ant.jar;%ANT_HOME%\lib\jaxp.jar;%ANT_HOME%\lib\parser.jar
 
 rem add tools.jar
 if "%JAVA_HOME%" == "" goto NOJAVAHOME
@@ -24,7 +16,7 @@ goto RUNANT
 :NOJAVAHOME
 echo ***********************************************************
 echo    Warning: JAVA_HOME environment variable is not set.
-echo   Please set the JAVA_HOME environment variable to the 
+echo   Please set the JAVA_HOME environment variable to the
 echo   directory where the JDK is installed.
 echo ***********************************************************
 goto END
@@ -34,3 +26,6 @@ goto END
 
 :END
 set LOCALCP=
+
+rem modified and cleaned up by raphael, 28th June 03;
+rem  major change: moved ant and log4j into the cvs repository and using them in the build script
