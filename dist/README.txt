@@ -1,4 +1,4 @@
-last revised: 03/02/2000
+last revised: 03/03/2000
 
 !!!!!!!!!!!!!!!
 !!! WARNING !!!
@@ -24,9 +24,13 @@ cvs.tigris.org at noon today, EST.
 src - GEF source
 demos - GEF demos
 docs - Old documentation
-argo - The leftover ArgoUML source after GEF has been removed.
-       Includes a build script to build ArgoUML from the gef.jar built
-       from this GEF distribution.
+argo - The leftover ArgoUML source after GEF has been removed.  This
+       directory exists solely to help track files that are migrated
+       between the ArgoUML and GEF distributions, and will be
+       removed once the boundaries of the ArgoUML/GEF separation are
+       settled upon.  Includes a build script to verify that ArgoUML
+       can be built from the gef.jar produced by the GEF
+       distribution.
 
 
 Edwin Park
