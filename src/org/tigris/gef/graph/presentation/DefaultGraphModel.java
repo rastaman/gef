@@ -147,18 +147,28 @@ public class DefaultGraphModel
 
     /** Return all edges going to given port */
     public Vector getInEdges(Object port) {
-        // needs-more-work: only IN edges
-        if (port instanceof NetPort)
-            return ((NetPort) port).getEdges();
-        return null; // raise exception
+        Vector res = new Vector();
+        Vector edge = ((NetPort) port).getEdges();
+        for( int i = 0; i < edge.size(); i++ ) {
+            NetEdge ne = (NetEdge) edge.elementAt( i );
+            if( ne.getDestPort() == port ) {
+                res.add( ne );
+            }
+        }		
+        return res;
     }
 
     /** Return all edges going from given port */
     public Vector getOutEdges(Object port) {
-        // needs-more-work: only IN edges
-        if (port instanceof NetPort)
-            return ((NetPort) port).getEdges();
-        return null; // raise exception
+        Vector res = new Vector();
+        Vector edge = ((NetPort) port).getEdges();
+        for( int i = 0; i < edge.size(); i++ ) {
+            NetEdge ne = (NetEdge) edge.elementAt( i );
+            if( ne.getSourcePort() == port ) {
+                res.add( ne );
+            }
+        }
+        return res;
     }
 
     /** Return one end of an edge */
