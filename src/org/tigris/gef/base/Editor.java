@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: Editor.java
 // Classes: Editor
 // Original Author: ics125 spring 1996
@@ -230,7 +228,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public ModeManager getModeManager() { return _modeManager; }
 
   /** Set the current user interface mode to the given Mode instance. */
-  public void mode(Mode m) {
+  public void mode(FigModifyingMode m) {
     _modeManager.push(m);
     m.setEditor(this);
     Globals.showStatus(m.instructions());
@@ -239,7 +237,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Set this Editor's current Mode to the next global Mode. */
   public void finishMode() {
     _modeManager.pop();
-    mode(Globals.mode());
+    mode((FigModifyingMode)Globals.mode());
     Globals.clearStatus();
   }
 
@@ -604,7 +602,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     else if (_awt_component != null) _awt_component.requestFocus();
     //- RedrawManager.lock();
     Globals.curEditor(this);
-    mode(Globals.mode());
+    mode((FigModifyingMode)Globals.mode());
     setUnderMouse(me);
     _modeManager.mouseEntered(me);
     //- RedrawManager.unlock();
