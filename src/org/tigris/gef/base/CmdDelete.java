@@ -42,18 +42,17 @@ package org.tigris.gef.base;
 
 public class CmdDelete extends Cmd {
 
-  public CmdDelete() {
-	  super("DeleteFromDiagram");
-  }
+    public CmdDelete() {
+        super("DeleteFromDiagram");
+    }
 
-  /** Tell the selected Figs to remove themselves from the
-   *  the diagram it is in (and thus all editors). */
-  public void doIt() {
-	  System.out.println("[CmdDelete] doIt");
-    Editor ce = Globals.curEditor();
-    SelectionManager sm = ce.getSelectionManager();
-    sm.delete();
-  }
+    /** Tell the selected Figs to remove themselves from the
+     *  the diagram it is in (and thus all editors). */
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        SelectionManager sm = ce.getSelectionManager();
+        sm.delete();
+    }
 
-  public void undoIt() { }
+    public void undoIt() { }
 } /* end class CmdDelete */
