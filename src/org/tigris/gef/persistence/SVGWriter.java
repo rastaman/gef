@@ -55,8 +55,16 @@ public class SVGWriter extends Graphics {
      */
     private Color _bgColor = Color.white;
 
-    private Font fFont = new Font("Helvetica",Font.PLAIN,12);
+    /**
+     * The drawing area for the SVG output.
+     */
+    private Rectangle _drawingArea;
 
+    /**
+     * The current font.
+     */
+    private Font _font = new Font("Verdana",Font.PLAIN,8);
+    
     private Rectangle clip;
 
     // To keep the SVG output as simple as possible, I handle all
@@ -67,8 +75,9 @@ public class SVGWriter extends Graphics {
     private double yScale  = 1.0;
     private String SVGns = "http://www.w3.org/2000/SVG";
 
-    public SVGWriter(OutputStream stream) throws IOException, Exception {
+    public SVGWriter(OutputStream stream, Rectangle drawingArea) throws IOException, Exception {
         _p = new PrintWriter(stream);
+	_drawingArea = drawingArea;
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(false);
@@ -78,8 +87,8 @@ public class SVGWriter extends Graphics {
 
 	_root = _svg.createElement( "svg");
         _root.setAttribute("xmlns","http://www.w3.org/2000/svg");
-	_root.setAttribute( "width", "600");
-	_root.setAttribute( "height", "600");
+	_root.setAttribute( "width", "" + scaleX(_drawingArea.width));
+	_root.setAttribute( "height", "" + scaleY(_drawingArea.height));
     }
 
     public Graphics create() { return this; }
@@ -253,41 +262,44 @@ public class SVGWriter extends Graphics {
     private void setBackgroundColor(Color c) {
 	_bgColor = c;
     }
-    
+
     public void setPaintMode() {}
 
     public void setXORMode(Color otherColor) {}
 
-    public Font getFont() { return fFont; }
+    public Font getFont() { return _font; }
 
     public void setFont(Font font) {
-	/*
-	if (!fFont.equals(font)) {
-	    fFont = font;
-	    FontMetrics metrics = getFontMetrics();
-	    String name = font.getName();
-	    if (font.isBold() || font.isItalic()) {
-		name += "-";
-		if (font.isBold())
-		    name += "Bold";
-		if (font.isItalic())
-		    name += "Oblique";
-	    }
-
-	    p.println("isolatin1encoding /_" + name + " /" + name + " RE");
-	    p.println("/_" + name + " findfont");
-	    p.println(font.getSize() + " scalefont setfont");
-	    } */
+	_font = font;
     }
 
-    /*
     public FontMetrics getFontMetrics() {
-		return getFontMetrics(fFont);
+		return getFontMetrics(_font);
     }
-    */
 
     public FontMetrics getFontMetrics(Font font) {
 	return Toolkit.getDefaultToolkit().getFontMetrics(font);
+    }
+
+    /**
+     * Translate the current font to a SVG 'style' attribute.
+     *
+     * @return The style of the current font as a SVG attribute.
+     */
+    private String getFontStyleSVG() {
+	String style = "font-family:" + _font.getFamily() + "; font-size:" + _font.getSize() +";";
+	
+	// If this is a bold font, add the appropriate attribute.
+	if(getFont().isBold()) {
+	    style += " font-weight:bold;";
+	}
+
+	// If this is a italic font, add the appropriate attribute.
+	if(getFont().isItalic()) {
+	    style += " font-style:italic;";
+	}
+
+	return style;
     }
 
     public java.awt.Rectangle getClipBounds() { return clip; }
@@ -512,6 +524,8 @@ public class SVGWriter extends Graphics {
     }
 
     private void drawPolygon( int xPoints[], int yPoints[], int nPoints, String style) {
+	double maxX = 0, maxY = 0;
+
 	Element polygon = _svg.createElement( "polygon");
 	polygon.setAttribute( "style", style);
 
@@ -526,6 +540,14 @@ public class SVGWriter extends Graphics {
 			      + transformX( xPoints[i])
 			      + ","
 			      + transformY( yPoints[i]));
+
+	    if(transformX( xPoints[i]) > maxX) {
+		maxX = transformX( xPoints[i]);
+	    }
+
+	    if(transformY( yPoints[i]) > maxY) {
+		maxY = transformY( yPoints[i]);
+	    }
 	}
 
 	polygon.setAttribute( "points", pointList.toString());
@@ -550,6 +572,7 @@ public class SVGWriter extends Graphics {
     }
 
     public void drawPolyline(int xPoints[], int yPoints[], int nPoints) {
+	double maxX = 0, maxY = 0;
 	Element polyline = _svg.createElement( "polyline");
 	polyline.setAttribute( "style", "fill:" + getBackgroundColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
 
@@ -564,6 +587,14 @@ public class SVGWriter extends Graphics {
 			      + transformX( xPoints[i])
 			      + ","
 			      + transformY( yPoints[i]));
+
+	    if(transformX( xPoints[i]) > maxX) {
+		maxX = transformX( xPoints[i]);
+	    }
+
+	    if(transformY( yPoints[i]) > maxY) {
+		maxY = transformY( yPoints[i]);
+	    }
 	}
 
 	polyline.setAttribute( "points", pointList.toString());
@@ -603,11 +634,18 @@ public class SVGWriter extends Graphics {
 	this.yScale = yscale;
     }
 
+    /**
+     * Draw a string at a given position.
+     *
+     * @param t The string to draw.
+     * @param x The horizontal position of the text.
+     * @param y The vertical position of the text.
+     */
     public void drawString(String t, int x, int y) {
         Element text = _svg.createElement("text");
         text.setAttribute( "x", ""+transformX( x));
         text.setAttribute( "y", ""+transformY( y));
-        text.setAttribute( "style", "font-family:Verdana; font-size:8pt;");
+        text.setAttribute( "style", getFontStyleSVG());
         text.appendChild( _svg.createTextNode( t));
         _root.appendChild( text);
     }

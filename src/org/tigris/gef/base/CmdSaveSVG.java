@@ -45,7 +45,7 @@ public class CmdSaveSVG extends CmdSaveGraphics {
 	  System.out.println("Writing Scalable Vector Graphics...");
 	  SVGWriter writer = null;
 	  try {
-	      writer = new SVGWriter(s);
+	      writer = new SVGWriter(s, drawingArea);
 	  } catch (Exception e) {
 	      System.out.println("Whatever this exception may be..." +e);
 	      e.printStackTrace();
