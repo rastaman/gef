@@ -28,9 +28,7 @@
 
 package org.tigris.gef.graph;
 
-import java.util.*;
-
-import org.tigris.gef.graph.*;
+import java.util.Hashtable;
 
 /** This interface provides a facade to a net-level
  *  representation. Similiar in concept to the Swing class
@@ -45,67 +43,67 @@ import org.tigris.gef.graph.*;
  */
 
 public interface MutableGraphModel extends GraphModel {
-  /** Return true if the given object is present as a node in the graph */
-  boolean containsNode(Object node);
+    /** Return true if the given object is present as a node in the graph */
+    boolean containsNode(Object node);
 
-  /** Return true if the given object is a valid node in this graph */
-  boolean canAddNode(Object node);
+    /** Return true if the given object is a valid node in this graph */
+    boolean canAddNode(Object node);
 
-  /** Return a valid node in this graph */
-  Object createNode( String name, Hashtable args);
+    /** Return a valid node in this graph */
+    Object createNode( String name, Hashtable args);
 
-  /** Return true if the given object is a valid edge in this graph */
-  boolean canAddEdge(Object edge);
+    /** Return true if the given object is a valid edge in this graph */
+    boolean canAddEdge(Object edge);
 
-	/** Return true if the type of the given object can be mapped to
-	 *  a supported type.
-	 */
-	boolean canDragNode(Object node);
+    /** Return true if the type of the given object can be mapped to
+     *  a supported type.
+     */
+    boolean canDragNode(Object node);
 
-  /** Remove the given node from the graph. Sends a notification. */
-  void removeNode(Object node);
+    /** Remove the given node from the graph. Sends a notification. */
+    void removeNode(Object node);
 
-  /** Add the given node to the graph, if valid. Sends a notification. */
-  void addNode(Object node);
+    /** Add the given node to the graph, if valid. Sends a notification. */
+    void addNode(Object node);
 
-  /** Return true if the given object is present as a edge in the graph */
-  boolean containsEdge(Object edge);
+    /** Return true if the given object is present as a edge in the graph */
+    boolean containsEdge(Object edge);
 
-  /** Add the given edge to the graph, if valid. Sends a notification. */
-  void addEdge(Object edge);
+    /** Add the given edge to the graph, if valid. Sends a notification. */
+    void addEdge(Object edge);
 
-  /** Add existing edges that are related to the node. */
-  void addNodeRelatedEdges(Object node);
+    /** Add existing edges that are related to the node. */
+    void addNodeRelatedEdges(Object node);
 
-  /** Remove the given edge from the graph. Sends a notification. */
-  void removeEdge(Object edge);
+    /** Remove the given edge from the graph. Sends a notification. */
+    void removeEdge(Object edge);
 	
-        /** Create a new node based on the given node and add it to the graph */
-        void dragNode(Object node);
-
-        /** Return true if the connection to the old node can be rerouted to
-         * the new node.
-         */
-        boolean canChangeConnectedNode(Object newNode, Object oldNode, Object edge);
+    /** Create a new node based on the given node and add it to the graph */
+    void dragNode(Object node);
+    
+    /** Return true if the connection to the old node can be rerouted to
+     * the new node.
+     */
+    boolean canChangeConnectedNode(Object newNode, Object oldNode, Object edge);
   
-        /** Return true if the two given ports can be connected by a 
-         * kind of edge to be determined by the ports. */
-        boolean canConnect(Object fromP, Object toP);
+    /** Return true if the two given ports can be connected by a 
+     * kind of edge to be determined by the ports. */
+    boolean canConnect(Object fromP, Object toP);
+    
+    /** Return true if the two given ports can be connected by the given
+     * kind of edge. */
+    boolean canConnect(Object fromP, Object toP, Class edgeClass);
 
-  /** Return true if the two given ports can be connected by the given
-   * kind of edge. */
-  boolean canConnect(Object fromP, Object toP, Class edgeClass);
-
-  /** Reroutes the connection to the old node to be connected to
-   * the new node.
-   */
-  void changeConnectedNode(Object newNode, Object oldNode, Object edge, boolean isSource);
+    /** Reroutes the connection to the old node to be connected to
+     * the new node.
+     */
+    void changeConnectedNode(Object newNode, Object oldNode, Object edge, boolean isSource);
   
-  /** Contruct and add a new edge of a kind determined by the
-   *  ports. Sends a notification.  */
-  Object connect(Object fromPort, Object toPort);
+    /** Contruct and add a new edge of a kind determined by the
+     *  ports. Sends a notification.  */
+    Object connect(Object fromPort, Object toPort);
 
-  /** Contruct and add a new edge of the given kind. Sends a notification. */
-  Object connect(Object fromPort, Object toPort, Class edgeClass);
+    /** Contruct and add a new edge of the given kind. Sends a notification. */
+    Object connect(Object fromPort, Object toPort, Class edgeClass);
 
 } /* end interface MutableGraphModel */
