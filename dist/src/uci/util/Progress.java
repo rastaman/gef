@@ -41,10 +41,7 @@ import java.awt.event.*;
  *  a header and an integer for the total amount of work that will be
  *  done. Then do their own processing, calling advance() every so
  *  often. Eventually, the number of advance() calls should equal the
- *  total amount of work specified in the constructor call.
- *
- * @see Preloader
- * @see uci.gef.Example */
+ *  total amount of work specified in the constructor call. */
 
 public class Progress extends Frame implements ActionListener {
 

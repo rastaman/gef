@@ -42,9 +42,7 @@ import java.util.*;
  *  </code>
  * 
  *  This is useful when you must pass or return an enumeration, but you
- *  do not have many elements.
- *
- * @see uci.uml.critics.ChildGenUML#gen */
+ *  do not have many elements. */
 
 public class EnumerationSingle
 implements Enumeration, java.io.Serializable {

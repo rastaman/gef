@@ -39,7 +39,7 @@ import java.net.*;
  *  originally used a simple int, but some dragHandle() methods need to change
  *  the index because new handles can be added during a drag.
  *
- * @see FigPoly#moveVertex.  */
+ * @see FigPoly#moveVertex */
 
 public class Handle {
 

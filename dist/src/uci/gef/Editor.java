@@ -420,9 +420,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** Paints the graphs nodes by calling paint() on layers, selections,
    *  and mode.  Whenever their is a change to the screen, this method
-   *  will eventually be called from the RedrawManager.
-   *
-   * @see RedrawManager */
+   *  will eventually be called from the RedrawManager. */
   public synchronized void paint(Graphics g) {
     getLayerManager().paint(g);
     _selectionManager.paint(g);

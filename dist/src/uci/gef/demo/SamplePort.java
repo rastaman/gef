@@ -39,11 +39,9 @@ import uci.gef.*;
 import uci.graph.*;
 
 
-/** An example subclass of NetPort for the Example application. As
- * part of the example I constrain the ports to only be on
- * SampleNodes and only connect to SamplePorts.
- *
- * @see BasicApplication */
+/** An example subclass of NetPort for the BasicApplication application.
+ * As part of the example I constrain the ports to only be on SampleNodes
+ * and only connect to SamplePorts. */
 
 public class SamplePort extends NetPort implements Serializable{
 

@@ -52,8 +52,7 @@ import java.util.*;
  * existing application.
  *
  * @see DefaultGraphModel
- * @see AdjacencyMatrixGraphModel
- * @see uci.graph.demo.WordTransforms */
+ * @see AdjacencyListGraphModel */
 
 public interface GraphModel extends java.io.Serializable {
   /** Return all nodes in the graph */

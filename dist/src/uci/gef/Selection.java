@@ -171,8 +171,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** If the selection is being deleted, the selected object must be
    * deleted also. This is different from just deselecting the
    * selected Fig, to do that use one of the deselect operations in
-   * Editor.
-   * @see Editor#deselect */
+   * SelectionManager.
+   * @see SelectionManager#deselect */
   public void delete() { _content.delete(); }
   public void dispose() { _content.dispose(); }
 

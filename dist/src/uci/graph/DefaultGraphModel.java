@@ -46,8 +46,7 @@ import uci.gef.NetEdge;
  * @see uci.gef.NetNode
  * @see uci.gef.NetPort
  * @see uci.gef.NetEdge
- * @see AdjacencyMatrixGraphModel
- * @see uci.graph.demo.WordTransforms */
+ * @see AdjacencyListGraphModel */
 
 public class DefaultGraphModel extends MutableGraphSupport
 implements java.io.Serializable {

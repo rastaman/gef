@@ -37,7 +37,7 @@ import java.awt.Event;
  *  when an underlying NetNode is disposed, it should delete all views
  *  on it, not just the selected one.
  *
- * @see NetPrimitive#dispose
+ * @see SelectionManager#dispose
  * @see CmdDelete */
 
 public class CmdDispose extends Cmd {

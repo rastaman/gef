@@ -38,8 +38,7 @@ import uci.gef.Layer;
  *  Swing class TreeCellRenderer.  This Default class asks the NetNode
  *  to make its own FigNode.
  *
- * @see uci.gef.NetNode#presentationFor 
- * @see uci.graph.demo.WordNodeRenderer */
+ * @see uci.gef.NetNode#presentationFor */
 
 public class DefaultGraphNodeRenderer
 implements GraphNodeRenderer, java.io.Serializable {

@@ -40,8 +40,7 @@ import java.util.*;
  *  modifications to the graph, instead of just access.
  *
  * @see DefaultGraphModel
- * @see AdjacencyMatrixGraphModel
- * @see uci.graph.demo.WordTransforms */
+ * @see AdjacencyListGraphModel */
 
 public interface MutableGraphModel extends GraphModel {
   /** Return true if the given object is a valid node in this graph */

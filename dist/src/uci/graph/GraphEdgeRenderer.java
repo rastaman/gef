@@ -36,8 +36,7 @@ import uci.gef.Layer;
 /** An interface for FigEdge factories. Similiar in concept to the
  *  Swing class TreeCellRenderer.
  *
- * @see DefaultGraphEdgeRenderer
- * @see uci.graph.demo.TranscriptionRenderer */
+ * @see DefaultGraphEdgeRenderer */
 
 public interface GraphEdgeRenderer extends java.io.Serializable {
   /** Return a Fig that can be used to represent the given edge */

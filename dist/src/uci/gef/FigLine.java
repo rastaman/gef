@@ -297,9 +297,7 @@ public class FigLine extends Fig {
 
   /** Resize the object for drag on creation. It bypasses the things
    *  done in resize so that the position of the object can be kept as
-   *  the anchor point. Fires PropertyChange with "bounds".
-   *
-   * @see FigLine#drag */
+   *  the anchor point. Fires PropertyChange with "bounds". */
   public void createDrag(int anchorX, int anchorY, int x, int y,
 			 int snapX, int snapY) {
     _x2 = snapX;

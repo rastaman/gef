@@ -56,7 +56,7 @@ import uci.util.Util;
  *  actions for undo. <p>
  *
  * @see Editor
- * @see ExecuteActionWindow */
+ * @see CmdOpenWindow */
 
 public abstract class Cmd extends AbstractAction
 implements java.io.Serializable {
@@ -193,15 +193,15 @@ implements java.io.Serializable {
   // registered Cmds
 
   /** A list of Cmd instances that should appear in lists for the
-   *  user to pick from. Registered Cmds server mainly to support
+   *  user to pick from. Registered Cmds serve mainly to support
    *  user interface prototyping: you can add Cmds to the
-   *  ExecuteCmdWindow and not have to woory about where it should
+   *  CmdOpenWindow and not have to worry about where it should
    *  eventually go in the user interface. */
   private static Vector _registeredCmds = new Vector();
 
   /** Return a list of "well-known" Cmd instances that should
    *  appear in lists for the user to pick from.
-   * @see ExecuteCmdWindow */
+   * @see CmdOpenWindow */
   public static Enumeration registeredCmds() {
     return _registeredCmds.elements();
   }

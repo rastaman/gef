@@ -38,9 +38,7 @@ import java.util.*;
  *  <code>(new Vector()).elements();</code>
  * 
  *  This is useful when you must pass or return an enumeration, but you
- *  do not have any elements.
- *
- * @see uci.gef.DiagramElement#keysIn */
+ *  do not have any elements. */
 
 public class EnumerationEmpty
 implements Enumeration, java.io.Serializable {

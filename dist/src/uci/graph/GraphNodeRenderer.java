@@ -36,8 +36,7 @@ import uci.gef.Layer;
 /** An interface for FigNode factories. Similiar in concept to the
  *  Swing class TreeCellRenderer.
  *
- * @see DefaultGraphNodeRenderer
- * @see uci.graph.demo.WordNodeRenderer */
+ * @see DefaultGraphNodeRenderer */
 
 public interface GraphNodeRenderer extends java.io.Serializable {
   /** Return a Fig that can be used to represent the given node */

@@ -37,9 +37,8 @@ import java.util.*;
 import java.io.*;
 import uci.gef.*;
 
-/** An example subclass of NetNode for use in the Example application.
- *
- * @see Example */
+/** An example subclass of NetNode for use in the BasicApplication
+ * application. */
 public class SampleNode extends NetNode implements Serializable {
 
   public SamplePort north, east, west, south;

@@ -38,9 +38,7 @@ import java.io.*;
 import uci.gef.*;
 import uci.graph.*;
 
-/** An example subclass of NetPort for the Example application. 
- *
- * @see BasicApplication */
+/** An example subclass of NetPort for the BasicApplication application. */
 
 public class SamplePort2 extends SamplePort implements Serializable {
 
