@@ -174,8 +174,6 @@ public class ModeCreateEdge extends ModeCreate {
             // FigNode to see if a port exists 
             Object foundPort = destFigNode.deepHitPort(x, y);
 
-            //if (foundPort != null && foundPort != _startPort && mgm.canConnect( _startPort, foundPort)) {
-            // NOTE: canConnect should be responsible to decide such things (foundPort != _startPort)
             if (foundPort != null && mgm.canConnect(_startPort, foundPort)) {
                 Fig destPortFig = destFigNode.getPortFig(foundPort);
                 Class edgeClass = (Class) getArg("edgeClass");
@@ -208,14 +206,13 @@ public class ModeCreateEdge extends ModeCreate {
                     me.consume();
                     if (LOG.isDebugEnabled()) LOG.debug("MouseReleased Edge created and event consumed");
                     return;
-                } else
-                    System.out.println("connection return null");
+                }
             }
         }
         _sourceFigNode.damage();
         ce.damageAll();
         _newItem = null;
-        if (LOG.isDebugEnabled()) LOG.debug("MouseReleased not on Fig so event consumed " + f.getClass().getName());
+        if (LOG.isDebugEnabled()) LOG.debug("MouseReleased not on FigNode. Event consumed anyway.");
         done();
         me.consume();
     }
