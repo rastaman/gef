@@ -28,6 +28,7 @@
 
 package org.tigris.gef.base;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.event.GraphSelectionListener;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.GraphEdgeRenderer;
@@ -158,11 +159,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     /** The context menu for this editor */
     private transient JPopupMenu _popup = null;
 
-    /**
-     * @deprecated in 0.10 - remove in 0.11
-     */
-    protected transient FigTextEditor _activeTextEditor = null;
-    
+    private static final Logger LOG = Logger.getLogger(Editor.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors and related functions
@@ -758,15 +755,18 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 
     /** Invoked when a mouse button has been pressed. */
     public void mousePressed(MouseEvent me) {
-        if(me.isConsumed())
+        if(me.isConsumed()) {
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but rejected as already consumed");
             return;
+        }
         translateMouseEvent(me);
         FigTextEditor.remove();
 
         Globals.curEditor(this);
         //setUnderMouse(me);
-        if(_curFig instanceof MouseListener)
+        if(_curFig instanceof MouseListener) {
             ((MouseListener)_curFig).mousePressed(me);
+        }
         if(_canSelectElements) {
             _selectionManager.mousePressed(me);
             _modeManager.mousePressed(me);

@@ -27,6 +27,9 @@
 package org.tigris.gef.base;
 
 import javax.swing.*;
+
+import org.apache.log4j.Logger;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
@@ -50,6 +53,20 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
     private final static int AUTOSCROLL_DELAY = 200;
     private static final int SCROLL_INCREMENT = 10;
 
+    private boolean _isScrolling = false;
+    private JViewport _viewport = null;
+    private Cursor _oldCursor = null;
+    private JComponent _component = null;
+    private Dimension _componentSize = null;
+    private Point _viewPosition = new Point();
+    private int _deltaX;
+    private int _deltaY;
+    private int _lastX;
+    private int _lastY;
+
+    private boolean _simpleDrag = false;
+
+    private static final Logger LOG = Logger.getLogger(ModeDragScroll.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors and related methods
@@ -87,19 +104,6 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         return "Drag with mouse to scroll, hold down SHIFT to speed up movement";
     }
 
-    private boolean _isScrolling = false;
-    private JViewport _viewport = null;
-    private Cursor _oldCursor = null;
-    private JComponent _component = null;
-    private Dimension _componentSize = null;
-    private Point _viewPosition = new Point();
-    private int _deltaX;
-    private int _deltaY;
-    private int _lastX;
-    private int _lastY;
-
-    private boolean _simpleDrag = false;
-
     /**
      * Grabs component to begin scrolling.  Will turn cursor into a hand.
      * 
@@ -119,18 +123,24 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         // if only mouse button1 is pressed, activate the auto scrolling
         _simpleDrag = ! buttonCondition && button1;
 
-        if(!buttonCondition)
+        if(!buttonCondition) {
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but with wrong button condition for scrolling");
             return;
+        }
 
         // get the component ...
         _component = editor.getJComponent();
-        if(_component == null)
+        if(_component == null) {
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no component to scrolling");
             return;
+        }
         
         // ... and the viewport
         Container parent = _component.getParent();
-        if(!(parent instanceof JViewport))
+        if(!(parent instanceof JViewport)) {
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no viewport to scrolling");
             return;
+        }
         
         // ok, ready to scroll
         _isScrolling = true;
@@ -157,6 +167,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
             autoscroll = false;
             //_simpleDrag = false;
         }
+        if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected scrolling started and event consumed");
     }
 
     /**
@@ -187,10 +198,13 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
                 }
             }
 
+            if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected and simple drag took place");
         } else {
 
-            if(!_isScrolling)
+            if(!_isScrolling) {
+                if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected bu not in scrolling mode");
                 return;
+            }
 
             me = editor.retranslateMouseEvent(me);
             int x = me.getX();
@@ -218,6 +232,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
                 _lastY = y + _deltaY;
             me.consume();
             editor.translateMouseEvent(me);
+            if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected, viewport moved and event consumed");
         }
     }
 
@@ -266,8 +281,10 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
             _simpleDrag = false;
         }
 
-        if(!_isScrolling)
+        if(!_isScrolling) {
+            if (LOG.isDebugEnabled()) LOG.debug("MouseReleased detected but not in scrolling mode");
             return;
+        }
         _isScrolling = false;
         _viewPosition = null;
         _component.setCursor(_oldCursor);
@@ -276,6 +293,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         _viewport = null;
         _oldCursor = null;
         me.consume();
+        if (LOG.isDebugEnabled()) LOG.debug("MouseReleased detected so ending scroll and event consumed");
     }
 
     /**

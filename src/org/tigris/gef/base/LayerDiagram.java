@@ -172,11 +172,22 @@ public class LayerDiagram extends Layer {
         f.setLayer(null);
     }
 
-    /** Reply the contents of this layer. Do I really want to do this? */
+    /** Reply the contents of this layer. Do I really want to do this?
+     * If a collection is supplied then that collection is reused and
+     * added to.
+     * If no collection is supplied then I new collection object is
+     * created and returned.
+     */
     public Collection getContents(Collection c) {
         if (c == null) return _contents; 
         c.addAll(_contents);
         return c;
+    }
+
+    /** Reply the contents of this layer. Do I really want to do this? */
+    public Fig[] getContents() {
+        Fig[] figs = (Fig[])_contents.toArray();
+        return figs;
     }
 
     /** Reply the 'top' Fig under the given (mouse)

@@ -2,16 +2,13 @@
 package org.tigris.gef.presentation;
 
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.event.MouseEvent;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Random;
 import java.util.Vector;
 
 import javax.swing.*;

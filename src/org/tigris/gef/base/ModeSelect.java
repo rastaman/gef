@@ -33,6 +33,7 @@ import java.awt.event.MouseEvent;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.Handle;
@@ -71,6 +72,8 @@ public class ModeSelect extends FigModifyingModeImpl {
     /** True when the user holds the shift key to toggle selections. */
     private boolean _toggleSelection = false;
 
+    private static final Logger LOG = Logger.getLogger(ModeSelect.class);
+    
     ////////////////////////////////////////////////////////////////
     // constructors and related methods
 
@@ -103,19 +106,27 @@ public class ModeSelect extends FigModifyingModeImpl {
      *  the shift key is not down, then go to ModeModify. If the mouse
      *  down event happens on a port, to to ModeCreateEdge.   */
     public void mousePressed(MouseEvent me) {
-        //System.out.println("in ModeSelect.mousePressed()");
-        if(me.isConsumed() || me.isAltDown()) {
+        if (me.isConsumed()) {
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed but rejected as already consumed");
+            return;
+        }
+        
+        if (me.isAltDown()) {
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed but rejected as alt key pressed");
             return;
         }
 
         if (me.getModifiers() == InputEvent.BUTTON3_MASK) {
             _selectAnchor = new Point(me.getX(), me.getY());
-            //System.out.println("ModeSelect: from awt component " + Globals.curEditor().getJComponent());
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected button 3 so setting anchor point");
+            // TODO should we not consume here?
             return;
         }
 
         if (me.isShiftDown()) {
             gotoBroomMode(me);
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed with shift key so gone to broom mode");
+            // TODO should we not consume here?
             return;
         }
 
@@ -135,6 +146,7 @@ public class ModeSelect extends FigModifyingModeImpl {
         }
 
         if(underMouse == null && !sm.hit(hitRect)) {
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed but rejected as no fig found");
             return;
         }
 
@@ -143,6 +155,7 @@ public class ModeSelect extends FigModifyingModeImpl {
         if(h.index >= 0) {
             gotoModifyMode(me);
             me.consume();
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed with hit handle, going to Modify mode and consumed event");
             return;
         }
 
@@ -160,6 +173,7 @@ public class ModeSelect extends FigModifyingModeImpl {
         }
 
         me.consume();
+        if (LOG.isDebugEnabled()) LOG.debug("MousePressed selection changed and consumed event");
     }
 
     /** On mouse dragging, stretch the selection rectangle. */
@@ -186,7 +200,13 @@ public class ModeSelect extends FigModifyingModeImpl {
     /** On mouse up, select or toggle the selection of items under the
      *  mouse or in the selection rectangle. */
     public void mouseReleased(MouseEvent me) {
-        if(me.isConsumed() || me.isMetaDown()) {
+        if(me.isConsumed()) {
+            if (LOG.isDebugEnabled()) LOG.debug("MouseReleased but rejected as already consumed");
+            return;
+        }
+        
+        if (me.isMetaDown()) {
+            if (LOG.isDebugEnabled()) LOG.debug("MouseReleased but rejected as meta key down");
             return;
         }
         
@@ -224,9 +244,11 @@ public class ModeSelect extends FigModifyingModeImpl {
         editor.scaleRect(_selectRect);
         editor.damaged(_selectRect);
         if(me.getModifiers() == InputEvent.BUTTON3_MASK) {
+            if (LOG.isDebugEnabled()) LOG.debug("MouseReleased button 3 detected so not consumed");
             return;
         }
 
+        if (LOG.isDebugEnabled()) LOG.debug("MouseReleased and consumed");
         me.consume();
     }
 

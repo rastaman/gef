@@ -23,6 +23,7 @@
 
 package org.tigris.gef.base;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.PopupGenerator;
 
@@ -44,6 +45,8 @@ import javax.swing.JSeparator;
 
 public class ModePopup extends FigModifyingModeImpl {
 
+    private static final Logger LOG = Logger.getLogger(ModePopup.class);
+    
     ////////////////////////////////////////////////////////////////
     //  constructor
 
@@ -64,7 +67,7 @@ public class ModePopup extends FigModifyingModeImpl {
         return " ";
     }
 
-    public void showPopup(MouseEvent me) {
+    public boolean showPopup(MouseEvent me) {
         int x = me.getX();
         int y = me.getY();
         Fig underMouse = editor.hit(x, y);
@@ -75,11 +78,13 @@ public class ModePopup extends FigModifyingModeImpl {
             if (editorPopup != null) {
                 // if the editor has a popup menu, show it
                 editorPopup.show(me.getComponent(), me.getX(), me.getY());
+                me.consume();
+                return true;
             }
         }
         
         if(!(underMouse instanceof PopupGenerator))
-            return;
+            return false;
 
         SelectionManager selectionManager = editor.getSelectionManager();
         if(!selectionManager.containsFig(underMouse))
@@ -115,8 +120,10 @@ public class ModePopup extends FigModifyingModeImpl {
                 me = editor.retranslateMouseEvent(me);
                 popup.show(editor.getJComponent(), me.getX(), me.getY());
                 me.consume();
+                return true;
             }
         }
+        return false;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -127,27 +134,46 @@ public class ModePopup extends FigModifyingModeImpl {
      * mouse key being released
      */
     public void mouseReleased(MouseEvent me) {
+        boolean popUpDisplayed = false;
         if(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
-            showPopup(me);
+            popUpDisplayed = showPopup(me);
+            if (LOG.isDebugEnabled()) {
+                if (popUpDisplayed) LOG.debug("MouseReleased detected as a popup trigger and popup displayed and event consumed");
+                else  LOG.debug("MouseReleased detected as a popup trigger but no popup to display");
+            }
+            return;
         }
+        LOG.debug("MouseReleased is not a popup trigger");
     }
     
     /** Determine if a popup menu should be displayed by this
      * mouse key being pressed
      */
     public void mousePressed(MouseEvent me) {
-        //System.out.println("in ModePopup.mousePressed()");
+        boolean popUpDisplayed = false;
         if(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
-            showPopup(me);
+            popUpDisplayed = showPopup(me);
+            if (LOG.isDebugEnabled()) {
+                if (popUpDisplayed) LOG.debug("MousePressed detected as a popup and popup displayed and event consumed");
+                else  LOG.debug("MousePressed detected as a popup but no popup to display");
+            }
+            return;
     	}
+        LOG.debug("MousePressed is not a popup trigger");
     }
 	
     /** Determine if a popup menu should be displayed by this
      * mouse key being clicked
      */
     public void mouseClicked(MouseEvent me) {
+        boolean popUpDisplayed = false;
         if(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
-            showPopup(me);
+            popUpDisplayed = showPopup(me);
+            if (LOG.isDebugEnabled()) {
+                if (popUpDisplayed) LOG.debug("MouseClicked detected as a popup and popup displayed and event consumed");
+                else  LOG.debug("MouseClicked detected as a popup but no popup to display");
+            }
     	}
+        LOG.debug("MouseClicked is not a popup trigger");
     }
 }
