@@ -68,11 +68,11 @@ public class LayerPageBreaks extends Layer {
 
   public LayerPageBreaks() { super("PageBreaks"); }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  /** Set the size of the page in pixels. */
-  public void setPageSize(Dimension d) { _pageSize = d; }
+    /** Set the size of the page in pixels. */
+    public void setPageSize(Dimension d) { _pageSize = d; }
 
     /**
      * @deprecated 0.10 in favour of getContents(Collection)
