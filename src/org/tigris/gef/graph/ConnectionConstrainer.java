@@ -19,12 +19,12 @@ abstract public class ConnectionConstrainer {
     protected Map _validConnectionMap = new HashMap();
 
     public boolean isConnectionValid(
-            Class connectionType,
+            Object edgeType,
             Object fromElement,
             Object toElement) {
         // Get the list of valid model item pairs for the given connection type
         ArrayList validItems =
-            (ArrayList) _validConnectionMap.get(connectionType);
+            (ArrayList) _validConnectionMap.get(edgeType);
         if (validItems == null) {
             return false;
         }

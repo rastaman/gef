@@ -29,6 +29,7 @@
 package org.tigris.gef.graph;
 
 import java.util.Hashtable;
+import java.util.Map;
 
 /** This interface provides a facade to a net-level
  *  representation. Similiar in concept to the Swing class
@@ -92,7 +93,7 @@ public interface MutableGraphModel extends GraphModel {
     
     /** Return true if the two given ports can be connected by the given
      * kind of edge. */
-    boolean canConnect(Object fromP, Object toP, Class edgeClass);
+    boolean canConnect(Object fromP, Object toP, Object edgeType);
 
     /** Reroutes the connection to the old node to be connected to
      * the new node.
@@ -103,8 +104,11 @@ public interface MutableGraphModel extends GraphModel {
      *  ports. Sends a notification.  */
     Object connect(Object fromPort, Object toPort);
 
-    /** Contruct and add a new edge of the given kind. Sends a notification. */
-    Object connect(Object fromPort, Object toPort, Class edgeClass);
+    /** Contruct and add a new edge with given attributes. Sends a notification. */
+    Object connect(Object fromPort, Object toPort, Object edgeType);
+
+    /** Contruct and add a new edge with given attributes. Sends a notification. */
+    Object connect(Object fromPort, Object toPort, Object edgeType, Map attributes);
 
     /**
      * Returns true if handle can be enclosed into encloser.

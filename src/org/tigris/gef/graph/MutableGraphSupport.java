@@ -31,6 +31,7 @@ package org.tigris.gef.graph;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -138,12 +139,12 @@ public abstract class MutableGraphSupport
     public boolean canConnect(
             Object fromPort,
             Object toPort,
-            Class edgeClass) {
+            Object edgeType) {
         boolean canConnect = false;
         if (connectionConstrainer != null) {
             canConnect =
                 connectionConstrainer.isConnectionValid(
-                    edgeClass,
+                    edgeType,
                     fromPort,
                     toPort);
         } else {
@@ -164,10 +165,34 @@ public abstract class MutableGraphSupport
 
     /** Contruct and add a new edge of the given kind. By default ignore
      *  edgeClass and call connect(port,port). */
-    public Object connect(Object fromPort, Object toPort, Class edgeClass) {
+    public Object connect(Object fromPort, Object toPort, Object edgeClass) {
         return connect(fromPort, toPort);
     }
 
+    /**
+     * Construct and add a new edge of the given kind and connect
+     * the given ports. By default ignore
+     *  edgeClass and call connect(port,port).
+     *
+     * @param fromPort   The originating port to connect
+     *
+     * @param toPort     The destination port to connect
+     *
+     * @param edgeType   Some indicator of the type of edge to create. This
+     *                   could be a <code>Class</code> or some other value
+     *                   as input to a factory to create the required edge
+     *                   model.
+     *
+     * @param styleAttributes key/value pairs from which to create the edge.
+     *
+     * @return           The type of edge created (the same as
+     *                   <code>edgeClass</code> if we succeeded,
+     *                   <code>null</code> otherwise)
+     */
+    public Object connect(Object fromPort, Object toPort, Object edgeType, Map styleAttributes) {
+        return connect(fromPort, toPort);
+    }
+    
     ////////////////////////////////////////////////////////////////
     // utility methods
 

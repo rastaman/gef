@@ -302,14 +302,15 @@ public class DefaultGraphModel
     }
 
     /** Contruct and add a new edge of the given kind */
-    public Object connect(Object srcPort, Object destPort, Class edgeClass) {
+    public Object connect(Object srcPort, Object destPort, Object edgeType) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Attempting to connect " + srcPort + " to " + destPort + " with " + edgeClass);
+            LOG.debug("Attempting to connect " + srcPort + " to " + destPort + " with " + edgeType);
         }
-        if (!canConnect(srcPort, destPort, edgeClass)) {
+        if (!canConnect(srcPort, destPort, edgeType)) {
             LOG.warn("Connection not allowed");
             return null;
         }
+        Class edgeClass = (Class)edgeType;
         if (srcPort instanceof NetPort && destPort instanceof NetPort) {
             NetPort s = (NetPort) srcPort;
             NetPort d = (NetPort) destPort;
