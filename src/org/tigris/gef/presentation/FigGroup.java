@@ -23,10 +23,6 @@ package org.tigris.gef.presentation;
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-
 // File: FigGroup.java
 // Classes: FigGroup
 // Original Author: jrobbins@ics.uci.edu
@@ -211,11 +207,11 @@ public String getPrivateData() {
 	  if (f.hit(r)) res = f;
 	}
 	return res;
-  }  
-  public boolean isReshapable() { return false; }  
+  }
+  public boolean isReshapable() { return false; }
   /** Groups are resizable, but not reshapable, and not rotatable (for now). */
-  public boolean isResizable() { return true; }  
-  public boolean isRotatable() { return false; }  
+  public boolean isResizable() { return true; }
+  public boolean isRotatable() { return false; }
   ////////////////////////////////////////////////////////////////
   // display methods
 
