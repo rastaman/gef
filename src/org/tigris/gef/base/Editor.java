@@ -592,7 +592,17 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         //     view.scrollRectToVisible(new Rectangle(x - 10, y - 10, 20, 20));
         //   }
     }
-
+    
+    /** Scroll the JGraph so that the given Fig is entirely visible.
+     */
+    public void scrollToShow(Fig fig) {
+        Rectangle bounds = new Rectangle((int)(fig.getX()*_scale),(int) 
+            (fig.getY()*_scale),(int)(fig.getWidth()*_scale), 
+            (int)(fig.getHeight()*_scale)); 
+        bounds.grow((int)(50*_scale),(int)( 50 * _scale)); 
+        JComponent c = getJComponent(); 
+        if (c!=null) c.scrollRectToVisible(bounds); 
+    }
 
     /** Reply the current SelectionManager of this Editor. */
     public SelectionManager getSelectionManager() {
