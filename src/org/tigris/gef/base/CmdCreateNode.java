@@ -28,7 +28,10 @@
 
 package org.tigris.gef.base;
 
+import java.awt.event.ActionEvent;
 import java.util.*;
+
+import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.tigris.gef.graph.*;
@@ -144,14 +147,21 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
      */    
     public Object makeNode() {
         Object newNode;
-        Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
-        //assert _nodeClass != null
-        try {
-            newNode = nodeClass.newInstance();
-        } catch (java.lang.IllegalAccessException ignore) {
-            return null;
-        } catch (java.lang.InstantiationException ignore) {
-            return null;
+        Object nodeType = getArg("className", DEFAULT_NODE_CLASS);
+        if (nodeType instanceof Action) {
+            Action a=null;
+            a.actionPerformed(null);
+            newNode = a.getValue("node");
+        } else {
+            Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
+            //assert _nodeClass != null
+            try {
+                newNode = nodeClass.newInstance();
+            } catch (java.lang.IllegalAccessException ignore) {
+                return null;
+            } catch (java.lang.InstantiationException ignore) {
+                return null;
+            }
         }
         LOG.debug("New node created " + newNode);
 
