@@ -55,7 +55,8 @@ import org.tigris.gef.presentation.Handle;
  * @see ModeCreateEdge
  * @see ModeModify
  * @see Fig
- * @see Editor */
+ * @see Editor 
+ */
 public class ModeSelect extends FigModifyingModeImpl {
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -78,8 +79,8 @@ public class ModeSelect extends FigModifyingModeImpl {
     // constructors and related methods
 
     /** Construct a new ModeSelect with the given parent. */
-    public ModeSelect(Editor par) {
-        super(par);
+    public ModeSelect(Editor parent) {
+        super(parent);
     }
 
     /** Construct a new ModeSelect instance. Its parent must be set
@@ -93,7 +94,7 @@ public class ModeSelect extends FigModifyingModeImpl {
     }
 
     /** 
-     * @deprecated in 0.11 this variable is not used. GEF will be
+     * @deprecated in 0.10.1 this variable is not used. GEF will be
      * coded in a platform independant manner.
      */
     public static boolean isMacintoshUser = false;
@@ -104,7 +105,7 @@ public class ModeSelect extends FigModifyingModeImpl {
     /** Handle mouse down events by preparing for a drag. If the mouse
      *  down event happens on a handle or an already selected object, and
      *  the shift key is not down, then go to ModeModify. If the mouse
-     *  down event happens on a port, to to ModeCreateEdge.   */
+     *  down event happens on a port, go to ModeCreateEdge.   */
     public void mousePressed(MouseEvent me) {
         if (me.isConsumed()) {
             if (LOG.isDebugEnabled()) LOG.debug("MousePressed but rejected as already consumed");
@@ -152,15 +153,15 @@ public class ModeSelect extends FigModifyingModeImpl {
 
         Handle h = new Handle(-1);
         sm.hitHandle(new Rectangle(x - 4, y - 4, 8, 8), h);
-        if(h.index >= 0) {
+        if (h.index >= 0) {
             gotoModifyMode(me);
             me.consume();
             if (LOG.isDebugEnabled()) LOG.debug("MousePressed with hit handle, going to Modify mode and consumed event");
             return;
         }
 
-        if(underMouse != null) {
-            if(toggleSelection) {
+        if (underMouse != null) {
+            if (toggleSelection) {
                 sm.toggle(underMouse);
             } else if(!sm.containsFig(underMouse)) {
                 sm.select(underMouse);
@@ -168,7 +169,6 @@ public class ModeSelect extends FigModifyingModeImpl {
         }
 
         if (sm.hit(hitRect)) {
-            //System.out.println("gotoModifyMode");
             gotoModifyMode(me);
         }
 
@@ -181,7 +181,7 @@ public class ModeSelect extends FigModifyingModeImpl {
         if (me.isConsumed() || me.isAltDown() || me.isMetaDown()) {
             return;
         }
-
+        editor.translateMouseEvent(me);
         int x = me.getX();
         int y = me.getY();
         
@@ -203,12 +203,17 @@ public class ModeSelect extends FigModifyingModeImpl {
         editor.scrollToShow(x, y);
         me.consume();
     }
-    
+
+    /**
+     * Damage the area of the rect after scaling
+     * @param scale
+     * @param rect
+     */    
     private void scaleDamage(double scale, Rectangle rect) {
-        int newX = (int)((double)rect.x * scale) - 1;
-        int newY = (int)((double)rect.y * scale) - 1;
-        int newWidth  = (int)(((double)(rect.width  + 2)) * scale) + 2;
-        int newHeight = (int)(((double)(rect.height + 2)) * scale) + 2;
+        int newX = (int) ((double)rect.x * scale) - 1;
+        int newY = (int) ((double)rect.y * scale) - 1;
+        int newWidth  = (int) (((double)(rect.width  + 2)) * scale) + 2;
+        int newHeight = (int) (((double)(rect.height + 2)) * scale) + 2;
         editor.damaged(newX, newY, newWidth, newHeight);
     }
 
@@ -224,6 +229,7 @@ public class ModeSelect extends FigModifyingModeImpl {
             if (LOG.isDebugEnabled()) LOG.debug("MouseReleased but rejected as meta key down");
             return;
         }
+        editor.translateMouseEvent(me);
         
         int x = me.getX();
         int y = me.getY();
@@ -311,6 +317,8 @@ public class ModeSelect extends FigModifyingModeImpl {
      * Determine if a mouse event was to toggle selection of multiple items.
      * On a Mac this is by Command-Click.
      * On a non-mac this is by Ctrl-Click.
+     * There seems to be no platform independant way of determining this.
+     * @author Bob Tarling
      */
     private boolean isMultiSelectTrigger(MouseEvent me) {
         // If the control key is down and this is not a popup trigger then
