@@ -28,7 +28,12 @@
 
 package org.tigris.gef.presentation;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Stroke;
 
 /**
  * Abstract class to draw arrow heads on the ends of FigEdges.
@@ -67,25 +72,33 @@ public abstract class ArrowHead implements java.io.Serializable {
     public abstract void paint(Graphics g, Point start, Point end);
 
     public void paintAtHead(Graphics g, Fig path) {
-        Graphics2D g2 = (Graphics2D) g;
-        Stroke oldStroke = g2.getStroke();
-        g2.setStroke(new BasicStroke(path.getLineWidth()));
         int[] xs = path.getXs();
         int[] ys = path.getYs();
-        paint(g2, new Point(xs[1], ys[1]), new Point(xs[0], ys[0]));
-        g2.setStroke(oldStroke);
+        if (g instanceof Graphics2D) {
+            Graphics2D g2 = (Graphics2D) g;
+            Stroke oldStroke = g2.getStroke();
+            g2.setStroke(new BasicStroke(path.getLineWidth()));
+            paint(g2, new Point(xs[1], ys[1]), new Point(xs[0], ys[0]));
+            g2.setStroke(oldStroke);
+        } else {
+            paint(g, new Point(xs[1], ys[1]), new Point(xs[0], ys[0]));
+        }
     }
 
     public void paintAtTail(Graphics g, Fig path) {
-        Graphics2D g2 = (Graphics2D) g;
-        Stroke oldStroke = g2.getStroke();
-        g2.setStroke(new BasicStroke(path.getLineWidth()));
+        int pointCount = path.getNumPoints();
         int[] xs = path.getXs();
         int[] ys = path.getYs();
-        int pointCount = path.getNumPoints();
-        paint(g2, new Point(xs[pointCount-2], ys[pointCount-2]), new Point(xs[pointCount-1], ys[pointCount-1]));
-        g2.setStroke(oldStroke);
+        if (g instanceof Graphics2D) {
+            Graphics2D g2 = (Graphics2D) g;
+            Stroke oldStroke = g2.getStroke();
+            g2.setStroke(new BasicStroke(path.getLineWidth()));
+            g2.setStroke(oldStroke);
+        } else {
+            paint(g, new Point(xs[pointCount-2], ys[pointCount-2]), new Point(xs[pointCount-1], ys[pointCount-1]));
+        }
     }
+    
     /** return the approximate arc length of the path in pixel units */
     public int getLineLength(Point one, Point two) {
         int dxdx = (two.x - one.x) * (two.x - one.x);
