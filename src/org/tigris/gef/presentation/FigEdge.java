@@ -26,10 +26,10 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
     // instance variables
 
     /** Fig presenting the edge's from-port . */
-    protected Fig _sourcePortFig;
+    private Fig _sourcePortFig;
 
     /** Fig presenting the edge's to-port. */
-    protected Fig _destPortFig;
+    private Fig _destPortFig;
 
     /** FigNode presenting the edge's from-port's parent node. */
     protected FigNode _sourceFigNode;
@@ -576,8 +576,12 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         }
     }
 
-    /** Get the Fig reprenting this FigEdge's to-port. */
+    /** Set the Fig reprenting this FigEdge's to-port. */
     public void setDestPortFig(Fig fig) {
+        // Reinstate for next beta
+//        if (fig == null) {
+//            throw new IllegalArgumentException("A destination port must be supplied");
+//        }
         _destPortFig = fig;
     }
 
@@ -716,6 +720,10 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
 
     /** Get the Fig reprenting this FigEdge's from-port. */
     public void setSourcePortFig(Fig fig) {
+        // reinstate for next beta
+//        if (fig == null) {
+//            throw new IllegalArgumentException("A source port must be supplied");
+//        }
         _sourcePortFig = fig;
     }
 

@@ -83,13 +83,16 @@ public class FigEdgeRectiline extends FigEdge {
 
     Point srcPt, dstPt;
     
+    Fig sourcePortFig = getSourcePortFig();
+    Fig destPortFig = getDestPortFig();
+    
     if (_useNearest) {
-      srcPt = _sourcePortFig.connectionPoint(p.getPoint(1));
-      dstPt = _destPortFig.connectionPoint(p.getPoint(p.getNumPoints()-2));
+      srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
+      dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints()-2));
     }
     else {
-      srcPt = _sourcePortFig.center();
-      dstPt = _destPortFig.center();
+      srcPt = sourcePortFig.center();
+      dstPt = destPortFig.center();
     }
     
     p.setEndPoints(srcPt, dstPt);
@@ -102,23 +105,27 @@ public class FigEdgeRectiline extends FigEdge {
     int npoints = 0;
     int xpoints[] = new int[16];
     int ypoints[] = new int[16];
-    Point srcPt = _sourcePortFig.center();
-    Point dstPt = _destPortFig.center();
+    
+    Fig sourcePortFig = getSourcePortFig();
+    Fig destPortFig = getDestPortFig();
+    
+    Point srcPt = sourcePortFig.center();
+    Point dstPt = destPortFig.center();
 
     if (_useNearest) {
-      srcPt = _sourcePortFig.connectionPoint(dstPt);
-      dstPt = _destPortFig.connectionPoint(srcPt);
-      srcPt = _sourcePortFig.connectionPoint(dstPt);
-      dstPt = _destPortFig.connectionPoint(srcPt);
+      srcPt = sourcePortFig.connectionPoint(dstPt);
+      dstPt = destPortFig.connectionPoint(srcPt);
+      srcPt = sourcePortFig.connectionPoint(dstPt);
+      dstPt = destPortFig.connectionPoint(srcPt);
     }
     
     Rectangle srcRR = _sourceFigNode.routingRect();
     Rectangle dstRR = _destFigNode.routingRect();
 
-    Object srcPort = _sourcePortFig.getOwner();
-    Object dstPort = _destPortFig.getOwner();
-    int srcSector = _sourceFigNode.getPortSector(_sourcePortFig);
-    int dstSector = _destFigNode.getPortSector(_destPortFig);
+    Object srcPort = sourcePortFig.getOwner();
+    Object dstPort = destPortFig.getOwner();
+    int srcSector = _sourceFigNode.getPortSector(sourcePortFig);
+    int dstSector = _destFigNode.getPortSector(destPortFig);
 
     // first decide what layout case we have
     Point srcRRPt = routingRectPoint(srcPt, srcRR, srcSector);

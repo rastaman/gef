@@ -30,9 +30,9 @@
 
 package org.tigris.gef.presentation;
 
-import java.util.*;
-import java.awt.*;
-import java.io.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 
 /** An FigEdge that shows a straight line from the source port
  *  to the destination port. */
@@ -45,22 +45,24 @@ public class FigEdgeLine extends FigEdge {
    *  black and the FigEdge has no ArrowHeads. */
   protected Fig makeEdgeFig() { return new FigLine(0, 0, 0, 0, Color.black); }
 
-  /** Compute the shape of the line that presents an Edge. */
-  public void computeRoute() {
-    Point srcPt = _sourcePortFig.center();
-    Point dstPt = _destPortFig.center();
+    /** Compute the shape of the line that presents an Edge. */
+    public void computeRoute() {
+        Fig sourcePortFig = getSourcePortFig();
+  	    Fig destPortFig = getDestPortFig();
+        Point srcPt = sourcePortFig.center();
+        Point dstPt = destPortFig.center();
 
-    if (_useNearest) {
-      //? two iterations of refinement, maybe should be a for-loop
-      srcPt = _sourcePortFig.connectionPoint(dstPt);
-      dstPt = _destPortFig.connectionPoint(srcPt);
-      srcPt = _sourcePortFig.connectionPoint(dstPt);
-      dstPt = _destPortFig.connectionPoint(srcPt);
+        if (_useNearest) {
+            //? two iterations of refinement, maybe should be a for-loop
+            srcPt = sourcePortFig.connectionPoint(dstPt);
+            dstPt = destPortFig.connectionPoint(srcPt);
+            srcPt = sourcePortFig.connectionPoint(dstPt);
+            dstPt = destPortFig.connectionPoint(srcPt);
+        }
+
+        ((FigLine) _fig).setShape(srcPt, dstPt);
+        calcBounds();
     }
-
-    ((FigLine) _fig).setShape(srcPt, dstPt);
-    calcBounds();
-  }
 
 
   public void paint(Graphics g) {

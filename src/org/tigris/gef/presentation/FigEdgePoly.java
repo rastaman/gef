@@ -28,8 +28,12 @@
 
 package org.tigris.gef.presentation;
 
-import java.util.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+
 
 /** A Fig that paints edges between ports. This version
  *  automatically routes a rectilinear edge. The routing is not very
@@ -87,24 +91,23 @@ public class FigEdgePoly extends FigEdge {
             _initiallyLaidOut = true;
         }
         FigPoly p = ((FigPoly) _fig);
-
-        Point srcPt = _sourcePortFig.center();
-        Point dstPt = _destPortFig.center();
+        
+        Fig sourcePortFig = getSourcePortFig();
+        Fig destPortFig = getDestPortFig();
+        
+        Point srcPt = sourcePortFig.center();
+        Point dstPt = destPortFig.center();
 
         if (_useNearest) {
             if (p.getNumPoints() == 2) {
                 //? two iterations of refinement, maybe should be a for-loop
-                srcPt = _sourcePortFig.connectionPoint(p.getPoints(1));
-                dstPt =
-                    _destPortFig.connectionPoint(
-                        p.getPoints(p.getNumPoints() - 2));
-                srcPt = _sourcePortFig.connectionPoint(dstPt);
-                dstPt = _destPortFig.connectionPoint(srcPt);
+                srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
+                dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints() - 2));
+                srcPt = sourcePortFig.connectionPoint(dstPt);
+                dstPt = destPortFig.connectionPoint(srcPt);
             } else {
-                srcPt = _sourcePortFig.connectionPoint(p.getPoints(1));
-                dstPt =
-                    _destPortFig.connectionPoint(
-                        p.getPoints(p.getNumPoints() - 2));
+                srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
+                dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints() - 2));
             }
         }
 
@@ -118,9 +121,11 @@ public class FigEdgePoly extends FigEdge {
         int npoints = 0;
         int xpoints[] = new int[16];
         int ypoints[] = new int[16];
+        Fig sourcePortFig = getSourcePortFig();
+        Fig destPortFig = getDestPortFig();
         //System.out.println("[FigEdgePoly] layoutEdge: " + _sourcePortFig + " / " + _destPortFig);
-        Point srcPt = _sourcePortFig.center();
-        Point dstPt = _destPortFig.center();
+        Point srcPt = sourcePortFig.center();
+        Point dstPt = destPortFig.center();
 
         if (_useNearest) {
             int xdiff = (srcPt.x - dstPt.x);
@@ -129,10 +134,10 @@ public class FigEdgePoly extends FigEdge {
             srcPt.y = (int) (srcPt.y - 0.1 * ydiff);
             dstPt.x = (int) (dstPt.x + 0.1 * xdiff);
             dstPt.y = (int) (dstPt.y + 0.1 * ydiff);
-            srcPt = _sourcePortFig.connectionPoint(dstPt);
-            dstPt = _destPortFig.connectionPoint(srcPt);
-            srcPt = _sourcePortFig.connectionPoint(dstPt);
-            dstPt = _destPortFig.connectionPoint(srcPt);
+            srcPt = sourcePortFig.connectionPoint(dstPt);
+            dstPt = destPortFig.connectionPoint(srcPt);
+            srcPt = sourcePortFig.connectionPoint(dstPt);
+            dstPt = destPortFig.connectionPoint(srcPt);
         }
 
         xpoints[npoints] = srcPt.x;
@@ -345,11 +350,16 @@ public class FigEdgePoly extends FigEdge {
                 if (np > 2) {
                     //Point handlePoint = new Point(p._xpoints[i],p._ypoints[i]);
                     Point handlePoint = new Point(x, y);
-                    Point srcPt = _sourcePortFig.center();
-                    Point dstPt = _destPortFig.center();
+                    
+                    Fig sourcePortFig = getSourcePortFig();
+                    Fig destPortFig = getDestPortFig();
+                    
+                    Point srcPt = sourcePortFig.center();
+                    Point dstPt = destPortFig.center();
+                    
                     if (i == 1 && np == 3) {
-                        srcPt = _sourcePortFig.connectionPoint(handlePoint);
-                        dstPt = _destPortFig.connectionPoint(handlePoint);
+                        srcPt = sourcePortFig.connectionPoint(handlePoint);
+                        dstPt = destPortFig.connectionPoint(handlePoint);
                         p.moveVertex(new Handle(0), srcPt.x, srcPt.y, true);
                         p.moveVertex(
                             new Handle(np - 1),
@@ -358,11 +368,11 @@ public class FigEdgePoly extends FigEdge {
                             true);
                         calcBounds();
                     } else if (i == 1) {
-                        srcPt = _sourcePortFig.connectionPoint(handlePoint);
+                        srcPt = sourcePortFig.connectionPoint(handlePoint);
                         p.moveVertex(new Handle(0), srcPt.x, srcPt.y, true);
                         calcBounds();
                     } else if (i == (np - 2)) {
-                        dstPt = _destPortFig.connectionPoint(handlePoint);
+                        dstPt = destPortFig.connectionPoint(handlePoint);
                         p.moveVertex(
                             new Handle(np - 1),
                             dstPt.x,
@@ -377,13 +387,13 @@ public class FigEdgePoly extends FigEdge {
         }
     }
 
-    /** When the user drags the handles, move individual points 
-     * @deprecated 0.10.2 in favour of setPoint(Handle, int, int)
-     */
-    public void setPoints(Handle h, int mX, int mY) {
-        moveVertex(h, mX, mY, false);
-        calcBounds();
-    }
+//    /** When the user drags the handles, move individual points 
+//     * @deprecated 0.10.2 in favour of setPoint(Handle, int, int)
+//     */
+//    public void setPoints(Handle h, int mX, int mY) {
+//        moveVertex(h, mX, mY, false);
+//        calcBounds();
+//    }
 
     /** When the user drags the handles, move individual points */
     public void setPoint(Handle h, int mX, int mY) {
@@ -420,8 +430,9 @@ public class FigEdgePoly extends FigEdge {
             int nPoints = f.getNumPoints();
             int xs[] = f.getXs();
             int ys[] = f.getYs();
-            for (int i = 1; i < nPoints; i++)
+            for (int i = 1; i < nPoints; i++) {
                 paintHighlightLine(g, xs[i - 1], ys[i - 1], xs[i], ys[i]);
+            }
         }
     }
 } /* end class FigEdgePoly */
