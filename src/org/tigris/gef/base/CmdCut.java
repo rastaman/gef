@@ -53,7 +53,7 @@ public class CmdCut extends Cmd {
 			figs.addElement(f);
 		}
 		Globals.clipBoard = figs;
-		selectionManager.delete();
+		selectionManager.removeFromGraph();
 	}
 	
 	public void undoIt() {

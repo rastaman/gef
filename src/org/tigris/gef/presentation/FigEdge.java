@@ -655,9 +655,14 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         calcBounds();
     }
 
-    public void setPoints(Handle h, int x, int y) {
-        _fig.setPoints(h, x, y);
+    public void setPoint(Handle h, int x, int y) {
+        _fig.setPoint(h, x, y);
         calcBounds();
+    }
+
+    /** @deprecated 0.10.5 in favour of setPoint(Handle,int,int) */
+    public void setPoints(Handle h, int x, int y) {
+        setPoint(h, x, y);
     }
 
     /** @deprecated 0.10.2 this method does nothing so lets get rid */

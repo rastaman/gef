@@ -329,19 +329,16 @@ public abstract class Layer implements java.io.Serializable {
         return v;
     }
 
-    /** Return the list of Editors that are showing this Layer. */
+    /** @deprecated 0.10.5 in favour of getEditors() */
     public Collection getEditors(Collection c) {
         if (c == null) return _editors;
         c.addAll(_editors);
         return c;
     }
 
-    /**
-     * @deprecated 0.10 in favour of getEditors(Collection)
-     * This method will be removed in release 0.11
-     */
-    public Vector getEditors() {
-        return new Vector(_editors);
+    /** Return the list of Editors that are showing this Layer. */
+    public List getEditors() {
+        return new ArrayList(_editors);
     }
 
     /** Most Layers contain Fig, so I have empty implementations of

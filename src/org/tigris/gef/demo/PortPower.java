@@ -79,15 +79,15 @@ public class PortPower extends NetPort implements Serializable {
         }
     }
 
-  /** Add the constraint that PortPowers can only be connected to
-   *  other ports of the same type. And SOCKETs can only be connected
-   *  to RECEPTICALs. */
-  public boolean canConnectTo(GraphModel gm, Object otherPort) {
-    return (super.canConnectTo(gm, otherPort)) &&
-      (otherPort.getClass() == this.getClass()) &&
-      (this.type() != ((PortPower)otherPort).type())  &&
-      _edges.size() == 0;
-    // needs-more-work: should work with subclasses too. This is
-    // really a java.lang.Class method that is missing: isSubclass()
-  }
+    /** Add the constraint that PortPowers can only be connected to
+     *  other ports of the same type. And SOCKETs can only be connected
+     *  to RECEPTICALs. */
+    public boolean canConnectTo(GraphModel gm, Object otherPort) {
+        return (super.canConnectTo(gm, otherPort)) &&
+                  (otherPort.getClass() == this.getClass()) &&
+                  (this.type() != ((PortPower)otherPort).type())  &&
+                  getEdges().size() == 0;
+        // needs-more-work: should work with subclasses too. This is
+        // really a java.lang.Class method that is missing: isSubclass()
+    }
 } /* end class PortPower */

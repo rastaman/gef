@@ -166,8 +166,8 @@ public class FlexibleApplet extends Applet {
     initWindows();
     Cmd.register(new CmdSave());
     Cmd.register(new CmdOpen());
-    Cmd.register(new CmdDispose());
-    Cmd.register(new CmdDelete());
+    Cmd.register(new CmdDeleteFromModel());
+    Cmd.register(new CmdRemoveFromGraph());
     Cmd.register(new CmdSpawn());
     Cmd.register(new CmdAdjustGrid());
     Cmd.register(new CmdShowProperties());

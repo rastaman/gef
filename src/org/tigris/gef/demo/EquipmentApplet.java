@@ -104,7 +104,7 @@ public class EquipmentApplet extends JApplet {
     jgf.setTitle("EquipmentApplet");
     jgf.setToolBar(palette);
     // make the delete key remove elements from the underlying GraphModel
-    jgf.getGraph().bindKey(new CmdDispose(), KeyEvent.VK_DELETE, 0);
+    jgf.getGraph().bindKey(new CmdDeleteFromModel(), KeyEvent.VK_DELETE, 0);
 
     jgf.show();
   }

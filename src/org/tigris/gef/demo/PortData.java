@@ -31,12 +31,12 @@
 
 package org.tigris.gef.demo;
 
-import java.awt.*;
-import java.util.Vector;
-import java.io.*;
+import java.io.Serializable;
 
-import org.tigris.gef.graph.*;
-import org.tigris.gef.graph.presentation.*;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.presentation.NetNode;
+import org.tigris.gef.graph.presentation.NetPort;
+
 
 /** An example subclass of NetPort for the EquipmentApplet demo. As
  *  part of the example I constrain the ports to only connect to
@@ -46,23 +46,23 @@ import org.tigris.gef.graph.presentation.*;
 
 public class PortData extends NetPort implements Serializable {
 
-  /** Construct a new NetPort with the given parent node and no arcs. */
-  public PortData(NetNode parent) { super(parent); }
+    /** Construct a new NetPort with the given parent node and no arcs. */
+    public PortData(NetNode parent) { super(parent); }
 
-  /** Add the constraint that PortData's can only be connected to
-   *  other ports of the same type. */
-  public boolean canConnectTo(GraphModel gm, NetPort otherPort) {
-    return (super.canConnectTo(gm, otherPort)) &&
-      (otherPort.getClass() == this.getClass()) &&
-      _edges.size() == 0;
-    // needs-more-work: should work with subclasses too. This is
-    // really a java.lang.Class method that is missing: isSubclass()
-  }
+    /** Add the constraint that PortData's can only be connected to
+     *  other ports of the same type. */
+    public boolean canConnectTo(GraphModel gm, NetPort otherPort) {
+        return (super.canConnectTo(gm, otherPort)) &&
+                (otherPort.getClass() == this.getClass()) &&
+                 getEdges().size() == 0;
+        // needs-more-work: should work with subclasses too. This is
+        // really a java.lang.Class method that is missing: isSubclass()
+    }
 
-  /** If the user starts draggin on this port, he will create a new
-   *  EdgeData. */
-  protected Class defaultEdgeClass(NetPort otherPort) {
-    try { return Class.forName("org.tigris.gef.demo.EdgeData"); }
-    catch (java.lang.ClassNotFoundException ignore) { return null; }
-  }
+    /** If the user starts draggin on this port, he will create a new
+     *  EdgeData. */
+    protected Class defaultEdgeClass(NetPort otherPort) {
+        try { return Class.forName("org.tigris.gef.demo.EdgeData"); }
+        catch (java.lang.ClassNotFoundException ignore) { return null; }
+    }
 } /* end class PortData */

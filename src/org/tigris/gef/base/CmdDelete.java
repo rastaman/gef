@@ -56,7 +56,7 @@ public class CmdDelete extends Cmd {
     public void doIt() {
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
-        sm.delete();
+        sm.removeFromGraph();
     }
 
     public void undoIt() {

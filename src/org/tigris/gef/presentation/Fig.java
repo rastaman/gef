@@ -647,14 +647,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     }
 
     protected int drawDashedLine(Graphics g, int phase, int x1, int y1, int x2, int y2) {             // float phase?
-        int segStartX;
-        int segStartY;
-        int segEndX;
-        int segEndY;
         int dxdx = (x2 - x1) * (x2 - x1);
         int dydy = (y2 - y1) * (y2 - y1);
         int length = (int)(Math.sqrt(dxdx + dydy) + 0.5);       // This causes a smaller rounding error of 0.5pixels max. . Seems acceptable.
-        int d;
         float lineWidth = _lineWidth;
         Graphics2D g2D = (Graphics2D)g;
         Stroke  OriginalStroke = g2D.getStroke();               // we need this to restore the original stroke afterwards
@@ -1394,18 +1389,38 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     public void setPoints(Point[] ps) {
     }
 
+    /** deprecated 0.10.5 by Bob Tarling use setPoint(int, int, int) */
     public void setPoints(int i, int x, int y) {
+        setPoint(i, x, y);
     }
 
+    public void setPoint(int i, int x, int y) {
+    }
+
+    /** deprecated 0.10.5 by Bob Tarling use setPoint(int, Point) */
     public final void setPoints(int i, Point p) {
+        setPoint(i, p);
+    }
+
+    public final void setPoint(int i, Point p) {
         setPoints(i, p.x, p.y);
     }
 
+    /** deprecated 0.10.5 by Bob Tarling use setPoint(Handle, int, int) */
     public void setPoints(Handle h, int x, int y) {
+        setPoint(h, x, y);
+    }
+
+    public void setPoint(Handle h, int x, int y) {
         setPoints(h.index, x, y);
     }
 
+    /** deprecated 0.10.5 by Bob Tarling use setPoint(Handle, int, int) */
     public final void setPoints(Handle h, Point p) {
+        setPoint(h, p);
+    }
+
+    public final void setPoint(Handle h, Point p) {
         setPoints(h, p.x, p.y);
     }
 
