@@ -46,6 +46,10 @@ public class FigGroup extends Fig {
   //? use array for speed?
   protected Vector _figs;
 
+  /** The String of figs that are dynamically
+         generated. */
+  public String _dynObjects;
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -59,7 +63,14 @@ public class FigGroup extends Fig {
 	super();
 	_figs = figs;
 	calcBounds();
-  }  
+  }
+
+  /** Empty method. Every figgroup that generates new
+         elements dynamically has to overwrite this method
+         for loading this figure. */
+  public void parseDynObjects(String dynStr) {
+  }
+
   /** Add a Fig to the group.  New Figs are added on the top. */
   public void addFig(Fig f) {
 	_figs.addElement(f);

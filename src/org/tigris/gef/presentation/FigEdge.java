@@ -213,8 +213,25 @@ implements PropertyChangeListener, Highlightable {
 	// needs-more-work: Find the closest Fig to this point
 	return null;
   }  
+
+  /** Return the fig of a given path item. */
+  public Fig getPathItemFig(PathItem pathItem) {
+    Fig fig = pathItem.getFig();
+    return fig;
+  }
+
+  /** Return all figs of the path items */
+  public Vector getPathItemFigs() {
+    Vector figs=new Vector();
+    for (int i=0; i< _pathItems.size(); i++) {
+      figs.add( getPathItemFig( (PathItem) _pathItems.elementAt(i)) );
+    }
+    return figs;
+  }
+
   /** Return the vector of path items on this FigEdge. */
   public Vector getPathItemsRaw() { return _pathItems; }  
+
   public int getPerimeterLength() { return _fig.getPerimeterLength(); }  
   public Point[] getPoints() { return _fig.getPoints(); }  
   public Point getPoints(int i) { return _fig.getPoints(i); }  
