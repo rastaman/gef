@@ -86,12 +86,22 @@ public class NetList extends NetPrimitive implements java.io.Serializable {
 
     /** Reply the vector of nodes */
     public Collection getNodes(Collection c) { 
-        return nodes;
+        if (c == null) {
+            return new Vector(nodes);
+        } else {
+            c.addAll(nodes);
+            return c;
+        }
     }
 
     /** Reply the vector of edges */
     public Collection getEdges(Collection c) {
-        return edges;
+        if (c == null) {
+            return new Vector(edges);
+        } else {
+            c.addAll(edges);
+            return c;
+        }
     }
 
     /** Add a node to this NetList.  */

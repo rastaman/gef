@@ -129,7 +129,7 @@ public class DefaultGraphModel
 
     /** Return all nodes in the graph */
     public Collection getEdges(Collection c) {
-        return netList.getEdges();
+        return netList.getEdges(c);
     }
 
     /** Return all ports on node or edge */
