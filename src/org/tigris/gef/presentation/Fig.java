@@ -602,7 +602,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 
     /** Remove this Fig from the Layer being edited by the
      *  given editor.
-     * @depreacted 0.10.7 use removeFromDiagram
+     * @deprecated 0.10.7 use removeFromDiagram
      */
     public void delete() {
         removeFromDiagram();
