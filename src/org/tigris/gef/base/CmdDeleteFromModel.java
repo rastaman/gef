@@ -47,7 +47,7 @@ public class CmdDeleteFromModel extends Cmd {
         //System.out.println("CmdDeleteFromModel");
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
-        sm.dispose();
+        sm.deleteFromModel();
         sm.deselectAll();
     }
 
