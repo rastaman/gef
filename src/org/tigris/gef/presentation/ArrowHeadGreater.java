@@ -35,40 +35,47 @@ import java.awt.*;
 
 public class ArrowHeadGreater extends ArrowHead {
 
-  public static ArrowHeadGreater TheInstance = new ArrowHeadGreater();
+    /**
+     * @deprecated 0.10.1 use getInstance()
+     */
+    public static ArrowHeadGreater TheInstance = new ArrowHeadGreater();
 
-  public void paint(Graphics g, Point start, Point end) {
-    int    xFrom, xTo, yFrom, yTo;
-    double denom, x, y, dx, dy, cos, sin;
-    Polygon triangle;
+    public static ArrowHeadGreater getInstance() {
+        return TheInstance;
+    }
+    public void paint(Graphics g, Point start, Point end) {
+        int    xFrom, xTo, yFrom, yTo;
+        double denom, x, y, dx, dy, cos, sin;
 
-    xFrom  = start.x;
-    xTo   = end.x;
-    yFrom  = start.y;
-    yTo   = end.y;
+        xFrom  = start.x;
+        xTo   = end.x;
+        yFrom  = start.y;
+        yTo   = end.y;
 
-    dx   	= (double)(xTo - xFrom);
-    dy   	= (double)(yTo - yFrom);
-    denom 	= dist(dx, dy);
-    if (denom == 0) return;
+        dx   	= (double)(xTo - xFrom);
+        dy   	= (double)(yTo - yFrom);
+        denom 	= dist(dx, dy);
+        if (denom == 0) {
+            return;
+        } 
 
-    cos = arrow_height/denom;
-    sin = arrow_width /denom;
-    x   = xTo - cos*dx;
-    y   = yTo - cos*dy;
-    int x1  = (int)(x - sin*dy);
-    int y1  = (int)(y + sin*dx);
-    int x2  = (int)(x + sin*dy);
-    int y2  = (int)(y - sin*dx);
+        cos = arrow_height/denom;
+        sin = arrow_width /denom;
+        x   = xTo - cos*dx;
+        y   = yTo - cos*dy;
+        int x1  = (int)(x - sin*dy);
+        int y1  = (int)(y + sin*dx);
+        int x2  = (int)(x + sin*dy);
+        int y2  = (int)(y - sin*dx);
 
-//     triangle = new Polygon();
+//     Polygon triangle = new Polygon();
 //     triangle.addPoint(xTo, yTo);
 //     triangle.addPoint(x1, y1);
 //     triangle.addPoint(x2, y2);
 
-    g.setColor(arrowLineColor);
-    g.drawLine(x1, y1, xTo, yTo);
+        g.setColor(arrowLineColor);
+        g.drawLine(x1, y1, xTo, yTo);
     g.drawLine(x2, y2, xTo, yTo);
-  }
+    }
 
 }
