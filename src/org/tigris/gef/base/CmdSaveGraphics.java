@@ -82,9 +82,9 @@ public abstract class CmdSaveGraphics extends Cmd {
             Fig f = null;
             Rectangle rectSize = null;
             Rectangle drawingArea = new Rectangle( 0, 0 );
-            Enumeration enum = ce.figs();
-            while( enum.hasMoreElements() ) {
-              f = (Fig) enum.nextElement();
+            Enumeration iter = ce.figs();
+            while( iter.hasMoreElements() ) {
+              f = (Fig) iter.nextElement();
               rectSize = f.getBounds();
               xmin = Math.min( xmin, rectSize.x );
               ymin = Math.min( ymin, rectSize.y );
