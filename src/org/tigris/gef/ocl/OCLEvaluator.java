@@ -52,7 +52,7 @@ public class OCLEvaluator {
 
     public synchronized String evalToString(Object self, String expr, String sep) {
         _scratchBindings.put("self", self);
-        Collection values = eval(_scratchBindings, expr);
+        java.util.List values = eval(_scratchBindings, expr);
         _strBuf.setLength(0);
         Iterator iter = values.iterator();
         while(iter.hasNext()) {
@@ -68,30 +68,23 @@ public class OCLEvaluator {
         return _strBuf.toString();
     }
 
-    public Collection eval(Map bindings, String expr) {
+    public java.util.List eval(Map bindings, String expr) {
         int firstPos = expr.indexOf(".");
         Object target = bindings.get(expr.substring(0, firstPos));
-        Collection targets;
-        if(target instanceof List) {
-            targets = (List)target;
+        Vector targets;
+
+        if (target instanceof Vector)  {
+            targets = (Vector) target;
         }
         else {
-            targets = Collections.singletonList(target);
+            targets = new Vector();
+            targets.addElement(target);
         }
-
         String prop = expr.substring(firstPos);
         return eval(bindings, prop, targets);
-    }    // end of eval()
-
-    /**
-     * @deprecated 0.10 in favour of eval(Map, String, Collection). Will remove in ver 0.11
-     */
-    public Vector eval(Map bindings, String expr, Vector targets) {
-        Vector v = new Vector(targets);
-        return new Vector(eval(bindings, expr, v));
-    }
+    } // end of eval()
     
-    public Collection eval(Map bindings, String expr, Collection targets) {
+    public Vector eval(Map bindings, String expr, Vector targets) {
         int firstPos;
         int secPos;
         int numElements;
@@ -111,12 +104,11 @@ public class OCLEvaluator {
             }
 
             numElements = targets.size();
-            Iterator it = targets.iterator();
-            while (it.hasNext()) {
-                v.add(evaluateProperty(it.next(), property));
+            for(int i = 0; i < numElements; i++) {
+                v.add(evaluateProperty(targets.get(i), property));
             }
 
-            targets = flatten(v);
+            targets = new Vector(flatten(v));
             // the results of evaluating a property may result in a List
         }
 
@@ -217,40 +209,22 @@ public class OCLEvaluator {
         return null;
     }    // end of evaluateProperty
 
-    public Vector flatten(Vector v) {
-        Vector accum = new Vector();
+    public List flatten(List v) {
+        List accum = new ArrayList();
         flattenInto(v, accum);
         return accum;
     }
 
-    public Collection flatten(Collection c) {
-        List accum = new ArrayList();
-        flattenInto(c, accum);
-        return accum;
-    }
-
-    public void flattenInto(Object o, Collection accum) {
-        if(!(o instanceof Collection)) {
+    public void flattenInto(Object o, List accum) {
+        if(!(o instanceof List)) {
             accum.add(o);
         }
         else {
-            Collection oList = (Collection)o;
-            Iterator it = oList.iterator();
-            while (it.hasNext()) {
-                flattenInto(it.next(), accum);
-            }
-        }
-    }
-
-    public void flattenInto(Object o, Vector accum) {
-        if(!(o instanceof Collection)) {
-            accum.add(o);
-        }
-        else {
-            Collection oList = (Collection)o;
-            Iterator it = oList.iterator();
-            while (it.hasNext()) {
-                flattenInto(it.next(), accum);
+            List oList = (List)o;
+            int count = oList.size();
+            for(int i = 0; i < count; ++i) {
+                Object p = oList.get(i);
+                flattenInto(p, accum);
             }
         }
     }
