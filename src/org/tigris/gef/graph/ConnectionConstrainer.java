@@ -95,10 +95,6 @@ abstract public class ConnectionConstrainer {
     }
     
     protected void addValidConnection(Class edgeClass, Class portClass1, Class portClass2) {
-        addValidConnection(edgeClass, portClass1, portClass2, true);
-    }
-    
-    protected void addValidConnection(Class edgeClass, Class portClass1, Class portClass2, boolean bothway) {
         ArrayList validItems =
             (ArrayList) _validConnectionMap.get(edgeClass);
         if (validItems == null) {
@@ -109,11 +105,5 @@ abstract public class ConnectionConstrainer {
         modeElementPair[0] = portClass1;
         modeElementPair[1] = portClass2;
         validItems.add(modeElementPair);
-        if (bothway) {
-            Object[] reversedModeElementPair = new Class[2];
-            reversedModeElementPair[0] = portClass2;
-            reversedModeElementPair[1] = portClass1;
-            validItems.add(reversedModeElementPair);
-        }
     }
 }
