@@ -34,8 +34,9 @@ package org.tigris.gef.util;
 /** This is a useful utility for debugging. In various places in the
  *  framework there are calls to Dbg.log(). If the proper -D
  *  defines are supplied when running the application those debugging
- *  statements will be enabled or disabled. */
-
+ *  statements will be enabled or disabled.
+ * @deprecated 0.10 in favour of log4j package
+ */
 public class Dbg {
 
   public final static boolean on = true;
