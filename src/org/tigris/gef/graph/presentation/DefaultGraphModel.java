@@ -301,16 +301,23 @@ public class DefaultGraphModel
             return null;
     }
 
-    /** Contruct and add a new edge of the given kind */
+    /**
+     * Contruct and add a new edge of the given kind
+     * The default is to assume the edge type is a Class.
+     */
     public Object connect(Object srcPort, Object destPort, Object edgeType) {
+        return connect(srcPort, destPort, (Class)edgeType);
+    }
+
+    /** Contruct and add a new edge of the given kind */
+    public Object connect(Object srcPort, Object destPort, Class edgeClass) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Attempting to connect " + srcPort + " to " + destPort + " with " + edgeType);
+            LOG.debug("Attempting to connect " + srcPort + " to " + destPort + " with " + edgeClass);
         }
-        if (!canConnect(srcPort, destPort, edgeType)) {
+        if (!canConnect(srcPort, destPort, edgeClass)) {
             LOG.warn("Connection not allowed");
             return null;
         }
-        Class edgeClass = (Class)edgeType;
         if (srcPort instanceof NetPort && destPort instanceof NetPort) {
             NetPort s = (NetPort) srcPort;
             NetPort d = (NetPort) destPort;

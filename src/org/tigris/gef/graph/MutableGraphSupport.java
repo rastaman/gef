@@ -134,7 +134,7 @@ public abstract class MutableGraphSupport
      * edgeClass and calls canConnect(port,port).
      * @param fromPort the source port for which to test
      * @param toPort the destination port for which to test
-     * @param edgeClass The edge class for which test
+     * @param edgeType An identifier indicating the type of edge to create
      */
     public boolean canConnect(
             Object fromPort,
@@ -145,6 +145,32 @@ public abstract class MutableGraphSupport
             canConnect =
                 connectionConstrainer.isConnectionValid(
                     edgeType,
+                    fromPort,
+                    toPort);
+        } else {
+            canConnect = canConnect(fromPort, toPort);
+        }
+        return canConnect;
+    }
+
+    /**
+     * Determine if the two given ports can be connected by the
+     * given kind of edge. This delegates either to the registered 
+     * ConnectionConstrainer or if unregistered then ignores
+     * edgeClass and calls canConnect(port,port).
+     * @param fromPort the source port for which to test
+     * @param toPort the destination port for which to test
+     * @param edgeClass The edge class for which test
+     */
+    public boolean canConnect(
+            Object fromPort,
+            Object toPort,
+            Class edgeClass) {
+        boolean canConnect = false;
+        if (connectionConstrainer != null) {
+            canConnect =
+                connectionConstrainer.isConnectionValid(
+                    edgeClass,
                     fromPort,
                     toPort);
         } else {

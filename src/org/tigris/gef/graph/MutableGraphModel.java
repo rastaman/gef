@@ -105,6 +105,9 @@ public interface MutableGraphModel extends GraphModel {
     Object connect(Object fromPort, Object toPort);
 
     /** Contruct and add a new edge with given attributes. Sends a notification. */
+    Object connect(Object fromPort, Object toPort, Class edgeClass);
+
+    /** Contruct and add a new edge with given attributes. Sends a notification. */
     Object connect(Object fromPort, Object toPort, Object edgeType);
 
     /** Contruct and add a new edge with given attributes. Sends a notification. */
