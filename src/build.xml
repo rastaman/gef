@@ -108,8 +108,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <property name="Name" value="GEF"/>
     <property name="name" value="gef"/>
     <!--<property name="version" value="0.9.4beta-${DSTAMP}-${TSTAMP}"/>-->
-    <property name="version" value="0.9.5"/>
-    <property name="year" value="2001"/>
+    <property name="version" value="0.9.6"/>
+    <property name="year" value="2002"/>
 
     <echo message="------------------- ${Name} ${version} (unstable) [${year}] ----------------"/>
 
