@@ -1,4 +1,4 @@
-GEF vers 0.10.4
+GEF vers 0.10.4 - 11 June 2004
 
 Resolved Issues
 ===============
@@ -7,15 +7,20 @@ The following issues have been fixed in release 0.10.4 of GEF
 
 
 7    DELETE: FigActivation & FigDynPort - Argo specific classes  
-13   assert keyword and Dbg.java  
+13   assert keyword and Dbg.java
+17   Starting editing of figtext requires extra key input
 105  Special rules for connecting figs  
-122  RESO  FIXE  paintAtHead should not assume Graphics2D  
+111  JGraphInternalPane doesn't acquire focus when it should  
+122  paintAtHead should not assume Graphics2D  
 126  Update build.xml for batik  
+127  Delete LogManager class  
 130  Arrow heads not appearing  
 131  DefaultGraphModel edge connection fix  
 132  SplitGraphPane  
 134  Add executable to release  
-136  Remove deprecated LogManager
+135  Line end jumps on primitive figs  
+137  Can't select diagonal  
+138  Net level objects are never disposed of  
 
 
 
