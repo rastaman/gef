@@ -35,6 +35,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
 
@@ -44,7 +46,7 @@ import java.util.Vector;
  * @deprecated this is not used in GEF. Move to your own app if reqd.
  */
 
-public class VectorSet implements Serializable, Set  {
+public class VectorSet implements Serializable, Set, List {
   ////////////////////////////////////////////////////////////////
   // constants
   public static final int TC_LIMIT = 50;
@@ -306,6 +308,69 @@ public class VectorSet implements Serializable, Set  {
     
     public void clear() {
         vector.clear();        
+    }
+    /**
+     * @see java.util.List#addAll(int, java.util.Collection)
+     */
+    public boolean addAll(int arg0, Collection arg1) {
+        return vector.addAll(arg0, arg1);
+    }
+    /**
+     * @see java.util.List#get(int)
+     */
+    public Object get(int index) {
+        return vector.get(index);
+    }
+    /**
+     * @see java.util.List#set(int, java.lang.Object)
+     */
+    public Object set(int arg0, Object o) {
+        if (contains(o)) {
+            vector.remove(o);
+        }
+        return vector.set(arg0, o);
+    }
+    /**
+     * @see java.util.List#add(int, java.lang.Object)
+     */
+    public void add(int arg0, Object arg1) {
+        vector.add(arg0, arg1);
+    }
+    /**
+     * @see java.util.List#remove(int)
+     */
+    public Object remove(int index) {
+        return vector.remove(index);
+    }
+    /**
+     * @see java.util.List#indexOf(java.lang.Object)
+     */
+    public int indexOf(Object o) {
+        return vector.indexOf(o);
+    }
+    /**
+     * @see java.util.List#lastIndexOf(java.lang.Object)
+     */
+    public int lastIndexOf(Object o) {
+        return vector.lastIndexOf(o);
+    }
+    /**
+     * @see java.util.List#listIterator()
+     */
+    public ListIterator listIterator() {
+        return vector.listIterator();
+    }
+    /**
+     * @see java.util.List#listIterator(int)
+     */
+    public ListIterator listIterator(int index) {
+        return listIterator(index);
+    }
+    /**
+     * @see java.util.List#subList(int, int)
+     */
+    public List subList(int fromIndex, int toIndex) {
+        return subList(fromIndex, toIndex);
     }
 
 } /* end class VectorSet */

@@ -28,6 +28,7 @@ import java.awt.*;
 import java.beans.*;
 
 import java.util.*;
+import java.util.List;
 import java.io.Serializable;
 
 import org.tigris.gef.graph.GraphController;
@@ -42,8 +43,6 @@ import org.tigris.gef.presentation.FigNode;
 
 import org.tigris.gef.ui.PaletteFig;
 import org.tigris.gef.ui.ToolBar;
-
-import org.tigris.gef.util.VectorSet;
 
 /** A diagram is just combination of a GraphModel, a Layer, and a
  title. The GraphModel stores the connected graph representation,
@@ -185,7 +184,7 @@ public class Diagram implements Serializable, GraphListener {
         _layer = layer;
     }
 
-    public int countContained(VectorSet owners) {
+    public int countContained(List owners) {
 
         int count = 0;
         int numOwners = owners.size();
@@ -196,7 +195,7 @@ public class Diagram implements Serializable, GraphListener {
 
             for (int j = 0; j < numOwners; j++) {
 
-                if (node == owners.elementAt(j)) {
+                if (node == owners.get(j)) {
                     count++;
                 }
             }
@@ -208,7 +207,7 @@ public class Diagram implements Serializable, GraphListener {
 
             for (int j = 0; j < numOwners; j++) {
 
-                if (edge == owners.elementAt(j)) {
+                if (edge == owners.get(j)) {
                     count++;
                 }
             }
@@ -220,7 +219,7 @@ public class Diagram implements Serializable, GraphListener {
         while(it.hasNext()) {
             Object fig = it.next();
             for(int j = 0; j < numOwners; j++) {
-                if(fig == owners.elementAt(j)) {
+                if(fig == owners.get(j)) {
                     count++;
                 }
             }
