@@ -317,11 +317,22 @@ public class DefaultGraphModel
         return null;
     }
 
+    /**
+     * Asks the given edge to attempt to connect itself to the given
+     * ports.
+     * @param s source port
+     * @param d destination port
+     * @param e edge
+     * @return the edge or null if the edge rejects the connection.
+     */
     protected Object connectInternal(NetPort s, NetPort d, NetEdge e) {
         //System.out.println("connectInternal");
-        e.connect(this, s, d);
-        addEdge(e);
-        return e;
+        if (e.connect(this, s, d)) {
+            addEdge(e);
+            return e;
+        } else {
+            return null;
+        }
     }
 
     /** Return true if the connection to the old node can be rerouted to
