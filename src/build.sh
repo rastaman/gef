@@ -16,7 +16,7 @@ fi
 
 ANT_HOME=../tools/ant-1.4.1
 PATH=$ANT_HOME/bin:$JAVA_HOME/bin:$PATH
-LOCALCLASSPATH=.:$ANT_HOME/lib/ant.jar:$ANT_HOME/lib/xerces-1.2.3.jar:$ANT_HOME/lib/jaxp.jar:$ANT_HOME/lib/parser.jar:../lib/log4j-1.2.6.jar:$JAVA_HOME/lib/tools.jar
+LOCALCLASSPATH=.:$ANT_HOME/lib/ant.jar:$ANT_HOME/lib/xerces-1.2.3.jar:$ANT_HOME/lib/jaxp.jar:$ANT_HOME/lib/parser.jar:../lib/log4j-1.2.6.jar:$JAVA_HOME/lib/tools.jar:../build/classes
 
 echo Building with classpath $CLASSPATH:$LOCALCLASSPATH
 echo
