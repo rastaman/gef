@@ -159,8 +159,10 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
             try {
                 newNode = nodeClass.newInstance();
             } catch (java.lang.IllegalAccessException ignore) {
+                LOG.error("Unable to instantiate node " + nodeClass.getName());
                 return null;
             } catch (java.lang.InstantiationException ignore) {
+                LOG.error("Failed to instantiate node " + nodeClass.getName());
                 return null;
             }
         }
