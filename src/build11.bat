@@ -30,7 +30,7 @@ echo ***********************************************************
 goto END
 
 :RUNANT
-%JAVA_HOME%\BIN\%JAVACMD% -classpath %LOCALCP% -Dclasspath=%LOCALCP% -Dant.home=%ANT_HOME% -Dant.opts=%ANT_OPTS% org.apache.tools.ant.Main %1 %2 %3 %4 %5 %6 %7 %8 %9
+%JAVA_HOME%\BIN\%JAVACMD% -classpath %LOCALCP% -Dant.home=%ANT_HOME% -Dant.opts=%ANT_OPTS% org.apache.tools.ant.Main -buildfile build11.xml %1 %2 %3 %4 %5 %6 %7 %8 %9
 
 :END
 set LOCALCP=
