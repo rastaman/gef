@@ -193,8 +193,17 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     /** Set the text justification given one of these strings: Left,
-     *  Center, or Right. */
+     *  Center, or Right.
+     * @deprecated 0.10 in favour of correctly spelled
+     * setJustificationByName(String). Will be deleted in 0.11 or later
+     */
     public void setJustifciaionByName(String justifyString) {
+        setJustificationByName(justifyString);
+    }
+
+    /** Set the text justification given one of these strings: Left,
+     *  Center, or Right. */
+    public void setJustificationByName(String justifyString) {
         if(justifyString.equals("Left"))
             _justification = JUSTIFY_LEFT;
         else if(justifyString.equals("Center"))
