@@ -80,17 +80,17 @@ public interface MutableGraphModel extends GraphModel {
   /** Remove the given edge from the graph. Sends a notification. */
   void removeEdge(Object edge);
 	
-	/** Create a new node based on the given node and add it to the graph */
-	void dragNode(Object node);
+        /** Create a new node based on the given node and add it to the graph */
+        void dragNode(Object node);
 
         /** Return true if the connection to the old node can be rerouted to
          * the new node.
          */
         boolean canChangeConnectedNode(Object newNode, Object oldNode, Object edge);
   
-  /** Return true if the two given ports can be connected by a 
-   * kind of edge to be determined by the ports. */
-  boolean canConnect(Object fromP, Object toP);
+        /** Return true if the two given ports can be connected by a 
+         * kind of edge to be determined by the ports. */
+        boolean canConnect(Object fromP, Object toP);
 
   /** Return true if the two given ports can be connected by the given
    * kind of edge. */

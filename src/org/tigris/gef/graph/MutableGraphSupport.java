@@ -28,7 +28,9 @@
 
 package org.tigris.gef.graph;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /** An abstract class that makes it easier to implement your own
  *  version of MutableGraphModel. This class basically includes the
@@ -44,7 +46,7 @@ public abstract class MutableGraphSupport
      *  and setGraphListeners instead */
     protected Vector _graphListeners;
 
-    protected ConnectionConstrainer connectionConstrainer;
+    private ConnectionConstrainer connectionConstrainer;
 
     public MutableGraphSupport() {
     }
@@ -60,11 +62,11 @@ public abstract class MutableGraphSupport
     ////////////////////////////////////////////////////////////////
     // MutableGraphModel implementation
 
-    /** Return a valid node in this graph */
+    /** Return a valid node in this graph
+     * TODO Should throw a GraphModelException or InvalidArgumentException
+     */
     public Object createNode(String name, Hashtable args) {
         Object newNode;
-        //Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
-        //assert _nodeClass != null
         try {
             newNode = Class.forName(name).newInstance();
         } catch (java.lang.ClassNotFoundException ignore) {
@@ -109,9 +111,9 @@ public abstract class MutableGraphSupport
      * the new node.
      */
     public boolean canChangeConnectedNode(
-        Object newNode,
-        Object oldNode,
-        Object edge) {
+            Object newNode,
+            Object oldNode,
+            Object edge) {
         return false;
     }
 
@@ -172,28 +174,32 @@ public abstract class MutableGraphSupport
 
     public boolean containsNodePort(Object port) {
         Vector nodes = getNodes();
-        if (nodes == null)
+        if (nodes == null) {
             return false;
+        }
         Enumeration nodeEnum = nodes.elements();
         while (nodeEnum.hasMoreElements()) {
             Object node = nodeEnum.nextElement();
             Vector ports = getPorts(node);
-            if (ports != null && ports.contains(port))
+            if (ports != null && ports.contains(port)) {
                 return true;
+            }
         }
         return false;
     }
 
     public boolean containsEdgePort(Object port) {
         Vector edges = getNodes();
-        if (edges == null)
+        if (edges == null) {
             return false;
+        }
         Enumeration edgeEnum = edges.elements();
         while (edgeEnum.hasMoreElements()) {
             Object edge = edgeEnum.nextElement();
             Vector ports = getPorts(edge);
-            if (ports != null && ports.contains(port))
+            if (ports != null && ports.contains(port)) {
                 return true;
+            }
         }
         return false;
     }
@@ -206,13 +212,15 @@ public abstract class MutableGraphSupport
     // listener registration
 
     public void addGraphEventListener(GraphListener listener) {
-        if (_graphListeners == null)
+        if (_graphListeners == null) {
             _graphListeners = new Vector();
+        }
         _graphListeners.addElement(listener);
     }
     public void removeGraphEventListener(GraphListener listener) {
-        if (_graphListeners == null)
+        if (_graphListeners == null) {
             return;
+        }
         _graphListeners.removeElement(listener);
     }
 
@@ -220,8 +228,9 @@ public abstract class MutableGraphSupport
     // event notifications
 
     public void fireNodeAdded(Object node) {
-        if (_graphListeners == null)
+        if (_graphListeners == null) {
             return;
+        }
         GraphEvent ge = new GraphEvent(this, node);
         Enumeration listeners = _graphListeners.elements();
         while (listeners.hasMoreElements()) {
@@ -231,8 +240,9 @@ public abstract class MutableGraphSupport
     }
 
     public void fireNodeRemoved(Object node) {
-        if (_graphListeners == null)
+        if (_graphListeners == null) {
             return;
+        }
         GraphEvent ge = new GraphEvent(this, node);
         Enumeration listeners = _graphListeners.elements();
         while (listeners.hasMoreElements()) {
@@ -242,8 +252,9 @@ public abstract class MutableGraphSupport
     }
 
     public void fireEdgeAdded(Object edge) {
-        if (_graphListeners == null)
+        if (_graphListeners == null) {
             return;
+        }
         GraphEvent ge = new GraphEvent(this, edge);
         Enumeration listeners = _graphListeners.elements();
         while (listeners.hasMoreElements()) {
@@ -253,8 +264,9 @@ public abstract class MutableGraphSupport
     }
 
     public void fireEdgeRemoved(Object edge) {
-        if (_graphListeners == null)
+        if (_graphListeners == null) {
             return;
+        }
         GraphEvent ge = new GraphEvent(this, edge);
         Enumeration listeners = _graphListeners.elements();
         while (listeners.hasMoreElements()) {
@@ -264,8 +276,9 @@ public abstract class MutableGraphSupport
     }
 
     public void fireGraphChanged() {
-        if (_graphListeners == null)
+        if (_graphListeners == null) {
             return;
+        }
         GraphEvent ge = new GraphEvent(this, null);
         Enumeration listeners = _graphListeners.elements();
         while (listeners.hasMoreElements()) {
