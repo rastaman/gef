@@ -32,7 +32,7 @@ import org.tigris.gef.util.Localizer;
  *  lines, text, circles, etc. Also, class FigGroup implements a composite
  *  figure. Fig's are Diagram elements that can be placed in any LayerDiagram.
  *  Fig's are also used to define the look of FigNodes on NetNodes.
- *
+ */
 public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerator {
     ////////////////////////////////////////////////////////////////
     // constants
@@ -1090,6 +1090,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      *
      * @see LayerDiagram#reorder
      * @see          CmdReorder
+     */
     public void reorder(int func, Layer lay) {
         lay.reorder(this, func);
     }
@@ -1098,6 +1099,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /**
      *  Reply a rectangle that arcs should not route through. Basically this is
      *  the bounding box plus some margin around all egdes.
+     */
     public Rectangle routingRect() {
         return new Rectangle(_x - BORDER, _y - BORDER, _w + BORDER * 2, _h + BORDER * 2);
     }
