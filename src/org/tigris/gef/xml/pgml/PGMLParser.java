@@ -24,6 +24,7 @@
 package org.tigris.gef.xml.pgml;
 
 import java.awt.Color;
+import java.beans.PropertyVetoException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,9 +35,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.Diagram;
 
 import org.tigris.gef.graph.GraphModel;
@@ -65,6 +69,9 @@ public class PGMLParser extends DefaultHandler {
     protected int _nestedGroups = 0;
     protected HashMap _figRegistry = null;
     
+    private static final Log LOG = LogFactory.getLog(PGMLParser.class);
+
+    
     /**
      * Model elements indexed by a UUID.
      */
@@ -88,26 +95,21 @@ public class PGMLParser extends DefaultHandler {
 
     ////////////////////////////////////////////////////////////////
     // main parsing methods
-    public synchronized Diagram readDiagram(URL url) {
+    public synchronized Diagram readDiagram(URL url) throws SAXException {
         try {
             return readDiagram(url.openStream());
         }
         catch(IOException e) {
-            System.out.println("Couldn't open InputStream! " + e);
-            e.printStackTrace();
+            throw new SAXException(e);
         }
-
-        return null;
     }
 
-    public synchronized Diagram readDiagram(InputStream is) {
+    public synchronized Diagram readDiagram(InputStream is) throws SAXException {
         return readDiagram(is, true);
     }
 
-    public synchronized Diagram readDiagram(InputStream is, boolean closeStream) {
+    public synchronized Diagram readDiagram(InputStream is, boolean closeStream) throws SAXException {
         try {
-            System.out.println("=======================================");
-            System.out.println("== READING DIAGRAM");
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setNamespaceAware(false);
             factory.setValidating(false);
@@ -129,37 +131,20 @@ public class PGMLParser extends DefaultHandler {
             }
 
             return _diagram;
+        } catch(IOException e) {
+            throw new SAXException(e);
+        } catch(ParserConfigurationException e) {
+            throw new SAXException(e);
         }
-        catch(SAXException saxEx) {
-            System.err.println("Exception in readDiagram");
-            //
-            //  a SAX exception could have been generated
-            //    because of another exception.
-            //    Get the initial exception to display the
-            //    location of the true error
-            Exception ex = saxEx.getException();
-            if(ex == null) {
-                saxEx.printStackTrace();
-            }
-            else {
-                ex.printStackTrace();
-            }
-        }
-        catch(Exception ex) {
-            System.err.println("Exception in readDiagram");
-            ex.printStackTrace();
-        }
-
-        return null;
     }
 
     ////////////////////////////////////////////////////////////////
     // internal methods
-    protected void initDiagram(String diagDescr) {
+    protected void initDiagram(String diagDescr) throws SAXException {
         String clsName = diagDescr;
         String initStr = null;
         int bar = diagDescr.indexOf("|");
-        if(bar != -1) {
+        if (bar != -1) {
             clsName = diagDescr.substring(0, bar);
             initStr = diagDescr.substring(bar + 1);
         }
@@ -172,8 +157,7 @@ public class PGMLParser extends DefaultHandler {
                 _diagram.initialize(findOwner(initStr));
             }
         } catch(Exception ex) {
-            //System.out.println("could not set diagram type to " + newClassName);
-            ex.printStackTrace();
+            throw new SAXException(ex);
         }
     }
 
@@ -476,10 +460,12 @@ public class PGMLParser extends DefaultHandler {
         }
     }
 
-    protected void handlePGML(Attributes attrList) {
+    protected void handlePGML(Attributes attrList) throws SAXException {
         String name = attrList.getValue("name");
+        LOG.info("Got a diagram name of " + name);
         String scale = attrList.getValue("scale");
         String clsName = attrList.getValue("description");
+        LOG.info("Got a description of " + clsName);
         String showSingleMultiplicity = attrList.getValue("showSingleMultiplicity");
         //System.out.println("name = " + name);
         //System.out.println("scale = " + scale);
@@ -502,13 +488,12 @@ public class PGMLParser extends DefaultHandler {
                 _diagram.setShowSingleMultiplicity(Boolean.valueOf(showSingleMultiplicity).booleanValue());
             }
         }
-        catch(Exception ex) {
-            System.out.println("Exception in handlePGML");
-            //ex.printStackTrace();
+        catch(PropertyVetoException ex) {
+            throw new SAXException(ex);
         }
     }
 
-    protected Fig handlePolyLine(Attributes attrList) {
+    protected Fig handlePolyLine(Attributes attrList) throws SAXException {
         String clsName = translateClassName(attrList.getValue("description"));
         if(clsName != null && clsName.indexOf("FigLine") != -1) {
             return handleLine(attrList);
@@ -522,7 +507,7 @@ public class PGMLParser extends DefaultHandler {
     protected int _x1Int = 0;
     protected int _y1Int = 0;
 
-    protected FigLine handleLine(Attributes attrList) {
+    protected FigLine handleLine(Attributes attrList) throws SAXException {
         _currentLine = new FigLine(0, 0, 100, 100);
         setAttrs(_currentLine, attrList);
         _x1Int = 0;
@@ -554,7 +539,7 @@ public class PGMLParser extends DefaultHandler {
         }
     }
 
-    protected FigCircle handleEllipse(Attributes attrList) {
+    protected FigCircle handleEllipse(Attributes attrList) throws SAXException {
         FigCircle f = new FigCircle(0, 0, 50, 50);
         setAttrs(f, attrList);
         String rx = attrList.getValue("rx");
@@ -568,7 +553,7 @@ public class PGMLParser extends DefaultHandler {
         return f;
     }
 
-    protected FigRect handleRect(Attributes attrList) {
+    protected FigRect handleRect(Attributes attrList) throws SAXException {
         FigRect f;
         String cornerRadius = attrList.getValue("rounding");
         if(cornerRadius == null || cornerRadius.equals("")) {
@@ -587,7 +572,7 @@ public class PGMLParser extends DefaultHandler {
     private FigText _currentText = null;
     protected StringBuffer _textBuf = null;
 
-    protected FigText handleText(Attributes attrList) {
+    protected FigText handleText(Attributes attrList) throws SAXException {
         FigText f = new FigText(100, 100, 90, 45);
         setAttrs(f, attrList);
         _currentText = f;
@@ -611,7 +596,7 @@ public class PGMLParser extends DefaultHandler {
 
     protected FigPoly _currentPoly = null;
 
-    protected FigPoly handlePath(Attributes attrList) {
+    protected FigPoly handlePath(Attributes attrList) throws SAXException {
         FigPoly f = new FigPoly();
         _elementState = POLY_STATE;
         setAttrs(f, attrList);
@@ -703,71 +688,66 @@ public class PGMLParser extends DefaultHandler {
     protected Fig _currentEncloser = null;
 
     protected void privateStateEndElement(String tagName) {
-        try {
-            if(_currentNode != null) {
-                if(_currentEdge != null) {
-                    _currentEdge = null;
-                }
-
-                String body = _textBuf.toString();
-                StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
-                while(st2.hasMoreElements()) {
-                    String t = st2.nextToken();
-                    String v = "no such fig";
-                    if(st2.hasMoreElements()) {
-                        v = st2.nextToken();
-                    }
-
-                    if(t.equals("enclosingFig")) {
-                        _currentEncloser = findFig(v);
-                    }
-                }
+        if(_currentNode != null) {
+            if(_currentEdge != null) {
+                _currentEdge = null;
             }
 
-            if(_currentEdge != null) {
-                Fig spf = null;
-                Fig dpf = null;
-                FigNode sfn = null;
-                FigNode dfn = null;
-                String body = _textBuf.toString();
-                StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
-                while(st2.hasMoreElements()) {
-                    String t = st2.nextToken();
-                    String v = st2.nextToken();
-                    if(t.equals("sourcePortFig")) {
-                        spf = findFig(v);
-                    }
-
-                    if(t.equals("destPortFig")) {
-                        dpf = findFig(v);
-                    }
-
-                    if(t.equals("sourceFigNode")) {
-                        sfn = (FigNode)findFig(v);
-                    }
-
-                    if(t.equals("destFigNode")) {
-                        dfn = (FigNode)findFig(v);
-                    }
+            String body = _textBuf.toString();
+            StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
+            while(st2.hasMoreElements()) {
+                String t = st2.nextToken();
+                String v = "no such fig";
+                if(st2.hasMoreElements()) {
+                    v = st2.nextToken();
                 }
 
-                if(spf == null || dpf == null || sfn == null || dfn == null) {
-                    setDetectedFailure(true);
-                }
-                else {
-                    _currentEdge.setSourcePortFig(spf);
-                    _currentEdge.setDestPortFig(dpf);
-                    _currentEdge.setSourceFigNode(sfn);
-                    _currentEdge.setDestFigNode(dfn);
+                if(t.equals("enclosingFig")) {
+                    _currentEncloser = findFig(v);
                 }
             }
         }
-        catch(Exception ex) {
-            ex.printStackTrace();
+
+        if(_currentEdge != null) {
+            Fig spf = null;
+            Fig dpf = null;
+            FigNode sfn = null;
+            FigNode dfn = null;
+            String body = _textBuf.toString();
+            StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
+            while(st2.hasMoreElements()) {
+                String t = st2.nextToken();
+                String v = st2.nextToken();
+                if(t.equals("sourcePortFig")) {
+                    spf = findFig(v);
+                }
+
+                if(t.equals("destPortFig")) {
+                    dpf = findFig(v);
+                }
+
+                if(t.equals("sourceFigNode")) {
+                    sfn = (FigNode)findFig(v);
+                }
+
+                if(t.equals("destFigNode")) {
+                    dfn = (FigNode)findFig(v);
+                }
+            }
+
+            if(spf == null || dpf == null || sfn == null || dfn == null) {
+                setDetectedFailure(true);
+            }
+            else {
+                _currentEdge.setSourcePortFig(spf);
+                _currentEdge.setDestPortFig(dpf);
+                _currentEdge.setSourceFigNode(sfn);
+                _currentEdge.setDestFigNode(dfn);
+            }
         }
     }
 
-    protected void nodeStateStartElement(String tagName, Attributes attrList) {
+    protected void nodeStateStartElement(String tagName, Attributes attrList) throws SAXException {
         //System.out.println("[PGMLParser]: nodeStateStartElement: " + tagName);
         if(tagName.equals("private")) {
             _textBuf = new StringBuffer();
@@ -792,7 +772,9 @@ public class PGMLParser extends DefaultHandler {
 
     protected FigEdge _currentEdge = null;
 
-    protected void edgeStateStartElement(String tagName, Attributes attrList) {
+    protected void edgeStateStartElement(
+            String tagName, 
+            Attributes attrList) throws SAXException {
         if(tagName.equals("path")) {
             if(!_detectedFailure) {
                 Fig p = handlePath(attrList);
@@ -836,7 +818,7 @@ public class PGMLParser extends DefaultHandler {
         }
     }
 
-    public void annotationStateStartElement(String tagName, Attributes attrList) {
+    public void annotationStateStartElement(String tagName, Attributes attrList) throws SAXException {
         if(tagName.equals("text")) {
             _elementState = TEXT_ANNOTATION_STATE;
             _textBuf = new StringBuffer();
@@ -846,7 +828,7 @@ public class PGMLParser extends DefaultHandler {
 
     ////////////////////////////////////////////////////////////////
     // internal parsing methods
-    protected void setAttrs(Fig f, Attributes attrList) {
+    protected void setAttrs(Fig f, Attributes attrList) throws SAXException {
         String name = attrList.getValue("name");
         if(name != null && !name.equals("")) {
             _figRegistry.put(name, f);
@@ -932,17 +914,12 @@ public class PGMLParser extends DefaultHandler {
         setOwnerAttr(f, attrList);
     }
 
-    protected void setOwnerAttr(Fig f, Attributes attrList) {
+    protected void setOwnerAttr(Fig f, Attributes attrList) throws SAXException {
         //System.out.println("[GEF.PGMLParser]: setOwnerAttr");
-        try {
-            String owner = attrList.getValue("href");
-            if(owner != null && !owner.equals("")) {
-                //System.out.println("[GEF.PGMLParser]: setOwnerAttr");
-                f.setOwner(findOwner(owner));
-            }
-        }
-        catch(Exception ex) {
-            System.out.println("could not set owner");
+        String owner = attrList.getValue("href");
+        if(owner != null && !owner.equals("")) {
+            //System.out.println("[GEF.PGMLParser]: setOwnerAttr");
+            f.setOwner(findOwner(owner));
         }
     }
 

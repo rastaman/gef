@@ -35,6 +35,7 @@ import java.net.*;
 import org.tigris.gef.graph.presentation.*;
 import org.tigris.gef.util.*;
 import org.tigris.gef.xml.pgml.*;
+import org.xml.sax.SAXException;
 
 /** Cmd to Load a previously saved document document. The loaded
  *  editor is displayed in a new JGraphFrame.
@@ -54,7 +55,7 @@ public class CmdOpenPGML extends Cmd implements FilenameFilter {
             new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
         fd.setFilenameFilter(this);
         fd.setDirectory(Globals.getLastDirectory());
-        fd.show();
+        fd.setVisible(true);
         String filename = fd.getFile(); // blocking
         String path = fd.getDirectory(); // blocking
         Globals.setLastDirectory(path);
@@ -74,9 +75,11 @@ public class CmdOpenPGML extends Cmd implements FilenameFilter {
                 Object d = getArg("dimension");
                 if (d instanceof Dimension) jgf.setSize((Dimension)d);
                 jgf.setVisible(true);
+            } catch (SAXException murle) {
+                System.out.println("bad URL");
+            } catch (IOException e) {
+                System.out.println("IOExcept in openpgml");
             }
-            catch (MalformedURLException murle) { System.out.println("bad URL"); }
-            catch (IOException e) { System.out.println("IOExcept in openpgml"); }
         }
     }
 
