@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: LayerPerspective.java
 // Classes: LayerPerspective
 // Original Author: jrobbins@ics.uci.edu
@@ -43,7 +40,7 @@ import org.tigris.gef.graph.presentation.*;
  *  LayerPerspective contains part of the overall picture that the
  *  user is drawing. LayerPerspective is different from LayerDiagram
  *  in that it assumes that you are drawing a connected graph that is
- *  represented in a GraphModel. */
+ *  represented in a GraphModel and controlled by a GraphController. */
 
 public class LayerPerspective extends LayerDiagram implements GraphListener {
   ////////////////////////////////////////////////////////////////
@@ -58,6 +55,7 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   /** The underlying connected graph to be visualized. */
   //protected NetList _net;
   protected GraphModel _gm;
+  protected GraphController _controller;
   protected GraphNodeRenderer _nodeRenderer = new DefaultGraphNodeRenderer();
   protected GraphEdgeRenderer _edgeRenderer = new DefaultGraphEdgeRenderer();
 
@@ -78,6 +76,14 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   public LayerPerspective(String name, GraphModel gm) {
     super(name);
     _gm = gm;
+	_controller = null;
+    _gm.addGraphEventListener(this);
+  }
+
+  public LayerPerspective(String name, GraphModel gm, GraphController controller) {
+    super(name);
+    _gm = gm;
+	_controller = controller;
     _gm.addGraphEventListener(this);
   }
 
@@ -90,6 +96,12 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
     _gm.removeGraphEventListener(this);
     _gm = gm;
     _gm.addGraphEventListener(this);
+  }
+
+  /** Reply the GraphController of the underlying connected graph. */
+  public GraphController getGraphController() { return _controller; }
+  public void setGraphController(GraphController controller) {
+	  _controller = controller;
   }
 
   public GraphNodeRenderer getGraphNodeRenderer() { return _nodeRenderer; }
