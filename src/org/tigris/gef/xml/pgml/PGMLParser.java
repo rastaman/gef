@@ -134,10 +134,12 @@ public class PGMLParser extends HandlerBase {
   private static final int EDGE_STATE = 5;
   private static final int PRIVATE_STATE = 6;
 
-  private static final int PRIVATE_NODE_STATE = 64;
-  private static final int PRIVATE_EDGE_STATE = 65;
-  private static final int TEXT_NODE_STATE = 14;
-  private static final int TEXT_EDGE_STATE = 15;
+  private static final int PRIVATE_NODE_STATE = 46;
+  private static final int PRIVATE_EDGE_STATE = 56;
+  private static final int TEXT_NODE_STATE = 41;
+  private static final int TEXT_EDGE_STATE = 51;
+  private static final int DEFAULT_NODE_STATE = 40;
+  private static final int DEFAULT_EDGE_STATE = 50;
 
   public void startElement(String elementName,AttributeList attrList) {
     switch(_elementState) {
@@ -161,6 +163,7 @@ public class PGMLParser extends HandlerBase {
 	    }
 	    else if (elementName.equals("text")) {
 			_elementState = TEXT_STATE;
+			_textBuf = new StringBuffer();
 	        _diagram.add(handleText(attrList));
 	    }
 	    else if (elementName.equals("piewedge")) { }
@@ -173,7 +176,7 @@ public class PGMLParser extends HandlerBase {
 	    else System.out.println("unknown top-level tag: " + elementName);
         }
         else if (_nestedGroups > 0) {
-	//System.out.println("skipping nested " + elementName);
+			//System.out.println("skipping nested " + elementName);
         }
         break;
 
@@ -218,55 +221,81 @@ public class PGMLParser extends HandlerBase {
         break;
 
         case TEXT_STATE:
-        if(elementName.equals("text")) {
-            _currentText.setText(_textBuf.toString());
-            _elementState = DEFAULT_STATE;
-            _currentText = null;
-            _textBuf = null;
-        }
-        break;
+			//System.out.println("[PGMLParser]: endElement TEXT_STATE: " + elementName);
+			if(elementName.equals("text")) {
+				_currentText.setText(_textBuf.toString());
+				_elementState = DEFAULT_STATE;
+				_currentText = null;
+				_textBuf = null;
+			}
+			break;
 
         case TEXT_NODE_STATE:
-        if(elementName.equals("text")) {
-            _currentText.setText(_textBuf.toString());
-            _elementState = NODE_STATE;
-            _currentText = null;
-            _textBuf = null;
-        }
-        break;
+			//System.out.println("[PGMLParser]: endElement TEXT_NODE_STATE: " + _textBuf.toString());
+			if(elementName.equals("text")) {
+				_currentText.setText(_textBuf.toString());
+				_elementState = NODE_STATE;
+				_currentText = null;
+				_textBuf = null;
+			}
+			break;
 
         case TEXT_EDGE_STATE:
-        if(elementName.equals("text")) {
-            _currentText.setText(_textBuf.toString());
-            _elementState = EDGE_STATE;
-            _currentText = null;
-            _textBuf = null;
-        }
-        break;
+			//System.out.println("[PGMLParser]: endElement TEXT_EDGE_STATE: " + _textBuf.toString());
+			if(elementName.equals("text")) {
+				_currentText.setText(_textBuf.toString());
+				_elementState = EDGE_STATE;
+				_currentText = null;
+				_textBuf = null;
+			}
+			break;
 
         case NODE_STATE:
+			//System.out.println("[PGMLParser]: endElement NODE_STATE");
+            _elementState = DEFAULT_STATE;
+            _currentNode = null;
+            _textBuf = null;
+        break;
+
+        case EDGE_STATE:
+			//System.out.println("[PGMLParser]: endElement EDGE_STATE");
             _elementState = DEFAULT_STATE;
             _currentNode = null;
             _textBuf = null;
         break;
 
         case PRIVATE_STATE:
+			//System.out.println("[PGMLParser]: endElement PRIVATE_STATE");
             privateStateEndElement(elementName);
             _textBuf = null;
             _elementState = DEFAULT_STATE;
 			break;
 
         case PRIVATE_NODE_STATE:
+			//System.out.println("[PGMLParser]: endElement PRIVATE_NODE_STATE");
             privateStateEndElement(elementName);
             _textBuf = null;
             _elementState = NODE_STATE;
 			break;
 
         case PRIVATE_EDGE_STATE:
+			//System.out.println("[PGMLParser]: endElement PRIVATE_EDGE_STATE");
             privateStateEndElement(elementName);
             _textBuf = null;
             _elementState = EDGE_STATE;
 			break;
+
+        case DEFAULT_NODE_STATE:
+			//System.out.println("[PGMLParser]: endElement DEFAULT_NODE_STATE");
+            _elementState = NODE_STATE;
+            _textBuf = null;
+        break;
+
+        case DEFAULT_EDGE_STATE:
+			//System.out.println("[PGMLParser]: endElement DEFAULT_EDGE_STATE");
+            _elementState = EDGE_STATE;
+            _textBuf = null;
+        break;
     }
   }
 
@@ -369,11 +398,12 @@ public class PGMLParser extends HandlerBase {
   private FigText _currentText = null;
   private StringBuffer _textBuf = null;
   protected FigText handleText(AttributeList attrList) {
+	  //System.out.println("[PGMLParser]: handleText");
     FigText f = new FigText(100, 100, 90, 45);
     setAttrs(f, attrList);
     _currentText = f;
     //_elementState = TEXT_STATE;
-    _textBuf = new StringBuffer();
+    //_textBuf = new StringBuffer();
 	//String text = e.getText();
 	//f.setText(text);
     String font = attrList.getValue("font");
@@ -423,6 +453,7 @@ public class PGMLParser extends HandlerBase {
   /* Returns Fig rather than FigGroups because this is also
      used for FigEdges. */
   protected Fig handleGroup(AttributeList attrList) {
+	  //System.out.println("[PGMLParser]: handleGroup");
     Fig f = null;
     String clsNameBounds = attrList.getValue("description");
     StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
@@ -445,10 +476,10 @@ public class PGMLParser extends HandlerBase {
 	f.setBounds(x, y, w, h);
       }
       if (f instanceof FigNode) {
-	FigNode fn = (FigNode) f;
-        _currentNode = fn;
-        _elementState = NODE_STATE;
-        _textBuf = new StringBuffer();
+		  FigNode fn = (FigNode) f;
+		  _currentNode = fn;
+		  _elementState = NODE_STATE;
+		  _textBuf = new StringBuffer();
       }
       if (f instanceof FigEdge) {
 		  _currentEdge = (FigEdge) f;
@@ -503,6 +534,7 @@ public class PGMLParser extends HandlerBase {
     }
 
 	private void nodeStateStartElement(String tagName,AttributeList attrList) {
+		//System.out.println("[PGMLParser]: nodeStateStartElement: " + tagName);
 		if (tagName.equals("private")) {
 			_textBuf = new StringBuffer();
 			_elementState = PRIVATE_NODE_STATE;
@@ -511,12 +543,20 @@ public class PGMLParser extends HandlerBase {
 			_textBuf = new StringBuffer();
 			_elementState = TEXT_NODE_STATE;
 			Fig p = handleText(attrList);
+			//needs-more-work: FigText should be set at distinct position within surrounding
+			// Fig, but this is not supported by Fig framework yet!
+			//_currentNode.addFig(handleText(attrList));
         }
+		else {
+			_textBuf = new StringBuffer();
+			_elementState = DEFAULT_NODE_STATE;
+		}
   }
 
     private FigEdge _currentEdge = null;
     private void edgeStateStartElement(String tagName,AttributeList attrList)
     {
+		//System.out.println("[PGMLParser]: edgeStateStartElement: " + tagName);
         if (tagName.equals("path")) {
             Fig p = handlePath(attrList);
             _currentEdge.setFig(p);
@@ -534,7 +574,12 @@ public class PGMLParser extends HandlerBase {
             _elementState = TEXT_EDGE_STATE;
             _textBuf = new StringBuffer();
 			Fig p = handleText(attrList);
+			//_diagram.add(handleText(attrList));
         }
+		else {
+			_textBuf = new StringBuffer();
+			_elementState = DEFAULT_EDGE_STATE;
+		}
     }
 
   ////////////////////////////////////////////////////////////////
