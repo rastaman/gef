@@ -68,6 +68,11 @@ public class DefaultGraphModel
         netList = new NetList();
     }
 
+    public DefaultGraphModel(ConnectionConstrainer cc) {
+        super(cc);
+        netList = new NetList();
+    }
+
     public DefaultGraphModel(NetList nl) {
         netList = nl;
     }
@@ -338,13 +343,4 @@ public class DefaultGraphModel
         Object edge,
         boolean isSource) {
     }
-
-    /**
-     * Apply the object containing the ruleset for what edges and
-     * ports can connect in the graph
-     */
-    public void setConnectionConstrainer(ConnectionConstrainer cc) {
-        connectionConstrainer = cc;        
-    }
-
 } /* end class DefaultGraphModel */
