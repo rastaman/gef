@@ -144,12 +144,34 @@ public class SVGWriter extends Graphics {
 		p.print("]]>");
 		break;
 	    }
-	    // print text
-	case Node.TEXT_NODE:
-	    {
-		p.print(node.getNodeValue());
-		break;
-	    }
+	    // print text 
+	case Node.TEXT_NODE: 
+	    { 
+		String text = node.getNodeValue();
+		for (int i = 0; i < text.length(); i++) {
+		    // escape reserved characters
+		    switch (text.charAt(i)) {
+		    case '&' :
+			{
+			    p.print("&amp;");
+			    break;
+			}
+		    case '<' :
+			{
+			    p.print("&lt;");
+			    break;
+			}
+		    case '>' :
+			{
+			    p.print("&gt;");
+			    break;
+			}
+		    default :
+			p.print(text.charAt(i));
+		    }
+		}
+		break; 
+	    } 
 	    // print processing instruction
 	case Node.PROCESSING_INSTRUCTION_NODE:
 	    {
