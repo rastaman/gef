@@ -51,7 +51,7 @@ public class FigGroup extends Fig {
     List figs;
     
     /**
-     * @deprecated visibility in 0.11 use getters and setters 
+     * @deprecated visibility in 0.10.5 use getters and setters 
      */
     protected int _extraFrameSpace = 0;
 
