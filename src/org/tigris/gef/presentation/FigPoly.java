@@ -431,7 +431,7 @@ public class FigPoly extends Fig {
      * USED BY PGML.tee
      */
     public List getPointsList() {
-        ArrayList res = new ArrayList();
+        ArrayList res = new ArrayList(_npoints);
 
         for(int i = 0; i < _npoints; i++) {
             res.add(new Point(_xpoints[i], _ypoints[i]));
@@ -442,6 +442,7 @@ public class FigPoly extends Fig {
 
     /**
      * USED BY PGML.tee
+     * @deprecated use getPointsList
      */
     public Vector getPointsVector() {
         Vector res = new Vector(_npoints);
