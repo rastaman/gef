@@ -63,65 +63,63 @@ import org.tigris.gef.ocl.*;
 
 public class CmdSavePGML extends Cmd implements FilenameFilter {
 
-  protected static Hashtable _templates = new Hashtable();
-  protected static OCLExpander _expander = null;
+    private static Hashtable _templates = new Hashtable();
+    private static OCLExpander _expander = null;
 
-  static {
-    _templates = TemplateReader.readFile("/org/tigris/gef/xml/dtd/PGML.tee");
-    _expander = new OCLExpander(_templates);
-  }
-
-  public CmdSavePGML() {
-	  super("SaveAsPGML");
-  }
-
-  /** Only allow the user to select files that match the fiven
-   *  filename pattern. Needs-More-Work: this is not used yet. */
-  public CmdSavePGML(String filterPattern) {
-    this();
-    setArg("filterPattern", filterPattern);
-  }
-
-  public void doIt() {
-    //@@@ just for easy debugging
-    _templates = TemplateReader.readFile("/org/tigris/gef/xml/dtd/PGML.tee");
-    _expander = new OCLExpander(_templates);
-
-    try {
-      Editor ce = Globals.curEditor();
-      Diagram d = new Diagram("junk", ce.getGraphModel(),
-			      (LayerPerspective) ce.getLayerManager().getActiveLayer());
-      FileDialog fd = new
-     	FileDialog(ce.findFrame(), "Save Diagram in PGML format", FileDialog.SAVE);
-      fd.setFilenameFilter(this);
-      fd.setDirectory(Globals.getLastDirectory());
-      fd.show();
-      String filename = fd.getFile(); // blocking
-      String path = fd.getDirectory(); // blocking
-      Globals.setLastDirectory(path);
-      if (filename != null) {
-     	Globals.showStatus("Writing " + path + filename + "...");
-     	FileWriter fw = new FileWriter(path + filename);
-    	System.out.println("Cmd save in PGML...");
-	_expander.expand(fw, d, "", "");	
-    	System.out.println("save done");
-    	Globals.showStatus("Wrote " + path + filename);
-    	fw.close();
-	//ce.setTitle(filename);
-      }
+    static {
+        _templates = TemplateReader.readFile("/org/tigris/gef/xml/dtd/PGML.tee");
+        _expander = new OCLExpander(_templates);
     }
-    catch (FileNotFoundException ignore) {
-      System.out.println("got an FileNotFoundException");
-    }
-    //    catch (java.lang.ClassMismatchException ignore) {
-    //      System.out.println("got an ClassMismatchException");
-    //    }
-    catch (IOException ignore) {
-      System.out.println("got an IOException");
-      ignore.printStackTrace();
 
+    public CmdSavePGML() {
+	    super("SaveAsPGML");
     }
-  }
+
+    /** Only allow the user to select files that match the fiven
+     *  filename pattern. Needs-More-Work: this is not used yet. */
+    public CmdSavePGML(String filterPattern) {
+        this();
+        setArg("filterPattern", filterPattern);
+    }
+
+    public void doIt() {
+            //@@@ just for easy debugging
+        _templates = TemplateReader.readFile("/org/tigris/gef/xml/dtd/PGML.tee");
+        _expander = new OCLExpander(_templates);
+        
+        try {
+            Editor ce = Globals.curEditor();
+            Diagram d = new Diagram("junk", ce.getGraphModel(),
+        		      (LayerPerspective) ce.getLayerManager().getActiveLayer());
+            FileDialog fd = new
+         	    FileDialog(ce.findFrame(), "Save Diagram in PGML format", FileDialog.SAVE);
+            fd.setFilenameFilter(this);
+            fd.setDirectory(Globals.getLastDirectory());
+            fd.show();
+            String filename = fd.getFile(); // blocking
+            String path = fd.getDirectory(); // blocking
+            Globals.setLastDirectory(path);
+            if (filename != null) {
+             	Globals.showStatus("Writing " + path + filename + "...");
+             	FileWriter fw = new FileWriter(path + filename);
+            	System.out.println("Cmd save in PGML...");
+                
+                _expander.expand(fw, d, "", "");
+            	System.out.println("save done");
+            	Globals.showStatus("Wrote " + path + filename);
+            	fw.close();
+            //ce.setTitle(filename);
+            }
+        } catch (FileNotFoundException ignore) {
+            System.out.println("got an FileNotFoundException");
+        } catch (IOException ignore) {
+            System.out.println("got an IOException");
+            ignore.printStackTrace();
+        } catch (ExpansionException e) {
+            System.out.println("got an Exception");
+            e.printStackTrace();
+        }
+    }
 
   /** Only let the user select files that match the filter. This does
    *  not seem to be called under JDK 1.0.2 on solaris. I have not

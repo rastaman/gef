@@ -22,6 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.tigris.gef.ocl;
 
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -45,11 +46,13 @@ public class OCLEvaluator {
     protected OCLEvaluator() {
     }
 
-    public synchronized String evalToString(Object self, String expr) {
+    protected synchronized String evalToString(Object self, String expr)
+            throws ExpansionException {
         return evalToString(self, expr, ", ");
     }
 
-    public synchronized String evalToString(Object self, String expr, String sep) {
+    protected synchronized String evalToString(Object self, String expr, String sep)
+            throws ExpansionException {
         _scratchBindings.put("self", self);
         java.util.List values = eval(_scratchBindings, expr);
         _strBuf.setLength(0);
@@ -67,7 +70,7 @@ public class OCLEvaluator {
         return _strBuf.toString();
     }
 
-    public java.util.List eval(Map bindings, String expr) {
+    protected List eval(Map bindings, String expr) throws ExpansionException {
         int firstPos = expr.indexOf(".");
         Object target = bindings.get(expr.substring(0, firstPos));
         Vector targets;
@@ -82,7 +85,7 @@ public class OCLEvaluator {
         return eval(bindings, prop, targets);
     } // end of eval()
     
-    private Vector eval(Map bindings, String expr, Vector targets) {
+    private List eval(Map bindings, String expr, List targets) throws ExpansionException {
         int firstPos;
         int secPos;
         int numElements;
@@ -132,14 +135,29 @@ public class OCLEvaluator {
      * @param property
      * @return
      */
-    private Object evaluateProperty(Object target, String property) {
+    private Object evaluateProperty(Object target, String property) throws ExpansionException {
         if(target == null) {
             return null;
         }
 
-        // First try and find a getter method in the form getProperty()
         Method m = null;
-        Field f = null;
+        
+        if (property.endsWith("()")) {
+            // Lastly try and find a method in the form property(Writer)
+            property = property.substring(0,property.length()-2);
+            try {
+                Class params[] = new Class[2];
+                params[0] = Writer.class;
+                params[1] = Integer.class;
+                m = target.getClass().getMethod(property, params);
+                MethodInfo info = new MethodInfo(target, m);
+                return info;
+            } catch(NoSuchMethodException e) {
+                throw new ExpansionException(e);
+            }
+        }
+        
+        // First try and find a getter method in the form getProperty()
         Object o = null;
         try {
             m = target.getClass().getMethod("get" + toTitleCase(property), null);
@@ -149,29 +167,24 @@ public class OCLEvaluator {
         } catch(NoSuchMethodException e) {
         } catch(InvocationTargetException e) {
             if(m != null) {
-                System.out.println("On Class: " + target.getClass().getName());
-                System.out.println("error in evaluating " + "get" + toTitleCase(property) + "()");
                 e.getTargetException().printStackTrace();
                 return null;
             }
-        } catch(Exception e) {
+        } catch(IllegalAccessException e) {
         }
 
         // Then try and find a method in the form property()
         try {
             m = target.getClass().getMethod(property, null);
             o = m.invoke(target, null);
-            //System.out.println("Trying to get method " + toTitleCase(property));
             return convertCollection(o);
         } catch(NoSuchMethodException e) {
         } catch(InvocationTargetException e) {
             if(m != null) {
-                System.out.println("On Class: " + target.getClass().getName());
-                System.out.println("error in evaluating " + property + "()");
                 e.getTargetException().printStackTrace();
                 return null;
             }
-        } catch(Exception e) {
+        } catch(IllegalAccessException e) {
         }
 
         
@@ -179,12 +192,16 @@ public class OCLEvaluator {
         try {
             m = target.getClass().getMethod(toTitleCase(property), null);
             o = m.invoke(target, null);
-            //System.out.println("Trying to get method" + property);
             return convertCollection(o);
-        } catch(Exception e) {
+        } catch(NoSuchMethodException e) {
+        } catch(IllegalAccessException e) {
+        } catch(InvocationTargetException e) {
         }
 
+
+        
         // We have tried all method forms so lets now try just getting the property
+        Field f = null;
         try {
             f = target.getClass().getField(property);
             o = f.get(target);    // access the field f or object targe
@@ -196,15 +213,11 @@ public class OCLEvaluator {
                 return convertCollection(o);
             }
             else {
-                System.out.println("On Class: " + target.getClass().getName());
-                System.out.println("Trying to get field " + property);
                 e.printStackTrace();
                 return null;
             }
         } catch(Exception e) {
             if(f != null) {
-                System.out.println("On Class: " + target.getClass().getName());
-                System.out.println("error in evaluating field " + property);
                 e.printStackTrace();
                 return null;
             }
@@ -213,12 +226,24 @@ public class OCLEvaluator {
         return null;
     }    // end of evaluateProperty
 
+    /**
+     * Copy every item from the given list to a new list.
+     * If the item to copy is itslef a list then each item is taken out
+     * of that (recursively) so that the end list contains only
+     * non-lists.
+     */
     private List flatten(List v) {
         List accum = new ArrayList();
         flattenInto(v, accum);
         return accum;
     }
 
+    /**
+     * Copy the object o into the given list.
+     * If the object is itself a list then each item is taken out
+     * of that (recursively) so that the end list contains only
+     * non-lists.
+     */
     private void flattenInto(Object o, List accum) {
         if(!(o instanceof List)) {
             accum.add(o);
@@ -242,14 +267,15 @@ public class OCLEvaluator {
      * @return null
      */
     protected Object getExternalProperty(Object target, String property) {
-        //System.out.println("called default implementation");
         return null;
     }
 
-    // added this method 02/08/00 (JH) - if an instance of Collection
-    // is encountered, convert it to a List so the rest of the
-    // OCL code still works; there may be a more efficient way,
-    // but this was the least intrusive fix
+    /** 
+     * If an object is a collection then return it as an ArrayList otherwise return it unchanged.
+     * 
+     * @param o the object
+     * @return the original object or ArrayList
+     */
     private static Object convertCollection(Object o) {
         if(o instanceof Collection && !(o instanceof List)) {
             return new ArrayList((Collection)o);

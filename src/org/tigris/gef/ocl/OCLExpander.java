@@ -26,6 +26,7 @@ package org.tigris.gef.ocl;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 
 import java.util.*;
 
@@ -54,15 +55,21 @@ public class OCLExpander {
     }
     ////////////////////////////////////////////////////////////////
     // template expansion
-    public void expand(OutputStream w, Object target, String prefix, String suffix) {
+    public void expand(OutputStream w, Object target, String prefix, String suffix) throws ExpansionException {
         expandContent(new PrintWriter(w), target, prefix, suffix);
     }
 
-    public void expand(Writer w, Object target, String prefix, String suffix) {
-        expandContent(new PrintWriter(w), target, prefix, suffix);
+    public void expand(Writer w, Object target, String prefix, String suffix) throws ExpansionException {
+        PrintWriter pw;
+        if (w instanceof PrintWriter) {
+            pw = (PrintWriter)w;
+        } else {
+            pw = new PrintWriter(w);
+        }
+        expandContent(pw, target, prefix, suffix);
     }
 
-    protected void expandContent(PrintWriter pw, Object target, String prefix, String suffix) {
+    private void expandContent(PrintWriter printWriter, Object target, String prefix, String suffix) throws ExpansionException {
         if(target == null) {
             return;
         }
@@ -78,7 +85,7 @@ public class OCLExpander {
             }
 
             _bindings.put("self", target);
-            java.util.List results = evaluate(_bindings, tr.guard);
+            List results = evaluate(_bindings, tr.guard);
             if(results.size() > 0 && !Boolean.FALSE.equals(results.get(0))) {
                 expr = tr.body;
                 break;
@@ -86,31 +93,53 @@ public class OCLExpander {
         }
 
         if(expr == null) {
+            printWriter.print(prefix);
+            
             String s = target.toString();
-            if(_useXMLEscapes) {
-                s = replaceWithXMLEscapes(s);
+            if (target instanceof MethodInfo) {
+                /**
+                 * If the target is a MethodInfo object then
+                 * we should call the method on the object inside
+                 * passing the writer as an argument.
+                 */
+                MethodInfo mi = (MethodInfo)target;
+                Object[] params = new Object[2];
+                params[0] = printWriter;
+                params[1] = new Integer(prefix.length());
+                try {
+                    mi.getMethod().invoke(mi.getObject(), params);
+                } catch (IllegalArgumentException e) {
+                    throw new ExpansionException(e);
+                } catch (IllegalAccessException e) {
+                    throw new ExpansionException(e);
+                } catch (InvocationTargetException e) {
+                    throw new ExpansionException(e);
+                }
+            } else {
+                if(_useXMLEscapes) {
+                    s = replaceWithXMLEscapes(s);
+                }
+    
+                printWriter.print(s);
             }
-
-            //System.out.println("[File content]    " + prefix + s + suffix);
-            pw.println(prefix + s + suffix);
+            printWriter.println(suffix);
             return;
         }
 
         StringTokenizer st = new StringTokenizer(expr, "\n\r");
         while(st.hasMoreTokens()) {
             String line = st.nextToken();
-            expandLine(pw, line, target, prefix, suffix);
+            expandLine(printWriter, line, target, prefix, suffix);
         }
         // System.out.println();
     }    // end of expand
 
-    protected void expandLine(PrintWriter pw, String line, Object target, String prefix, String suffix) {
+    private void expandLine(PrintWriter pw, String line, Object target, String prefix, String suffix) throws ExpansionException {
         // if no embedded expression then output line else
         // then loop over all values of expr and call recursively for each resul
         int startPos = line.indexOf(OCL_START, 0);
         int endPos = line.indexOf(OCL_END, 0);
         if(startPos == -1 || endPos == -1) {    // no embedded expr's
-            //System.out.println("[File content]    " + prefix + line + suffix);
             pw.println(prefix + line + suffix);
             return;
         }
@@ -120,7 +149,7 @@ public class OCLExpander {
         String expr = line.substring(startPos + OCL_START.length(), endPos);
         suffix = line.substring(endPos + OCL_END.length()) + suffix;
         _bindings.put("self", target);
-        java.util.List results = evaluate(_bindings, expr);
+        List results = evaluate(_bindings, expr);
         Iterator iter = results.iterator();
         while(iter.hasNext()) {
             expand(pw, iter.next(), prefix, suffix);
@@ -130,7 +159,7 @@ public class OCLExpander {
     /** Find the List of templates that could apply to this target
      *  object.  That includes the templates for its class and all
      *  superclasses.  Needs-More-Work: should cache. */
-    public List findTemplatesFor(Object target) {
+    private List findTemplatesFor(Object target) {
         List res = null;
         boolean shared = true;
         for(Class c = target.getClass(); c != null; c = c.getSuperclass()) {
@@ -165,7 +194,7 @@ public class OCLExpander {
         return res;
     }
 
-    protected String replaceWithXMLEscapes(String s) {
+    private String replaceWithXMLEscapes(String s) {
         s = replaceAll(s, "&", "&amp;");
         s = replaceAll(s, "<", "&lt;");
         s = replaceAll(s, ">", "&gt;");
@@ -173,7 +202,7 @@ public class OCLExpander {
         return s;
     }
 
-    protected String replaceAll(String s, String pat, String rep) {
+    private String replaceAll(String s, String pat, String rep) {
         int index = s.indexOf(pat);
         int patLen = pat.length();
         int repLen = rep.length();
@@ -185,7 +214,7 @@ public class OCLExpander {
         return s;
     }
 
-    protected java.util.List evaluate(Map bindings, String expr) {
+    protected List evaluate(Map bindings, String expr) throws ExpansionException {
         return evaluator.eval(bindings, expr);
     }
 }
