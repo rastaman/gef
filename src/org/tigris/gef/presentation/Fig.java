@@ -69,14 +69,12 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /**
      *  The Layer that this Fig is in. Each Fig can be in exactly one Layer, but
      *  there can be multiple Editors on a given Layer.
-     *  @deprecated 0.10.5 visibility will change to package
      */
-    protected transient Layer _layer = null;
+    private transient Layer _layer = null;
 
     /** True if this object is locked and cannot be moved by the user.
-     *  @deprecated 0.10.5 visibility will change to package
      */
-    protected boolean _locked = false;
+    private boolean _locked = false;
 
     /**
      *  Owners are underlying objects that "own" the graphical Fig's that
@@ -114,21 +112,23 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     protected int _h;
 
     /** Name of the resource being basis to this figs localization.
-     * @deprecated 0.10.1 will change to package visibility use getters/setters
      */
-    protected String _resource = "";
+    private String _resource = "";
 
-    /** Outline color of fig object.
+    /**
+     * Outline color of fig object.
      * @deprecated 0.10.1 will change to package visibility use getters/setters
      */
     protected Color _lineColor = Color.black;
 
-    /** Fill color of fig object.
+    /**
+     * Fill color of fig object.
      * @deprecated 0.10.1 will change to package visibility use getters/setters
      */
     protected Color _fillColor = Color.white;
 
-    /** Thickness of line around object, for now limited to 0 or 1.
+    /**
+     * Thickness of line around object, for now limited to 0 or 1.
      * @deprecated 0.10.1 will change to package visibility use getters/setters
      */
     protected int _lineWidth = 1;
@@ -142,26 +142,23 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     
     /**
      * The parent Fig of which this Fig is a child
-     * @deprecated 0.10.1 will change to package visibility
      */
-    protected Fig _group = null;
+    private Fig _group = null;
     
     protected String _context = "";
 
     /** True if the Fig is shown
-     * @deprecated 0.10.1 use getters/setters
      */
-    protected boolean _displayed = true;
+    private boolean _displayed = true;
+    
     /** 
-     * @deprecated 0.10.1 use getters/setters
+     * TODO how does this differ from displayed?
      */
-    public int _shown = 0;
+    private int _shown = 0;
+    
     protected boolean _allowsSaving = true;
-    /**
-     *  @deprecated 0.10.5 client programmers should not be able to access this
-     * they should only have access to isSelected().
-     */
-    protected transient boolean _selected = false;
+    
+    private transient boolean _selected = false;
 
     ////////////////////////////////////////////////////////////////
     // static initializer
