@@ -16,12 +16,12 @@ public interface GraphController extends java.io.Serializable {
 	 * Each presentation consists of a data object and an object
 	 * for its graphical representation.
 	 */
-	public void addPresentation(Object representation, Object data);
+	public boolean addPresentation(Object representation, Object data);
 
 	/** 
 	 * Remove a presentation from the list of known presentations.
 	 */
-	public void removePresentation(Object element);
+	public boolean removePresentation(Object element);
 
 	/**
 	 * Get the graphical representation of the given object.
