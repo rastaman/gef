@@ -1,3 +1,5 @@
+package uci.gef;
+
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,8 +24,6 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
-package uci.gef;
-
 import java.applet.*;
 import java.awt.*;
 import java.io.*;
@@ -47,64 +47,37 @@ public class FigSpline extends FigPoly {
   protected int _pattern  = 0x88888888;
   protected BitSet _style    = new BitSet(32);
 
-  public FigSpline(Color line_color, Color fill_color) {
-    super(line_color, fill_color);
-  }
-
-  public FigSpline(Color line_color) { super(line_color); }
-
-
+  public FigSpline() {
+	super();
+  }  
   public FigSpline(int x, int y) {
-    super();
-    addPoint(x, y);
-  }
-
-  public void moveVertex(Handle h, int x, int y, boolean ov) {
-    super.moveVertex(h, x, y, ov);
-    setSpline();
-  }
-
-  public void translate(int dx, int dy) {
-    super.translate(dx, dy);
-    setSpline();
-  }
-
+	super();
+	addPoint(x, y);
+  }  
+  public FigSpline(Color line_color) { super(line_color); }  
+  public FigSpline(Color line_color, Color fill_color) {
+	super(line_color, fill_color);
+  }  
   public void addPoint(int x, int y) {
-    super.addPoint(x, y);
-    setCount();
-    setSpline();
-  }
-
-  public void removePoint(int i) {
-    super.removePoint(i);
-    setCount();
-    setSpline();
-  }
-
+	super.addPoint(x, y);
+	setCount();
+	setSpline();
+  }  
   public void appendTwoPoints() {
-    super.appendTwoPoints();
-    setCount();
-    setSpline();
-  }
-
-  public void prependTwoPoints() {
-    super.prependTwoPoints();
-    setCount();
-    setSpline();
-  }
-
-  public void insertPoint(int i, int x, int y) {
-    super.insertPoint(i, x, y);
-    setCount();
-    setSpline();
-  }
-
-  public void paint(Graphics g) {
-    if (_npoints == 2) drawStraight(g);
-    else { drawCurve(g); }
-  }
-
-
+	super.appendTwoPoints();
+	setCount();
+	setSpline();
+  }  
+  public void cleanUp() { }  
+  private double dist(double dx, double dy) {
+	return Math.sqrt(dx*dx+dy*dy);
+  }  
+  private double dist(int x0, int y0, int x1, int y1) {
+	double dx, dy;
+	dx = (double)(x0-x1);
+	dy = (double)(y0-y1);
+	return Math.sqrt(dx*dx+dy*dy);
+  }  
 //   protected void drawControlLine(Graphics g) {
 //     for(int i=0; i<=_npoints-2; i++) {
 //       g.setColor(Color.black);
@@ -166,136 +139,139 @@ public class FigSpline extends FigPoly {
 			    int x1, int y1,
 			    int x2, int y2,
 			    int x3, int y3) {
-    int xa, ya, xb, yb, xc, yc, xp, yp;
-    xa = ( x1 + x2 ) / 2;
-    ya = ( y1 + y2 ) / 2;
-    xc = ( x2 + x3 ) / 2;
-    yc = ( y2 + y3 ) / 2;
-    xb = ( xa + xc ) / 2;
-    yb = ( ya + yc ) / 2;
+	int xa, ya, xb, yb, xc, yc, xp, yp;
+	xa = ( x1 + x2 ) / 2;
+	ya = ( y1 + y2 ) / 2;
+	xc = ( x2 + x3 ) / 2;
+	yc = ( y2 + y3 ) / 2;
+	xb = ( xa + xc ) / 2;
+	yb = ( ya + yc ) / 2;
 
-    xp = ( x1 + xb ) / 2;
-    yp = ( y1 + yb ) / 2;
-    if ( Math.abs( xa - xp ) + Math.abs( ya - yp ) > SPLINE_THRESH )
-      drawBezier( g, x1, y1, xa, ya, xb, yb );
-    else {
-      g.drawLine( x1, y1, xb, yb );
-      _curve.addPoint(xb, yb);
-    }
-    xp = ( x3 + xb ) / 2;
-    yp = ( y3 + yb ) / 2;
-    if ( Math.abs( xc - xp ) + Math.abs( yc - yp ) > SPLINE_THRESH )
-      drawBezier( g, xb, yb, xc, yc, x3, y3 );
-    else {
-      g.drawLine( xb, yb, x3, y3 );
-      _curve.addPoint(x3, y3);
-    }
-  }
-
+	xp = ( x1 + xb ) / 2;
+	yp = ( y1 + yb ) / 2;
+	if ( Math.abs( xa - xp ) + Math.abs( ya - yp ) > SPLINE_THRESH )
+	  drawBezier( g, x1, y1, xa, ya, xb, yb );
+	else {
+	  g.drawLine( x1, y1, xb, yb );
+	  _curve.addPoint(xb, yb);
+	}
+	xp = ( x3 + xb ) / 2;
+	yp = ( y3 + yb ) / 2;
+	if ( Math.abs( xc - xp ) + Math.abs( yc - yp ) > SPLINE_THRESH )
+	  drawBezier( g, xb, yb, xc, yc, x3, y3 );
+	else {
+	  g.drawLine( xb, yb, x3, y3 );
+	  _curve.addPoint(x3, y3);
+	}
+  }  
   protected void drawCurve(Graphics g) {
-    int nSegments = _npoints-2;
-    _curve = new Polygon();
-    g.setColor(_lineColor);
-    for (int i=0; i<=nSegments-1; i++)	{
-      drawBezier(g, _xknots[2*i],   _yknots[2*i],
+	int nSegments = _npoints-2;
+	_curve = new Polygon();
+	g.setColor(_lineColor);
+	for (int i=0; i<=nSegments-1; i++)	{
+	  drawBezier(g, _xknots[2*i],   _yknots[2*i],
 		 _xknots[2*i+1], _yknots[2*i+1],
 		 _xknots[2*i+2], _yknots[2*i+2]);
-    }
-    if (_filled) {
-      g.setColor(_fillColor);
-      g.fillPolygon(_curve);	   // here the curve gets partially destroyed
-      g.setColor(_lineColor);
-      g.drawPolyline(_curve.xpoints, _curve.ypoints, _curve.npoints);
-    }
-  }
-
+	}
+	if (_filled) {
+	  g.setColor(_fillColor);
+	  g.fillPolygon(_curve);	   // here the curve gets partially destroyed
+	  g.setColor(_lineColor);
+	  g.drawPolyline(_curve.xpoints, _curve.ypoints, _curve.npoints);
+	}
+  }  
   protected void drawStraight(Graphics g) {
-    g.setColor(_lineColor);
-    g.drawLine(_xknots[0], _yknots[0], 
+	g.setColor(_lineColor);
+	g.drawLine(_xknots[0], _yknots[0], 
 	       _xknots[1], _yknots[1]);
-  }
+  }  
+  protected void growIfNeeded() {
+	if (_npoints >= _xpoints.length) {
+	  int tmp[];
 
+	  tmp = new int[_npoints*2];
+	  System.arraycopy(_xpoints, 0, tmp, 0, _npoints);
+	  _xpoints = tmp;
+
+	  tmp = new int[_npoints*2];
+	  System.arraycopy(_ypoints, 0, tmp, 0, _npoints);
+	  _ypoints = tmp;
+
+	  tmp = new int[_npoints*4-1];
+	  System.arraycopy(_xknots, 0, tmp, 0, _nknots);
+	  _xknots = tmp;
+
+	  tmp = new int[_npoints*4-1];
+	  System.arraycopy(_yknots, 0, tmp, 0, _nknots);
+	  _yknots = tmp;
+	}
+  }  
+  public void insertPoint(int i, int x, int y) {
+	super.insertPoint(i, x, y);
+	setCount();
+	setSpline();
+  }  
+  public void moveVertex(Handle h, int x, int y, boolean ov) {
+	super.moveVertex(h, x, y, ov);
+	setSpline();
+  }  
+  public void paint(Graphics g) {
+	if (_npoints == 2) drawStraight(g);
+	else { drawCurve(g); }
+  }  
+  public void prependTwoPoints() {
+	super.prependTwoPoints();
+	setCount();
+	setSpline();
+  }  
+  public void removePoint(int i) {
+	super.removePoint(i);
+	setCount();
+	setSpline();
+  }  
   protected void setCount() {
-    if (_npoints == 2) _nknots   = 2;
-    else if (_npoints == 3) _nknots   = 3;
-    _nknots = 2*_npoints-3;
-  }
-
-
+	if (_npoints == 2) _nknots   = 2;
+	else if (_npoints == 3) _nknots   = 3;
+	_nknots = 2*_npoints-3;
+  }  
+  protected void setJunctionPoint(int p1x, int p1y,
+				  int p2x, int p2y,
+				  int p3x, int p3y) {
+	_delta0 = dist(p1x, p1y, p2x, p2y);
+	_delta1 = dist(p2x, p2y, p3x, p3y);
+	_denom = _delta0 + _delta1;
+	if (_denom<=_threshold) _junc_t = 0;
+	else _junc_t = _delta1 / _denom;
+	_juncX = (int)(_junc_t*p2x + (1-_junc_t)*p3x);
+	_juncY = (int)(_junc_t*p2y + (1-_junc_t)*p3y);
+  }  
   protected void setSpline() {
-    if (_npoints>=4) {
-      _xknots[0] = _xpoints[0];
-      _yknots[0] = _ypoints[0];
-      _xknots[_nknots-1] = _xpoints[_npoints-1];
-      _yknots[_nknots-1] = _ypoints[_npoints-1];
-      for (int i=0; i<=_npoints-4; i++) {
+	if (_npoints>=4) {
+	  _xknots[0] = _xpoints[0];
+	  _yknots[0] = _ypoints[0];
+	  _xknots[_nknots-1] = _xpoints[_npoints-1];
+	  _yknots[_nknots-1] = _ypoints[_npoints-1];
+	  for (int i=0; i<=_npoints-4; i++) {
 	setJunctionPoint(_xpoints[i],   _ypoints[i],
 			 _xpoints[i+1], _ypoints[i+1],
 			 _xpoints[i+2], _ypoints[i+2]);
 	_xknots[2*(i+1)] = _juncX;
 	_yknots[2*(i+1)] = _juncY;
-      }
-      for(int i=1; i<=_npoints-2; i++) {
+	  }
+	  for(int i=1; i<=_npoints-2; i++) {
 	_xknots[2*i-1] = _xpoints[i];
 	_yknots[2*i-1] = _ypoints[i];
-      }
-    }
-    else if (_npoints<4) {
-      for (int i=0; i<_npoints; i++) {
+	  }
+	}
+	else if (_npoints<4) {
+	  for (int i=0; i<_npoints; i++) {
 	_xknots[i] = _xpoints[i];
 	_yknots[i] = _ypoints[i];
-      }
-    }
-  }
-
-
-  protected void setJunctionPoint(int p1x, int p1y,
-				  int p2x, int p2y,
-				  int p3x, int p3y) {
-    _delta0 = dist(p1x, p1y, p2x, p2y);
-    _delta1 = dist(p2x, p2y, p3x, p3y);
-    _denom = _delta0 + _delta1;
-    if (_denom<=_threshold) _junc_t = 0;
-    else _junc_t = _delta1 / _denom;
-    _juncX = (int)(_junc_t*p2x + (1-_junc_t)*p3x);
-    _juncY = (int)(_junc_t*p2y + (1-_junc_t)*p3y);
-  }
-
-
-  protected void growIfNeeded() {
-    if (_npoints >= _xpoints.length) {
-      int tmp[];
-
-      tmp = new int[_npoints*2];
-      System.arraycopy(_xpoints, 0, tmp, 0, _npoints);
-      _xpoints = tmp;
-
-      tmp = new int[_npoints*2];
-      System.arraycopy(_ypoints, 0, tmp, 0, _npoints);
-      _ypoints = tmp;
-
-      tmp = new int[_npoints*4-1];
-      System.arraycopy(_xknots, 0, tmp, 0, _nknots);
-      _xknots = tmp;
-
-      tmp = new int[_npoints*4-1];
-      System.arraycopy(_yknots, 0, tmp, 0, _nknots);
-      _yknots = tmp;
-    }
-  }
-
-  private double dist(int x0, int y0, int x1, int y1) {
-    double dx, dy;
-    dx = (double)(x0-x1);
-    dy = (double)(y0-y1);
-    return Math.sqrt(dx*dx+dy*dy);
-  }
-
-  private double dist(double dx, double dy) {
-    return Math.sqrt(dx*dx+dy*dy);
-  }
-
-  public void cleanUp() { }
-
+	  }
+	}
+  }  
+  public void translate(int dx, int dy) {
+	super.translate(dx, dy);
+	setSpline();
+  }  
 } /* end class FigSpline */
-
