@@ -143,7 +143,7 @@ public class FigLine extends Fig {
   }
 
   /** returns the ith point. Argument i must be 0 or 1. */
-  public Point getPoints(int i) {
+  public Point getPoint(int i) {
     if (i == 0) { return new Point(_x1, _y1); }
     else if (i == 1)  { return new Point(_x2, _y2); }
     throw new IndexOutOfBoundsException("FigLine has exactly 2 points");

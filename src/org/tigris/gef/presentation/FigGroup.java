@@ -238,6 +238,7 @@ public class FigGroup extends Fig {
     /** Get the figs that make up this group
      * @param c a collection to populate with the figs
      * @return the figs of this group added to the given collection
+     * @deprecated use getFigs()
      */
     public Collection getFigs(Collection c) {
         if (c == null) return this.figs;

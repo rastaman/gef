@@ -48,7 +48,9 @@ import java.util.List;
 
 /** Class to present a node (such as a NetNode) in a diagram. */
 
-public class FigNode extends FigGroup implements MouseListener, PropertyChangeListener, Highlightable {
+public class FigNode extends FigGroup implements
+        Connecter,
+        MouseListener {
     ////////////////////////////////////////////////////////////////
     // constants
 

@@ -35,7 +35,8 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.tigris.gef.base.Globals;
+import org.tigris.gef.presentation.Connecter;
+import org.tigris.gef.presentation.Fig;
 
 /** An abstract class that makes it easier to implement your own
  *  version of MutableGraphModel. This class basically includes the
@@ -110,6 +111,9 @@ public abstract class MutableGraphSupport
 
     /** Create a new node based on the given one and add it to the graph.*/
     public void dragNode(Object node) {
+        if (saveAction != null && !saveAction.isEnabled()) {
+            saveAction.setEnabled(true);
+        }
     }
 
     /** Return true if the connection to the old node can be rerouted to
@@ -306,4 +310,48 @@ public abstract class MutableGraphSupport
     public static void setSaveAction(Action action) {
         saveAction = action;
     }
+    
+    public void removeNode(Object node) {
+        fireNodeRemoved(node);
+    }
+    
+    /** Add the given node to the graph, if valid. */
+    public void addNode(Object node) {
+        fireNodeAdded(node);
+    }
+    
+    /** Add the given edge to the graph, if valid. */
+    public void addEdge(Object edge) {
+        fireEdgeAdded(edge);
+    }
+
+    /** Remove the given edge from the graph. */
+    public void removeEdge(Object edge) {
+        fireEdgeRemoved(edge);
+    }
+
+    /** Remove the given edge from the graph. */
+    public void removeFig(Fig fig) {
+        if (fig instanceof Connecter) {
+            throw new IllegalArgumentException("Use removeEdge or removeNode to remove a complex Fig");
+        }
+        fig.removeFromDiagram();
+        fireGraphChanged();
+    }
+
+    /** Remove all the nodes from the graph. */
+    public void removeAllNodes() {
+        fireGraphChanged();
+    }
+
+    /** Remove all the edges from the graph. */
+    public void removeAllEdges() {
+        fireGraphChanged();
+    }
+
+    /** Remove all nodes and edges to reset the graph. */
+    public void removeAll() {
+        fireGraphChanged();
+    }    
+    
 } /* end class MutableGraphSupport */

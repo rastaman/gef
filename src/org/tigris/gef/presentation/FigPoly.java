@@ -471,11 +471,11 @@ public class FigPoly extends Fig {
      * USED BY PGML.tee
      */
     public Point getFirstPoint() {
-        return getPoints(0);
+        return getPoint(0);
     }
 
     public Point getLastPoint() {
-        return getPoints(_npoints - 1);
+        return getPoint(_npoints - 1);
     }
 
     /** When the user drags the handles, move individual points */

@@ -27,6 +27,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.graph.GraphEdgeHooks;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
+import org.tigris.gef.graph.MutableGraphSupport;
 
 import org.tigris.gef.properties.PropCategoryManager;
 
@@ -935,7 +936,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return new Point[0];
     }
 
-    public Point getPoints(int i) {
+    public Point getPoint(int i) {
         return null;
     }
 

@@ -30,7 +30,11 @@ package org.tigris.gef.base;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphSupport;
+import org.tigris.gef.presentation.Connecter;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -110,6 +114,9 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
     /** On mouse down, make a new Fig in memory. */
     public void mousePressed(MouseEvent me) {
         createFig(me);
+        if (!(_newItem instanceof Connecter) && editor.getGraphModel() instanceof MutableGraphSupport) {
+            ((MutableGraphSupport)(editor.getGraphModel())).fireGraphChanged();
+        }
     }
 
     protected void createFig(MouseEvent me) {

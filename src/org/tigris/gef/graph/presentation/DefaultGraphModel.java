@@ -225,7 +225,7 @@ public class DefaultGraphModel
         NetNode n = (NetNode) node;
         netList.removeNode(n);
         LOG.debug("Removed node from graph model");
-        fireNodeRemoved(n);
+        super.removeNode(node);
     }
 
     /** Return true if dragging the given object is a valid in this graph */
@@ -240,7 +240,7 @@ public class DefaultGraphModel
         if (LOG.isDebugEnabled()) {
             LOG.debug("Added a node. There are now " + netList.getNodes(null).size() + " edges");
         }
-        fireNodeAdded(n);
+        super.addNode(node);
     }
 
     /** Add the given edge to the graph, if valid. */
@@ -250,7 +250,7 @@ public class DefaultGraphModel
         if (LOG.isDebugEnabled()) {
             LOG.debug("Added an edge. There are now " + netList.getEdges(null).size() + " edges");
         }
-        fireEdgeAdded(e);
+        super.addEdge(e);
     }
 
     public void addNodeRelatedEdges(Object node) {
@@ -261,28 +261,28 @@ public class DefaultGraphModel
         LOG.debug("DefaultGraphModel::removeEdge");
         NetEdge e = (NetEdge) edge;
         netList.removeEdge(e);
-        fireEdgeRemoved(e);
+        super.removeEdge(e);
     }
 
     /** Remove all the nodes from the graph. */
     public void removeAllNodes() {
         LOG.debug("Removing all the nodes from the graph.");
         netList.removeAllNodes();
-        fireGraphChanged();
+        super.removeAllNodes();
     }
 
     /** Remove all the edges from the graph. */
     public void removeAllEdges() {
         LOG.debug("Removing all the edges from the graph.");
         netList.removeAllEdges();
-        fireGraphChanged();
+        super.removeAllEdges();
     }
 
     /** Remove all nodes and edges to reset the graph. */
     public void removeAll() {
         netList.removeAllEdges();
         netList.removeAllNodes();
-        fireGraphChanged();
+        super.removeAll();
     }    
     
     public void dragNode(Object node) {

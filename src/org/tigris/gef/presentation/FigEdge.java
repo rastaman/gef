@@ -21,7 +21,7 @@ import org.tigris.gef.ui.Highlightable;
  *  @see FigEdgeLine
  *  @see FigEdgeRectiline
  */
-public abstract class FigEdge extends Fig implements PropertyChangeListener, Highlightable {
+public abstract class FigEdge extends Fig implements Connecter {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -241,6 +241,10 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         return _fig;
     }
 
+    /**
+     * The first point ion an edge
+     * USED BY PGML.tee
+     */
     public Point getFirstPoint() {
         return _fig.getFirstPoint();
     }
@@ -317,11 +321,11 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
 
     /** @deprecated use getPoint(int) */
     public Point getPoints(int i) {
-        return _fig.getPoints(i);
+        return _fig.getPoint(i);
     }
 
     public Point getPoint(int i) {
-        return _fig.getPoints(i);
+        return _fig.getPoint(i);
     }
 
     /**

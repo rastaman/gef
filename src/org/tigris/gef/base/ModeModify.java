@@ -35,6 +35,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.*;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
@@ -125,8 +128,13 @@ public class ModeModify extends FigModifyingModeImpl {
             return;
         }
 
-        _dragInProcess = true;
-
+        if (!_dragInProcess) {
+            _dragInProcess = true;
+            GraphModel gm = editor.getGraphModel();
+            if (gm instanceof MutableGraphSupport) {
+                ((MutableGraphSupport)gm).fireGraphChanged();
+            }
+        }
 
         boolean restrict45 = mouseEvent.isControlDown();
         handleMouseDragged(restrict45);
@@ -263,7 +271,7 @@ public class ModeModify extends FigModifyingModeImpl {
 
         done();
         me.consume();
-        SelectionManager sm = getEditor().getSelectionManager();
+        SelectionManager sm = editor.getSelectionManager();
         sm.stopDrag();
         List figs = sm.getFigs();
         int figCount = figs.size();
