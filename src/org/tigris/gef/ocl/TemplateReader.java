@@ -24,16 +24,27 @@
 package org.tigris.gef.ocl;
 
 import java.util.*;
+import java.util.Enumeration;
+import java.util.StringTokenizer;
+//import java.util.*;
 import java.io.*;
-import com.ibm.xml.parser.*;
+//import com.ibm.xml.parser.*;
+import org.xml.sax.*;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.parsers.SAXParser;
 
-public class TemplateReader implements com.ibm.xml.parser.ElementHandler {
+public class TemplateReader extends org.xml.sax.HandlerBase {
   ////////////////////////////////////////////////////////////////
   // static variables
   public final static TemplateReader SINGLETON = new TemplateReader();
 
   Hashtable _templates;  /* Class -> Vector of TemplateRecord */
   Vector _macros;
+
+  private java.util.List _stack = new ArrayList();
+  private int _stackPointer = 0;
+  private TemplateRecord _stackTopTemplate = null;
+  private MacroRecord _stackTopMacro = null;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -49,64 +60,151 @@ public class TemplateReader implements com.ibm.xml.parser.ElementHandler {
   // reading methods
   public Hashtable read(String fileName) {
     InputStream in = null;
-    try { in = TemplateReader.class.getResourceAsStream(fileName); }
-    catch (Exception ex) { return null; }
-    if (in == null) return null;
+    try {
+        in = TemplateReader.class.getResourceAsStream(fileName);
+    }
+    catch (Exception ex) {}
+    if (in == null) {
+      String relativePath = fileName;
+      if(relativePath.startsWith("/")) {
+        relativePath = relativePath.substring(1);
+      }
+      try {
+        in = new FileInputStream(relativePath);
+      }
+      catch(Exception ex) {}
+    }
+    if(in == null) return null;
 
     _templates = new Hashtable();
     _macros = new Vector();
-    Parser pc = new Parser(fileName);
-    pc.addElementHandler(this, "template");
-    pc.addElementHandler(this, "macro");
-    try { pc.readStream(in); } //new FileInputStream(fileName)); }
-    catch (Exception ex) { System.out.println("Exception"); }
+    SAXParserFactory factory = SAXParserFactory.newInstance();
+    factory.setNamespaceAware(false);
+    factory.setValidating(false);
+    try {
+        SAXParser pc = factory.newSAXParser();
+        pc.parse(in,this);
+    }
+    catch (Exception ex) {
+        ex.printStackTrace();
+    }
     return _templates;
   }
 
+    public void setDocumentLocator(Locator locator) {
+    }
+
+    public void startDocument() {
+        _stackPointer = 0;
+        _stackTopTemplate = null;
+        _stackTopMacro = null;
+    }
+
+    public void endDocument() {
+        _stackTopTemplate = null;
+        _stackTopMacro = null;
+    }
+
+    public void ignorableWhitespace(char[] ch,
+                                int start,
+                                int length) {
+    }
+
+    public void processingInstruction(java.lang.String target,
+                                  java.lang.String data) {
+    }
+
   ////////////////////////////////////////////////////////////////
   // ElementHandler implementation
-  public TXElement handleElement(TXElement e) {
-    if (e.getTagName().equals("template")) {
-      String body = e.getText().trim();
-      String guard = e.getAttribute("guard");
-      String className = e.getAttribute("class");
+  public void startElement(String tagName,AttributeList attrList) {
+    if (tagName.equals("template")) {
+//      String body = e.getText().trim();
+      String guard = attrList.getValue("guard");
+      String className = attrList.getValue("class");
       java.lang.Class classObj = null;
+      Object objToStack = null;
       try { classObj = Class.forName(className); }
       catch (Exception ex) {
 	System.out.println("TemplateReader: Class " + className + " not found");
-	return null;
       }
+
+      _stackTopTemplate = new TemplateRecord(classObj,guard,null);
+      _stackTopMacro = null;
+      _stack.add(_stackPointer++,_stackTopTemplate);
+
+    }
+    else if (tagName.equals("macro")) {
+//      String body = e.getText().trim();
+      String name = attrList.getValue("name");
+      _stackTopMacro = new MacroRecord(name, null);
+      _stackTopTemplate = null;
+      _stack.add(_stackPointer++,_stackTopMacro);
+    }
+    else {
+      _stackTopMacro = null;
+      _stackTopTemplate = null;
+      _stack.add(_stackPointer++,null);
+      System.out.println("unknown tag: " + tagName);
+    }
+  }
+
+  public void characters(char[] ch,
+                       int start,
+                       int length) {
+      if(_stackTopMacro != null) {
+        _stackTopMacro.characters(ch,start,length);
+      }
+      else {
+        if(_stackTopTemplate != null) {
+            _stackTopTemplate.characters(ch,start,length);
+        }
+      }
+  }
+
+  public void endElement(java.lang.String name) {
+    if(_stackTopTemplate != null) {
+      String body = _stackTopTemplate.getBody().trim();
       body = expandMacros(body);
-      TemplateRecord rec = new TemplateRecord(classObj, guard, body);
+      _stackTopTemplate.setBody(body);
+      Class classObj = _stackTopTemplate.getClass();
       Vector existing = (Vector) _templates.get(classObj);
       if (existing == null) existing = new Vector();
-      existing.addElement(rec);
+      existing.addElement(_stackTopTemplate);
       _templates.put(classObj, existing);
-      //     System.out.println("read template for " + "[" + classObj + "]");
-      //     System.out.println("[" + body + "]\n\n");
     }
-    else if (e.getTagName().equals("macro")) {
-      String body = e.getText().trim();
-      String name = e.getAttribute("name");
-      if (name == null) return null;
-      int newNameLength = name.length();
-      body = expandMacros(body);
-      MacroRecord mr = new MacroRecord(name, body);
-      boolean inserted = false;
-      int size = _macros.size();
-      for (int i = 0; i < size && !inserted; i++) {
-	String n = ((MacroRecord)_macros.elementAt(i)).name;
-	if (n.length() < newNameLength) {
-	  _macros.insertElementAt(mr, i);
-	  inserted = true;
-	}
-      }
-      if (!inserted) _macros.addElement(mr);
+    else {
+        if(_stackTopMacro != null) {
+            String body = _stackTopMacro.getBody().trim();
+            body = expandMacros(body);
+            _stackTopMacro.setBody(body);
+            boolean inserted = false;
+            int newNameLength = _stackTopMacro.getName().length();
+            int size = _macros.size();
+            for (int i = 0; i < size && !inserted; i++) {
+	        String n = ((MacroRecord)_macros.elementAt(i)).name;
+	        if (n.length() < newNameLength) {
+	            _macros.insertElementAt(_stackTopMacro, i);
+	            inserted = true;
+	        }
+            }
+            if (!inserted) {
+                _macros.addElement(_stackTopMacro);
+            }
+        }
     }
-    else
-      System.out.println("unknown tag: " + e.getTagName());
-    return null;
+    _stackTopTemplate = null;
+    _stackTopMacro = null;
+    Object top = _stack.get(--_stackPointer);
+    if(top instanceof TemplateRecord) {
+        _stackTopTemplate = (TemplateRecord) top;
+    }
+    else {
+        if(top instanceof MacroRecord) {
+            _stackTopMacro = (MacroRecord) top;
+        }
+    }
   }
+
 
   public String expandMacros(String body) {
     StringBuffer resultBuffer = new StringBuffer(body.length()*2);
@@ -152,10 +250,41 @@ public class TemplateReader implements com.ibm.xml.parser.ElementHandler {
 class MacroRecord {
   String name;
   String body;
+  private StringBuffer _buf = null;
   MacroRecord(String n, String b) {
     name = n;
     body = b;
   }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getBody() {
+    if(_buf != null) {
+        body = _buf.toString();
+    }
+    return body;
+  }
+
+  public void setBody(String b) {
+    body = b;
+    _buf = null;
+  }
+
+  public void characters(char[] ch,
+                       int start,
+                       int length) {
+    if(_buf == null) {
+        _buf = new StringBuffer();
+        if(body != null) {
+            _buf.append(body);
+        }
+    }
+    _buf.append(ch,start,length);
+  }
+
+
 } /* end class MacroRecord */
 
 

@@ -89,7 +89,18 @@ public class OCLEvaluator {
 
   public static Vector eval(Hashtable bindings, String expr) {
     int firstPos = expr.indexOf(".");
-    Object target = bindings.get(expr.substring(0, firstPos));
+    String bindExpr = expr;
+    String prop = null;
+    if(firstPos == -1) {
+        bindExpr.concat(".");
+        prop = "";
+    }
+    else {
+        bindExpr = expr.substring(0,firstPos);
+        prop = expr.substring(firstPos);
+    }
+
+    Object target = bindings.get(bindExpr);
     Vector targets;
 
     if (target instanceof Vector)  {
@@ -99,7 +110,6 @@ public class OCLEvaluator {
       targets = new Vector();
       targets.addElement(target);
     }
-    String prop = expr.substring(firstPos);
     return eval(bindings, prop, targets);
   } // end of eval()
 

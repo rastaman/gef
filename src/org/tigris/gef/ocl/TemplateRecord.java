@@ -21,10 +21,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.tigris.gef.ocl;
 
-import java.util.*;
+
+
 import java.awt.*;
 import java.io.*;
 import java.lang.*;
@@ -33,10 +33,37 @@ public class TemplateRecord {
   Class key;
   String guard;
   String body;
-  
+  private StringBuffer _buf = null;
+
   TemplateRecord(Class k, String g, String b) {
     key = k;
     guard = g;
     body = b;
   }
+
+  public String getBody() {
+    if(_buf != null) {
+        body = _buf.toString();
+    }
+    return body;
+  }
+
+  public void setBody(String b) {
+    body = b;
+    _buf = null;
+  }
+
+  public void characters(char[] ch,
+                       int start,
+                       int length) {
+    if(_buf == null) {
+        _buf = new StringBuffer();
+        if(body != null) {
+            _buf.append(body);
+        }
+    }
+    _buf.append(ch,start,length);
+  }
+
+
 } /** end class TemplateRecord */

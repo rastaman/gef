@@ -28,7 +28,8 @@ import java.awt.*;
 import java.io.*;
 import java.net.URL;
 
-import com.ibm.xml.parser.*;
+//import com.ibm.xml.parser.*;
+import javax.xml.parsers.*;
 import org.w3c.dom.*;
 
 import org.tigris.gef.base.*;
@@ -36,8 +37,9 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.graph.presentation.*;
 import org.tigris.gef.xml.*;
+import org.xml.sax.*;
 
-public class SVGParser implements ElementHandler, TagHandler {
+public class SVGParser extends HandlerBase {
 
   ////////////////////////////////////////////////////////////////
   // static variables
@@ -55,7 +57,7 @@ public class SVGParser implements ElementHandler, TagHandler {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  protected SVGParser() { }  
+  protected SVGParser() { }
   protected Fig findFig(String uri) {
 	Fig f = null;
 	if (uri.indexOf(".") == -1) {
@@ -75,74 +77,131 @@ public class SVGParser implements ElementHandler, TagHandler {
 	  }
 	}
 	return f;
-  }  
+  }
   //needs-more-work: find object in model
   protected Object findOwner(String uri) {
 	Object own = _ownerRegistry.get(uri);
 	return own;
-  }  
+  }
   //needs-more-work: make an instance of the named class
   protected GraphModel getGraphModelFor(String desc) {
 	return new DefaultGraphModel();
-  }  
-	public TXElement handleElement(TXElement e) {
-		try {
-			String elementName = e.getName();
-			if (elementName.equals("svg"))
-				{/*_diagram.add(handleSVG(e));*/}
-			else if (elementName.equals("g"))
-				_diagram.add(handleGroup(e));
-			 else if (_nestedGroups == 0) {
-				if (elementName.equals("path"))
-					_diagram.add(handlePath(e));
-				else if (elementName.equals("ellipse"))
-					_diagram.add(handleEllipse(e));
-				else if (elementName.equals("rect"))
-					_diagram.add(handleRect(e));
-				else if (elementName.equals("text"))
-					_diagram.add(handleText(e));
-				else if (elementName.equals("line"))
-					_diagram.add(handleLine(e));
-				else System.out.println("unknown top-level tag: " + elementName);
-	  		}
-			else if (_nestedGroups > 0) {
-				//System.out.println("skipping nested " + elementName);
-			  }
-	 	} catch (Exception ex) {
-	  		System.out.println("Exception in SVGParser handleElement");
-			ex.printStackTrace();
-		}
-		return e; // needs-more-work: too much memory? should return null.
-	}
-  protected FigCircle handleEllipse(TXElement e) {
+  }
+
+  private int _state = 0;
+  private static final int DEFAULT_STATE = 0;
+  private static final int FIG_STATE = 1;
+  private static final int TEXT_STATE = 2;
+  private static final int FOREIGN_STATE = 3;
+
+    public void startElement(String elementName,AttributeList attrList) {
+        try {
+            switch(_state) {
+                case DEFAULT_STATE:
+                if (elementName.equals("svg")) {
+                    handleSVG(attrList);
+                }
+                else if (elementName.equals("g")) {
+                    _nestedGroups++;
+                    _diagram.add(handleGroup(attrList));
+                }
+                else if (_nestedGroups == 0) {
+                    if (elementName.equals("path")) {
+                        _diagram.add(handlePath(attrList));
+                    }
+                    else if (elementName.equals("ellipse")) {
+                        _diagram.add(handleEllipse(attrList));
+                    }
+                    else if (elementName.equals("rect")) {
+                        _diagram.add(handleRect(attrList));
+                    }
+                    else if (elementName.equals("text")) {
+                        _diagram.add(handleText(attrList));
+                    }
+                    else if (elementName.equals("line")) {
+                        _diagram.add(handleLine(attrList));
+                    }
+                    else {
+                        System.out.println("unknown top-level tag: " + elementName);
+                    }
+                }
+                else if (_nestedGroups > 0) {
+                    //System.out.println("skipping nested " + elementName);
+                }
+                break;
+
+                case FIG_STATE:
+                figStartElement(elementName,attrList);
+                break;
+            }
+        }
+        catch (Exception ex) {
+            System.out.println("Exception in SVGParser handleElement");
+            ex.printStackTrace();
+        }
+    }
+
+    public void characters(char[] chars,int offset,int len) {
+        switch(_state) {
+            case FOREIGN_STATE:
+            foreignCharacters(chars,offset,len);
+            break;
+
+            case TEXT_STATE:
+            textCharacters(chars,offset,len);
+            break;
+        }
+    }
+
+  protected FigCircle handleEllipse(AttributeList attrList) {
 	FigCircle f = new FigCircle(0, 0, 50, 50);
-	setAttrs(f, e);
-	
-	String cx = e.getAttribute("cx");
-	String cy = e.getAttribute("cy");
-	String rx = e.getAttribute("rx");
-	String ry = e.getAttribute("ry");
-	
+	setAttrs(f, attrList);
+
+	String cx = attrList.getValue("cx");
+	String cy = attrList.getValue("cy");
+	String rx = attrList.getValue("rx");
+	String ry = attrList.getValue("ry");
+
 	int cxInt = (cx == null || cx.equals("")) ? 0  : Integer.parseInt(cx);
 	int cyInt = (cy == null || cy.equals("")) ? 0  : Integer.parseInt(cy);
 	int rxInt = (rx == null || rx.equals("")) ? 10 : Integer.parseInt(rx);
 	int ryInt = (ry == null || ry.equals("")) ? 10 : Integer.parseInt(ry);
-	
+
 	f.setX( cxInt - rxInt );
 	f.setY( cyInt - ryInt );
 	f.setWidth(rxInt * 2);
 	f.setHeight(ryInt * 2);
 	return f;
-  }      
-  public void handleEndTag(TXElement e, boolean empty) {
-	String elementName = e.getName();
-	if ("g".equals(elementName)) _nestedGroups--;
-  }  
-/* Returns Fig rather than FigGroups because this is also
+  }
+
+    public void endElement(String elementName) {
+        switch(_state) {
+            case DEFAULT_STATE:
+	    if ("g".equals(elementName)) _nestedGroups--;
+            break;
+
+            case FIG_STATE:
+            figEndElement(elementName);
+            break;
+
+            case FOREIGN_STATE:
+            foreignEndElement(elementName);
+            break;
+
+            case TEXT_STATE:
+            textEndElement(elementName);
+            break;
+        }
+    }
+
+  private FigNode _fn = null;
+  private FigEdge _fe = null;
+
+  /* Returns Fig rather than FigGroups because this is also
  used for FigEdges. */
-protected Fig handleGroup(TXElement e) {
+    protected Fig handleGroup(AttributeList attrList) {
 	Fig f = null;
-	String clsNameBounds = e.getAttribute("class");
+	String clsNameBounds = attrList.getValue("class");
 	StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
 	String clsName = st.nextToken();
 	String xStr = null, yStr = null, wStr = null, hStr = null;
@@ -153,39 +212,29 @@ protected Fig handleGroup(TXElement e) {
 		hStr = st.nextToken();
 	}
 	try {
-		Class nodeClass = Class.forName(clsName);
-		f = (Fig) nodeClass.newInstance();
-		if (xStr != null && !xStr.equals("")) {
-			int x = Integer.parseInt(xStr);
-			int y = Integer.parseInt(yStr);
-			int w = Integer.parseInt(wStr);
-			int h = Integer.parseInt(hStr);
-			f.setBounds(x, y, w, h);
-		}
-		if (f instanceof FigNode) {
-			FigNode fn = (FigNode) f;
-			if (e.hasChildNodes()) {
-				NodeList nl = e.getElementsByTagName("foreignObject");
-				if (nl.getLength()==1)
-				{
-					TXElement pe = (TXElement) nl.item(0);
-					String data = pe.getText();
-					fn.setPrivateData(data);
-				}
-			}
-		}
-		if (f instanceof FigEdge) {
-			FigEdge fe = (FigEdge) f;
-			if (e.hasChildNodes()) {
-				NodeList nl = e.getElementsByTagName("foreignObject");
-				if (nl.getLength()==1)
-				{
-					TXElement pe = (TXElement) nl.item(0);
-					String data = pe.getText();
-					fe.setPrivateData(data);
-				}
-			}
-		}
+            Class nodeClass = Class.forName(clsName);
+            f = (Fig) nodeClass.newInstance();
+            if (xStr != null && !xStr.equals("")) {
+                    int x = Integer.parseInt(xStr);
+                    int y = Integer.parseInt(yStr);
+                    int w = Integer.parseInt(wStr);
+                    int h = Integer.parseInt(hStr);
+                    f.setBounds(x, y, w, h);
+            }
+            if (f instanceof FigNode) {
+                _fn = (FigNode) f;
+                _fe = null;
+                _foreignBuffer = null;
+                _foreignCount = 0;
+                _state = FIG_STATE;
+            }
+            if (f instanceof FigEdge) {
+                _fn = null;
+                _fe = (FigEdge) f;
+                _foreignBuffer = null;
+                _foreignCount = 0;
+                _state = FIG_STATE;
+            }
 	} catch (Exception ex) {
 		System.out.println("Exception in handleGroup");
 		ex.printStackTrace();
@@ -195,15 +244,52 @@ protected Fig handleGroup(TXElement e) {
 	}
 	return f;
 }
-  protected FigLine handleLine(TXElement e) {
+
+    private StringBuffer _foreignBuffer = null;
+    private int _foreignCount = 0;
+    private void figStartElement(String tagName,AttributeList attrList) {
+        if(tagName.equals("foreignObject")) {
+            _state = FOREIGN_STATE;
+            _foreignCount++;
+            _foreignBuffer = new StringBuffer();
+        }
+    }
+
+    private void foreignCharacters(char[] chars,int start,int length) {
+        _foreignBuffer.append(chars,start,length);
+    }
+
+    private void foreignEndElement(String tagName) {
+        if(tagName.equals("foreignObject")) {
+            _state = FIG_STATE;
+        }
+    }
+
+    private void figEndElement(String tagName) {
+        if(_foreignCount == 1 && _foreignBuffer != null) {
+            String data = _foreignBuffer.toString();
+            if(_fn != null) {
+                _fn.setPrivateData(data);
+            }
+            else {
+                _fe.setPrivateData(data);
+            }
+        }
+        _foreignBuffer = null;
+        _fn = null;
+        _fe = null;
+        _state = DEFAULT_STATE;
+    }
+
+  protected FigLine handleLine(AttributeList e) {
 	FigLine f = new FigLine(0, 0, 100, 100);
 	setAttrs(f, e);
 
 	// Get the start and end
-	String x1 = e.getAttribute("x1");
-	String y1 = e.getAttribute("y1");
-	String x2 = e.getAttribute("x2");
-	String y2 = e.getAttribute("y2");
+	String x1 = e.getValue("x1");
+	String y1 = e.getValue("y1");
+	String x2 = e.getValue("x2");
+	String y2 = e.getValue("y2");
 
 	// Convert to integers
 	int x1Int = (x1 == null || x1.equals("")) ? 0 : Integer.parseInt(x1);
@@ -218,9 +304,9 @@ protected Fig handleGroup(TXElement e) {
 	f.setY2(y2Int);
 
 	return f;
-  }  
-  protected FigPoly handlePath(TXElement e) {
-	String type = e.getAttribute("class");
+  }
+  protected FigPoly handlePath(AttributeList e) {
+	String type = e.getValue("class");
 
 	FigPoly f = null;
 	if (type.equals("org.tigris.gef.presentation.FigPoly"))
@@ -237,11 +323,11 @@ protected Fig handleGroup(TXElement e) {
 	}
 	if (f != null)
 	{
-		// Set the default attributes	
+		// Set the default attributes
 		setAttrs(f, e);
 
 		// Set the path data
-		String path = e.getAttribute("d");
+		String path = e.getValue("d");
 		int	x = -1;
 		int	y = -1;
 
@@ -269,7 +355,7 @@ protected Fig handleGroup(TXElement e) {
 						f.addPoint(x,y);
 						x = -1;
 						y = -1;
-					}					
+					}
 				}
 
 				tok = tokenizer.nextToken();
@@ -280,12 +366,12 @@ protected Fig handleGroup(TXElement e) {
 			ex.printStackTrace();
 		}
 	}
-		
+
 	return f;
-  }  
-  protected FigRect handleRect(TXElement e) {
+  }
+  protected FigRect handleRect(AttributeList e) {
 	FigRect f;
-	String cornerRadius = e.getAttribute("rx");
+	String cornerRadius = e.getValue("rx");
 	if (cornerRadius == null || cornerRadius.equals("")) {
 	  f = new FigRect(0, 0, 80, 80);
 	}
@@ -296,37 +382,35 @@ protected Fig handleGroup(TXElement e) {
 	}
 	setAttrs(f, e);
 	return f;
-  }  
+  }
   ////////////////////////////////////////////////////////////////
   // XML element handlers
 
-  public void handleStartTag(TXElement e, boolean empty) {
-	String elementName = e.getName();
-	if ("g".equals(elementName)) _nestedGroups++;
-	else if (elementName.equals("svg")) handleSVG(e);
-  }  
-  protected void handleSVG(TXElement e) {
-	String name = e.getAttribute("gef:name");
-	String clsName = e.getAttribute("class");
+  protected void handleSVG(AttributeList e) {
+	String name = e.getValue("gef:name");
+	String clsName = e.getValue("class");
 	try {
 	  if (clsName != null && !clsName.equals("")) initDiagram(clsName);
 	  if (name != null && !name.equals("")) _diagram.setName(name);
 	}
 	catch (Exception ex) { System.out.println("Exception in handleSVG"); }
-  }  
-  protected FigText handleText(TXElement e) {
+  }
+
+  private FigText _ft = null;
+  private StringBuffer _textBuffer = null;
+  protected FigText handleText(AttributeList e) {
 	FigText f = new FigText(100, 100, 90, 45);
 	setAttrs(f, e);
-	String text = e.getText();
-	f.setText(text);
-
-	String style = e.getAttribute("style");
+        _state = TEXT_STATE;
+        _textBuffer = new StringBuffer();
+        _ft = f;
+	String style = e.getValue("style");
 	if (style != null)
 	{
 		String font = parseStyle("font",style);
 		if (font != null)
 		{
-				f.setFontFamily(font);
+                    f.setFontFamily(font);
 		}
 		String size = parseStyle("font-size",style);
 		if (size != null)
@@ -336,7 +420,20 @@ protected Fig handleGroup(TXElement e) {
 		}
 	}
 	return f;
-  }  
+  }
+
+  void textCharacters(char[] chars,int offset, int len) {
+    _textBuffer.append(chars,offset,len);
+  }
+
+  void textEndElement(String tagName) {
+    _ft.setText(_textBuffer.toString());
+    _ft = null;
+    _textBuffer = null;
+    _state = DEFAULT_STATE;
+  }
+
+
   ////////////////////////////////////////////////////////////////
   // internal methods
 
@@ -358,7 +455,7 @@ protected Fig handleGroup(TXElement e) {
 	  System.out.println("could not set diagram type to " + clsName);
 	  ex.printStackTrace();
 	}
-  }  
+  }
   protected Color parseColor(String name, Color defaultColor) {
 	try {
 		int start = name.indexOf("rgb",0);
@@ -375,17 +472,17 @@ protected Fig handleGroup(TXElement e) {
 				int green	= Integer.parseInt(name.substring( start, end ).trim());
 				start 		= end+1;
 				end 		= name.indexOf( ")", start);
-				int blue	= Integer.parseInt(name.substring( start, end ).trim());	
-				
-				return new Color(red, green, blue);	
+				int blue	= Integer.parseInt(name.substring( start, end ).trim());
+
+				return new Color(red, green, blue);
 			}
 			return defaultColor;
 		}
 	} catch (Exception ex) {
 		System.out.println("invalid rgb() sequence: " + name);
 		return defaultColor;
-	}	
-	
+	}
+
 	if (name.equalsIgnoreCase("none")) return null;
 	if (name.equalsIgnoreCase("white")) return Color.white;
 	if (name.equalsIgnoreCase("lightGray")) return Color.lightGray;
@@ -400,14 +497,14 @@ protected Fig handleGroup(TXElement e) {
 	if (name.equalsIgnoreCase("magenta")) return Color.magenta;
 	if (name.equalsIgnoreCase("cyan")) return Color.cyan;
 	if (name.equalsIgnoreCase("blue")) return Color.blue;
-	
+
 	try {
-		return Color.decode(name); 
+		return Color.decode(name);
 	} catch (Exception ex) {
 	  System.out.println("invalid color code string: " + name);
 	}
 	return defaultColor;
-  }  
+  }
 /**
  * This method parses the 'style' attribute for a particular field
  * @return java.lang.String
@@ -427,7 +524,7 @@ protected String parseStyle(String field, String style) {
 		else
 		{
 			return style.substring( start+field.length(), style.length()-1 ).trim();
-		}				
+		}
 	}
 
 	return null;
@@ -441,16 +538,15 @@ protected String parseStyle(String field, String style) {
 	  String filename = url.getFile();
 	  System.out.println("=======================================");
 	  System.out.println("== READING DIAGRAM: " + url);
-	  Parser pc = new Parser(filename);
-	  pc.addElementHandler(this);
-	  pc.setTagHandler(this);
-	  pc.getEntityHandler().setEntityResolver(DTDEntityResolver.SINGLETON);
-	  //pc.setProcessExternalDTD(false);
-	  //pc.setProcessNamespace(true);
-	  initDiagram("org.tigris.gef.base.Diagram");
-	  _figRegistry = new Hashtable();
-	  pc.readStream(is);
-	  is.close();
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        factory.setNamespaceAware(false);
+        factory.setValidating(false);
+        SAXParser pc = factory.newSAXParser();
+        initDiagram("org.tigris.gef.base.Diagram");
+        _figRegistry = new Hashtable();
+        pc.parse(is,this);
+
+         is.close();
 	  return _diagram;
 	}
 	catch (Exception ex) {
@@ -458,18 +554,18 @@ protected String parseStyle(String field, String style) {
 	  ex.printStackTrace();
 	}
 	return null;
-  }  
+  }
   ////////////////////////////////////////////////////////////////
   // internal parsing methods
 
-  protected void setAttrs(Fig f, TXElement e) {
-	String name = e.getAttribute("name");
+  protected void setAttrs(Fig f, AttributeList e) {
+	String name = e.getValue("name");
 	if (name != null && !name.equals("")) _figRegistry.put(name, f);
-	String x = e.getAttribute("x");
+	String x = e.getValue("x");
 	if (x != null && !x.equals("")) {
-	  String y = e.getAttribute("y");
-	  String w = e.getAttribute("width");
-	  String h = e.getAttribute("height");
+	  String y = e.getValue("y");
+	  String w = e.getValue("width");
+	  String h = e.getValue("height");
 	  int xInt = Integer.parseInt(x);
 	  int yInt = (y == null || y.equals("")) ? 0 : Integer.parseInt(y);
 	  int wInt = (w == null || w.equals("")) ? 20 : Integer.parseInt(w);
@@ -478,7 +574,7 @@ protected String parseStyle(String field, String style) {
 	}
 
 	// Parse Style
-	String style = e.getAttribute("style");
+	String style = e.getValue("style");
 	if (style != null)
 	{
 		String linewidth = parseStyle("stroke-width",style);
@@ -504,17 +600,69 @@ protected String parseStyle(String field, String style) {
 	}
 
 	try {
-	  String owner = e.getAttribute("gef:href");
+	  String owner = e.getValue("gef:href");
 	  if (owner != null && !owner.equals("")) f.setOwner(findOwner(owner));
 	}
 	catch (Exception ex) {
 	  System.out.println("could not set owner");
 	}
-  }  
+  }
   ////////////////////////////////////////////////////////////////
   // accessors
 
   public void setOwnerRegistery(Hashtable owners) {
 	_ownerRegistry = owners;
-  }  
+  }
+
+
+  private String[] _entityPaths = { "/org/tigris/gef/xml/dtd/" };
+  protected String[] getEntityPaths() {
+    return _entityPaths;
+  }
+
+
+   public InputSource resolveEntity(java.lang.String publicId,
+                                 java.lang.String systemId) {
+        InputSource source = null;
+        try {
+            java.net.URL url = new java.net.URL(systemId);
+            try {
+	        source = new InputSource(url.openStream());
+	        if (publicId != null) source.setPublicId(publicId);
+            }
+            catch (java.io.IOException e) {
+	        if (systemId.endsWith(".dtd")) {
+                    int i = systemId.lastIndexOf('/');
+                    i++;	// go past '/' if there, otherwise advance to 0
+                    String[] entityPaths = getEntityPaths();
+                    InputStream is = null;
+                    for(int pathIndex = 0; pathIndex < entityPaths.length && is == null; pathIndex++) {
+                        String DTD_DIR = entityPaths[pathIndex];
+                        is = getClass().getResourceAsStream(DTD_DIR + systemId.substring(i));
+                        if(is == null) {
+                            try {
+                                is = new FileInputStream(DTD_DIR.substring(1) + systemId.substring(i));
+                            }
+                            catch(Exception ex) {}
+                        }
+                    }
+                    if(is != null) {
+                        source = new InputSource(is);
+                        if(publicId != null) source.setPublicId(publicId);
+                    }
+                }
+            }
+	}
+        catch(Exception ex) {
+        }
+
+        //
+        //   returning an "empty" source is better than failing
+        //
+        if(source == null) {
+            source = new InputSource();
+        }
+        return source;
+   }
+
 } /* end class SVGParser */

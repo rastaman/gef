@@ -33,7 +33,9 @@ import java.util.Hashtable;
 import java.awt.*;
 import java.awt.image.*;
 import org.w3c.dom.*;
-import com.ibm.xml.dom.*;
+//import com.ibm.xml.dom.*;
+import javax.xml.parsers.*;
+
 
 public class SVGWriter extends Graphics {
 
@@ -51,13 +53,19 @@ public class SVGWriter extends Graphics {
     private int    yOffset = 0;
     private double xScale  = 1.0;
     private double yScale  = 1.0;
+    private String SVGns = "http://www.w3.org/2000/SVG";
 
     public SVGWriter(OutputStream stream) throws IOException, Exception {
         p = new PrintWriter(stream);
 
-	svg = (Document)Class.forName("com.ibm.xml.dom.DocumentImpl").newInstance();
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(false);
+        factory.setValidating(false);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        svg = builder.newDocument();
 
 	root = svg.createElement( "svg");
+        root.setAttribute("xmlns","http://www.w3.org/2000/svg");
 	root.setAttribute( "width", "600");
 	root.setAttribute( "height", "600");
     }
@@ -81,81 +89,81 @@ public class SVGWriter extends Graphics {
 
 	int type = node.getNodeType();
 
-	switch (type) { 
-	    // print the document element 
-	case Node.DOCUMENT_NODE: 
-	    { 
-		p.println("<?xml version=\"1.0\" ?>"); 
-		p.println("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20000303 Stylable//EN\" \"svg-20000303-stylable.dtd\">");
-		printDOMTree(((Document)node).getDocumentElement()); 
-		break; 
-	    } 
-	    // print element with attributes 
-	case Node.ELEMENT_NODE: 
-	    { 
-		p.print("<"); 
-		p.print(node.getNodeName()); 
+	switch (type) {
+	    // print the document element
+	case Node.DOCUMENT_NODE:
+	    {
+		p.println("<?xml version=\"1.0\" ?>");
+		p.println("<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 20001102//EN' 'http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd'>");
+		printDOMTree(((Document)node).getDocumentElement());
+		break;
+	    }
+	    // print element with attributes
+	case Node.ELEMENT_NODE:
+	    {
+		p.print("<");
+		p.print(node.getNodeName());
 
-		NamedNodeMap attrs = node.getAttributes(); 
-		for (int i = 0; i < attrs.getLength(); i++) { 
+		NamedNodeMap attrs = node.getAttributes();
+		for (int i = 0; i < attrs.getLength(); i++) {
 		    Node attr = attrs.item(i);
-		    p.print(" " + attr.getNodeName() + "=\"" 
-				+ attr.getNodeValue() + "\""); 
-		} 
+		    p.print(" " + attr.getNodeName() + "=\""
+				+ attr.getNodeValue() + "\"");
+		}
 
-		NodeList children = node.getChildNodes(); 
+		NodeList children = node.getChildNodes();
 
-		if (children.getLength() > 0) { 
+		if (children.getLength() > 0) {
 		    p.println(">");
-		    int len = children.getLength(); 
-		    for (int i = 0; i < len; i++) printDOMTree(children.item(i)); 	       
-	      
-		    p.print("</"); 
-		    p.print(node.getNodeName()); 
+		    int len = children.getLength();
+		    for (int i = 0; i < len; i++) printDOMTree(children.item(i));
+
+		    p.print("</");
+		    p.print(node.getNodeName());
 		    p.println('>');
 		} else {
 		    p.println("/>");
 		}
-		break; 
+		break;
 
 
-	    } 
-	    // handle entity reference nodes 
-	case Node.ENTITY_REFERENCE_NODE: 
-	    { 
-		p.print("&"); 
-		p.print(node.getNodeName()); 
-		p.print(";"); 
-		break; 
-	    } 
-	    // print cdata sections 
-	case Node.CDATA_SECTION_NODE: 
-	    { 
-		p.print("<![CDATA["); 
-		p.print(node.getNodeValue()); 
-		p.print("]]>"); 
-		break; 
-	    } 
-	    // print text 
-	case Node.TEXT_NODE: 
-	    { 
-		p.print(node.getNodeValue()); 
-		break; 
-	    } 
-	    // print processing instruction 
-	case Node.PROCESSING_INSTRUCTION_NODE: 
-	    { 
-		p.print("<?"); 
-		p.print(node.getNodeName()); 
-		String data = node.getNodeValue(); 
-		{ 
-		    p.print(""); 
-		    p.print(data); 
-		} 
-		p.print("?>"); 
-		break; 
-	    } 
-	} 
+	    }
+	    // handle entity reference nodes
+	case Node.ENTITY_REFERENCE_NODE:
+	    {
+		p.print("&");
+		p.print(node.getNodeName());
+		p.print(";");
+		break;
+	    }
+	    // print cdata sections
+	case Node.CDATA_SECTION_NODE:
+	    {
+		p.print("<![CDATA[");
+		p.print(node.getNodeValue());
+		p.print("]]>");
+		break;
+	    }
+	    // print text
+	case Node.TEXT_NODE:
+	    {
+		p.print(node.getNodeValue());
+		break;
+	    }
+	    // print processing instruction
+	case Node.PROCESSING_INSTRUCTION_NODE:
+	    {
+		p.print("<?");
+		p.print(node.getNodeName());
+		String data = node.getNodeValue();
+		{
+		    p.print("");
+		    p.print(data);
+		}
+		p.print("?>");
+		break;
+	    }
+	}
     }
 
     public Color getColor() { return fColor; }
@@ -250,7 +258,7 @@ public class SVGWriter extends Graphics {
 	writeCoords(iw,-ih); p.println("4 [" + iw +" 0 0 "+ (-ih) + " 0 " + ih + "]");
 	p.println("{currentfile DatenString readhexstring pop} bind");
 	p.println("false 3 colorimage");
-      
+
 	int[] pixels = new int[iw * ih];
 	PixelGrabber pg = new PixelGrabber(img, 0, 0, iw, ih, pixels, 0, iw);
 	//	pg.setColorModel(Toolkit.getDefaultToolkit().getColorModel());
@@ -383,7 +391,7 @@ public class SVGWriter extends Graphics {
 	oval.setAttribute( "rx", ""+((double)scaleX( w))/2);
 	oval.setAttribute( "ry", ""+((double)scaleY( h))/2);
 	oval.setAttribute( "style", style);
-	root.appendChild( oval);	
+	root.appendChild( oval);
     }
 
     public void drawOval(int x, int y, int w, int h) {
@@ -417,7 +425,7 @@ public class SVGWriter extends Graphics {
 	rect.setAttribute( "rx", ""+scaleX( arcw));
 	rect.setAttribute( "ry", ""+scaleY( arch));
 	rect.setAttribute( "style", style);
-	root.appendChild( rect);	
+	root.appendChild( rect);
     }
 
     public void drawRoundRect(int x, int y, int w, int h, int arcw, int arch) {
@@ -439,7 +447,7 @@ public class SVGWriter extends Graphics {
 	    if ( i > 0)
 		pointList.append( " ");
 
-	    pointList.append( "" 
+	    pointList.append( ""
 			      + transformX( xPoints[i])
 			      + ","
 			      + transformY( yPoints[i]));
@@ -448,7 +456,7 @@ public class SVGWriter extends Graphics {
 	polygon.setAttribute( "points", pointList.toString());
 
 	root.appendChild( polygon);
-    } 
+    }
 
     public void drawPolygon(int xPoints[], int yPoints[], int nPoints) {
 	drawPolygon( xPoints, yPoints, nPoints, "fill:white; stroke:black; stroke-width:1");
@@ -477,7 +485,7 @@ public class SVGWriter extends Graphics {
 	    if ( i > 0)
 		pointList.append( " ");
 
-	    pointList.append( "" 
+	    pointList.append( ""
 			      + transformX( xPoints[i])
 			      + ","
 			      + transformY( yPoints[i]));
