@@ -109,6 +109,10 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
 
     /** On mouse down, make a new Fig in memory. */
     public void mousePressed(MouseEvent me) {
+        createFig(me);
+    }
+
+    protected void createFig(MouseEvent me) {
         if(me.isConsumed())
             return;
         start();
@@ -122,7 +126,7 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
         me.consume();
         setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
-
+    
     /** On mouse drag, resize the new item as the user moves the
      *  mouse.  Maybe the Fig createDrag() method should be removed
      *  and I should call dragHandle(). That would elimiate one method
