@@ -131,7 +131,14 @@ public class PGMLParser extends HandlerBase {
   private static final int LINE_STATE = 2;
   private static final int POLY_STATE = 3;
   private static final int NODE_STATE = 4;
-  private static final int PRIVATE_STATE = 5;
+  private static final int EDGE_STATE = 5;
+  private static final int PRIVATE_STATE = 6;
+
+  private static final int PRIVATE_NODE_STATE = 64;
+  private static final int PRIVATE_EDGE_STATE = 65;
+  private static final int TEXT_NODE_STATE = 14;
+  private static final int TEXT_EDGE_STATE = 15;
+
   public void startElement(String elementName,AttributeList attrList) {
     switch(_elementState) {
         case DEFAULT_STATE:
@@ -153,6 +160,7 @@ public class PGMLParser extends HandlerBase {
 	        _diagram.add(handleRect(attrList));
 	    }
 	    else if (elementName.equals("text")) {
+			_elementState = TEXT_STATE;
 	        _diagram.add(handleText(attrList));
 	    }
 	    else if (elementName.equals("piewedge")) { }
@@ -177,8 +185,12 @@ public class PGMLParser extends HandlerBase {
         polyStateStartElement(elementName,attrList);
         break;
 
-        case NODE_STATE:
-        nodeStateStartElement(elementName,attrList);
+        case NODE_STATE:			
+			nodeStateStartElement(elementName,attrList);
+			break;
+
+        case EDGE_STATE:
+        edgeStateStartElement(elementName,attrList);
         break;
     }
   }
@@ -214,6 +226,24 @@ public class PGMLParser extends HandlerBase {
         }
         break;
 
+        case TEXT_NODE_STATE:
+        if(elementName.equals("text")) {
+            _currentText.setText(_textBuf.toString());
+            _elementState = NODE_STATE;
+            _currentText = null;
+            _textBuf = null;
+        }
+        break;
+
+        case TEXT_EDGE_STATE:
+        if(elementName.equals("text")) {
+            _currentText.setText(_textBuf.toString());
+            _elementState = EDGE_STATE;
+            _currentText = null;
+            _textBuf = null;
+        }
+        break;
+
         case NODE_STATE:
             _elementState = DEFAULT_STATE;
             _currentNode = null;
@@ -223,14 +253,29 @@ public class PGMLParser extends HandlerBase {
         case PRIVATE_STATE:
             privateStateEndElement(elementName);
             _textBuf = null;
+            _elementState = DEFAULT_STATE;
+			break;
+
+        case PRIVATE_NODE_STATE:
+            privateStateEndElement(elementName);
+            _textBuf = null;
             _elementState = NODE_STATE;
+			break;
+
+        case PRIVATE_EDGE_STATE:
+            privateStateEndElement(elementName);
+            _textBuf = null;
+            _elementState = EDGE_STATE;
+			break;
     }
   }
 
   public void characters(char[] ch,
                        int start,
                        int length) {
-    if((_elementState == TEXT_STATE || _elementState == PRIVATE_STATE) &&
+    if((_elementState == TEXT_STATE || _elementState == PRIVATE_STATE ||
+		_elementState == TEXT_NODE_STATE || _elementState == TEXT_EDGE_STATE ||
+		_elementState == PRIVATE_NODE_STATE || _elementState == PRIVATE_EDGE_STATE) &&
         _textBuf != null) {
         _textBuf.append(ch,start,length);
     }
@@ -327,10 +372,10 @@ public class PGMLParser extends HandlerBase {
     FigText f = new FigText(100, 100, 90, 45);
     setAttrs(f, attrList);
     _currentText = f;
-    _elementState = TEXT_STATE;
+    //_elementState = TEXT_STATE;
     _textBuf = new StringBuffer();
-//    String text = e.getText();
-//    f.setText(text);
+	//String text = e.getText();
+	//f.setText(text);
     String font = attrList.getValue("font");
     if (font != null && !font.equals("")) f.setFontFamily(font);
     String textsize = attrList.getValue("textsize");
@@ -352,16 +397,26 @@ public class PGMLParser extends HandlerBase {
 
 
   private void polyStateStartElement(String tagName,AttributeList attrList) {
-    if(_currentPoly != null) {
-	int xInt = 0;
-	int yInt = 0;
-        String x = attrList.getValue("x");
-        if (x != null && !x.equals("")) xInt = Integer.parseInt(x);
-        String y = attrList.getValue("y");
-        if (y != null && !y.equals("")) yInt = Integer.parseInt(y);
-        //needs-more-work: dx, dy
-        _currentPoly.addPoint(xInt, yInt);
-    }
+      if(_currentPoly != null) {
+          if(tagName.equals("moveto")) {
+              String x1 = attrList.getValue("x");
+              String y1 = attrList.getValue("y");
+              _x1Int = (x1 == null || x1.equals("")) ? 0 : Integer.parseInt(x1);
+              _y1Int = (y1 == null || y1.equals("")) ? 0 : Integer.parseInt(y1);
+              //_currentLine.setX1(_x1Int);
+              //_currentLine.setY1(_y1Int);
+			  _currentPoly.addPoint(_x1Int,_y1Int);
+          }
+          else if(tagName.equals("lineto")) {
+            String x2 = attrList.getValue("x");
+            String y2 = attrList.getValue("y");
+            int x2Int = (x2 == null || x2.equals("")) ? _x1Int : Integer.parseInt(x2);
+            int y2Int = (y2 == null || y2.equals("")) ? _y1Int : Integer.parseInt(y2);
+            //_currentLine.setX2(x2Int);
+            //_currentLine.setY2(y2Int);
+			_currentPoly.addPoint(x2Int,y2Int);
+          }
+      }
   }
 
   private FigNode _currentNode = null;
@@ -396,7 +451,8 @@ public class PGMLParser extends HandlerBase {
         _textBuf = new StringBuffer();
       }
       if (f instanceof FigEdge) {
-	_currentEdge = (FigEdge) f;
+		  _currentEdge = (FigEdge) f;
+		  _elementState = EDGE_STATE;
       }
     }
     catch (Exception ex) {
@@ -446,15 +502,20 @@ public class PGMLParser extends HandlerBase {
         }
     }
 
-  private void nodeStateStartElement(String tagName,AttributeList attrList) {
-    if (tagName.equals("private")) {
-        _textBuf = new StringBuffer();
-        _elementState = PRIVATE_STATE;
-    }
+	private void nodeStateStartElement(String tagName,AttributeList attrList) {
+		if (tagName.equals("private")) {
+			_textBuf = new StringBuffer();
+			_elementState = PRIVATE_NODE_STATE;
+		}
+		else if (tagName.equals("text")) {
+			_textBuf = new StringBuffer();
+			_elementState = TEXT_NODE_STATE;
+			Fig p = handleText(attrList);
+        }
   }
 
     private FigEdge _currentEdge = null;
-    private void edgeModeStartElement(String tagName,AttributeList attrList)
+    private void edgeStateStartElement(String tagName,AttributeList attrList)
     {
         if (tagName.equals("path")) {
             Fig p = handlePath(attrList);
@@ -466,8 +527,13 @@ public class PGMLParser extends HandlerBase {
             }
         }
         else if (tagName.equals("private")) {
-            _elementState = PRIVATE_STATE;
+            _elementState = PRIVATE_EDGE_STATE;
             _textBuf = new StringBuffer();
+        }
+        else if (tagName.equals("text")) {
+            _elementState = TEXT_EDGE_STATE;
+            _textBuf = new StringBuffer();
+			Fig p = handleText(attrList);
         }
     }
 

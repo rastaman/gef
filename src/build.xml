@@ -99,7 +99,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <tstamp/>
     <property name="Name" value="GEF"/>
     <property name="name" value="gef"/>
-    <property name="version" value="0.9.0"/>
+    <property name="version" value="0.9.1"/>
     <property name="year" value="2000"/>
 
     <echo message="------------------- ${Name} ${version} (unstable) [${year}] ----------------"/>
