@@ -39,12 +39,24 @@ import javax.xml.parsers.*;
 
 public class SVGWriter extends Graphics {
 
-    private PrintWriter p;
-    Document svg;
-    Element  root;
+    private PrintWriter _p;
 
-    private Color fColor = Color.black;
+    Document _svg;
+
+    Element  _root;
+
+    /**
+     * The current color;
+     */
+    private Color _fColor = Color.black;
+
+    /**
+     * The current background color.
+     */
+    private Color _bgColor = Color.white;
+
     private Font fFont = new Font("Helvetica",Font.PLAIN,12);
+
     private Rectangle clip;
 
     // To keep the SVG output as simple as possible, I handle all
@@ -56,18 +68,18 @@ public class SVGWriter extends Graphics {
     private String SVGns = "http://www.w3.org/2000/SVG";
 
     public SVGWriter(OutputStream stream) throws IOException, Exception {
-        p = new PrintWriter(stream);
+        _p = new PrintWriter(stream);
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(false);
         factory.setValidating(false);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        svg = builder.newDocument();
+        _svg = builder.newDocument();
 
-	root = svg.createElement( "svg");
-        root.setAttribute("xmlns","http://www.w3.org/2000/svg");
-	root.setAttribute( "width", "600");
-	root.setAttribute( "height", "600");
+	_root = _svg.createElement( "svg");
+        _root.setAttribute("xmlns","http://www.w3.org/2000/svg");
+	_root.setAttribute( "width", "600");
+	_root.setAttribute( "height", "600");
     }
 
     public Graphics create() { return this; }
@@ -80,9 +92,9 @@ public class SVGWriter extends Graphics {
     }
 
     public void dispose() {
-        svg.appendChild( root);
-	printDOMTree( svg);
-	p.close();
+        _svg.appendChild( _root);
+	printDOMTree( _svg);
+	_p.close();
     }
 
     public void printDOMTree( Node node) {
@@ -93,36 +105,36 @@ public class SVGWriter extends Graphics {
 	    // print the document element
 	case Node.DOCUMENT_NODE:
 	    {
-		p.println("<?xml version=\"1.0\" ?>");
-		p.println("<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 20001102//EN' 'http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd'>");
+		_p.println("<?xml version=\"1.0\" ?>");
+		_p.println("<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 20001102//EN' 'http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd'>");
 		printDOMTree(((Document)node).getDocumentElement());
 		break;
 	    }
 	    // print element with attributes
 	case Node.ELEMENT_NODE:
 	    {
-		p.print("<");
-		p.print(node.getNodeName());
+		_p.print("<");
+		_p.print(node.getNodeName());
 
 		NamedNodeMap attrs = node.getAttributes();
 		for (int i = 0; i < attrs.getLength(); i++) {
 		    Node attr = attrs.item(i);
-		    p.print(" " + attr.getNodeName() + "=\""
+		    _p.print(" " + attr.getNodeName() + "=\""
 				+ attr.getNodeValue() + "\"");
 		}
 
 		NodeList children = node.getChildNodes();
 
 		if (children.getLength() > 0) {
-		    p.println(">");
+		    _p.println(">");
 		    int len = children.getLength();
 		    for (int i = 0; i < len; i++) printDOMTree(children.item(i));
 
-		    p.print("</");
-		    p.print(node.getNodeName());
-		    p.println('>');
+		    _p.print("</");
+		    _p.print(node.getNodeName());
+		    _p.println('>');
 		} else {
-		    p.println("/>");
+		    _p.println("/>");
 		}
 		break;
 
@@ -131,17 +143,17 @@ public class SVGWriter extends Graphics {
 	    // handle entity reference nodes
 	case Node.ENTITY_REFERENCE_NODE:
 	    {
-		p.print("&");
-		p.print(node.getNodeName());
-		p.print(";");
+		_p.print("&");
+		_p.print(node.getNodeName());
+		_p.print(";");
 		break;
 	    }
 	    // print cdata sections
 	case Node.CDATA_SECTION_NODE:
 	    {
-		p.print("<![CDATA[");
-		p.print(node.getNodeValue());
-		p.print("]]>");
+		_p.print("<![CDATA[");
+		_p.print(node.getNodeValue());
+		_p.print("]]>");
 		break;
 	    }
 	    // print text 
@@ -153,21 +165,21 @@ public class SVGWriter extends Graphics {
 		    switch (text.charAt(i)) {
 		    case '&' :
 			{
-			    p.print("&amp;");
+			    _p.print("&amp;");
 			    break;
 			}
 		    case '<' :
 			{
-			    p.print("&lt;");
+			    _p.print("&lt;");
 			    break;
 			}
 		    case '>' :
 			{
-			    p.print("&gt;");
+			    _p.print("&gt;");
 			    break;
 			}
 		    default :
-			p.print(text.charAt(i));
+			_p.print(text.charAt(i));
 		    }
 		}
 		break; 
@@ -175,32 +187,73 @@ public class SVGWriter extends Graphics {
 	    // print processing instruction
 	case Node.PROCESSING_INSTRUCTION_NODE:
 	    {
-		p.print("<?");
-		p.print(node.getNodeName());
+		_p.print("<?");
+		_p.print(node.getNodeName());
 		String data = node.getNodeValue();
 		{
-		    p.print("");
-		    p.print(data);
+		    _p.print("");
+		    _p.print(data);
 		}
-		p.print("?>");
+		_p.print("?>");
 		break;
 	    }
 	}
     }
 
-    public Color getColor() { return fColor; }
+    /**
+     * Get the current color for drawing operations.
+     *
+     * @return The current color for drawing operations.
+     */
+    public Color getColor() { return _fColor; }
 
-    public void setColor(Color c) {
-	/*
-        fColor = c;
-        final float maxColor = 255;
-        p.print(((float)c.getRed()) / maxColor + " ");
-        p.print(((float)c.getGreen()) / maxColor + " ");
-        p.print(((float)c.getBlue()) / maxColor + " ");
-	p.println("setrgbcolor");
-	*/
+    /**
+     * Return a String representation of the the current color.
+     * 
+     * @return The current color as a String (like #FF00BF).
+     */
+    private String getColorAsString() {
+	// Remove the alpha channel info from the string representation.
+	return "#" + Integer.toHexString(_fColor.getRGB()).substring(2);
     }
 
+    /**
+     * Set the current color for drawing operations.
+     *
+     * @param c The new color for drawing operations.
+     */
+    public void setColor(Color c) {
+        _fColor = c;
+    }
+
+    /**
+     * Get the current background color.
+     *
+     * @return The current background color.
+     */
+    private Color getBackgroundColor() {
+	return _bgColor;
+    }
+
+    /**
+     * Get a String representation for the current background color.
+     *
+     * @return The current background color as a String (like #BF00FF).
+     */
+    private String getBackgroundColorAsString() {
+	// Remove the alpha channel info from the string representation.
+	return "#" + Integer.toHexString(_bgColor.getRGB()).substring(2);
+    }
+
+    /**
+     * Set the new background color.
+     *
+     * @param c The new background color.
+     */
+    private void setBackgroundColor(Color c) {
+	_bgColor = c;
+    }
+    
     public void setPaintMode() {}
 
     public void setXORMode(Color otherColor) {}
@@ -299,12 +352,12 @@ public class SVGWriter extends Graphics {
 		handlesinglepixel(i, j, pixels[j * iw + i]);
 	    }
 	    if (iw % 2 == 1) p.print("0");
-	    p.println();
+	    _p.println();
 	}
 	if (ih % 2 == 1) {
 	    for (int i = 0; i < 3 * (iw + iw % 2); i++)
 		p.print("0");
-	    p.println();
+	    _p.println();
 	}
 	p.println("grestore");
 	*/
@@ -373,25 +426,25 @@ public class SVGWriter extends Graphics {
     }
 
     private void drawRect( int x, int y, int w, int h, String style) {
-	Element rect = svg.createElement( "rect");
+	Element rect = _svg.createElement( "rect");
 	rect.setAttribute( "x", ""+transformX( x));
 	rect.setAttribute( "y", ""+transformY( y));
 	rect.setAttribute( "width", ""+scaleX( w));
 	rect.setAttribute( "height", ""+scaleY( h));
 	rect.setAttribute( "style", style);
-	root.appendChild( rect);
+	_root.appendChild( rect);
     }
 
     public void drawRect( int x, int y, int w, int h) {
-	drawRect( x, y, w, h, "fill:white; stroke:black; stroke-width:1");
+	drawRect( x, y, w, h, "fill:" + getBackgroundColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
     }
 
     public void fillRect(int x, int y, int w, int h) {
-	drawRect( x, y, w, h, "fill:black; stroke:black; stroke-width:1");
+	drawRect( x, y, w, h, "fill:" + getColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
     }
 
     public void clearRect(int x, int y, int w, int h) {
-	drawRect( x, y, w, h, "fill:white; stroke:white; stroke-width:1");
+	drawRect( x, y, w, h, "fill:" + getBackgroundColorAsString() + "; stroke:" + getBackgroundColorAsString() + "; stroke-width:1");
     }
 
     private void writeEllipsePath(int x, int y, int w, int h, int startAngle, int arcAngle) {
@@ -407,21 +460,21 @@ public class SVGWriter extends Graphics {
 
 
     private void drawOval( int x, int y, int w, int h, String style) {
-	Element oval = svg.createElement( "ellipse");
+	Element oval = _svg.createElement( "ellipse");
 	oval.setAttribute( "cx", ""+transformX( x));
 	oval.setAttribute( "cy", ""+transformY( y));
 	oval.setAttribute( "rx", ""+((double)scaleX( w))/2);
 	oval.setAttribute( "ry", ""+((double)scaleY( h))/2);
 	oval.setAttribute( "style", style);
-	root.appendChild( oval);
+	_root.appendChild( oval);
     }
 
     public void drawOval(int x, int y, int w, int h) {
-	drawOval( x, y, w, h, "fill:white; stroke:black; stroke-width:1");
+	drawOval( x, y, w, h, "fill:" + getBackgroundColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
     }
 
     public void fillOval(int x, int y, int w, int h) {
-	drawOval( x, y, w, h, "fill:black; stroke:black; stroke-width:1");
+	drawOval( x, y, w, h, "fill:" + getColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
     }
 
     public void drawArc(int x, int y, int w, int h, int startAngle, int arcAngle) {
@@ -439,7 +492,7 @@ public class SVGWriter extends Graphics {
     }
 
     private void drawRoundRect( int x, int y, int w, int h, int arcw, int arch, String style) {
-	Element rect = svg.createElement( "rect");
+	Element rect = _svg.createElement( "rect");
 	rect.setAttribute( "x", ""+transformX( x));
 	rect.setAttribute( "y", ""+transformY( y));
 	rect.setAttribute( "width", ""+scaleX( w));
@@ -447,19 +500,19 @@ public class SVGWriter extends Graphics {
 	rect.setAttribute( "rx", ""+scaleX( arcw));
 	rect.setAttribute( "ry", ""+scaleY( arch));
 	rect.setAttribute( "style", style);
-	root.appendChild( rect);
+	_root.appendChild( rect);
     }
 
     public void drawRoundRect(int x, int y, int w, int h, int arcw, int arch) {
-	drawRoundRect( x, y, w, h, arcw, arch, "fill:white; stroke:black; stroke-width:1");
+	drawRoundRect( x, y, w, h, arcw, arch, "fill:" + getBackgroundColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
     }
 
     public void fillRoundRect(int x, int y, int w, int h, int arcw, int arch) {
-	drawRoundRect( x, y, w, h, arcw, arch, "fill:black; stroke:black; stroke-width:1");
+	drawRoundRect( x, y, w, h, arcw, arch, "fill:" + getColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
     }
 
     private void drawPolygon( int xPoints[], int yPoints[], int nPoints, String style) {
-	Element polygon = svg.createElement( "polygon");
+	Element polygon = _svg.createElement( "polygon");
 	polygon.setAttribute( "style", style);
 
 	// Create the list of points for this tag.
@@ -477,11 +530,11 @@ public class SVGWriter extends Graphics {
 
 	polygon.setAttribute( "points", pointList.toString());
 
-	root.appendChild( polygon);
+	_root.appendChild( polygon);
     }
 
     public void drawPolygon(int xPoints[], int yPoints[], int nPoints) {
-	drawPolygon( xPoints, yPoints, nPoints, "fill:white; stroke:black; stroke-width:1");
+	drawPolygon( xPoints, yPoints, nPoints, "fill:" + getBackgroundColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
     }
 
     public void drawPolygon( Polygon poly) {
@@ -489,7 +542,7 @@ public class SVGWriter extends Graphics {
     }
 
     public void fillPolygon(int xPoints[], int yPoints[], int nPoints) {
-	drawPolygon( xPoints, yPoints, nPoints, "fill:black; stroke:black; stroke-width:1");
+	drawPolygon( xPoints, yPoints, nPoints, "fill:" + getColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
     }
 
     public void fillPolygon(Polygon poly) {
@@ -497,8 +550,8 @@ public class SVGWriter extends Graphics {
     }
 
     public void drawPolyline(int xPoints[], int yPoints[], int nPoints) {
-	Element polyline = svg.createElement( "polyline");
-	polyline.setAttribute( "style", "fill:white; stroke:black; stroke-width:1");
+	Element polyline = _svg.createElement( "polyline");
+	polyline.setAttribute( "style", "fill:" + getBackgroundColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
 
 	// Create the list of points for this tag.
 	// I.e. points="100,100 150,150 200,200"
@@ -515,17 +568,17 @@ public class SVGWriter extends Graphics {
 
 	polyline.setAttribute( "points", pointList.toString());
 
-	root.appendChild( polyline);
+	_root.appendChild( polyline);
     }
 
     public void drawLine(int x1, int y1, int x2, int y2) {
-	Element line = svg.createElement( "line");
+	Element line = _svg.createElement( "line");
 	line.setAttribute( "x1", ""+transformX( x1));
 	line.setAttribute( "y1", ""+transformY( y1));
 	line.setAttribute( "x2", ""+transformX( x2));
 	line.setAttribute( "y2", ""+transformY( y2));
-	line.setAttribute( "style", "fill:black; stroke:black; stroke-width:1");
-	root.appendChild( line);
+	line.setAttribute( "style", "fill:" + getColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
+	_root.appendChild( line);
     }
 
     public void setClip(int x, int y, int w, int h) {
@@ -551,11 +604,11 @@ public class SVGWriter extends Graphics {
     }
 
     public void drawString(String t, int x, int y) {
-	Element text = svg.createElement("text");
+	Element text = _svg.createElement("text");
 	text.setAttribute( "x", ""+transformX( x));
         text.setAttribute( "y", ""+transformY( y));
-	text.appendChild( svg.createTextNode( t));
-	root.appendChild( text);
+	text.appendChild( _svg.createTextNode( t));
+	_root.appendChild( text);
     }
 
 
