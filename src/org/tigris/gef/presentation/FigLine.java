@@ -286,7 +286,7 @@ public class FigLine extends Fig {
    *  contains() which gives a strict geometric version, and hit() which
    *  is for selection by mouse clicks. */
    public boolean hit(Rectangle r) {
-     return intersects(r);
+     return intersectsPerimeter(r);
    }
 
   /** Resize the object for drag on creation. It bypasses the things
