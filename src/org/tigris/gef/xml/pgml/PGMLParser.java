@@ -857,7 +857,7 @@ public class PGMLParser extends HandlerBase {
             source.setSystemId(systemId);
 	        if (publicId != null) source.setPublicId(publicId);
             }
-            catch (java.io.IOException e) {
+            catch (Exception e) {
 	        if (systemId.endsWith(".dtd")) {
                     int i = systemId.lastIndexOf('/');
                     i++;	// go past '/' if there, otherwise advance to 0
@@ -881,8 +881,6 @@ public class PGMLParser extends HandlerBase {
                 }
             }
 	}
-        catch(Exception ex) {
-        }
 
         //
         //   returning an "empty" source is better than failing
