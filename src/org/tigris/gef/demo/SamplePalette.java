@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: SamplePalette.java
 // Classes: SamplePalette
 // Original Author: jrobbins@ics.uci.edu
@@ -47,32 +44,43 @@ import org.tigris.gef.ui.*;
 
 public class SamplePalette extends PaletteFig {
 
-  /** Construct a new palette of example nodes for the Example application */
-  public SamplePalette() { super(); }
-
-  /** Define a button to make for the Example application */
-  public void defineButtons() {
-    super.defineButtons();
-
-    add(new CmdCreateNode(org.tigris.gef.demo.SampleNode.class, "NodeOne"));
-    add(new CmdCreateNode(org.tigris.gef.demo.SampleNode2.class, "NodeTwo"));
-    JButton complexFigButton2 = add(new CmdCreateNode(org.tigris.gef.demo.SampleNode4.class, "NodeFour"));
-    complexFigButton2.setText("Complex Fig");
-    addSeparator();
-    Cmd image1 = new CmdSetMode(ModeCreateFigImage.class,
-				"imageURL",
-				"http://www.ics.uci.edu/~jrobbins/images/"+
-				"new.gif");
-    image1.putValue(Action.NAME, "Image1");
-    Cmd image2 = new CmdSetMode(ModeCreateFigImage.class,
-				"imageURL",
-				"http://www.ics.uci.edu/~jrobbins/images/"+
-				"gef_banner.gif");
-    image2.putValue(Action.NAME, "Image2");
-
-    if (Globals.getAppletContext() != null) {
-      add(image1, "Image1", "Image1");
-      add(image2, "Image2", "Image2");
+    /** Construct a new palette of example nodes for the Example application */
+    public SamplePalette() {
+        super();
     }
-  }
+
+    /** Define a button to make for the Example application */
+    public void defineButtons() {
+        super.defineButtons();
+
+        add(new CmdCreateNode(org.tigris.gef.demo.SampleNode.class, "NodeOne"));
+        add(
+            new CmdCreateNode(
+                org.tigris.gef.demo.SampleNode2.class,
+                "NodeTwo"));
+        JButton complexFigButton2 =
+            add(
+                new CmdCreateNode(
+                    org.tigris.gef.demo.SampleNode4.class,
+                    "NodeFour"));
+        complexFigButton2.setText("Complex Fig");
+        addSeparator();
+        Cmd image1 =
+            new CmdSetMode(
+                ModeCreateFigImage.class,
+                "imageURL",
+                "http://www.ics.uci.edu/~jrobbins/images/" + "new.gif");
+        image1.putValue(Action.NAME, "Image1");
+        Cmd image2 =
+            new CmdSetMode(
+                ModeCreateFigImage.class,
+                "imageURL",
+                "http://www.ics.uci.edu/~jrobbins/images/" + "gef_banner.gif");
+        image2.putValue(Action.NAME, "Image2");
+
+        if (Globals.getAppletContext() != null) {
+            add(image1, "Image1", "Image1");
+            add(image2, "Image2", "Image2");
+        }
+    }
 } /* end class SamplePalette */
