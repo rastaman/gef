@@ -159,7 +159,7 @@ public class ModeModify extends FigModifyingModeImpl {
     sm.startTrans();
     if (_curHandle.index == -1) {
       setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-      if (legal(dx, dy, sm, me)) {
+      if (legal(dx, dy, sm, me) && !outOfBounds(dx,dy,me,sm)) {
 	sm.translate(dx, dy);
 	_lastX = snapX; _lastY = snapY;
       }
@@ -320,5 +320,75 @@ public class ModeModify extends FigModifyingModeImpl {
     }
     return true;
   }
+
+  /**
+   * This method will check to see if the selection bein moved will end up
+   * off the screen and off the diagram. There is just no easy way to do this
+   * especially because there could be more than one fig selected!
+   *
+   * @param dx - horizontal distance to move
+   * @param dy - vertical distance to move
+   * @param me - the mouse event
+   * @param sm - the selection manager
+   * @returns boolean - is it out of bounds? ( T / F )
+   */
+  protected boolean outOfBounds(int dx, int dy, MouseEvent me, SelectionManager sm) {
+
+   Rectangle selectionBox = sm.getContentBounds();
+
+   int selectionHeight = (int)selectionBox.getHeight();
+   int selectionWidth = (int)selectionBox.getWidth();
+
+   // Get top-left most point of the whole selection
+   Point selectionOrigin = sm.getLocation();
+
+   int selectionOriginX = (int)selectionOrigin.getX();
+   int selectionOriginY = (int)selectionOrigin.getY();
+
+   int targetY = me.getY();
+   int targetX = me.getX();
+
+   // These offsets tell us where the drag point is in relation to
+   // the selection it is in.  We need this information so that we don't
+   // let varying parts of the selection go outside the bounds just because
+   // the drag point was in different parts of the selection
+
+   int topVerticalOffset = _lastY - selectionOriginY;
+   int bottomVerticalOffset = selectionOriginY + selectionHeight - _lastY;
+
+   int leftHorizontalOffset = _lastX - selectionOriginX;
+   int rightHorizontalOffset = selectionOriginX + selectionWidth - _lastX;
+
+   /*
+    *  OK, what we're saying here is that if the destination point is less than
+    *  zero, forget it.  But if you move less than zero, but part of your figure
+    *  would be in the negative zone, you cannot do that either.
+    */
+
+   // Check top
+   if ((targetY < 0 ) || (targetY < topVerticalOffset) ) return true;
+
+   // Check bottom
+
+   int canvasBottomEdge = me.getComponent().getHeight();
+
+   if ((targetY > canvasBottomEdge ) ||
+      ((targetY + bottomVerticalOffset) > canvasBottomEdge ) ) return true;
+
+   // Check left
+   if ((targetX < 0 ) || (targetX < leftHorizontalOffset) ) return true;
+
+   // Check right
+
+   int canvasRightEdge = me.getComponent().getWidth();
+
+   if ((targetX > canvasRightEdge ) ||
+      ((targetX + rightHorizontalOffset) > canvasRightEdge ) ) return true;
+
+
+   // Otherwise we're ok!
+    return false;
+  }
+
 } /* end class ModeModify */
 

@@ -291,6 +291,44 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
     return r;
   }
 
+  /**
+   * This method will return the upper-left coordinate point
+   * of the entire selection by iterating through the figs
+   *
+   * @return Point - the point for that upper left corner
+   *
+   */
+  public Point getLocation() {
+
+     int size = _selections.size();
+
+     if (size < 1) return new Point(0,0);
+
+     Selection sel = null;
+
+     // I just set these to two unbelievably big numbers
+
+     int lowestX = 32000;
+     int lowestY = 32000;
+
+     Point pt = null;
+
+     for (int i = 0; i < size; i++) {
+      sel = (Selection) _selections.elementAt(i);
+      pt = sel.getLocation();
+      if (pt.getX() < lowestX)
+        { lowestX = (int) pt.getX(); }
+      if (pt.getY() < lowestY)
+        { lowestY = (int) pt.getY(); }
+    }
+
+    pt = null;
+    sel = null;
+
+    return new Point(lowestX,lowestY);
+  }
+
+
 //   /** Align the selected Fig's relative to each other */
 //   /* needs-more-work: more of this logic should be in ActionAlign */
 //   public void align(int dir) {
