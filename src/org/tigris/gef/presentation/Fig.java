@@ -957,13 +957,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 	public Dimension getPreferredSize() {
 		return new Dimension(_w, _h);
 	}
-	/**
-	 * @deprecated 0.10.5 in favour of getPreferredSize()
-	 * @return
-	 */
-    public Dimension getPreferedSize() {
-        return getPreferredSize();
-    }
 
     /**
      * TODO document
