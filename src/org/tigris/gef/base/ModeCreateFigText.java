@@ -41,6 +41,12 @@ import org.tigris.gef.presentation.*;
 
 public class ModeCreateFigText extends ModeCreate {
 
+  public ModeCreateFigText() {
+      super();
+      _defaultWidth = 15;
+      _defaultHeight = 15;
+  }
+  
   public String instructions() {
     return "Drag to define a text rectangle, then type";
   }

@@ -61,7 +61,8 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
 
   /** The default size of a Fig if the user simply clicks instead of
    *  dragging out a size. */
-  protected static int _defaultWidth = 32, _defaultHeight = 32;
+  protected int _defaultWidth = 32;
+  protected int _defaultHeight = 32;
 
 
 
