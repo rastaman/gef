@@ -86,7 +86,7 @@ public class CmdReorder extends Cmd {
     sm.startTrans();
     sm.reorder(function, lm.getActiveLayer());
     sm.endTrans();
-    ce.repairDamage();
+    //ce.repairDamage();
   }
 
   public void undoIt() {
