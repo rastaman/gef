@@ -515,6 +515,8 @@ public class PGMLParser extends HandlerBase {
 
     private void privateStateEndElement(String tagName) {
         if(_currentNode != null) {
+			if ( _currentEdge != null ) _currentEdge = null;
+
             String body = _textBuf.toString();
             StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
             Fig encloser = null;
