@@ -28,11 +28,7 @@
 
 package org.tigris.gef.presentation;
 
-import java.applet.*;
 import java.awt.*;
-import java.io.*;
-import java.util.*;
-import java.util.Enumeration;
 
 import org.tigris.gef.base.*;
 
@@ -40,16 +36,13 @@ import org.tigris.gef.base.*;
 
 public class FigLine extends Fig {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-
-  /** Coordinates of the start and end points of the line. Note: _x,
-   *  _y, _w, and _h from class Fig are always updated by calcBounds()
-   *  whenever _x1, _y1, _x2, or _y2 change.*/
-  protected int _x1;
-  protected int _y1;
-  protected int _x2;
-  protected int _y2;
+    /** Coordinates of the start and end points of the line. Note: _x,
+     *  _y, _w, and _h from class Fig are always updated by calcBounds()
+     *  whenever _x1, _y1, _x2, or _y2 change.*/
+    protected int _x1;
+    protected int _y1;
+    protected int _x2;
+    protected int _y2;
 
 
   ////////////////////////////////////////////////////////////////
@@ -224,19 +217,19 @@ public class FigLine extends Fig {
     else  { _y = _y2; _h = _y1 - _y2; }
   }
 
-  /** Paint this line object. */
-  public void paint(Graphics g) {
-    if (_lineWidth > 0) {
-      if (getDashed()) {
-        g.setColor(_lineColor);
-    drawDashedLine(g, 0, _x1, _y1, _x2, _y2);
-      }
-      else {
-        g.setColor(_lineColor);
-        g.drawLine(_x1, _y1, _x2, _y2);
-      }
-   }
- }
+    /** Paint this line object. */
+    public void paint(Graphics g) {
+        if (getLineWidth() > 0) {
+            if (getDashed()) {
+                g.setColor(getLineColor());
+                drawDashedLine(g, 0, _x1, _y1, _x2, _y2);
+            }
+            else {
+                g.setColor(getLineColor());
+                g.drawLine(_x1, _y1, _x2, _y2);
+            }
+        }
+    }
 
 /*
  protected Point getOffsetAmount(Point p1, Point p2, int offset) {
@@ -280,38 +273,52 @@ public class FigLine extends Fig {
          linePoint.y + offsetAmount.y);
   }
 */
-  /** Reply true if the given point is "near" the line. Nearness
-   *  allows the user to more easily select the line with the
-   *  mouse. Needs-More-Work: I should probably have two functions
-   *  contains() which gives a strict geometric version, and hit() which
-   *  is for selection by mouse clicks. */
-   public boolean hit(Rectangle r) {
-     return intersectsPerimeter(r);
-   }
 
-  /** Resize the object for drag on creation. It bypasses the things
-   *  done in resize so that the position of the object can be kept as
-   *  the anchor point. Fires PropertyChange with "bounds".
-   *
-   * @see FigLine#drag
-   */
-  public void createDrag(int anchorX, int anchorY, int x, int y,
-             int snapX, int snapY) {
-    _x2 = snapX;
-    _y2 = snapY;
-    calcBounds();
-    firePropChange("bounds", null, null);
-  }
+    /**
+     * Reply true if the given point is "near" the line. Nearness
+     * allows the user to more easily select the line with the
+     * mouse. Needs-More-Work: I should probably have two functions
+     * contains() which gives a strict geometric version, and hit() which
+     * is for selection by mouse clicks.
+     */
+    public boolean hit(Rectangle r) {
+        return intersects(r);
+    }
+
+    /** Resize the object for drag on creation. It bypasses the things
+     *  done in resize so that the position of the object can be kept as
+     *  the anchor point. Fires PropertyChange with "bounds".
+     *
+     * @see FigLine#drag
+     */
+    public void createDrag(int anchorX, int anchorY,
+                           int x, int y,
+                           int snapX, int snapY) {
+        _x2 = snapX;
+        _y2 = snapY;
+        calcBounds();
+        firePropChange("bounds", null, null);
+    }
   
     /**
-     * Tests, if the given rectangle intersects with the perimeter of this polygon.
+     * Tests if the given rectangle intersects with the perimeter of this polygon.
+     * For this implementation the polygon is just a 2 dimensional straight line.
+     * So this method is the same as intersects.
      * @param rect The rectangle to be tested.
      * @return True, if the rectangle intersects the perimeter, otherwise false.
      */
     public boolean intersectsPerimeter(Rectangle rect) {
-        return rect.intersectsLine(_x, _y, _x+_w, _y+_h);
+        return intersects(rect);
     }
   
-
+    /**
+     * Tests, if the given rectangle intersects with this line
+     * @param rect The rectangle to be tested.
+     * @return True, if the rectangle intersects the perimeter, otherwise false.
+     */
+    public boolean intersects(Rectangle rect) {
+        return rect.intersectsLine(_x1, _y1, _x2, _y2);
+    }
+  
 } /* end class FigLine */
 
