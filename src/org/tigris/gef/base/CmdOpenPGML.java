@@ -43,41 +43,41 @@ import org.tigris.gef.xml.pgml.*;
 
 public class CmdOpenPGML extends Cmd implements FilenameFilter {
 
-  public CmdOpenPGML() {
-    super("OpenPGML");
-    setArg("filterPattern", "*.pgml");
-  }
+    public CmdOpenPGML() {
+        super("OpenPGML");
+        setArg("filterPattern", "*.pgml");
+    }
 
-  public void doIt() {
-      Editor ce = Globals.curEditor();
-      FileDialog fd =
-	new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
-      fd.setFilenameFilter(this);
-      fd.setDirectory(Globals.getLastDirectory());
-      fd.show();
-      String filename = fd.getFile(); // blocking
-      String path = fd.getDirectory(); // blocking
-      Globals.setLastDirectory(path);
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        FileDialog fd =
+            new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
+        fd.setFilenameFilter(this);
+        fd.setDirectory(Globals.getLastDirectory());
+        fd.show();
+        String filename = fd.getFile(); // blocking
+        String path = fd.getDirectory(); // blocking
+        Globals.setLastDirectory(path);
 
-      if (filename != null) {
-	try {
-	  Globals.showStatus("Reading " + path + filename + "...");
-	  URL url = Util.fileToURL(new File(path + filename));
-	  Diagram diag = PGMLParser.SINGLETON.readDiagram(url);
-	  Editor ed = new Editor(diag);
-	  //System.out.println("load done, showing editor");
-	  //System.out.println(ed.toString());
-	  //System.out.println(ed.getLayerManager().toString());
-	  Globals.showStatus("Read " + path + filename);
-	  JGraphFrame jgf = new JGraphFrame(path + filename, ed);
-	  Object d = getArg("dimension");
-	  if (d instanceof Dimension) jgf.setSize((Dimension)d);
-	  jgf.setVisible(true);
-	}
-	catch (MalformedURLException murle) { System.out.println("bad URL"); }
-	catch (IOException e) { System.out.println("IOExcept in openpgml"); }
-      }
-  }
+        if (filename != null) {
+            try {
+                Globals.showStatus("Reading " + path + filename + "...");
+                URL url = Util.fileToURL(new File(path + filename));
+                Diagram diag = PGMLParser.SINGLETON.readDiagram(url);
+                Editor ed = new Editor(diag);
+                //System.out.println("load done, showing editor");
+                //System.out.println(ed.toString());
+                //System.out.println(ed.getLayerManager().toString());
+                Globals.showStatus("Read " + path + filename);
+                JGraphFrame jgf = new JGraphFrame(path + filename, ed);
+                Object d = getArg("dimension");
+                if (d instanceof Dimension) jgf.setSize((Dimension)d);
+                jgf.setVisible(true);
+            }
+            catch (MalformedURLException murle) { System.out.println("bad URL"); }
+            catch (IOException e) { System.out.println("IOExcept in openpgml"); }
+        }
+    }
 
   /** Only let the user select files that match the filter. This does
    * not seem to be called under JDK 1.0.2 on solaris. I have not

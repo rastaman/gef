@@ -55,168 +55,189 @@ import org.tigris.gef.util.*;
  * @see Editor
  * @see CmdOpenWindow */
 
-public abstract class Cmd extends AbstractAction
-        implements java.io.Serializable {
+public abstract class Cmd
+    extends AbstractAction
+    implements java.io.Serializable {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
     /** Arguments that configure the Cmd instance. */
     protected Hashtable _args;
     protected String _resource;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  /** Construct a new Cmd with the given arguments */
-  public Cmd(Hashtable args, String resource, String name) {
-    super(Localizer.localize(resource,name));
-    Icon icon = ResourceLoader.lookupIconResource(name, name);
-    if (icon != null) putValue(Action.SMALL_ICON, icon);
-    _args = args;
-	_resource = resource;
-  }
+    /** Construct a new Cmd with the given arguments */
+    public Cmd(Hashtable args, String resource, String name) {
+        super(Localizer.localize(resource, name));
+        Icon icon = ResourceLoader.lookupIconResource(name, name);
+        if (icon != null) {
+            putValue(Action.SMALL_ICON, icon);
+        }
+        _args = args;
+        _resource = resource;
+    }
 
-  public Cmd(String resource, String name) {
-    this (null, resource, name);
-  }
+    public Cmd(String resource, String name) {
+        this(null, resource, name);
+    }
 
-  public Cmd(Hashtable args, String resource, String name, ImageIcon icon) {
-    super(Localizer.localize(resource,name), icon);
-    _args = args;
-	_resource = resource;
-  }
+    public Cmd(Hashtable args, String resource, String name, ImageIcon icon) {
+        super(Localizer.localize(resource, name), icon);
+        _args = args;
+        _resource = resource;
+    }
 
-	/** Constructors with no resource name */
-	protected Cmd(String name) {
-		this(null, "GefBase", name);
-	}
+    /** Constructors with no resource name */
+    protected Cmd(String name) {
+        this(null, "GefBase", name);
+    }
 
-	protected Cmd(Hashtable args, String name, ImageIcon icon) {
-		this(args, "GefBase", name, icon);
-	}
+    protected Cmd(Hashtable args, String name, ImageIcon icon) {
+        this(args, "GefBase", name, icon);
+    }
 
-	protected Cmd(Hashtable args, String name) {
-		this(args, "GefBase", name);
-	}
+    protected Cmd(Hashtable args, String name) {
+        this(args, "GefBase", name);
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // enabling and disabling
+    ////////////////////////////////////////////////////////////////
+    // enabling and disabling
 
-  /** Determine if this Cmd should be shown as grayed out in menus and
-   *  toolbars. */
-  public void updateEnabled() { setEnabled(shouldBeEnabled()); }
+    /** Determine if this Cmd should be shown as grayed out in menus and
+     *  toolbars. */
+    public void updateEnabled() {
+        setEnabled(shouldBeEnabled());
+    }
 
-  /** Return true if this action should be available to the user. This
-   *  method should examine the ProjectBrowser that owns it.  Sublass
-   *  implementations of this method should always call
-   *  super.shouldBeEnabled first. */
-  public boolean shouldBeEnabled() { return true; }
+    /** Return true if this action should be available to the user. This
+     *  method should examine the ProjectBrowser that owns it.  Sublass
+     *  implementations of this method should always call
+     *  super.shouldBeEnabled first. */
+    public boolean shouldBeEnabled() {
+        return true;
+    }
 
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
+    /**
+     * Set a new resource as basis for the localization of this command.
+     */
+    public void setResource(String resource) {
+        _resource = resource;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    public String getResource() {
+        return _resource;
+    }
 
-	/**
-	 * Set a new resource as basis for the localization of this command.
-	 */
-	public void setResource(String resource) { _resource = resource; }
+    /** Return a name for this Cmd suitable for display to the user */
+    public String getName() {
+        return (String) getValue(NAME);
+    }
+    public void setName(String n) {
+        putValue(NAME, Localizer.localize(_resource, n));
+    }
 
-	public String getResource() { return _resource; }
+    /** Get the object stored as an argument under the given name. */
+    protected Object getArg(String key) {
+        if (_args == null)
+            return null;
+        else
+            return _args.get(key);
+    }
 
-  /** Return a name for this Cmd suitable for display to the user */
-  public String getName() { return (String) getValue(NAME); }
-  public void setName(String n) { putValue(NAME, Localizer.localize(_resource,n)); }
+    /** Get an argument by name.  If it's not defined then use the given
+     *  default. */
+    protected Object getArg(String key, Object defaultValue) {
+        if (_args == null)
+            return defaultValue;
+        Object res = _args.get(key);
+        if (res == null)
+            return defaultValue;
+        return res;
+    }
 
-  /** Get the object stored as an argument under the given name. */
-  protected Object getArg(String key) {
-    if (_args == null) return null;
-    else return _args.get(key);
-  }
+    /** Store the given argument under the given name. */
+    protected void setArg(String key, Object value) {
+        if (_args == null) {
+            _args = new Hashtable();
+        }
+        _args.put(key, value);
+    }
 
-  /** Get an argument by name.  If it's not defined then use the given
-   *  default. */
-  protected Object getArg(String key, Object defaultValue) {
-    if (_args == null) return defaultValue;
-    Object res = _args.get(key);
-    if (res == null) return defaultValue;
-    return res;
-  }
+    /** Reply true if this Cmd instance has the named argument defined. */
+    protected boolean containsArg(String key) {
+        return _args != null && _args.containsKey(key);
+    }
 
-  /** Store the given argument under the given name. */
-  protected void setArg(String key, Object value) {
-    if (_args == null) { _args = new Hashtable(); }
-    _args.put(key, value);
-  }
+    ////////////////////////////////////////////////////////////////
+    // Cmd API
 
-  /** Reply true if this Cmd instance has the named argument defined. */
-  protected boolean containsArg(String key) {
-    return _args != null && _args.containsKey(key);
-  }
+    /** Return a URL that has user and programmer documentation.
+     *  <A HREF="../features.html#view_Cmd_documentation">
+     *  <TT>FEATURE: view_Cmd_documentation</TT></A>
+     */
+    public String about() {
+        return "http://gef.tigris.org" + getClass().getName();
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // Cmd API
+    public void actionPerformed(ActionEvent ae) {
+        doIt();
+    }
 
-  /** Return a URL that has user and programmer documentation.
-   *  <A HREF="../features.html#view_Cmd_documentation">
-   *  <TT>FEATURE: view_Cmd_documentation</TT></A>
-   */
-  public String about() {
-    return "http://gef.tigris.org" +
-		 getClass().getName();
-  }
+    /** Perform whatever Cmd this Cmd is meant to do. Subclasses
+     *  should override this to do whatever is intended. When the Cmd
+     *  executes, it should store enough information to undo itself later
+     *  if needed.
+     *  @param e  The event that caused this Cmd to be
+     *  performed. Generally it is a bad idea to depend on the
+     *  contents of this event too much.
+     */
+    public abstract void doIt();
 
-  public void actionPerformed(ActionEvent ae) { doIt(); }
-  
-  /** Perform whatever Cmd this Cmd is meant to do. Subclasses
-   *  should override this to do whatever is intended. When the Cmd
-   *  executes, it should store enough information to undo itself later
-   *  if needed.
-   *  @param e  The event that caused this Cmd to be
-   *  performed. Generally it is a bad idea to depend on the
-   *  contents of this event too much.
-   */
-  public abstract void doIt();
+    /** Undo the Cmd using information stored during its
+     *  execution. <p>
+     *  needs-more-work: This is not currently implemented.
+     */
+    public abstract void undoIt();
 
-  /** Undo the Cmd using information stored during its
-   *  execution. <p>
-   *  needs-more-work: This is not currently implemented.
-   */
-  public abstract void undoIt();
+    // needs-more-work: do I need a separate redo()? Should doIt() take
+    // flag to indicate if this is the first time the Cmd is being
+    // done, or it it is actually being redone? What information does
+    // undoIt() need to store to support redo?
 
-  // needs-more-work: do I need a separate redo()? Should doIt() take
-  // flag to indicate if this is the first time the Cmd is being
-  // done, or it it is actually being redone? What information does
-  // undoIt() need to store to support redo?
+    ////////////////////////////////////////////////////////////////
+    // registered Cmds
 
-  ////////////////////////////////////////////////////////////////
-  // registered Cmds
+    /** A list of Cmd instances that should appear in lists for the
+     *  user to pick from. Registered Cmds serve mainly to support
+     *  user interface prototyping: you can add Cmds to the
+     *  CmdOpenWindow and not have to worry about where it should
+     *  eventually go in the user interface. */
+    private static Vector _registeredCmds = new Vector();
 
-  /** A list of Cmd instances that should appear in lists for the
-   *  user to pick from. Registered Cmds serve mainly to support
-   *  user interface prototyping: you can add Cmds to the
-   *  CmdOpenWindow and not have to worry about where it should
-   *  eventually go in the user interface. */
-  private static Vector _registeredCmds = new Vector();
+    /** Return a list of "well-known" Cmd instances that should
+     *  appear in lists for the user to pick from.
+     * @see CmdOpenWindow */
+    public static Enumeration registeredCmds() {
+        return _registeredCmds.elements();
+    }
 
-  /** Return a list of "well-known" Cmd instances that should
-   *  appear in lists for the user to pick from.
-   * @see CmdOpenWindow */
-  public static Enumeration registeredCmds() {
-    return _registeredCmds.elements();
-  }
+    /** Add a "well-known" Cmd */
+    public static void register(Cmd c) {
+        _registeredCmds.addElement(c);
+    }
 
-  /** Add a "well-known" Cmd */
-  public static void register(Cmd c) { _registeredCmds.addElement(c); }
-
-  /** Return the "well-known" Cmd at a given index. Useful for
-   *  displaying a list of "well-known" cmds. */
-  public static Cmd cmdAtIndex(int i) {
-    return (Cmd) _registeredCmds.elementAt(i);
-  }
+    /** Return the "well-known" Cmd at a given index. Useful for
+     *  displaying a list of "well-known" cmds. */
+    public static Cmd cmdAtIndex(int i) {
+        return (Cmd) _registeredCmds.elementAt(i);
+    }
 } /* end class Cmd */
-
