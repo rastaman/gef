@@ -148,7 +148,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
         startPortFig = sourceFigNode.getPortFig(startPort);
 
         if (_npoints == 0) {
-            super.mousePressed(me);
+            createFig(me);
         }
         if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected and processed by ancestor - consumed");
         me.consume();
@@ -247,6 +247,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
                     if (destFigNode != null) {
                         destFigNode.updateEdges();
                     }
+                    endAttached();
                 }
                 done();
                 me.consume();
@@ -266,6 +267,9 @@ public class ModeCreatePolyEdge extends ModeCreate {
         me.consume();
     }
 
+    protected void endAttached() {
+    }
+    
     public void mouseMoved(MouseEvent me) {
         mouseDragged(me);
     }
