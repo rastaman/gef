@@ -46,8 +46,6 @@ public class FigGroup extends Fig {
          generated. */
   public String _dynObjects;
 
-  public int _shown = 1;
-
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -187,8 +185,6 @@ public String getPrivateData() {
 	}
 	return false;
   }
-
-  public int getVisState() { return _shown; }
 
   /** Returns true if any Fig in the group hits the given rect. */
   public boolean hit(Rectangle r) { return hitFig(r) != null; }
@@ -371,8 +367,6 @@ public void setPrivateData(String data) {
 	  if (ft instanceof FigText) ((FigText)ft).setTextFilled(b);
 	}
   }
-
-  public void setVisState(int visState) { _shown = visState; }
 
   /** Translate all the Fig in the list by the given offset. */
   public void translate(int dx, int dy) {

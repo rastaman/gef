@@ -730,6 +730,13 @@ public String getPrivateData() {
   public final void setBounds(Rectangle r) {
 	setBounds(r.x, r.y, r.width, r.height);
   }  
+
+    public final void setCenter(Point p) {
+	int newX = p.x - (_w / 2);
+	int newY = p.y - (_h / 2);
+	setLocation(newX,newY);
+    }
+
   /** Set line to be dashed or not **/
   public void setDashed(boolean now_dashed) {
 	if (now_dashed) _dashes = DASH_ARRAYS[1];

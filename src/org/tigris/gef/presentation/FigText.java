@@ -535,6 +535,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
    *  do not get smaller when you backspace.  */
   public void calcBounds() {
     Rectangle bounds = getBounds();
+    //System.out.println("[FigText] calcBounds(1) "+getText()+": "+bounds.x+","+bounds.y+","+bounds.width+","+bounds.height);
     if (_font == null) return;
     if (_fm == null) _fm = Toolkit.getDefaultToolkit().getFontMetrics(_font);
     int overallW = 0;
@@ -567,13 +568,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
     _w = _expandOnly ? Math.max(_w, overallW) : overallW;
     _h = _expandOnly ? Math.max(_h, overallH) : overallH;
-
-  }
-
-  //needs-more-work: this is only a hack. the origination of the problem lies
-  // within the storing of the annotations.
-  public void recalcAnnotationBounds(Rectangle rect) {
-        setBounds(rect.x+5,rect.y,rect.width,rect.height);
+    //System.out.println("[FigText] calcBounds(2): "+_x+","+_y+","+_w+","+_h);
   }
 
 } /* end class FigText */
