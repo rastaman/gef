@@ -31,7 +31,7 @@
 
 package org.tigris.gef.base;
 
-import java.util.List;
+import java.util.Collection;
 
 /** Cmd to select all the Figs in the editor's current view. */
 
@@ -41,7 +41,7 @@ public class CmdSelectAll extends Cmd {
 
   public void doIt() {
     Editor ce = Globals.curEditor();
-    List diagramContents = ce.getLayerManager().getContents();
+    Collection diagramContents = ce.getLayerManager().getContents(null);
     ce.getSelectionManager().select(diagramContents);
   }
 
