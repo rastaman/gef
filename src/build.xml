@@ -5,8 +5,8 @@
 <target name="init">
  <tstamp/>
  <property file="${ant.home}${file.separator}dev.properties"/>
- <property name="src.dir" value="src"/>
- <property name="obj.dir" value="lib"/>
+ <property name="src.dir" value="../src"/>
+ <property name="obj.dir" value="../lib"/>
  <property name="javadoc.dir" value="javadoc"/>
  <property name="packagenames" value="org.*"/>
  <property name="jar" value="gef.jar"/>
