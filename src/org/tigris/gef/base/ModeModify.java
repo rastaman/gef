@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
@@ -77,6 +78,8 @@ public class ModeModify extends FigModifyingModeImpl {
     private Rectangle _highlightTrap = null;
     private int _deltaMouseX;
     private int _deltaMouseY;
+    
+    private static final Logger LOG = Logger.getLogger(ModeModify.class);
 
     /** Construct a new ModeModify with the given parent, and set the
      *  Anchor point to a default location (the _anchor's proper position
@@ -104,7 +107,8 @@ public class ModeModify extends FigModifyingModeImpl {
      *  can drag the handle around the drawing area and the Fig reacts to that.
      */
     public void mouseDragged(MouseEvent mouseEvent) {
-        if(mouseEvent.isConsumed()) {
+        if (mouseEvent.isConsumed()) {
+            if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected but with wrong button condition for scrolling");
             return;
         }
 
@@ -114,6 +118,7 @@ public class ModeModify extends FigModifyingModeImpl {
         _deltaMouseX = mouseX - _dragStartMousePosition.x;
         _deltaMouseY = mouseY - _dragStartMousePosition.y;
         if(!_dragInProcess && Math.abs(_deltaMouseX) < MIN_DELTA && Math.abs(_deltaMouseY) < MIN_DELTA) {
+            if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected but not enough to notice");
             return;
         }
 
@@ -122,6 +127,7 @@ public class ModeModify extends FigModifyingModeImpl {
 
         boolean restrict45 = mouseEvent.isControlDown();
         handleMouseDragged(restrict45);
+        if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected");
     }
 
     /**
@@ -192,6 +198,7 @@ public class ModeModify extends FigModifyingModeImpl {
         int deltaSelectionX = selectionNewPosition.x - selectionCurrentPosition.x;
         int deltaSelectionY = selectionNewPosition.y - selectionCurrentPosition.y;
         if(deltaSelectionX != 0 || deltaSelectionY != 0) {
+            if (LOG.isDebugEnabled()) LOG.debug("handle index = " + _curHandle.index);
             if(_curHandle.index == -1) {
                 setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
                 if(legal(deltaSelectionX, deltaSelectionY, selectionManager)) {
@@ -213,7 +220,8 @@ public class ModeModify extends FigModifyingModeImpl {
      *  starts preparing for future drag events by finding if a handle
      *  was clicked on.  This event is passed from ModeSelect. */
     public void mousePressed(MouseEvent me) {
-        if(me.isConsumed()) {
+        if (me.isConsumed()) {
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but already consumed");
             return;
         }
 
