@@ -4,10 +4,11 @@
 
 <target name="init">
  <tstamp/>
- <property file="${ant.home}/dev.properties"/>
+ <property file="${ant.home}${file.separator}dev.properties"/>
  <property name="obj.dir" value="lib"/>
  <property name="jar" value="argouml.jar"/>
- <echo message="${xml4j.lib}"/>
+ <echo message="gef.lib=${gef.lib}"/>
+ <echo message="xml4j.lib=${xml4j.lib}"/>
 </target>
 
 <target name="build" depends="init">
@@ -16,7 +17,7 @@
  <mkdir dir="${obj.dir}"/>
  <javac srcdir="${src.dir}" destdir="${obj.dir}"
         deprecation="${deprecation}"
-        classpath="${gef.lib}:${xml4j.lib}"/>
+        classpath="${gef.lib}${path.separator}${xml4j.lib}"/>
 </target>
 
 <target name="jar" depends="build">
@@ -33,7 +34,7 @@
  <property name="args" value=""/>
 
  <java classname="${main}" args="${args}" fork="yes"
-       jvmargs="-cp ${obj.dir}:${gef.lib}:${xml4j.lib}"/>
+       jvmargs="-cp ${obj.dir}${path.separator}${gef.lib}${path.separator}${xml4j.lib}"/>
 </target>
 
 </project>

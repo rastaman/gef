@@ -6,7 +6,9 @@
  <tstamp/>
  <property name="obj.dir" value="lib"/>
  <property name="jar" value="gef-demos.jar"/>
- <property name="gef.jar" value="../gef.jar"/>
+ <property name="gef.jar" value="..${file.separator}gef.jar"/>
+
+ <echo message="!! ${gef.jar}"/>
 </target>
 
 <target name="build" depends="init">
@@ -45,7 +47,7 @@
  <property name="args" value=""/>
 
  <java classname="${main}" args="${args}" fork="yes"
-       jvmargs="-cp ${obj.dir}:${gef.jar}"/>
+       jvmargs="-cp ${obj.dir}${path.separator}${gef.jar}"/>
 </target>
 
 <target name="BroomStudy" depends="build">
@@ -53,7 +55,7 @@
  <property name="args" value=""/>
 
  <java classname="${main}" args="${args}" fork="yes"
-       jvmargs="-cp ${obj.dir}:${gef.jar}"/>
+       jvmargs="-cp ${obj.dir}${path.separator}${gef.jar}"/>
 </target>
 
 <!-- applets -->
@@ -69,7 +71,7 @@
 </target>
 
 <target name="SpawnedApplet" depends="build">
- <copyfile src="${gef.jar}" dest="${obj.dir}/gef.jar"/>
+ <copyfile src="${gef.jar}" dest="${obj.dir}${file.separator}gef.jar"/>
  <exec command="appletviewer SpawnedApplet.html" dir="${obj.dir}"/>
 </target>
 

@@ -16,6 +16,12 @@ contains the following properties:
 gef.lib=path/to/gef.jar
 xml4j.lib=path/to/xml4j.jar
 
+on Windows, you will need to escape the '\' file separator, so your
+properties will look something like this:
+
+gef.lib=c:\\path\\to\\gef.jar
+xml4j.lib=c:\\path\\to\\xml4j.jar
+
 
 Edwin Park
 esp@parkplace.dhs.org
