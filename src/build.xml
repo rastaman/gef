@@ -118,8 +118,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <property name="packages" value="org.tigris.gef.* Acme.*"/>
 
     <property name="build.dir" value="../build"/>
-    <property name="build.src" value="../src"/>
-    <property name="build.dest" value="../build/classes"/>
+    <property name="build.src" value="${src.dir}"/>
+    <property name="build.dest" value="${build.dir}/classes"/>
 
     <property file="${user.home}/.ant.properties" />
   </target>
@@ -179,7 +179,6 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <echo message="Compiling the sources using ${build.compiler}"/>
     <!-- create directories -->
     <mkdir dir="${build.dest}"/>
-
     <javac srcdir="${build.src}"
            destdir="${build.dest}"
            debug="${debug}"
@@ -196,15 +195,15 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 	<delete file="${lib.dir}/${name}.jar"/>
 	
     <filter token="version" value="${version}"/>
-    <copyfile src="${manifest}"
-              dest="${classes}/${manifest}"
+    <copyfile src="${src.dir}/${manifest}"
+              dest="${build.dir}/${manifest}"
               filtering="on"
     />
     <jar jarfile="${lib.dir}/${name}.jar"
          basedir="${build.dest}"
          includes="org/tigris/gef/** Acme/**"
          excludes="${manifest}"
-         manifest="${classes}/${manifest}"/>
+         manifest="${build.dir}/${manifest}"/>
   </target>
 
   <!-- =================================================================== -->
