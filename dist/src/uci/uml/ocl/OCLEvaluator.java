@@ -28,10 +28,10 @@ import java.awt.*;
 import java.lang.reflect.*;
 import java.lang.*;
 
-import uci.uml.Foundation.Core.Element;
-import uci.uml.Foundation.Core.Feature;
-import uci.uml.Foundation.Data_Types.Name;
-import uci.uml.Foundation.Data_Types.Expression;
+//import uci.uml.Foundation.Core.Element;
+//import uci.uml.Foundation.Core.Feature;
+//import uci.uml.Foundation.Data_Types.Name;
+//import uci.uml.Foundation.Data_Types.Expression;
 
 // stereotype <<utility>>
 public class OCLEvaluator {
@@ -52,18 +52,18 @@ public class OCLEvaluator {
   // static methods
   public static synchronized String evalToString(Object self, String expr) {
     String res = null;
-    if (GET_NAME_EXPR_1.equals(expr) && self instanceof Element) {
-      res = ((Element)self).getName().getBody();
-      if (res == null || "".equals(res)) res = "(anon)";
-    }
-    if (GET_NAME_EXPR_2.equals(expr) && self instanceof Element) {
-      res = ((Element)self).getName().getBody();
-      if (res == null || "".equals(res)) res = "(anon)";
-    }
-    if (GET_OWNER_EXPR.equals(expr) && self instanceof Feature) {
-      res = ((Feature)self).getOwner().getName().getBody();
-      if (res == null || "".equals(res)) res = "(anon)";
-    }
+    //    if (GET_NAME_EXPR_1.equals(expr) && self instanceof Element) {
+    //      res = ((Element)self).getName().getBody();
+    //      if (res == null || "".equals(res)) res = "(anon)";
+    //    }
+    //    if (GET_NAME_EXPR_2.equals(expr) && self instanceof Element) {
+    //      res = ((Element)self).getName().getBody();
+    //      if (res == null || "".equals(res)) res = "(anon)";
+    //    }
+    //    if (GET_OWNER_EXPR.equals(expr) && self instanceof Feature) {
+    //      res = ((Feature)self).getOwner().getName().getBody();
+    //      if (res == null || "".equals(res)) res = "(anon)";
+    //    }
     if (res == null) res = evalToString(self, expr, ", ");
     return res;
   }
@@ -76,14 +76,14 @@ public class OCLEvaluator {
     int size = values.size();
     for (int i = 0; i < size; i++) {
       Object v = values.elementAt(i);
-      if (v instanceof Element) {
-	v = ((Element)v).getName().getBody();
-	if ("".equals(v)) v = "(anon)";
-      }
-      if (v instanceof Expression) {
-	v = ((Expression)v).getBody().getBody();
-	if ("".equals(v)) v = "(unspecified)";
-      }
+      //      if (v instanceof Element) {
+      //	v = ((Element)v).getName().getBody();
+      //	if ("".equals(v)) v = "(anon)";
+      //      }
+      //      if (v instanceof Expression) {
+      //	v = ((Expression)v).getBody().getBody();
+      //	if ("".equals(v)) v = "(unspecified)";
+      //      }
       if (! "".equals(v)) {
 	_strBuf.append(v);
 	if (i < size - 1) _strBuf.append(sep);

@@ -73,7 +73,7 @@ public class CmdSavePGML extends Cmd implements FilenameFilter {
   protected static OCLExpander _expander = null;
 
   static {
-    _templates = TemplateReader.readFile("/uci/dtd/PGML.tee");
+    _templates = TemplateReader.readFile("/uci/xml/dtd/PGML.tee");
     _expander = new OCLExpander(_templates);
   }
 
@@ -88,7 +88,7 @@ public class CmdSavePGML extends Cmd implements FilenameFilter {
 
   public void doIt() {
     //@@@ just for easy debugging
-    _templates = TemplateReader.readFile("/uci/dtd/PGML.tee");
+    _templates = TemplateReader.readFile("/uci/xml/dtd/PGML.tee");
     _expander = new OCLExpander(_templates);
 
     try {

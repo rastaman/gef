@@ -53,6 +53,15 @@ public class BasicApplication {
 
   public BasicApplication() {
     _jgf = new JGraphFrame();
+    _jgf.addWindowListener(new WindowAdapter() {
+        public void windowClosing(WindowEvent event) {
+          _jgf.dispose();
+        }
+        public void windowClosed(WindowEvent event) {
+          System.exit(0);
+        }
+      });
+
     _jgf.setToolBar(new SamplePalette()); //needs-more-work
 
     // make the delete key remove elements from the underlying GraphModel
@@ -63,15 +72,15 @@ public class BasicApplication {
     LayerManager lm =  _jgf.getGraph().getEditor().getLayerManager();
     LayerPerspective lay = (LayerPerspective) lm.getActiveLayer();
     lay.addNodeTypeRegion(SampleNode.class, new Rectangle(10, 10, 200, 200));
-    lay.addNodeTypeRegion(SampleNode2.class, new Rectangle(250, 10, 200, 200));
+    //lay.addNodeTypeRegion(SampleNode2.class, new Rectangle(250, 10, 200, 200));
     DefaultGraphModel dgm = (DefaultGraphModel) _jgf.getGraphModel();
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 1; i++) {
       SampleNode sn = new SampleNode();
       sn.initialize(null);
       dgm.addNode(sn);
-      SampleNode2 sn2 = new SampleNode2();
-      sn2.initialize(null);
-      dgm.addNode(sn2);
+      //      SampleNode2 sn2 = new SampleNode2();
+      //      sn2.initialize(null);
+      //      dgm.addNode(sn2);
     }
     System.out.println("finished adding nodes");
   }

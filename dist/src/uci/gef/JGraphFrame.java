@@ -118,9 +118,9 @@ implements IStatusBar, Cloneable, ModeChangeListener {
     _menubar.add(file);
     //file.add(new CmdNew());
     openItem = file.add(new CmdOpen());
-    //!esp! openPGMLItem = file.add(new CmdOpenPGML());
+    openPGMLItem = file.add(new CmdOpenPGML());
     saveItem = file.add(new CmdSave());
-    //!esp! savePGMLItem = file.add(new CmdSavePGML());
+    savePGMLItem = file.add(new CmdSavePGML());
     printItem = file.add(new CmdPrint());
     prefsItem = file.add(new CmdOpenWindow("uci.gef.PrefsEditor",
 					   "Preferences..."));

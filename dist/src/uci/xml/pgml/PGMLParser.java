@@ -32,6 +32,9 @@ import uci.graph.*;
 import uci.gef.*;
 import uci.xml.*;
 
+//KLUDGE ALERT !!!!
+//import uci.gef.demo.*;
+
 import com.ibm.xml.parser.*;
 import org.w3c.dom.*;
 
@@ -48,7 +51,7 @@ public class PGMLParser implements ElementHandler, TagHandler {
   protected Diagram _diagram = null;
   protected int _nestedGroups = 0;
   protected Hashtable _figRegistry;
-  protected Hashtable _ownerRegistry;
+  protected Hashtable _ownerRegistry = new Hashtable();
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -420,7 +423,6 @@ public class PGMLParser implements ElementHandler, TagHandler {
       System.out.println("could not set owner");
     }
   }
-
 
   //needs-more-work: find object in model
   protected Object findOwner(String uri) {

@@ -4,6 +4,7 @@
 
 <target name="init">
  <tstamp/>
+ <property file="${ant.home}${file.separator}dev.properties"/>
  <property name="src.dir" value="src"/>
  <property name="obj.dir" value="lib"/>
  <property name="javadoc.dir" value="javadoc"/>
@@ -14,7 +15,8 @@
 <target name="build" depends="init">
  <mkdir dir="${obj.dir}"/>
  <javac srcdir="${src.dir}" destdir="${obj.dir}"
-        deprecation="${deprecation}"/>
+        deprecation="${deprecation}"
+        classpath="${obj.dir}${path.separator}${xml4j.lib}"/>
 </target>
 
 <target name="jar" depends="build">
