@@ -53,8 +53,8 @@ import org.tigris.gef.graph.MutableGraphSupport;
  */
 
 public class DefaultGraphModel
-    extends MutableGraphSupport
-    implements java.io.Serializable {
+        extends MutableGraphSupport
+        implements java.io.Serializable {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -77,27 +77,6 @@ public class DefaultGraphModel
     public DefaultGraphModel(NetList nl) {
         netList = nl;
     }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
-//    public NetList getNetList() {
-//        return netList;
-//    }
-//    
-//    public void setNetList(NetList nl) {
-//        netList = nl;
-//    }
-
-//    ////////////////////////////////////////////////////////////////
-//    // invariants
-//
-//    public boolean OK() {
-//        return netList != null;
-//    }
-//
-    ////////////////////////////////////////////////////////////////
-    // interface GraphModel
 
     /** Return all nodes in the graph 
      */
