@@ -30,7 +30,8 @@ package org.tigris.gef.base;
 
 import java.awt.event.*;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 
@@ -61,7 +62,7 @@ public class ModeCreateEdge extends ModeCreate {
     /** The new NetEdge that is being created */
     private Object _newEdge;
 
-    private static final Logger LOG = Logger.getLogger(ModeCreateEdge.class);
+    private static Log LOG = LogFactory.getLog(ModeCreateEdge.class);
     ////////////////////////////////////////////////////////////////
     // constructor
 

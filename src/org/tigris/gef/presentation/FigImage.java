@@ -32,7 +32,8 @@ import java.awt.*;
 import java.awt.image.*;
 import java.net.*;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.base.*;
 
 /** Primitive Fig to paint images (such as icons) on a LayerDiagram. */
@@ -51,7 +52,7 @@ public class FigImage extends Fig implements ImageObserver {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    private static final Logger LOG = Logger.getLogger(FigImage.class);
+    private static Log LOG = LogFactory.getLog(FigImage.class);
     
     /** Construct a new FigImage with the given position, size, and Image.  */
     public FigImage(int x, int y, int w, int h, Image img) {

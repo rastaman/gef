@@ -33,7 +33,8 @@ import java.util.*;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.graph.*;
 
 /*  this Cmd is executed it makes the new objects as per its
@@ -51,7 +52,7 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
     public static Class DEFAULT_NODE_CLASS =
         org.tigris.gef.graph.presentation.NetNode.class;
 
-    private static final Logger LOG = Logger.getLogger(CmdCreateNode.class);
+    private static Log LOG = LogFactory.getLog(CmdCreateNode.class);
     
     ////////////////////////////////////////////////////////////////
     // instance variables

@@ -28,7 +28,8 @@
 
 package org.tigris.gef.base;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
@@ -66,7 +67,7 @@ public class ModePlace extends FigModifyingModeImpl {
 
     protected String _instructions; 
 
-    private static final Logger LOG = Logger.getLogger(ModePlace.class);
+    private static Log LOG = LogFactory.getLog(ModePlace.class);
     ////////////////////////////////////////////////////////////////
     // constructor
 

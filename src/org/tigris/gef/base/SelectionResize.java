@@ -30,7 +30,8 @@ package org.tigris.gef.base;
 
 import java.awt.*;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.presentation.*;
 
 /** A Selection class to represent selections on Figs that present
@@ -47,7 +48,7 @@ public class SelectionResize extends Selection {
     private int cw;
     private int ch;
 
-    private static final Logger log = Logger.getLogger(ModeDragScroll.class);
+    private static Log log = LogFactory.getLog(ModeDragScroll.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors

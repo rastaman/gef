@@ -28,7 +28,8 @@
 
 package org.tigris.gef.base;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.ui.IStatusBar;
 
 import java.applet.Applet;
@@ -69,7 +70,7 @@ public class Globals {
      *  disappear. */
     public static String defaultStatus = "  ";
 
-    private static final Logger LOG = Logger.getLogger(Globals.class);
+    private static Log LOG = LogFactory.getLog(Globals.class);
     
     /** If we are running as an applet, Store the Applet and
      *  AppletContext in a well known place. */

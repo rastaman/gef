@@ -36,7 +36,8 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
@@ -61,7 +62,7 @@ public class LayerDiagram extends Layer {
     protected static int _nextLayerNumbered = 1;
     private Rectangle _clipBounds = new Rectangle();
 
-    private static final Logger LOG = Logger.getLogger(LayerDiagram.class);
+    private static Log LOG = LogFactory.getLog(LayerDiagram.class);
     
     ////////////////////////////////////////////////////////////////
     // constuctors and related methods

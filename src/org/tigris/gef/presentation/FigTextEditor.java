@@ -30,7 +30,8 @@
 
 package org.tigris.gef.presentation;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 
@@ -61,7 +62,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     private static boolean _makeBrighter = false;
     private static Color _backgroundColor = null;
 
-    private static final Logger LOG = Logger.getLogger(FigTextEditor.class);
+    private static Log LOG = LogFactory.getLog(FigTextEditor.class);
     
     /** Needs-more-work: does not open if I use tab to select the
      *  FigText. */

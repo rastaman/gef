@@ -32,7 +32,8 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.MutableGraphSupport;
 
@@ -60,7 +61,7 @@ public class DefaultGraphModel
      */
     protected NetList _netList;
 
-    private static final Logger LOG = Logger.getLogger(DefaultGraphModel.class);
+    private static Log LOG = LogFactory.getLog(DefaultGraphModel.class);
     
     ////////////////////////////////////////////////////////////////
     // constructors

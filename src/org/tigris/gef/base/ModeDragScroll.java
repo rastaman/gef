@@ -28,7 +28,8 @@ package org.tigris.gef.base;
 
 import javax.swing.*;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -66,7 +67,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
 
     private boolean simpleDrag = false;
 
-    private static final Logger LOG = Logger.getLogger(ModeDragScroll.class);
+    private static Log LOG = LogFactory.getLog(ModeDragScroll.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors and related methods

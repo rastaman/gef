@@ -28,7 +28,8 @@
 
 package org.tigris.gef.base;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.event.GraphSelectionListener;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.GraphEdgeRenderer;
@@ -160,7 +161,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     /** The context menu for this editor */
     private transient JPopupMenu _popup = null;
 
-    private static final Logger LOG = Logger.getLogger(Editor.class);
+    private static Log LOG = LogFactory.getLog(Editor.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors and related functions

@@ -129,8 +129,13 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <property name="build.dir" value="../build"/>
     <property name="build.src" value="${src.dir}"/>
     <property name="build.dest" value="${build.dir}/classes"/>
-    <property name="gef.classpath" value="${lib.dir}/log4j-1.2.6.jar:${lib.dir}/xerces.jar"/>
+    <property name="gef.classpath" value="${lib.dir}/commons-logging.jar:${lib.dir}/log4j-1.2.6.jar:${lib.dir}/xerces.jar"/>
+    
     <property file="${user.home}/.ant.properties" />
+    <property name="logger" value="org.apache.commons.logging.impl.Log4JLogger"/>
+    <property name="logger.configuration.name" value="log4j.configuration"/>
+    <property name="logger.configuration.value" value="log4j.properties"/>
+    
 
   </target>
 
@@ -255,6 +260,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
         author="false"
         windowtitle="GEF Documentation">
         <classpath>
+	    <pathelement path="${lib.dir}/commons-logging.jar"/>
             <pathelement path="${lib.dir}/log4j.jar"/>
             <pathelement path="${lib.dir}/xerces.jar"/>
         </classpath>
@@ -315,6 +321,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
           <classpath>
                 <pathelement path="${build.dest};${gef.classpath};${classpath}"/>
           </classpath>
+          <jvmarg value="-Dorg.apache.commons.logging.Log=${logger}"/>
+          <jvmarg value="-D${logger.configuration.name}=${logger.configuration.value}"/>          
           <jvmarg value="-Dgef.log.location=${src.dir}/GEF.log"/>
           <jvmarg value="-Dgef.log.level=DEBUG"/>
     </java>
@@ -330,6 +338,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
               author="false"
               windowtitle="GEF Documentation">
        <classpath>
+	   <pathelement path="${lib.dir}/commons-logging.jar"/>
            <pathelement path="${lib.dir}/log4j.jar"/>
            <pathelement path="${lib.dir}/xerces.jar"/>
        </classpath>

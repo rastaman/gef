@@ -31,7 +31,8 @@ package org.tigris.gef.base;
 import java.awt.*;
 import java.awt.event.*;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 
@@ -67,7 +68,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
     protected int _lastX, _lastY, _startX, _startY;
     protected Handle _handle = new Handle(-1);
 
-    private static final Logger LOG = Logger.getLogger(ModeCreatePolyEdge.class);
+    private static Log LOG = LogFactory.getLog(ModeCreatePolyEdge.class);
     
     ////////////////////////////////////////////////////////////////
     // constructor

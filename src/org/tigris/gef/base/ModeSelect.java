@@ -33,7 +33,8 @@ import java.awt.event.MouseEvent;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.Handle;
@@ -73,7 +74,7 @@ public class ModeSelect extends FigModifyingModeImpl {
     /** True when the user holds the shift key to toggle selections. */
     private boolean toggleSelection = false;
 
-    private static final Logger LOG = Logger.getLogger(ModeSelect.class);
+    private static Log LOG = LogFactory.getLog(ModeSelect.class);
     
     ////////////////////////////////////////////////////////////////
     // constructors and related methods

@@ -13,7 +13,8 @@ import java.util.Vector;
 
 import javax.swing.*;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.base.*;
 
 import org.tigris.gef.graph.GraphEdgeHooks;
@@ -180,7 +181,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /** Margin between this Fig and automatically routed arcs. */
     public final int BORDER = 8;
 
-    private static final Logger LOG = Logger.getLogger(Fig.class);
+    private static Log LOG = LogFactory.getLog(Fig.class);
 
     /**
      * Most subclasses will not use this constructor, it is only useful

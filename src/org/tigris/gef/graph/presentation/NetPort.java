@@ -31,7 +31,8 @@ package org.tigris.gef.graph.presentation;
 import java.awt.*;
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.graph.*;
 
 /** This class models a port in our underlying connected graph model.
@@ -62,7 +63,7 @@ public class NetPort
     /** The NetNode that this port is a part of. */
     protected Object _parent;
 
-    private static final Logger LOG = Logger.getLogger(NetPort.class);
+    private static Log LOG = LogFactory.getLog(NetPort.class);
     
     ////////////////////////////////////////////////////////////////
     // constructors

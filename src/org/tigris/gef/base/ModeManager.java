@@ -31,7 +31,8 @@
 
 package org.tigris.gef.base;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.event.ModeChangeEvent;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.presentation.NetPort;
@@ -70,7 +71,7 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
 
     protected EventListenerList _listeners = new EventListenerList();
 
-    private static final Logger LOG = Logger.getLogger(ModeManager.class);
+    private static Log LOG = LogFactory.getLog(ModeManager.class);
     
     ////////////////////////////////////////////////////////////////
     // constructors

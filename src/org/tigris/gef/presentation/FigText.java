@@ -30,7 +30,8 @@
 
 package org.tigris.gef.presentation;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.properties.PropCategoryManager;
 
 import java.awt.*;
@@ -129,7 +130,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         PropCategoryManager.categorizeProperty("Style", "textColor");
     }
 
-    private static final Logger LOG = Logger.getLogger(FigText.class);
+    private static Log LOG = LogFactory.getLog(FigText.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors

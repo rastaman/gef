@@ -32,7 +32,8 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 
 /** 
  * A FigGroup is a collection of Figs to all be treated as a single item 
@@ -67,7 +68,7 @@ public class FigGroup extends Fig {
      */
     private boolean suppressCalcBounds;
 
-    private static final Logger log = Logger.getLogger(FigGroup.class);
+    private static Log log = LogFactory.getLog(FigGroup.class);
     
     ////////////////////////////////////////////////////////////////
     // constructors

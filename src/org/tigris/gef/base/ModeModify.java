@@ -34,7 +34,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
@@ -79,7 +80,7 @@ public class ModeModify extends FigModifyingModeImpl {
     private int _deltaMouseX;
     private int _deltaMouseY;
     
-    private static final Logger LOG = Logger.getLogger(ModeModify.class);
+    private static Log LOG = LogFactory.getLog(ModeModify.class);
 
     /** Construct a new ModeModify with the given parent, and set the
      *  Anchor point to a default location (the _anchor's proper position

@@ -23,7 +23,8 @@
 
 package org.tigris.gef.base;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.PopupGenerator;
 
@@ -45,7 +46,7 @@ import javax.swing.JSeparator;
 
 public class ModePopup extends FigModifyingModeImpl {
 
-    private static final Logger LOG = Logger.getLogger(ModePopup.class);
+    private static Log LOG = LogFactory.getLog(ModePopup.class);
     
     ////////////////////////////////////////////////////////////////
     //  constructor

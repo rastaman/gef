@@ -31,7 +31,8 @@ package org.tigris.gef.base;
 import java.util.*;
 import java.awt.*;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.*;
+import org.apache.commons.logging.impl.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.graph.presentation.*;
@@ -77,7 +78,7 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   /** Rectangles of where to place nodes that are automatically added. */
   protected Hashtable _nodeTypeRegions = new Hashtable();
 
-    private static final Logger LOG = Logger.getLogger(LayerPerspective.class);
+    private static Log LOG = LogFactory.getLog(LayerPerspective.class);
     
   ////////////////////////////////////////////////////////////////
   // constructors
