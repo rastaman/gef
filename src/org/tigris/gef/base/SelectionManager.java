@@ -705,7 +705,10 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         }
     }
 
-    /** When a multiple selection are deleted, each selection is deleted */
+    /**
+     * When a multiple selection are deleted, each selection is deleted
+     * @deprecated 0.10.4 Use the better described removeFromGraph
+     **/
     public void delete() {
         Enumeration ss = ((Vector)_selections.clone()).elements();
         while(ss.hasMoreElements()) {
@@ -714,6 +717,16 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     /** When a multiple selection are deleted, each selection is deleted */
+    public void removeFromGraph() {
+        Enumeration ss = ((Vector)_selections.clone()).elements();
+        while(ss.hasMoreElements()) {
+            ((Selection)ss.nextElement()).delete();
+        }
+    }
+
+    /**
+     * When a multiple selection are deleted, each selection is deleted
+     */
     public void dispose() {
         Enumeration ss = ((Vector)_selections.clone()).elements();
         while(ss.hasMoreElements()) {
@@ -744,6 +757,18 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         }
     }
 
+    /**
+     * When a multiple selection are deleted, each selection is deleted
+     */
+    public void deleteFromModel() {
+        Enumeration ss = ((Vector)_selections.clone()).elements();
+        while(ss.hasMoreElements()) {
+            Selection s = (Selection)ss.nextElement();
+            Fig f = s.getContent();
+            Object o = f.getOwner();
+            f.dispose();
+        }
+    }
     ////////////////////////////////////////////////////////////////
     // input events
 
