@@ -201,6 +201,10 @@ height="<ocl>self.height.intValue</ocl>"
     destFigNode="<ocl>self.destFigNode.id</ocl>"
   </private>
 
+  <anotations>
+      <ocl>self.anotationStrategy.anotationsVector</ocl>
+  </anotations>
+
   <ocl>self.fig</ocl>
 </group>
 ]]>
