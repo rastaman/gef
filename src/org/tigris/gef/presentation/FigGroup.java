@@ -211,7 +211,7 @@ public class FigGroup extends Fig {
     // accessors
 
     /** Reply an Enumeration of the Figs contained in this FigGroup.
-     * @depreacted 0.10 this will be replaced in 0.11 in favour of iterator()
+     * @depreacted 0.10.5 use iterator()
      */
     public Enumeration elements() {
         return new Vector(this.figs).elements();
