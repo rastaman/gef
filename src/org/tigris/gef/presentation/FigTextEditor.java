@@ -165,17 +165,14 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     public void endEditing() {
         updateFigText();
         _target.endTrans();
-        //hide();
         Container parent = getParent();
-        if(parent != null)
+        if(parent != null) {
             parent.remove(this);
+        }
         _target.removePropertyChangeListener(this);
         _target.firePropChange("editing", true, false);
-        _drawingPanel.requestFocus();
-        //removeFocusListener(this);
         removeKeyListener(this);
         _layeredPane.remove(this);
-        Editor ce = Globals.curEditor();
         //FigTextEditor.remove();
         // Don't call remove() here, because remove() would call this method
         // (endEditing()) for second time (unnecessarily). 
