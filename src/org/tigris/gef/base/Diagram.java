@@ -112,6 +112,7 @@ public class Diagram implements java.io.Serializable, GraphListener {
     gm.addGraphEventListener(this);
   }
 
+  public GraphController getGraphController() { return getLayer().getGraphController(); }
   public LayerPerspective getLayer() { return _lay; }
   public void setLayer(LayerPerspective lay) { _lay = lay; }
 
