@@ -246,8 +246,6 @@ public abstract class Layer implements java.io.Serializable {
     /**
      * Get the figs that make up this layer.
      * @return the figs
-     * @deprecated 0.10 This method will be removed in release 0.11
-     * CHECK SAVE IN ARGOUML ONCE REMOVED
      */
     public List getContents() {
         Vector v = new Vector();
