@@ -31,9 +31,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.util.*;
-
 /** Cmd to close all windows and exit the application.
  *  Needs-More-Work: Needs to keep track of all open windows. */
 

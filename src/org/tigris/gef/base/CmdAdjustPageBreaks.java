@@ -28,8 +28,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.Event;
-
 /** An Cmd to modify the way that the PageBreaks Layer of the
  *  current document looks.  For now it just cycles among a few
  *  predefined looks.  Needs-More-Work: Should put up a PageBreaks

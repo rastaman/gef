@@ -31,8 +31,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.Event;
-
 /** An Cmd to modify the way that the grid layer of the current
  *  document looks.  For now it just cycles among a few predefined
  *  looks.  Needs-More-Work: should put up a grid preference dialog

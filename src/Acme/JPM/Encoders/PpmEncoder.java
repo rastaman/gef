@@ -28,7 +28,6 @@
 
 package Acme.JPM.Encoders;
 
-import java.util.*;
 import java.io.*;
 import java.awt.Image;
 import java.awt.image.*;

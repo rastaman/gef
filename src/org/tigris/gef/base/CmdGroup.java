@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdGroup.java
 // Classes: CmdGroup
 // Original Author: jrobbins@ics.uci.edu
@@ -31,7 +28,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
 import java.util.*;
 
 import org.tigris.gef.presentation.*;

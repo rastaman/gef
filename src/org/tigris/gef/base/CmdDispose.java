@@ -30,8 +30,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.Event;
-
 /** Cmd to delete the Figs selected in the current editor, and dispose
  *  any underlying Net stuctures. This differs from CmdDelete in that
  *  when an underlying NetNode is disposed, it should delete all views

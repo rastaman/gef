@@ -57,7 +57,6 @@ public class Globals {
     ////////////////////////////////////////////////////////////////
     // applet related methods
 
-    protected static AppletContext _appletContext;
     protected static Applet _applet;
     protected static MediaTracker _tracker;
 
@@ -76,13 +75,16 @@ public class Globals {
      *  AppletContext in a well known place. */
     public static void setApplet(Applet a) {
         _applet = a;
-        _appletContext = a.getAppletContext();
         clearStatus();
         _tracker = new MediaTracker(a);
     }
 
     public static AppletContext getAppletContext() {
-        return _appletContext;
+        try {
+            return _applet.getAppletContext();
+        } catch (NullPointerException ex) {
+            return null;
+        }
     }
 
     public static Applet getApplet() {
@@ -132,8 +134,9 @@ public class Globals {
     public static void showStatus(String s) {
         if(_StatusBar != null)
             _StatusBar.showStatus(s);
-        else if(_appletContext != null)
-            _appletContext.showStatus(s);
+        else if(getAppletContext() != null) {
+            _applet.getAppletContext().showStatus(s);
+        }
         //else System.out.println(s);
     }
 
@@ -145,15 +148,15 @@ public class Globals {
     /** If we are running as an applet, ask the browser to display the
      *  given URL. */
     public static void showDocument(URL url) {
-        if(_appletContext != null)
-            _appletContext.showDocument(url);
+        if(getAppletContext() != null)
+            _applet.getAppletContext().showDocument(url);
     }
 
     /** If we are running as an applet, ask the browser to display the
      *  given URL. */
     public static void showDocument(URL url, String target) {
-        if(_appletContext != null)
-            _appletContext.showDocument(url, target);
+        if(getAppletContext() != null)
+            _applet.getAppletContext().showDocument(url, target);
     }
 
     /** If we are running as an applet, ask the browser to display the
@@ -169,8 +172,9 @@ public class Globals {
     /** Get an image from the given URL (usually a gif file). */
     public static Image getImage(URL url) {
         Image img = null;
-        if(_appletContext != null)
-            img = _appletContext.getImage(url);
+        if(getAppletContext() != null) {
+            img = getAppletContext().getImage(url);
+        }
         if(_tracker != null && img != null)
             _tracker.addImage(img, 1);
         return img;
@@ -180,8 +184,8 @@ public class Globals {
     public static Image getImage(String urlStr) {
         try {
             Image img = null;
-            if(_appletContext != null)
-                img = _appletContext.getImage(new URL(urlStr));
+            if(getAppletContext() != null)
+                img = getAppletContext().getImage(new URL(urlStr));
             if(_tracker != null && img != null)
                 _tracker.addImage(img, 1);
             return img;
@@ -206,7 +210,7 @@ public class Globals {
      *  case of an applet, not all windows are closed. */
     public static void quit() {
         showStatus("Quiting"); // Needs-More-Work: put up "are you sure?" dialog
-        if(_appletContext != null)
+        if(_applet.getAppletContext() != null)
             _applet.destroy();
         // Needs-More-Work: now it is up to the Applet to close all windows.
         System.exit(0);     // in any case, try to exit

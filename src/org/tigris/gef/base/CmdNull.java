@@ -31,9 +31,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.util.*;
-
 /** Cmd to do nothing.  This might make some other code simpler.  For
  *  example, keybinding query funcitons can return a "real" Cmd if
  *  there is one bound to the given key, and an instance of CmdNull if

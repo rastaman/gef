@@ -31,12 +31,8 @@
 package org.tigris.gef.base;
 
 import java.awt.datatransfer.*;  // Clipboard, Transferable, DataFlavor, etc.
-import java.awt.event.*;         // New event model.
-import java.io.*;                // Object serialization streams.
-import java.util.zip.*;          // Data compression/decompression streams.
 import java.util.Enumeration;    // To store the scribble in.
 import java.util.Vector;
-import java.util.Properties;     // To store printing preferences in.
 
 import org.tigris.gef.presentation.*;
 

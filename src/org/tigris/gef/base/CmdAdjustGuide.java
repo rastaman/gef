@@ -28,8 +28,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.Event;
-
 /** An Cmd to modify the way that the Guides constrain the mouse
  *  points entered by the user.  This does not change the apperance of
  *  the LayerGrid.  Needs-More-Work: Should put up a grid preference

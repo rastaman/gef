@@ -31,8 +31,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.Event;
-
 import org.tigris.gef.presentation.*;
 
 /** Cmd to insert a new point after the selected (last manipulated)

@@ -30,8 +30,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.Event;
-
 /** Cmd to delete Figs from view. This does not
  *  do anything to any underlying Net or other model, it is strictly a
  *  manipulation of graphical objects.  Normally CmdDispose is the
