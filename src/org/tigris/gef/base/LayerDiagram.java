@@ -37,9 +37,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPainter;
 
@@ -60,7 +58,6 @@ public class LayerDiagram extends Layer {
 
     /** A counter so that layers have default names like 'One', 'Two', ... */
     protected static int _nextLayerNumbered = 1;
-    private Rectangle _clipBounds = new Rectangle();
 
     private static Log LOG = LogFactory.getLog(LayerDiagram.class);
     
@@ -280,18 +277,19 @@ public class LayerDiagram extends Layer {
      *  If painter is null, the Fig's are painted directly.
      */
     public void paintContents(Graphics g, FigPainter painter) {
-        g.getClipBounds(_clipBounds);
+        Rectangle clipBounds = g.getClipBounds();
+        Iterator figsIter;
         synchronized(_contents) {
-            Iterator figs = (new ArrayList(_contents)).iterator();
-            while(figs.hasNext()) {
-                Fig fig = (Fig)figs.next();
-                if(_clipBounds == null || fig.intersects(_clipBounds)) {
-                    if(painter == null) {
-                        fig.paint(g);
-                    }
-                    else {
-                        painter.paint(g, fig);
-                    }
+            figsIter = (new ArrayList(_contents)).iterator();
+        }
+        while(figsIter.hasNext()) {
+            Fig fig = (Fig)figsIter.next();
+            if(clipBounds == null || fig.intersects(clipBounds)) {
+                if(painter == null) {
+                    fig.paint(g);
+                }
+                else {
+                    painter.paint(g, fig);
                 }
             }
         }
