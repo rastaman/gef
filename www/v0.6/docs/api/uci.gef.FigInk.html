@@ -1,0 +1,160 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.FigInk | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.FigInk
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.FigInk
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.Fig.html">uci.gef.Fig</A>
+           |
+           +----<A HREF="uci.gef.FigPoly.html">uci.gef.FigPoly</A>
+                   |
+                   +----uci.gef.FigInk
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>FigInk</STRONG>
+     extends uci.gef.<A HREF="uci.gef.FigPoly.html">FigPoly</A>
+{
+          // Constructors 2
+     public <A HREF="#FigInk()">FigInk</A>();
+     public <A HREF="#FigInk(int, int)">FigInk</A>(int, int);
+
+          // Methods 4
+     public boolean <A HREF="#contains(int, int)">contains</A>(int, int);
+     public void <A HREF="#setFilled(boolean)">setFilled</A>(boolean);
+     public void <A HREF="#setLineWidth(int)">setLineWidth</A>(int);
+     public void <A HREF="#setRectilinear(boolean)">setRectilinear</A>(boolean);
+}
+</PRE>
+<P>
+<DL>
+<P>
+Primitive Fig to paint Ink on a LayerDiagram. Ink is like an open
+  polygon with no fill.  The main difference between FigInk and
+  FigPoly is in the way that they are created.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.FigPoly.html">FigPoly</A>, <A HREF="uci.gef.ModeCreateFigInk.html">ModeCreateFigInk</A><P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="FigInk"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="FigInk()">FigInk</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public FigInk() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new FigInk w/ the given attributes.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="FigInk"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="FigInk(int, int)">FigInk</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public FigInk(int x, 
+                 int y) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new FigInk w/ the given point and attributes.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setLineWidth"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setLineWidth(int)">setLineWidth</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setLineWidth(int w) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Line width of ink must be always be 1, so do nothing
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#setLineWidth(int)">setLineWidth</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setFilled"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setFilled(boolean)">setFilled</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setFilled(boolean f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+FigInks can never be filled, so do nothing.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#setFilled(boolean)">setFilled</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setRectilinear"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setRectilinear(boolean)">setRectilinear</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setRectilinear(boolean r) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+FigInks can never be rectilinear, so do nothing.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.FigPoly.html#setRectilinear(boolean)">setRectilinear</A> in class <A HREF="uci.gef.FigPoly.html">FigPoly</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="contains"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="contains(int, int)">contains</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean contains(int x, 
+                           int y) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.FigPoly.html#contains(int, int)">contains</A> in class <A HREF="uci.gef.FigPoly.html">FigPoly</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

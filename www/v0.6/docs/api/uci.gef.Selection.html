@@ -1,0 +1,655 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.Selection | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.Selection
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.Selection
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----uci.gef.Selection
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public abstract class  <STRONG>Selection</STRONG>
+     extends java.lang.<A HREF="java.lang.Object.html">Object</A>
+     implements java.io.<A HREF="java.io.Serializable.html">Serializable</A>, 
+                java.awt.event.<A HREF="java.awt.event.MouseListener.html">MouseListener</A>, 
+                java.awt.event.<A HREF="java.awt.event.MouseMotionListener.html">MouseMotionListener</A>, 
+                java.awt.event.<A HREF="java.awt.event.KeyListener.html">KeyListener</A>
+{
+          // Fields 3
+     public static final int <A HREF="#BORDER_WIDTH">BORDER_WIDTH</A>;
+     public static final int <A HREF="#HAND_SIZE">HAND_SIZE</A>;
+     protected <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#_content">_content</A>;
+
+          // Constructors 1
+     public <A HREF="#Selection(uci.gef.Fig)">Selection</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+
+          // Methods 35
+     public void <A HREF="#align(int)">align</A>(int);
+     public void <A HREF="#align(java.awt.Rectangle, int, uci.gef.Editor)">align</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>, int, <A CLASS=nound HREF="uci.gef.Editor.html">Editor</A>);
+     public boolean <A HREF="#contains(int, int)">contains</A>(int, int);
+     public final boolean <A HREF="#contains(java.awt.Point)">contains</A>(<A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+     public boolean <A HREF="#contains(uci.gef.Fig)">contains</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#damage()">damage</A>();
+     public void <A HREF="#delete()">delete</A>();
+     public void <A HREF="#dispose()">dispose</A>();
+     public abstract void <A HREF="#dragHandle(int, int, int, int, uci.gef.Handle)">dragHandle</A>(int, int, int, int, <A CLASS=nound HREF="uci.gef.Handle.html">Handle</A>);
+     public void <A HREF="#endTrans()">endTrans</A>();
+     public <A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A> <A HREF="#getBounds()">getBounds</A>();
+     public <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#getContent()">getContent</A>();
+     public <A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A> <A HREF="#getContentBounds()">getContentBounds</A>();
+     public <A CLASS=nound HREF="java.awt.Point.html">Point</A> <A HREF="#getLocation()">getLocation</A>();
+     public boolean <A HREF="#getLocked()">getLocked</A>();
+     public boolean <A HREF="#hit(java.awt.Rectangle)">hit</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>);
+     public final int <A HREF="#hitHandle(int, int, int, int)">hitHandle</A>(int, int, int, int);
+     public abstract int <A HREF="#hitHandle(java.awt.Rectangle)">hitHandle</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>);
+     public void <A HREF="#keyPressed(java.awt.event.KeyEvent)">keyPressed</A>(<A CLASS=nound HREF="java.awt.event.KeyEvent.html">KeyEvent</A>);
+     public void <A HREF="#keyReleased(java.awt.event.KeyEvent)">keyReleased</A>(<A CLASS=nound HREF="java.awt.event.KeyEvent.html">KeyEvent</A>);
+     public void <A HREF="#keyTyped(java.awt.event.KeyEvent)">keyTyped</A>(<A CLASS=nound HREF="java.awt.event.KeyEvent.html">KeyEvent</A>);
+     public void <A HREF="#mouseClicked(java.awt.event.MouseEvent)">mouseClicked</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseDragged(java.awt.event.MouseEvent)">mouseDragged</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseEntered(java.awt.event.MouseEvent)">mouseEntered</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseExited(java.awt.event.MouseEvent)">mouseExited</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseMoved(java.awt.event.MouseEvent)">mouseMoved</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mousePressed(java.awt.event.MouseEvent)">mousePressed</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public abstract void <A HREF="#paint(java.awt.Graphics)">paint</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     public void <A HREF="#print(java.awt.Graphics)">print</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     public void <A HREF="#reorder(int, uci.gef.Layer)">reorder</A>(int, <A CLASS=nound HREF="uci.gef.Layer.html">Layer</A>);
+     public void <A HREF="#setcontent(uci.gef.Fig)">setcontent</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#startTrans()">startTrans</A>();
+     public void <A HREF="#stuffBounds(java.awt.Rectangle)">stuffBounds</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>);
+     public void <A HREF="#translate(int, int)">translate</A>(int, int);
+}
+</PRE>
+<P>
+<DL>
+<P>
+This class represents the "selection" object that is used when you
+  select one or more Figs in the drawing window. Selections handle
+  the display of handles or whatever graphics indicate that
+  something is selected, and they process events to manipulate the
+  selected Fig.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.Fig.html">Fig</A><P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Extended By: </B>
+<DD><A HREF="uci.gef.SelectionMove.html">SelectionMove</A>, <A HREF="uci.gef.SelectionNoop.html">SelectionNoop</A>, <A HREF="uci.gef.SelectionReshape.html">SelectionReshape</A>, <A HREF="uci.gef.SelectionResize.html">SelectionResize</A>, <A HREF="uci.gef.SelectionRotate.html">SelectionRotate</A><P>
+<DT><B>Returned By: </B>
+<DD>SelectionManager.<A HREF="uci.gef.SelectionManager.html#findSelectionFor(uci.gef.Fig)">findSelectionFor()</A>, SelectionManager.<A HREF="uci.gef.SelectionManager.html#makeSelectionFor(uci.gef.Fig)">makeSelectionFor()</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="HAND_SIZE"><FONT COLOR="#0000FF">&middot;</FONT> HAND_SIZE</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final int HAND_SIZE
+</PRE>
+<BLOCKQUOTE>
+<P>
+The size of the little handle boxes.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="BORDER_WIDTH"><FONT COLOR="#0000FF">&middot;</FONT> BORDER_WIDTH</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final int BORDER_WIDTH
+</PRE>
+<BLOCKQUOTE>
+<P>
+The margin between the contents bbox and the frame
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_content"><FONT COLOR="#FF00FF">&middot;</FONT> _content</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.Fig.html">Fig</A> _content
+</PRE>
+<BLOCKQUOTE>
+<P>
+_content refers to the Fig that is selected.
+<P>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Selection"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Selection(uci.gef.Fig)">Selection</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Selection(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new selection. Empty, subclases can override
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getContent"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getContent()">getContent</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Fig.html">Fig</A> getContent() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the Fig that was selected
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setcontent"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setcontent(uci.gef.Fig)">setcontent</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setcontent(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getLocked"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getLocked()">getLocked</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean getLocked() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="contains"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="contains(uci.gef.Fig)">contains</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean contains(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply true if this selection contains the given Fig
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="print"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="print(java.awt.Graphics)">print</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void print(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Do nothing. Selections shoudl not appear in print outs.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paint"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paint(java.awt.Graphics)">paint</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract void paint(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Abstract method to display the selection handleds.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="startTrans"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="startTrans()">startTrans</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void startTrans() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Tell the content to start a transaction that causes damage
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="endTrans"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="endTrans()">endTrans</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void endTrans() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Tell the content to end a transaction that causes damage
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getLocation"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getLocation()">getLocation</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Point.html">Point</A> getLocation() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the position of the Selection. That is defined to be the
+  upper left corner of my bounding box.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="damage"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="damage()">damage</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void damage() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+This selection object needs to be redrawn, register its damaged
+  area within the given Editor
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="contains"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="contains(java.awt.Point)">contains</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public final boolean contains(<A HREF="java.awt.Point.html">Point</A> pnt) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply true if the given point is inside this selection
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="contains"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="contains(int, int)">contains</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean contains(int x, 
+                           int y) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="hit"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="hit(java.awt.Rectangle)">hit</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean hit(<A HREF="java.awt.Rectangle.html">Rectangle</A> r) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply true if the given Rectangle is inside or overlapps me
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="hitHandle"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="hitHandle(java.awt.Rectangle)">hitHandle</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract int hitHandle(<A HREF="java.awt.Rectangle.html">Rectangle</A> r) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Find which handle the user clicked on, or return -1 if none.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="hitHandle"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="hitHandle(int, int, int, int)">hitHandle</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public final int hitHandle(int x, 
+                              int y, 
+                              int w, 
+                              int h) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="reorder"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="reorder(int, uci.gef.Layer)">reorder</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void reorder(int func, 
+                       <A HREF="uci.gef.Layer.html">Layer</A> lay) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Tell the selected Fig to move to front or back, etc.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="align"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="align(int)">align</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void align(int direction) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Do nothing because alignment only makes sense for multiple
+ selections
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="align"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="align(java.awt.Rectangle, int, uci.gef.Editor)">align</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void align(<A HREF="java.awt.Rectangle.html">Rectangle</A> r, 
+                     int direction, 
+                     <A HREF="uci.gef.Editor.html">Editor</A> ed) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="translate"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="translate(int, int)">translate</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void translate(int dx, 
+                         int dy) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+When the selection is told to move, move the selected
+ Fig
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getBounds"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getBounds()">getBounds</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Rectangle.html">Rectangle</A> getBounds() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+The bounding box of the selection is the bbox of the contained Fig.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="stuffBounds"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="stuffBounds(java.awt.Rectangle)">stuffBounds</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void stuffBounds(<A HREF="java.awt.Rectangle.html">Rectangle</A> r) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Returns my bounding box in the given Rectangle.  This avoids
+  memory allocation.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="delete"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="delete()">delete</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void delete() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+If the selection is being deleted, the selected object must be
+ deleted also. This is different from just deselecting the
+ selected Fig, to do that use one of the deselect operations in
+ Editor.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.Editor.html#deselect">deselect</A></BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="dispose"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="dispose()">dispose</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void dispose() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="dragHandle"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="dragHandle(int, int, int, int, uci.gef.Handle)">dragHandle</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract void dragHandle(int mx, 
+                                   int my, 
+                                   int an_x, 
+                                   int an_y, 
+                                   <A HREF="uci.gef.Handle.html">Handle</A> h) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Move one of the handles of a selected Fig.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getContentBounds"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getContentBounds()">getContentBounds</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Rectangle.html">Rectangle</A> getContentBounds() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the bounding box of the selected Figs, does not
+  include space used by handles.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="keyTyped"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="keyTyped(java.awt.event.KeyEvent)">keyTyped</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void keyTyped(<A HREF="java.awt.event.KeyEvent.html">KeyEvent</A> ke) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Pass any events along to the selected Fig.
+ Subclasses of Selection may reimplement this to add
+ functionality.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.KeyListener.html#keyTyped(java.awt.event.KeyEvent)">keyTyped</A> in interface <A HREF="java.awt.event.KeyListener.html">KeyListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="keyPressed"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="keyPressed(java.awt.event.KeyEvent)">keyPressed</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void keyPressed(<A HREF="java.awt.event.KeyEvent.html">KeyEvent</A> ke) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.KeyListener.html#keyPressed(java.awt.event.KeyEvent)">keyPressed</A> in interface <A HREF="java.awt.event.KeyListener.html">KeyListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="keyReleased"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="keyReleased(java.awt.event.KeyEvent)">keyReleased</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void keyReleased(<A HREF="java.awt.event.KeyEvent.html">KeyEvent</A> ke) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.KeyListener.html#keyReleased(java.awt.event.KeyEvent)">keyReleased</A> in interface <A HREF="java.awt.event.KeyListener.html">KeyListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseMoved"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseMoved(java.awt.event.MouseEvent)">mouseMoved</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseMoved(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseMotionListener.html#mouseMoved(java.awt.event.MouseEvent)">mouseMoved</A> in interface <A HREF="java.awt.event.MouseMotionListener.html">MouseMotionListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseDragged"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseDragged(java.awt.event.MouseEvent)">mouseDragged</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseDragged(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseMotionListener.html#mouseDragged(java.awt.event.MouseEvent)">mouseDragged</A> in interface <A HREF="java.awt.event.MouseMotionListener.html">MouseMotionListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mousePressed"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mousePressed(java.awt.event.MouseEvent)">mousePressed</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mousePressed(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mousePressed(java.awt.event.MouseEvent)">mousePressed</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseReleased"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseReleased(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseClicked"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseClicked(java.awt.event.MouseEvent)">mouseClicked</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseClicked(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseClicked(java.awt.event.MouseEvent)">mouseClicked</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseEntered"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseEntered(java.awt.event.MouseEvent)">mouseEntered</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseEntered(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseEntered(java.awt.event.MouseEvent)">mouseEntered</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseExited"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseExited(java.awt.event.MouseEvent)">mouseExited</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseExited(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseExited(java.awt.event.MouseEvent)">mouseExited</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

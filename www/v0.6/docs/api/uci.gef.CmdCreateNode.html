@@ -1,0 +1,164 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.CmdCreateNode | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.CmdCreateNode
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.CmdCreateNode
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="AbstractAction.html">AbstractAction</A>
+           |
+           +----<A HREF="uci.gef.Cmd.html">uci.gef.Cmd</A>
+                   |
+                   +----uci.gef.CmdCreateNode
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>CmdCreateNode</STRONG>
+     extends uci.gef.<A HREF="uci.gef.Cmd.html">Cmd</A>
+{
+          // Fields 1
+     public static <A CLASS=nound HREF="java.lang.Class.html">Class</A> <A HREF="#DEFAULT_NODE_CLASS">DEFAULT_NODE_CLASS</A>;
+
+          // Constructors 3
+     public <A HREF="#CmdCreateNode(java.lang.Class, boolean, java.lang.String)">CmdCreateNode</A>(<A CLASS=nound HREF="java.lang.Class.html">Class</A>, boolean, <A CLASS=nound HREF="java.lang.String.html">String</A>);
+     public <A HREF="#CmdCreateNode(java.lang.Class, java.lang.String)">CmdCreateNode</A>(<A CLASS=nound HREF="java.lang.Class.html">Class</A>, <A CLASS=nound HREF="java.lang.String.html">String</A>);
+     public <A HREF="#CmdCreateNode(java.util.Hashtable, java.lang.String)">CmdCreateNode</A>(<A CLASS=nound HREF="java.util.Hashtable.html">Hashtable</A>, <A CLASS=nound HREF="java.lang.String.html">String</A>);
+
+          // Methods 2
+     public void <A HREF="#doIt()">doIt</A>();
+     public void <A HREF="#undoIt()">undoIt</A>();
+}
+</PRE>
+<P>
+<DL>
+<P>
+Editor Cmd to create a new FigNode on a new NetNode. When
+  this Cmd is executed it makes the new objects as per its
+  arguments, and then it sets the global next mode to ModePlace so
+  that the user can place the new node in any editor window.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.ModePlace.html">ModePlace</A>, <A HREF="uci.gef.NetNode.html">NetNode</A>, <A HREF="uci.gef.FigNode.html">FigNode</A><P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="DEFAULT_NODE_CLASS"><FONT COLOR="#0000FF">&middot;</FONT> DEFAULT_NODE_CLASS</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static <A HREF="java.lang.Class.html">Class</A> DEFAULT_NODE_CLASS
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="CmdCreateNode"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="CmdCreateNode(java.util.Hashtable, java.lang.String)">CmdCreateNode</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public CmdCreateNode(<A HREF="java.util.Hashtable.html">Hashtable</A> args, 
+                        <A HREF="java.lang.String.html">String</A> name) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new Cmd with the given arguments for node class.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="CmdCreateNode"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="CmdCreateNode(java.lang.Class, java.lang.String)">CmdCreateNode</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public CmdCreateNode(<A HREF="java.lang.Class.html">Class</A> nodeClass, 
+                        <A HREF="java.lang.String.html">String</A> name) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new Cmd with the given classes for the NetNode
+  and its FigNode.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="CmdCreateNode"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="CmdCreateNode(java.lang.Class, boolean, java.lang.String)">CmdCreateNode</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public CmdCreateNode(<A HREF="java.lang.Class.html">Class</A> nodeClass, 
+                        boolean sticky, 
+                        <A HREF="java.lang.String.html">String</A> name) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new Cmd with the given classes for the NetNode
+  and its FigNode, and set the global sticky mode boolean to
+  the given value. This allows the user to place several nodes
+  rapidly.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="doIt"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="doIt()">doIt</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void doIt() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Actually instanciate the NetNode and FigNode objects and
+ set the global next mode to ModePlace
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Cmd.html#doIt()">doIt</A> in class <A HREF="uci.gef.Cmd.html">Cmd</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="undoIt"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="undoIt()">undoIt</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void undoIt() </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Cmd.html#undoIt()">undoIt</A> in class <A HREF="uci.gef.Cmd.html">Cmd</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

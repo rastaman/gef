@@ -1,0 +1,298 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.util.Progress | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.util.Progress
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.util.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.util.Progress
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="java.awt.Component.html">java.awt.Component</A>
+           |
+           +----<A HREF="java.awt.Container.html">java.awt.Container</A>
+                   |
+                   +----<A HREF="java.awt.Window.html">java.awt.Window</A>
+                           |
+                           +----<A HREF="java.awt.Frame.html">java.awt.Frame</A>
+                                   |
+                                   +----uci.util.Progress
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>Progress</STRONG>
+     extends java.awt.<A HREF="java.awt.Frame.html">Frame</A>
+{
+          // Constructors 1
+     public <A HREF="#Progress(java.lang.String, int)">Progress</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>, int);
+
+          // Methods 13
+     public static void <A HREF="#main(java.lang.String[])">main</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>[]);
+
+     public boolean <A HREF="#action(java.awt.Event, java.lang.Object)">action</A>(<A CLASS=nound HREF="java.awt.Event.html">Event</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#advance()">advance</A>();
+     protected void <A HREF="#build()">build</A>();
+     public boolean <A HREF="#canceled()">canceled</A>();
+     public int <A HREF="#current()">current</A>();
+     public boolean <A HREF="#handleEvent(java.awt.Event)">handleEvent</A>(<A CLASS=nound HREF="java.awt.Event.html">Event</A>);
+     public void <A HREF="#paint(java.awt.Graphics)">paint</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     protected void <A HREF="#paintBar()">paintBar</A>();
+     public int <A HREF="#percentComplete()">percentComplete</A>();
+     protected int <A HREF="#pixelsComplete()">pixelsComplete</A>();
+     public void <A HREF="#setMessage(java.lang.String)">setMessage</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>);
+     public int <A HREF="#total()">total</A>();
+}
+</PRE>
+<P>
+<DL>
+<P>
+A general purpose progress bar dialog box that shows percentage
+  completion of some long running operation, and allows the user to
+  cancel. Clients of this code should construct a Progress object with
+  a header and an integer for the total amount of work that will be
+  done. Then do their own processing, calling advance() every so
+  often. Eventually, the number of advance() calls should equal the
+  total amount of work specified in the constructor call.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="#Preloader">Preloader</A>, <A HREF="#uci.gef.Example">uci.gef.Example</A><P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Progress"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Progress(java.lang.String, int)">Progress</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Progress(<A HREF="java.lang.String.html">String</A> header, 
+                   int total) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new Progress object.
+<P>
+<TABLE WIDTH="87%" BORDER=1 CELLPADDING=3 CELLSPACING=0> <TR VALIGN=TOP BGCOLOR="#CCCCCC"> <TD><B>Parameter</B></TD> <TD><B>Description</B></TD> </TR>
+<TR VALIGN=TOP> <TD><I> header</I></TD> <TD>Describes the long running task.</TD></TR>
+<TR VALIGN=TOP> <TD><I> total</I></TD> <TD>Number of units of work needed to complete the task.</TD></TR>
+</TABLE><P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="advance"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="advance()">advance</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void advance() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Client code calls advance() from inside the code for its long
+  term task whenever one unit of work is completed. The number of
+  calls shuold equal the total work specified in the contructor.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="current"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="current()">current</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int current() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return amount of work done so far
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="total"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="total()">total</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int total() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Returns total work to be done
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="percentComplete"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="percentComplete()">percentComplete</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int percentComplete() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Returns percentage of total work done so far, as an integer in
+  the range 0..100
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="canceled"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="canceled()">canceled</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean canceled() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return true if the user has pressed the cancel button
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setMessage"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setMessage(java.lang.String)">setMessage</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setMessage(<A HREF="java.lang.String.html">String</A> m) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set the message text that describes the step that the long
+ running task is currently on.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="pixelsComplete"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="pixelsComplete()">pixelsComplete</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int pixelsComplete() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Returns the proper size of the progress bar in pixels.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="build"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="build()">build</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void build() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Build the Frame needed to display the progress bar.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paint"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paint(java.awt.Graphics)">paint</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void paint(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Repaint the progress bar.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.awt.Container.html#paint(java.awt.Graphics)">paint</A> in class <A HREF="java.awt.Container.html">Container</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="action"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="action(java.awt.Event, java.lang.Object)">action</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean action(<A HREF="java.awt.Event.html">Event</A> e, 
+                         <A HREF="java.lang.Object.html">Object</A> what) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Checks to see if the user clicked the cancel button. It is the
+  client class's responsibility to check the canceled flag and
+  hide and dispose of this window when the operation in progress
+  is canceled.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.awt.Component.html#action(java.awt.Event, java.lang.Object)">action</A> in class <A HREF="java.awt.Component.html">Component</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="handleEvent"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="handleEvent(java.awt.Event)">handleEvent</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean handleEvent(<A HREF="java.awt.Event.html">Event</A> e) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.awt.Component.html#handleEvent(java.awt.Event)">handleEvent</A> in class <A HREF="java.awt.Component.html">Component</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paintBar"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paintBar()">paintBar</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void paintBar() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Paint the progress bar and percent complete text.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="main"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="main(java.lang.String[])">main</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static void main(<A HREF="java.lang.String.html">String</A>[] argv) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+A main() to test out and demostrate the progress bar code
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.util.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

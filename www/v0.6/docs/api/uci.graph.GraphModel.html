@@ -1,0 +1,215 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.graph.GraphModel | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Interface uci.graph.GraphModel
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.graph.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Interface uci.graph.GraphModel
+</FONT></B>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public interface  <STRONG>GraphModel</STRONG>
+{
+          // Methods 10
+     public abstract void <A HREF="#addGraphEventListener(uci.graph.GraphListener)">addGraphEventListener</A>(<A CLASS=nound HREF="uci.graph.GraphListener.html">GraphListener</A>);
+     public abstract <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#getDestPort(java.lang.Object)">getDestPort</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public abstract <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#getEdges()">getEdges</A>();
+     public abstract <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#getInEdges(java.lang.Object)">getInEdges</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public abstract <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#getNodes()">getNodes</A>();
+     public abstract <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#getOutEdges(java.lang.Object)">getOutEdges</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public abstract <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#getOwner(java.lang.Object)">getOwner</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public abstract <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#getPorts(java.lang.Object)">getPorts</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public abstract <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#getSourcePort(java.lang.Object)">getSourcePort</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public abstract void <A HREF="#removeGraphEventListener(uci.graph.GraphListener)">removeGraphEventListener</A>(<A CLASS=nound HREF="uci.graph.GraphListener.html">GraphListener</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+This interface provides a facade to a net-level
+  representation. Similiar in concept to the Swing class
+  TreeModel.<p>
+
+ The idea is not to have a widget (like JGraph) storing all the
+ information that it should display, and the programmer having to
+ keep the widget's data in synch with the application's data.
+ Instead, the programmer defines a Model class that gives the widget
+ access to the application data.  That way there is only one copy of
+ the data and nothing can get out of synch.  If you don't have your
+ own application data objects, there is a Default implementation of
+ the Model that will store it for you.<p>
+
+ Instead of asking application programmers to subclass their data
+ objects from some predefined base class (like NetNode), this
+ interface allows the use of any application object as a node, port,
+ or edge.  This makes it much easier to add a visualization to an
+ existing application.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.graph.DefaultGraphModel.html">DefaultGraphModel</A>, <A HREF="#AdjacencyMatrixGraphModel">AdjacencyMatrixGraphModel</A>, <A HREF="#uci.graph.demo.WordTransforms">uci.graph.demo.WordTransforms</A><P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Extended By: </B>
+<DD><A HREF="uci.graph.MutableGraphModel.html">MutableGraphModel</A><P>
+<DT><B>Returned By: </B>
+<DD>Diagram.<A HREF="uci.gef.Diagram.html#getGraphModel()">getGraphModel()</A>, Editor.<A HREF="uci.gef.Editor.html#getGraphModel()">getGraphModel()</A>, JGraphFrame.<A HREF="uci.gef.JGraphFrame.html#getGraphModel()">getGraphModel()</A>, JGraph.<A HREF="uci.gef.JGraph.html#getGraphModel()">getGraphModel()</A>, LayerPerspective.<A HREF="uci.gef.LayerPerspective.html#getGraphModel()">getGraphModel()</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getNodes"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getNodes()">getNodes</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract <A HREF="java.util.Vector.html">Vector</A> getNodes() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return all nodes in the graph
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getEdges"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getEdges()">getEdges</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract <A HREF="java.util.Vector.html">Vector</A> getEdges() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return all nodes in the graph
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPorts"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPorts(java.lang.Object)">getPorts</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract <A HREF="java.util.Vector.html">Vector</A> getPorts(<A HREF="java.lang.Object.html">Object</A> nodeOrEdge) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return all ports on node or edge
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getOwner"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getOwner(java.lang.Object)">getOwner</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract <A HREF="java.lang.Object.html">Object</A> getOwner(<A HREF="java.lang.Object.html">Object</A> port) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return the node or edge that owns the given port
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getInEdges"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getInEdges(java.lang.Object)">getInEdges</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract <A HREF="java.util.Vector.html">Vector</A> getInEdges(<A HREF="java.lang.Object.html">Object</A> port) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return all edges going to given port
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getOutEdges"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getOutEdges(java.lang.Object)">getOutEdges</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract <A HREF="java.util.Vector.html">Vector</A> getOutEdges(<A HREF="java.lang.Object.html">Object</A> port) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return all edges going from given port
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getSourcePort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getSourcePort(java.lang.Object)">getSourcePort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract <A HREF="java.lang.Object.html">Object</A> getSourcePort(<A HREF="java.lang.Object.html">Object</A> edge) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return one end of an edge
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getDestPort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getDestPort(java.lang.Object)">getDestPort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract <A HREF="java.lang.Object.html">Object</A> getDestPort(<A HREF="java.lang.Object.html">Object</A> edge) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return  the other end of an edge
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="addGraphEventListener"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="addGraphEventListener(uci.graph.GraphListener)">addGraphEventListener</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract void addGraphEventListener(<A HREF="uci.graph.GraphListener.html">GraphListener</A> listener) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removeGraphEventListener"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removeGraphEventListener(uci.graph.GraphListener)">removeGraphEventListener</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract void removeGraphEventListener(<A HREF="uci.graph.GraphListener.html">GraphListener</A> listener) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.graph.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

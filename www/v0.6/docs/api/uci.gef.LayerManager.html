@@ -1,0 +1,450 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.LayerManager | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.LayerManager
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.LayerManager
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----uci.gef.LayerManager
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>LayerManager</STRONG>
+     extends java.lang.<A HREF="java.lang.Object.html">Object</A>
+     implements java.io.<A HREF="java.io.Serializable.html">Serializable</A>
+{
+          // Fields 3
+     protected <A CLASS=nound HREF="uci.gef.Layer.html">Layer</A> <A HREF="#_activeLayer">_activeLayer</A>;
+     public <A CLASS=nound HREF="uci.gef.Editor.html">Editor</A> <A HREF="#_editor">_editor</A>;
+     protected <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#_layers">_layers</A>;
+
+          // Constructors 1
+     public <A HREF="#LayerManager(uci.gef.Editor)">LayerManager</A>(<A CLASS=nound HREF="uci.gef.Editor.html">Editor</A>);
+
+          // Methods 22
+     public void <A HREF="#add(uci.gef.Fig)">add</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#addLayer(uci.gef.Layer)">addLayer</A>(<A CLASS=nound HREF="uci.gef.Layer.html">Layer</A>);
+     public void <A HREF="#bringForward(uci.gef.Fig)">bringForward</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#bringToFront(uci.gef.Fig)">bringToFront</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public <A CLASS=nound HREF="java.util.Enumeration.html">Enumeration</A> <A HREF="#elements()">elements</A>();
+     public <A CLASS=nound HREF="uci.gef.Layer.html">Layer</A> <A HREF="#findLayerNamed(java.lang.String)">findLayerNamed</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>);
+     public <A CLASS=nound HREF="uci.gef.Layer.html">Layer</A> <A HREF="#getActiveLayer()">getActiveLayer</A>();
+     public <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#getContents()">getContents</A>();
+     public <A CLASS=nound HREF="uci.gef.Editor.html">Editor</A> <A HREF="#getEditor()">getEditor</A>();
+     public <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#hit(java.awt.Rectangle)">hit</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>);
+     public void <A HREF="#paint(java.awt.Graphics)">paint</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     public <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#presentationFor(java.lang.Object)">presentationFor</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#remove(uci.gef.Fig)">remove</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#removeAll()">removeAll</A>();
+     public void <A HREF="#removeAllLayers()">removeAllLayers</A>();
+     public void <A HREF="#removeLayer(uci.gef.Layer)">removeLayer</A>(<A CLASS=nound HREF="uci.gef.Layer.html">Layer</A>);
+     public void <A HREF="#reorder(uci.gef.Fig, int)">reorder</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>, int);
+     public void <A HREF="#replaceActiveLayer(uci.gef.Layer)">replaceActiveLayer</A>(<A CLASS=nound HREF="uci.gef.Layer.html">Layer</A>);
+     public void <A HREF="#sendBackward(uci.gef.Fig)">sendBackward</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#sendToBack(uci.gef.Fig)">sendToBack</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#setActiveLayer(uci.gef.Layer)">setActiveLayer</A>(<A CLASS=nound HREF="uci.gef.Layer.html">Layer</A>);
+     public void <A HREF="#setEditor(uci.gef.Editor)">setEditor</A>(<A CLASS=nound HREF="uci.gef.Editor.html">Editor</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+This class implements a kind of Layer that contains other
+  Layers. Layer's can be nested in an is-part-of tree. That tree can
+  be walked to paint the contents of the view, find what the user
+  clicked on, find a layer by name, save the contents to a file,
+  etc.
+<P>
+</DL>
+<P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Returned By: </B>
+<DD>Editor.<A HREF="uci.gef.Editor.html#getLayerManager()">getLayerManager()</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_layers"><FONT COLOR="#FF00FF">&middot;</FONT> _layers</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.util.Vector.html">Vector</A> _layers
+</PRE>
+<BLOCKQUOTE>
+<P>
+The Layer's contained within this LayerManager.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_activeLayer"><FONT COLOR="#FF00FF">&middot;</FONT> _activeLayer</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.Layer.html">Layer</A> _activeLayer
+</PRE>
+<BLOCKQUOTE>
+<P>
+In most editors one Layer is the active layer and all mouse
+  clicks go to the contents of that layer.  For now I assume this,
+  but I would like to avoid this assumption in the future.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_editor"><FONT COLOR="#FF00FF">&middot;</FONT> _editor</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Editor.html">Editor</A> _editor
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="LayerManager"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="LayerManager(uci.gef.Editor)">LayerManager</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public LayerManager(<A HREF="uci.gef.Editor.html">Editor</A> editor) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new LayerManager with no sublayers.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="addLayer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="addLayer(uci.gef.Layer)">addLayer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void addLayer(<A HREF="uci.gef.Layer.html">Layer</A> lay) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Add a sublayer to this layer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removeAllLayers"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removeAllLayers()">removeAllLayers</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void removeAllLayers() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="replaceActiveLayer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="replaceActiveLayer(uci.gef.Layer)">replaceActiveLayer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void replaceActiveLayer(<A HREF="uci.gef.Layer.html">Layer</A> lay) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removeLayer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removeLayer(uci.gef.Layer)">removeLayer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void removeLayer(<A HREF="uci.gef.Layer.html">Layer</A> lay) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Remove a sublayer to this layer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="findLayerNamed"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="findLayerNamed(java.lang.String)">findLayerNamed</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Layer.html">Layer</A> findLayerNamed(<A HREF="java.lang.String.html">String</A> aName) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Find a layer with the given name somewhere in the layer tree.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setActiveLayer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setActiveLayer(uci.gef.Layer)">setActiveLayer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setActiveLayer(<A HREF="uci.gef.Layer.html">Layer</A> lay) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Make one of my layers the active one.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getActiveLayer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getActiveLayer()">getActiveLayer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Layer.html">Layer</A> getActiveLayer() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply which layer is the active one. In case LayerManager's
+  are nested, this works recursively.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getContents"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getContents()">getContents</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Vector.html">Vector</A> getContents() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+When an editor or some tool wants to look at all the
+  Figs that are contained in this layer, reply the
+  contents of my active layer. Maybe this should really reply _all_
+  the contents of all layers.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paint"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paint(java.awt.Graphics)">paint</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void paint(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Paint the contents of this LayerManager by painting all layers.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="add"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="add(uci.gef.Fig)">add</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void add(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+When the user tries to add a new Fig to a
+  LayerManager, pass that addition along to my active layer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="remove"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="remove(uci.gef.Fig)">remove</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void remove(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+When the user tries to remove a new Fig from a
+  LayerManager, pass that removal along to my active layer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removeAll"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removeAll()">removeAll</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void removeAll() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+See comments above, this message is passed to my active layer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="elements"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="elements()">elements</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Enumeration.html">Enumeration</A> elements() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+See comments above, this message is passed to my active layer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="hit"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="hit(java.awt.Rectangle)">hit</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Fig.html">Fig</A> hit(<A HREF="java.awt.Rectangle.html">Rectangle</A> r) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+See comments above, this message is passed to my active layer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="presentationFor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="presentationFor(java.lang.Object)">presentationFor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Fig.html">Fig</A> presentationFor(<A HREF="java.lang.Object.html">Object</A> obj) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Try to find a FigNode instance that presents the given
+  Net-level object.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="sendToBack"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="sendToBack(uci.gef.Fig)">sendToBack</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void sendToBack(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+See comments above, this message is passed to my active layer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="bringForward"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="bringForward(uci.gef.Fig)">bringForward</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void bringForward(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+See comments above, this message is passed to my active layer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="sendBackward"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="sendBackward(uci.gef.Fig)">sendBackward</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void sendBackward(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+See comments above, this message is passed to my active layer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="bringToFront"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="bringToFront(uci.gef.Fig)">bringToFront</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void bringToFront(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+See comments above, this message is passed to my active layer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="reorder"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="reorder(uci.gef.Fig, int)">reorder</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void reorder(<A HREF="uci.gef.Fig.html">Fig</A> f, 
+                       int function) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+See comments above, this message is passed to my active layer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setEditor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setEditor(uci.gef.Editor)">setEditor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setEditor(<A HREF="uci.gef.Editor.html">Editor</A> ed) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getEditor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getEditor()">getEditor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Editor.html">Editor</A> getEditor() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

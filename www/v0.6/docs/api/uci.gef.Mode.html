@@ -1,0 +1,491 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.Mode | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.Mode
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.Mode
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----uci.gef.Mode
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public abstract class  <STRONG>Mode</STRONG>
+     extends java.lang.<A HREF="java.lang.Object.html">Object</A>
+     implements java.io.<A HREF="java.io.Serializable.html">Serializable</A>, 
+                java.awt.event.<A HREF="java.awt.event.KeyListener.html">KeyListener</A>, 
+                java.awt.event.<A HREF="java.awt.event.MouseListener.html">MouseListener</A>, 
+                java.awt.event.<A HREF="java.awt.event.MouseMotionListener.html">MouseMotionListener</A>
+{
+          // Fields 2
+     protected <A CLASS=nound HREF="java.util.Hashtable.html">Hashtable</A> <A HREF="#_args">_args</A>;
+     public <A CLASS=nound HREF="uci.gef.Editor.html">Editor</A> <A HREF="#_editor">_editor</A>;
+
+          // Constructors 2
+     public <A HREF="#Mode()">Mode</A>();
+     public <A HREF="#Mode(uci.gef.Editor)">Mode</A>(<A CLASS=nound HREF="uci.gef.Editor.html">Editor</A>);
+
+          // Methods 23
+     public boolean <A HREF="#canExit()">canExit</A>();
+     public void <A HREF="#done()">done</A>();
+     public <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#getArg(java.lang.String)">getArg</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>);
+     public <A CLASS=nound HREF="java.util.Hashtable.html">Hashtable</A> <A HREF="#getArgs()">getArgs</A>();
+     public <A CLASS=nound HREF="uci.gef.Editor.html">Editor</A> <A HREF="#getEditor()">getEditor</A>();
+     public <A CLASS=nound HREF="java.awt.Cursor.html">Cursor</A> <A HREF="#getInitialCursor()">getInitialCursor</A>();
+     public <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#instructions()">instructions</A>();
+     public void <A HREF="#keyPressed(java.awt.event.KeyEvent)">keyPressed</A>(<A CLASS=nound HREF="java.awt.event.KeyEvent.html">KeyEvent</A>);
+     public void <A HREF="#keyReleased(java.awt.event.KeyEvent)">keyReleased</A>(<A CLASS=nound HREF="java.awt.event.KeyEvent.html">KeyEvent</A>);
+     public void <A HREF="#keyTyped(java.awt.event.KeyEvent)">keyTyped</A>(<A CLASS=nound HREF="java.awt.event.KeyEvent.html">KeyEvent</A>);
+     public void <A HREF="#mouseClicked(java.awt.event.MouseEvent)">mouseClicked</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseDragged(java.awt.event.MouseEvent)">mouseDragged</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseEntered(java.awt.event.MouseEvent)">mouseEntered</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseExited(java.awt.event.MouseEvent)">mouseExited</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseMoved(java.awt.event.MouseEvent)">mouseMoved</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mousePressed(java.awt.event.MouseEvent)">mousePressed</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#paint(java.awt.Graphics)">paint</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     public void <A HREF="#print(java.awt.Graphics)">print</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     public void <A HREF="#setArgs(java.util.Hashtable)">setArgs</A>(<A CLASS=nound HREF="java.util.Hashtable.html">Hashtable</A>);
+     public void <A HREF="#setCursor(java.awt.Cursor)">setCursor</A>(<A CLASS=nound HREF="java.awt.Cursor.html">Cursor</A>);
+     public void <A HREF="#setEditor(uci.gef.Editor)">setEditor</A>(<A CLASS=nound HREF="uci.gef.Editor.html">Editor</A>);
+     public void <A HREF="#start()">start</A>();
+}
+</PRE>
+<P>
+<DL>
+<P>
+This is the abstract superclass of all editor modes.  A Mode is
+  responsible for handling most of the events that come to the
+  Editor.  A Mode defines a context for interperting those events.
+  For example, a mouse drag in ModeSelect will define a selection
+  rectangle, while a mouse drag in ModeCreateEdge will drag out a
+  rubberband line.  Placing the logic for most event handing in
+  Modes is key to keeping the Editor source code small and
+  manageable, and also key to allowing addition of new kinds of user
+  interactions without always modifying Editor and having to
+  integrate ones modifications with other contributors
+  modifications.  Modes should interpert user input and ask the
+  Editor to execute Cmds.  Placing the logic to manipulate the
+  document into Cmds helps keep Mode's small and promotes sharing of
+  Cmd code.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.Editor.html">Editor</A>, <A HREF="uci.gef.Cmd.html">Cmd</A>, <A HREF="uci.gef.ModeSelect.html">ModeSelect</A>, <A HREF="uci.gef.ModeCreateEdge.html">ModeCreateEdge</A><P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Extended By: </B>
+<DD><A HREF="uci.gef.ModeCreate.html">ModeCreate</A>, <A HREF="uci.gef.ModeModify.html">ModeModify</A>, <A HREF="uci.gef.ModePlace.html">ModePlace</A>, <A HREF="uci.gef.ModePopup.html">ModePopup</A>, <A HREF="uci.gef.ModeSelect.html">ModeSelect</A><P>
+<DT><B>Returned By: </B>
+<DD>Globals.<A HREF="uci.gef.Globals.html#defaultMode()">defaultMode()</A>, Globals.<A HREF="uci.gef.Globals.html#mode()">mode()</A>, Globals.<A HREF="uci.gef.Globals.html#nextMode()">nextMode()</A>, ModeManager.<A HREF="uci.gef.ModeManager.html#pop()">pop()</A>, ModeManager.<A HREF="uci.gef.ModeManager.html#top()">top()</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_editor"><FONT COLOR="#FF00FF">&middot;</FONT> _editor</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Editor.html">Editor</A> _editor
+</PRE>
+<BLOCKQUOTE>
+<P>
+The Editor that is in this mode. Each Mode instance belongs to
+  exactly one Editor instance.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_args"><FONT COLOR="#FF00FF">&middot;</FONT> _args</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.util.Hashtable.html">Hashtable</A> _args
+</PRE>
+<BLOCKQUOTE>
+<P>
+Arguments to this mode. These are usually set just after the
+  mode is created, and the are used later.
+<P>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.ModeCreateEdge.html">ModeCreateEdge</A><P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Mode"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Mode(uci.gef.Editor)">Mode</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Mode(<A HREF="uci.gef.Editor.html">Editor</A> par) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new Mode instance with the given Editor as its
+ _editor
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Mode"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Mode()">Mode</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Mode() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new Mode instance without any Editor as its parent,
+ the parent must be filled in before the instance is actually
+ used. This constructor is needed because CmdSetMode can only
+ call Class.newInstance which does not pass constructor arguments.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.CmdSetMode.html">CmdSetMode</A></BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setEditor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setEditor(uci.gef.Editor)">setEditor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setEditor(<A HREF="uci.gef.Editor.html">Editor</A> w) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set the parent Editor of this Mode
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getEditor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getEditor()">getEditor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Editor.html">Editor</A> getEditor() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Get the parent Editor of this Mode
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getInitialCursor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getInitialCursor()">getInitialCursor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Cursor.html">Cursor</A> getInitialCursor() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Returns the cursor that should be shown when this Mode starts.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setArgs"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setArgs(java.util.Hashtable)">setArgs</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setArgs(<A HREF="java.util.Hashtable.html">Hashtable</A> args) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getArgs"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getArgs()">getArgs</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Hashtable.html">Hashtable</A> getArgs() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getArg"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getArg(java.lang.String)">getArg</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.Object.html">Object</A> getArg(<A HREF="java.lang.String.html">String</A> s) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="keyPressed"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="keyPressed(java.awt.event.KeyEvent)">keyPressed</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void keyPressed(<A HREF="java.awt.event.KeyEvent.html">KeyEvent</A> ke) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.KeyListener.html#keyPressed(java.awt.event.KeyEvent)">keyPressed</A> in interface <A HREF="java.awt.event.KeyListener.html">KeyListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="keyReleased"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="keyReleased(java.awt.event.KeyEvent)">keyReleased</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void keyReleased(<A HREF="java.awt.event.KeyEvent.html">KeyEvent</A> ke) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.KeyListener.html#keyReleased(java.awt.event.KeyEvent)">keyReleased</A> in interface <A HREF="java.awt.event.KeyListener.html">KeyListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="keyTyped"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="keyTyped(java.awt.event.KeyEvent)">keyTyped</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void keyTyped(<A HREF="java.awt.event.KeyEvent.html">KeyEvent</A> ke) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.KeyListener.html#keyTyped(java.awt.event.KeyEvent)">keyTyped</A> in interface <A HREF="java.awt.event.KeyListener.html">KeyListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseMoved"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseMoved(java.awt.event.MouseEvent)">mouseMoved</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseMoved(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseMotionListener.html#mouseMoved(java.awt.event.MouseEvent)">mouseMoved</A> in interface <A HREF="java.awt.event.MouseMotionListener.html">MouseMotionListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseDragged"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseDragged(java.awt.event.MouseEvent)">mouseDragged</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseDragged(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseMotionListener.html#mouseDragged(java.awt.event.MouseEvent)">mouseDragged</A> in interface <A HREF="java.awt.event.MouseMotionListener.html">MouseMotionListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseClicked"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseClicked(java.awt.event.MouseEvent)">mouseClicked</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseClicked(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseClicked(java.awt.event.MouseEvent)">mouseClicked</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mousePressed"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mousePressed(java.awt.event.MouseEvent)">mousePressed</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mousePressed(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mousePressed(java.awt.event.MouseEvent)">mousePressed</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseReleased"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseReleased(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseExited"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseExited(java.awt.event.MouseEvent)">mouseExited</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseExited(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseExited(java.awt.event.MouseEvent)">mouseExited</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseEntered"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseEntered(java.awt.event.MouseEvent)">mouseEntered</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseEntered(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseEntered(java.awt.event.MouseEvent)">mouseEntered</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="done"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="done()">done</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void done() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+When a Mode handles a certain event that indicates that the user
+  wants to exit that Mode (e.g., a mouse up event after a drag in
+  ModeCreateEdge) the Mode calls done to set the parent Editor's
+  Mode to some other Mode (normally ModeSelect).
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="start"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="start()">start</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void start() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+When the user performs the first AWT Event that indicate that
+  they want to do some work in this mode, then change the global
+  next mode. For example, this is useful when the user clicks on
+  a palette button which sets the global next mode. That Mode
+  should only be given to one Editor, after that it should go
+  back to ModeSelect, unless the sticky flag is set.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="canExit"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="canExit()">canExit</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean canExit() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Some Mode's should never be exited, but by default any Mode can
+  exit. Mode's which return false for canExit() will not be popped
+  from a ModeManager.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.ModeManager.html">ModeManager</A></BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="instructions"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="instructions()">instructions</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.String.html">String</A> instructions() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply a string of instructions that should be shown in the
+  statusbar when this mode starts.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setCursor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setCursor(java.awt.Cursor)">setCursor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setCursor(<A HREF="java.awt.Cursor.html">Cursor</A> c) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set the mouse cursor to some appropriate for this mode.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paint"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paint(java.awt.Graphics)">paint</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void paint(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Modes can paint themselves to give the user feedback. For
+  example, ModePlace paints the object being placed. Mode's are
+  drawn on top of (after) the Editor's current view and on top of
+  any selections.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="print"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="print(java.awt.Graphics)">print</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void print(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Just calls paint(g) bt default.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

@@ -1,0 +1,392 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.ui.PropSheet | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.ui.PropSheet
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.ui.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.ui.PropSheet
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="JPanel.html">JPanel</A>
+           |
+           +----uci.ui.PropSheet
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>PropSheet</STRONG>
+     extends <A HREF="JPanel.html">JPanel</A>
+     implements java.beans.<A HREF="java.beans.PropertyChangeListener.html">PropertyChangeListener</A>
+{
+          // Fields 10
+     public static final int <A HREF="#MIN_UPDATE">MIN_UPDATE</A>;
+     protected boolean <A HREF="#_autoApply">_autoApply</A>;
+     protected <A CLASS=nound HREF="java.util.Hashtable.html">Hashtable</A> <A HREF="#_editorsPds">_editorsPds</A>;
+     protected boolean <A HREF="#_ignorePropChanges">_ignorePropChanges</A>;
+     protected long <A HREF="#_lastUpdateTime">_lastUpdateTime</A>;
+     protected <A CLASS=nound HREF="java.util.Hashtable.html">Hashtable</A> <A HREF="#_pdsEditors">_pdsEditors</A>;
+     protected <A CLASS=nound HREF="java.util.Hashtable.html">Hashtable</A> <A HREF="#_pendingStores">_pendingStores</A>;
+     protected <A CLASS=nound HREF="java.awt.Font.html">Font</A> <A HREF="#_propertiesFont">_propertiesFont</A>;
+     protected <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#_sel">_sel</A>;
+     protected <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#_tabName">_tabName</A>;
+
+          // Constructors 1
+     public <A HREF="#PropSheet()">PropSheet</A>();
+
+          // Methods 15
+     public void <A HREF="#apply()">apply</A>();
+     protected void <A HREF="#applyProperty(java.beans.PropertyDescriptor, java.lang.Object)">applyProperty</A>(<A CLASS=nound HREF="java.beans.PropertyDescriptor.html">PropertyDescriptor</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public boolean <A HREF="#canEdit(java.lang.Object)">canEdit</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public <A CLASS=nound HREF="java.awt.Font.html">Font</A> <A HREF="#getPropertiesFont()">getPropertiesFont</A>();
+     public <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#getTabName()">getTabName</A>();
+     public void <A HREF="#propertyChange(java.beans.PropertyChangeEvent)">propertyChange</A>(<A CLASS=nound HREF="java.beans.PropertyChangeEvent.html">PropertyChangeEvent</A>);
+     public void <A HREF="#revert()">revert</A>();
+     public void <A HREF="#setAutoApply(boolean)">setAutoApply</A>(boolean);
+     public void <A HREF="#setPropertiesFont(java.awt.Font)">setPropertiesFont</A>(<A CLASS=nound HREF="java.awt.Font.html">Font</A>);
+     public void <A HREF="#setSelection(java.lang.Object)">setSelection</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#setTabName(java.lang.String)">setTabName</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>);
+     public void <A HREF="#setVisible(boolean)">setVisible</A>(boolean);
+     public void <A HREF="#store(java.beans.PropertyDescriptor, java.lang.Object)">store</A>(<A CLASS=nound HREF="java.beans.PropertyDescriptor.html">PropertyDescriptor</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#updateComponent(java.beans.PropertyDescriptor)">updateComponent</A>(<A CLASS=nound HREF="java.beans.PropertyDescriptor.html">PropertyDescriptor</A>);
+     public void <A HREF="#updateComponents()">updateComponents</A>();
+}
+</PRE>
+<P>
+<DL>
+<P>
+Class that defines the interface for several different kinds of
+  panels that can edit a group of properties. The only subclass
+  supplied with GEF is PropSheetCategory, but others could be
+  defined.
+<P>
+</DL>
+<P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Extended By: </B>
+<DD><A HREF="uci.ui.PropSheetCategory.html">PropSheetCategory</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_sel"><FONT COLOR="#FF00FF">&middot;</FONT> _sel</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.lang.Object.html">Object</A> _sel
+</PRE>
+<BLOCKQUOTE>
+<P>
+The object being edited.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_pendingStores"><FONT COLOR="#FF00FF">&middot;</FONT> _pendingStores</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.util.Hashtable.html">Hashtable</A> _pendingStores
+</PRE>
+<BLOCKQUOTE>
+<P>
+The changes to that object that have not been carried out yet.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_pdsEditors"><FONT COLOR="#FF00FF">&middot;</FONT> _pdsEditors</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.util.Hashtable.html">Hashtable</A> _pdsEditors
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_editorsPds"><FONT COLOR="#FF00FF">&middot;</FONT> _editorsPds</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.util.Hashtable.html">Hashtable</A> _editorsPds
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_autoApply"><FONT COLOR="#FF00FF">&middot;</FONT> _autoApply</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected boolean _autoApply
+</PRE>
+<BLOCKQUOTE>
+<P>
+True iff every change shold be immeadiatly carried out.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_ignorePropChanges"><FONT COLOR="#FF00FF">&middot;</FONT> _ignorePropChanges</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected boolean _ignorePropChanges
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_tabName"><FONT COLOR="#FF00FF">&middot;</FONT> _tabName</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.lang.String.html">String</A> _tabName
+</PRE>
+<BLOCKQUOTE>
+<P>
+Name used to identify this sheet to the user.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_propertiesFont"><FONT COLOR="#FF00FF">&middot;</FONT> _propertiesFont</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.awt.Font.html">Font</A> _propertiesFont
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_lastUpdateTime"><FONT COLOR="#FF00FF">&middot;</FONT> _lastUpdateTime</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected long _lastUpdateTime
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="MIN_UPDATE"><FONT COLOR="#0000FF">&middot;</FONT> MIN_UPDATE</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final int MIN_UPDATE
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="PropSheet"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="PropSheet()">PropSheet</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public PropSheet() </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setSelection"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setSelection(java.lang.Object)">setSelection</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setSelection(<A HREF="java.lang.Object.html">Object</A> s) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setAutoApply"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setAutoApply(boolean)">setAutoApply</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setAutoApply(boolean aa) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getTabName"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getTabName()">getTabName</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.String.html">String</A> getTabName() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setTabName"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setTabName(java.lang.String)">setTabName</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setTabName(<A HREF="java.lang.String.html">String</A> tn) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="canEdit"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="canEdit(java.lang.Object)">canEdit</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean canEdit(<A HREF="java.lang.Object.html">Object</A> item) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setVisible"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setVisible(boolean)">setVisible</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setVisible(boolean b) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPropertiesFont"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPropertiesFont()">getPropertiesFont</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Font.html">Font</A> getPropertiesFont() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setPropertiesFont"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setPropertiesFont(java.awt.Font)">setPropertiesFont</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setPropertiesFont(<A HREF="java.awt.Font.html">Font</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="store"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="store(java.beans.PropertyDescriptor, java.lang.Object)">store</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void store(<A HREF="java.beans.PropertyDescriptor.html">PropertyDescriptor</A> pd, 
+                     <A HREF="java.lang.Object.html">Object</A> value) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+When the user changes a value in a widget, record that fact
+ until the next apply (which may be done immeadiatly).
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="apply"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="apply()">apply</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void apply() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Take all property changes that have been stored and actually
+ change the state of the selected object.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="applyProperty"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="applyProperty(java.beans.PropertyDescriptor, java.lang.Object)">applyProperty</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void applyProperty(<A HREF="java.beans.PropertyDescriptor.html">PropertyDescriptor</A> pd, 
+                                <A HREF="java.lang.Object.html">Object</A> value) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="revert"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="revert()">revert</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void revert() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Abandon any stored changes that have not been applied yet.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="updateComponents"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="updateComponents()">updateComponents</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void updateComponents() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="updateComponent"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="updateComponent(java.beans.PropertyDescriptor)">updateComponent</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void updateComponent(<A HREF="java.beans.PropertyDescriptor.html">PropertyDescriptor</A> pd) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="propertyChange"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="propertyChange(java.beans.PropertyChangeEvent)">propertyChange</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void propertyChange(<A HREF="java.beans.PropertyChangeEvent.html">PropertyChangeEvent</A> e) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+The selected object may have changed one of its properties.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="java.beans.PropertyChangeListener.html#propertyChange(java.beans.PropertyChangeEvent)">propertyChange</A> in interface <A HREF="java.beans.PropertyChangeListener.html">PropertyChangeListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.ui.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

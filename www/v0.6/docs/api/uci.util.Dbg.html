@@ -1,0 +1,138 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.util.Dbg | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.util.Dbg
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.util.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.util.Dbg
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----uci.util.Dbg
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>Dbg</STRONG>
+     extends java.lang.<A HREF="java.lang.Object.html">Object</A>
+{
+          // Fields 1
+     public static final boolean <A HREF="#on">on</A>;
+
+          // Constructors 1
+     public <A HREF="#Dbg()">Dbg</A>();
+
+          // Methods 3
+     public static final void <A HREF="#assert(boolean, java.lang.String)">assert</A>(boolean, <A CLASS=nound HREF="java.lang.String.html">String</A>);
+     public static final void <A HREF="#log(java.lang.String, boolean, java.lang.String)">log</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>, boolean, <A CLASS=nound HREF="java.lang.String.html">String</A>);
+     public static final void <A HREF="#log(java.lang.String, java.lang.String)">log</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>, <A CLASS=nound HREF="java.lang.String.html">String</A>);
+
+}
+</PRE>
+<P>
+<DL>
+<P>
+This is a useful utility for debugging. In various places in the
+  framework there are calls to Dbg.log(). If the proper -D
+  defines are supplied when running the application those debugging
+  statements will be enabled or disabled.
+<P>
+</DL>
+<P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="on"><FONT COLOR="#0000FF">&middot;</FONT> on</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final boolean on
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Dbg"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Dbg()">Dbg</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Dbg() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Default constructor
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="assert"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="assert(boolean, java.lang.String)">assert</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final void assert(boolean cond, 
+                                   <A HREF="java.lang.String.html">String</A> msg) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="log"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="log(java.lang.String, java.lang.String)">log</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final void log(<A HREF="java.lang.String.html">String</A> guard, 
+                                <A HREF="java.lang.String.html">String</A> msg) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Print the given message if the guard was defined with a command
+  line -D option.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="log"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="log(java.lang.String, boolean, java.lang.String)">log</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final void log(<A HREF="java.lang.String.html">String</A> guard, 
+                                boolean cond, 
+                                <A HREF="java.lang.String.html">String</A> msg) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Print the given message if the guard was defined with a command
+  line -D option and the given condition evaluates to true.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.util.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

@@ -1,0 +1,121 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.demo.SamplePort | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.demo.SamplePort
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.demo.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.demo.SamplePort
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.NetPrimitive.html">uci.gef.NetPrimitive</A>
+           |
+           +----<A HREF="uci.gef.NetPort.html">uci.gef.NetPort</A>
+                   |
+                   +----uci.gef.demo.SamplePort
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>SamplePort</STRONG>
+     extends uci.gef.<A HREF="uci.gef.NetPort.html">NetPort</A>
+     implements java.io.<A HREF="java.io.Serializable.html">Serializable</A>
+{
+          // Constructors 1
+     public <A HREF="#SamplePort(uci.gef.NetNode)">SamplePort</A>(<A CLASS=nound HREF="uci.gef.NetNode.html">NetNode</A>);
+
+          // Methods 2
+     public boolean <A HREF="#canConnectTo(uci.graph.GraphModel, java.lang.Object)">canConnectTo</A>(<A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     protected <A CLASS=nound HREF="java.lang.Class.html">Class</A> <A HREF="#defaultEdgeClass(uci.gef.NetPort)">defaultEdgeClass</A>(<A CLASS=nound HREF="uci.gef.NetPort.html">NetPort</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+An example subclass of NetPort for the Example application. As
+ part of the example I constrain the ports to only be on
+ SampleNodes and only connect to SamplePorts.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.demo.BasicApplication.html">BasicApplication</A><P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Extended By: </B>
+<DD><A HREF="uci.gef.demo.SamplePort2.html">SamplePort2</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="SamplePort"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="SamplePort(uci.gef.NetNode)">SamplePort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public SamplePort(<A HREF="uci.gef.NetNode.html">NetNode</A> parent) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new SamplePort as a port of the given NetNode. This
+ example includes the constraint that SamplePort's can only be
+ part of SampleNode's.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="defaultEdgeClass"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="defaultEdgeClass(uci.gef.NetPort)">defaultEdgeClass</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.lang.Class.html">Class</A> defaultEdgeClass(<A HREF="uci.gef.NetPort.html">NetPort</A> otherPort) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.NetPort.html#defaultEdgeClass(uci.gef.NetPort)">defaultEdgeClass</A> in class <A HREF="uci.gef.NetPort.html">NetPort</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="canConnectTo"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="canConnectTo(uci.graph.GraphModel, java.lang.Object)">canConnectTo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean canConnectTo(<A HREF="uci.graph.GraphModel.html">GraphModel</A> gm, 
+                               <A HREF="java.lang.Object.html">Object</A> anotherPort) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Add the constraint that SamplePort's can only be connected to
+ other ports of the same type.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.NetPort.html#canConnectTo(uci.graph.GraphModel, java.lang.Object)">canConnectTo</A> in class <A HREF="uci.gef.NetPort.html">NetPort</A>
+<DT><B>Implements:</B>
+<DD><A HREF="uci.graph.GraphPortHooks.html#canConnectTo(uci.graph.GraphModel, java.lang.Object)">canConnectTo</A> in interface <A HREF="uci.graph.GraphPortHooks.html">GraphPortHooks</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.demo.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

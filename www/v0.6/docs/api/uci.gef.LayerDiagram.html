@@ -1,0 +1,428 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.LayerDiagram | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.LayerDiagram
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.LayerDiagram
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.Layer.html">uci.gef.Layer</A>
+           |
+           +----uci.gef.LayerDiagram
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>LayerDiagram</STRONG>
+     extends uci.gef.<A HREF="uci.gef.Layer.html">Layer</A>
+{
+          // Fields 2
+     protected <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#_contents">_contents</A>;
+     protected static int <A HREF="#_nextLayerNumbered">_nextLayerNumbered</A>;
+
+          // Constructors 2
+     public <A HREF="#LayerDiagram()">LayerDiagram</A>();
+     public <A HREF="#LayerDiagram(java.lang.String)">LayerDiagram</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>);
+
+          // Methods 17
+     protected static <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#numberWordFor(int)">numberWordFor</A>(int);
+
+     public void <A HREF="#add(uci.gef.Fig)">add</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#bringForward(uci.gef.Fig)">bringForward</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#bringToFront(uci.gef.Fig)">bringToFront</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public <A CLASS=nound HREF="java.util.Enumeration.html">Enumeration</A> <A HREF="#elements()">elements</A>();
+     public <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#getContents()">getContents</A>();
+     public <A CLASS=nound HREF="uci.gef.FigNode.html">FigNode</A> <A HREF="#getPortFig(java.lang.Object)">getPortFig</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#hit(java.awt.Rectangle)">hit</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>);
+     public int <A HREF="#indexOf(uci.gef.Fig)">indexOf</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#insertAt(uci.gef.Fig, int)">insertAt</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>, int);
+     public void <A HREF="#paintContents(java.awt.Graphics)">paintContents</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     public <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#presentationFor(java.lang.Object)">presentationFor</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#remove(uci.gef.Fig)">remove</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#removeAll()">removeAll</A>();
+     public void <A HREF="#reorder(uci.gef.Fig, int)">reorder</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>, int);
+     public void <A HREF="#sendBackward(uci.gef.Fig)">sendBackward</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#sendToBack(uci.gef.Fig)">sendToBack</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+A Layer like found in many drawing applications. It contains a
+  collection of Fig's, ordered from back to front. Each
+  LayerDiagram contains part of the overall picture that the user is
+  drawing.  Needs-More-Work: eventually add a "Layers" menu to the
+  Editor.
+  <A HREF="../features.html#graph_visualization">
+  <TT>FEATURE: graph_visualization</TT></A>
+<P>
+</DL>
+<P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Extended By: </B>
+<DD><A HREF="uci.gef.LayerPerspective.html">LayerPerspective</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_contents"><FONT COLOR="#FF00FF">&middot;</FONT> _contents</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.util.Vector.html">Vector</A> _contents
+</PRE>
+<BLOCKQUOTE>
+<P>
+The Fig's that are contained in this layer.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_nextLayerNumbered"><FONT COLOR="#0000FF">&middot;</FONT> _nextLayerNumbered</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected static int _nextLayerNumbered
+</PRE>
+<BLOCKQUOTE>
+<P>
+A counter so that layers have default names like 'One', 'Two', ...
+<P>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="LayerDiagram"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="LayerDiagram()">LayerDiagram</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public LayerDiagram() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new LayerDiagram with a default name and do not put
+  it on the Layer's menu.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="LayerDiagram"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="LayerDiagram(java.lang.String)">LayerDiagram</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public LayerDiagram(<A HREF="java.lang.String.html">String</A> name) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new LayerDiagram with the given name, and add it to
+  the menu of layers. Needs-More-Work: I have not implemented a
+  menu of layers yet. I don't know if that is really the right user
+  interface.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="numberWordFor"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="numberWordFor(int)">numberWordFor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected static <A HREF="java.lang.String.html">String</A> numberWordFor(int n) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+A utility function to give the spelled-out word for numbers.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="add"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="add(uci.gef.Fig)">add</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void add(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Add a Fig to the contents of this layer. Items are
+  added on top of all other items.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#add(uci.gef.Fig)">add</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="insertAt"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="insertAt(uci.gef.Fig, int)">insertAt</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void insertAt(<A HREF="uci.gef.Fig.html">Fig</A> f, 
+                        int index) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Add a Fig to the contents of this layer. Items are
+  added on top of all other items.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="indexOf"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="indexOf(uci.gef.Fig)">indexOf</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int indexOf(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Add a Fig to the contents of this layer. Items are
+  added on top of all other items.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="remove"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="remove(uci.gef.Fig)">remove</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void remove(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Remove the given Fig from this layer.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#remove(uci.gef.Fig)">remove</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="elements"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="elements()">elements</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Enumeration.html">Enumeration</A> elements() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Enumerate over all Fig's in this layer.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#elements()">elements</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getContents"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getContents()">getContents</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Vector.html">Vector</A> getContents() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the contents of this layer. Do I really want to do this?
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#getContents()">getContents</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="hit"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="hit(java.awt.Rectangle)">hit</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Fig.html">Fig</A> hit(<A HREF="java.awt.Rectangle.html">Rectangle</A> r) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the 'top' Fig under the given (mouse)
+  coordinates. Needs-More-Work: For now, just do a linear search.
+  Later, optimize this routine using Quad Trees (or other)
+  techniques.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#hit(java.awt.Rectangle)">hit</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removeAll"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removeAll()">removeAll</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void removeAll() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Delete all Fig's from this layer.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#removeAll()">removeAll</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPortFig"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPortFig(java.lang.Object)">getPortFig</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.FigNode.html">FigNode</A> getPortFig(<A HREF="java.lang.Object.html">Object</A> port) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Find the FigNode that is being used to visualize the
+ given NetPort, or null if there is none in this layer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="presentationFor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="presentationFor(java.lang.Object)">presentationFor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Fig.html">Fig</A> presentationFor(<A HREF="java.lang.Object.html">Object</A> obj) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Find the Fig that visualized the given NetNode in
+ this layer, or null if there is none.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#presentationFor(java.lang.Object)">presentationFor</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paintContents"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paintContents(java.awt.Graphics)">paintContents</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void paintContents(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Paint all the Fig's that belong to this layer.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#paintContents(java.awt.Graphics)">paintContents</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="sendToBack"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="sendToBack(uci.gef.Fig)">sendToBack</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void sendToBack(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reorder the given Fig in this layer.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#sendToBack(uci.gef.Fig)">sendToBack</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="bringToFront"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="bringToFront(uci.gef.Fig)">bringToFront</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void bringToFront(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reorder the given Fig in this layer.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#bringToFront(uci.gef.Fig)">bringToFront</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="sendBackward"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="sendBackward(uci.gef.Fig)">sendBackward</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void sendBackward(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reorder the given Fig in this layer. Needs-more-work:
+ Should come backward/forward until they change positions with an
+ object they overlap. Maybe...
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#sendBackward(uci.gef.Fig)">sendBackward</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="bringForward"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="bringForward(uci.gef.Fig)">bringForward</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void bringForward(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reorder the given Fig in this layer.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#bringForward(uci.gef.Fig)">bringForward</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="reorder"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="reorder(uci.gef.Fig, int)">reorder</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void reorder(<A HREF="uci.gef.Fig.html">Fig</A> f, 
+                       int function) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reorder the given Fig in this layer.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#reorder(uci.gef.Fig, int)">reorder</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

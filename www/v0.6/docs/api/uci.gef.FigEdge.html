@@ -1,0 +1,888 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.FigEdge | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.FigEdge
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.FigEdge
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.Fig.html">uci.gef.Fig</A>
+           |
+           +----uci.gef.FigEdge
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public abstract class  <STRONG>FigEdge</STRONG>
+     extends uci.gef.<A HREF="uci.gef.Fig.html">Fig</A>
+     implements java.beans.<A HREF="java.beans.PropertyChangeListener.html">PropertyChangeListener</A>
+{
+          // Fields 10
+     protected <A CLASS=nound HREF="uci.gef.ArrowHead.html">ArrowHead</A> <A HREF="#_arrowHeadEnd">_arrowHeadEnd</A>;
+     protected <A CLASS=nound HREF="uci.gef.ArrowHead.html">ArrowHead</A> <A HREF="#_arrowHeadStart">_arrowHeadStart</A>;
+     protected <A CLASS=nound HREF="uci.gef.FigNode.html">FigNode</A> <A HREF="#_destFigNode">_destFigNode</A>;
+     protected <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#_destPortFig">_destPortFig</A>;
+     protected <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#_fig">_fig</A>;
+     protected boolean <A HREF="#_highlight">_highlight</A>;
+     protected <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#_pathItems">_pathItems</A>;
+     protected <A CLASS=nound HREF="uci.gef.FigNode.html">FigNode</A> <A HREF="#_sourceFigNode">_sourceFigNode</A>;
+     protected <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#_sourcePortFig">_sourcePortFig</A>;
+     protected boolean <A HREF="#_useNearest">_useNearest</A>;
+
+          // Constructors 2
+     public <A HREF="#FigEdge()">FigEdge</A>();
+     public <A HREF="#FigEdge(uci.gef.Fig, uci.gef.Fig, uci.gef.FigNode, uci.gef.FigNode, java.lang.Object)">FigEdge</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>, <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>, <A CLASS=nound HREF="uci.gef.FigNode.html">FigNode</A>, <A CLASS=nound HREF="uci.gef.FigNode.html">FigNode</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+
+          // Methods 43
+     public void <A HREF="#addPathItem(uci.gef.Fig, uci.gef.PathConv)">addPathItem</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>, <A CLASS=nound HREF="uci.gef.PathConv.html">PathConv</A>);
+     protected void <A HREF="#calcBounds()">calcBounds</A>();
+     protected void <A HREF="#computeRoute()">computeRoute</A>();
+     public boolean <A HREF="#contains(int, int)">contains</A>(int, int);
+     public void <A HREF="#destFigNode(uci.gef.FigNode)">destFigNode</A>(<A CLASS=nound HREF="uci.gef.FigNode.html">FigNode</A>);
+     public void <A HREF="#destPortFig(uci.gef.Fig)">destPortFig</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public boolean <A HREF="#getBetweenNearestPoints()">getBetweenNearestPoints</A>();
+     public <A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A> <A HREF="#getBounds()">getBounds</A>();
+     public <A CLASS=nound HREF="uci.gef.ArrowHead.html">ArrowHead</A> <A HREF="#getDestArrowHead()">getDestArrowHead</A>();
+     public <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#getFig()">getFig</A>();
+     public int <A HREF="#getNumPoints()">getNumPoints</A>();
+     public <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#getPathItem(uci.gef.PathConv)">getPathItem</A>(<A CLASS=nound HREF="uci.gef.PathConv.html">PathConv</A>);
+     public <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#getPathItemsRaw()">getPathItemsRaw</A>();
+     public int <A HREF="#getPerimeterLength()">getPerimeterLength</A>();
+     public <A CLASS=nound HREF="java.awt.Point.html">Point</A>[] <A HREF="#getPoints()">getPoints</A>();
+     public <A CLASS=nound HREF="java.awt.Point.html">Point</A> <A HREF="#getPoints(int)">getPoints</A>(int);
+     public <A CLASS=nound HREF="uci.gef.ArrowHead.html">ArrowHead</A> <A HREF="#getSourceArrowHead()">getSourceArrowHead</A>();
+     public int[] <A HREF="#getXs()">getXs</A>();
+     public int[] <A HREF="#getYs()">getYs</A>();
+     public boolean <A HREF="#hit(java.awt.Rectangle)">hit</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>);
+     public boolean <A HREF="#intersects(java.awt.Rectangle)">intersects</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>);
+     public boolean <A HREF="#isReshapable()">isReshapable</A>();
+     public boolean <A HREF="#isResizable()">isResizable</A>();
+     public boolean <A HREF="#isRotatable()">isRotatable</A>();
+     protected abstract <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#makeEdgeFig()">makeEdgeFig</A>();
+     public void <A HREF="#paint(java.awt.Graphics)">paint</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     protected void <A HREF="#paintArrowHeads(java.awt.Graphics)">paintArrowHeads</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     protected void <A HREF="#paintPathItems(java.awt.Graphics)">paintPathItems</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     public <A CLASS=nound HREF="java.awt.Point.html">Point</A> <A HREF="#pointAlongPerimeter(int)">pointAlongPerimeter</A>(int);
+     public void <A HREF="#propertyChange(java.beans.PropertyChangeEvent)">propertyChange</A>(<A CLASS=nound HREF="java.beans.PropertyChangeEvent.html">PropertyChangeEvent</A>);
+     public void <A HREF="#removePathItem(uci.gef.FigEdge.PathItem)">removePathItem</A>(<A CLASS=nound HREF="uci.gef.FigEdge.PathItem.html">FigEdge.PathItem</A>);
+     public void <A HREF="#setBetweenNearestPoints(boolean)">setBetweenNearestPoints</A>(boolean);
+     public void <A HREF="#setDestArrowHead(uci.gef.ArrowHead)">setDestArrowHead</A>(<A CLASS=nound HREF="uci.gef.ArrowHead.html">ArrowHead</A>);
+     public void <A HREF="#setNumPoints(int)">setNumPoints</A>(int);
+     public void <A HREF="#setOwner(java.lang.Object)">setOwner</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#setPoints(int, int, int)">setPoints</A>(int, int, int);
+     public void <A HREF="#setPoints(java.awt.Point[])">setPoints</A>(<A CLASS=nound HREF="java.awt.Point.html">Point</A>[]);
+     public void <A HREF="#setPoints(uci.gef.Handle, int, int)">setPoints</A>(<A CLASS=nound HREF="uci.gef.Handle.html">Handle</A>, int, int);
+     public void <A HREF="#setSourceArrowHead(uci.gef.ArrowHead)">setSourceArrowHead</A>(<A CLASS=nound HREF="uci.gef.ArrowHead.html">ArrowHead</A>);
+     public void <A HREF="#setXs(int[])">setXs</A>(int[]);
+     public void <A HREF="#setYs(int[])">setYs</A>(int[]);
+     public void <A HREF="#sourceFigNode(uci.gef.FigNode)">sourceFigNode</A>(<A CLASS=nound HREF="uci.gef.FigNode.html">FigNode</A>);
+     public void <A HREF="#sourcePortFig(uci.gef.Fig)">sourcePortFig</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+
+          // Inner Classes 1
+     protected class <A HREF="uci.gef.FigEdge.PathItem.html">FigEdge.PathItem</A>
+}
+</PRE>
+<P>
+<DL>
+<P>
+Abastract Fig class for representing edges between ports.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.FigEdgeLine.html">FigEdgeLine</A>, <A HREF="uci.gef.FigEdgeRectiline.html">FigEdgeRectiline</A><P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Extended By: </B>
+<DD><A HREF="uci.gef.FigEdgeLine.html">FigEdgeLine</A>, <A HREF="uci.gef.FigEdgeRectiline.html">FigEdgeRectiline</A><P>
+<DT><B>Returned By: </B>
+<DD>NetEdge.<A HREF="uci.gef.NetEdge.html#makePresentation(uci.gef.Layer)">makePresentation()</A>, NetEdge.<A HREF="uci.gef.NetEdge.html#presentationFor(uci.gef.Layer)">presentationFor()</A>, EdgeData.<A HREF="uci.gef.demo.EdgeData.html#makePresentation(uci.gef.Layer)">makePresentation()</A>, EdgePower.<A HREF="uci.gef.demo.EdgePower.html#makePresentation(uci.gef.Layer)">makePresentation()</A>, SampleEdge2.<A HREF="uci.gef.demo.SampleEdge2.html#makePresentation(uci.gef.Layer)">makePresentation()</A>, SampleEdge.<A HREF="uci.gef.demo.SampleEdge.html#makePresentation(uci.gef.Layer)">makePresentation()</A>, DefaultGraphEdgeRenderer.<A HREF="uci.graph.DefaultGraphEdgeRenderer.html#getFigEdgeFor(uci.graph.GraphModel, uci.gef.Layer, java.lang.Object)">getFigEdgeFor()</A>, GraphEdgeRenderer.<A HREF="uci.graph.GraphEdgeRenderer.html#getFigEdgeFor(uci.graph.GraphModel, uci.gef.Layer, java.lang.Object)">getFigEdgeFor()</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_sourcePortFig"><FONT COLOR="#FF00FF">&middot;</FONT> _sourcePortFig</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.Fig.html">Fig</A> _sourcePortFig
+</PRE>
+<BLOCKQUOTE>
+<P>
+Fig presenting the edge's from-port .
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_destPortFig"><FONT COLOR="#FF00FF">&middot;</FONT> _destPortFig</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.Fig.html">Fig</A> _destPortFig
+</PRE>
+<BLOCKQUOTE>
+<P>
+Fig presenting the edge's to-port.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_sourceFigNode"><FONT COLOR="#FF00FF">&middot;</FONT> _sourceFigNode</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.FigNode.html">FigNode</A> _sourceFigNode
+</PRE>
+<BLOCKQUOTE>
+<P>
+FigNode presenting the edge's from-port's parent node.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_destFigNode"><FONT COLOR="#FF00FF">&middot;</FONT> _destFigNode</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.FigNode.html">FigNode</A> _destFigNode
+</PRE>
+<BLOCKQUOTE>
+<P>
+FigNode presenting the edge's to-port's parent node.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_fig"><FONT COLOR="#FF00FF">&middot;</FONT> _fig</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.Fig.html">Fig</A> _fig
+</PRE>
+<BLOCKQUOTE>
+<P>
+Fig that presents the edge.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_useNearest"><FONT COLOR="#FF00FF">&middot;</FONT> _useNearest</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected boolean _useNearest
+</PRE>
+<BLOCKQUOTE>
+<P>
+True if the FigEdge should be drawn from the nearest point of
+  each port Fig.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_highlight"><FONT COLOR="#FF00FF">&middot;</FONT> _highlight</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected boolean _highlight
+</PRE>
+<BLOCKQUOTE>
+<P>
+True when the FigEdgde should be drawn highlighted.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_arrowHeadStart"><FONT COLOR="#FF00FF">&middot;</FONT> _arrowHeadStart</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.ArrowHead.html">ArrowHead</A> _arrowHeadStart
+</PRE>
+<BLOCKQUOTE>
+<P>
+The ArrowHead at the start of the line
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_arrowHeadEnd"><FONT COLOR="#FF00FF">&middot;</FONT> _arrowHeadEnd</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.ArrowHead.html">ArrowHead</A> _arrowHeadEnd
+</PRE>
+<BLOCKQUOTE>
+<P>
+The ArrowHead at the end of the line
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_pathItems"><FONT COLOR="#FF00FF">&middot;</FONT> _pathItems</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.util.Vector.html">Vector</A> _pathItems
+</PRE>
+<BLOCKQUOTE>
+<P>
+The items that are accumulated along the path, a vector.
+<P>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="FigEdge"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="FigEdge(uci.gef.Fig, uci.gef.Fig, uci.gef.FigNode, uci.gef.FigNode, java.lang.Object)">FigEdge</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public FigEdge(<A HREF="uci.gef.Fig.html">Fig</A> s, 
+                  <A HREF="uci.gef.Fig.html">Fig</A> d, 
+                  <A HREF="uci.gef.FigNode.html">FigNode</A> sfn, 
+                  <A HREF="uci.gef.FigNode.html">FigNode</A> dfn, 
+                  <A HREF="java.lang.Object.html">Object</A> edge) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Contruct a new FigEdge with the given source and destination
+  port figs and FigNodes.  The new FigEdge will represent the
+  given edge (an object from some underlying model).
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="FigEdge"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="FigEdge()">FigEdge</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public FigEdge() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Contruct a new FigEdge without any underlying edge.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="makeEdgeFig"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="makeEdgeFig()">makeEdgeFig</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected abstract <A HREF="uci.gef.Fig.html">Fig</A> makeEdgeFig() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Abstract method to make the Fig that will be drawn for this
+  FigEdge. In FigEdgeLine this method constructs a FigLine. In
+  FigEdgeRectiline, this method constructs a FigPoly.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getFig"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getFig()">getFig</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Fig.html">Fig</A> getFig() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return the Fig that will be drawn.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="sourcePortFig"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="sourcePortFig(uci.gef.Fig)">sourcePortFig</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void sourcePortFig(<A HREF="uci.gef.Fig.html">Fig</A> fig) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Get the Fig reprenting this FigEdge's from-port.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="destPortFig"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="destPortFig(uci.gef.Fig)">destPortFig</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void destPortFig(<A HREF="uci.gef.Fig.html">Fig</A> fig) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Get the Fig reprenting this FigEdge's to-port.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="sourceFigNode"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="sourceFigNode(uci.gef.FigNode)">sourceFigNode</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void sourceFigNode(<A HREF="uci.gef.FigNode.html">FigNode</A> fn) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set the FigNode reprenting this FigEdge's from-node.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="destFigNode"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="destFigNode(uci.gef.FigNode)">destFigNode</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void destFigNode(<A HREF="uci.gef.FigNode.html">FigNode</A> fn) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set the FigNode reprenting this FigEdge's to-node.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setOwner"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setOwner(java.lang.Object)">setOwner</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setOwner(<A HREF="java.lang.Object.html">Object</A> own) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set the edge (some object in an underlying model) that this
+  FigEdge should represent.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#setOwner(java.lang.Object)">setOwner</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getSourceArrowHead"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getSourceArrowHead()">getSourceArrowHead</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.ArrowHead.html">ArrowHead</A> getSourceArrowHead() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Get the ArrowHead at the start of this FigEdge.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getDestArrowHead"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getDestArrowHead()">getDestArrowHead</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.ArrowHead.html">ArrowHead</A> getDestArrowHead() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Get the ArrowHead at the end of this FigEdge.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setSourceArrowHead"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setSourceArrowHead(uci.gef.ArrowHead)">setSourceArrowHead</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setSourceArrowHead(<A HREF="uci.gef.ArrowHead.html">ArrowHead</A> newArrow) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set the ArrowHead at the start of this FigEdge.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setDestArrowHead"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setDestArrowHead(uci.gef.ArrowHead)">setDestArrowHead</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setDestArrowHead(<A HREF="uci.gef.ArrowHead.html">ArrowHead</A> newArrow) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set the ArrowHead at the end of this FigEdge.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPathItemsRaw"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPathItemsRaw()">getPathItemsRaw</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Vector.html">Vector</A> getPathItemsRaw() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return the vector of path items on this FigEdge.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPathItem"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPathItem(uci.gef.PathConv)">getPathItem</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Fig.html">Fig</A> getPathItem(<A HREF="uci.gef.PathConv.html">PathConv</A> pointOnPath) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return the path item on this FigEdge closest to the given
+  location. needs-more-work: not implemented yet.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="addPathItem"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="addPathItem(uci.gef.Fig, uci.gef.PathConv)">addPathItem</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void addPathItem(<A HREF="uci.gef.Fig.html">Fig</A> newFig, 
+                           <A HREF="uci.gef.PathConv.html">PathConv</A> newPath) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Add a new path item to this FigEdge. newPath indicates both the
+  location and the Fig (usually FigText) that should be drawn.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removePathItem"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removePathItem(uci.gef.FigEdge.PathItem)">removePathItem</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void removePathItem(<A HREF="uci.gef.FigEdge.PathItem.html">FigEdge.PathItem</A> goneItem) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Removes the given path item.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getBetweenNearestPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getBetweenNearestPoints()">getBetweenNearestPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean getBetweenNearestPoints() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Get and set the flag about using Fig connection points rather
+  than centers.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setBetweenNearestPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setBetweenNearestPoints(boolean)">setBetweenNearestPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setBetweenNearestPoints(boolean un) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="computeRoute"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="computeRoute()">computeRoute</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void computeRoute() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Method to compute the route a FigEdge should follow.  By defualt
+  this does nothing. Sublcasses, like FigEdgeRectiline override
+  this method.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getBounds"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getBounds()">getBounds</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Rectangle.html">Rectangle</A> getBounds() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the bounding box for this FigEdge.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#getBounds()">getBounds</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="calcBounds"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="calcBounds()">calcBounds</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void calcBounds() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Update my bounding box
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#calcBounds()">calcBounds</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="contains"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="contains(int, int)">contains</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean contains(int x, 
+                           int y) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#contains(int, int)">contains</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="intersects"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="intersects(java.awt.Rectangle)">intersects</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean intersects(<A HREF="java.awt.Rectangle.html">Rectangle</A> r) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#intersects(java.awt.Rectangle)">intersects</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="hit"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="hit(java.awt.Rectangle)">hit</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean hit(<A HREF="java.awt.Rectangle.html">Rectangle</A> r) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#hit(java.awt.Rectangle)">hit</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPerimeterLength"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPerimeterLength()">getPerimeterLength</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int getPerimeterLength() </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#getPerimeterLength()">getPerimeterLength</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="pointAlongPerimeter"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="pointAlongPerimeter(int)">pointAlongPerimeter</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Point.html">Point</A> pointAlongPerimeter(int dist) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#pointAlongPerimeter(int)">pointAlongPerimeter</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setPoints(java.awt.Point[])">setPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setPoints(<A HREF="java.awt.Point.html">Point</A>[] ps) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#setPoints(java.awt.Point[])">setPoints</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPoints()">getPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Point.html">Point</A>[] getPoints() </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#getPoints()">getPoints</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setPoints(int, int, int)">setPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setPoints(int i, 
+                         int x, 
+                         int y) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#setPoints(int, int, int)">setPoints</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setPoints(uci.gef.Handle, int, int)">setPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setPoints(<A HREF="uci.gef.Handle.html">Handle</A> h, 
+                         int x, 
+                         int y) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#setPoints(uci.gef.Handle, int, int)">setPoints</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPoints(int)">getPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Point.html">Point</A> getPoints(int i) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#getPoints(int)">getPoints</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getNumPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getNumPoints()">getNumPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int getNumPoints() </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#getNumPoints()">getNumPoints</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setNumPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setNumPoints(int)">setNumPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setNumPoints(int npoints) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#setNumPoints(int)">setNumPoints</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getXs"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getXs()">getXs</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int[] getXs() </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#getXs()">getXs</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setXs"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setXs(int[])">setXs</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setXs(int[] xs) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#setXs(int[])">setXs</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getYs"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getYs()">getYs</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int[] getYs() </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#getYs()">getYs</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setYs"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setYs(int[])">setYs</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setYs(int[] ys) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#setYs(int[])">setYs</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="isResizable"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="isResizable()">isResizable</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean isResizable() </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#isResizable()">isResizable</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="isReshapable"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="isReshapable()">isReshapable</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean isReshapable() </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#isReshapable()">isReshapable</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="isRotatable"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="isRotatable()">isRotatable</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean isRotatable() </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#isRotatable()">isRotatable</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paintArrowHeads"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paintArrowHeads(java.awt.Graphics)">paintArrowHeads</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void paintArrowHeads(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Paint ArrowHeads on this FigEdge. Called from paint().
+  Determines placement and orientation by using
+  pointAlongPerimeter().
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paintPathItems"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paintPathItems(java.awt.Graphics)">paintPathItems</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void paintPathItems(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Paint any labels that are located relative to this FigEdge.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paint"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paint(java.awt.Graphics)">paint</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void paint(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Paint this FigEdge.  Needs-more-work: take Highlight into account
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#paint(java.awt.Graphics)">paint</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="propertyChange"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="propertyChange(java.beans.PropertyChangeEvent)">propertyChange</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void propertyChange(<A HREF="java.beans.PropertyChangeEvent.html">PropertyChangeEvent</A> pce) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.beans.PropertyChangeListener.html#propertyChange(java.beans.PropertyChangeEvent)">propertyChange</A> in interface <A HREF="java.beans.PropertyChangeListener.html">PropertyChangeListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

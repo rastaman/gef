@@ -1,0 +1,293 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.NetEdge | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.NetEdge
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.NetEdge
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.NetPrimitive.html">uci.gef.NetPrimitive</A>
+           |
+           +----uci.gef.NetEdge
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public abstract class  <STRONG>NetEdge</STRONG>
+     extends uci.gef.<A HREF="uci.gef.NetPrimitive.html">NetPrimitive</A>
+     implements uci.graph.<A HREF="uci.graph.GraphEdgeHooks.html">GraphEdgeHooks</A>, 
+                java.io.<A HREF="java.io.Serializable.html">Serializable</A>
+{
+          // Fields 3
+     protected <A CLASS=nound HREF="uci.gef.NetPort.html">NetPort</A> <A HREF="#_destPort">_destPort</A>;
+     protected <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#_ports">_ports</A>;
+     protected <A CLASS=nound HREF="uci.gef.NetPort.html">NetPort</A> <A HREF="#_sourcePort">_sourcePort</A>;
+
+          // Constructors 1
+     public <A HREF="#NetEdge()">NetEdge</A>();
+
+          // Methods 11
+     public boolean <A HREF="#connect(uci.graph.GraphModel, java.lang.Object, java.lang.Object)">connect</A>(<A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#dispose()">dispose</A>();
+     public <A CLASS=nound HREF="uci.gef.NetPort.html">NetPort</A> <A HREF="#getDestPort()">getDestPort</A>();
+     public <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#getPorts()">getPorts</A>();
+     public <A CLASS=nound HREF="uci.gef.NetPort.html">NetPort</A> <A HREF="#getSourcePort()">getSourcePort</A>();
+     public abstract <A CLASS=nound HREF="uci.gef.FigEdge.html">FigEdge</A> <A HREF="#makePresentation(uci.gef.Layer)">makePresentation</A>(<A CLASS=nound HREF="uci.gef.Layer.html">Layer</A>);
+     public <A CLASS=nound HREF="uci.gef.NetPort.html">NetPort</A> <A HREF="#otherEnd(uci.gef.NetPort)">otherEnd</A>(<A CLASS=nound HREF="uci.gef.NetPort.html">NetPort</A>);
+     public <A CLASS=nound HREF="uci.gef.FigEdge.html">FigEdge</A> <A HREF="#presentationFor(uci.gef.Layer)">presentationFor</A>(<A CLASS=nound HREF="uci.gef.Layer.html">Layer</A>);
+     public void <A HREF="#setDestPort(uci.gef.NetPort)">setDestPort</A>(<A CLASS=nound HREF="uci.gef.NetPort.html">NetPort</A>);
+     public void <A HREF="#setPorts(java.util.Vector)">setPorts</A>(<A CLASS=nound HREF="java.util.Vector.html">Vector</A>);
+     public void <A HREF="#setSourcePort(uci.gef.NetPort)">setSourcePort</A>(<A CLASS=nound HREF="uci.gef.NetPort.html">NetPort</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+This class models an edge in our underlying connected graph
+  model. This class is used by the DefaultGraphModel.  If you define
+  your own GraphModel, you can user your own application-specific
+  objects as edges. Needs-more-work: this should probably move to
+  package uci.graph.
+<P>
+</DL>
+<P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Extended By: </B>
+<DD><A HREF="uci.gef.demo.EdgeData.html">EdgeData</A>, <A HREF="uci.gef.demo.EdgePower.html">EdgePower</A>, <A HREF="uci.gef.demo.SampleEdge.html">SampleEdge</A>, <A HREF="uci.gef.demo.SampleEdge2.html">SampleEdge2</A><P>
+<DT><B>Returned By: </B>
+<DD>NetPort.<A HREF="uci.gef.NetPort.html#getParentEdge()">getParentEdge()</A>, NetPort.<A HREF="uci.gef.NetPort.html#makeEdgeFor(uci.gef.NetPort)">makeEdgeFor()</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_sourcePort"><FONT COLOR="#FF00FF">&middot;</FONT> _sourcePort</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.NetPort.html">NetPort</A> _sourcePort
+</PRE>
+<BLOCKQUOTE>
+<P>
+The start and end ports of this edge.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_destPort"><FONT COLOR="#FF00FF">&middot;</FONT> _destPort</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.NetPort.html">NetPort</A> _destPort
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_ports"><FONT COLOR="#FF00FF">&middot;</FONT> _ports</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.util.Vector.html">Vector</A> _ports
+</PRE>
+<BLOCKQUOTE>
+<P>
+The ports that are part of this edge. Most of the time Edges do
+  not have any ports. However, in some connected graph notations,
+  users are allowed to attach notes to edges, or something that
+  requrires edges to go from an edge to a node, or an edge to an
+  edge.
+<P>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="NetEdge"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="NetEdge()">NetEdge</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public NetEdge() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new NetEdge
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setSourcePort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setSourcePort(uci.gef.NetPort)">setSourcePort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setSourcePort(<A HREF="uci.gef.NetPort.html">NetPort</A> s) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getSourcePort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getSourcePort()">getSourcePort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.NetPort.html">NetPort</A> getSourcePort() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setDestPort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setDestPort(uci.gef.NetPort)">setDestPort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setDestPort(<A HREF="uci.gef.NetPort.html">NetPort</A> d) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getDestPort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getDestPort()">getDestPort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.NetPort.html">NetPort</A> getDestPort() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="otherEnd"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="otherEnd(uci.gef.NetPort)">otherEnd</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.NetPort.html">NetPort</A> otherEnd(<A HREF="uci.gef.NetPort.html">NetPort</A> oneEnd) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Given one port (source or destination), reply the other port
+  (destination or source).
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPorts"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPorts()">getPorts</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Vector.html">Vector</A> getPorts() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setPorts"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setPorts(java.util.Vector)">setPorts</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setPorts(<A HREF="java.util.Vector.html">Vector</A> v) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="connect"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="connect(uci.graph.GraphModel, java.lang.Object, java.lang.Object)">connect</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean connect(<A HREF="uci.graph.GraphModel.html">GraphModel</A> gm, 
+                          <A HREF="java.lang.Object.html">Object</A> srcPort, 
+                          <A HREF="java.lang.Object.html">Object</A> destPort) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Connect the source and destination ports, iff they agree to
+ being connected (i.e., canConnectTo() returns true). Reply true
+ on success. This method is noramlly called after a new edge
+ instance is made. Maybe this behavior should be in a constructor,
+ but I want to use Class#newInstance so constructors do not get
+ any arguments.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="dispose"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="dispose()">dispose</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void dispose() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Remove this NetEdge from the underlying connected graph model.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="uci.graph.GraphEdgeHooks.html#dispose()">dispose</A> in interface <A HREF="uci.graph.GraphEdgeHooks.html">GraphEdgeHooks</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="presentationFor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="presentationFor(uci.gef.Layer)">presentationFor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.FigEdge.html">FigEdge</A> presentationFor(<A HREF="uci.gef.Layer.html">Layer</A> lay) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+The Fig to use in views of a given type
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="makePresentation"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="makePresentation(uci.gef.Layer)">makePresentation</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract <A HREF="uci.gef.FigEdge.html">FigEdge</A> makePresentation(<A HREF="uci.gef.Layer.html">Layer</A> lay) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Abstract method that returns a FigEdge to represent this edge in
+  a given Layer.  This is just a quick and simple way to do it if
+  you use a DefaultGraphModel because DefaultgraphEdgeRenderer
+  calls this. Override this method if you want your Edge
+  subclasses to have a different look.  The better way to do it is
+  to implement your own GraphEdgeRenderer.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

@@ -1,0 +1,170 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.SelectionReshape | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.SelectionReshape
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.SelectionReshape
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.Selection.html">uci.gef.Selection</A>
+           |
+           +----uci.gef.SelectionReshape
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>SelectionReshape</STRONG>
+     extends uci.gef.<A HREF="uci.gef.Selection.html">Selection</A>
+{
+          // Fields 1
+     protected int <A HREF="#_selectedHandle">_selectedHandle</A>;
+
+          // Constructors 1
+     public <A HREF="#SelectionReshape(uci.gef.Fig)">SelectionReshape</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+
+          // Methods 4
+     public void <A HREF="#dragHandle(int, int, int, int, uci.gef.Handle)">dragHandle</A>(int, int, int, int, <A CLASS=nound HREF="uci.gef.Handle.html">Handle</A>);
+     public int <A HREF="#hitHandle(java.awt.Rectangle)">hitHandle</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>);
+     public void <A HREF="#keyTyped(java.awt.event.KeyEvent)">keyTyped</A>(<A CLASS=nound HREF="java.awt.event.KeyEvent.html">KeyEvent</A>);
+     public void <A HREF="#paint(java.awt.Graphics)">paint</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+A Selection that allows the user to reshape the selected Fig.
+  This is used with FigPoly, FigLine, and FigInk.  One handle is
+  drawn over each point on the Fig.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.FigLine.html">FigLine</A>, <A HREF="uci.gef.FigPoly.html">FigPoly</A>, <A HREF="uci.gef.FigInk.html">FigInk</A><P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_selectedHandle"><FONT COLOR="#FF00FF">&middot;</FONT> _selectedHandle</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int _selectedHandle
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="SelectionReshape"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="SelectionReshape(uci.gef.Fig)">SelectionReshape</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public SelectionReshape(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new SelectionReshape for the given Fig
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="hitHandle"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="hitHandle(java.awt.Rectangle)">hitHandle</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int hitHandle(<A HREF="java.awt.Rectangle.html">Rectangle</A> r) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return a handle ID for the handle under the mouse, or -1 if none.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Selection.html#hitHandle(java.awt.Rectangle)">hitHandle</A> in class <A HREF="uci.gef.Selection.html">Selection</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paint"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paint(java.awt.Graphics)">paint</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void paint(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Paint the handles at the four corners and midway along each edge
+ of the bounding box.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Selection.html#paint(java.awt.Graphics)">paint</A> in class <A HREF="uci.gef.Selection.html">Selection</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="dragHandle"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="dragHandle(int, int, int, int, uci.gef.Handle)">dragHandle</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void dragHandle(int mX, 
+                          int mY, 
+                          int anX, 
+                          int anY, 
+                          <A HREF="uci.gef.Handle.html">Handle</A> h) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Change some attribute of the selected Fig when the user drags one of its
+  handles.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Selection.html#dragHandle(int, int, int, int, uci.gef.Handle)">dragHandle</A> in class <A HREF="uci.gef.Selection.html">Selection</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="keyTyped"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="keyTyped(java.awt.event.KeyEvent)">keyTyped</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void keyTyped(<A HREF="java.awt.event.KeyEvent.html">KeyEvent</A> ke) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+If the user presses delete or backaspace while a handle is
+  selected, remove that point from the polygon. The 'n' and 'p'
+  keys select the next and previous points. The 'i' key inserts a
+  new point.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Selection.html#keyTyped(java.awt.event.KeyEvent)">keyTyped</A> in class <A HREF="uci.gef.Selection.html">Selection</A>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.KeyListener.html#keyTyped(java.awt.event.KeyEvent)">keyTyped</A> in interface <A HREF="java.awt.event.KeyListener.html">KeyListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

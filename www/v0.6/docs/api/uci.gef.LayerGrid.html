@@ -1,0 +1,240 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.LayerGrid | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.LayerGrid
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.LayerGrid
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.Layer.html">uci.gef.Layer</A>
+           |
+           +----uci.gef.LayerGrid
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>LayerGrid</STRONG>
+     extends uci.gef.<A HREF="uci.gef.Layer.html">Layer</A>
+{
+          // Fields 4
+     protected <A CLASS=nound HREF="java.awt.Color.html">Color</A> <A HREF="#_bgColor">_bgColor</A>;
+     protected <A CLASS=nound HREF="java.awt.Color.html">Color</A> <A HREF="#_color">_color</A>;
+     protected int <A HREF="#_dotSize">_dotSize</A>;
+     protected boolean <A HREF="#_paintBackground">_paintBackground</A>;
+
+          // Constructors 2
+     public <A HREF="#LayerGrid()">LayerGrid</A>();
+     public <A HREF="#LayerGrid(java.awt.Color, java.awt.Color, int, boolean)">LayerGrid</A>(<A CLASS=nound HREF="java.awt.Color.html">Color</A>, <A CLASS=nound HREF="java.awt.Color.html">Color</A>, int, boolean);
+
+          // Methods 5
+     public void <A HREF="#adjust()">adjust</A>();
+     public <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#getContents()">getContents</A>();
+     public synchronized void <A HREF="#paintContents(java.awt.Graphics)">paintContents</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     protected void <A HREF="#paintDots(java.awt.Graphics, boolean)">paintDots</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>, boolean);
+     public <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#presentationFor(java.lang.Object)">presentationFor</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+Paint a background drawing guide consisting of horizontal and
+  vertical lines in a neutral color. This feature is common to many
+  drawing applications (e.g., MacDraw).  LayerGrid is in concept a
+  Layer, just like any other so it can be composed, locked, grayed,
+  hidden, and reordered. <p>
+
+  Needs-More-Work: Since I am using image stamping and AWT does not
+  support transparent pixels, any Layer underneath an instance of
+  LayerGrid will not be seen. Image stamping is nice because it is
+  fast, but I need to think of some other fast way to do it...
+<P>
+</DL>
+<P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_color"><FONT COLOR="#FF00FF">&middot;</FONT> _color</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.awt.Color.html">Color</A> _color
+</PRE>
+<BLOCKQUOTE>
+<P>
+The color of the grid lines or dots.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_bgColor"><FONT COLOR="#FF00FF">&middot;</FONT> _bgColor</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.awt.Color.html">Color</A> _bgColor
+</PRE>
+<BLOCKQUOTE>
+<P>
+The color of the space between the lines or dots.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_paintBackground"><FONT COLOR="#FF00FF">&middot;</FONT> _paintBackground</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected boolean _paintBackground
+</PRE>
+<BLOCKQUOTE>
+<P>
+True means to fill in the image stamp or drawing area with the
+  background color. False means to just paint the lines or dots.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_dotSize"><FONT COLOR="#FF00FF">&middot;</FONT> _dotSize</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int _dotSize
+</PRE>
+<BLOCKQUOTE>
+<P>
+The size of the dots.  Dots are actually small rectangles.
+<P>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="LayerGrid"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="LayerGrid()">LayerGrid</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public LayerGrid() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new LayerGrid and name it 'Grid'.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="LayerGrid"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="LayerGrid(java.awt.Color, java.awt.Color, int, boolean)">LayerGrid</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public LayerGrid(<A HREF="java.awt.Color.html">Color</A> fore, 
+                    <A HREF="java.awt.Color.html">Color</A> back, 
+                    int spacing, 
+                    boolean lines) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new LayerGrid with the given foreground color,
+ background color, line spacing, and lines/dots flag.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getContents"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getContents()">getContents</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Vector.html">Vector</A> getContents() </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#getContents()">getContents</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="presentationFor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="presentationFor(java.lang.Object)">presentationFor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Fig.html">Fig</A> presentationFor(<A HREF="java.lang.Object.html">Object</A> obj) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#presentationFor(java.lang.Object)">presentationFor</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paintContents"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paintContents(java.awt.Graphics)">paintContents</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public synchronized void paintContents(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Paint the grid lines or dots by repeatedly bitblting a
+  precomputed 'stamp' onto the given Graphics
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#paintContents(java.awt.Graphics)">paintContents</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paintDots"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paintDots(java.awt.Graphics, boolean)">paintDots</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void paintDots(<A HREF="java.awt.Graphics.html">Graphics</A> g, 
+                            boolean paintBackground) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Paint dots on the given Graphics.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="adjust"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="adjust()">adjust</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void adjust() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Eventually this will open a dialog box to let the user adjust
+  the grid line spacing, colors, and whether liens or dots are
+  shown. For now it just cycles among 5 predefined styles.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Layer.html#adjust()">adjust</A> in class <A HREF="uci.gef.Layer.html">Layer</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

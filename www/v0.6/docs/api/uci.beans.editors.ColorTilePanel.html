@@ -1,0 +1,471 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.beans.editors.ColorTilePanel | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.beans.editors.ColorTilePanel
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.beans.editors.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.beans.editors.ColorTilePanel
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="JPanel.html">JPanel</A>
+           |
+           +----uci.beans.editors.ColorTilePanel
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>ColorTilePanel</STRONG>
+     extends <A HREF="JPanel.html">JPanel</A>
+     implements java.awt.event.<A HREF="java.awt.event.MouseListener.html">MouseListener</A>, 
+                java.awt.event.<A HREF="java.awt.event.MouseMotionListener.html">MouseMotionListener</A>
+{
+          // Fields 7
+     public static final int <A HREF="#TILESIZE">TILESIZE</A>;
+     public static <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#_NetscapeColors">_NetscapeColors</A>;
+     protected boolean <A HREF="#_allowSelection">_allowSelection</A>;
+     protected <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#_colors">_colors</A>;
+     protected int <A HREF="#_nCols">_nCols</A>;
+     protected <A CLASS=nound HREF="java.awt.event.ActionListener.html">ActionListener</A> <A HREF="#_onlyListener">_onlyListener</A>;
+     protected int <A HREF="#_selected">_selected</A>;
+
+          // Constructors 4
+     public <A HREF="#ColorTilePanel()">ColorTilePanel</A>();
+     public <A HREF="#ColorTilePanel(int)">ColorTilePanel</A>(int);
+     public <A HREF="#ColorTilePanel(java.util.Vector)">ColorTilePanel</A>(<A CLASS=nound HREF="java.util.Vector.html">Vector</A>);
+     public <A HREF="#ColorTilePanel(java.util.Vector, int)">ColorTilePanel</A>(<A CLASS=nound HREF="java.util.Vector.html">Vector</A>, int);
+
+          // Methods 20
+     public static <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#netscapeColors()">netscapeColors</A>();
+
+     public void <A HREF="#addActionListener(java.awt.event.ActionListener)">addActionListener</A>(<A CLASS=nound HREF="java.awt.event.ActionListener.html">ActionListener</A>);
+     public void <A HREF="#allowSelection(boolean)">allowSelection</A>(boolean);
+     public void <A HREF="#fireActionEvent(java.awt.event.ActionEvent)">fireActionEvent</A>(<A CLASS=nound HREF="java.awt.event.ActionEvent.html">ActionEvent</A>);
+     public <A CLASS=nound HREF="java.awt.Color.html">Color</A> <A HREF="#getColor()">getColor</A>();
+     public <A CLASS=nound HREF="java.awt.Dimension.html">Dimension</A> <A HREF="#getMinimumSize()">getMinimumSize</A>();
+     public <A CLASS=nound HREF="java.awt.Dimension.html">Dimension</A> <A HREF="#getPreferredSize()">getPreferredSize</A>();
+     public void <A HREF="#mouseClicked(java.awt.event.MouseEvent)">mouseClicked</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseDragged(java.awt.event.MouseEvent)">mouseDragged</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseEntered(java.awt.event.MouseEvent)">mouseEntered</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseExited(java.awt.event.MouseEvent)">mouseExited</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseMoved(java.awt.event.MouseEvent)">mouseMoved</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mousePressed(java.awt.event.MouseEvent)">mousePressed</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#paint(java.awt.Graphics)">paint</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     public void <A HREF="#paintTile(java.awt.Graphics, int)">paintTile</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>, int);
+     public void <A HREF="#removeActionListener(java.awt.event.ActionListener)">removeActionListener</A>(<A CLASS=nound HREF="java.awt.event.ActionListener.html">ActionListener</A>);
+     public void <A HREF="#setColor(java.awt.Color)">setColor</A>(<A CLASS=nound HREF="java.awt.Color.html">Color</A>);
+     public boolean <A HREF="#setSelectionIndex(int)">setSelectionIndex</A>(int);
+     public void <A HREF="#showSelection(java.awt.Graphics)">showSelection</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+A Panel that shows an array of little colored squares to allow the
+  user to pick a color. By default I use "netscape colors" which are
+  colors that Netscape Navigator (TM) tries to allocate when it
+  starts.
+<P>
+</DL>
+<P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="TILESIZE"><FONT COLOR="#0000FF">&middot;</FONT> TILESIZE</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final int TILESIZE
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_colors"><FONT COLOR="#FF00FF">&middot;</FONT> _colors</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.util.Vector.html">Vector</A> _colors
+</PRE>
+<BLOCKQUOTE>
+<P>
+The colors that will be shown
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_selected"><FONT COLOR="#FF00FF">&middot;</FONT> _selected</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int _selected
+</PRE>
+<BLOCKQUOTE>
+<P>
+The index of the selected color
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_nCols"><FONT COLOR="#FF00FF">&middot;</FONT> _nCols</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int _nCols
+</PRE>
+<BLOCKQUOTE>
+<P>
+The number of columns to use when displaying the array of
+  /** colors.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_allowSelection"><FONT COLOR="#FF00FF">&middot;</FONT> _allowSelection</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected boolean _allowSelection
+</PRE>
+<BLOCKQUOTE>
+<P>
+True iff the user can select a color, false if this widget is
+  /** disabled.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_onlyListener"><FONT COLOR="#FF00FF">&middot;</FONT> _onlyListener</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.awt.event.ActionListener.html">ActionListener</A> _onlyListener
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_NetscapeColors"><FONT COLOR="#0000FF">&middot;</FONT> _NetscapeColors</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static <A HREF="java.util.Vector.html">Vector</A> _NetscapeColors
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ColorTilePanel"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="ColorTilePanel()">ColorTilePanel</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public ColorTilePanel() </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ColorTilePanel"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="ColorTilePanel(int)">ColorTilePanel</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public ColorTilePanel(int nCols) </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ColorTilePanel"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="ColorTilePanel(java.util.Vector)">ColorTilePanel</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public ColorTilePanel(<A HREF="java.util.Vector.html">Vector</A> cs) </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ColorTilePanel"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="ColorTilePanel(java.util.Vector, int)">ColorTilePanel</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public ColorTilePanel(<A HREF="java.util.Vector.html">Vector</A> cs, 
+                         int nCols) </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getColor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getColor()">getColor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Color.html">Color</A> getColor() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setColor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setColor(java.awt.Color)">setColor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setColor(<A HREF="java.awt.Color.html">Color</A> c) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Select the little rectangle for the given color, ONLY if it is
+ one of the displayed colors.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="allowSelection"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="allowSelection(boolean)">allowSelection</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void allowSelection(boolean as) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+The user can be prevented from selecting a color if there would
+ be nothing to do the the selected color. E.g., the Color Picker
+ window is open but no DiagramElement is selected.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paint"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paint(java.awt.Graphics)">paint</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void paint(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paintTile"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paintTile(java.awt.Graphics, int)">paintTile</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void paintTile(<A HREF="java.awt.Graphics.html">Graphics</A> g, 
+                         int tileNum) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="showSelection"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="showSelection(java.awt.Graphics)">showSelection</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void showSelection(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Draw a black or white hollow rectangle to indicate which color
+ the user selected.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getMinimumSize"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getMinimumSize()">getMinimumSize</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Dimension.html">Dimension</A> getMinimumSize() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPreferredSize"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPreferredSize()">getPreferredSize</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Dimension.html">Dimension</A> getPreferredSize() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setSelectionIndex"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setSelectionIndex(int)">setSelectionIndex</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean setSelectionIndex(int s) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseReleased"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseReleased(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+When the user releases the mouse button that signifies that
+ (s)he has made a selection, post an ACTION_EVENT that the
+ enclosing Container can handle.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mousePressed"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mousePressed(java.awt.event.MouseEvent)">mousePressed</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mousePressed(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Mousedown is the same as mouse up: it selects the color under
+ the mouse
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mousePressed(java.awt.event.MouseEvent)">mousePressed</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseMoved"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseMoved(java.awt.event.MouseEvent)">mouseMoved</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseMoved(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseMotionListener.html#mouseMoved(java.awt.event.MouseEvent)">mouseMoved</A> in interface <A HREF="java.awt.event.MouseMotionListener.html">MouseMotionListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseDragged"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseDragged(java.awt.event.MouseEvent)">mouseDragged</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseDragged(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseMotionListener.html#mouseDragged(java.awt.event.MouseEvent)">mouseDragged</A> in interface <A HREF="java.awt.event.MouseMotionListener.html">MouseMotionListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseClicked"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseClicked(java.awt.event.MouseEvent)">mouseClicked</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseClicked(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseClicked(java.awt.event.MouseEvent)">mouseClicked</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseEntered"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseEntered(java.awt.event.MouseEvent)">mouseEntered</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseEntered(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseEntered(java.awt.event.MouseEvent)">mouseEntered</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseExited"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseExited(java.awt.event.MouseEvent)">mouseExited</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseExited(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseExited(java.awt.event.MouseEvent)">mouseExited</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="netscapeColors"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="netscapeColors()">netscapeColors</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static <A HREF="java.util.Vector.html">Vector</A> netscapeColors() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="addActionListener"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="addActionListener(java.awt.event.ActionListener)">addActionListener</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void addActionListener(<A HREF="java.awt.event.ActionListener.html">ActionListener</A> list) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removeActionListener"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removeActionListener(java.awt.event.ActionListener)">removeActionListener</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void removeActionListener(<A HREF="java.awt.event.ActionListener.html">ActionListener</A> list) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="fireActionEvent"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="fireActionEvent(java.awt.event.ActionEvent)">fireActionEvent</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void fireActionEvent(<A HREF="java.awt.event.ActionEvent.html">ActionEvent</A> ae) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.beans.editors.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

@@ -1,0 +1,131 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.Guide | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.Guide
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.Guide
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----uci.gef.Guide
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public abstract class  <STRONG>Guide</STRONG>
+     extends java.lang.<A HREF="java.lang.Object.html">Object</A>
+     implements java.io.<A HREF="java.io.Serializable.html">Serializable</A>
+{
+          // Constructors 1
+     public <A HREF="#Guide()">Guide</A>();
+
+          // Methods 3
+     public void <A HREF="#adjust()">adjust</A>();
+     public abstract void <A HREF="#snap(java.awt.Point)">snap</A>(<A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+     public final <A CLASS=nound HREF="java.awt.Point.html">Point</A> <A HREF="#snapTo(java.awt.Point)">snapTo</A>(<A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+Constrains interactions to certain coordinates. For example
+  GuideGrid makes objects snap to a grid. Other subclasses might
+  implement other snapping rules, for example, a polar grid or
+  gravity (objects cling to other objects when they get close).
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.GuideGrid.html">GuideGrid</A><P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Extended By: </B>
+<DD><A HREF="uci.gef.GuideGrid.html">GuideGrid</A><P>
+<DT><B>Returned By: </B>
+<DD>Editor.<A HREF="uci.gef.Editor.html#getGuide()">getGuide()</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Guide"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Guide()">Guide</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Guide() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Default constructor
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="snapTo"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="snapTo(java.awt.Point)">snapTo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public final <A HREF="java.awt.Point.html">Point</A> snapTo(<A HREF="java.awt.Point.html">Point</A> p) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return a NEW Point that is close to p and on the guideline
+  (e.g., gridline).
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="snap"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="snap(java.awt.Point)">snap</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract void snap(<A HREF="java.awt.Point.html">Point</A> p) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Modify the given point to satisfy guide conditions (e.g. be on a
+  gridline).
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="adjust"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="adjust()">adjust</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void adjust() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Bring up a dialog box to set the parameters for this
+  guide. E.g., set the size of a grid.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

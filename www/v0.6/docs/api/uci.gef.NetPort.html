@@ -1,0 +1,329 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.NetPort | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.NetPort
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.NetPort
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.NetPrimitive.html">uci.gef.NetPrimitive</A>
+           |
+           +----uci.gef.NetPort
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>NetPort</STRONG>
+     extends uci.gef.<A HREF="uci.gef.NetPrimitive.html">NetPrimitive</A>
+     implements uci.graph.<A HREF="uci.graph.GraphPortHooks.html">GraphPortHooks</A>, 
+                java.io.<A HREF="java.io.Serializable.html">Serializable</A>
+{
+          // Fields 3
+     public static <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#DEFAULT_EDGE_CLASS">DEFAULT_EDGE_CLASS</A>;
+     protected <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#_edges">_edges</A>;
+     protected <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#_parent">_parent</A>;
+
+          // Constructors 1
+     public <A HREF="#NetPort(java.lang.Object)">NetPort</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+
+          // Methods 12
+     public void <A HREF="#addEdge(uci.gef.NetEdge)">addEdge</A>(<A CLASS=nound HREF="uci.gef.NetEdge.html">NetEdge</A>);
+     public boolean <A HREF="#canConnectTo(uci.graph.GraphModel, java.lang.Object)">canConnectTo</A>(<A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     protected <A CLASS=nound HREF="java.lang.Class.html">Class</A> <A HREF="#defaultEdgeClass(uci.gef.NetPort)">defaultEdgeClass</A>(<A CLASS=nound HREF="uci.gef.NetPort.html">NetPort</A>);
+     public void <A HREF="#dispose()">dispose</A>();
+     public <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#getEdges()">getEdges</A>();
+     public <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#getParent()">getParent</A>();
+     public <A CLASS=nound HREF="uci.gef.NetEdge.html">NetEdge</A> <A HREF="#getParentEdge()">getParentEdge</A>();
+     public <A CLASS=nound HREF="uci.gef.NetNode.html">NetNode</A> <A HREF="#getParentNode()">getParentNode</A>();
+     public <A CLASS=nound HREF="uci.gef.NetEdge.html">NetEdge</A> <A HREF="#makeEdgeFor(uci.gef.NetPort)">makeEdgeFor</A>(<A CLASS=nound HREF="uci.gef.NetPort.html">NetPort</A>);
+     public void <A HREF="#postConnect(uci.graph.GraphModel, java.lang.Object)">postConnect</A>(<A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#postDisconnect(uci.graph.GraphModel, java.lang.Object)">postDisconnect</A>(<A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#removeEdge(uci.gef.NetEdge)">removeEdge</A>(<A CLASS=nound HREF="uci.gef.NetEdge.html">NetEdge</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+This class models a port in our underlying connected graph model.
+  A port is place on a node where an edge can connect.  For example,
+  the power socket in a wall, ot the power cord socket on the back
+  of a computer.  This class is used by the DefaultGraphModel. You
+  can also define your own GraphModel that uses your own
+  application-specific objects as ports. Needs-more-work: this
+  should probably move to package uci.graph.
+<P>
+</DL>
+<P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Extended By: </B>
+<DD><A HREF="uci.gef.demo.PortData.html">PortData</A>, <A HREF="uci.gef.demo.PortPower.html">PortPower</A>, <A HREF="uci.gef.demo.SamplePort.html">SamplePort</A><P>
+<DT><B>Returned By: </B>
+<DD>NetEdge.<A HREF="uci.gef.NetEdge.html#getDestPort()">getDestPort()</A>, NetEdge.<A HREF="uci.gef.NetEdge.html#getSourcePort()">getSourcePort()</A>, NetEdge.<A HREF="uci.gef.NetEdge.html#otherEnd(uci.gef.NetPort)">otherEnd()</A>, NetNode.<A HREF="uci.gef.NetNode.html#getPort(int)">getPort()</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="DEFAULT_EDGE_CLASS"><FONT COLOR="#0000FF">&middot;</FONT> DEFAULT_EDGE_CLASS</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static <A HREF="java.lang.String.html">String</A> DEFAULT_EDGE_CLASS
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_edges"><FONT COLOR="#FF00FF">&middot;</FONT> _edges</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.util.Vector.html">Vector</A> _edges
+</PRE>
+<BLOCKQUOTE>
+<P>
+The NetEdges that are connected to this port.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_parent"><FONT COLOR="#FF00FF">&middot;</FONT> _parent</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.lang.Object.html">Object</A> _parent
+</PRE>
+<BLOCKQUOTE>
+<P>
+The NetNode that this port is a part of.
+<P>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="NetPort"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="NetPort(java.lang.Object)">NetPort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public NetPort(<A HREF="java.lang.Object.html">Object</A> parent) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new NetPort with the given parent node and no arcs.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getParentNode"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getParentNode()">getParentNode</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.NetNode.html">NetNode</A> getParentNode() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the NetNode that owns this port.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getParentEdge"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getParentEdge()">getParentEdge</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.NetEdge.html">NetEdge</A> getParentEdge() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getParent"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getParent()">getParent</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.Object.html">Object</A> getParent() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getEdges"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getEdges()">getEdges</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Vector.html">Vector</A> getEdges() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply a vector of NetEdges that are connected here.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="addEdge"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="addEdge(uci.gef.NetEdge)">addEdge</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void addEdge(<A HREF="uci.gef.NetEdge.html">NetEdge</A> edge) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Add an edge to the list of edge connected to this port. Called
+  when the user defines a new edge. Normally, you would not call
+  this directly, you would call NetEdge#connect().
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removeEdge"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removeEdge(uci.gef.NetEdge)">removeEdge</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void removeEdge(<A HREF="uci.gef.NetEdge.html">NetEdge</A> edge) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Remove an edge from the list of edge connected to this
+  port. Called when the user disposes an edge. Normally, you would
+  not call this directly, you would call NetEdge#dispose().
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="dispose"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="dispose()">dispose</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void dispose() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Remove this port from the underlying connected graph model and
+  dispose all arcs connected to it.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="uci.graph.GraphPortHooks.html#dispose()">dispose</A> in interface <A HREF="uci.graph.GraphPortHooks.html">GraphPortHooks</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="postConnect"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="postConnect(uci.graph.GraphModel, java.lang.Object)">postConnect</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void postConnect(<A HREF="uci.graph.GraphModel.html">GraphModel</A> gm, 
+                           <A HREF="java.lang.Object.html">Object</A> otherPort) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Application specific hook that is called after a successful
+  connection.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="uci.graph.GraphPortHooks.html#postConnect(uci.graph.GraphModel, java.lang.Object)">postConnect</A> in interface <A HREF="uci.graph.GraphPortHooks.html">GraphPortHooks</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="postDisconnect"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="postDisconnect(uci.graph.GraphModel, java.lang.Object)">postDisconnect</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void postDisconnect(<A HREF="uci.graph.GraphModel.html">GraphModel</A> gm, 
+                              <A HREF="java.lang.Object.html">Object</A> otherPort) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Application specific hook that is called after a
+  disconnection. (for now, all disconnections are assumed
+  legal).
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="uci.graph.GraphPortHooks.html#postDisconnect(uci.graph.GraphModel, java.lang.Object)">postDisconnect</A> in interface <A HREF="uci.graph.GraphPortHooks.html">GraphPortHooks</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="defaultEdgeClass"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="defaultEdgeClass(uci.gef.NetPort)">defaultEdgeClass</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.lang.Class.html">Class</A> defaultEdgeClass(<A HREF="uci.gef.NetPort.html">NetPort</A> otherPort) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+reply the java Class to be used to make new arcs. This is a
+  utility function called from NetPort#makeEdgeFor
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="makeEdgeFor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="makeEdgeFor(uci.gef.NetPort)">makeEdgeFor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.NetEdge.html">NetEdge</A> makeEdgeFor(<A HREF="uci.gef.NetPort.html">NetPort</A> otherPort) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+reply a new NetEdge from this port to the given NetPort.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="canConnectTo"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="canConnectTo(uci.graph.GraphModel, java.lang.Object)">canConnectTo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean canConnectTo(<A HREF="uci.graph.GraphModel.html">GraphModel</A> gm, 
+                               <A HREF="java.lang.Object.html">Object</A> anotherPort) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply true if this port can legally be connected to the given
+  port. Subclasses may implement this to reflect application
+  specific connection constraints. By default, each port just
+  defers that decision to its parent NetNode. By convention, your
+  implementation should return false if super.canConnectTo() would
+  return false (i.e., deeper subclasses get more constrained). I
+  don't know if that is a good convention.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="uci.graph.GraphPortHooks.html#canConnectTo(uci.graph.GraphModel, java.lang.Object)">canConnectTo</A> in interface <A HREF="uci.graph.GraphPortHooks.html">GraphPortHooks</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

@@ -1,0 +1,140 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.PrefsEditor | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.PrefsEditor
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.PrefsEditor
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="java.awt.Component.html">java.awt.Component</A>
+           |
+           +----<A HREF="java.awt.Container.html">java.awt.Container</A>
+                   |
+                   +----<A HREF="java.awt.Window.html">java.awt.Window</A>
+                           |
+                           +----<A HREF="java.awt.Frame.html">java.awt.Frame</A>
+                                   |
+                                   +----uci.gef.PrefsEditor
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>PrefsEditor</STRONG>
+     extends java.awt.<A HREF="java.awt.Frame.html">Frame</A>
+{
+          // Constructors 1
+     public <A HREF="#PrefsEditor()">PrefsEditor</A>();
+
+          // Methods 3
+     public boolean <A HREF="#action(java.awt.Event, java.lang.Object)">action</A>(<A CLASS=nound HREF="java.awt.Event.html">Event</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#close()">close</A>();
+     public boolean <A HREF="#handleEvent(java.awt.Event)">handleEvent</A>(<A CLASS=nound HREF="java.awt.Event.html">Event</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+A dialog box to let the user edit various preferences that effect
+  the application.  Needs-More-Work: right now the only preferences
+  that can be edited relate to redrawing. I should add prefs for
+  handle colors, grid snap(?), and some
+  behaviors... Needs-More-Work: This code could be deleted if I used
+  a PropSheet to edit preferences instead.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.RedrawManager.html">RedrawManager</A><P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="PrefsEditor"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="PrefsEditor()">PrefsEditor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public PrefsEditor() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new PrefsEditor and get ready to open it. This can
+ be invoked via ActionOpenWindow.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="#ActionOpenWindow">ActionOpenWindow</A></BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="close"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="close()">close</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void close() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Close the PrefEditor window
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="handleEvent"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="handleEvent(java.awt.Event)">handleEvent</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean handleEvent(<A HREF="java.awt.Event.html">Event</A> e) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+If the user wants to close the window, do it.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.awt.Component.html#handleEvent(java.awt.Event)">handleEvent</A> in class <A HREF="java.awt.Component.html">Component</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="action"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="action(java.awt.Event, java.lang.Object)">action</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean action(<A HREF="java.awt.Event.html">Event</A> e, 
+                         <A HREF="java.lang.Object.html">Object</A> what) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+If the use pushes one of the buttons, update
+  Globals.prefs(). Needs-More-Work: It would be nice to have a more
+  compact way to code this. I expect that every preference that can
+  be edited will affect Globals.prefs() in a similiar way.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.awt.Component.html#action(java.awt.Event, java.lang.Object)">action</A> in class <A HREF="java.awt.Component.html">Component</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

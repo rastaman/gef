@@ -1,0 +1,147 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.ExecuteCmdWindow | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.ExecuteCmdWindow
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.ExecuteCmdWindow
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="java.awt.Component.html">java.awt.Component</A>
+           |
+           +----<A HREF="java.awt.Container.html">java.awt.Container</A>
+                   |
+                   +----<A HREF="java.awt.Window.html">java.awt.Window</A>
+                           |
+                           +----<A HREF="java.awt.Frame.html">java.awt.Frame</A>
+                                   |
+                                   +----uci.gef.ExecuteCmdWindow
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>ExecuteCmdWindow</STRONG>
+     extends java.awt.<A HREF="java.awt.Frame.html">Frame</A>
+{
+          // Constructors 1
+     public <A HREF="#ExecuteCmdWindow()">ExecuteCmdWindow</A>();
+
+          // Methods 5
+     public void <A HREF="#close()">close</A>();
+     protected void <A HREF="#describeCommand()">describeCommand</A>();
+     protected void <A HREF="#executeCommand(java.awt.Event)">executeCommand</A>(<A CLASS=nound HREF="java.awt.Event.html">Event</A>);
+     public boolean <A HREF="#getCmd(java.awt.Event, java.lang.Object)">getCmd</A>(<A CLASS=nound HREF="java.awt.Event.html">Event</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public boolean <A HREF="#handleEvent(java.awt.Event)">handleEvent</A>(<A CLASS=nound HREF="java.awt.Event.html">Event</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+The ExecuteCmdWindow lists out several Cmds that the user
+  can execute by clicking on the Cmd name. This allows
+  programmers to add new Cmds without having to work out where
+  exactly in the interface to put it, and allows users to execute
+  Cmds without having to know the right keystrokes or get into
+  the proper mode. Users can also see on-line help for each Cmd
+  from this list.
+  <A HREF="../features.html#execute_cmd_window">
+  <TT>FEATURE: execute_cmd_window</TT></A>
+  <A HREF="../features.html#view_cmd_documentation">
+  <TT>FEATURE: view_cmd_documentation</TT></A>
+<P>
+</DL>
+<P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ExecuteCmdWindow"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="ExecuteCmdWindow()">ExecuteCmdWindow</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public ExecuteCmdWindow() </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="handleEvent"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="handleEvent(java.awt.Event)">handleEvent</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean handleEvent(<A HREF="java.awt.Event.html">Event</A> e) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.awt.Component.html#handleEvent(java.awt.Event)">handleEvent</A> in class <A HREF="java.awt.Component.html">Component</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getCmd"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getCmd(java.awt.Event, java.lang.Object)">getCmd</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean getCmd(<A HREF="java.awt.Event.html">Event</A> e, 
+                         <A HREF="java.lang.Object.html">Object</A> what) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="close"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="close()">close</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void close() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="executeCommand"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="executeCommand(java.awt.Event)">executeCommand</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void executeCommand(<A HREF="java.awt.Event.html">Event</A> e) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="describeCommand"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="describeCommand()">describeCommand</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void describeCommand() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

@@ -1,0 +1,198 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.FigImage | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.FigImage
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.FigImage
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.Fig.html">uci.gef.Fig</A>
+           |
+           +----uci.gef.FigImage
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>FigImage</STRONG>
+     extends uci.gef.<A HREF="uci.gef.Fig.html">Fig</A>
+     implements java.awt.image.<A HREF="java.awt.image.ImageObserver.html">ImageObserver</A>
+{
+          // Fields 2
+     protected transient <A CLASS=nound HREF="java.awt.Image.html">Image</A> <A HREF="#_image">_image</A>;
+     protected <A CLASS=nound HREF="java.net.URL.html">URL</A> <A HREF="#_url">_url</A>;
+
+          // Constructors 3
+     public <A HREF="#FigImage(int, int, int, int, java.awt.Image)">FigImage</A>(int, int, int, int, <A CLASS=nound HREF="java.awt.Image.html">Image</A>);
+     public <A HREF="#FigImage(int, int, java.awt.Image)">FigImage</A>(int, int, <A CLASS=nound HREF="java.awt.Image.html">Image</A>);
+     public <A HREF="#FigImage(int, int, java.net.URL)">FigImage</A>(int, int, <A CLASS=nound HREF="java.net.URL.html">URL</A>);
+
+          // Methods 3
+     public void <A HREF="#createDrag(int, int, int, int, int, int)">createDrag</A>(int, int, int, int, int, int);
+     public boolean <A HREF="#imageUpdate(java.awt.Image, int, int, int, int, int)">imageUpdate</A>(<A CLASS=nound HREF="java.awt.Image.html">Image</A>, int, int, int, int, int);
+     public void <A HREF="#paint(java.awt.Graphics)">paint</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+Primitive Fig to paint images (such as icons) on a LayerDiagram.
+<P>
+</DL>
+<P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_image"><FONT COLOR="#FF00FF">&middot;</FONT> _image</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected transient <A HREF="java.awt.Image.html">Image</A> _image
+</PRE>
+<BLOCKQUOTE>
+<P>
+The Image being rendered
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_url"><FONT COLOR="#FF00FF">&middot;</FONT> _url</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.net.URL.html">URL</A> _url
+</PRE>
+<BLOCKQUOTE>
+<P>
+The URL of the Image being rendered
+<P>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="FigImage"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="FigImage(int, int, int, int, java.awt.Image)">FigImage</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public FigImage(int x, 
+                   int y, 
+                   int w, 
+                   int h, 
+                   <A HREF="java.awt.Image.html">Image</A> img) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new FigImage with the given position, size, and Image.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="FigImage"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="FigImage(int, int, java.awt.Image)">FigImage</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public FigImage(int x, 
+                   int y, 
+                   <A HREF="java.awt.Image.html">Image</A> i) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new FigImage w/ the given position and image.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="FigImage"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="FigImage(int, int, java.net.URL)">FigImage</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public FigImage(int x, 
+                   int y, 
+                   <A HREF="java.net.URL.html">URL</A> imageUrl) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new FigImage w/ the given position and URL.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="imageUpdate"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="imageUpdate(java.awt.Image, int, int, int, int, int)">imageUpdate</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean imageUpdate(<A HREF="java.awt.Image.html">Image</A> img, 
+                              int infoflags, 
+                              int x, 
+                              int y, 
+                              int w, 
+                              int h) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.image.ImageObserver.html#imageUpdate(java.awt.Image, int, int, int, int, int)">imageUpdate</A> in interface <A HREF="java.awt.image.ImageObserver.html">ImageObserver</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paint"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paint(java.awt.Graphics)">paint</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void paint(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Paint this FigImage on the given Graphics.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#paint(java.awt.Graphics)">paint</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="createDrag"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="createDrag(int, int, int, int, int, int)">createDrag</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void createDrag(int anchorX, 
+                          int anchorY, 
+                          int x, 
+                          int y, 
+                          int snapX, 
+                          int snapY) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#createDrag(int, int, int, int, int, int)">createDrag</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

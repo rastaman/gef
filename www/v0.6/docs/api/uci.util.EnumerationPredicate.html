@@ -1,0 +1,169 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.util.EnumerationPredicate | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.util.EnumerationPredicate
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.util.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.util.EnumerationPredicate
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----uci.util.EnumerationPredicate
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>EnumerationPredicate</STRONG>
+     extends java.lang.<A HREF="java.lang.Object.html">Object</A>
+     implements java.util.<A HREF="java.util.Enumeration.html">Enumeration</A>, 
+                java.io.<A HREF="java.io.Serializable.html">Serializable</A>
+{
+          // Fields 3
+     protected <A CLASS=nound HREF="java.util.Enumeration.html">Enumeration</A> <A HREF="#_enum">_enum</A>;
+     protected <A CLASS=nound HREF="uci.util.Predicate.html">Predicate</A> <A HREF="#_filter">_filter</A>;
+     protected <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#_nextElement">_nextElement</A>;
+
+          // Constructors 1
+     public <A HREF="#EnumerationPredicate(java.util.Enumeration, uci.util.Predicate)">EnumerationPredicate</A>(<A CLASS=nound HREF="java.util.Enumeration.html">Enumeration</A>, <A CLASS=nound HREF="uci.util.Predicate.html">Predicate</A>);
+
+          // Methods 3
+     protected void <A HREF="#findNext()">findNext</A>();
+     public boolean <A HREF="#hasMoreElements()">hasMoreElements</A>();
+     public <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#nextElement()">nextElement</A>();
+}
+</PRE>
+<P>
+<DL>
+<P>
+Step through the elements of some other enumeration, but skip over
+  any elements that do not satisfy the given predicate.
+<P>
+</DL>
+<P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_enum"><FONT COLOR="#FF00FF">&middot;</FONT> _enum</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.util.Enumeration.html">Enumeration</A> _enum
+</PRE>
+<BLOCKQUOTE>
+<P>
+The normal enumeration that this EnumerationPredicate is moving
+  through.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_filter"><FONT COLOR="#FF00FF">&middot;</FONT> _filter</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.util.Predicate.html">Predicate</A> _filter
+</PRE>
+<BLOCKQUOTE>
+<P>
+The predicate that must be satisfied in order for a given
+  element to be returned by nextElement().
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_nextElement"><FONT COLOR="#FF00FF">&middot;</FONT> _nextElement</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.lang.Object.html">Object</A> _nextElement
+</PRE>
+<BLOCKQUOTE>
+<P>
+The element that will be returned on the next call to
+  nextElement(). This element is "on deck".
+<P>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="EnumerationPredicate"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="EnumerationPredicate(java.util.Enumeration, uci.util.Predicate)">EnumerationPredicate</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public EnumerationPredicate(<A HREF="java.util.Enumeration.html">Enumeration</A> e, 
+                               <A HREF="uci.util.Predicate.html">Predicate</A> p) </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="hasMoreElements"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="hasMoreElements()">hasMoreElements</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean hasMoreElements() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply true iff there are more elements in the given enumeration
+  that satisfy the given predicate.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="java.util.Enumeration.html#hasMoreElements()">hasMoreElements</A> in interface <A HREF="java.util.Enumeration.html">Enumeration</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="nextElement"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="nextElement()">nextElement</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.Object.html">Object</A> nextElement() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the next element in the given enumeration that satisfies
+  the given predicate.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="java.util.Enumeration.html#nextElement()">nextElement</A> in interface <A HREF="java.util.Enumeration.html">Enumeration</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="findNext"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="findNext()">findNext</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void findNext() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Internal method to find the next element that satisfies the
+  predicate and store it in _nextElement.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.util.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

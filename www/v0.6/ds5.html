@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+
+<HEAD>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+	<META NAME="GENERATOR" Content="Visual Page 1.1a for Windows">
+	<TITLE>Download Argo/UML Bytecodes</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<P><FONT SIZE="5" COLOR="#008080" FACE="Tahoma"><B>Download GEF Source Code</B></FONT></P>
+
+<P><FONT SIZE="5" COLOR="#008080" FACE="Tahoma"><B><BR>
+</B></FONT>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="680">
+	<TR>
+		<TD VALIGN="TOP" COLSPAN="2"><FONT COLOR="#996600" FACE="Tahoma"><B>Final Step: Start Working on GEF</B></FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="20">&nbsp;</TD>
+		<TD WIDTH="660">
+			<P><FONT SIZE="2" FACE="Arial, Helvetica"><B><BR>
+			</B></FONT><FONT SIZE="2" COLOR="#000000" FACE="Arial, Helvetica"><B>To Compile GEF using 'make' on UNIX or Windows:</B></FONT><FONT
+			FACE="Arial, Helvetica"></FONT>
+			<UL>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">You will need a make utility that is compatable with GNU make. You can
+				get a version for the PC at </FONT><A HREF="http://sourceware.cygnus.com/cygwin/"><FONT SIZE="2" FACE="Arial, Helvetica">Cygnus
+				Solutions</FONT></A><FONT SIZE="2" FACE="Arial, Helvetica">.</FONT><FONT FACE="Arial, Helvetica"></FONT>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">Unzip gefsrc060.zip to get the GEF source code files.</FONT><FONT FACE="Arial, Helvetica"></FONT>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">Edit the file Makefile.config to set the path to your java compiler
+				and make utility.</FONT><FONT FACE="Arial, Helvetica"></FONT>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">Set your CLASSPATH to include the following in the given order:</FONT><FONT
+				FACE="Arial, Helvetica"></FONT>
+				<UL>
+					<LI><FONT SIZE="2" FACE="Arial, Helvetica">classes.zip from your JDK distribution</FONT><FONT FACE="Arial, Helvetica"></FONT>
+					<LI><FONT SIZE="2" FACE="Arial, Helvetica">the directory above the uci directory</FONT><FONT FACE="Arial, Helvetica"></FONT>
+					<LI><FONT SIZE="2" FACE="Arial, Helvetica">swing-1.0.3/swing.jar</FONT><FONT FACE="Arial, Helvetica"></FONT>
+					<LI><FONT SIZE="2" FACE="Arial, Helvetica">xml4j_1_1_14.jar</FONT><FONT FACE="Arial, Helvetica"></FONT>
+				</UL>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">cd into the &quot;uci&quot; directory</FONT><FONT FACE="Arial, Helvetica"></FONT>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">Type &quot;make&quot;</FONT><FONT FACE="Arial, Helvetica"></FONT>
+			</UL>
+			<P><FONT SIZE="2" COLOR="#000000" FACE="Arial, Helvetica"><B>To Compile GEF on Windows using an IDE (e.g. VisualCafe):</B></FONT><FONT
+			FACE="Arial, Helvetica"></FONT>
+			<UL>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">Unzip gefsrc060.zip to get the GEF source code files.</FONT><FONT FACE="Arial, Helvetica"></FONT>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">Make a new <B>empty</B> project and set the CLASSPATH as above. In VisualCafe
+				this is under Project | Options.</FONT><FONT FACE="Arial, Helvetica"></FONT>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">Add all the GEF source files to your project. One way to do this is
+				to go directory by directory and add all files in each. A faster way to do it is to use the Windows Find utility
+				to find all *.java files, then select them all (Control-A), then drag them into the VisualCafe Project window.</FONT><FONT
+				FACE="Arial, Helvetica"></FONT>
+			</UL>
+			<P><FONT SIZE="2" COLOR="#000000" FACE="Arial, Helvetica"><B>To Run a GEF demo:</B></FONT><FONT FACE="Arial, Helvetica"></FONT>
+			<UL>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">Make sure that everything is compiled.</FONT><FONT FACE="Arial, Helvetica"></FONT>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">If you downloaded swing103.zip then you will have to unzip it to get
+				swing-1.0.3/swing.jar</FONT><FONT FACE="Arial, Helvetica"></FONT>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">Start a new command line window.</FONT><FONT FACE="Arial, Helvetica"></FONT>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">Set your CLASSPATH to include the following in the given order:</FONT><FONT
+				FACE="Arial, Helvetica"></FONT>
+				<UL>
+					<LI><FONT SIZE="2" FACE="Arial, Helvetica">classes.zip from your JDK distribution</FONT><FONT FACE="Arial, Helvetica"></FONT>
+					<LI><FONT SIZE="2" FACE="Arial, Helvetica">The directory above the uci directory</FONT><FONT FACE="Arial, Helvetica"></FONT>
+					<LI><FONT SIZE="2" FACE="Arial, Helvetica">swing-1.0.3/swing.jar</FONT><FONT FACE="Arial, Helvetica"></FONT>
+					<LI><FONT SIZE="2" FACE="Arial, Helvetica">xml4j_1_1_14.jar</FONT><FONT FACE="Arial, Helvetica"></FONT>
+				</UL>
+				<LI><FONT SIZE="2" FACE="Arial, Helvetica">Type the command:<BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;<B>java uci.gef.demo.BasicApplication</B></FONT><FONT FACE="Arial, Helvetica"><BR>
+				</FONT><FONT SIZE="2" FACE="Arial, Helvetica">or on some Windows Java implementations type:<B><BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;java -classpath %CLASSPATH% uci.gef.demo.BasicApplication</B></FONT><FONT FACE="Arial, Helvetica"></FONT>
+			</UL>
+			<P><FONT SIZE="2" COLOR="#CC0000" FACE="Arial, Helvetica"><B></B></FONT></P>
+
+			<P><FONT SIZE="2" COLOR="#CC0000" FACE="Arial, Helvetica"><B>Keep in Mind:</B></FONT><FONT COLOR="#000066" FACE="Arial, Helvetica"><B></B></FONT></P>
+
+			<P><FONT SIZE="2" FACE="Arial, Helvetica">GEF is a research prototype. It will evolve into a full featured graph
+			editing tool in the future, but it is not comparable to commercial libraries yet. If you believe in the importance
+			of an open-source components, please </FONT><A HREF="../contribute.html"><FONT SIZE="2" FACE="Arial, Helvetica">help
+			in the development of GEF</FONT></A><FONT SIZE="2" FACE="Arial, Helvetica">.</FONT></P>
+
+			<P><FONT SIZE="2" FACE="Arial, Helvetica"></FONT>
+			<P ALIGN="CENTER"><A HREF="ds4.html"><FONT SIZE="2" FACE="Arial, Helvetica">Previous</FONT></A></P>
+			<P><FONT SIZE="2" FACE="Arial, Helvetica">&nbsp;</FONT>
+		</TD>
+	</TR>
+</TABLE>
+
+<HR ALIGN="LEFT" WIDTH="680" SIZE="1" NOSHADE>
+<FONT SIZE="2" FACE="Arial, Helvetica">Back to </FONT><A HREF="../index.html"><FONT SIZE="2" FACE="Arial, Helvetica">GEF
+Home</FONT><FONT SIZE="2" FACE="Tahoma"></FONT></A></P>
+
+<P>&nbsp;</P>
+
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+
+<P>&nbsp;
+
+</BODY>
+
+</HTML>

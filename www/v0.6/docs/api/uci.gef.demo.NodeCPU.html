@@ -1,0 +1,342 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.demo.NodeCPU | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.demo.NodeCPU
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.demo.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.demo.NodeCPU
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.NetPrimitive.html">uci.gef.NetPrimitive</A>
+           |
+           +----<A HREF="uci.gef.NetNode.html">uci.gef.NetNode</A>
+                   |
+                   +----uci.gef.demo.NodeCPU
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>NodeCPU</STRONG>
+     extends uci.gef.<A HREF="uci.gef.NetNode.html">NetNode</A>
+     implements java.io.<A HREF="java.io.Serializable.html">Serializable</A>
+{
+          // Fields 10
+     protected int <A HREF="#_busSpeedMHz">_busSpeedMHz</A>;
+     protected int <A HREF="#_cpuSpeedMHz">_cpuSpeedMHz</A>;
+     protected boolean <A HREF="#_hasCDROM">_hasCDROM</A>;
+     protected int <A HREF="#_megsOfRAM">_megsOfRAM</A>;
+     protected <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#_ownerInfo">_ownerInfo</A>;
+     public static final <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#pBUS_SPEED_MHZ">pBUS_SPEED_MHZ</A>;
+     public static final <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#pCPU_SPEED_MHZ">pCPU_SPEED_MHZ</A>;
+     public static final <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#pHAS_CD_ROM">pHAS_CD_ROM</A>;
+     public static final <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#pMEGS_OF_RAM">pMEGS_OF_RAM</A>;
+     public static final <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#pOWNER_INFO">pOWNER_INFO</A>;
+
+          // Constructors 1
+     public <A HREF="#NodeCPU()">NodeCPU</A>();
+
+          // Methods 12
+     public int <A HREF="#getBusSpeedMHz()">getBusSpeedMHz</A>();
+     public int <A HREF="#getCPUSpeedMhz()">getCPUSpeedMhz</A>();
+     public boolean <A HREF="#getHasCDROM()">getHasCDROM</A>();
+     public int <A HREF="#getMegsOfRAM()">getMegsOfRAM</A>();
+     public <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#getOwnerInfo()">getOwnerInfo</A>();
+     public void <A HREF="#initialize(java.util.Hashtable)">initialize</A>(<A CLASS=nound HREF="java.util.Hashtable.html">Hashtable</A>);
+     public <A CLASS=nound HREF="uci.gef.FigNode.html">FigNode</A> <A HREF="#makePresentation(uci.gef.Layer)">makePresentation</A>(<A CLASS=nound HREF="uci.gef.Layer.html">Layer</A>);
+     public void <A HREF="#setBusSpeedMHz(int)">setBusSpeedMHz</A>(int);
+     public void <A HREF="#setCPUSpeedMhz(int)">setCPUSpeedMhz</A>(int);
+     public void <A HREF="#setHasCDROM(boolean)">setHasCDROM</A>(boolean);
+     public void <A HREF="#setMegsOfRAM(int)">setMegsOfRAM</A>(int);
+     public void <A HREF="#setOwnerInfo(java.lang.String)">setOwnerInfo</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+An example subclass of NetNode for use in the Example
+  application. This class represents a computer that can be plugged
+  into electrical power and attached to a printer. The Computer has
+  attributes that can be set via the property sheet.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="#Example">Example</A><P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="pMEGS_OF_RAM"><FONT COLOR="#0000FF">&middot;</FONT> pMEGS_OF_RAM</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final <A HREF="java.lang.String.html">String</A> pMEGS_OF_RAM
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="pBUS_SPEED_MHZ"><FONT COLOR="#0000FF">&middot;</FONT> pBUS_SPEED_MHZ</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final <A HREF="java.lang.String.html">String</A> pBUS_SPEED_MHZ
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="pCPU_SPEED_MHZ"><FONT COLOR="#0000FF">&middot;</FONT> pCPU_SPEED_MHZ</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final <A HREF="java.lang.String.html">String</A> pCPU_SPEED_MHZ
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="pHAS_CD_ROM"><FONT COLOR="#0000FF">&middot;</FONT> pHAS_CD_ROM</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final <A HREF="java.lang.String.html">String</A> pHAS_CD_ROM
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="pOWNER_INFO"><FONT COLOR="#0000FF">&middot;</FONT> pOWNER_INFO</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final <A HREF="java.lang.String.html">String</A> pOWNER_INFO
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_megsOfRAM"><FONT COLOR="#FF00FF">&middot;</FONT> _megsOfRAM</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int _megsOfRAM
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_busSpeedMHz"><FONT COLOR="#FF00FF">&middot;</FONT> _busSpeedMHz</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int _busSpeedMHz
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_cpuSpeedMHz"><FONT COLOR="#FF00FF">&middot;</FONT> _cpuSpeedMHz</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int _cpuSpeedMHz
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_hasCDROM"><FONT COLOR="#FF00FF">&middot;</FONT> _hasCDROM</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected boolean _hasCDROM
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_ownerInfo"><FONT COLOR="#FF00FF">&middot;</FONT> _ownerInfo</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.lang.String.html">String</A> _ownerInfo
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="NodeCPU"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="NodeCPU()">NodeCPU</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public NodeCPU() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Default constructor
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="initialize"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="initialize(java.util.Hashtable)">initialize</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void initialize(<A HREF="java.util.Hashtable.html">Hashtable</A> args) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Initialize a new NodeCPU. <p>
+
+  Needs-More-Work: for now we construct the FigNode
+  programatically in this class.  A more powerful way to do it is
+  to make your own sublcass of FigNode.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.NetNode.html#initialize(java.util.Hashtable)">initialize</A> in class <A HREF="uci.gef.NetNode.html">NetNode</A>
+<DT><B>Implements:</B>
+<DD><A HREF="uci.graph.GraphNodeHooks.html#initialize(java.util.Hashtable)">initialize</A> in interface <A HREF="uci.graph.GraphNodeHooks.html">GraphNodeHooks</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getMegsOfRAM"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getMegsOfRAM()">getMegsOfRAM</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int getMegsOfRAM() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getBusSpeedMHz"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getBusSpeedMHz()">getBusSpeedMHz</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int getBusSpeedMHz() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getCPUSpeedMhz"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getCPUSpeedMhz()">getCPUSpeedMhz</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int getCPUSpeedMhz() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getHasCDROM"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getHasCDROM()">getHasCDROM</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean getHasCDROM() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getOwnerInfo"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getOwnerInfo()">getOwnerInfo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.String.html">String</A> getOwnerInfo() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setMegsOfRAM"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setMegsOfRAM(int)">setMegsOfRAM</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setMegsOfRAM(int m) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setBusSpeedMHz"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setBusSpeedMHz(int)">setBusSpeedMHz</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setBusSpeedMHz(int b) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setCPUSpeedMhz"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setCPUSpeedMhz(int)">setCPUSpeedMhz</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setCPUSpeedMhz(int c) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setHasCDROM"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setHasCDROM(boolean)">setHasCDROM</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setHasCDROM(boolean r) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setOwnerInfo"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setOwnerInfo(java.lang.String)">setOwnerInfo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setOwnerInfo(<A HREF="java.lang.String.html">String</A> oi) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="makePresentation"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="makePresentation(uci.gef.Layer)">makePresentation</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.FigNode.html">FigNode</A> makePresentation(<A HREF="uci.gef.Layer.html">Layer</A> lay) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.NetNode.html#makePresentation(uci.gef.Layer)">makePresentation</A> in class <A HREF="uci.gef.NetNode.html">NetNode</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.demo.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

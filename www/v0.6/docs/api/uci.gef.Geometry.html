@@ -1,0 +1,336 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.Geometry | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.Geometry
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.Geometry
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----uci.gef.Geometry
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>Geometry</STRONG>
+     extends java.lang.<A HREF="java.lang.Object.html">Object</A>
+{
+          // Constructors 1
+     public <A HREF="#Geometry()">Geometry</A>();
+
+          // Methods 13
+     public static int <A HREF="#counterClockWise(int, int, int, int, int, int)">counterClockWise</A>(int, int, int, int, int, int);
+     public static synchronized boolean <A HREF="#intersects(java.awt.Rectangle, int, int, int, int)">intersects</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>, int, int, int, int);
+     public static int <A HREF="#mid(int, int, int)">mid</A>(int, int, int);
+     public static synchronized boolean <A HREF="#nearPolySegment(int[], int[], int, int, int, int)">nearPolySegment</A>(int[], int[], int, int, int, int);
+     public static synchronized boolean <A HREF="#nearSegment(int, int, int, int, int, int, int)">nearSegment</A>(int, int, int, int, int, int, int);
+     public static <A CLASS=nound HREF="java.awt.Point.html">Point</A> <A HREF="#ptClosestTo(int, int, int, int, java.awt.Point)">ptClosestTo</A>(int, int, int, int, <A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+     public static void <A HREF="#ptClosestTo(int, int, int, int, java.awt.Point, java.awt.Point)">ptClosestTo</A>(int, int, int, int, <A CLASS=nound HREF="java.awt.Point.html">Point</A>, <A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+     public static <A CLASS=nound HREF="java.awt.Point.html">Point</A> <A HREF="#ptClosestTo(int[], int[], int, java.awt.Point)">ptClosestTo</A>(int[], int[], int, <A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+     public static synchronized void <A HREF="#ptClosestTo(int[], int[], int, java.awt.Point, java.awt.Point)">ptClosestTo</A>(int[], int[], int, <A CLASS=nound HREF="java.awt.Point.html">Point</A>, <A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+     public static <A CLASS=nound HREF="java.awt.Point.html">Point</A> <A HREF="#ptClosestTo(java.awt.Point, java.awt.Point, java.awt.Point)">ptClosestTo</A>(<A CLASS=nound HREF="java.awt.Point.html">Point</A>, <A CLASS=nound HREF="java.awt.Point.html">Point</A>, <A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+     public static <A CLASS=nound HREF="java.awt.Point.html">Point</A> <A HREF="#ptClosestTo(java.awt.Rectangle, java.awt.Point)">ptClosestTo</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>, <A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+     public static void <A HREF="#ptClosestTo(java.awt.Rectangle, java.awt.Point, java.awt.Point)">ptClosestTo</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>, <A CLASS=nound HREF="java.awt.Point.html">Point</A>, <A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+     public static double <A HREF="#segmentAngle(java.awt.Point, java.awt.Point)">segmentAngle</A>(<A CLASS=nound HREF="java.awt.Point.html">Point</A>, <A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+
+}
+</PRE>
+<P>
+<DL>
+<P>
+A library of functions that do geometric opeations.  These are all
+  static methods, so you never need to make an instance of this
+  class.  Needs-More-Work: many of these are not done yet or not
+  used yet.
+<P>
+</DL>
+<P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Geometry"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Geometry()">Geometry</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Geometry() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Default constructor
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ptClosestTo"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="ptClosestTo(java.awt.Rectangle, java.awt.Point, java.awt.Point)">ptClosestTo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static void ptClosestTo(<A HREF="java.awt.Rectangle.html">Rectangle</A> r, 
+                                  <A HREF="java.awt.Point.html">Point</A> p, 
+                                  <A HREF="java.awt.Point.html">Point</A> res) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Given a Rectangle and a point, set res to be the point on or in
+  the Rectangle that is closest to the given point.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ptClosestTo"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="ptClosestTo(java.awt.Rectangle, java.awt.Point)">ptClosestTo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static <A HREF="java.awt.Point.html">Point</A> ptClosestTo(<A HREF="java.awt.Rectangle.html">Rectangle</A> r, 
+                                   <A HREF="java.awt.Point.html">Point</A> p) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Given a Rectangle and a point, return a new Point on or in the
+  Rectangle that is closest to the given Point.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="segmentAngle"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="segmentAngle(java.awt.Point, java.awt.Point)">segmentAngle</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static double segmentAngle(<A HREF="java.awt.Point.html">Point</A> p1, 
+                                     <A HREF="java.awt.Point.html">Point</A> p2) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return the angle of the given line segment.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ptClosestTo"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="ptClosestTo(int, int, int, int, java.awt.Point, java.awt.Point)">ptClosestTo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static void ptClosestTo(int x1, 
+                                  int y1, 
+                                  int x2, 
+                                  int y2, 
+                                  <A HREF="java.awt.Point.html">Point</A> p, 
+                                  <A HREF="java.awt.Point.html">Point</A> res) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Given the coordinates of the endpoints of a line segment, and a
+  point, set res to be the closest point on the segement to the
+  given point.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mid"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="mid(int, int, int)">mid</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static int mid(int a, 
+                         int b, 
+                         int c) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Given three ints, return the one with the middle value. I.e., it
+  is not the single largest or the single smallest.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ptClosestTo"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="ptClosestTo(int, int, int, int, java.awt.Point)">ptClosestTo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static <A HREF="java.awt.Point.html">Point</A> ptClosestTo(int x1, 
+                                   int y1, 
+                                   int x2, 
+                                   int y2, 
+                                   <A HREF="java.awt.Point.html">Point</A> p) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Given the coordinates of the endpoints of a line segment, and a
+  point, return a new point that is the closest point on the
+  segement to the given point.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ptClosestTo"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="ptClosestTo(java.awt.Point, java.awt.Point, java.awt.Point)">ptClosestTo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static <A HREF="java.awt.Point.html">Point</A> ptClosestTo(<A HREF="java.awt.Point.html">Point</A> p1, 
+                                   <A HREF="java.awt.Point.html">Point</A> p2, 
+                                   <A HREF="java.awt.Point.html">Point</A> p) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Given the endpoints of a line segment, and a point, return a new
+  point that is the closest point on the segement to the given
+  point.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ptClosestTo"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="ptClosestTo(int[], int[], int, java.awt.Point, java.awt.Point)">ptClosestTo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static synchronized void ptClosestTo(int[] xs, 
+                                               int[] ys, 
+                                               int n, 
+                                               <A HREF="java.awt.Point.html">Point</A> p, 
+                                               <A HREF="java.awt.Point.html">Point</A> res) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Given a polygon and a point, set res to be the point on 
+  the perimiter of the polygon that is closest to to the given
+  point.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ptClosestTo"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="ptClosestTo(int[], int[], int, java.awt.Point)">ptClosestTo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static <A HREF="java.awt.Point.html">Point</A> ptClosestTo(int[] xs, 
+                                   int[] ys, 
+                                   int n, 
+                                   <A HREF="java.awt.Point.html">Point</A> p) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Given a polygon and a point, return a new point on the perimiter
+  of the polygon that is closest to to the given point.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="nearPolySegment"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="nearPolySegment(int[], int[], int, int, int, int)">nearPolySegment</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static synchronized boolean nearPolySegment(int[] xs, 
+                                                      int[] ys, 
+                                                      int n, 
+                                                      int x, 
+                                                      int y, 
+                                                      int grip) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply true iff the given point is within grip pixels of one of
+  the segments of the given polygon. Needs-more-work: this is
+  never used, I don't know that it is needed now that I use hit
+  rectangles instead.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="nearSegment"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="nearSegment(int, int, int, int, int, int, int)">nearSegment</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static synchronized boolean nearSegment(int x1, 
+                                                  int y1, 
+                                                  int x2, 
+                                                  int y2, 
+                                                  int x, 
+                                                  int y, 
+                                                  int grip) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply true iff the given point is within grip pixels of the
+  given segment. Needs-more-work: this is never used, I don't know
+  that it is needed now that I use hit rectangles instead.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="intersects"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="intersects(java.awt.Rectangle, int, int, int, int)">intersects</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static synchronized boolean intersects(<A HREF="java.awt.Rectangle.html">Rectangle</A> r, 
+                                                 int x1, 
+                                                 int y1, 
+                                                 int x2, 
+                                                 int y2) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply true iff the given Rectangle intersects the given line
+  segment.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="counterClockWise"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="counterClockWise(int, int, int, int, int, int)">counterClockWise</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static int counterClockWise(int x1, 
+                                      int y1, 
+                                      int x2, 
+                                      int y2, 
+                                      int x, 
+                                      int y) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply true if the given point is counter-clockwise from the
+ vector defined by the position of the given line. This
+ is used as in determining intersection between lines and
+ rectangles. Taken from Algorithms in C by Sedgewick, page
+ 350.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

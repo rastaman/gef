@@ -1,0 +1,289 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.graph.MutableGraphSupport | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.graph.MutableGraphSupport
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.graph.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.graph.MutableGraphSupport
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----uci.graph.MutableGraphSupport
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public abstract class  <STRONG>MutableGraphSupport</STRONG>
+     extends java.lang.<A HREF="java.lang.Object.html">Object</A>
+     implements uci.graph.<A HREF="uci.graph.MutableGraphModel.html">MutableGraphModel</A>, 
+                java.io.<A HREF="java.io.Serializable.html">Serializable</A>
+{
+          // Fields 1
+     protected <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#_graphListeners">_graphListeners</A>;
+
+          // Constructors 1
+     public <A HREF="#MutableGraphSupport()">MutableGraphSupport</A>();
+
+          // Methods 15
+     public void <A HREF="#addGraphEventListener(uci.graph.GraphListener)">addGraphEventListener</A>(<A CLASS=nound HREF="uci.graph.GraphListener.html">GraphListener</A>);
+     public boolean <A HREF="#canConnect(java.lang.Object, java.lang.Object, java.lang.Class)">canConnect</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>, <A CLASS=nound HREF="java.lang.Class.html">Class</A>);
+     public <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#connect(java.lang.Object, java.lang.Object, java.lang.Class)">connect</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>, <A CLASS=nound HREF="java.lang.Object.html">Object</A>, <A CLASS=nound HREF="java.lang.Class.html">Class</A>);
+     public boolean <A HREF="#containsEdge(java.lang.Object)">containsEdge</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public boolean <A HREF="#containsEdgePort(java.lang.Object)">containsEdgePort</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public boolean <A HREF="#containsNode(java.lang.Object)">containsNode</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public boolean <A HREF="#containsNodePort(java.lang.Object)">containsNodePort</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public boolean <A HREF="#containsPort(java.lang.Object)">containsPort</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#fireEdgeAdded(java.lang.Object)">fireEdgeAdded</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#fireEdgeRemoved(java.lang.Object)">fireEdgeRemoved</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#fireGraphChanged()">fireGraphChanged</A>();
+     public void <A HREF="#fireNodeAdded(java.lang.Object)">fireNodeAdded</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#fireNodeRemoved(java.lang.Object)">fireNodeRemoved</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#getGraphListeners()">getGraphListeners</A>();
+     public void <A HREF="#removeGraphEventListener(uci.graph.GraphListener)">removeGraphEventListener</A>(<A CLASS=nound HREF="uci.graph.GraphListener.html">GraphListener</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+An abstract class that makes it easier to implement your own
+  version of MutableGraphModel. This class basically includes the
+  code for event notifications, so that you don't have to write
+  that.  It also provides a few utility methods.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="#AdjacencyMatrixGraphModel">AdjacencyMatrixGraphModel</A>, <A HREF="#uci.graph.demo.WordTransforms">uci.graph.demo.WordTransforms</A><P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Extended By: </B>
+<DD><A HREF="uci.graph.AdjacencyListGraphModel.html">AdjacencyListGraphModel</A>, <A HREF="uci.graph.DefaultGraphModel.html">DefaultGraphModel</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_graphListeners"><FONT COLOR="#FF00FF">&middot;</FONT> _graphListeners</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.util.Vector.html">Vector</A> _graphListeners
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="MutableGraphSupport"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="MutableGraphSupport()">MutableGraphSupport</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public MutableGraphSupport() </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getGraphListeners"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getGraphListeners()">getGraphListeners</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Vector.html">Vector</A> getGraphListeners() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="canConnect"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="canConnect(java.lang.Object, java.lang.Object, java.lang.Class)">canConnect</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean canConnect(<A HREF="java.lang.Object.html">Object</A> fromPort, 
+                             <A HREF="java.lang.Object.html">Object</A> toPort, 
+                             <A HREF="java.lang.Class.html">Class</A> edgeClass) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Return true if the two given ports can be connected by the given
+  kind of edge. By default ignore edgeClass and call
+  canConnect(port,port).
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="uci.graph.MutableGraphModel.html#canConnect(java.lang.Object, java.lang.Object, java.lang.Class)">canConnect</A> in interface <A HREF="uci.graph.MutableGraphModel.html">MutableGraphModel</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="connect"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="connect(java.lang.Object, java.lang.Object, java.lang.Class)">connect</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.Object.html">Object</A> connect(<A HREF="java.lang.Object.html">Object</A> fromPort, 
+                         <A HREF="java.lang.Object.html">Object</A> toPort, 
+                         <A HREF="java.lang.Class.html">Class</A> edgeClass) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Contruct and add a new edge of the given kind. By default ignore
+  edgeClass and call connect(port,port).
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="uci.graph.MutableGraphModel.html#connect(java.lang.Object, java.lang.Object, java.lang.Class)">connect</A> in interface <A HREF="uci.graph.MutableGraphModel.html">MutableGraphModel</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="containsNode"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="containsNode(java.lang.Object)">containsNode</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean containsNode(<A HREF="java.lang.Object.html">Object</A> node) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="containsEdge"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="containsEdge(java.lang.Object)">containsEdge</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean containsEdge(<A HREF="java.lang.Object.html">Object</A> edge) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="containsNodePort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="containsNodePort(java.lang.Object)">containsNodePort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean containsNodePort(<A HREF="java.lang.Object.html">Object</A> port) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="containsEdgePort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="containsEdgePort(java.lang.Object)">containsEdgePort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean containsEdgePort(<A HREF="java.lang.Object.html">Object</A> port) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="containsPort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="containsPort(java.lang.Object)">containsPort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean containsPort(<A HREF="java.lang.Object.html">Object</A> port) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="addGraphEventListener"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="addGraphEventListener(uci.graph.GraphListener)">addGraphEventListener</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void addGraphEventListener(<A HREF="uci.graph.GraphListener.html">GraphListener</A> listener) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removeGraphEventListener"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removeGraphEventListener(uci.graph.GraphListener)">removeGraphEventListener</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void removeGraphEventListener(<A HREF="uci.graph.GraphListener.html">GraphListener</A> listener) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="fireNodeAdded"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="fireNodeAdded(java.lang.Object)">fireNodeAdded</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void fireNodeAdded(<A HREF="java.lang.Object.html">Object</A> node) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="fireNodeRemoved"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="fireNodeRemoved(java.lang.Object)">fireNodeRemoved</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void fireNodeRemoved(<A HREF="java.lang.Object.html">Object</A> node) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="fireEdgeAdded"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="fireEdgeAdded(java.lang.Object)">fireEdgeAdded</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void fireEdgeAdded(<A HREF="java.lang.Object.html">Object</A> edge) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="fireEdgeRemoved"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="fireEdgeRemoved(java.lang.Object)">fireEdgeRemoved</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void fireEdgeRemoved(<A HREF="java.lang.Object.html">Object</A> edge) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="fireGraphChanged"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="fireGraphChanged()">fireGraphChanged</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void fireGraphChanged() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.graph.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

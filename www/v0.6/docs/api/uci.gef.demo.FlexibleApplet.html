@@ -1,0 +1,289 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.demo.FlexibleApplet | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.demo.FlexibleApplet
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.demo.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.demo.FlexibleApplet
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="java.awt.Component.html">java.awt.Component</A>
+           |
+           +----<A HREF="java.awt.Container.html">java.awt.Container</A>
+                   |
+                   +----<A HREF="java.awt.Panel.html">java.awt.Panel</A>
+                           |
+                           +----<A HREF="java.applet.Applet.html">java.applet.Applet</A>
+                                   |
+                                   +----uci.gef.demo.FlexibleApplet
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>FlexibleApplet</STRONG>
+     extends java.applet.<A HREF="java.applet.Applet.html">Applet</A>
+{
+          // Fields 4
+     protected static int <A HREF="#_drawAreaHeight">_drawAreaHeight</A>;
+     protected static int <A HREF="#_drawAreaWidth">_drawAreaWidth</A>;
+     protected static <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#_loadDocument">_loadDocument</A>;
+     protected static boolean <A HREF="#_spawnFrame">_spawnFrame</A>;
+
+          // Constructors 1
+     public <A HREF="#FlexibleApplet()">FlexibleApplet</A>();
+
+          // Methods 9
+     public static void <A HREF="#main(java.lang.String[])">main</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>[]);
+     public static void <A HREF="#parseParams(java.applet.Applet)">parseParams</A>(<A CLASS=nound HREF="java.applet.Applet.html">Applet</A>);
+
+     public void <A HREF="#destroy()">destroy</A>();
+     public <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#getAppletInfo()">getAppletInfo</A>();
+     public <A CLASS=nound HREF="java.lang.String.html">String</A>[][] <A HREF="#getParameterInfo()">getParameterInfo</A>();
+     public void <A HREF="#init()">init</A>();
+     public void <A HREF="#initWindows()">initWindows</A>();
+     public void <A HREF="#start()">start</A>();
+     public void <A HREF="#stop()">stop</A>();
+}
+</PRE>
+<P>
+<DL>
+<P>
+An example application to show off <B>some</B> of the capabilities
+  of the UCI Graph Editing Framework. This example is a basic drawing
+  editor that allows the user to place shapes in a drawing area and
+  minipulate them. Also it uses LayerGrid. It has an Arrange menu
+  that allows the user to so some manipulations, and an Attributes
+  menu that allows the user to set fonts and colors. It registers
+  some Cmds for execution from the ExecuteCmdWindow. <p>
+
+  For another example see Argo. Argo (in its current form) is a
+  Design Environment for C2 style software architectures. An Argo
+  demo can be found
+  <a href="http://www.ics.uci.edu/pub/arch/argo/">here</a>.<p>
+
+  Needs-More-Work: I need additional examples to show off the power
+  of the framework and motivate its design. For example: a KISS
+  viewer(?), a computer network editor, a class hierarchy editor (UML
+  or OMT), etc.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.Editor.html">Editor</A>, <A HREF="uci.gef.PaletteFig.html">PaletteFig</A>, <A HREF="uci.gef.Cmd.html">Cmd</A>, <A HREF="uci.gef.Mode.html">Mode</A>, <A HREF="uci.gef.Layer.html">Layer</A>, <A HREF="#DiagramElement">DiagramElement</A>, <A HREF="uci.gef.NetPrimitive.html">NetPrimitive</A>, <A HREF="#jargo.softarch.klax.Main">jargo.softarch.klax.Main</A><P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_spawnFrame"><FONT COLOR="#0000FF">&middot;</FONT> _spawnFrame</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected static boolean _spawnFrame
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_drawAreaWidth"><FONT COLOR="#0000FF">&middot;</FONT> _drawAreaWidth</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected static int _drawAreaWidth
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_drawAreaHeight"><FONT COLOR="#0000FF">&middot;</FONT> _drawAreaHeight</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected static int _drawAreaHeight
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_loadDocument"><FONT COLOR="#0000FF">&middot;</FONT> _loadDocument</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected static <A HREF="java.lang.String.html">String</A> _loadDocument
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="FlexibleApplet"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="FlexibleApplet()">FlexibleApplet</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public FlexibleApplet() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new FlexibleApplet
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="main"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="main(java.lang.String[])">main</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static void main(<A HREF="java.lang.String.html">String</A>[] args) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+If this is run as an application, basically do the same thing as
+  the applet
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="parseParams"><FONT COLOR="#00DD00">&middot;</FONT></A>
+<A NAME="parseParams(java.applet.Applet)">parseParams</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static void parseParams(<A HREF="java.applet.Applet.html">Applet</A> applet) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="initWindows"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="initWindows()">initWindows</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void initWindows() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="start"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="start()">start</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void start() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Part of the required Applet API. Does nothing.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.applet.Applet.html#start()">start</A> in class <A HREF="java.applet.Applet.html">Applet</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="init"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="init()">init</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void init() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+This is called when the Applet/Application starts up. It does
+  preloading if the 'ShouldPreLoad' property is set to true. It
+  also registers some well known Cmd's as an example.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.applet.Applet.html#init()">init</A> in class <A HREF="java.applet.Applet.html">Applet</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="stop"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="stop()">stop</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void stop() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Part of the required Applet API. Does nothing.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.applet.Applet.html#stop()">stop</A> in class <A HREF="java.applet.Applet.html">Applet</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="destroy"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="destroy()">destroy</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void destroy() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+When the user closes this window try to free up as many objects
+  as possible.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.applet.Applet.html#destroy()">destroy</A> in class <A HREF="java.applet.Applet.html">Applet</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getAppletInfo"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getAppletInfo()">getAppletInfo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.String.html">String</A> getAppletInfo() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply a breif string that describes this applet in the "About"
+  box.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.applet.Applet.html#getAppletInfo()">getAppletInfo</A> in class <A HREF="java.applet.Applet.html">Applet</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getParameterInfo"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getParameterInfo()">getParameterInfo</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.String.html">String</A>[][] getParameterInfo() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply an array of strings that describe the HTML PARAM's that
+  can be passed to this applet.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.applet.Applet.html#getParameterInfo()">getParameterInfo</A> in class <A HREF="java.applet.Applet.html">Applet</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.demo.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

@@ -1,0 +1,513 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.JGraph | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.JGraph
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.JGraph
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="JPanel.html">JPanel</A>
+           |
+           +----uci.gef.JGraph
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>JGraph</STRONG>
+     extends <A HREF="JPanel.html">JPanel</A>
+     implements java.lang.<A HREF="java.lang.Cloneable.html">Cloneable</A>
+{
+          // Fields 1
+     protected <A CLASS=nound HREF="uci.gef.Editor.html">Editor</A> <A HREF="#_editor">_editor</A>;
+
+          // Constructors 4
+     public <A HREF="#JGraph()">JGraph</A>();
+     public <A HREF="#JGraph(uci.gef.Diagram)">JGraph</A>(<A CLASS=nound HREF="uci.gef.Diagram.html">Diagram</A>);
+     public <A HREF="#JGraph(uci.gef.Editor)">JGraph</A>(<A CLASS=nound HREF="uci.gef.Editor.html">Editor</A>);
+     public <A HREF="#JGraph(uci.graph.GraphModel)">JGraph</A>(<A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A>);
+
+          // Methods 25
+     public void <A HREF="#addGraphSelectionListener(uci.gef.event.GraphSelectionListener)">addGraphSelectionListener</A>(<A CLASS=nound HREF="uci.gef.event.GraphSelectionListener.html">GraphSelectionListener</A>);
+     public void <A HREF="#bindKey(java.awt.event.ActionListener, int, int)">bindKey</A>(<A CLASS=nound HREF="java.awt.event.ActionListener.html">ActionListener</A>, int, int);
+     public <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#clone()">clone</A>();
+     public void <A HREF="#deselect(uci.gef.Fig)">deselect</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#deselectAll()">deselectAll</A>();
+     public <A CLASS=nound HREF="uci.gef.Editor.html">Editor</A> <A HREF="#getEditor()">getEditor</A>();
+     public <A CLASS=nound HREF="uci.graph.GraphEdgeRenderer.html">GraphEdgeRenderer</A> <A HREF="#getGraphEdgeRenderer()">getGraphEdgeRenderer</A>();
+     public <A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A> <A HREF="#getGraphModel()">getGraphModel</A>();
+     public <A CLASS=nound HREF="uci.graph.GraphNodeRenderer.html">GraphNodeRenderer</A> <A HREF="#getGraphNodeRenderer()">getGraphNodeRenderer</A>();
+     public void <A HREF="#initKeys()">initKeys</A>();
+     public boolean <A HREF="#isFocusTraversable()">isFocusTraversable</A>();
+     public boolean <A HREF="#isManagingFocus()">isManagingFocus</A>();
+     public void <A HREF="#layoutGraph()">layoutGraph</A>();
+     public void <A HREF="#paint(java.awt.Graphics)">paint</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     public void <A HREF="#removeGraphSelectionListener(uci.gef.event.GraphSelectionListener)">removeGraphSelectionListener</A>(<A CLASS=nound HREF="uci.gef.event.GraphSelectionListener.html">GraphSelectionListener</A>);
+     public void <A HREF="#select(java.util.Vector)">select</A>(<A CLASS=nound HREF="java.util.Vector.html">Vector</A>);
+     public void <A HREF="#select(uci.gef.Fig)">select</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#selectByOwner(java.lang.Object)">selectByOwner</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#selectedFigs()">selectedFigs</A>();
+     public void <A HREF="#setDiagram(uci.gef.Diagram)">setDiagram</A>(<A CLASS=nound HREF="uci.gef.Diagram.html">Diagram</A>);
+     public void <A HREF="#setGraphEdgeRenderer(uci.graph.GraphEdgeRenderer)">setGraphEdgeRenderer</A>(<A CLASS=nound HREF="uci.graph.GraphEdgeRenderer.html">GraphEdgeRenderer</A>);
+     public void <A HREF="#setGraphModel(uci.graph.GraphModel)">setGraphModel</A>(<A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A>);
+     public void <A HREF="#setGraphNodeRenderer(uci.graph.GraphNodeRenderer)">setGraphNodeRenderer</A>(<A CLASS=nound HREF="uci.graph.GraphNodeRenderer.html">GraphNodeRenderer</A>);
+     public void <A HREF="#toggleItem(uci.gef.Fig)">toggleItem</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#toggleItems(java.util.Vector)">toggleItems</A>(<A CLASS=nound HREF="java.util.Vector.html">Vector</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+JGraph is a Swing component that displays a connected graph and
+  allows interactive editing. In many ways this class serves as a
+  simple front-end to class Editor, and other classes which do the
+  real work.
+<P>
+</DL>
+<P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Returned By: </B>
+<DD>JGraphFrame.<A HREF="uci.gef.JGraphFrame.html#getGraph()">getGraph()</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_editor"><FONT COLOR="#FF00FF">&middot;</FONT> _editor</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.Editor.html">Editor</A> _editor
+</PRE>
+<BLOCKQUOTE>
+<P>
+The Editor object that is being shown in this panel
+<P>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="JGraph"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="JGraph()">JGraph</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public JGraph() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Make a new JGraph with a new DefaultGraphModel.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.graph.DefaultGraphModel.html">DefaultGraphModel</A></BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="JGraph"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="JGraph(uci.gef.Diagram)">JGraph</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public JGraph(<A HREF="uci.gef.Diagram.html">Diagram</A> d) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Make a new JGraph with a the GraphModel and Layer from the given
+  Diagram.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="JGraph"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="JGraph(uci.graph.GraphModel)">JGraph</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public JGraph(<A HREF="uci.graph.GraphModel.html">GraphModel</A> gm) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Make a new JGraph with the given GraphModel
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="JGraph"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="JGraph(uci.gef.Editor)">JGraph</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public JGraph(<A HREF="uci.gef.Editor.html">Editor</A> ed) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Make a new JGraph with the given Editor.  All JGraph contructors
+  eventually call this contructor.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="clone"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="clone()">clone</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.Object.html">Object</A> clone() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Make a copy of this JGraph so that it can be shown in another window.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="initKeys"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="initKeys()">initKeys</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void initKeys() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="bindKey"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="bindKey(java.awt.event.ActionListener, int, int)">bindKey</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void bindKey(<A HREF="java.awt.event.ActionListener.html">ActionListener</A> action, 
+                       int keyCode, 
+                       int modifiers) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Utility frunction to bind a keystroke to a Swing Action.  Note
+  that GEF Cmds are subclasses of Swing's Actions.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getEditor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getEditor()">getEditor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Editor.html">Editor</A> getEditor() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Get the Editor that is being displayed
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setDiagram"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setDiagram(uci.gef.Diagram)">setDiagram</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setDiagram(<A HREF="uci.gef.Diagram.html">Diagram</A> d) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set the Diagram that should be displayed by setting the
+  GraphModel and Layer that the Editor is using.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setGraphModel"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setGraphModel(uci.graph.GraphModel)">setGraphModel</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setGraphModel(<A HREF="uci.graph.GraphModel.html">GraphModel</A> gm) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Get and set the GraphModel the Editor is using.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getGraphModel"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getGraphModel()">getGraphModel</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.graph.GraphModel.html">GraphModel</A> getGraphModel() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setGraphNodeRenderer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setGraphNodeRenderer(uci.graph.GraphNodeRenderer)">setGraphNodeRenderer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setGraphNodeRenderer(<A HREF="uci.graph.GraphNodeRenderer.html">GraphNodeRenderer</A> r) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Get and set the Renderer used to make FigNodes for nodes in the
+  GraphModel.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getGraphNodeRenderer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getGraphNodeRenderer()">getGraphNodeRenderer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.graph.GraphNodeRenderer.html">GraphNodeRenderer</A> getGraphNodeRenderer() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setGraphEdgeRenderer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setGraphEdgeRenderer(uci.graph.GraphEdgeRenderer)">setGraphEdgeRenderer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setGraphEdgeRenderer(<A HREF="uci.graph.GraphEdgeRenderer.html">GraphEdgeRenderer</A> r) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Get and set the Renderer used to make FigEdges for edges in the
+  GraphModel.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getGraphEdgeRenderer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getGraphEdgeRenderer()">getGraphEdgeRenderer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.graph.GraphEdgeRenderer.html">GraphEdgeRenderer</A> getGraphEdgeRenderer() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="isManagingFocus"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="isManagingFocus()">isManagingFocus</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean isManagingFocus() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Tell Swing/AWT that JGraph handles tab-order itself.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="isFocusTraversable"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="isFocusTraversable()">isFocusTraversable</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean isFocusTraversable() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Tell Swing/AWT that JGraph can be tabbed into.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="addGraphSelectionListener"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="addGraphSelectionListener(uci.gef.event.GraphSelectionListener)">addGraphSelectionListener</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void addGraphSelectionListener(<A HREF="uci.gef.event.GraphSelectionListener.html">GraphSelectionListener</A> listener) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Add listener to the objects to notify whenever the Editor
+  changes its current selection.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removeGraphSelectionListener"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removeGraphSelectionListener(uci.gef.event.GraphSelectionListener)">removeGraphSelectionListener</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void removeGraphSelectionListener(<A HREF="uci.gef.event.GraphSelectionListener.html">GraphSelectionListener</A> listener) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="layoutGraph"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="layoutGraph()">layoutGraph</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void layoutGraph() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paint"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paint(java.awt.Graphics)">paint</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void paint(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+The JGraph is painted by simply painting its Editor.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="select"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="select(uci.gef.Fig)">select</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void select(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Add the given item to this Editor's selections.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="selectByOwner"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="selectByOwner(java.lang.Object)">selectByOwner</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void selectByOwner(<A HREF="java.lang.Object.html">Object</A> owner) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Add the Fig that owns the given item to this Editor's selections.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="deselect"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="deselect(uci.gef.Fig)">deselect</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void deselect(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Remove the given item from this editors selections.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="toggleItem"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="toggleItem(uci.gef.Fig)">toggleItem</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void toggleItem(<A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Select the given item if it was not already selected, and
+  vis-a-versa.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="deselectAll"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="deselectAll()">deselectAll</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void deselectAll() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Deslect everything that is currently selected.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="select"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="select(java.util.Vector)">select</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void select(<A HREF="java.util.Vector.html">Vector</A> items) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Select a collection of Figs.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="toggleItems"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="toggleItems(java.util.Vector)">toggleItems</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void toggleItems(<A HREF="java.util.Vector.html">Vector</A> items) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Toggle the selection of a collection of Figs.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="selectedFigs"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="selectedFigs()">selectedFigs</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Vector.html">Vector</A> selectedFigs() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+reply a Vector of all selected Figs. Used in many Cmds.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

@@ -1,0 +1,307 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.ModeCreate | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.ModeCreate
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.ModeCreate
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.Mode.html">uci.gef.Mode</A>
+           |
+           +----uci.gef.ModeCreate
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public abstract class  <STRONG>ModeCreate</STRONG>
+     extends uci.gef.<A HREF="uci.gef.Mode.html">Mode</A>
+{
+          // Fields 5
+     protected static int <A HREF="#_defaultHeight">_defaultHeight</A>;
+     protected static int <A HREF="#_defaultWidth">_defaultWidth</A>;
+     protected <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#_newItem">_newItem</A>;
+     protected int <A HREF="#anchorX">anchorX</A>;
+     protected int <A HREF="#anchorY">anchorY</A>;
+
+          // Constructors 2
+     public <A HREF="#ModeCreate()">ModeCreate</A>();
+     public <A HREF="#ModeCreate(uci.gef.Editor)">ModeCreate</A>(<A CLASS=nound HREF="uci.gef.Editor.html">Editor</A>);
+
+          // Methods 7
+     public abstract <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#createNewItem(java.awt.event.MouseEvent, int, int)">createNewItem</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>, int, int);
+     protected void <A HREF="#creationDrag(int, int)">creationDrag</A>(int, int);
+     public <A CLASS=nound HREF="java.awt.Cursor.html">Cursor</A> <A HREF="#getInitialCursor()">getInitialCursor</A>();
+     public void <A HREF="#mouseDragged(java.awt.event.MouseEvent)">mouseDragged</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mousePressed(java.awt.event.MouseEvent)">mousePressed</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#paint(java.awt.Graphics)">paint</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+Abstract superclass for all Mode's that create new
+  Figs.  This class factors our shared code that would
+  otherwise be duplicated in its subclasses.  On a mouse down the new
+  item is created in memory.  On mouse drag the new item is resized
+  via its createDrag() method.  On mouse up the new item is
+  officially added to the Layer being edited in the parent
+  Editor, the item is selected, and the Editor is placed in the next
+  Mode (usually ModeSelect).  Subclasses override various of these
+  event handlers to give specific behaviors, for example,
+  ModeCreateEdge handles dragging differently.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.ModeCreateEdge.html">ModeCreateEdge</A>, <A HREF="uci.gef.ModeCreateFigRect.html">ModeCreateFigRect</A>, <A HREF="uci.gef.ModeCreateFigRRect.html">ModeCreateFigRRect</A>, <A HREF="uci.gef.ModeCreateFigLine.html">ModeCreateFigLine</A>, <A HREF="uci.gef.ModeCreateFigCircle.html">ModeCreateFigCircle</A>, <A HREF="uci.gef.ModeCreateFigPoly.html">ModeCreateFigPoly</A>, <A HREF="uci.gef.ModeCreateFigInk.html">ModeCreateFigInk</A>, <A HREF="uci.gef.ModeCreateFigText.html">ModeCreateFigText</A>, <A HREF="uci.gef.ModeCreateFigImage.html">ModeCreateFigImage</A><P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Extended By: </B>
+<DD><A HREF="uci.gef.ModeCreateArc.html">ModeCreateArc</A>, <A HREF="uci.gef.ModeCreateEdge.html">ModeCreateEdge</A>, <A HREF="uci.gef.ModeCreateFigCircle.html">ModeCreateFigCircle</A>, <A HREF="uci.gef.ModeCreateFigImage.html">ModeCreateFigImage</A>, <A HREF="uci.gef.ModeCreateFigInk.html">ModeCreateFigInk</A>, <A HREF="uci.gef.ModeCreateFigLine.html">ModeCreateFigLine</A>, <A HREF="uci.gef.ModeCreateFigPoly.html">ModeCreateFigPoly</A>, <A HREF="uci.gef.ModeCreateFigRRect.html">ModeCreateFigRRect</A>, <A HREF="uci.gef.ModeCreateFigRect.html">ModeCreateFigRect</A>, <A HREF="uci.gef.ModeCreateFigText.html">ModeCreateFigText</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_defaultWidth"><FONT COLOR="#0000FF">&middot;</FONT> _defaultWidth</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected static int _defaultWidth
+</PRE>
+<BLOCKQUOTE>
+<P>
+The default size of a Fig if the user simply clicks instead of
+  dragging out a size.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_defaultHeight"><FONT COLOR="#0000FF">&middot;</FONT> _defaultHeight</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected static int _defaultHeight
+</PRE>
+<BLOCKQUOTE>
+<P>
+The default size of a Fig if the user simply clicks instead of
+  dragging out a size.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="anchorX"><FONT COLOR="#FF00FF">&middot;</FONT> anchorX</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int anchorX
+</PRE>
+<BLOCKQUOTE>
+<P>
+Original mouse down event coordinates
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="anchorY"><FONT COLOR="#FF00FF">&middot;</FONT> anchorY</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int anchorY
+</PRE>
+<BLOCKQUOTE>
+<P>
+Original mouse down event coordinates
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_newItem"><FONT COLOR="#FF00FF">&middot;</FONT> _newItem</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.Fig.html">Fig</A> _newItem
+</PRE>
+<BLOCKQUOTE>
+<P>
+This holds the Fig to be added to the parent Editor.
+<P>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ModeCreate"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="ModeCreate(uci.gef.Editor)">ModeCreate</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public ModeCreate(<A HREF="uci.gef.Editor.html">Editor</A> par) </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="ModeCreate"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="ModeCreate()">ModeCreate</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public ModeCreate() </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getInitialCursor"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getInitialCursor()">getInitialCursor</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Cursor.html">Cursor</A> getInitialCursor() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+By default all creation modes use CROSSHAIR_CURSOR.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Mode.html#getInitialCursor()">getInitialCursor</A> in class <A HREF="uci.gef.Mode.html">Mode</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mousePressed"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mousePressed(java.awt.event.MouseEvent)">mousePressed</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mousePressed(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+On mouse down, make a new Fig in memory.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Mode.html#mousePressed(java.awt.event.MouseEvent)">mousePressed</A> in class <A HREF="uci.gef.Mode.html">Mode</A>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mousePressed(java.awt.event.MouseEvent)">mousePressed</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseDragged"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseDragged(java.awt.event.MouseEvent)">mouseDragged</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseDragged(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+On mouse drag, resize the new item as the user moves the
+  mouse.  Maybe the Fig createDrag() method should be removed
+  and I should call dragHandle(). That would elimiate one method
+  from each oif several classes, but dragging during creation is
+  not really the same thing as dragging after creation....<p>
+
+  Note: _newItem has not been added to any Layer yet. So you cannot
+  use _newItem.damage(), instead use _editor.damaged(_newItem).
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Mode.html#mouseDragged(java.awt.event.MouseEvent)">mouseDragged</A> in class <A HREF="uci.gef.Mode.html">Mode</A>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseMotionListener.html#mouseDragged(java.awt.event.MouseEvent)">mouseDragged</A> in interface <A HREF="java.awt.event.MouseMotionListener.html">MouseMotionListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseReleased"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseReleased(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+On mouse up, officially add the new item to the parent Editor
+  and select it. Then exit this mode.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Mode.html#mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A> in class <A HREF="uci.gef.Mode.html">Mode</A>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="creationDrag"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="creationDrag(int, int)">creationDrag</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void creationDrag(int x, 
+                               int y) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Update the new item to reflect the new mouse position. By
+  default let the new item set its size, subclasses may
+  override. If the user simply clicks instead of dragging then use
+  the default size. If the user actually drags out a Fig, then
+  use its size as the new default size.
+<P>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.ModeCreateFigLine.html#creationDrag">creationDrag</A></BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paint"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paint(java.awt.Graphics)">paint</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void paint(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Paint this mode by painting the new item. This is the only
+  feedback that the user will get since the new item is not
+  officially added to the Editor's document yet.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Mode.html#paint(java.awt.Graphics)">paint</A> in class <A HREF="uci.gef.Mode.html">Mode</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="createNewItem"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="createNewItem(java.awt.event.MouseEvent, int, int)">createNewItem</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public abstract <A HREF="uci.gef.Fig.html">Fig</A> createNewItem(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me, 
+                                     int snapX, 
+                                     int snapY) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Abstact method to construct a new Fig to be added to the Editor.
+  Typically, subclasses will make a new instance of some Fig based
+  on the given mouse down event and the state of the parent Editor
+  (specifically, its default graphical attributes).
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

@@ -1,0 +1,278 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.Diagram | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.Diagram
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.Diagram
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----uci.gef.Diagram
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>Diagram</STRONG>
+     extends java.lang.<A HREF="java.lang.Object.html">Object</A>
+{
+          // Fields 4
+     protected <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#_comments">_comments</A>;
+     protected <A CLASS=nound HREF="uci.gef.LayerPerspective.html">LayerPerspective</A> <A HREF="#_lay">_lay</A>;
+     protected <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#_name">_name</A>;
+     protected <A CLASS=nound HREF="uci.ui.ToolBar.html">ToolBar</A> <A HREF="#_toolBar">_toolBar</A>;
+
+          // Constructors 4
+     public <A HREF="#Diagram()">Diagram</A>();
+     public <A HREF="#Diagram(java.lang.String)">Diagram</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>);
+     public <A HREF="#Diagram(java.lang.String, uci.graph.GraphModel)">Diagram</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>, <A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A>);
+     public <A HREF="#Diagram(java.lang.String, uci.graph.GraphModel, uci.gef.LayerPerspective)">Diagram</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>, <A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A>, <A CLASS=nound HREF="uci.gef.LayerPerspective.html">LayerPerspective</A>);
+
+          // Methods 11
+     public <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#getComments()">getComments</A>();
+     public <A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A> <A HREF="#getGraphModel()">getGraphModel</A>();
+     public <A CLASS=nound HREF="uci.gef.LayerPerspective.html">LayerPerspective</A> <A HREF="#getLayer()">getLayer</A>();
+     public <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#getName()">getName</A>();
+     public <A CLASS=nound HREF="uci.ui.ToolBar.html">ToolBar</A> <A HREF="#getToolBar()">getToolBar</A>();
+     protected void <A HREF="#initToolBar()">initToolBar</A>();
+     public void <A HREF="#setComments(java.lang.String)">setComments</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>);
+     public void <A HREF="#setGraphModel(uci.graph.GraphModel)">setGraphModel</A>(<A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A>);
+     public void <A HREF="#setLayer(uci.gef.LayerPerspective)">setLayer</A>(<A CLASS=nound HREF="uci.gef.LayerPerspective.html">LayerPerspective</A>);
+     public void <A HREF="#setName(java.lang.String)">setName</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>);
+     public void <A HREF="#setToolBar(uci.ui.ToolBar)">setToolBar</A>(<A CLASS=nound HREF="uci.ui.ToolBar.html">ToolBar</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+A diagram is just combination of a GraphModel, a Layer, and a
+    title. The GraphModel stores the connected graph representation,
+    without any graphics. The Layer stores all the Figs.
+<P>
+</DL>
+<P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_name"><FONT COLOR="#FF00FF">&middot;</FONT> _name</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.lang.String.html">String</A> _name
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_comments"><FONT COLOR="#FF00FF">&middot;</FONT> _comments</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.lang.String.html">String</A> _comments
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_lay"><FONT COLOR="#FF00FF">&middot;</FONT> _lay</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.LayerPerspective.html">LayerPerspective</A> _lay
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_toolBar"><FONT COLOR="#FF00FF">&middot;</FONT> _toolBar</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.ui.ToolBar.html">ToolBar</A> _toolBar
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Diagram"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Diagram()">Diagram</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Diagram() </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Diagram"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Diagram(java.lang.String)">Diagram</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Diagram(<A HREF="java.lang.String.html">String</A> name) </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Diagram"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Diagram(java.lang.String, uci.graph.GraphModel)">Diagram</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Diagram(<A HREF="java.lang.String.html">String</A> name, 
+                  <A HREF="uci.graph.GraphModel.html">GraphModel</A> gm) </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Diagram"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Diagram(java.lang.String, uci.graph.GraphModel, uci.gef.LayerPerspective)">Diagram</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Diagram(<A HREF="java.lang.String.html">String</A> name, 
+                  <A HREF="uci.graph.GraphModel.html">GraphModel</A> gm, 
+                  <A HREF="uci.gef.LayerPerspective.html">LayerPerspective</A> lay) </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="initToolBar"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="initToolBar()">initToolBar</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void initToolBar() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getToolBar"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getToolBar()">getToolBar</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.ui.ToolBar.html">ToolBar</A> getToolBar() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setToolBar"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setToolBar(uci.ui.ToolBar)">setToolBar</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setToolBar(<A HREF="uci.ui.ToolBar.html">ToolBar</A> tb) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getComments"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getComments()">getComments</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.String.html">String</A> getComments() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setComments"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setComments(java.lang.String)">setComments</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setComments(<A HREF="java.lang.String.html">String</A> c) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getName"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getName()">getName</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.String.html">String</A> getName() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setName"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setName(java.lang.String)">setName</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setName(<A HREF="java.lang.String.html">String</A> n) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setGraphModel"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setGraphModel(uci.graph.GraphModel)">setGraphModel</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setGraphModel(<A HREF="uci.graph.GraphModel.html">GraphModel</A> gm) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getGraphModel"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getGraphModel()">getGraphModel</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.graph.GraphModel.html">GraphModel</A> getGraphModel() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getLayer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getLayer()">getLayer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.LayerPerspective.html">LayerPerspective</A> getLayer() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setLayer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setLayer(uci.gef.LayerPerspective)">setLayer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setLayer(<A HREF="uci.gef.LayerPerspective.html">LayerPerspective</A> lay) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

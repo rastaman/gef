@@ -1,0 +1,239 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.demo.EdgeData | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.demo.EdgeData
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.demo.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.demo.EdgeData
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.NetPrimitive.html">uci.gef.NetPrimitive</A>
+           |
+           +----<A HREF="uci.gef.NetEdge.html">uci.gef.NetEdge</A>
+                   |
+                   +----uci.gef.demo.EdgeData
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>EdgeData</STRONG>
+     extends uci.gef.<A HREF="uci.gef.NetEdge.html">NetEdge</A>
+     implements java.io.<A HREF="java.io.Serializable.html">Serializable</A>
+{
+          // Fields 9
+     public static final <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#CABLE_ETHERNET">CABLE_ETHERNET</A>;
+     public static final <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#CABLE_FDDI">CABLE_FDDI</A>;
+     public static final <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#CABLE_FIREWIRE">CABLE_FIREWIRE</A>;
+     public static final <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#CABLE_SCSI">CABLE_SCSI</A>;
+     public static <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#_PossibleCableTypes">_PossibleCableTypes</A>;
+     protected int <A HREF="#_bitsPerSecond">_bitsPerSecond</A>;
+     protected <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#_cableType">_cableType</A>;
+     public static final <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#pBITS_PER_SECOND">pBITS_PER_SECOND</A>;
+     public static final <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#pCABLE_TYPE">pCABLE_TYPE</A>;
+
+          // Constructors 1
+     public <A HREF="#EdgeData()">EdgeData</A>();
+
+          // Methods 5
+     public int <A HREF="#getBitsPerSecond()">getBitsPerSecond</A>();
+     public <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#getCableType()">getCableType</A>();
+     public <A CLASS=nound HREF="uci.gef.FigEdge.html">FigEdge</A> <A HREF="#makePresentation(uci.gef.Layer)">makePresentation</A>(<A CLASS=nound HREF="uci.gef.Layer.html">Layer</A>);
+     public void <A HREF="#setBitsPerSecond(int)">setBitsPerSecond</A>(int);
+     public void <A HREF="#setCableType(java.lang.String)">setCableType</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+A sample NetEdge subclass for use in the Example application.  There
+  are no real details here yet.  If I was to expand this example more
+  the Edge could have more attributes, e.g. bandwidth... and it
+  could have its own subclasses of FigEdge to make it look a
+  certain way.
+<P>
+</DL>
+<P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="pCABLE_TYPE"><FONT COLOR="#0000FF">&middot;</FONT> pCABLE_TYPE</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final <A HREF="java.lang.String.html">String</A> pCABLE_TYPE
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="pBITS_PER_SECOND"><FONT COLOR="#0000FF">&middot;</FONT> pBITS_PER_SECOND</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final <A HREF="java.lang.String.html">String</A> pBITS_PER_SECOND
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="CABLE_SCSI"><FONT COLOR="#0000FF">&middot;</FONT> CABLE_SCSI</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final <A HREF="java.lang.String.html">String</A> CABLE_SCSI
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="CABLE_ETHERNET"><FONT COLOR="#0000FF">&middot;</FONT> CABLE_ETHERNET</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final <A HREF="java.lang.String.html">String</A> CABLE_ETHERNET
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="CABLE_FIREWIRE"><FONT COLOR="#0000FF">&middot;</FONT> CABLE_FIREWIRE</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final <A HREF="java.lang.String.html">String</A> CABLE_FIREWIRE
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="CABLE_FDDI"><FONT COLOR="#0000FF">&middot;</FONT> CABLE_FDDI</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final <A HREF="java.lang.String.html">String</A> CABLE_FDDI
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_bitsPerSecond"><FONT COLOR="#FF00FF">&middot;</FONT> _bitsPerSecond</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int _bitsPerSecond
+</PRE>
+<BLOCKQUOTE>
+<P>
+Speed of this data line
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_cableType"><FONT COLOR="#FF00FF">&middot;</FONT> _cableType</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.lang.String.html">String</A> _cableType
+</PRE>
+<BLOCKQUOTE>
+<P>
+Type of cable, choosen from the constants above: SCSI, FireWire,
+ etc.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_PossibleCableTypes"><FONT COLOR="#0000FF">&middot;</FONT> _PossibleCableTypes</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static <A HREF="java.util.Vector.html">Vector</A> _PossibleCableTypes
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="EdgeData"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="EdgeData()">EdgeData</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public EdgeData() </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getCableType"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getCableType()">getCableType</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.String.html">String</A> getCableType() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setCableType"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setCableType(java.lang.String)">setCableType</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setCableType(<A HREF="java.lang.String.html">String</A> ct) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getBitsPerSecond"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getBitsPerSecond()">getBitsPerSecond</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int getBitsPerSecond() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setBitsPerSecond"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setBitsPerSecond(int)">setBitsPerSecond</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setBitsPerSecond(int bps) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="makePresentation"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="makePresentation(uci.gef.Layer)">makePresentation</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.FigEdge.html">FigEdge</A> makePresentation(<A HREF="uci.gef.Layer.html">Layer</A> lay) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.NetEdge.html#makePresentation(uci.gef.Layer)">makePresentation</A> in class <A HREF="uci.gef.NetEdge.html">NetEdge</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.demo.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

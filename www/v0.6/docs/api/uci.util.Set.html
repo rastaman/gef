@@ -1,0 +1,409 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.util.Set | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.util.Set
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.util.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.util.Set
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----uci.util.Set
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>Set</STRONG>
+     extends java.lang.<A HREF="java.lang.Object.html">Object</A>
+     implements java.io.<A HREF="java.io.Serializable.html">Serializable</A>
+{
+          // Fields 1
+     public static final int <A HREF="#TC_LIMIT">TC_LIMIT</A>;
+
+          // Constructors 3
+     public <A HREF="#Set()">Set</A>();
+     public <A HREF="#Set(int)">Set</A>(int);
+     public <A HREF="#Set(java.lang.Object)">Set</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+
+          // Methods 21
+     public void <A HREF="#addAllElements(java.util.Enumeration)">addAllElements</A>(<A CLASS=nound HREF="java.util.Enumeration.html">Enumeration</A>);
+     public void <A HREF="#addAllElements(uci.util.Set)">addAllElements</A>(<A CLASS=nound HREF="uci.util.Set.html">Set</A>);
+     public void <A HREF="#addAllElementsSuchThat(java.util.Enumeration, uci.util.Predicate)">addAllElementsSuchThat</A>(<A CLASS=nound HREF="java.util.Enumeration.html">Enumeration</A>, <A CLASS=nound HREF="uci.util.Predicate.html">Predicate</A>);
+     public void <A HREF="#addAllElementsSuchThat(uci.util.Set, uci.util.Predicate)">addAllElementsSuchThat</A>(<A CLASS=nound HREF="uci.util.Set.html">Set</A>, <A CLASS=nound HREF="uci.util.Predicate.html">Predicate</A>);
+     public void <A HREF="#addElement(java.lang.Object)">addElement</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#asVector()">asVector</A>();
+     public boolean <A HREF="#contains(java.lang.Object)">contains</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public boolean <A HREF="#containsSuchThat(uci.util.Predicate)">containsSuchThat</A>(<A CLASS=nound HREF="uci.util.Predicate.html">Predicate</A>);
+     public <A CLASS=nound HREF="java.util.Enumeration.html">Enumeration</A> <A HREF="#elements()">elements</A>();
+     public boolean <A HREF="#equals(java.lang.Object)">equals</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#findSuchThat(uci.util.Predicate)">findSuchThat</A>(<A CLASS=nound HREF="uci.util.Predicate.html">Predicate</A>);
+     public <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#firstElement()">firstElement</A>();
+     public <A CLASS=nound HREF="uci.util.Set.html">Set</A> <A HREF="#reachable(uci.util.ChildGenerator)">reachable</A>(<A CLASS=nound HREF="uci.util.ChildGenerator.html">ChildGenerator</A>);
+     public <A CLASS=nound HREF="uci.util.Set.html">Set</A> <A HREF="#reachable(uci.util.ChildGenerator, int, uci.util.Predicate)">reachable</A>(<A CLASS=nound HREF="uci.util.ChildGenerator.html">ChildGenerator</A>, int, <A CLASS=nound HREF="uci.util.Predicate.html">Predicate</A>);
+     public void <A HREF="#remove(java.lang.Object)">remove</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#removeAllElements()">removeAllElements</A>();
+     public void <A HREF="#removeElement(java.lang.Object)">removeElement</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public int <A HREF="#size()">size</A>();
+     public <A CLASS=nound HREF="java.lang.String.html">String</A> <A HREF="#toString()">toString</A>();
+     public <A CLASS=nound HREF="uci.util.Set.html">Set</A> <A HREF="#transitiveClosure(uci.util.ChildGenerator)">transitiveClosure</A>(<A CLASS=nound HREF="uci.util.ChildGenerator.html">ChildGenerator</A>);
+     public <A CLASS=nound HREF="uci.util.Set.html">Set</A> <A HREF="#transitiveClosure(uci.util.ChildGenerator, int, uci.util.Predicate)">transitiveClosure</A>(<A CLASS=nound HREF="uci.util.ChildGenerator.html">ChildGenerator</A>, int, <A CLASS=nound HREF="uci.util.Predicate.html">Predicate</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+An Ordered, non-duplicated collecton of objects (not exactly a
+  mathemetical set because it is ordered).  Implemented with a
+  Vector.
+<P>
+</DL>
+<P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Returned By: </B>
+<DD>Set.<A HREF="uci.util.Set.html#reachable(uci.util.ChildGenerator)">reachable()</A>, Set.<A HREF="uci.util.Set.html#reachable(uci.util.ChildGenerator, int, uci.util.Predicate)">reachable()</A>, Set.<A HREF="uci.util.Set.html#transitiveClosure(uci.util.ChildGenerator)">transitiveClosure()</A>, Set.<A HREF="uci.util.Set.html#transitiveClosure(uci.util.ChildGenerator, int, uci.util.Predicate)">transitiveClosure()</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="TC_LIMIT"><FONT COLOR="#0000FF">&middot;</FONT> TC_LIMIT</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final int TC_LIMIT
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Set"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Set()">Set</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Set() </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Set"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Set(int)">Set</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Set(int n) </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="Set"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="Set(java.lang.Object)">Set</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public Set(<A HREF="java.lang.Object.html">Object</A> o1) </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="addElement"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="addElement(java.lang.Object)">addElement</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void addElement(<A HREF="java.lang.Object.html">Object</A> o) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="addAllElements"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="addAllElements(java.util.Enumeration)">addAllElements</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void addAllElements(<A HREF="java.util.Enumeration.html">Enumeration</A> enum) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="addAllElementsSuchThat"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="addAllElementsSuchThat(java.util.Enumeration, uci.util.Predicate)">addAllElementsSuchThat</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void addAllElementsSuchThat(<A HREF="java.util.Enumeration.html">Enumeration</A> enum, 
+                                      <A HREF="uci.util.Predicate.html">Predicate</A> p) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="addAllElements"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="addAllElements(uci.util.Set)">addAllElements</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void addAllElements(<A HREF="uci.util.Set.html">Set</A> s) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="addAllElementsSuchThat"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="addAllElementsSuchThat(uci.util.Set, uci.util.Predicate)">addAllElementsSuchThat</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void addAllElementsSuchThat(<A HREF="uci.util.Set.html">Set</A> s, 
+                                      <A HREF="uci.util.Predicate.html">Predicate</A> p) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="remove"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="remove(java.lang.Object)">remove</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void remove(<A HREF="java.lang.Object.html">Object</A> o) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removeElement"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removeElement(java.lang.Object)">removeElement</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void removeElement(<A HREF="java.lang.Object.html">Object</A> o) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removeAllElements"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removeAllElements()">removeAllElements</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void removeAllElements() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="contains"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="contains(java.lang.Object)">contains</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean contains(<A HREF="java.lang.Object.html">Object</A> o) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="containsSuchThat"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="containsSuchThat(uci.util.Predicate)">containsSuchThat</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean containsSuchThat(<A HREF="uci.util.Predicate.html">Predicate</A> p) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="findSuchThat"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="findSuchThat(uci.util.Predicate)">findSuchThat</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.Object.html">Object</A> findSuchThat(<A HREF="uci.util.Predicate.html">Predicate</A> p) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+return the first element that causes p.predicate() to return
+ true.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="elements"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="elements()">elements</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Enumeration.html">Enumeration</A> elements() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="asVector"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="asVector()">asVector</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Vector.html">Vector</A> asVector() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="equals"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="equals(java.lang.Object)">equals</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean equals(<A HREF="java.lang.Object.html">Object</A> o) </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.lang.Object.html#equals(java.lang.Object)">equals</A> in class <A HREF="java.lang.Object.html">Object</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="firstElement"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="firstElement()">firstElement</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.Object.html">Object</A> firstElement() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="size"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="size()">size</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int size() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="toString"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="toString()">toString</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.String.html">String</A> toString() </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="java.lang.Object.html#toString()">toString</A> in class <A HREF="java.lang.Object.html">Object</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="transitiveClosure"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="transitiveClosure(uci.util.ChildGenerator)">transitiveClosure</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.util.Set.html">Set</A> transitiveClosure(<A HREF="uci.util.ChildGenerator.html">ChildGenerator</A> cg) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the Set of all objects that can be reached from the
+ receiving Set by taking steps defined by the given
+ ChildGenerator.  The result includes the elements of the original
+ Set. In order to avoid very deep searches which are often
+ programming mistakes, only paths of length TC_LIMIT or less are
+ considered.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="reachable"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="reachable(uci.util.ChildGenerator)">reachable</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.util.Set.html">Set</A> reachable(<A HREF="uci.util.ChildGenerator.html">ChildGenerator</A> cg) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the Set of all objects that can be reached from the
+ receiving Set by taking steps defined by the given
+ ChildGenerator.  The result DOES NOT include the elements of the
+ original Set. In order to avoid very deep searches which are
+ often programming mistakes, only paths of length TC_LIMIT or less
+ are considered.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="reachable"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="reachable(uci.util.ChildGenerator, int, uci.util.Predicate)">reachable</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.util.Set.html">Set</A> reachable(<A HREF="uci.util.ChildGenerator.html">ChildGenerator</A> cg, 
+                        int max, 
+                        <A HREF="uci.util.Predicate.html">Predicate</A> p) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the Set of all objects that can be reached from the
+ receiving Set by taking steps defined by the given
+ ChildGenerator.  The result DOES NOT include the elements of the
+ original Set. In order to avoid very deep searches which are
+ often programming mistakes, only paths of given max length or
+ less are considered. Only paths consisting of elements which all
+ cause p.predicate() to return true are considered.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="transitiveClosure"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="transitiveClosure(uci.util.ChildGenerator, int, uci.util.Predicate)">transitiveClosure</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.util.Set.html">Set</A> transitiveClosure(<A HREF="uci.util.ChildGenerator.html">ChildGenerator</A> cg, 
+                                int max, 
+                                <A HREF="uci.util.Predicate.html">Predicate</A> p) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the Set of all objects that can be reached from the
+ receiving Set by taking steps defined by the given
+ ChildGenerator.  The result includes the elements of the original
+ Set. In order to avoid very deep searches which are often
+ programming mistakes, only paths of given max length or less are
+ considered. Only paths consisting of elements which all cause
+ p.predicate() to return true are considered.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.util.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

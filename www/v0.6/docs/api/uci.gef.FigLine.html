@@ -1,0 +1,591 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.FigLine | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.FigLine
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.FigLine
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.Fig.html">uci.gef.Fig</A>
+           |
+           +----uci.gef.FigLine
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>FigLine</STRONG>
+     extends uci.gef.<A HREF="uci.gef.Fig.html">Fig</A>
+{
+          // Fields 4
+     protected int <A HREF="#_x1">_x1</A>;
+     protected int <A HREF="#_x2">_x2</A>;
+     protected int <A HREF="#_y1">_y1</A>;
+     protected int <A HREF="#_y2">_y2</A>;
+
+          // Constructors 2
+     public <A HREF="#FigLine(int, int, int, int)">FigLine</A>(int, int, int, int);
+     public <A HREF="#FigLine(int, int, int, int, java.awt.Color)">FigLine</A>(int, int, int, int, <A CLASS=nound HREF="java.awt.Color.html">Color</A>);
+
+          // Methods 26
+     public void <A HREF="#calcBounds()">calcBounds</A>();
+     public <A CLASS=nound HREF="java.awt.Point.html">Point</A> <A HREF="#connectionPoint(java.awt.Point)">connectionPoint</A>(<A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+     public void <A HREF="#createDrag(int, int, int, int, int, int)">createDrag</A>(int, int, int, int, int, int);
+     public int <A HREF="#getNumPoints()">getNumPoints</A>();
+     public int <A HREF="#getPerimeterLength()">getPerimeterLength</A>();
+     public <A CLASS=nound HREF="java.awt.Point.html">Point</A>[] <A HREF="#getPoints()">getPoints</A>();
+     public <A CLASS=nound HREF="java.awt.Point.html">Point</A> <A HREF="#getPoints(int)">getPoints</A>(int);
+     public int[] <A HREF="#getXs()">getXs</A>();
+     public int[] <A HREF="#getYs()">getYs</A>();
+     public boolean <A HREF="#hit(java.awt.Rectangle)">hit</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>);
+     public boolean <A HREF="#intersects(java.awt.Rectangle)">intersects</A>(<A CLASS=nound HREF="java.awt.Rectangle.html">Rectangle</A>);
+     public boolean <A HREF="#isReshapable()">isReshapable</A>();
+     public boolean <A HREF="#isResizable()">isResizable</A>();
+     public boolean <A HREF="#isRotatable()">isRotatable</A>();
+     public void <A HREF="#paint(java.awt.Graphics)">paint</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     public <A CLASS=nound HREF="java.awt.Point.html">Point</A> <A HREF="#pointAlongPerimeter(int)">pointAlongPerimeter</A>(int);
+     public void <A HREF="#setBounds(int, int, int, int)">setBounds</A>(int, int, int, int);
+     public void <A HREF="#setPoints(int, int, int)">setPoints</A>(int, int, int);
+     public void <A HREF="#setPoints(java.awt.Point[])">setPoints</A>(<A CLASS=nound HREF="java.awt.Point.html">Point</A>[]);
+     public void <A HREF="#setShape(int, int, int, int)">setShape</A>(int, int, int, int);
+     public final void <A HREF="#setShape(java.awt.Point, java.awt.Point)">setShape</A>(<A CLASS=nound HREF="java.awt.Point.html">Point</A>, <A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+     public void <A HREF="#setX1(int)">setX1</A>(int);
+     public void <A HREF="#setX2(int)">setX2</A>(int);
+     public void <A HREF="#setY1(int)">setY1</A>(int);
+     public void <A HREF="#setY2(int)">setY2</A>(int);
+     public void <A HREF="#translate(int, int)">translate</A>(int, int);
+}
+</PRE>
+<P>
+<DL>
+<P>
+Class to display lines in diagrams.
+<P>
+</DL>
+<P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_x1"><FONT COLOR="#FF00FF">&middot;</FONT> _x1</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int _x1
+</PRE>
+<BLOCKQUOTE>
+<P>
+Coordinates of the start and end points of the line. Note: _x,
+  _y, _w, and _h from class Fig are always updated by calcBounds()
+  whenever _x1, _y1, _x2, or _y2 change.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_y1"><FONT COLOR="#FF00FF">&middot;</FONT> _y1</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int _y1
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_x2"><FONT COLOR="#FF00FF">&middot;</FONT> _x2</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int _x2
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_y2"><FONT COLOR="#FF00FF">&middot;</FONT> _y2</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected int _y2
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="FigLine"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="FigLine(int, int, int, int, java.awt.Color)">FigLine</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public FigLine(int x1, 
+                  int y1, 
+                  int x2, 
+                  int y2, 
+                  <A HREF="java.awt.Color.html">Color</A> lineColor) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new FigLine with the given coordinates and color.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="FigLine"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="FigLine(int, int, int, int)">FigLine</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public FigLine(int x1, 
+                  int y1, 
+                  int x2, 
+                  int y2) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Construct a new FigLine with the given coordinates and attributes.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setShape"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setShape(java.awt.Point, java.awt.Point)">setShape</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public final void setShape(<A HREF="java.awt.Point.html">Point</A> p1, 
+                              <A HREF="java.awt.Point.html">Point</A> p2) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set both end points. Fires PropertyChange with "bounds".
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setShape"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setShape(int, int, int, int)">setShape</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setShape(int x1, 
+                        int y1, 
+                        int x2, 
+                        int y2) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set both end points. Fires PropertyChange with "bounds".
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setX1"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setX1(int)">setX1</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setX1(int x1) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set one of the end point coordinates. Each of these methods
+  fires PropertyChange with "bounds".
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setY1"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setY1(int)">setY1</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setY1(int y1) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setX2"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setX2(int)">setX2</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setX2(int x2) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setY2"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setY2(int)">setY2</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setY2(int y2) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="isResizable"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="isResizable()">isResizable</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean isResizable() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Lines can be reshaped, but not resized or rotated (for now).
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#isResizable()">isResizable</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="isReshapable"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="isReshapable()">isReshapable</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean isReshapable() </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#isReshapable()">isReshapable</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="isRotatable"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="isRotatable()">isRotatable</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean isRotatable() </PRE>
+<BLOCKQUOTE>
+<DL>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#isRotatable()">isRotatable</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setPoints(java.awt.Point[])">setPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setPoints(<A HREF="java.awt.Point.html">Point</A>[] ps) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Sets both endpoints of a line. Length of array must be 2.
+  Fires PropertyChange with "bounds".
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#setPoints(java.awt.Point[])">setPoints</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPoints()">getPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Point.html">Point</A>[] getPoints() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+returns an array of lenfth 2 that has the line's endpoints.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#getPoints()">getPoints</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setPoints(int, int, int)">setPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setPoints(int i, 
+                         int x, 
+                         int y) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Move point i to location (x, y). Argument i must be 0 or 1.
+  Fires PropertyChange with "bounds".
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#setPoints(int, int, int)">setPoints</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPoints(int)">getPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Point.html">Point</A> getPoints(int i) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+returns the ith point. Argument i must be 0 or 1.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#getPoints(int)">getPoints</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getNumPoints"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getNumPoints()">getNumPoints</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int getNumPoints() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Returns the number of points. Lines always have 2 points.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#getNumPoints()">getNumPoints</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getXs"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getXs()">getXs</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int[] getXs() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Returns an array of the X coordinates of all (2) points.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#getXs()">getXs</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getYs"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getYs()">getYs</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int[] getYs() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Returns an array of the Y coordinates of all (2) points.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#getYs()">getYs</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPerimeterLength"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPerimeterLength()">getPerimeterLength</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int getPerimeterLength() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+return the approximate arc length of the path in pixel units
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#getPerimeterLength()">getPerimeterLength</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="pointAlongPerimeter"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="pointAlongPerimeter(int)">pointAlongPerimeter</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Point.html">Point</A> pointAlongPerimeter(int dist) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+return a point that is dist pixels along the path
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#pointAlongPerimeter(int)">pointAlongPerimeter</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setBounds"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setBounds(int, int, int, int)">setBounds</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setBounds(int x, 
+                         int y, 
+                         int w, 
+                         int h) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Sets the bounds of the line.  The line is scaled to fit within
+  the new bounding box. Fires PropertyChange with "bounds".
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#setBounds(int, int, int, int)">setBounds</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="connectionPoint"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="connectionPoint(java.awt.Point)">connectionPoint</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.awt.Point.html">Point</A> connectionPoint(<A HREF="java.awt.Point.html">Point</A> anotherPt) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Replys the point that other connected Figs should attach
+  to. Currently replys the point on the this line that is closest
+  to the given point.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#connectionPoint(java.awt.Point)">connectionPoint</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="translate"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="translate(int, int)">translate</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void translate(int dx, 
+                         int dy) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Translate (move) this Fig. Fires PropertyChange with "bounds".
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#translate(int, int)">translate</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="calcBounds"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="calcBounds()">calcBounds</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void calcBounds() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Update the bounding box so that it encloses (_x1, _y1)--(_x2, _y2).
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#calcBounds()">calcBounds</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paint"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paint(java.awt.Graphics)">paint</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void paint(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Paint this line object.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#paint(java.awt.Graphics)">paint</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="hit"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="hit(java.awt.Rectangle)">hit</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean hit(<A HREF="java.awt.Rectangle.html">Rectangle</A> r) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply true iff the given point is "near" the line. Nearness
+  allows the user to more easily select the line with the
+  mouse. Needs-More-Work: I should probably have two functions
+  contains() which gives a strict geometric version, and hit() which
+  is for selection by mouse clicks.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#hit(java.awt.Rectangle)">hit</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="intersects"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="intersects(java.awt.Rectangle)">intersects</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean intersects(<A HREF="java.awt.Rectangle.html">Rectangle</A> r) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply true iff this line passes through, or is even partly
+  inside the given rectangle, or if any corner of the rect is on
+  the line. What happens if the line runs along one edge of the
+  rect, but not all the way to either corner?
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#intersects(java.awt.Rectangle)">intersects</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="createDrag"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="createDrag(int, int, int, int, int, int)">createDrag</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void createDrag(int anchorX, 
+                          int anchorY, 
+                          int x, 
+                          int y, 
+                          int snapX, 
+                          int snapY) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Resize the object for drag on creation. It bypasses the things
+  done in resize so that the position of the object can be kept as
+  the anchor point. Fires PropertyChange with "bounds".
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#createDrag(int, int, int, int, int, int)">createDrag</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+<P> <B>See Also:</B>
+<A HREF="uci.gef.FigLine.html#drag">drag</A></BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

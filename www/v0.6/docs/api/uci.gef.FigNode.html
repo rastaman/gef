@@ -1,0 +1,635 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.FigNode | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.FigNode
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.FigNode
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="uci.gef.Fig.html">uci.gef.Fig</A>
+           |
+           +----<A HREF="uci.gef.FigGroup.html">uci.gef.FigGroup</A>
+                   |
+                   +----uci.gef.FigNode
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>FigNode</STRONG>
+     extends uci.gef.<A HREF="uci.gef.FigGroup.html">FigGroup</A>
+     implements java.awt.event.<A HREF="java.awt.event.MouseListener.html">MouseListener</A>, 
+                java.beans.<A HREF="java.beans.PropertyChangeListener.html">PropertyChangeListener</A>, 
+                java.io.<A HREF="java.io.Serializable.html">Serializable</A>
+{
+          // Fields 7
+     protected boolean <A HREF="#_blinkPorts">_blinkPorts</A>;
+     protected <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#_figEdges">_figEdges</A>;
+     protected boolean <A HREF="#_highlight">_highlight</A>;
+     public static final double <A HREF="#ang135">ang135</A>;
+     public static final double <A HREF="#ang225">ang225</A>;
+     public static final double <A HREF="#ang315">ang315</A>;
+     public static final double <A HREF="#ang45">ang45</A>;
+
+          // Constructors 2
+     public <A HREF="#FigNode(java.lang.Object)">FigNode</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public <A HREF="#FigNode(java.lang.Object, java.util.Vector)">FigNode</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>, <A CLASS=nound HREF="java.util.Vector.html">Vector</A>);
+
+          // Methods 26
+     public void <A HREF="#addFigEdge(uci.gef.FigEdge)">addFigEdge</A>(<A CLASS=nound HREF="uci.gef.FigEdge.html">FigEdge</A>);
+     public void <A HREF="#bindPort(java.lang.Object, uci.gef.Fig)">bindPort</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>, <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#deepHitPort(int, int)">deepHitPort</A>(int, int);
+     public void <A HREF="#delete()">delete</A>();
+     public void <A HREF="#dispose()">dispose</A>();
+     public void <A HREF="#endTrans()">endTrans</A>();
+     public boolean <A HREF="#getBlinkPorts()">getBlinkPorts</A>();
+     public <A CLASS=nound HREF="uci.gef.Fig.html">Fig</A> <A HREF="#getPortFig(java.lang.Object)">getPortFig</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public <A CLASS=nound HREF="java.util.Vector.html">Vector</A> <A HREF="#getPortFigs()">getPortFigs</A>();
+     public int <A HREF="#getPortSector(uci.gef.Fig)">getPortSector</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#hidePorts()">hidePorts</A>();
+     public <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#hitPort(int, int)">hitPort</A>(int, int);
+     public final <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#hitPort(java.awt.Point)">hitPort</A>(<A CLASS=nound HREF="java.awt.Point.html">Point</A>);
+     public void <A HREF="#mouseClicked(java.awt.event.MouseEvent)">mouseClicked</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseEntered(java.awt.event.MouseEvent)">mouseEntered</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseExited(java.awt.event.MouseEvent)">mouseExited</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mousePressed(java.awt.event.MouseEvent)">mousePressed</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A>(<A CLASS=nound HREF="java.awt.event.MouseEvent.html">MouseEvent</A>);
+     public void <A HREF="#paint(java.awt.Graphics)">paint</A>(<A CLASS=nound HREF="java.awt.Graphics.html">Graphics</A>);
+     public void <A HREF="#propertyChange(java.beans.PropertyChangeEvent)">propertyChange</A>(<A CLASS=nound HREF="java.beans.PropertyChangeEvent.html">PropertyChangeEvent</A>);
+     public void <A HREF="#removeFigEdge(uci.gef.FigEdge)">removeFigEdge</A>(<A CLASS=nound HREF="uci.gef.FigEdge.html">FigEdge</A>);
+     public void <A HREF="#removePort(uci.gef.Fig)">removePort</A>(<A CLASS=nound HREF="uci.gef.Fig.html">Fig</A>);
+     public void <A HREF="#setBlinkPorts(boolean)">setBlinkPorts</A>(boolean);
+     public void <A HREF="#setOwner(java.lang.Object)">setOwner</A>(<A CLASS=nound HREF="java.lang.Object.html">Object</A>);
+     public void <A HREF="#showPorts()">showPorts</A>();
+     public void <A HREF="#startTrans()">startTrans</A>();
+}
+</PRE>
+<P>
+<DL>
+<P>
+Class to present a node (such as a NetNode) in a diagram.
+<P>
+</DL>
+<P>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Cross Reference</B></FONT></TD> </TR> </TABLE>
+<BR><DL>
+<DT><B>Returned By: </B>
+<DD>LayerDiagram.<A HREF="uci.gef.LayerDiagram.html#getPortFig(java.lang.Object)">getPortFig()</A>, NetNode.<A HREF="uci.gef.NetNode.html#makePresentation(uci.gef.Layer)">makePresentation()</A>, NetNode.<A HREF="uci.gef.NetNode.html#presentationFor(uci.gef.Layer)">presentationFor()</A>, NodeCPU.<A HREF="uci.gef.demo.NodeCPU.html#makePresentation(uci.gef.Layer)">makePresentation()</A>, NodePrinter.<A HREF="uci.gef.demo.NodePrinter.html#makePresentation(uci.gef.Layer)">makePresentation()</A>, NodeWall.<A HREF="uci.gef.demo.NodeWall.html#makePresentation(uci.gef.Layer)">makePresentation()</A>, SampleNode2.<A HREF="uci.gef.demo.SampleNode2.html#makePresentation(uci.gef.Layer)">makePresentation()</A>, SampleNode.<A HREF="uci.gef.demo.SampleNode.html#makePresentation(uci.gef.Layer)">makePresentation()</A>, DefaultGraphNodeRenderer.<A HREF="uci.graph.DefaultGraphNodeRenderer.html#getFigNodeFor(uci.graph.GraphModel, uci.gef.Layer, java.lang.Object)">getFigNodeFor()</A>, GraphNodeRenderer.<A HREF="uci.graph.GraphNodeRenderer.html#getFigNodeFor(uci.graph.GraphModel, uci.gef.Layer, java.lang.Object)">getFigNodeFor()</A><P>
+</DL><BR>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="ang45"><FONT COLOR="#0000FF">&middot;</FONT> ang45</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final double ang45
+</PRE>
+<BLOCKQUOTE>
+<P>
+Constants useful for determining what side (north, south, east,
+  or west) a port is located on. Maybe this should really be in
+  FigNode.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="ang135"><FONT COLOR="#0000FF">&middot;</FONT> ang135</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final double ang135
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="ang225"><FONT COLOR="#0000FF">&middot;</FONT> ang225</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final double ang225
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="ang315"><FONT COLOR="#0000FF">&middot;</FONT> ang315</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public static final double ang315
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_blinkPorts"><FONT COLOR="#FF00FF">&middot;</FONT> _blinkPorts</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected boolean _blinkPorts
+</PRE>
+<BLOCKQUOTE>
+<P>
+True if you want ports to show when the mouse moves in and
+  be invisible otherwise.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_highlight"><FONT COLOR="#FF00FF">&middot;</FONT> _highlight</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected boolean _highlight
+</PRE>
+<BLOCKQUOTE>
+<P>
+True when we want to draw the user's attention to this FigNode.
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_figEdges"><FONT COLOR="#FF00FF">&middot;</FONT> _figEdges</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="java.util.Vector.html">Vector</A> _figEdges
+</PRE>
+<BLOCKQUOTE>
+<P>
+A Vector of FigEdges that need to be rerouted when this FigNode
+  moves.
+<P>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="FigNode"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="FigNode(java.lang.Object)">FigNode</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public FigNode(<A HREF="java.lang.Object.html">Object</A> node) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Constructs a new FigNode on the given node with the given owner.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="FigNode"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="FigNode(java.lang.Object, java.util.Vector)">FigNode</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public FigNode(<A HREF="java.lang.Object.html">Object</A> node, 
+                  <A HREF="java.util.Vector.html">Vector</A> figs) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Constructs a new FigNode on the given node with the given owner
+  and Figs.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setBlinkPorts"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setBlinkPorts(boolean)">setBlinkPorts</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setBlinkPorts(boolean b) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set the property of highlighting ports when the user moves the
+  mouse over this FigNode.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getBlinkPorts"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getBlinkPorts()">getBlinkPorts</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public boolean getBlinkPorts() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="addFigEdge"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="addFigEdge(uci.gef.FigEdge)">addFigEdge</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void addFigEdge(<A HREF="uci.gef.FigEdge.html">FigEdge</A> fe) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Adds a FigEdge to the list of them that need to be rerouted when
+  this FigNode moves.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removeFigEdge"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removeFigEdge(uci.gef.FigEdge)">removeFigEdge</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void removeFigEdge(<A HREF="uci.gef.FigEdge.html">FigEdge</A> fe) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+removes a FigEdge from the list of them that need to be rerouted when
+  this FigNode moves.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setOwner"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setOwner(java.lang.Object)">setOwner</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setOwner(<A HREF="java.lang.Object.html">Object</A> node) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Sets the owner (an node in some underlying model). If the given
+  node implements GraphNodeHooks, then the FigNode will register
+  itself as a listener on the node.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#setOwner(java.lang.Object)">setOwner</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="startTrans"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="startTrans()">startTrans</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void startTrans() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+When a FigNode is damaged, all of its edges may need repainting.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#startTrans()">startTrans</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="endTrans"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="endTrans()">endTrans</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void endTrans() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+When a FigNode is damaged, all of its edges may need repainting.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#endTrans()">endTrans</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="delete"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="delete()">delete</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void delete() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+When a FigNode is deleted, all of its edges are deleted.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#delete()">delete</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="dispose"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="dispose()">dispose</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void dispose() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+When a FigNode is disposed, all of its edges are disposed.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.Fig.html#dispose()">dispose</A> in class <A HREF="uci.gef.Fig.html">Fig</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="bindPort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="bindPort(java.lang.Object, uci.gef.Fig)">bindPort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void bindPort(<A HREF="java.lang.Object.html">Object</A> port, 
+                        <A HREF="uci.gef.Fig.html">Fig</A> f) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Sets the port (some object in an underlying model) for Fig f.  f
+  must already be contained in the FigNode. f will now represent
+  the given port.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="removePort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="removePort(uci.gef.Fig)">removePort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void removePort(<A HREF="uci.gef.Fig.html">Fig</A> rep) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Removes a port from the current FigNode.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="hitPort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="hitPort(java.awt.Point)">hitPort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public final <A HREF="java.lang.Object.html">Object</A> hitPort(<A HREF="java.awt.Point.html">Point</A> p) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the NetPort associated with the topmost Fig under the mouse, or
+  null if there is none.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="hitPort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="hitPort(int, int)">hitPort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.Object.html">Object</A> hitPort(int x, 
+                         int y) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the port that "owns" the topmost Fig under the given point, or
+  null if none.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="deepHitPort"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="deepHitPort(int, int)">deepHitPort</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.Object.html">Object</A> deepHitPort(int x, 
+                             int y) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply a port for the topmost Fig that actually has a port. This
+  allows users to drag edges to or from ports that are hidden by
+  other Figs.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPortFig"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPortFig(java.lang.Object)">getPortFig</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.Fig.html">Fig</A> getPortFig(<A HREF="java.lang.Object.html">Object</A> np) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the Fig that displays the given NetPort.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPortFigs"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPortFigs()">getPortFigs</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.util.Vector.html">Vector</A> getPortFigs() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply a Vector of Fig's that have some port as their owner
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getPortSector"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getPortSector(uci.gef.Fig)">getPortSector</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public int getPortSector(<A HREF="uci.gef.Fig.html">Fig</A> portFig) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Reply the port's sector within the current view.  This version
+  works precisely with square FigNodes the angxx constants
+  should be removed and calculated by the port if non-square
+  FigNodes will be used.
+
+  <pre>Sectors
+		      \  1   /
+		       \    /
+		        \  /
+		     2   \/   -2
+			 /\
+		        /  \
+		       /    \
+		      /  -1  \ </pre>
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="paint"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="paint(java.awt.Graphics)">paint</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void paint(<A HREF="java.awt.Graphics.html">Graphics</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Paints the FigNode to the given Graphics. Calls super.paint to
+  paint all the Figs contained in the FigNode. Also can draw a
+  highlighting rectangle around the FigNode. Needs-more-work:
+  maybe I should implement LayerHighlight instead.
+<P>
+<DT><B>Overrides:</B>
+<DD><A HREF="uci.gef.FigGroup.html#paint(java.awt.Graphics)">paint</A> in class <A HREF="uci.gef.FigGroup.html">FigGroup</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="propertyChange"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="propertyChange(java.beans.PropertyChangeEvent)">propertyChange</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void propertyChange(<A HREF="java.beans.PropertyChangeEvent.html">PropertyChangeEvent</A> pce) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+The node object that this FigNode is presenting has changed
+  state, or been disposed or highlighted.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="java.beans.PropertyChangeListener.html#propertyChange(java.beans.PropertyChangeEvent)">propertyChange</A> in interface <A HREF="java.beans.PropertyChangeListener.html">PropertyChangeListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="showPorts"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="showPorts()">showPorts</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void showPorts() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Make the port Figs visible. Used when blinkingPorts is true.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="hidePorts"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="hidePorts()">hidePorts</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void hidePorts() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Make the port Figs invisible. Used when blinkingPorts is true.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseEntered"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseEntered(java.awt.event.MouseEvent)">mouseEntered</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseEntered(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+If the mouse enters this FigNode's bbox and the
+  _blinkPorts flag is set, then show ports.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseEntered(java.awt.event.MouseEvent)">mouseEntered</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseExited"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseExited(java.awt.event.MouseEvent)">mouseExited</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseExited(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+If the mouse exits this FigNode's bbox and the
+  _blinkPorts flag is set, then hide ports.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseExited(java.awt.event.MouseEvent)">mouseExited</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mousePressed"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mousePressed(java.awt.event.MouseEvent)">mousePressed</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mousePressed(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Do nothing when mouse is pressed in FigNode.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mousePressed(java.awt.event.MouseEvent)">mousePressed</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseReleased"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseReleased(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Do nothing when mouse is released in FigNode.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseReleased(java.awt.event.MouseEvent)">mouseReleased</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="mouseClicked"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="mouseClicked(java.awt.event.MouseEvent)">mouseClicked</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void mouseClicked(<A HREF="java.awt.event.MouseEvent.html">MouseEvent</A> me) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Do nothing when mouse is clicked in FigNode.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="java.awt.event.MouseListener.html#mouseClicked(java.awt.event.MouseEvent)">mouseClicked</A> in interface <A HREF="java.awt.event.MouseListener.html">MouseListener</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>

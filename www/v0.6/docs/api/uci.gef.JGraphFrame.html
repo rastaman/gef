@@ -1,0 +1,412 @@
+<!-- Automatically generated with polardoc Version 1.0.7 on Fri Apr 17 20:55:42 PDT 1998 -->
+<!-- uci.gef.JGraphFrame | Do not remove or edit this line! -->
+<STYLE TYPE="text/css"> <!-- A.nound {text-decoration:none; color:black} --> </STYLE>
+<HTML>
+<HEAD>
+<TITLE>
+  Class uci.gef.JGraphFrame
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#0000FF" ALINK="#0000FF">
+<A NAME="_top_"></A>
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<B><FONT FACE="Arial,Helvetica" SIZE=+2>
+     Class uci.gef.JGraphFrame
+</FONT></B>
+<PRE>
+<A HREF="java.lang.Object.html">java.lang.Object</A>
+   |
+   +----<A HREF="JFrame.html">JFrame</A>
+           |
+           +----uci.gef.JGraphFrame
+</PRE>
+<P><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Summary</B></FONT></TD> </TR> </TABLE>
+<A NAME="_Summary_"></A>
+<PRE>
+public class  <STRONG>JGraphFrame</STRONG>
+     extends <A HREF="JFrame.html">JFrame</A>
+     implements uci.ui.<A HREF="uci.ui.IStatusBar.html">IStatusBar</A>, 
+                java.lang.<A HREF="java.lang.Cloneable.html">Cloneable</A>
+{
+          // Fields 6
+     protected <A CLASS=nound HREF="uci.gef.JGraph.html">JGraph</A> <A HREF="#_graph">_graph</A>;
+     protected <A CLASS=nound HREF="JPanel.html">JPanel</A> <A HREF="#_graphPanel">_graphPanel</A>;
+     protected <A CLASS=nound HREF="JPanel.html">JPanel</A> <A HREF="#_mainPanel">_mainPanel</A>;
+     protected <A CLASS=nound HREF="JMenuBar.html">JMenuBar</A> <A HREF="#_menubar">_menubar</A>;
+     protected <A CLASS=nound HREF="JLabel.html">JLabel</A> <A HREF="#_statusbar">_statusbar</A>;
+     protected <A CLASS=nound HREF="uci.ui.ToolBar.html">ToolBar</A> <A HREF="#_toolbar">_toolbar</A>;
+
+          // Constructors 5
+     public <A HREF="#JGraphFrame()">JGraphFrame</A>();
+     public <A HREF="#JGraphFrame(java.lang.String)">JGraphFrame</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>);
+     public <A HREF="#JGraphFrame(java.lang.String, uci.gef.Editor)">JGraphFrame</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>, <A CLASS=nound HREF="uci.gef.Editor.html">Editor</A>);
+     public <A HREF="#JGraphFrame(java.lang.String, uci.gef.JGraph)">JGraphFrame</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>, <A CLASS=nound HREF="uci.gef.JGraph.html">JGraph</A>);
+     public <A HREF="#JGraphFrame(uci.graph.GraphModel)">JGraphFrame</A>(<A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A>);
+
+          // Methods 16
+     public <A CLASS=nound HREF="java.lang.Object.html">Object</A> <A HREF="#clone()">clone</A>();
+     public <A CLASS=nound HREF="uci.gef.JGraph.html">JGraph</A> <A HREF="#getGraph()">getGraph</A>();
+     public <A CLASS=nound HREF="uci.graph.GraphEdgeRenderer.html">GraphEdgeRenderer</A> <A HREF="#getGraphEdgeRenderer()">getGraphEdgeRenderer</A>();
+     public <A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A> <A HREF="#getGraphModel()">getGraphModel</A>();
+     public <A CLASS=nound HREF="uci.graph.GraphNodeRenderer.html">GraphNodeRenderer</A> <A HREF="#getGraphNodeRenderer()">getGraphNodeRenderer</A>();
+     public <A CLASS=nound HREF="JMenuBar.html">JMenuBar</A> <A HREF="#getJMenuBar()">getJMenuBar</A>();
+     public <A CLASS=nound HREF="uci.ui.ToolBar.html">ToolBar</A> <A HREF="#getToolBar()">getToolBar</A>();
+     public void <A HREF="#setGraph(uci.gef.JGraph)">setGraph</A>(<A CLASS=nound HREF="uci.gef.JGraph.html">JGraph</A>);
+     public void <A HREF="#setGraphEdgeRenderer(uci.graph.GraphEdgeRenderer)">setGraphEdgeRenderer</A>(<A CLASS=nound HREF="uci.graph.GraphEdgeRenderer.html">GraphEdgeRenderer</A>);
+     public void <A HREF="#setGraphModel(uci.graph.GraphModel)">setGraphModel</A>(<A CLASS=nound HREF="uci.graph.GraphModel.html">GraphModel</A>);
+     public void <A HREF="#setGraphNodeRenderer(uci.graph.GraphNodeRenderer)">setGraphNodeRenderer</A>(<A CLASS=nound HREF="uci.graph.GraphNodeRenderer.html">GraphNodeRenderer</A>);
+     public void <A HREF="#setJMenuBar(JMenuBar)">setJMenuBar</A>(<A CLASS=nound HREF="JMenuBar.html">JMenuBar</A>);
+     public void <A HREF="#setToolBar(uci.ui.ToolBar)">setToolBar</A>(<A CLASS=nound HREF="uci.ui.ToolBar.html">ToolBar</A>);
+     protected void <A HREF="#setUpMenus()">setUpMenus</A>();
+     public void <A HREF="#show()">show</A>();
+     public void <A HREF="#showStatus(java.lang.String)">showStatus</A>(<A CLASS=nound HREF="java.lang.String.html">String</A>);
+}
+</PRE>
+<P>
+<DL>
+<P>
+A window that displays a toolbar, a connected graph editing pane,
+  and a status bar.
+<P>
+</DL>
+<P>
+<BR><BR>
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Fields</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_toolbar"><FONT COLOR="#FF00FF">&middot;</FONT> _toolbar</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.ui.ToolBar.html">ToolBar</A> _toolbar
+</PRE>
+<BLOCKQUOTE>
+<P>
+The toolbar (shown at top of window).
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_graph"><FONT COLOR="#FF00FF">&middot;</FONT> _graph</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="uci.gef.JGraph.html">JGraph</A> _graph
+</PRE>
+<BLOCKQUOTE>
+<P>
+The graph pane (shown in middle of window).
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_statusbar"><FONT COLOR="#FF00FF">&middot;</FONT> _statusbar</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="JLabel.html">JLabel</A> _statusbar
+</PRE>
+<BLOCKQUOTE>
+<P>
+A statusbar (shown at bottom ow window).
+<P>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_mainPanel"><FONT COLOR="#FF00FF">&middot;</FONT> _mainPanel</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="JPanel.html">JPanel</A> _mainPanel
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_graphPanel"><FONT COLOR="#FF00FF">&middot;</FONT> _graphPanel</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="JPanel.html">JPanel</A> _graphPanel
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3> <A NAME="_menubar"><FONT COLOR="#FF00FF">&middot;</FONT> _menubar</A></H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected <A HREF="JMenuBar.html">JMenuBar</A> _menubar
+</PRE>
+<BLOCKQUOTE>
+<P> </BLOCKQUOTE>
+
+<P>
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Constructors</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="JGraphFrame"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="JGraphFrame()">JGraphFrame</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public JGraphFrame() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Contruct a new JGraphFrame with the title "untitled" and a new
+  DefaultGraphModel.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="JGraphFrame"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="JGraphFrame(uci.graph.GraphModel)">JGraphFrame</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public JGraphFrame(<A HREF="uci.graph.GraphModel.html">GraphModel</A> gm) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Contruct a new JGraphFrame with the title "untitled" and the
+  given GraphModel.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="JGraphFrame"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="JGraphFrame(java.lang.String)">JGraphFrame</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public JGraphFrame(<A HREF="java.lang.String.html">String</A> title) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Contruct a new JGraphFrame with the given title and a new
+  DefaultGraphModel.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="JGraphFrame"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="JGraphFrame(java.lang.String, uci.gef.Editor)">JGraphFrame</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public JGraphFrame(<A HREF="java.lang.String.html">String</A> title, 
+                      <A HREF="uci.gef.Editor.html">Editor</A> ed) </PRE>
+<BLOCKQUOTE>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="JGraphFrame"><FONT COLOR="#FFCC00">&middot;</FONT></A>
+<A NAME="JGraphFrame(java.lang.String, uci.gef.JGraph)">JGraphFrame</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public JGraphFrame(<A HREF="java.lang.String.html">String</A> title, 
+                      <A HREF="uci.gef.JGraph.html">JGraph</A> jg) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Contruct a new JGraphFrame with the given title and given
+  JGraph. All JGraphFrame contructors call this one.
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<BR><TABLE BGCOLOR="#00ccff" WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD><FONT FACE="arial,helvetica" SIZE=+1><B>&nbsp;&nbsp;Methods</B></FONT></TD> </TR> </TABLE>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setUpMenus"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setUpMenus()">setUpMenus</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   protected void setUpMenus() </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Set up the menus and keystrokes for menu items. Subclasses can
+  override this, or you can use setMenuBar().
+<P>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getGraph"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getGraph()">getGraph</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.gef.JGraph.html">JGraph</A> getGraph() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setGraph"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setGraph(uci.gef.JGraph)">setGraph</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setGraph(<A HREF="uci.gef.JGraph.html">JGraph</A> g) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setGraphModel"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setGraphModel(uci.graph.GraphModel)">setGraphModel</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setGraphModel(<A HREF="uci.graph.GraphModel.html">GraphModel</A> gm) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getGraphModel"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getGraphModel()">getGraphModel</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.graph.GraphModel.html">GraphModel</A> getGraphModel() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setGraphNodeRenderer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setGraphNodeRenderer(uci.graph.GraphNodeRenderer)">setGraphNodeRenderer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setGraphNodeRenderer(<A HREF="uci.graph.GraphNodeRenderer.html">GraphNodeRenderer</A> rend) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getGraphNodeRenderer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getGraphNodeRenderer()">getGraphNodeRenderer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.graph.GraphNodeRenderer.html">GraphNodeRenderer</A> getGraphNodeRenderer() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setGraphEdgeRenderer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setGraphEdgeRenderer(uci.graph.GraphEdgeRenderer)">setGraphEdgeRenderer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setGraphEdgeRenderer(<A HREF="uci.graph.GraphEdgeRenderer.html">GraphEdgeRenderer</A> rend) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getGraphEdgeRenderer"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getGraphEdgeRenderer()">getGraphEdgeRenderer</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.graph.GraphEdgeRenderer.html">GraphEdgeRenderer</A> getGraphEdgeRenderer() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setToolBar"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setToolBar(uci.ui.ToolBar)">setToolBar</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setToolBar(<A HREF="uci.ui.ToolBar.html">ToolBar</A> tb) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getToolBar"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getToolBar()">getToolBar</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="uci.ui.ToolBar.html">ToolBar</A> getToolBar() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="setJMenuBar"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="setJMenuBar(JMenuBar)">setJMenuBar</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void setJMenuBar(<A HREF="JMenuBar.html">JMenuBar</A> mb) </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="getJMenuBar"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="getJMenuBar()">getJMenuBar</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="JMenuBar.html">JMenuBar</A> getJMenuBar() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="show"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="show()">show</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void show() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="clone"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="clone()">clone</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public <A HREF="java.lang.Object.html">Object</A> clone() </PRE>
+<BLOCKQUOTE>
+<DL>
+</DL>
+</BLOCKQUOTE> <BR>
+
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=1 BORDER=0> <TR> <TD WIDTH=80%>
+<BR><H3><A NAME="showStatus"><FONT COLOR="#FF0000">&middot;</FONT></A>
+<A NAME="showStatus(java.lang.String)">showStatus</A> </H3>
+</TD> <TD ALIGN=right WIDTH=20%> <FONT SIZE="-2"><A HREF="#_Summary_">Summary</A> &nbsp;|&nbsp; <A HREF=#_top_>Top</A></FONT> </TD> </TR> </TABLE>
+<PRE>
+   public void showStatus(<A HREF="java.lang.String.html">String</A> msg) </PRE>
+<BLOCKQUOTE>
+<DL>
+<P>
+Show a message in the statusbar.
+<P>
+<DT><B>Implements:</B>
+<DD><A HREF="uci.ui.IStatusBar.html#showStatus(java.lang.String)">showStatus</A> in interface <A HREF="uci.ui.IStatusBar.html">IStatusBar</A>
+</DL>
+</BLOCKQUOTE> <BR>
+
+
+<HR SIZE=1 ALIGN=left WIDTH="98%">
+<PRE>
+<A HREF="Packages.html">All Packages</A>  <A HREF="Package-uci.gef.html">This Package</A>  <A HREF="Tree.html">Class Hierarchy</A>  <A HREF="Search.html">Class Search</A>  <A HREF="AllNames.html">Index</A>
+</PRE>
+<FONT FACE="Arial,Helvetica" SIZE=-2>
+Freshly brewed Java API Documentation automatically generated with <A HREF="http://www.ualberta.ca/~tgee/polardoc">polardoc</A> Version 1.0.7
+<BR>
+</FONT>
+</BODY>
+</HTML>
