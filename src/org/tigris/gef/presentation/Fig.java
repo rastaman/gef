@@ -646,34 +646,45 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         }
     }
 
-    protected int drawDashedLine(Graphics g, int phase, int x1, int y1, int x2,
-                                 int y2) {
+    protected int drawDashedLine(Graphics g, int phase, int x1, int y1, int x2, int y2) {
         int segStartX;
         int segStartY;
         int segEndX;
         int segEndY;
         int dxdx = (x2 - x1) * (x2 - x1);
         int dydy = (y2 - y1) * (y2 - y1);
-        int length = (int)(Math.sqrt(dxdx + dydy) + 0.5); // This causes a rounding error of 0.5pixels max. . Seems acceptable.
-        int numDashesPatternSegments = _g2dashes.length;
-        int dashesPatternLength = 0;
+        int length = (int)Math.sqrt(dxdx + dydy);
+        int numDashes = _dashes.length;
         int d;
-        float lineWidth=(float)_lineWidth;
-        Graphics2D g2D = (Graphics2D)g;
-
-        BasicStroke  DashedStroke   = new BasicStroke(lineWidth,  
-                BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f,            _g2dashes,   
-                (float)phase);
-        //(float width, int cap, int join,float miterlimit, float[] dash, float dash_phase)
-        g2D.setStroke(DashedStroke);
-        g2D.drawLine(x1, y1, x2, y2);
-
-        // calculate length of complete dash pattern, could be done earlier
-        for(d = 0; d < numDashesPatternSegments ; d++) {
-            dashesPatternLength += _g2dashes[d];
+        int dashesDist = 0;
+        for(d = 0; d < numDashes; d++) {
+            dashesDist += _dashes[d];
+            // find first partial dash?
         }
 
-        return (length + phase) % dashesPatternLength ;
+        d = 0;
+        int i = 0;
+        while(i < length) {
+            segStartX = x1 + ((x2 - x1) * i) / length;
+            segStartY = y1 + ((y2 - y1) * i) / length;
+            i += _dashes[d];
+            d = (d + 1) % numDashes;
+            if(i >= length) {
+                segEndX = x2;
+                segEndY = y2;
+            }
+            else {
+                segEndX = x1 + ((x2 - x1) * i) / length;
+                segEndY = y1 + ((y2 - y1) * i) / length;
+            }
+
+            g.drawLine(segStartX, segStartY, segEndX, segEndY);
+            i += _dashes[d];
+            d = (d + 1) % numDashes;
+        }
+
+        // needs-more-work: phase not taken into account
+        return (length + phase) % dashesDist;
     }
     
     protected void drawDashedPerimeter(Graphics g) {
