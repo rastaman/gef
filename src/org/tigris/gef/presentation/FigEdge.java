@@ -91,7 +91,7 @@ implements PropertyChangeListener, Highlightable {
 	Fig getFig() { return _fig; }
   }
   /** Contruct a new FigEdge without any underlying edge. */
-  public FigEdge() { _fig = makeEdgeFig(); }  
+  public FigEdge() { _fig = makeEdgeFig(); }
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -107,13 +107,13 @@ implements PropertyChangeListener, Highlightable {
 	_fig = makeEdgeFig();
 	_fig.setGroup(this);
 	_fig.setLayer(getLayer());
-  }  
+  }
   /** Add a new path item to this FigEdge. newPath indicates both the
    *  location and the Fig (usually FigText) that should be drawn. */
   public void addPathItem(Fig newFig, PathConv newPath) {
 	_pathItems.addElement(new PathItem(newFig, newPath));
 	newFig.setGroup(this);
-  }  
+  }
   /** Update my bounding box */
   public void calcBounds() {
 	_fig.calcBounds();
@@ -141,15 +141,15 @@ implements PropertyChangeListener, Highlightable {
 	_y = res.y;
 	_w = res.width;
 	_h = res.height;
-  }  
-  public void cleanUp() { _fig.cleanUp(); }  
+  }
+  public void cleanUp() { _fig.cleanUp(); }
   ////////////////////////////////////////////////////////////////
   // Routing related methods
 
   /** Method to compute the route a FigEdge should follow.  By defualt
    *  this does nothing. Sublcasses, like FigEdgeRectiline override
    *  this method. */
-  public void computeRoute() { }  
+  public void computeRoute() { }
 
   public boolean contains(int x, int y) {
 	if (_fig.contains(x, y)) return true;
@@ -159,16 +159,16 @@ implements PropertyChangeListener, Highlightable {
 	  if (f.contains(x, y)) return true;
 	}
 	return false;
-  }  
+  }
 
   public void delete() {
 	if (_sourceFigNode != null) _sourceFigNode.removeFigEdge(this);
 	if (_destFigNode != null) _destFigNode.removeFigEdge(this);
 	super.delete();
-  }  
+  }
   /** Get and set the flag about using Fig connection points rather
    *  than centers. */
-  public boolean getBetweenNearestPoints() { return _useNearest; }  
+  public boolean getBetweenNearestPoints() { return _useNearest; }
   ////////////////////////////////////////////////////////////////
   // Fig API
 
@@ -178,9 +178,9 @@ implements PropertyChangeListener, Highlightable {
 //     for (int i = 0; i < size; i+) {
 //       Fig f = ((PathItem) _pathItems.elementAt(i)).getFig();
 //       f.startTrans();
-//     }    
+//     }
 //   }
-  
+
   /** Reply the bounding box for this FigEdge. */
   public Rectangle getBounds() {
 	Rectangle res = _fig.getBounds();
@@ -190,29 +190,29 @@ implements PropertyChangeListener, Highlightable {
 	  res.add(f.getBounds());
 	}
 	return res;
-  }  
-  public boolean getDashed() { return _fig.getDashed(); }  
+  }
+  public boolean getDashed() { return _fig.getDashed(); }
   /** Get the ArrowHead at the end of this FigEdge. */
-  public ArrowHead getDestArrowHead() { return _arrowHeadEnd; }  
-  public Fig getDestFigNode() { return _destFigNode; }  
-  public Fig getDestPortFig() { return _destPortFig; }  
+  public ArrowHead getDestArrowHead() { return _arrowHeadEnd; }
+  public Fig getDestFigNode() { return _destFigNode; }
+  public Fig getDestPortFig() { return _destPortFig; }
   ////////////////////////////////////////////////////////////////
   // accessors
 
   /** Return the Fig that will be drawn. */
-  public Fig getFig() { return _fig; }  
-  public Point getFirstPoint() { return _fig.getFirstPoint(); }  
-  public boolean getHighlight() { return _highlight; }  
-  public Point getLastPoint() { return _fig.getLastPoint(); }  
-  public Color getLineColor() { return _fig.getLineColor(); }  
-  public int getLineWidth() { return _fig.getLineWidth(); }  
-  public int getNumPoints() { return _fig.getNumPoints(); }  
+  public Fig getFig() { return _fig; }
+  public Point getFirstPoint() { return _fig.getFirstPoint(); }
+  public boolean getHighlight() { return _highlight; }
+  public Point getLastPoint() { return _fig.getLastPoint(); }
+  public Color getLineColor() { return _fig.getLineColor(); }
+  public int getLineWidth() { return _fig.getLineWidth(); }
+  public int getNumPoints() { return _fig.getNumPoints(); }
   /** Return the path item on this FigEdge closest to the given
    *  location. needs-more-work: not implemented yet. */
-  public Fig getPathItem(PathConv pointOnPath) { 
+  public Fig getPathItem(PathConv pointOnPath) {
 	// needs-more-work: Find the closest Fig to this point
 	return null;
-  }  
+  }
 
   /** Return the fig of a given path item. */
   public Fig getPathItemFig(PathItem pathItem) {
@@ -230,11 +230,11 @@ implements PropertyChangeListener, Highlightable {
   }
 
   /** Return the vector of path items on this FigEdge. */
-  public Vector getPathItemsRaw() { return _pathItems; }  
+  public Vector getPathItemsRaw() { return _pathItems; }
 
-  public int getPerimeterLength() { return _fig.getPerimeterLength(); }  
-  public Point[] getPoints() { return _fig.getPoints(); }  
-  public Point getPoints(int i) { return _fig.getPoints(i); }  
+  public int getPerimeterLength() { return _fig.getPerimeterLength(); }
+  public Point[] getPoints() { return _fig.getPoints(); }
+  public Point getPoints(int i) { return _fig.getPoints(i); }
 public String getPrivateData() {
 	Fig spf = getSourcePortFig();
 	Fig dpf = getDestPortFig();
@@ -262,11 +262,11 @@ public String getPrivateData() {
 	return data;
 }
   /** Get the ArrowHead at the start of this FigEdge. */
-  public ArrowHead getSourceArrowHead() { return _arrowHeadStart; }  
-  public Fig getSourceFigNode() { return _sourceFigNode; }  
-  public Fig getSourcePortFig() { return _sourcePortFig; }  
-  public int[] getXs() { return _fig.getXs(); }  
-  public int[] getYs() { return _fig.getYs(); }  
+  public ArrowHead getSourceArrowHead() { return _arrowHeadStart; }
+  public Fig getSourceFigNode() { return _sourceFigNode; }
+  public Fig getSourcePortFig() { return _sourcePortFig; }
+  public int[] getXs() { return _fig.getXs(); }
+  public int[] getYs() { return _fig.getYs(); }
   public boolean hit(Rectangle r) {
 	if (_fig.hit(r)) return true;
 	int size = _pathItems.size();
@@ -275,7 +275,7 @@ public String getPrivateData() {
 	  if (f.hit(r)) return true;
 	}
 	return false;
-  }  
+  }
   public Fig hitFig(Rectangle r) {
 	Enumeration enum = _pathItems.elements();
 	Fig res = null;
@@ -286,7 +286,7 @@ public String getPrivateData() {
 	  if (f.hit(r)) res = f;
 	}
 	return res;
-  }  
+  }
   public boolean intersects(Rectangle r) {
 	if (_fig.intersects(r)) return true;
 	int size = _pathItems.size();
@@ -295,21 +295,21 @@ public String getPrivateData() {
 	  if (f.intersects(r)) return true;
 	}
 	return false;
-  }  
-  public boolean isReshapable() { return _fig.isReshapable(); }  
-  public boolean isResizable() { return _fig.isResizable(); }  
-  public boolean isRotatable() { return _fig.isRotatable(); }  
+  }
+  public boolean isReshapable() { return _fig.isReshapable(); }
+  public boolean isResizable() { return _fig.isResizable(); }
+  public boolean isRotatable() { return _fig.isRotatable(); }
   /** Abstract method to make the Fig that will be drawn for this
    *  FigEdge. In FigEdgeLine this method constructs a FigLine. In
    *  FigEdgeRectiline, this method constructs a FigPoly. */
-  protected abstract Fig makeEdgeFig();  
+  protected abstract Fig makeEdgeFig();
   /** Paint this FigEdge.  Needs-more-work: take Highlight into account */
   public void paint(Graphics g) {
 	//computeRoute();
 	_fig.paint(g);
 	paintArrowHeads(g);
 	paintPathItems(g);
-  }  
+  }
   ////////////////////////////////////////////////////////////////
   // display methods
 
@@ -322,7 +322,7 @@ public String getPrivateData() {
 	//     _arrowHeadStart.paint(g, pointAlongPerimeter(5), pointAlongPerimeter(0));
 	//     _arrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength() - 6),
 	// 			pointAlongPerimeter(getPerimeterLength() - 1));
-  }  
+  }
   public void paintHighlightLine(Graphics g, int x1, int y1,
 				 int x2, int y2) {
 	g.setColor(Globals.getPrefs().getHighlightColor()); /* needs-more-work */
@@ -342,7 +342,7 @@ public String getPrivateData() {
 	  int hy2  = (int)(y2 + i * orthoY);
 	  g.drawLine(hx1, hy1, hx2, hy2);
 	}
-  }  
+  }
   /** Paint any labels that are located relative to this FigEdge. */
   protected void paintPathItems(Graphics g) {
 	Vector pathVec = getPathItemsRaw();
@@ -357,10 +357,10 @@ public String getPrivateData() {
 //       f.setLocation(loc.x - halfWidth, loc.y - halfHeight);
 	  f.paint(g);
 	}
-  }  
+  }
   /** After the file is loaded, re-establish any connections from the
    * model to the Figs */
-  public void postLoad() { setOwner(getOwner()); }  
+  public void postLoad() { setOwner(getOwner()); }
   ////////////////////////////////////////////////////////////////
   // notifications and updates
 
@@ -373,53 +373,58 @@ public String getPrivateData() {
 	  _highlight = ((Boolean)pce.getNewValue()).booleanValue();
 	  damage();
 	}
-  }  
+  }
   /** Removes the given path item. */
   public void removePathItem(PathItem goneItem) {
 	_pathItems.removeElement(goneItem);
 	goneItem.getFig().setGroup(null);
-  }  
-  public void setBetweenNearestPoints(boolean un) { _useNearest = un; }  
-  public void setDashed(boolean d) { _fig.setDashed(d); }  
+  }
+  public void setBetweenNearestPoints(boolean un) { _useNearest = un; }
+  public void setDashed(boolean d) { _fig.setDashed(d); }
   /** Set the ArrowHead at the end of this FigEdge. */
   public void setDestArrowHead(ArrowHead newArrow) {
 	_arrowHeadEnd = newArrow;
-  }  
-  /** Set the FigNode reprenting this FigEdge's to-node. */ 
+  }
+  /** Set the FigNode reprenting this FigEdge's to-node. */
   public void setDestFigNode(FigNode fn) {
 	// assert fn != null
-	if (_destFigNode != null) _destFigNode.removeFigEdge(this);
-	_destFigNode = fn;
-	fn.addFigEdge(this);
-  }  
-  /** Get the Fig reprenting this FigEdge's to-port. */ 
-  public void setDestPortFig(Fig fig) { _destPortFig = fig; }  
+        try {
+	  if (_destFigNode != null) _destFigNode.removeFigEdge(this);
+	  _destFigNode = fn;
+          fn.addFigEdge(this);
+        }
+        catch(Exception ex) {
+          ex.printStackTrace();
+        }
+  }
+  /** Get the Fig reprenting this FigEdge's to-port. */
+  public void setDestPortFig(Fig fig) { _destPortFig = fig; }
   public void setFig(Fig f) {
 	if (_fig != null && _fig.getGroup() == this) _fig.setGroup(null);
 	_fig = f;
 	_fig.setGroup(this);
 	_fig.setLayer(getLayer());
-  }  
+  }
   ////////////////////////////////////////////////////////////////
   // Highlightable implementation
   public void setHighlight(boolean b) {
 	_highlight = b;
 	damage();
-  }  
-  public void setLineColor(Color c) { _fig.setLineColor(c); }  
-  public void setLineWidth(int w) { _fig.setLineWidth(w); }  
+  }
+  public void setLineColor(Color c) { _fig.setLineColor(c); }
+  public void setLineWidth(int w) { _fig.setLineWidth(w); }
   public void setNumPoints(int npoints) {
 	_fig.setNumPoints(npoints);
 	calcBounds();
-  }  
+  }
   /** Set the edge (some object in an underlying model) that this
    *  FigEdge should represent. */
   public void setOwner(Object own) {
 	Object oldOwner = getOwner();
 
-	if (oldOwner instanceof GraphEdgeHooks) 
+	if (oldOwner instanceof GraphEdgeHooks)
 	  ((GraphEdgeHooks)oldOwner).removePropertyChangeListener(this);
-	else if (oldOwner instanceof Highlightable) 
+	else if (oldOwner instanceof Highlightable)
 	  ((Highlightable)oldOwner).removePropertyChangeListener(this);
 
 	if (own instanceof GraphEdgeHooks)
@@ -428,21 +433,21 @@ public String getPrivateData() {
 	  ((Highlightable)own).addPropertyChangeListener(this);
 
 	super.setOwner(own);
-  }  
-  public void setPoints(Point[] ps) { _fig.setPoints(ps); calcBounds(); }  
+  }
+  public void setPoints(Point[] ps) { _fig.setPoints(ps); calcBounds(); }
   public void setPoints(int i, int x, int y) {
 	_fig.setPoints(i, x, y);
 	calcBounds(); }
   public void setPoints(Handle h, int x, int y) {
 	_fig.setPoints(h, x, y);
 	calcBounds();
-  }  
+  }
 public void setPrivateData(String data) {
 
     // this method did nothing, so I commented out this Exception throwing code. Toby
 
 // 	StringTokenizer tokenizer = new StringTokenizer(data,"=\"' ");
-	
+
 // 	while (tokenizer.hasMoreTokens()) {
 // 		String tok = tokenizer.nextToken();
 // 		if (tok.equals("sourcePortFig")) {
@@ -469,24 +474,29 @@ public void setPrivateData(String data) {
   /** Set the ArrowHead at the start of this FigEdge. */
   public void setSourceArrowHead(ArrowHead newArrow) {
 	_arrowHeadStart = newArrow;
-  }  
-  /** Set the FigNode reprenting this FigEdge's from-node. */ 
+  }
+  /** Set the FigNode reprenting this FigEdge's from-node. */
   public void setSourceFigNode(FigNode fn) {
 	// assert fn != null
-	if (_sourceFigNode != null) _sourceFigNode.removeFigEdge(this);
-	_sourceFigNode = fn;
-	fn.addFigEdge(this);
-  }  
-  /** Get the Fig reprenting this FigEdge's from-port. */ 
-  public void setSourcePortFig(Fig fig) { _sourcePortFig = fig; }  
-  public void setXs(int[] xs) { _fig.setXs(xs); calcBounds(); }  
-  public void setYs(int[] ys) { _fig.setYs(ys); calcBounds(); }  
+        try {
+	  if (_sourceFigNode != null) _sourceFigNode.removeFigEdge(this);
+	  _sourceFigNode = fn;
+	  fn.addFigEdge(this);
+        }
+        catch(Exception ex) {
+          ex.printStackTrace();
+        }
+  }
+  /** Get the Fig reprenting this FigEdge's from-port. */
+  public void setSourcePortFig(Fig fig) { _sourcePortFig = fig; }
+  public void setXs(int[] xs) { _fig.setXs(xs); calcBounds(); }
+  public void setYs(int[] ys) { _fig.setYs(ys); calcBounds(); }
   public void stuffPointAlongPerimeter(int dist, Point res) {
 	_fig.stuffPointAlongPerimeter(dist, res);
-  }  
+  }
   public void translateEdge(int dx, int dy) {
 	_fig.translate(dx, dy);
 	calcBounds();
-  }  
-  public void updatePathItemLocations() { calcBounds(); }  
+  }
+  public void updatePathItemLocations() { calcBounds(); }
 } /* end class FigEdge */
