@@ -51,16 +51,16 @@ public class ModeCreatePolyEdge extends ModeCreate {
     // instance variables
 
     /** The NetPort where the arc is paintn from */
-    private Object _startPort;
+    private Object startPort;
 
     /** The Fig that presents the starting NetPort */
-    private Fig _startPortFig;
+    private Fig startPortFig;
 
     /** The FigNode on the NetNode that owns the start port */
-    private FigNode _sourceFigNode;
+    private FigNode sourceFigNode;
 
     /** The new NetEdge that is being created */
-    private Object _newEdge;
+    private Object newEdge;
 
     /** The number of points added so far. */
     protected int _npoints = 0;
@@ -134,17 +134,17 @@ public class ModeCreatePolyEdge extends ModeCreate {
             if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but not on a FigNode - consumed anyway");
             return;
         }
-        if (_sourceFigNode == null) { //_npoints == 0) {
-            _sourceFigNode = (FigNode) underMouse;
-            _startPort = _sourceFigNode.deepHitPort(x, y);
+        if (sourceFigNode == null) { //_npoints == 0) {
+            sourceFigNode = (FigNode) underMouse;
+            startPort = sourceFigNode.deepHitPort(x, y);
         }
-        if (_startPort == null) {
+        if (startPort == null) {
             if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but not on a port - consumed anyway");
             done();
             me.consume();
             return;
         }
-        _startPortFig = _sourceFigNode.getPortFig(_startPort);
+        startPortFig = sourceFigNode.getPortFig(startPort);
 
         if (_npoints == 0) {
             super.mousePressed(me);
@@ -161,7 +161,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
         if (me.isConsumed()) {
             return;
         }
-        if (_sourceFigNode == null) {
+        if (sourceFigNode == null) {
             done();
             me.consume();
             return;
@@ -186,7 +186,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
             // FigNode to see if a port exists
             Object foundPort = destFigNode.deepHitPort(x, y);
 
-            if (foundPort == _startPort && _npoints < 4) {
+            if (foundPort == startPort && _npoints < 4) {
                 // user made a false start
                 done();
                 me.consume();
@@ -196,7 +196,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
             if (foundPort != null) {
                 Fig destPortFig = destFigNode.getPortFig(foundPort);
                 FigPoly p = (FigPoly) _newItem;
-                if (foundPort == _startPort && _npoints >= 4) {
+                if (foundPort == startPort && _npoints >= 4) {
                     p.setSelfLoop(true);
                 }
                 //_npoints = 0;
@@ -206,43 +206,46 @@ public class ModeCreatePolyEdge extends ModeCreate {
 
                 Class edgeClass = (Class) getArg("edgeClass");
                 if (edgeClass != null)
-                    _newEdge = mutableGraphModel.connect(_startPort, foundPort, edgeClass);
+                    newEdge = mutableGraphModel.connect(startPort, foundPort, edgeClass);
                 else
-                    _newEdge = mutableGraphModel.connect(_startPort, foundPort);
+                    newEdge = mutableGraphModel.connect(startPort, foundPort);
 
                 // Calling connect() will add the edge to the GraphModel and
                 // any LayerPersectives on that GraphModel will get a
                 // edgeAdded event and will add an appropriate FigEdge
                 // (determined by the GraphEdgeRenderer).
 
-                if (null == _newEdge) {
+                if (null == newEdge) {
                     LOG.warn("MutableGraphModel connect() returned null");
                 } else {
-                    LayerManager lm = editor.getLayerManager();
-                    _sourceFigNode.damage();
+                    sourceFigNode.damage();
                     destFigNode.damage();
                     Layer lay = editor.getLayerManager().getActiveLayer();
-                    FigEdge fe = (FigEdge) lay.presentationFor(_newEdge);
+                    FigEdge fe = (FigEdge) lay.presentationFor(newEdge);
                     _newItem.setLineColor(Color.black);
                     fe.setFig(_newItem);
-                    fe.setSourcePortFig(_startPortFig);
-                    fe.setSourceFigNode(_sourceFigNode);
+                    fe.setSourcePortFig(startPortFig);
+                    fe.setSourceFigNode(sourceFigNode);
                     fe.setDestPortFig(destPortFig);
                     fe.setDestFigNode(destFigNode);
 
-                    if (fe != null)
+                    if (fe != null) {
                         editor.getSelectionManager().select(fe);
+                    }
                     editor.damageAll();
 
                     // if the new edge implements the MouseListener interface it has to receive the mouseReleased() event
-                    if (fe instanceof MouseListener)
+                    if (fe instanceof MouseListener) {
                          ((MouseListener) fe).mouseReleased(me);
+                    }
 
                     // set the new edge in place
-                    if (_sourceFigNode != null)
-                        _sourceFigNode.updateEdges();
-                    if (destFigNode != null)
+                    if (sourceFigNode != null) {
+                        sourceFigNode.updateEdges();
+                    }
+                    if (destFigNode != null) {
                         destFigNode.updateEdges();
+                    }
                 }
                 done();
                 me.consume();
@@ -302,9 +305,9 @@ public class ModeCreatePolyEdge extends ModeCreate {
             editor.damageAll();
         _newItem = null; // use this as the fig for the new FigEdge
         _npoints = 0;
-        _sourceFigNode = null;
-        _startPort = null;
-        _startPortFig = null;
+        sourceFigNode = null;
+        startPort = null;
+        startPortFig = null;
     }
 
     ////////////////////////////////////////////////////////////////
