@@ -303,6 +303,10 @@ public class FigGroup extends Fig {
         return ((Fig)this.figs.get(this.figs.size() - 1)).getLineWidth();
     }
 
+    /**
+     * TODO document
+     * Used in SVG.TEE
+     */
     public String getPrivateData() {
         Fig enc = getEnclosingFig();
         if(enc != null) {

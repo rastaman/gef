@@ -310,6 +310,10 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         return _fig.getPoints(i);
     }
 
+    /**
+     * TODO document
+     * Used in SVG.TEE
+     */
     public String getPrivateData() {
         Fig spf = getSourcePortFig();
         Fig dpf = getDestPortFig();

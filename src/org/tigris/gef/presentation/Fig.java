@@ -919,6 +919,10 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return new Dimension(_w, _h);
     }
 
+    /**
+     * TODO document
+     * Used in SVG.TEE
+     */
     public String getPrivateData() {
         return "";
     }

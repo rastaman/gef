@@ -107,7 +107,11 @@ public class FigSampleNode3 extends FigNode {
         return subGroup;
     }
     
-    public String getPrivateData() {
+    /**
+     * TODO document
+     * Used in SVG.TEE
+     */
+     public String getPrivateData() {
         return "text=\"" + obj7.getText() + "\"";
     }
     

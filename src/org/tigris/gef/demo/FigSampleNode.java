@@ -29,10 +29,10 @@ import java.util.*;
 import org.tigris.gef.presentation.*;
 
 public class FigSampleNode extends FigNode {
-  Fig obj1, obj2, obj3, obj4, obj5, obj6;
-  FigText obj7;
+    Fig obj1, obj2, obj3, obj4, obj5, obj6;
+    FigText obj7;
 
-  public FigSampleNode() {
+    public FigSampleNode() {
 	super();
 	obj1 = new FigRect(-25, -25, 50, 50, Color.black, Color.white);
 	obj2 = new FigCircle(-20, -20, 40, 40, Color.red, null);
@@ -51,12 +51,18 @@ public class FigSampleNode extends FigNode {
 	addFig(obj5);
 	addFig(obj6);
 	addFig(obj7);
-
-  }    
-public String getPrivateData() {
-	return "text=\"" + obj7.getText() + "\"";
-}
-  public void setOwner(Object own) {
+    }
+  
+  
+    /**
+     * TODO document
+     * Used in SVG.TEE
+     */
+    public String getPrivateData() {
+        return "text=\"" + obj7.getText() + "\"";
+    }
+  
+    public void setOwner(Object own) {
 	super.setOwner(own);
 	if (!(own instanceof SampleNode)) return;
 	SampleNode node = (SampleNode) own;
@@ -65,8 +71,9 @@ public String getPrivateData() {
 	bindPort(node.south, obj4);
 	bindPort(node.east, obj5);
 	bindPort(node.west, obj6);
-  }  
-public void setPrivateData(String data) {
+    }
+    
+    public void setPrivateData(String data) {
 	StringTokenizer tokenizer = new StringTokenizer(data,"=\"' ");
 	
 	while (tokenizer.hasMoreTokens()) {
@@ -78,5 +85,5 @@ public void setPrivateData(String data) {
 			/* Unknown value */
 		}
 	}
-}
+    }
 } /* end class FigSampleNode */
