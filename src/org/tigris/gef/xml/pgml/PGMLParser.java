@@ -169,24 +169,24 @@ public class PGMLParser extends HandlerBase {
     ////////////////////////////////////////////////////////////////
     // XML element handlers
     protected int _elementState = 0;
-    private static final int DEFAULT_STATE = 0;
-    private static final int TEXT_STATE = 1;
-    private static final int LINE_STATE = 2;
-    private static final int POLY_STATE = 3;
+    protected static final int DEFAULT_STATE = 0;
+    protected static final int TEXT_STATE = 1;
+    protected static final int LINE_STATE = 2;
+    protected static final int POLY_STATE = 3;
     protected static final int NODE_STATE = 4;
     protected static final int EDGE_STATE = 5;
-    private static final int PRIVATE_STATE = 6;
-    private static final int ANNOTATION_STATE = 7;
-    private static final int PRIVATE_NODE_STATE = 46;
-    private static final int PRIVATE_EDGE_STATE = 56;
-    private static final int ANNOTATION_EDGE_STATE = 57;
-    private static final int TEXT_NODE_STATE = 41;
-    private static final int TEXT_EDGE_STATE = 51;
-    private static final int TEXT_ANNOTATION_STATE = 71;
-    private static final int POLY_EDGE_STATE = 53;
-    private static final int POLY_NODE_STATE = 43;
-    private static final int DEFAULT_NODE_STATE = 40;
-    private static final int DEFAULT_EDGE_STATE = 50;
+    protected static final int PRIVATE_STATE = 6;
+    protected static final int ANNOTATION_STATE = 7;
+    protected static final int PRIVATE_NODE_STATE = 46;
+    protected static final int PRIVATE_EDGE_STATE = 56;
+    protected static final int ANNOTATION_EDGE_STATE = 57;
+    protected static final int TEXT_NODE_STATE = 41;
+    protected static final int TEXT_EDGE_STATE = 51;
+    protected static final int TEXT_ANNOTATION_STATE = 71;
+    protected static final int POLY_EDGE_STATE = 53;
+    protected static final int POLY_NODE_STATE = 43;
+    protected static final int DEFAULT_NODE_STATE = 40;
+    protected static final int DEFAULT_EDGE_STATE = 50;
 
     public void startElement(String elementName, AttributeList attrList) {
         //System.out.println("[PGMLParser]: startElement " + elementName + " / " + _nestedGroups + " / " + _elementState);
