@@ -1,76 +1,85 @@
-<table width="100%" border="0" cellpadding="5" cellspacing="5" bgcolor="#f0f0f0">
-  <tr align="center"> 
-    <td width="100%" valign="top" colspan="2"> 
-      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td align="center"> 
-            <table border="0" cellpadding="0" cellspacing="0">
-              <tr> 
-                <td> 
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr> 
-                      <td valign="bottom" align="right" width="40" height="10"><img src="/images/handle_nw.gif" width="5" height="5"></td>
-                      <td valign="bottom" width="15" bgcolor="#000000"><img src="/images/handle_ne.gif" width="5" height="5"></td>
-                      <td rowspan="2" bgcolor="#000000"> 
-                        <table width="100%" border="0" cellpadding="2">
-                          <tr> 
-                            <td><strong><font face="Arial, Helvetica, sans-serif" color="#FFFFFF">Vision</font></strong></td>
-                          </tr>
-                        </table>
-                      </td>
-                      <td align="right" valign="bottom" width="15" bgcolor="#000000"><img src="/images/handle_nw.gif" width="5" height="5"></td>
-                      <td valign="bottom" width="40"><img src="/images/handle_ne.gif" width="5" height="5"></td>
-                    </tr>
-                    <tr> 
-                      <td valign="top" align="right" height="10" bgcolor="#E9E9D6"><img src="/images/handle_sw.gif" width="5" height="5"></td>
-                      <td valign="top" bgcolor="#000000"><img src="/images/handle_se.gif" width="5" height="5"></td>
-                      <td valign="top" align="right" bgcolor="#000000"><img src="/images/handle_sw.gif" width="5" height="5"></td>
-                      <td valign="top" bgcolor="#E9E9D6"><img src="/images/handle_se.gif" width="5" height="5"></td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr bgcolor="#E9E9D6"> 
-          <td> 
-            <table border="0" cellpadding="10" cellspacing="0">
-              <tr> 
-                <td>The Graph Editing Framework is a library of Java(tm) classes 
-                  that make it easier to develop new applications that involve 
-                  diagram editing (ala MacDraw(tm)) and connected graph editing 
-                  (something like Visio(tm)).<br>
-                  <br>
-                  I am making this framework availible to anyone who wants it. 
-                  My hope for this project is that people around the world will 
-                  be able to make use of this framework, and will contribute comments 
-                  and enhancements. I think that the design is clear enough and 
-                  extensible enough that people will be able to add new Cmds, 
-                  Figs, Modes, Palettes, Layers, etc. without having to do much 
-                  integration work.<br>
-                  <br>
-                  When I initially announced that I was doing this project, I 
-                  got several favorable responses from people who were implementing 
-                  applications for their companies that needed diagram editing, 
-                  as well as students and instructors who wanted material for 
-                  project classes.<b><br>
-                  <br>
-                  </b>GEF can be used to for both applications and applets. Although, 
-                  some features (e.g., saving files) are only available in applications.<br>
-                  <br>
-                  I am very interested in working with instructors who would like 
-                  to give this code to students, and with students working on 
-                  projects. GEF was initially developed by undergraduates working 
-                  on a class project. Now, GEF has been downloaded over 500 times 
-                  by people around the world.</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
+<html>
+<head>
 
-</HTML>
+<meta name="keywords"
+content="GEF, Graph Editing Framework, Diagrams, ArgoUML, software engineering, CASE, Java, XML, SVG">
+
+<style type="text/css">
+/* <![CDATA[ */
+@import url(http://www.tigris.org/branding/css/ns4_toxins.css);
+/* ]]> */
+</style>
+ <link rel="stylesheet" type="text/css" href="http://www.tigris.org/branding/css/main.css" media="screen" />
+ <link rel="stylesheet" type="text/css" href="http://www.tigris.org/branding/css/print.css" media="print" />
+
+<title>Vision</title>
+
+</head>
+<body>
+
+<div class="app">
+
+<h3>Vision</h3>
+
+<p>GEF stands for Graph Editing Framework.  It is a library of Java
+classes that make it easier to develop new applications that involve
+editing diagrams and connected graphs.  Graph editing is required for
+many software engineering and network engineering tools that deal with
+models of software or networks.  Diagram or graph editing can also be
+used in applications such as home design, business process modeling,
+organization charts, family trees, or even games.</p>
+
+<p>Java's Swing user interface library includes widgets for windows,
+buttons, text, menus, tables, and trees.  These are used in every
+application that has a GUI.  However, Swing does not provide support
+for diagram or graph editing.</p>
+
+<p>The GEF vision is to produce a reusable framework for diagram and
+connected graph editing.  The key qualities for the success of this
+project are:</p>
+
+<ol>
+ <li>Simplicity: GEF should be easy for developers to learn and use.
+ An experienced developer should be able to understand all of
+ GEF's implementation in just 3 days.</li>
+
+ <li>Usability: GEF must provide a user interface that is easy for end
+ users</li>
+
+ <li>Adaptability: GEF should be easily adaptable to a wide range of
+ applications</li>
+
+ <li>Scalability: GEF must be efficient on diagrams up to a thousand
+ elements</li>
+
+</ol>
+
+
+<p>Two important things set GEF apart from most other graph editing
+frameworks:<p>
+
+<ul>
+ <li>The main objects in GEF a fairly concrete and familiar to people
+ who have experience using drawing tools.  E.g., shapes, groups,
+ selection handles, commands, and layers.  In contrast, many other
+ frameworks revolve around abstract concepts such as constraints or
+ event handlers.</li>
+
+ <li>GEF provides both a simple, concrete representation of connected
+ graphs, as well as a highly flexible graph model that is similar to
+ Swing's TreeModel and TableModel.  These "Model" classes allow
+ existing application objects to be visualized as graphs without
+ change.  They also allow for multiple diagrammatic views of the same
+ underlying set of objects.</li>
+
+</ul>
+
+
+<p>GEF can be used to for both applications and applets. Although,
+some features (e.g., saving files) are only available in
+applications.</p>
+
+
+</div>
+</body>
+</html>
