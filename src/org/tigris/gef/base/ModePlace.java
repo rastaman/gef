@@ -192,7 +192,10 @@ public class ModePlace extends FigModifyingModeImpl {
             Iterator it = otherFigs.iterator();
             while(it.hasNext()) {
                 Fig otherFig = (Fig)it.next();
-                if(!(otherFig instanceof FigNode)) {
+                if(otherFig instanceof FigNode) {
+                    continue;
+                }
+                if (!otherFig.isVisible()) {
                     continue;
                 }
                 if(otherFig.equals(_pers)) {

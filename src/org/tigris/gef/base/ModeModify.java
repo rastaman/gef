@@ -340,7 +340,7 @@ public class ModeModify extends FigModifyingModeImpl {
         editor.damaged(r);
     }
 
-    /** @deprecated 0.10. Remove in 0.11 */
+    /** @deprecated 0.10. Remove in 0.10.6 */
     protected boolean legal(int dx, int dy, SelectionManager sm, MouseEvent me) {
         return legal (dx, dy, sm);
     }
@@ -383,6 +383,10 @@ public class ModeModify extends FigModifyingModeImpl {
                     continue;
                 }
 
+                if(!otherFig.isVisible()) {
+                    continue;
+                }
+                
                 Rectangle trap = otherFig.getTrapRect();
                 if(trap == null) {
                     continue;
