@@ -66,17 +66,7 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
     /** The Editor that owns this ModeManager. */
     public Editor editor;
 
-    /** Set the parent Editor of this ModeManager */
-    public void setEditor(Editor w) {
-        editor = w;
-    }
-
     protected EventListenerList _listeners = new EventListenerList();
-
-    /** Get the parent Editor of this ModeManager */
-    public Editor getEditor() {
-        return editor;
-    }
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -88,6 +78,16 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
 
     ////////////////////////////////////////////////////////////////
     //  accessors
+
+    /** Set the parent Editor of this ModeManager */
+    public void setEditor(Editor w) {
+        editor = w;
+    }
+
+    /** Get the parent Editor of this ModeManager */
+    public Editor getEditor() {
+        return editor;
+    }
 
     /** Reply the stack of Mode's. */
     public Vector getModes() {
@@ -110,8 +110,6 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
     /** Add the given Mode to the stack if another instance
      *  of the same class is not already on the stack. */
     public void push(FigModifyingMode newMode) {
-        if(!(newMode instanceof FigModifyingMode))
-            return;
         if(!includes(newMode.getClass())) {
             _modes.addElement(newMode);
             //fireModeChanged();
