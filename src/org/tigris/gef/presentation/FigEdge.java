@@ -58,7 +58,7 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
 
     ////////////////////////////////////////////////////////////////
     // inner classes
-    protected class PathItem implements java.io.Serializable {
+    private class PathItem implements java.io.Serializable {
         Fig _fig;
         PathConv _path;
 
@@ -301,7 +301,12 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         return _fig.getPoints();
     }
 
+    /** @deprecated use getPoint(int) */
     public Point getPoints(int i) {
+        return _fig.getPoints(i);
+    }
+
+    public Point getPoint(int i) {
         return _fig.getPoints(i);
     }
 

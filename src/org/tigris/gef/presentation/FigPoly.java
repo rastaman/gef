@@ -409,8 +409,24 @@ public class FigPoly extends Fig {
         }
     }
 
-    /** return the point at index i. */
+    /** 
+     * Create a new Point object containg the coordinate
+     * of a specified point
+     * @deprecated in favour of getPoint()
+     */
     public Point getPoints(int i) {
+        return new Point(_xpoints[i], _ypoints[i]);
+    }
+
+    /** 
+     * Find the required line break and return it's corordinates as a Point.
+     * This results in a new object instantiation on every
+     * call, if multiple calls are required consider 
+     * getXs() and getYs() for performance.
+     * @param i the position of the point to return
+     * @return the point at position i
+     */
+    public Point getPoint(int i) {
         return new Point(_xpoints[i], _ypoints[i]);
     }
 
