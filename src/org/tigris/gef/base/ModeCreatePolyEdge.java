@@ -316,8 +316,44 @@ public class ModeCreatePolyEdge extends ModeCreate {
 
     public void keyTyped(KeyEvent ke) {
         if (ke.getKeyChar() == KeyEvent.VK_ESCAPE) { // escape
+            LOG.debug("Esc pressed");
             done();
             ke.consume();
         }
     }
+    /**
+     * @return
+     */
+    protected FigNode getSourceFigNode() {
+        return sourceFigNode;
+    }
+
+    /**
+     * @param node
+     */
+    protected void setSourceFigNode(FigNode node) {
+        sourceFigNode = node;
+    }
+
+    /**
+     * @return
+     */
+    protected Object getStartPort() {
+        return startPort;
+    }
+
+    /**
+     * @param object
+     */
+    protected void setStartPort(Object object) {
+        startPort = object;
+    }
+
+    /**
+     * @param fig
+     */
+    protected void setStartPortFig(Fig fig) {
+        startPortFig = fig;
+    }
+
 } /* end class ModeCreatePolyEdge */
