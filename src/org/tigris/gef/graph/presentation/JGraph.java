@@ -87,13 +87,11 @@ public class JGraph extends JPanel implements Cloneable {
 
     private Dimension defaultSize = new Dimension(6000, 6000);
 
-    /**
-     * @deprecated 0.10.5 will become private in future release.
-     */
-    protected Hashtable _viewPortPositions = new Hashtable();
+    private Hashtable _viewPortPositions = new Hashtable();
 
     /**
-     * @deprecated 0.10.5 will become private in future release.
+     * @deprecated 0.10.7 visibility will become private.
+     * Use getCurrentDiagramId()
      */
     protected String _currentDiagramId = null;
 
@@ -512,6 +510,12 @@ public class JGraph extends JPanel implements Cloneable {
     
     static final long serialVersionUID = -5459241816919316496L;
 
+    /**
+     * @return Returns the _currentDiagramId.
+     */
+    protected String getCurrentDiagramId() {
+        return _currentDiagramId;
+    }
 } /* end class JGraph */
 
 class JGraphInternalPane extends JPanel {
