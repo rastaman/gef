@@ -53,10 +53,10 @@ import javax.swing.*;
 
 
 
-/** Primitive Fig to paint spezial rectangles for SequenceDiagrams on a LayerDiagram. */
-
-
-
+/** Primitive Fig to paint spezial rectangles for SequenceDiagrams on a LayerDiagram.
+ * @deprecated This is a UML specific fig not relevant to GEF. Please implement in your
+ * own application instead.
+ */
 public class FigDynPort extends FigRect implements Serializable {
 
 
