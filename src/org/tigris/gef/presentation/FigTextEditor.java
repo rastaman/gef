@@ -43,6 +43,8 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -51,7 +53,7 @@ import java.beans.PropertyChangeListener;
 
 // needs-more-work: could this be a singleton?
 
-public class FigTextEditor extends JTextPane implements PropertyChangeListener, DocumentListener, KeyListener {
+public class FigTextEditor extends JTextPane implements PropertyChangeListener, DocumentListener, KeyListener, FocusListener {
 
     FigText _target;
     JPanel _drawingPanel;
@@ -153,6 +155,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
             setSelectionStart(getDocument().getLength());
             setSelectionEnd(getDocument().getLength());
         }
+        addFocusListener(this);
     }
 
     public void propertyChange(PropertyChangeEvent pve) {
@@ -178,6 +181,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         // (endEditing()) for second time (unnecessarily). 
         // Just reset the _activeTextEditor:
         FigTextEditor._activeTextEditor = null;
+        removeFocusListener(this);
     }
     
     private static FigTextEditor _activeTextEditor;
@@ -280,4 +284,17 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width + _extraSpace * 2, bbox.height + _extraSpace * 2);
         setFont(_target.getFont());
     }
+
+	/**
+	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+	 */
+	public void focusGained(FocusEvent e) {
+	}
+
+	/**
+	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+	 */
+	public void focusLost(FocusEvent e) {
+        endEditing();
+	}
 }
