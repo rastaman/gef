@@ -58,8 +58,17 @@ public class FigGroup extends Fig {
         _figs = new ArrayList();
     }
 
-    /** Construct a new FigGroup that holds the given Figs. */
+    /** Construct a new FigGroup that holds the given Figs. 
+     * @deprecated in favour of FigGroup(List)
+     */
     public FigGroup(Vector figs) {
+        super();
+        _figs = figs;
+        calcBounds();
+    }
+
+    /** Construct a new FigGroup that holds the given Figs. */
+   public FigGroup(List figs) {
         super();
         _figs = figs;
         calcBounds();
@@ -78,7 +87,7 @@ public class FigGroup extends Fig {
     public void addFig(Fig fig) {
         Fig group = fig.getGroup();
         if (group != this) {
-            if (fig != null) {
+            if (group != null) {
                 ((FigGroup)group).removeFig(fig);
             }
             _figs.add(fig);
