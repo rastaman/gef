@@ -76,22 +76,22 @@ public abstract class SAXParserBase extends DefaultHandler {
      * This acts as a stack of elements. startElement places
      * an item on the stack end endElement removes it.
      */
-    private   static  XMLElement[]  elements      = new XMLElement[100];
+    private XMLElement[]  elements      = new XMLElement[100];
 
     /**
      * The number of items actually in use on the elements stack.
      */
-    private   static  int           nElements     = 0;
+    private int           nElements     = 0;
 
     /**
      * This acts as a stack of elements. startElement places
      * an item on the stack end endElement removes it.
      */
-    private   static  XMLElement[]  freeElements  = new XMLElement[100];
-    private   static  int           nFreeElements = 0;
+    private XMLElement[]  freeElements  = new XMLElement[100];
+    private int           nFreeElements = 0;
 
-    private   static  boolean       stats         = true;
-    private   static  long          parseTime     = 0;
+    private boolean       stats         = true;
+    private long          parseTime     = 0;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -276,7 +276,7 @@ public abstract class SAXParserBase extends DefaultHandler {
     public InputSource resolveEntity (String publicId, String systemId)
         throws SAXException {
         try {
-	    URL testIt = new URL(systemId);
+            URL testIt = new URL(systemId);
             InputSource s = new InputSource(testIt.openStream());
             return s;
         } catch (Exception e) {
