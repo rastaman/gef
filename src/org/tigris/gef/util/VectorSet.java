@@ -40,9 +40,7 @@ import java.util.Vector;
 
 /** An Ordered, non-duplicated collecton of objects (not exactly a
  *  mathemetical set because it is ordered).  Implemented with a
- *  Vector.
- * @deprecated this is not used in GEF. Move to your own app if reqd.
- */
+ *  Vector. */
 
 public class VectorSet implements Serializable, Set  {
   ////////////////////////////////////////////////////////////////

@@ -36,6 +36,7 @@ import java.util.List;
 
 import org.apache.commons.logging.*;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;

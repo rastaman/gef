@@ -119,7 +119,7 @@ public class ModePlace extends FigModifyingModeImpl {
         GraphModel gm = editor.getGraphModel();
         GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
         Layer lay = editor.getLayerManager().getActiveLayer();
-        _pers = renderer.getFigNodeFor(gm, lay, _node, null);
+        _pers = renderer.getFigNodeFor(gm, lay, _node);
         if (LOG.isDebugEnabled()) LOG.debug("mousePressed: Got a fig at position (" + _pers.getX() + "," + _pers.getY() + ")");
         mouseMoved(me); // move _pers into position
         me.consume();
@@ -192,13 +192,13 @@ public class ModePlace extends FigModifyingModeImpl {
             Iterator it = otherFigs.iterator();
             while(it.hasNext()) {
                 Fig otherFig = (Fig)it.next();
-                if (!(otherFig instanceof FigNode)) {
+                if(otherFig instanceof FigNode) {
                     continue;
                 }
                 if (!otherFig.isVisible()) {
                     continue;
                 }
-                if (otherFig.equals(_pers)) {
+                if(otherFig.equals(_pers)) {
                     continue;
                 }
                 Rectangle trap = otherFig.getTrapRect();
