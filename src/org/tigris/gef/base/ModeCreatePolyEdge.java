@@ -158,8 +158,9 @@ public class ModeCreatePolyEdge extends ModeCreate {
      *  construct a new FigEdge and add it to the Layer and send it to
      *  the back. */
     public void mouseReleased(MouseEvent me) {
-        if (me.isConsumed())
+        if (me.isConsumed()) {
             return;
+        }
         if (_sourceFigNode == null) {
             done();
             me.consume();
@@ -195,8 +196,9 @@ public class ModeCreatePolyEdge extends ModeCreate {
             if (foundPort != null) {
                 Fig destPortFig = destFigNode.getPortFig(foundPort);
                 FigPoly p = (FigPoly) _newItem;
-                if (foundPort == _startPort && _npoints >= 4)
+                if (foundPort == _startPort && _npoints >= 4) {
                     p.setSelfLoop(true);
+                }
                 //_npoints = 0;
                 editor.damageAll();
                 //editor.getSelectionManager().select(p);
