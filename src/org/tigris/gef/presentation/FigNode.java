@@ -32,6 +32,8 @@ package org.tigris.gef.presentation;
 
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphNodeHooks;
+import org.tigris.gef.graph.GraphPortHooks;
+import org.tigris.gef.graph.presentation.NetPort;
 import org.tigris.gef.ui.Highlightable;
 
 import java.awt.*;
@@ -312,15 +314,6 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
         return null;
     }
 
-    /** Reply a Vector of Fig's that have some port as their owner
-     * @deprecated release 0.10 will be removed in favour of getPortFigs(Collection)
-     */
-    public Vector getPortFigs() {
-        Vector v = new Vector();
-        v.addAll(getPortFigs(null));
-        return v;
-    }
-
     /** Get all the figs that have some port as their owner
      * @param figs a collection to which to add the figs or null
      * @return the collection of figs
@@ -329,17 +322,24 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
         if (figs == null) {
             figs = new ArrayList();
         }
-        int figCount = this.figs.size();
-        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)this.figs.get(figIndex);
-            if(f.getOwner() != null) {
-                figs.add(f);
-            }
-        }
+		int figCount = this.figs.size();
+		for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+			Fig f = (Fig)this.figs.get(figIndex);
+			if(isPortFig(f)) {
+				figs.add(f);
+			}
+		}
         return figs;
     }
 
-
+	private boolean isPortFig(Fig f) {
+		boolean retVal = (f.getOwner() != null);
+		if (retVal && getOwner() instanceof GraphNodeHooks) {
+			retVal = f.getOwner() instanceof GraphPortHooks;
+		}
+		return retVal;
+	}
+	
     ////////////////////////////////////////////////////////////////
     // diagram-level operations
 
