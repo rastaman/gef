@@ -429,8 +429,12 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         return hit(new Rectangle(x, y, w, h));
     }
 
+    /** Reply the top Fig in the current layer that contains
+     *  the given rectangle. This is called by all other hit methods. */
     public Fig hit(Rectangle r) {
-        return getLayerManager().hit(r);
+        Fig f = getLayerManager().hit(r);
+        LOG.debug("Hit " + f);
+        return f;
     }
 
     /** Find the Fig under the mouse, and the node it represents, if any */

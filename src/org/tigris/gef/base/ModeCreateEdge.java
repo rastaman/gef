@@ -103,7 +103,7 @@ public class ModeCreateEdge extends ModeCreate {
      *  The mousePressed event is sent via ModeSelect. */
     public void mousePressed(MouseEvent me) {
         if (me.isConsumed()) {
-            LOG.debug("MousePressed but rejected as already consumed");
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed but rejected as already consumed");
             return;
         }
         int x = me.getX(), y = me.getY();
@@ -116,13 +116,13 @@ public class ModeCreateEdge extends ModeCreate {
         if (underMouse == null) {
             done();
             me.consume();
-            LOG.debug("MousePressed but nothing under - consumed");
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed but nothing under - consumed");
             return;
         }
         if (!(underMouse instanceof FigNode)) {
             done();
             me.consume();
-            LOG.debug("MousePressed but not a FigNode under - consumed");
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed but not a FigNode under - consumed");
             return;
         }
         _sourceFigNode = (FigNode) underMouse;
@@ -130,11 +130,11 @@ public class ModeCreateEdge extends ModeCreate {
         if (_startPort == null) {
             done();
             me.consume();
-            LOG.debug("MousePressed but no port found - consumed");
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed but no port found - consumed");
             return;
         }
         _startPortFig = _sourceFigNode.getPortFig(_startPort);
-        LOG.debug("MousePressed start port set");
+        if (LOG.isDebugEnabled()) LOG.debug("MousePressed start port set");
         super.mousePressed(me);
     }
 
@@ -144,11 +144,13 @@ public class ModeCreateEdge extends ModeCreate {
      *  the back. */
     public void mouseReleased(MouseEvent me) {
         if (me.isConsumed()) {
+            if (LOG.isDebugEnabled()) LOG.debug("MouseReleased but rejected as already consumed");
             return;
         }
         if (_sourceFigNode == null) {
             done();
             me.consume();
+            if (LOG.isDebugEnabled()) LOG.debug("MouseReleased but no source found so consuming and leaving");
             return;
         }
 
@@ -162,10 +164,10 @@ public class ModeCreateEdge extends ModeCreate {
         if (!(gm instanceof MutableGraphModel)) {
             f = null;
         }
-        MutableGraphModel mgm = (MutableGraphModel) gm;
-        // needs-more-work: potential class cast exception
 
         if (f instanceof FigNode) {
+            MutableGraphModel mgm = (MutableGraphModel) gm;
+            // needs-more-work: potential class cast exception
             FigNode destFigNode = (FigNode) f;
             // If its a FigNode, then check within the  
             // FigNode to see if a port exists 
@@ -203,6 +205,7 @@ public class ModeCreateEdge extends ModeCreate {
                         ce.getSelectionManager().select(fe);
                     done();
                     me.consume();
+                    if (LOG.isDebugEnabled()) LOG.debug("MouseReleased Edge created and event consumed");
                     return;
                 } else
                     System.out.println("connection return null");
@@ -211,6 +214,7 @@ public class ModeCreateEdge extends ModeCreate {
         _sourceFigNode.damage();
         ce.damageAll();
         _newItem = null;
+        if (LOG.isDebugEnabled()) LOG.debug("MouseReleased not on Fig so event consumed " + f.getClass().getName());
         done();
         me.consume();
     }

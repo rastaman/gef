@@ -124,21 +124,21 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         simpleDrag = ! buttonCondition && button1;
 
         if(!buttonCondition) {
-            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but with wrong button condition for scrolling");
+            //if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but with wrong button condition for scrolling");
             return;
         }
 
         // get the component ...
         _component = editor.getJComponent();
         if(_component == null) {
-            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no component to scrolling");
+            //if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no component to scrolling");
             return;
         }
         
         // ... and the viewport
         Container parent = _component.getParent();
         if(!(parent instanceof JViewport)) {
-            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no viewport to scrolling");
+            //if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no viewport to scrolling");
             return;
         }
         
@@ -167,7 +167,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
             autoscroll = false;
             //_simpleDrag = false;
         }
-        if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected scrolling started and event consumed");
+        //if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected scrolling started and event consumed");
     }
 
     /**
@@ -198,11 +198,11 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
                 }
             }
 
-            if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected and simple drag took place");
+            //if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected and simple drag took place");
         } else {
 
             if(!_isScrolling) {
-                if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected bu not in scrolling mode");
+                //if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected bu not in scrolling mode");
                 return;
             }
 
@@ -234,7 +234,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
             }
             me.consume();
             editor.translateMouseEvent(me);
-            if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected, viewport moved and event consumed");
+            //if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected, viewport moved and event consumed");
         }
     }
 
@@ -280,7 +280,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         }
 
         if(!_isScrolling) {
-            if (LOG.isDebugEnabled()) LOG.debug("MouseReleased detected but not in scrolling mode");
+            //if (LOG.isDebugEnabled()) LOG.debug("MouseReleased detected but not in scrolling mode");
             return;
         }
         _isScrolling = false;
@@ -291,7 +291,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         _viewport = null;
         _oldCursor = null;
         me.consume();
-        if (LOG.isDebugEnabled()) LOG.debug("MouseReleased detected so ending scroll and event consumed");
+        //if (LOG.isDebugEnabled()) LOG.debug("MouseReleased detected so ending scroll and event consumed");
     }
 
     /**

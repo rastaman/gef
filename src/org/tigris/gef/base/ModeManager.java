@@ -257,19 +257,24 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
      *  transition from ModeSelect to ModeModify here, but there are too
      *  many interactions, so that code is still in ModeSelect. */
     public void checkModeTransitions(InputEvent ie) {
-        if(!top().canExit() && ie.getID() == MouseEvent.MOUSE_PRESSED) {
+        if (!top().canExit() && ie.getID() == MouseEvent.MOUSE_PRESSED) {
             MouseEvent me = (MouseEvent)ie;
             int x = me.getX(), y = me.getY();
             Fig underMouse = editor.hit(x, y);
-            if(underMouse instanceof FigNode && ((FigNode)underMouse).isDragConnectable()) {
+            if (underMouse instanceof FigNode && ((FigNode)underMouse).isDragConnectable()) {
                 Object startPort = ((FigNode)underMouse).hitPort(x, y);
-                if(startPort != null) {
+                if (startPort != null) {
+                    if (LOG.isDebugEnabled()) LOG.debug("ModeManager mousepressed detected on a draggable port");
                     //user clicked on a port, now drag an edge
                     FigModifyingModeImpl createArc =
                         (FigModifyingModeImpl)new ModeCreateEdge(editor);
                     push(createArc);
                     createArc.mousePressed(me);
+                } else {
+                    if (LOG.isDebugEnabled()) LOG.debug("ModeManager mousepressed detected but not on a port");
                 }
+            } else {
+                if (LOG.isDebugEnabled()) LOG.debug("ModeManager mousepressed detected but not on a port dragable node");
             }
         }
     }
