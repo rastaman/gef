@@ -72,9 +72,15 @@ public class SampleNode extends NetNode implements Serializable {
   public String getId() { return "" + _number; }
   
   public FigNode makePresentation(Layer lay) {
-    FigSampleNode fn = new FigSampleNode();
-    fn.setOwner(this);
-    return fn;
+      try {
+          //FigSampleNode fn = new FigSampleNode();
+          FigSampleNode fn = (FigSampleNode)FigFactory.getInstance().createFig(FigSampleNode.class);
+          fn.setOwner(this);
+          return fn;
+      } catch (FigInstantiationException e) {
+          // Need to improve exception handling
+          return null;
+      }
   }
 
   /** Sample event handler: prints a message to the console. */

@@ -24,9 +24,7 @@
 package org.tigris.gef.demo;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
-import java.io.*;
 
 import org.tigris.gef.presentation.*;
 
@@ -76,8 +74,7 @@ public void setPrivateData(String data) {
 		if (tok.equals("text")) {
 			String s = tokenizer.nextToken();
 			obj7.setText( s );
-		}
-		else {
+		} else {
 			/* Unknown value */
 		}
 	}
