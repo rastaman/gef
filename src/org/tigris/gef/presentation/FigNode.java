@@ -235,7 +235,7 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
         // dispose the edges in reverse order because to make sure
         // that other edges in figEdge don't have their position
         // altered as a side effect.
-        for(int i = edgeCount-1; i <= 0; --i) {
+        for(int i = edgeCount-1; i >= 0; --i) {
             FigEdge f = (FigEdge)_figEdges.get(i);
             f.dispose();
         }
