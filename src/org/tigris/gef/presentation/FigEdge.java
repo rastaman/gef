@@ -438,30 +438,33 @@ public String getPrivateData() {
 	calcBounds();
   }  
 public void setPrivateData(String data) {
-	StringTokenizer tokenizer = new StringTokenizer(data,"=\"' ");
+
+    // this method did nothing, so I commented out this Exception throwing code. Toby
+
+// 	StringTokenizer tokenizer = new StringTokenizer(data,"=\"' ");
 	
-	while (tokenizer.hasMoreTokens()) {
-		String tok = tokenizer.nextToken();
-		if (tok.equals("sourcePortFig")) {
-			String s = tokenizer.nextToken();
-			int value = Integer.parseInt( s );
-		}
-		else if (tok.equals("destPortFig")) {
-			String s = tokenizer.nextToken();
-			int value = Integer.parseInt( s );
-		}
-		else if (tok.equals("sourceFigNode")) {
-			String s = tokenizer.nextToken();
-			int value = Integer.parseInt( s );
-		}
-		else if (tok.equals("destFigNode")) {
-			String s = tokenizer.nextToken();
-			int value = Integer.parseInt( s );
-		}
-		else {
-			/* Unknown value */
-		}
-	}
+// 	while (tokenizer.hasMoreTokens()) {
+// 		String tok = tokenizer.nextToken();
+// 		if (tok.equals("sourcePortFig")) {
+// 			String s = tokenizer.nextToken();
+// 			int value = Integer.parseInt( s );
+// 		}
+// 		else if (tok.equals("destPortFig")) {
+// 			String s = tokenizer.nextToken();
+// 			int value = Integer.parseInt( s );
+// 		}
+// 		else if (tok.equals("sourceFigNode")) {
+// 			String s = tokenizer.nextToken();
+// 			int value = Integer.parseInt( s );
+// 		}
+// 		else if (tok.equals("destFigNode")) {
+// 			String s = tokenizer.nextToken();
+// 			int value = Integer.parseInt( s );
+// 		}
+// 		else {
+// 			/* Unknown value */
+// 		}
+// 	}
 }
   /** Set the ArrowHead at the start of this FigEdge. */
   public void setSourceArrowHead(ArrowHead newArrow) {
