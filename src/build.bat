@@ -5,7 +5,7 @@ set ANT_HOME=..\tools\ant-1.4.1
 
 :CHECKJAVA
 if "%JAVACMD%" == "" set JAVACMD=JAVA
-set LOCALCP=%CLASSPATH%;..\lib\log4j-1.2.6.jar;%ANT_HOME%\lib\ant.jar;%ANT_HOME%\lib\jaxp.jar;%ANT_HOME%\lib\parser.jar
+set LOCALCP=%CLASSPATH%;..\lib\log4j-1.2.6.jar;%ANT_HOME%\lib\ant.jar;%ANT_HOME%\lib\jaxp.jar;%ANT_HOME%\lib\parser.jar;%ANT_HOME%\lib\xerces-1.2.3.jar
 
 rem add tools.jar
 if "%JAVA_HOME%" == "" goto NOJAVAHOME
