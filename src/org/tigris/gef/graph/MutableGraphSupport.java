@@ -33,6 +33,8 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
+import org.tigris.gef.base.Globals;
+
 /** An abstract class that makes it easier to implement your own
  *  version of MutableGraphModel. This class basically includes the
  *  code for event notifications, so that you don't have to write
@@ -225,6 +227,7 @@ public abstract class MutableGraphSupport
     // event notifications
 
     public void fireNodeAdded(Object node) {
+        Globals.getSaveAction().setEnabled(true);
         if (_graphListeners == null) {
             return;
         }
@@ -237,6 +240,7 @@ public abstract class MutableGraphSupport
     }
 
     public void fireNodeRemoved(Object node) {
+        Globals.getSaveAction().setEnabled(true);
         if (_graphListeners == null) {
             return;
         }
@@ -249,6 +253,7 @@ public abstract class MutableGraphSupport
     }
 
     public void fireEdgeAdded(Object edge) {
+        Globals.getSaveAction().setEnabled(true);
         if (_graphListeners == null) {
             return;
         }
@@ -261,6 +266,7 @@ public abstract class MutableGraphSupport
     }
 
     public void fireEdgeRemoved(Object edge) {
+        Globals.getSaveAction().setEnabled(true);
         if (_graphListeners == null) {
             return;
         }
@@ -273,6 +279,7 @@ public abstract class MutableGraphSupport
     }
 
     public void fireGraphChanged() {
+        Globals.getSaveAction().setEnabled(true);
         if (_graphListeners == null) {
             return;
         }

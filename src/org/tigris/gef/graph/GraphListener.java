@@ -30,7 +30,6 @@
 
 package org.tigris.gef.graph;
 
-import java.util.EventObject;
 import java.util.EventListener;
 
 /** This defines a set of event notifications that objects can
@@ -42,9 +41,9 @@ import java.util.EventListener;
  * @see org.tigris.gef.base.LayerPerspective */
 
 public interface GraphListener extends EventListener {
-  void nodeAdded(GraphEvent e);
-  void edgeAdded(GraphEvent e);
-  void nodeRemoved(GraphEvent e);
-  void edgeRemoved(GraphEvent e);
-  void graphChanged(GraphEvent e);
+    void nodeAdded(GraphEvent e);
+    void edgeAdded(GraphEvent e);
+    void nodeRemoved(GraphEvent e);
+    void edgeRemoved(GraphEvent e);
+    void graphChanged(GraphEvent e);
 } /* end interface GraphListener */
