@@ -119,7 +119,7 @@ public class TemplateReader extends DefaultHandler {
         if (elementName.equals("template")) {
             String guard = atts.getValue("guard");
             String className = atts.getValue("class");
-            System.out.println("Start template guard=\"" + guard + "\" class=\"" + className + "\"");
+            LOG.debug("Start template guard=\"" + guard + "\" class=\"" + className + "\"");
             java.lang.Class classObj = null;
             Object objToStack = null;
             try {
@@ -163,20 +163,15 @@ public class TemplateReader extends DefaultHandler {
                 String localname, 
                 String elementName) throws SAXException {
         if(_currentTemplate != null && elementName.equals("template")) {
-            System.out.println("template end element");
             String body = _currentTemplate.getBody().trim();
-            System.out.println("Got the template body " + body);
             body = expandMacros(body);
-            System.out.println("Expanded body " + body);
             _currentTemplate.setBody(body);
             Class classObj = _currentTemplate.getKey();
-            System.out.println("classObj = " + classObj);
             Vector existing = (Vector) _templates.get(classObj);
             if (existing == null) {
                 existing = new Vector();
             }
             existing.addElement(_currentTemplate);
-            System.out.println("Putting something into templates");
             _templates.put(classObj, existing);
             _currentTemplate = null;
         } else if(_currentMacro != null && elementName.equals("macro")) {
@@ -200,46 +195,6 @@ public class TemplateReader extends DefaultHandler {
         }
     }
     
-    public void endElement(java.lang.String name) {
-        if(_currentTemplate != null && name.equals("template")) {
-            System.out.println("template end element");
-            String body = _currentTemplate.getBody().trim();
-            System.out.println("Got the template body " + body);
-            body = expandMacros(body);
-            System.out.println("Expanded body " + body);
-            _currentTemplate.setBody(body);
-            Class classObj = _currentTemplate.getKey();
-            System.out.println("classObj = " + classObj);
-            Vector existing = (Vector) _templates.get(classObj);
-            if (existing == null) {
-                existing = new Vector();
-            }
-            existing.addElement(_currentTemplate);
-            System.out.println("Putting something into templates");
-            _templates.put(classObj, existing);
-            _currentTemplate = null;
-        } else if(_currentMacro != null && name.equals("macro")) {
-            String body = _currentMacro.getBody().trim();
-            body = expandMacros(body);
-            _currentMacro.setBody(body);
-            boolean inserted = false;
-            int newNameLength = _currentMacro.getName().length();
-            int size = _macros.size();
-            for (int i = 0; i < size && !inserted; i++) {
-	        String n = ((MacroRecord)_macros.elementAt(i)).name;
-	        if (n.length() < newNameLength) {
-	            _macros.insertElementAt(_currentMacro, i);
-	            inserted = true;
-	        }
-            }
-            if (!inserted) {
-                _macros.addElement(_currentMacro);
-            }
-            _currentMacro = null;
-        }
-    }
-
-
     public String expandMacros(String body) {
         StringBuffer resultBuffer = new StringBuffer(body.length()*2);
         StringTokenizer st = new StringTokenizer(body, "\n\r");
