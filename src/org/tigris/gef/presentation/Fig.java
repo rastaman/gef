@@ -42,6 +42,8 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /** The size of the dashes drawn when the Fig is dashed. */
 
     //public final int DASH_LENGTH = 5;
+    // TODO deprecate these arrays. There is no such thing as a constant array.
+    // these need hiding behind getters and setters
     public static final String[] DASHED_CHOICES = {"Solid", "Dashed"};
     public static final int[][] DASH_ARRAYS = {null, {5}, {15, 5}, {3, 10}, {3, 6, 10, 6}};
 
@@ -53,6 +55,11 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      * this flag should only be set by the FigNodeFactory
      */
     private boolean factoryConstructed = false;
+    
+    /**
+     * Indicates whether this fig can be moved
+     */
+    boolean movable = true;
     
     /**
      * Indicates whether this fig can be resized
@@ -134,16 +141,24 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      */
     int originalY;
 
-    /** Name of the resource being basis to this figs localization. */
+    /** Name of the resource being basis to this figs localization.
+     * @deprecated 0.11 will change to package visibility use getters/setters
+     */
     protected String _resource = "";
 
-    /** Outline color of fig object. */
+    /** Outline color of fig object.
+     * @deprecated 0.11 will change to package visibility use getters/setters
+     */
     protected Color _lineColor = Color.black;
 
-    /** Fill color of fig object. */
+    /** Fill color of fig object.
+     * @deprecated 0.11 will change to package visibility use getters/setters
+     */
     protected Color _fillColor = Color.white;
 
-    /** Thickness of line around object, for now limited to 0 or 1. */
+    /** Thickness of line around object, for now limited to 0 or 1.
+     * @deprecated 0.11 will change to package visibility use getters/setters
+     */
     protected int _lineWidth = 1;
     protected int[] _dashes = null;
     protected float[] _g2dashes = null;
@@ -193,7 +208,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /** Margin between this Fig and automatically routed arcs. */
     public final int BORDER = 8;
 
-    private static final Logger log = Logger.getLogger(Fig.class);
+    private static final Logger LOG = Logger.getLogger(Fig.class);
 
     /**
      * Most subclasses will not use this constructor, it is only useful
@@ -228,15 +243,13 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         originalWidth = w;
         if(lineColor != null) {
             _lineColor = lineColor;
-        }
-        else {
+        } else {
             _lineWidth = 0;
         }
 
         if(fillColor != null) {
             _fillColor = fillColor;
-        }
-        else {
+        } else {
             _filled = false;
         }
 
@@ -244,12 +257,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         //annotation related
     }
 
-    /**
-     * @deprecated 0.10 no longer required. Removed in ver 0.11
-     */
-    public void startTrans() {
-    }
-    
     //------------------------
     // localization related
     public void setResource(String resource) {
@@ -298,7 +305,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     }
 
     public void setAnnotationStatus(boolean newValue) {
-        //System.out.println("[Fig] setAnnotationStatus: " + newValue);
         annotationStatus = newValue;
     }
 
@@ -605,7 +611,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      * Overide this method if HandleBox and bounds differ
      */
     public void setHandleBox(int x, int y, int w, int h) {
-        if (log.isDebugEnabled()) log.debug("Height = " + h);
+        if (LOG.isDebugEnabled()) LOG.debug("Height = " + h);
         setBounds(x, y, w, h);
     }
 
@@ -1037,7 +1043,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 
     /** Returns true if this Fig can be moved around by the user. */
     public boolean isMovable() {
-        return true;
+        return movable;
     }
 
     /** Returns true if this Fig can be reshaped by the user. */
@@ -1045,7 +1051,10 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return false;
     }
 
-    /** Returns true if this Fig can be resized by the user. */
+    /**
+     * Determine if this Fig can be resized 
+     * @return true if this Fig can be resized by the user.
+     */
     public boolean isResizable() {
         return resizable;
     }
@@ -1510,6 +1519,22 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      */
     public boolean isFactoryConstructed() {
         return factoryConstructed;
+    }
+
+    /**
+     * Set whether this Fig can be resized
+     * @param true to make this Fig resizable
+     */
+    public void setResizable(boolean b) {
+        resizable = b;
+    }
+
+    /**
+     * Set whether this Fig can be moved
+     * @param true to make this Fig resizable
+     */
+    public void setMovable(boolean b) {
+        movable = b;
     }
 
 }    /* end class Fig */
