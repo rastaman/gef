@@ -1,3 +1,4 @@
+//$Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -21,21 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// File: ModeManager.java
-// Classes: ModeManager
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.tigris.gef.base;
 
 import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
 import org.tigris.gef.event.ModeChangeEvent;
 import org.tigris.gef.event.ModeChangeListener;
-import org.tigris.gef.graph.presentation.NetPort;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 
@@ -43,6 +34,7 @@ import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -94,16 +86,6 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
         return editor;
     }
 
-    /** Reply the stack of Mode's. */
-    public Vector getModes() {
-        return _modes;
-    }
-
-    /** Set the entire stack of Mode's. */
-    public void setModes(Vector newModes) {
-        _modes = newModes;
-    }
-
     /** Reply the top (first) Mode. */
     public FigModifyingMode top() {
         if(_modes.isEmpty())
@@ -123,10 +105,14 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
 
     /** Remove the topmost Mode if it can exit. */
     public FigModifyingMode pop() {
-        if(_modes.isEmpty())
+        if(_modes.isEmpty()) {
             return null;
+        }
         FigModifyingMode res = top();
         if(res.canExit()) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Removing mode " + res);
+            }
             _modes.removeElement(res);
             fireModeChanged();
         }
@@ -164,7 +150,6 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
     /** Pass events to all modes in order, until one consumes it. */
     public void keyTyped(KeyEvent ke) {
         checkModeTransitions(ke);
-        LOG.debug("Esc pressed");
         for(int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
             m.keyTyped(ke);
@@ -181,9 +166,15 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
 
     /** Pass events to all modes in order, until one consumes it. */
     public void keyPressed(KeyEvent ke) {
-        for(int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
-            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
-            m.keyPressed(ke);
+        // Executing keyPressed of a Mode may in fact remove other modes
+        // from the stack. So it is neccessary each time to check that a mode
+        // is still on the stack before calling it.
+        Vector modes = (Vector)_modes.clone();
+        for(int i = modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)modes.get(i));
+            if (_modes.contains(m)) {
+                m.keyPressed(ke);
+            }
         }
     }
 
@@ -298,7 +289,7 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
         for(int i = listeners.length - 2; i >= 0; i -= 2) {
             if(listeners[i] == ModeChangeListener.class) {
                 if(e == null)
-                    e = new ModeChangeEvent(editor, getModes());
+                    e = new ModeChangeEvent(editor, _modes);
                 //needs-more-work: should copy vector, use JGraph as src?
                 ((ModeChangeListener)listeners[i + 1]).modeChange(e);
             }
