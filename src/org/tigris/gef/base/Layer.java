@@ -255,6 +255,9 @@ public abstract class Layer implements java.io.Serializable {
         return v;
     }
     
+    /**
+     * @deprecated 0.10.2 in favour of getContentsNoEdges()
+     */
     public Collection getContentsNoEdges(Collection c) {
         List contents = getContents();
         int size = contents.size();
@@ -271,12 +274,7 @@ public abstract class Layer implements java.io.Serializable {
         return c;
     }
 
-    /**
-     * @deprecated 0.10 in favour of getContentsNoEdges(Collection)
-     * This method will be removed in release 0.11
-     * CHECK SAVE IN ARGOUML ONCE REMOVED
-     */
-    public Vector getContentsNoEdges() {
+    public List getContentsNoEdges() {
         List contents = getContents();
         int size = contents.size();
         Vector v = new Vector(size);
@@ -292,6 +290,9 @@ public abstract class Layer implements java.io.Serializable {
         return v;
     }
 
+    /**
+     * @deprecated 0.10.2 in favour of getContentsNoEdges()
+     */
     public Collection getContentsEdgesOnly(Collection c) {
         List contents = getContents();
         int size = contents.size();
@@ -308,12 +309,7 @@ public abstract class Layer implements java.io.Serializable {
         return c;
     }
     
-    /**
-     * @deprecated 0.10 in favour of getContentsEdgesOnly(Collection)
-     * This method will be removed in release 0.11
-     * CHECK SAVE IN ARGOUML ONCE REMOVED
-     */
-    public Vector getContentsEdgesOnly() {
+    public List getContentsEdgesOnly() {
         List contents = getContents();
         int size = contents.size();
         Vector v = new Vector(size);
