@@ -39,7 +39,6 @@
  <echo message="======================="/>
  <echo message="usage: ant [target]"/>
  <echo message="targets:"/>
- <echo message=" MyDemo"/>
  <echo message=" BasicApplication"/>
  <echo message=" BroomStudy"/>
  <echo message=" EquipmentApplet"/>
@@ -49,14 +48,6 @@
 </target>
 
 <!-- applications -->
-<target name="MyDemo" depends="build">
- <property name="main" value="uci.gef.demo.MyDemo"/>
- <property name="args" value=""/>
-
- <java classname="${main}" args="${args}" fork="yes"
-       jvmargs="-cp ${obj.dir}${path.separator}${gef.jar}"/>
-</target>
-
 <target name="BasicApplication" depends="build">
  <property name="main" value="uci.gef.demo.BasicApplication"/>
  <property name="args" value=""/>
@@ -75,13 +66,13 @@
 
 <!-- applets -->
 <target name="EquipmentApplet" depends="build">
- <copyfile src="${gef.jar}" dest="${obj.dir}/gef.jar"/>
+ <copyfile src="${gef.jar}" dest="${obj.dir}${file.separator}gef.jar"/>
  <echo message="${gef.jar} ${obj.dir}"/>
  <exec command="appletviewer EquipmentApplet.html" dir="${obj.dir}"/>
 </target>
 
 <target name="InBrowserApplet" depends="build">
- <copyfile src="${gef.jar}" dest="${obj.dir}/gef.jar"/>
+ <copyfile src="${gef.jar}" dest="${obj.dir}${file.separator}gef.jar"/>
  <exec command="appletviewer InBrowserApplet.html" dir="${obj.dir}"/>
 </target>
 
