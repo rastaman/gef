@@ -149,7 +149,7 @@ public class ModeCreateEdge extends ModeCreate {
 
 	if (null != _newEdge) {
 	  LayerManager lm = ce.getLayerManager();
-	  ce.damaged(_newItem);
+	  ce.damageAll();
 	  _sourceFigNode.damage();
 	  destFigNode.damage();
 	  _newItem = null;
@@ -170,7 +170,7 @@ public class ModeCreateEdge extends ModeCreate {
       }
     }
     _sourceFigNode.damage();
-    ce.damaged(_newItem);
+    ce.damageAll();
     _newItem = null;
     done();
     me.consume();

@@ -58,7 +58,7 @@ public class JGraph extends JPanel implements Cloneable {
   // constructor
 
   /** Make a new JGraph with a new DefaultGraphModel.
-   * @see uci.graph.DefaultGraphModel */
+   * @see org.tigris.gef.graph.presentation.DefaultGraphModel */
   public JGraph() { this(new DefaultGraphModel()); }
 
   /** Make a new JGraph with a the GraphModel and Layer from the given
@@ -81,7 +81,7 @@ public class JGraph extends JPanel implements Cloneable {
     _scroll.getHorizontalScrollBar().setUnitIncrement(25);
     _scroll.getVerticalScrollBar().setUnitIncrement(25);
 
-    _editor.setAwtComponent(_drawingPane);
+    _editor.setJComponent(_drawingPane);
     setLayout(new BorderLayout());
     add(_scroll, BorderLayout.CENTER);
     addMouseListener(_editor);
@@ -94,9 +94,9 @@ public class JGraph extends JPanel implements Cloneable {
     validate();
     //revalidate();
 
-    Vector layerManagerContent = ed.getLayerManager().getContents();
+    java.util.List layerManagerContent = ed.getLayerManager().getContents();
     if ( layerManagerContent != null ) {
-        updateDrawingSizeToIncludeAllFigs(layerManagerContent.elements());
+        updateDrawingSizeToIncludeAllFigs(Collections.enumeration(layerManagerContent));
     } // end if
   }
 
@@ -266,7 +266,7 @@ public class JGraph extends JPanel implements Cloneable {
   public void setVisible(boolean b) {
     super.setVisible(b);
     _drawingPane.setVisible(b);
-    _editor.setActiveTextEditor(null);
+    FigTextEditor.remove();
   }
 
   /** Tell Swing/AWT that JGraph handles tab-order itself. */

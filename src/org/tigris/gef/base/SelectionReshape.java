@@ -178,7 +178,6 @@ public class SelectionReshape extends Selection
     if (key == 'n') {
       // Needs-More-Work: the following should be in an Cmd.
       // ce.executeCmd(new CmdSelectNextPoint(), e);
-      startTrans();
       if (_selectedHandle == -1) _selectedHandle = 0;
       else _selectedHandle = (_selectedHandle + 1) % npoints;
       endTrans();
@@ -188,7 +187,6 @@ public class SelectionReshape extends Selection
     if (key == 'p') {
       // Needs-More-Work: the following should be in an Cmd.
       // ce.executeCmd(new CmdSelectPrevPoint(), e);
-      startTrans();
       if (_selectedHandle == -1) _selectedHandle = npoints - 1;
       else _selectedHandle = (_selectedHandle + npoints - 1) % npoints;
       endTrans();

@@ -29,8 +29,8 @@
 package org.tigris.gef.base;
 
 import java.awt.event.*;
-import java.util.*;
-import java.io.*;
+import java.io.Serializable;
+import java.util.Hashtable;
 
 /** This is the default implementation for the basic interface of all modes.
  *  It provides basic functionality for initializing the mode and handling
@@ -41,9 +41,7 @@ import java.io.*;
  * @see FigModifyingModeImpl
  */
 
-public class ModeImpl implements Mode, Serializable, KeyListener,
-    MouseListener, MouseMotionListener
-{
+public class ModeImpl implements Mode, Serializable, KeyListener, MouseListener, MouseMotionListener {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -58,30 +56,39 @@ public class ModeImpl implements Mode, Serializable, KeyListener,
 
     /** Construct a new Mode instance with the given parameters as its
      * initial parameters */
-    public ModeImpl(Hashtable parameters) { setArgs(parameters); }
+    public ModeImpl(Hashtable parameters) {
+        setArgs(parameters);
+    }
 
     /** Construct a new ModeImpl instance without any parameters.
      * This constructor is needed because some Cmd-Classes can only
      * call Class.newInstance which does not pass constructor arguments.
      *
      * @see CmdSetMode */
-    public ModeImpl() { }
+    public ModeImpl() {
+    }
 
     ////////////////////////////////////////////////////////////////
     // Arguments
 
-    public void setArgs(Hashtable args) { _args = args; }
+    public void setArgs(Hashtable args) {
+        _args = args;
+    }
 
     public void setArg(String key, Object value) {
-        if (_args == null) _args = new Hashtable();
+        if(_args == null)
+            _args = new Hashtable();
         _args.put(key, value);
     }
 
-    public Hashtable getArgs() { return _args; }
-    
+    public Hashtable getArgs() {
+        return _args;
+    }
+
     public Object getArg(String s) {
-        if (_args == null) return null;
-        return _args.get(s);    
+        if(_args == null)
+            return null;
+        return _args.get(s);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -92,20 +99,25 @@ public class ModeImpl implements Mode, Serializable, KeyListener,
      *  ModeCreateEdge) the Mode calls done to make switching to another
      *  Mode possible. 
      */
-    public void done() {}
+    public void done() {
+    }
 
     /** When the user performs the first AWT Event that indicate that
      *  they want to do some work in this mode, then change the global
      *  next mode. 
      */
-    public void start() { Globals.nextMode(); }
+    public void start() {
+        Globals.nextMode();
+    }
 
     /** Some Mode's should never be exited, but by default any Mode can
      *  exit. Mode's which return false for canExit() will not be popped
      *  from a ModeManager.
      *
      * @see ModeManager */
-    public boolean canExit() { return true; }
+    public boolean canExit() {
+        return true;
+    }
 
     /** Modes may need some parameters in order to work properly. With this
      * method, a Mode can be inititalized with a unspecified number of
@@ -115,21 +127,52 @@ public class ModeImpl implements Mode, Serializable, KeyListener,
         setArgs(parameters);
     }
 
+    /**
+     * Modes can be finished before completed for some reasons. This method
+     * lets the mode be finished from any state it is in.
+     */
+    public void leave() {
+        Globals.setSticky(false);
+        done();
+        Globals.nextMode();
+        Editor editor = Globals.curEditor();
+        if(editor != null) {
+            editor.finishMode();
+        }
+    }
+
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    public void keyPressed(KeyEvent ke) { }
-    public void keyReleased(KeyEvent ke) { }
-    public void keyTyped(KeyEvent ke) {  }
+    public void keyPressed(KeyEvent ke) {
+    }
 
-    public void mouseMoved(MouseEvent me) { }
-    public void mouseDragged(MouseEvent me) { }
+    public void keyReleased(KeyEvent ke) {
+    }
 
-    public void mouseClicked(MouseEvent me) { }
-    public void mousePressed(MouseEvent me) { }
-    public void mouseReleased(MouseEvent me) { }
-    public void mouseExited(MouseEvent me) { }
-    public void mouseEntered(MouseEvent me) { }
+    public void keyTyped(KeyEvent ke) {
+    }
+
+    public void mouseMoved(MouseEvent me) {
+    }
+
+    public void mouseDragged(MouseEvent me) {
+    }
+
+    public void mouseClicked(MouseEvent me) {
+    }
+
+    public void mousePressed(MouseEvent me) {
+    }
+
+    public void mouseReleased(MouseEvent me) {
+    }
+
+    public void mouseExited(MouseEvent me) {
+    }
+
+    public void mouseEntered(MouseEvent me) {
+    }
 
 } /* end class Mode */
 

@@ -83,7 +83,6 @@ public class CmdReorder extends Cmd {
     Editor ce = Globals.curEditor();
     LayerManager lm = ce.getLayerManager();
     SelectionManager sm = ce.getSelectionManager();
-    sm.startTrans();
     sm.reorder(function, lm.getActiveLayer());
     sm.endTrans();
     //ce.repairDamage();

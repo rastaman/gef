@@ -74,7 +74,7 @@ public class LayerPageBreaks extends Layer {
   /** Set the size of the page in pixels. */
   public void setPageSize(Dimension d) { _pageSize = d; }
 
-  public Vector getContents() { return null; }
+  public java.util.List getContents() { return null; }
   public Fig presentationFor(Object obj) { return null; }
 
   ////////////////////////////////////////////////////////////////

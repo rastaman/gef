@@ -28,10 +28,11 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.awt.event.*;
+import org.tigris.gef.presentation.Fig;
 
-import org.tigris.gef.presentation.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 /** Abstract superclass for all Mode's that create new
  *  Figs.  This class factors our shared code that would
@@ -56,150 +57,152 @@ import org.tigris.gef.presentation.*;
  */
 
 public abstract class ModeCreate extends FigModifyingModeImpl {
-  ////////////////////////////////////////////////////////////////
-  // static variables
+    ////////////////////////////////////////////////////////////////
+    // static variables
 
-  /** The default size of a Fig if the user simply clicks instead of
-   *  dragging out a size. */
-  protected int _defaultWidth = 32;
-  protected int _defaultHeight = 32;
-
-
-
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-
-  /** Original mouse down event coordinates */
-  protected int anchorX, anchorY;
-
-  /** This holds the Fig to be added to the parent Editor. */
-  protected Fig _newItem;
-
-  ////////////////////////////////////////////////////////////////
-  // constructors
-
-  public ModeCreate(Editor par) { super(par); }
-
-  public ModeCreate() { super(); }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  /** By default all creation modes use CROSSHAIR_CURSOR. */
-  public Cursor getInitialCursor() {
-    return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
-  }
+    /** The default size of a Fig if the user simply clicks instead of
+     *  dragging out a size. */
+    protected int _defaultWidth = 32;
+    protected int _defaultHeight = 32;
 
 
-  ////////////////////////////////////////////////////////////////
-  // event handlers
 
-  private Point snapPt = new Point(0, 0);
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** On mouse down, make a new Fig in memory. */
-  public void mousePressed(MouseEvent me) {
-    if (me.isConsumed()) return;
-    start();
-    synchronized (snapPt) {
-      snapPt.setLocation(me.getX(), me.getY());
-      editor.snap(snapPt);
-      anchorX = snapPt.x;
-      anchorY = snapPt.y;
+    /** Original mouse down event coordinates */
+    protected int anchorX, anchorY;
+
+    /** This holds the Fig to be added to the parent Editor. */
+    protected Fig _newItem;
+
+    ////////////////////////////////////////////////////////////////
+    // constructors
+
+    public ModeCreate(Editor par) {
+        super(par);
     }
-    _newItem = createNewItem(me, anchorX, anchorY);
-    me.consume();
-    setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-  }
 
-  /** On mouse drag, resize the new item as the user moves the
-   *  mouse.  Maybe the Fig createDrag() method should be removed
-   *  and I should call dragHandle(). That would elimiate one method
-   *  from each oif several classes, but dragging during creation is
-   *  not really the same thing as dragging after creation....<p>
-   *
-   *  Note: _newItem has not been added to any Layer yet. So you cannot
-   *  use _newItem.damage(), instead use editor.damaged(_newItem). */
-  public void mouseDragged(MouseEvent me) {
-    if (me.isConsumed()) return;
-    if (_newItem != null) {
-      editor.damaged(_newItem);
-      creationDrag(me.getX(), me.getY());
-      editor.damaged(_newItem);
+    public ModeCreate() {
+        super();
     }
-    editor.scrollToShow(me.getX(), me.getY());
-    me.consume();
-  }
 
-  /** On mouse up, officially add the new item to the parent Editor
-   *  and select it. Then exit this mode. */
-  public void mouseReleased(MouseEvent me) {
-    if (me.isConsumed()) return;
-    if (_newItem != null) {
-      editor.damaged(_newItem);
-      creationDrag(me.getX(), me.getY());
-      editor.add(_newItem);
-      editor.getSelectionManager().select(_newItem);
-      _newItem = null;
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    /** By default all creation modes use CROSSHAIR_CURSOR. */
+    public Cursor getInitialCursor() {
+        return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
     }
-    done();
-    me.consume();
-  }
 
-    public void keyPressed(KeyEvent ke) { 
-        if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            Globals.setSticky(false);
-            done();
-            Globals.nextMode();
-            Globals.curEditor().finishMode();
+
+    ////////////////////////////////////////////////////////////////
+    // event handlers
+
+    private Point snapPt = new Point(0, 0);
+
+    /** On mouse down, make a new Fig in memory. */
+    public void mousePressed(MouseEvent me) {
+        if(me.isConsumed())
+            return;
+        start();
+        synchronized(snapPt) {
+            snapPt.setLocation(me.getX(), me.getY());
+            editor.snap(snapPt);
+            anchorX = snapPt.x;
+            anchorY = snapPt.y;
+        }
+        _newItem = createNewItem(me, anchorX, anchorY);
+        me.consume();
+        setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+    }
+
+    /** On mouse drag, resize the new item as the user moves the
+     *  mouse.  Maybe the Fig createDrag() method should be removed
+     *  and I should call dragHandle(). That would elimiate one method
+     *  from each oif several classes, but dragging during creation is
+     *  not really the same thing as dragging after creation....<p>
+     *
+     *  Note: _newItem has not been added to any Layer yet. So you cannot
+     *  use _newItem.damage(), instead use editor.damageAll(_newItem). */
+    public void mouseDragged(MouseEvent me) {
+        if(me.isConsumed())
+            return;
+        if(_newItem != null) {
+            editor.damageAll();
+            creationDrag(me.getX(), me.getY());
+            editor.damageAll();
+        }
+        editor.scrollToShow(me.getX(), me.getY());
+        me.consume();
+    }
+
+    /** On mouse up, officially add the new item to the parent Editor
+     *  and select it. Then exit this mode. */
+    public void mouseReleased(MouseEvent me) {
+        if(me.isConsumed())
+            return;
+        if(_newItem != null) {
+            editor.damageAll();
+            creationDrag(me.getX(), me.getY());
+            editor.add(_newItem);
+            editor.getSelectionManager().select(_newItem);
+            _newItem = null;
+        }
+        done();
+        me.consume();
+    }
+
+    public void keyPressed(KeyEvent ke) {
+        if(ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            leave();
         }
     }
-    
-  /** Update the new item to reflect the new mouse position. By
-   *  default let the new item set its size, subclasses may
-   *  override. If the user simply clicks instead of dragging then use
-   *  the default size. If the user actually drags out a Fig, then
-   *  use its size as the new default size.
-   *
-   * @see ModeCreateFigLine#creationDrag */
-  protected void creationDrag(int x, int y) {
-    if (_newItem == null) return;
-    int snapX, snapY;
-    synchronized (snapPt) {
-      snapPt.setLocation(x, y);
-      editor.snap(snapPt);
-      snapX = snapPt.x;
-      snapY = snapPt.y;
+
+    /** Update the new item to reflect the new mouse position. By
+     *  default let the new item set its size, subclasses may
+     *  override. If the user simply clicks instead of dragging then use
+     *  the default size. If the user actually drags out a Fig, then
+     *  use its size as the new default size.
+     *
+     * @see ModeCreateFigLine#creationDrag */
+    protected void creationDrag(int x, int y) {
+        if(_newItem == null)
+            return;
+        int snapX, snapY;
+        synchronized(snapPt) {
+            snapPt.setLocation(x, y);
+            editor.snap(snapPt);
+            snapX = snapPt.x;
+            snapY = snapPt.y;
+        }
+        if(anchorX == snapX && anchorY == snapY)
+            ((Fig)_newItem).createDrag(anchorX, anchorY, x + _defaultWidth, y + _defaultHeight, snapX + _defaultWidth, snapY + _defaultHeight);
+        else {
+            ((Fig)_newItem).createDrag(anchorX, anchorY, x, y, snapX, snapY);
+            _defaultWidth = snapX - anchorX;
+            _defaultHeight = snapY - anchorY;
+        }
     }
-    if (anchorX == snapX && anchorY == snapY)
-      ((Fig)_newItem).createDrag(anchorX, anchorY,
-				x + _defaultWidth,
-				y + _defaultHeight,
-				snapX + _defaultWidth,
-				snapY + _defaultHeight);
-    else {
-      ((Fig)_newItem).createDrag(anchorX, anchorY, x, y, snapX, snapY);
-      _defaultWidth = snapX - anchorX;
-      _defaultHeight = snapY - anchorY;
+
+    ////////////////////////////////////////////////////////////////
+    // painting methods
+
+    /** Paint this mode by painting the new item. This is the only
+     *  feedback that the user will get since the new item is not
+     *  officially added to the Editor's document yet. */
+    public void paint(Graphics g) {
+        if(null != _newItem)
+            _newItem.paint(g);
     }
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // painting methods
+    ////////////////////////////////////////////////////////////////
+    // ModeCreate API
 
-  /** Paint this mode by painting the new item. This is the only
-   *  feedback that the user will get since the new item is not
-   *  officially added to the Editor's document yet. */
-  public void paint(Graphics g) {
-    if (null != _newItem) _newItem.paint(g);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // ModeCreate API
-
-  /** Abstact method to construct a new Fig to be added to the Editor.
-   *  Typically, subclasses will make a new instance of some Fig based
-   *  on the given mouse down event and the state of the parent Editor
-   *  (specifically, its default graphical attributes). */
-  public abstract Fig createNewItem(MouseEvent me, int snapX, int snapY);
+    /** Abstact method to construct a new Fig to be added to the Editor.
+     *  Typically, subclasses will make a new instance of some Fig based
+     *  on the given mouse down event and the state of the parent Editor
+     *  (specifically, its default graphical attributes). */
+    public abstract Fig createNewItem(MouseEvent me, int snapX, int snapY);
 } /* end class ModeCreate */
 

@@ -76,7 +76,6 @@ public class CmdInsertPoint extends Cmd {
       newX = (xs[_selectedHandle] + xs[_selectedHandle + 1]) / 2;
       newY = (ys[_selectedHandle] + ys[_selectedHandle + 1]) / 2;
     }
-    f.startTrans();
     f.insertPoint(_selectedHandle, newX, newY);
     f.endTrans();
   }

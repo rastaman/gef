@@ -161,7 +161,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
 	FigPoly p = (FigPoly) _newItem;
 	if (foundPort == _startPort && _npoints >= 4) p.setSelfLoop(true);
 	//_npoints = 0;
-	editor.damaged(p);
+	editor.damageAll();
 	//editor.getSelectionManager().select(p);
 	p._isComplete = true;
 
@@ -193,7 +193,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
 	  fe.setDestFigNode(destFigNode);
 
 	  if (fe != null) editor.getSelectionManager().select(fe);
-	  editor.damaged(fe);
+	  editor.damageAll();
 
           // if the new edge implements the MouseListener interface it has to receive the mouseReleased() event
           if (fe instanceof MouseListener) ((MouseListener) fe).mouseReleased(me);
@@ -208,12 +208,12 @@ public class ModeCreatePolyEdge extends ModeCreate {
       }
     }
     if (!nearLast(x, y)) {
-      editor.damaged(_newItem);
+      editor.damageAll();
       Point snapPt = new Point(x, y);
       editor.snap(snapPt);
       ((FigPoly)_newItem).addPoint(snapPt.x, snapPt.y);
       _npoints++;
-      editor.damaged(_newItem);
+      editor.damageAll();
     }
     _lastX = x; _lastY = y;
     me.consume();
@@ -229,12 +229,12 @@ public class ModeCreatePolyEdge extends ModeCreate {
     if (_npoints == 0) { me.consume(); return; }
     if (_newItem == null) { me.consume(); return; }
     FigPoly p = (FigPoly)_newItem;
-    editor.damaged(_newItem); // startTrans?
+    editor.damageAll(); // startTrans?
     Point snapPt = new Point(x, y);
     editor.snap(snapPt);
     _handle.index = p.getNumPoints() - 1;
     p.moveVertex(_handle, snapPt.x, snapPt.y, true);
-    editor.damaged(_newItem); // endTrans?
+    editor.damageAll(); // endTrans?
     me.consume();
   }
 
@@ -248,7 +248,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
 
   public void done() {
     super.done();
-    if (_newItem != null) editor.damaged(_newItem);
+    if (_newItem != null) editor.damageAll();
     _newItem = null;// use this as the fig for the new FigEdge
     _npoints = 0;
     _sourceFigNode = null;

@@ -31,15 +31,16 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
-import java.io.*;
+import org.tigris.gef.presentation.Fig;
 
 import javax.swing.*;
-
-import java.awt.print.*;
-
-import org.tigris.gef.presentation.*;
+import java.awt.*;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  * Cmd to Print a diagram.  Only works under JDK 1.2 and above.
@@ -48,205 +49,203 @@ import org.tigris.gef.presentation.*;
  */
 public class CmdPrint extends Cmd implements Printable {
 
-  PrinterJob printerJob;
-  PageFormat pageFormat;
+    PrinterJob printerJob;
+    PageFormat pageFormat;
 
-  int     maxPageIndex = 1;
-  boolean fitDiagramToPage = true;
-  boolean isFirstPrintCall = true;
-  double  scale;
-  int     nCol;
+    int maxPageIndex = 1;
+    boolean fitDiagramToPage = true;
+    boolean isFirstPrintCall = true;
+    double scale;
+    int nCol;
 
-  double  pageX, pageY, pageWidth, pageHeight;
+    double pageX, pageY, pageWidth, pageHeight;
 
-  double  diagramX, diagramY, diagramWidth, diagramHeight;
+    double diagramX, diagramY, diagramWidth, diagramHeight;
 
-  public CmdPrint() {
-    super("Print");
-  }
-
-  public CmdPrint(String diagramName) {
-    this();
-    setDiagramName(diagramName);
-  }
-
-  public void setDiagramName(String name) {
-    setArg("diagramName", name);
-  }
-
-  public void setPrintPageNumbers(boolean b) {
-    setArg("printPageNumbers", b ? Boolean.TRUE : Boolean.FALSE);
-  }
-
-  public void doIt() {
-    PrinterJob printerJob = getPrinterJob();
-
-    printerJob.setPrintable(new CmdPrint(),getPageFormat());
-
-    if (printerJob.printDialog()) {
-      try {
-        printerJob.print();
-      } catch (PrinterException pe) {
-        Globals.showStatus("Error got a Printer exception");
-      }
+    public CmdPrint() {
+        super("Print");
     }
 
-    Globals.showStatus("Printing finished");
-  }
-
-  public void undoIt() {
-    System.out.println("Undo does not make sense for CmdPrint");
-  }
-
-  private boolean isFirstPrintCall() {
-    return isFirstPrintCall;
-  }
-
-  private void setFirstPrintCall(boolean b) {
-    isFirstPrintCall = b;
-  }
-
-  private boolean fitDiagramToPage() {
-    return fitDiagramToPage;
-  }
-
-  private void setFitDiagramToPage(boolean b) {
-    fitDiagramToPage = b;
-  }
-  public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) {
-    if (pageIndex >= maxPageIndex) {
-      return NO_SUCH_PAGE;
+    public CmdPrint(String diagramName) {
+        this();
+        setDiagramName(diagramName);
     }
 
-    Editor editor = Globals.curEditor();
-    String diagramName = (String) getArg("diagramName");
-
-    Graphics2D g2d = (Graphics2D)graphics;
-
-    Rectangle drawingArea = null;
-
-    SelectionManager sm = editor.getSelectionManager();
-    Vector selectedFigs = sm.getFigs();
-    Enumeration enum = null;
-
-    if (selectedFigs.size() > 0 ) {
-      enum = selectedFigs.elements();
-    } else {
-      enum = editor.figs();
-      drawingArea = new Rectangle();
-    } // end else if
-
-    while( enum.hasMoreElements() ) {
-      Fig fig = (Fig) enum.nextElement();
-      Rectangle rect = fig.getBounds();
-      if (drawingArea == null) {
-          drawingArea = new Rectangle(rect);
-      }
-      drawingArea.add( rect );
+    public void setDiagramName(String name) {
+        setArg("diagramName", name);
     }
 
-    if (drawingArea == null ||
-        drawingArea.width == 0 || drawingArea.height == 0 ) {
-      return NO_SUCH_PAGE;
+    public void setPrintPageNumbers(boolean b) {
+        setArg("printPageNumbers", b ? Boolean.TRUE : Boolean.FALSE);
     }
 
-    boolean h = editor.getGridHidden();
-    editor.setGridHidden( true );
+    public void doIt() {
+        PrinterJob printerJob = getPrinterJob();
 
-    if (isFirstPrintCall()) {
-      setFirstPrintCall(false);
+        printerJob.setPrintable(new CmdPrint(), getPageFormat());
 
-      pageWidth  = pageFormat.getImageableWidth();
-      pageHeight = pageFormat.getImageableHeight();
+        if(printerJob.printDialog()) {
+            try {
+                printerJob.print();
+            }
+            catch(PrinterException pe) {
+                Globals.showStatus("Error got a Printer exception");
+            }
+        }
 
-      pageX = pageFormat.getImageableX();
-      pageY = pageFormat.getImageableY();
-
-      diagramWidth  = (double)drawingArea.width;
-      diagramHeight = (double)drawingArea.height;
-
-      diagramX = (double)drawingArea.x;
-      diagramY = (double)drawingArea.y;
-
-      scale = Math.min(pageWidth/(double)(drawingArea.width+1),
-                       pageHeight/(double)(drawingArea.height+1));
-      if (scale < 1.0) {
-         promptFitToPage();
-      }
-      if (fitDiagramToPage()) {
-        maxPageIndex = 1;
-      } else {
-        nCol = Math.max((int)Math.ceil(diagramWidth/pageWidth),1);
-        int nRow = Math.max((int)Math.ceil(diagramHeight/pageHeight),1);
-        maxPageIndex = nCol*nRow;
-      }
+        Globals.showStatus("Printing finished");
     }
 
-    if (fitDiagramToPage()) {
-      if (scale < 1.0) {
-        g2d.scale(scale,scale);
-        g2d.translate((pageX/scale)-diagramX+1,(pageY/scale)-diagramY+1);
-      } else {
-        g2d.translate(pageX-diagramX+1,pageY-diagramY+1);
-      }
-    } else {
-        double iCol = pageIndex % nCol;
-        double iRow = pageIndex / nCol;
-        double x = iCol*pageWidth;
-        double y = iRow*pageHeight;
-        g2d.translate(pageX-x+1,pageY-y+1);
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdPrint");
     }
 
-    editor.print( g2d );
-    editor.setGridHidden( h );
-
-    return (PAGE_EXISTS);
-  }
-
-  PrinterJob getPrinterJob() {
-    if (printerJob == null) {
-      printerJob = PrinterJob.getPrinterJob();
+    private boolean isFirstPrintCall() {
+        return isFirstPrintCall;
     }
-    return printerJob;
-  }
 
-  PageFormat getPageFormat() {
-    if (pageFormat == null) {
-      PrinterJob pj = getPrinterJob();
-      if (pj != null) {
-        pageFormat = pj.defaultPage();
-      }
+    private void setFirstPrintCall(boolean b) {
+        isFirstPrintCall = b;
     }
-    return pageFormat;
-  }
 
-  void setPageFormat(PageFormat pf) {
-    pageFormat = pf;
-  }
-
-  public void doPageSetup() {
-    setPageFormat(getPrinterJob().pageDialog(getPageFormat()));
-  }
-
-  private void promptFitToPage() {
-    Object[] options = {"Fit to page",
-                        "Multiple Pages"};
-
-    int n = JOptionPane.showOptionDialog(null,
-              "The diagram exceeds the current page size. Select option?",
-              "Printing Selection",
-              JOptionPane.YES_NO_OPTION,
-              JOptionPane.QUESTION_MESSAGE,
-              null,
-              options,
-              options[0]);
-
-    if (n == JOptionPane.NO_OPTION) {
-      setFitDiagramToPage(false);
-    } else {
-      setFitDiagramToPage(true);
+    private boolean fitDiagramToPage() {
+        return fitDiagramToPage;
     }
-  }
+
+    private void setFitDiagramToPage(boolean b) {
+        fitDiagramToPage = b;
+    }
+
+    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) {
+        if(pageIndex >= maxPageIndex) {
+            return NO_SUCH_PAGE;
+        }
+
+        Editor editor = Globals.curEditor();
+        String diagramName = (String)getArg("diagramName");
+
+        Graphics2D g2d = (Graphics2D)graphics;
+
+        Rectangle drawingArea = null;
+
+        SelectionManager sm = editor.getSelectionManager();
+        Vector selectedFigs = sm.getFigs();
+        Enumeration enum = null;
+
+        if(selectedFigs.size() > 0) {
+            enum = selectedFigs.elements();
+        }
+        else {
+            enum = editor.figs();
+            drawingArea = new Rectangle();
+        } // end else if
+
+        while(enum.hasMoreElements()) {
+            Fig fig = (Fig)enum.nextElement();
+            Rectangle rect = fig.getBounds();
+            if(drawingArea == null) {
+                drawingArea = new Rectangle(rect);
+            }
+            drawingArea.add(rect);
+        }
+
+        if(drawingArea == null || drawingArea.width == 0 || drawingArea.height == 0) {
+            return NO_SUCH_PAGE;
+        }
+
+        boolean h = editor.getGridHidden();
+        editor.setGridHidden(true);
+
+        if(isFirstPrintCall()) {
+            setFirstPrintCall(false);
+
+            pageWidth = pageFormat.getImageableWidth();
+            pageHeight = pageFormat.getImageableHeight();
+
+            pageX = pageFormat.getImageableX();
+            pageY = pageFormat.getImageableY();
+
+            diagramWidth = (double)drawingArea.width;
+            diagramHeight = (double)drawingArea.height;
+
+            diagramX = (double)drawingArea.x;
+            diagramY = (double)drawingArea.y;
+
+            scale = Math.min(pageWidth / (double)(drawingArea.width + 1), pageHeight / (double)(drawingArea.height + 1));
+            if(scale < 1.0) {
+                promptFitToPage();
+            }
+            if(fitDiagramToPage()) {
+                maxPageIndex = 1;
+            }
+            else {
+                nCol = Math.max((int)Math.ceil(diagramWidth / pageWidth), 1);
+                int nRow = Math.max((int)Math.ceil(diagramHeight / pageHeight), 1);
+                maxPageIndex = nCol * nRow;
+            }
+        }
+
+        if(fitDiagramToPage()) {
+            if(scale < 1.0) {
+                g2d.scale(scale, scale);
+                g2d.translate((pageX / scale) - diagramX + 1, (pageY / scale) - diagramY + 1);
+            }
+            else {
+                g2d.translate(pageX - diagramX + 1, pageY - diagramY + 1);
+            }
+        }
+        else {
+            double iCol = pageIndex % nCol;
+            double iRow = pageIndex / nCol;
+            double x = iCol * pageWidth;
+            double y = iRow * pageHeight;
+            g2d.translate(pageX - x + 1, pageY - y + 1);
+        }
+
+        g2d.setClip(drawingArea);
+        editor.print(g2d);
+        editor.setGridHidden(h);
+
+        return (PAGE_EXISTS);
+    }
+
+    PrinterJob getPrinterJob() {
+        if(printerJob == null) {
+            printerJob = PrinterJob.getPrinterJob();
+        }
+        return printerJob;
+    }
+
+    PageFormat getPageFormat() {
+        if(pageFormat == null) {
+            PrinterJob pj = getPrinterJob();
+            if(pj != null) {
+                pageFormat = pj.defaultPage();
+            }
+        }
+        return pageFormat;
+    }
+
+    void setPageFormat(PageFormat pf) {
+        pageFormat = pf;
+    }
+
+    public void doPageSetup() {
+        setPageFormat(getPrinterJob().pageDialog(getPageFormat()));
+    }
+
+    private void promptFitToPage() {
+        Object[] options = {"Fit to page", "Multiple Pages"};
+
+        int n = JOptionPane.showOptionDialog(null, "The diagram exceeds the current page size. Select option?", "Printing Selection", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+        if(n == JOptionPane.NO_OPTION) {
+            setFitDiagramToPage(false);
+        }
+        else {
+            setFitDiagramToPage(true);
+        }
+    }
 
 } /* end class CmdPrint */
 

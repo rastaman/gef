@@ -31,69 +31,74 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.util.*;
+import org.tigris.gef.presentation.Fig;
 
-import org.tigris.gef.presentation.*;
+import java.util.List;
 
 /** Cmd to select the next (or previous) Fig in the
  *  editor's current view.  This is very convienent for moving among
  *  lots of small Figs.  It also provides a simple example
  *  of an Cmd that is bound to a key.
  *
- * @see JGraph#initKeys() */
+ * @see org.tigris.gef.graph.presentation.JGraph#initKeys() */
 
 public class CmdSelectNext extends Cmd {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  public static final String DIR = "Direction";
-  public static final String DIR_NEXT = "Next";
-  public static final String DIR_PREV = "Previous";
+    public static final String DIR = "Direction";
+    public static final String DIR_NEXT = "Next";
+    public static final String DIR_PREV = "Previous";
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public CmdSelectNext() { this(true); }
-  public CmdSelectNext(boolean next) {
-    this(next ? DIR_NEXT : DIR_PREV);
-  }
-  public CmdSelectNext(String d) {
-    super("Select" + d);
-    setArg(DIR, d);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // Cmd API
-
-  public void doIt() {
-    Selection curSel;
-    Fig newFig = null;
-    int offset = 1;
-    String dir = (String) getArg(DIR);
-    if (DIR_PREV.equals(dir)) offset = -1;
-    Editor ce = Globals.curEditor();
-    SelectionManager sm = ce.getSelectionManager();
-    Vector diagramContents = ce.getLayerManager().getContents();
-    int diagramSize = diagramContents.size();
-    int newIndex = diagramSize + 1;
-
-    if (sm.size() == 0) newIndex = 0;
-    else if (sm.size() == 1) {
-      Fig curFig;
-      curSel = (Selection) sm.selections().firstElement();
-      curFig = (Fig) curSel.getContent();
-      int curIndex = diagramContents.indexOf(curFig);
-      newIndex = (curIndex + offset + diagramSize) % diagramSize;
+    public CmdSelectNext() {
+        this(true);
     }
-    if (diagramSize > newIndex)
-      newFig = (Fig) diagramContents.elementAt(newIndex);
-    if (newFig != null) ce.getSelectionManager().select(newFig);
-  }
 
-  public void undoIt() {
-    System.out.println("Undo does not make sense for CmdSelectNext");
-  }
-} /* end class CmdSelectNext */
+    public CmdSelectNext(boolean next) {
+        this(next ? DIR_NEXT : DIR_PREV);
+    }
 
+    public CmdSelectNext(String d) {
+        super("Select" + d);
+        setArg(DIR, d);
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // Cmd API
+
+    public void doIt() {
+        Selection curSel;
+        Fig newFig = null;
+        int offset = 1;
+        String dir = (String)getArg(DIR);
+        if(DIR_PREV.equals(dir))
+            offset = -1;
+        Editor ce = Globals.curEditor();
+        SelectionManager sm = ce.getSelectionManager();
+        List diagramContents = ce.getLayerManager().getContents();
+        int diagramSize = diagramContents.size();
+        int newIndex = diagramSize + 1;
+
+        if(sm.size() == 0)
+            newIndex = 0;
+        else if(sm.size() == 1) {
+            Fig curFig;
+            curSel = (Selection)sm.selections().firstElement();
+            curFig = curSel.getContent();
+            int curIndex = diagramContents.indexOf(curFig);
+            newIndex = (curIndex + offset + diagramSize) % diagramSize;
+        }
+        if(diagramSize > newIndex)
+            newFig = (Fig)diagramContents.get(newIndex);
+        if(newFig != null)
+            ce.getSelectionManager().select(newFig);
+    }
+
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdSelectNext");
+    }
+}

@@ -31,10 +31,13 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigPainter;
 
-import org.tigris.gef.presentation.*;
+import java.awt.*;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.ArrayList;
 
 /** This class implements a kind of Layer that contains other
  *  Layers. Layer's can be nested in an is-part-of tree. That tree can
@@ -42,196 +45,298 @@ import org.tigris.gef.presentation.*;
  *  clicked on, find a layer by name, save the contents to a file,
  *  etc. */
 
-public class LayerManager implements java.io.Serializable  {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+public class LayerManager implements java.io.Serializable {
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The Layer's contained within this LayerManager. */
-  protected Vector _layers = new Vector();
+    /** The Layer's contained within this LayerManager. */
+    protected List _layers = new ArrayList();
 
-  /** In most editors one Layer is the active layer and all mouse
-   *  clicks go to the contents of that layer.  For now I assume this,
-   *  but I would like to avoid this assumption in the future. */
-  protected Layer _activeLayer;
+    /** In most editors one Layer is the active layer and all mouse
+     *  clicks go to the contents of that layer.  For now I assume this,
+     *  but I would like to avoid this assumption in the future. */
+    protected Layer _activeLayer;
 
-  public Editor _editor = null;
+    /**
+     * Should only the active layer be repainted?
+     */
+    private boolean _paintActiveOnly = false;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors and related methods
+    /**
+     * Should only the known layers be repainted?
+     */
+    private boolean _paintLayers = true;
 
-  /** Construct a new LayerManager with no sublayers. */
-  public LayerManager(Editor editor) { _editor = editor; }
+    public Editor _editor = null;
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // constructors and related methods
 
-  /** Add a sublayer to this layer. */
-  public void addLayer(Layer lay) {
-    if (findLayerNamed(lay.getName()) == null) {
-      _layers.addElement(lay);
-      lay.addEditor(_editor);
-      setActiveLayer(lay);
+    /** Construct a new LayerManager with no sublayers. */
+    public LayerManager(Editor editor) {
+        _editor = editor;
     }
-  }
 
-  public void removeAllLayers() {
-    _layers.removeAllElements();
-    _activeLayer = null;
-  }
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public void replaceActiveLayer(Layer lay) {
-    _activeLayer.removeEditor(_editor);
-    int oldActiveIndex = _layers.indexOf(_activeLayer);
-    _layers.setElementAt(lay, oldActiveIndex);
-    lay.addEditor(_editor);
-    setActiveLayer(lay);
-  }
-
-      
-  /** Remove a sublayer to this layer. */
-  public void removeLayer(Layer lay) {
-    _layers.removeElement(lay);
-    lay.removeEditor(_editor);
-    if (_activeLayer == lay) {
-      if (_layers.size() >= 1) _activeLayer = (Layer) _layers.elementAt(0);
-      else _activeLayer = null;
+    /** Add a sublayer to this layer. */
+    public void addLayer(Layer lay, boolean makeActive) {
+        if(findLayerNamed(lay.getName()) == null) {
+            _editor.getModeManager().leaveAll();
+            _layers.add(lay);
+            lay.addEditor(_editor);
+            if(makeActive) {
+                setActiveLayer(lay);
+            }
+        }
     }
-  }
-
-  /** Find a layer with the given name somewhere in the layer tree. */
-  public Layer findLayerNamed(String aName) {
-    Enumeration layers = _layers.elements();
-    while (layers.hasMoreElements()) {
-      Layer curLayer = (Layer) layers.nextElement();
-      Layer res = curLayer.findLayerNamed(aName);
-      if (res != null) return res;
+    
+    public void addLayer(Layer lay) {
+        addLayer(lay, true);
     }
-    return null;
-  }
 
-  /** Make one of my layers the active one. */
-  public void setActiveLayer(Layer lay) {
-    if (_layers.contains(lay)) _activeLayer = lay;
-    else System.out.println("That layer is not one of my layers");
-  }
-
-  /** Reply which layer is the active one. In case LayerManager's
-   *  are nested, this works recursively. */
-  public Layer getActiveLayer() { return _activeLayer; }
-
-  /** When an editor or some tool wants to look at all the
-   *  Figs that are contained in this layer, reply the
-   *  contents of my active layer. Maybe this should really reply _all_
-   *  the contents of all layers. */
-  public Vector getContents() {
-    return (_activeLayer == null) ?  null : _activeLayer.getContents();
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // painting methods
-
-  /** Paint the contents of this LayerManager by painting all layers. */
-  public void paint(Graphics g) { // kept for backwards compatibility
-      paint(g,null);
-  }
-
-  /** Paint the contents of this LayerManager using a given painter by painting
-   *  all layers. */   
-     public void paint(Graphics g, FigPainter painter) {
-       Enumeration layers = _layers.elements();
-       while (layers.hasMoreElements())
-	   ((Layer) layers.nextElement()).paint(g, painter);
-     }
-
-  ////////////////////////////////////////////////////////////////
-  // Layer API
-
-  /** When the user tries to add a new Fig to a
-   *  LayerManager, pass that addition along to my active layer. */
-  public void add(Fig f) {
-    if (_activeLayer != null) _activeLayer.add(f);
-  }
-
-  /** When the user tries to remove a new Fig from a
-   *  LayerManager, pass that removal along to my active layer. */
-  public void remove(Fig f) {
-    if (_activeLayer != null) _activeLayer.remove(f);
-  }
-
-  /** See comments above, this message is passed to my active layer. */
-  public void removeAll() {
-    if (_activeLayer != null) _activeLayer.removeAll();
-  }
-
-  /** See comments above, this message is passed to my active layer. */
-  public Enumeration elements() {
-    return (_activeLayer == null) ? null : _activeLayer.elements();
-  }
-
-  /** See comments above, this message is passed to my active layer. */
-  public Fig hit(Rectangle r) {
-    return (_activeLayer == null) ? null : _activeLayer.hit(r);
-  }
-
-  /** Try to find a FigNode instance that presents the given
-   *  Net-level object. */
-  public Fig presentationFor(Object obj) {
-    Fig f = null;
-    Enumeration lays = _layers.elements();
-    while (lays.hasMoreElements()) {
-        Layer sub = (Layer) lays.nextElement();
-        f = sub.presentationFor(obj);
-        if (f != null) return f;
+    public void removeAllLayers() {
+        _layers.clear();
+        _activeLayer = null;
     }
-    return null;
-  }
 
-  /** See comments above, this message is passed to my active layer. */
-  public void sendToBack(Fig f) {
-    if (_activeLayer != null) _activeLayer.sendToBack(f);
-  }
+    public void replaceLayer(Layer oldLayer, Layer newLayer) {
+        _editor.getModeManager().leaveAll();
 
-  /** See comments above, this message is passed to my active layer. */
-  public void bringForward(Fig f) {
-    if (_activeLayer != null) _activeLayer.bringForward(f);
-  }
+        oldLayer.removeEditor(_editor);
+        int oldIndex = _layers.indexOf(oldLayer);
 
-  /** See comments above, this message is passed to my active layer. */
-  public void sendBackward(Fig f) {
-    if (_activeLayer != null) _activeLayer.sendBackward(f);
-  }
+        _layers.set(oldIndex, newLayer);
+        newLayer.addEditor(_editor);
+        if(_activeLayer == oldLayer)
+            setActiveLayer(newLayer);
+    }
 
-  /** See comments above, this message is passed to my active layer. */
-  public void bringToFront(Fig f) {
-    if (_activeLayer != null) _activeLayer.bringToFront(f);
-  }
+    public void replaceActiveLayer(Layer layer) {
+        if(_activeLayer == null) {
+            addLayer(layer, true);
+        }
+        else {
+            replaceLayer(_activeLayer, layer);
+        }
+    }
 
-  /** See comments above, this message is passed to my active layer. */
-  public void reorder(Fig f, int function) {
-    if (_activeLayer != null) _activeLayer.reorder(f, function);
-  }
 
-  public void setEditor(Editor ed) {
-    _editor = ed;
-    Enumeration lays = _layers.elements();
-    while (lays.hasMoreElements()) ((Layer) lays.nextElement()).addEditor(ed);
-  }
+    /** Remove a sublayer to this layer. */
+    public void removeLayer(Layer lay) {
+        _layers.remove(lay);
+        lay.removeEditor(_editor);
+        if(_activeLayer == lay) {
+            if(_layers.size() >= 1)
+                _activeLayer = (Layer)_layers.get(0);
+            else
+                _activeLayer = null;
+        }
+    }
 
-  public Editor getEditor() { return _editor; }
+    /** Find a layer with the given name somewhere in the layer tree. */
+    public Layer findLayerNamed(String aName) {
+        int count = _layers.size();
+        for(int layerIndex = 0; layerIndex < count; ++layerIndex) {
+            Layer curLayer = (Layer)_layers.get(layerIndex);
+            if(aName.equals(curLayer.getName()))
+                return curLayer;
+        }
+        return null;
+    }
 
-  public void preSave() {
-    for (int i = 0; i < _layers.size(); i++)
-      ((Layer) _layers.elementAt(i)).preSave();
-  }
+    /** Make one of my layers the active one. */
+    public void setActiveLayer(Layer lay) {
+        if(_activeLayer != null && _activeLayer.isAlwaysOnTop())
+            return;
 
-  public void postSave() {
-    for (int i = 0; i < _layers.size(); i++)
-      ((Layer) _layers.elementAt(i)).postSave();
-  }
+        if(_layers.contains(lay))
+            _activeLayer = lay;
+        else
+            System.out.println("That layer is not one of my layers");
+    }
 
-  public void postLoad() {
-    for (int i = 0; i < _layers.size(); i++)
-      ((Layer) _layers.elementAt(i)).postLoad();
-  }
+    /** Reply which layer is the active one. In case LayerManager's
+     *  are nested, this works recursively. */
+    public Layer getActiveLayer() {
+        return _activeLayer;
+    }
 
-} /* end class LayerManager */
+    /** When an editor or some tool wants to look at all the
+     *  Figs that are contained in this layer, reply the
+     *  contents of my active layer. Maybe this should really reply _all_
+     *  the contents of all layers. */
+    public List getContents() {
+        return (_activeLayer == null) ?  null : _activeLayer.getContents();
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // painting methods
+
+    /** Paint the contents of this LayerManager by painting all layers. */
+    public void paint(Graphics g) { // kept for backwards compatibility
+        paint(g, null);
+    }
+
+    /** Paint the contents of this LayerManager using a given painter by painting
+     *  all layers. */
+    public void paint(Graphics g, FigPainter painter) {
+        if(!_paintLayers)
+            return;
+        
+        if(_paintActiveOnly)
+            _activeLayer.paint(g, painter);
+        else {
+            Layer currentActiveLayer = _activeLayer;
+            boolean alwaysOnTopState = currentActiveLayer.isAlwaysOnTop();
+            currentActiveLayer.setAlwaysOnTop(false);
+            int count = _layers.size();
+            for(int layerIndex = 0; layerIndex < count; ++layerIndex) {
+                Layer tmpLayer = (Layer)_layers.get(layerIndex);
+                setActiveLayer(tmpLayer);
+                tmpLayer.paint(g, painter);
+            }
+            setActiveLayer(currentActiveLayer);
+            currentActiveLayer.setAlwaysOnTop(alwaysOnTopState);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // Layer API
+
+    /** When the user tries to add a new Fig to a
+     *  LayerManager, pass that addition along to my active layer. */
+    public void add(Fig f) {
+        if(_activeLayer != null)
+            _activeLayer.add(f);
+    }
+
+    /** When the user tries to remove a new Fig from a
+     *  LayerManager, pass that removal along to my active layer. */
+    public void remove(Fig f) {
+        if(_activeLayer != null)
+            _activeLayer.remove(f);
+    }
+
+    /** See comments above, this message is passed to my active layer. */
+    public void removeAll() {
+        if(_activeLayer != null)
+            _activeLayer.removeAll();
+    }
+
+    /** See comments above, this message is passed to my active layer. */
+    public Enumeration elements() {
+        return (_activeLayer == null) ? null : _activeLayer.elements();
+    }
+
+    /** See comments above, this message is passed to my active layer. */
+    public Fig hit(Rectangle r) {
+        return (_activeLayer == null) ? null : _activeLayer.hit(r);
+    }
+
+    /** Try to find a FigNode instance that presents the given
+     *  Net-level object. */
+    public Fig presentationFor(Object obj) {
+        Fig f = null;
+        int count = _layers.size();
+        for(int layerIndex = 0; layerIndex < count; ++layerIndex) {
+            Layer sub = (Layer)_layers.get(layerIndex);
+            f = sub.presentationFor(obj);
+            if(f != null)
+                return f;
+        }
+        return null;
+    }
+
+    /** See comments above, this message is passed to my active layer. */
+    public void sendToBack(Fig f) {
+        if(_activeLayer != null)
+            _activeLayer.sendToBack(f);
+    }
+
+    /** See comments above, this message is passed to my active layer. */
+    public void bringForward(Fig f) {
+        if(_activeLayer != null)
+            _activeLayer.bringForward(f);
+    }
+
+    /** See comments above, this message is passed to my active layer. */
+    public void sendBackward(Fig f) {
+        if(_activeLayer != null)
+            _activeLayer.sendBackward(f);
+    }
+
+    /** See comments above, this message is passed to my active layer. */
+    public void bringToFront(Fig f) {
+        if(_activeLayer != null)
+            _activeLayer.bringToFront(f);
+    }
+
+    /** See comments above, this message is passed to my active layer. */
+    public void reorder(Fig f, int function) {
+        if(_activeLayer != null)
+            _activeLayer.reorder(f, function);
+    }
+
+    public void setEditor(Editor ed) {
+        _editor = ed;
+        int layerCount = _layers.size();
+        for(int layerIndex = 0; layerIndex < layerCount; ++layerIndex) {
+            Layer layer = (Layer)_layers.get(layerIndex);
+            layer.addEditor(ed);
+        }
+    }
+
+    public Editor getEditor() {
+        return _editor;
+    }
+
+    public void preSave() {
+        int layerCount = _layers.size();
+        for(int layerIndex = 0; layerIndex < layerCount; ++layerIndex) {
+            Layer layer = (Layer)_layers.get(layerIndex);
+            layer.preSave();
+        }
+    }
+
+    public void postSave() {
+        int layerCount = _layers.size();
+        for(int layerIndex = 0; layerIndex < layerCount; ++layerIndex) {
+            Layer layer = (Layer)_layers.get(layerIndex);
+            layer.postSave();
+        }
+    }
+
+    public void postLoad() {
+        int layerCount = _layers.size();
+        for(int layerIndex = 0; layerIndex < layerCount; ++layerIndex) {
+            Layer layer = (Layer)_layers.get(layerIndex);
+            layer.postLoad();
+        }
+    }
+
+    public void setPaintActiveOnly(boolean activeOnly) {
+        _paintActiveOnly = activeOnly;
+    }
+
+    public boolean getPaintActiveOnly() {
+        return _paintActiveOnly;
+    }
+
+    public void setPaintLayers(boolean paintLayers) {
+        _paintLayers = paintLayers;
+    }
+
+    public boolean getPaintLayers() {
+        return _paintLayers;
+    }
+
+    public void setScale(double scale) {
+        int layerCount = _layers.size();
+        for(int layerIndex = 0; layerIndex < layerCount; ++layerIndex) {
+            Layer layer = (Layer)_layers.get(layerIndex);
+            layer.setScale(scale);
+        }
+    }
+}

@@ -72,14 +72,14 @@ public class ModeCreateFigSpline extends ModeCreateFigPoly {
     int x = me.getX(), y = me.getY();
     if (_npoints > 2 && nearLast(x, y)) {
       FigSpline p = (FigSpline) _newItem;
-      editor.damaged(_newItem);
+      editor.damageAll();
       _handle.index = p.getNumPoints() - 1;
       p.moveVertex(_handle, _startX, _startY, true);
 
       p.removePoint(_handle.index);
 
       _npoints = 0;
-      editor.damaged(p);
+      editor.damageAll();
       editor.add(p);
       editor.getSelectionManager().select(p);
       _newItem = null;

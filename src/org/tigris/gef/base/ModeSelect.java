@@ -20,21 +20,24 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
 // File: ModeSelect.java
 // Classes: ModeSelect
 // Original Author: ics125 spring 1996
 // $Id$
-
 package org.tigris.gef.base;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 
-import org.tigris.gef.presentation.*;
+import java.util.Enumeration;
+import java.util.Vector;
 
-/** This class implements a Mode that interperts user input as
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.Handle;
+
+/** This class implements a Mode that interprets user input as
  *  selecting one or more Figs. Clicking on a Fig will select
  *  it.  Shift-clicking will toggle whether it is selected. Dragging in
  *  open space will draw a selection rectangle.  Dragging on a Fig will
@@ -55,173 +58,222 @@ import org.tigris.gef.presentation.*;
  * @see ModeModify
  * @see Fig
  * @see Editor */
-
 public class ModeSelect extends FigModifyingModeImpl {
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    /** If the user drags a selection rectangle, this is the first corner. */
+    private Point _selectAnchor = new Point(0, 0);
 
-  /** If the user drags a selection rectangle, this is the first corner. */
-  private Point	_selectAnchor  = new Point(0, 0);
+    /** This is the seclection rectangle. */
+    private Rectangle _selectRect = new Rectangle(0, 0, 0, 0);
 
-  /** This is the seclection rectangle. */
-  private Rectangle _selectRect = new Rectangle(0,0,0,0);
+    /** True when the selection rectangle should be painted. */
+    private boolean _showSelectRect = false;
 
-  /** True when the selection rectangle should be paintn. */
-  private boolean _showSelectRect = false;
+    /** True when the user holds the shift key to toggle selections. */
+    private boolean _toggleSelection = false;
 
-  /** True when the user holds the shift key to toggle selections. */
-  private boolean _toggleSelection = false;
+    ////////////////////////////////////////////////////////////////
+    // constructors and related methods
 
-  ////////////////////////////////////////////////////////////////
-  // constructors and related methods
-
-  /** Construct a new ModeSelect with the given parent. */
-  public ModeSelect(Editor par) { super(par); }
-
-  /** Construct a new ModeSelect instance. Its parent must be set
-   *  before this instance can be used.  */
-  public ModeSelect() { }
-
-  /** Always false because I never want to get out of selection mode. */
-  public boolean canExit() { return false; }
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-  /** Handle mouse down events by preparing for a drag. If the mouse
-   *  down event happens on a handle or an already selected object, and
-   *  the shift key is not down, then go to ModeModify. If the mouse
-   *  down event happens on a port, to to ModeCreateEdge.   */
-  public void mousePressed(MouseEvent me) {
-    if (me.isConsumed()) {
-      //System.out.println("ModeSelect consumed");
-      return;
-    }
-    if (me.getModifiers() == InputEvent.BUTTON3_MASK) { return; }
-    if (me.isControlDown()) { gotoBroomMode(me); return; }
-    if (me.isAltDown()) return;
-    int x = me.getX(), y = me.getY();
-
-    _selectAnchor = new Point(x, y);
-    _selectRect.setBounds(x, y, 0, 0);
-    _toggleSelection = me.isShiftDown();
-    SelectionManager sm = editor.getSelectionManager();
-    Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
-
-    /* Check if multiple things are selected and user clicked one of them. */
-    Fig underMouse = editor.hit(_selectAnchor);
-    if (underMouse == null && !sm.hit(hitRect)) return;
-
-    Handle h = new Handle(-1);
-    sm.hitHandle(new Rectangle(x-4, y-4, 8, 8), h);
-    if (h.index >= 0) {
-      gotoModifyMode(me);
-      me.consume();
-      return;
+    /** Construct a new ModeSelect with the given parent. */
+    public ModeSelect(Editor par) {
+        super(par);
     }
 
-    if (underMouse != null) {
-      if (_toggleSelection) sm.toggle(underMouse);
-      else if (!sm.containsFig(underMouse)) sm.select(underMouse);
+    /** Construct a new ModeSelect instance. Its parent must be set
+     *  before this instance can be used.  */
+    public ModeSelect() {
     }
-    if (sm.hit(hitRect)) {
-      //System.out.println("gotoModifyMode");
-      gotoModifyMode(me);
+
+    /** Always false because I never want to get out of selection mode. */
+    public boolean canExit() {
+        return false;
     }
-    me.consume();
-  }
 
-  /** On mouse dragging, stretch the selection rectangle. */
-  public void mouseDragged(MouseEvent me) {
-    if (me.getModifiers() == InputEvent.BUTTON3_MASK) { return; }
-    if (me.isConsumed()) return;
-    if (me.isAltDown()) return;
-    int x = me.getX(), y = me.getY();
-    _showSelectRect = true;
-    int bound_x = Math.min(_selectAnchor.x, x);
-    int bound_y = Math.min(_selectAnchor.y, y);
-    int bound_w = Math.max(_selectAnchor.x, x) - bound_x;
-    int bound_h = Math.max(_selectAnchor.y, y) - bound_y;
+    public static boolean isMacintoshUser = false;
 
-    editor.damaged(_selectRect);
-    _selectRect.setBounds(bound_x, bound_y, bound_w, bound_h);
-    editor.damaged(_selectRect);
-    editor.scrollToShow(x, y);
+    ////////////////////////////////////////////////////////////////
+    // event handlers
 
-    me.consume();
-  }
+    /** Handle mouse down events by preparing for a drag. If the mouse
+     *  down event happens on a handle or an already selected object, and
+     *  the shift key is not down, then go to ModeModify. If the mouse
+     *  down event happens on a port, to to ModeCreateEdge.   */
+    public void mousePressed(MouseEvent me) {
+        if(me.isConsumed()) {
+            //System.out.println("ModeSelect consumed");
+            return;
+        }
 
-  /** On mouse up, select or toggle the selection of items under the
-   *  mouse or in the selection rectangle. */
-  public void mouseReleased(MouseEvent me) {
-    if (me.isConsumed()) return;
-    int x = me.getX(), y = me.getY();
-    _showSelectRect = false;
-    Vector selectList = new Vector();
+        if(me.getModifiers() == InputEvent.BUTTON3_MASK) {
+            _selectAnchor = new Point(me.getX(), me.getY());
+            System.out.println("ModeSelect: from awt component " + Globals.curEditor().getJComponent());
+            return;
+        }
 
-    Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
-    Enumeration figs = editor.figs();
-    while (figs.hasMoreElements()) {
-      Fig f = (Fig) figs.nextElement();
-      if ((!_toggleSelection && _selectRect.isEmpty() && f.hit(hitRect)) ||
-	  (!_selectRect.isEmpty() && f.within(_selectRect))) {
-	selectList.addElement(f);
-      }
+        if(me.isControlDown() && !isMacintoshUser) {    // macintosh users use CTRL to activate right mouse key, so they will not get the automatic broom
+            gotoBroomMode(me);
+            return;
+        }
+
+        if(me.isAltDown()) {
+            return;
+        }
+
+        int x = me.getX();
+        int y = me.getY();
+        _selectAnchor = new Point(x, y);
+        _selectRect.setBounds(x, y, 0, 0);
+        _toggleSelection = me.isShiftDown();
+        SelectionManager sm = editor.getSelectionManager();
+        Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
+
+        /* Check if multiple things are selected and user clicked one of them. */
+        Fig underMouse = editor.hit(_selectAnchor);
+        Rectangle smallHitRect = new Rectangle(x - 1, y - 1, 3, 3);
+        if(underMouse instanceof FigGroup) {
+            underMouse = ((FigGroup)underMouse).deepSelect(smallHitRect);
+        }
+
+        if(underMouse == null && !sm.hit(hitRect)) {
+            return;
+        }
+
+        Handle h = new Handle(-1);
+        sm.hitHandle(new Rectangle(x - 4, y - 4, 8, 8), h);
+        if(h.index >= 0) {
+            gotoModifyMode(me);
+            me.consume();
+            return;
+        }
+
+        if(underMouse != null) {
+            if(_toggleSelection) {
+                sm.toggle(underMouse);
+            }
+            else if(!sm.containsFig(underMouse)) {
+                sm.select(underMouse);
+            }
+        }
+
+        if(sm.hit(hitRect)) {
+            //System.out.println("gotoModifyMode");
+            gotoModifyMode(me);
+        }
+
+        me.consume();
     }
-    if (!_selectRect.isEmpty() && selectList.isEmpty()) {
-       figs = editor.figs();
-       while (figs.hasMoreElements()) {
-	 Fig f = (Fig) figs.nextElement();
-	 if (f.intersects(_selectRect)) selectList.addElement(f);
-       }
+
+    /** On mouse dragging, stretch the selection rectangle. */
+    public void mouseDragged(MouseEvent me) {
+        if(me.isConsumed()) {
+            return;
+        }
+
+        if(me.isAltDown()) {
+            return;
+        }
+
+        int x = me.getX();
+        int y = me.getY();
+        _showSelectRect = true;
+        int boundX = Math.min(_selectAnchor.x, x);
+        int boundY = Math.min(_selectAnchor.y, y);
+        int boundW = Math.max(_selectAnchor.x, x) - boundX;
+        int boundH = Math.max(_selectAnchor.y, y) - boundY;
+        double scale = editor.getScale();
+        editor.damaged((int)((double)_selectRect.x * scale) - 1, (int)((double)_selectRect.y * scale) - 1, (int)(((double)_selectRect.width + 1) * scale + 2), (int)(((double)_selectRect.height + 1) * scale) + 2);
+        _selectRect.setBounds(boundX, boundY, boundW, boundH);
+        editor.damaged((int)((double)_selectRect.x * scale) - 1, (int)((double)_selectRect.y * scale) - 1, (int)(((double)_selectRect.width + 1) * scale + 2), (int)(((double)_selectRect.height + 1) * scale) + 2);
+        editor.scrollToShow(x, y);
+        me.consume();
     }
-    if (_toggleSelection) editor.getSelectionManager().toggle(selectList);
-    else editor.getSelectionManager().select(selectList);
 
-    _selectRect.grow(1,1); /* make sure it is not empty for redraw */
-    editor.damaged(_selectRect);
-    if (me.getModifiers() == InputEvent.BUTTON3_MASK) return;
-    me.consume();
-  }
+    /** On mouse up, select or toggle the selection of items under the
+     *  mouse or in the selection rectangle. */
+    public void mouseReleased(MouseEvent me) {
+        if(me.isConsumed()) {
+            return;
+        }
 
+        int x = me.getX();
+        int y = me.getY();
+        _showSelectRect = false;
+        Vector selectList = new Vector();
+        Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
+        Enumeration figs = editor.figs();
+        while(figs.hasMoreElements()) {
+            Fig f = (Fig)figs.nextElement();
+            if((!_toggleSelection && _selectRect.isEmpty() && f.hit(hitRect)) || (!_selectRect.isEmpty() && f.within(_selectRect))) {
+                selectList.addElement(f);
+            }
+        }
 
-  ////////////////////////////////////////////////////////////////
-  // user feedback methods
+        if(!_selectRect.isEmpty() && selectList.isEmpty()) {
+            figs = editor.figs();
+            while(figs.hasMoreElements()) {
+                Fig f = (Fig)figs.nextElement();
+                if(f.intersects(_selectRect)) {
+                    selectList.addElement(f);
+                }
+            }
+        }
 
-  /** Reply a string of instructions that should be shown in the
-   *  statusbar when this mode starts. */
-  public String instructions() { return "  "; }
+        if(_toggleSelection) {
+            editor.getSelectionManager().toggle(selectList);
+        }
+        else {
+            editor.getSelectionManager().select(selectList);
+        }
 
-  ////////////////////////////////////////////////////////////////
-  // painting methods
+        _selectRect.grow(1, 1);    /* make sure it is not empty for redraw */
+        editor.scaleRect(_selectRect);
+        editor.damaged(_selectRect);
+        if(me.getModifiers() == InputEvent.BUTTON3_MASK) {
+            return;
+        }
 
-  /** Paint this mode by painting the selection rectangle if appropriate. */
-  public void paint(Graphics g) {
-    if (_showSelectRect) {
-      Color selectRectColor = (Color) Globals.getPrefs().getRubberbandColor();
-      g.setColor(selectRectColor);
-      g.drawRect(_selectRect.x, _selectRect.y,
-		 _selectRect.width, _selectRect.height);
+        me.consume();
     }
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // methods related to transitions among modes
+    ////////////////////////////////////////////////////////////////
+    // user feedback methods
 
-  /** Set the Editor's Mode to ModeModify.  Needs-More-Work: This
-   *  should not be in ModeSelect, I wanted to move it to ModeModify,
-   *  but it is too tighly integrated with ModeSelect. */
-  protected void gotoModifyMode(MouseEvent me) {
-    FigModifyingModeImpl nextMode = new ModeModify(editor);
-    editor.mode(nextMode);
-    nextMode.mousePressed(me);
-  }
+    /** Reply a string of instructions that should be shown in the
+     *  statusbar when this mode starts. */
+    public String instructions() {
+        return "  ";
+    }
 
-  protected void gotoBroomMode(MouseEvent me) {
-    FigModifyingModeImpl nextMode = new ModeBroom(editor);
-    editor.mode(nextMode);
-    nextMode.mousePressed(me);
-  }
-} /* end class ModeSelect */
+    ////////////////////////////////////////////////////////////////
+    // painting methods
 
+    /** Paint this mode by painting the selection rectangle if appropriate. */
+    public void paint(Graphics g) {
+        if(_showSelectRect) {
+            Color selectRectColor = Globals.getPrefs().getRubberbandColor();
+            g.setColor(selectRectColor);
+            g.drawRect(_selectRect.x, _selectRect.y, _selectRect.width, _selectRect.height);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // methods related to transitions among modes
+
+    /** Set the Editor's Mode to ModeModify.  Needs-More-Work: This
+     *  should not be in ModeSelect, I wanted to move it to ModeModify,
+     *  but it is too tighly integrated with ModeSelect. */
+    protected void gotoModifyMode(MouseEvent me) {
+        FigModifyingModeImpl nextMode = new ModeModify(editor);
+        editor.mode(nextMode);
+        nextMode.mousePressed(me);
+    }
+
+    protected void gotoBroomMode(MouseEvent me) {
+        FigModifyingModeImpl nextMode = new ModeBroom(editor);
+        editor.mode(nextMode);
+        nextMode.mousePressed(me);
+    }
+}    /* end class ModeSelect */

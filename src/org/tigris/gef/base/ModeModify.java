@@ -20,19 +20,24 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
 // File: ModeModify.java
 // Classes: ModeModify
 // Original Author: ics125 spring 1996
 // $Id$
-
 package org.tigris.gef.base;
 
-import java.awt.event.*;
 import java.awt.*;
-import java.util.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
-import org.tigris.gef.presentation.*;
+import java.util.List;
+
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.Handle;
+
+import javax.swing.*;
 
 /** A Mode to process events from the Editor when the user is
  *  modifying a Fig.  Right now users can drag one or more
@@ -42,355 +47,342 @@ import org.tigris.gef.presentation.*;
  * @see Fig
  * @see Selection
  */
-
 public class ModeModify extends FigModifyingModeImpl {
-  ////////////////////////////////////////////////////////////////
-  // constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  /** Minimum amoun that the user must move the mouse to indicate that he
-   *  really wants to modify something. */
-  public static final int MIN_DELTA = 4;
+    /** Minimum amount that the user must move the mouse to indicate that she
+     *  really wants to modify something. */
+    private static final int MIN_DELTA = 4;
+    private double degrees45 = Math.PI / 4;
 
-  /** When _constraint == NO_CONSTRAINT, user can move selections any way*/
-  public static final int NO_CONSTRAINT = 0;
+    private static final int SCROLL_INCREMENT = 10;
 
-  /** When _constraint == HORIZONTAL_CONSTRAINT, the user can only
-   *  move selections left and right. */
-  public static final int HORIZONTAL_CONSTRAINT = 1;
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** When _constraint == VERTICAL_CONSTRAINT, the user can only
-   *  move selections up and down. */
-  public static final int VERTICAL_CONSTRAINT = 2;
+    /** drag in process */
+    private boolean _dragInProcess = false;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    /** The point at which the mouse started a drag operation. */
+    private Point _dragStartMousePosition = new Point(0, 0);
 
-  /** The point relative to the original postition of the
-   *  Fig where the dragging started.  Keeping this point
-   *  allows the user to "grip" any part of the Fig, rather
-   *  than just dragging its position (or "pin") around. */
-  protected Point _anchor;
+    /** The location of the selection when the drag was started. */
+    private Point _dragStartSelectionPosition = null;
 
-  /** the mouse location for the most recent drag event */
-  protected int _lastX = 1000, _lastY = 1000;
+    /** The index of the handle that the user is dragging */
+    private Handle _curHandle = new Handle(-1);
+    private Rectangle _highlightTrap = null;
+    private int _deltaMouseX;
+    private int _deltaMouseY;
 
-  /** the mouse location for the first mouse down event*/
-  protected int _startX, _startY;
-
-  /** Has the mouse moved enough to indicate that the user really
-   *  wants to modify somthing? */
-  protected boolean _minDeltaAchieved;
-
-  /** The index of the handle that the user is dragging */
-  protected Handle _curHandle = new Handle(-1);
-
-  /** Indicates the kind of movement constraint being
-   *  applied. Possible values are NO_CONSTRAINT,
-   *  HORIZONTAL_CONSTRAINT, or VERTICAL_CONSTRAINT. */
-  protected int _constraint = NO_CONSTRAINT;
-
-  protected Rectangle _highlightTrap = null;
-
-  /** Construct a new ModeModify with the given parent, and set the
-   *  Anchor point to a default location (the _anchor's proper position
-   *  will be determioned on mouse down). */
-  public ModeModify(Editor par) {
-    super(par);
-    _anchor = new Point(0,0);
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // user feedback
-
-  /** Reply a string of instructions that should be shown in the
-   *  statusbar when this mode starts. */
-  public String instructions() { return "Modify selected objects"; }
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-  private static Point snapPt = new Point(0, 0);
-
-  /** When the user drags the mouse two things can happen: (1) if the
-   *  user is dragging the body of one or more Figs then they are all
-   *  moved around the drawing area, or (2) if the user started
-   *  dragging on a handle of one Fig then the user can drag the
-   *  handle around the drawing area and the Fig reacts to that.  */
-  public void mouseDragged(MouseEvent me) {
-    if (me.isConsumed()) return;
-    int x = me.getX(), y = me.getY();
-    int dx, dy, snapX, snapY;
-    if (!checkMinDelta(x, y)) { me.consume(); return; }
-    SelectionManager sm = getEditor().getSelectionManager();
-    if (sm.getLocked()) {
-      Globals.showStatus("Cannot Modify Locked Objects");
-      me.consume();
-      return;
+    /** Construct a new ModeModify with the given parent, and set the
+     *  Anchor point to a default location (the _anchor's proper position
+     *  will be determioned on mouse down). */
+    public ModeModify(Editor par) {
+        super(par);
     }
-    synchronized (snapPt) {
-      snapPt.setLocation(x, y);
-      getEditor().snap(snapPt);
-      snapX = snapPt.x;
-      snapY = snapPt.y;
+
+    ////////////////////////////////////////////////////////////////
+    // user feedback
+
+    /** Reply a string of instructions that should be shown in the
+     *  statusbar when this mode starts. */
+    public String instructions() {
+        return "Modify selected objects";
     }
-    dx = snapX - _lastX;
-    dy = snapY - _lastY;
-    if (me.isControlDown() && _constraint == NO_CONSTRAINT) {
-      if (dx != 0) {
-	_constraint = HORIZONTAL_CONSTRAINT;
-	Globals.showStatus("Moving objects horizontally");
-      }
-      if (dy != 0) {
-	_constraint = VERTICAL_CONSTRAINT;
-	Globals.showStatus("Moving objects vertically");
-      }
+
+    ////////////////////////////////////////////////////////////////
+    // event handlers
+
+    /** When the user drags the mouse two things can happen:
+     *  (1) if the user is dragging the body of one or more Figs then
+     *  they are all moved around the drawing area, or
+     *  (2) if the user started dragging on a handle of one Fig then the user
+     *  can drag the handle around the drawing area and the Fig reacts to that.
+     */
+    public void mouseDragged(MouseEvent mouseEvent) {
+        if(mouseEvent.isConsumed()) {
+            return;
+        }
+
+        mouseEvent.consume();
+        int mouseX = mouseEvent.getX();
+        int mouseY = mouseEvent.getY();
+        _deltaMouseX = mouseX - _dragStartMousePosition.x;
+        _deltaMouseY = mouseY - _dragStartMousePosition.y;
+        if(!_dragInProcess && Math.abs(_deltaMouseX) < MIN_DELTA && Math.abs(_deltaMouseY) < MIN_DELTA) {
+            return;
+        }
+
+        _dragInProcess = true;
+
+
+        boolean restrict45 = mouseEvent.isControlDown();
+        handleMouseDragged(restrict45);
     }
-    if (_constraint == HORIZONTAL_CONSTRAINT)  {
-      dy = 0;
-      snapY = _anchor.y;
+
+    /**
+     * Check if a drag operation is in progress and if the key event changes the restriction of horizontal/vertical
+     * movement. If so, update the selection's position.
+     * @param keyEvent
+     */
+    private void updateMouseDrag(KeyEvent keyEvent) {
+        if(_dragInProcess) {
+            boolean restrict45 = keyEvent.isControlDown();
+            handleMouseDragged(restrict45);
+        }
     }
-    if (_constraint == VERTICAL_CONSTRAINT)  {
-      dx = 0;
-      snapX = _anchor.x;
+
+    public void keyPressed(KeyEvent keyEvent) {
+        super.keyPressed(keyEvent);
+        updateMouseDrag(keyEvent);
     }
-    if (dx == 0 && dy == 0) { me.consume(); return; }
 
-    sm.startTrans();
-    if (_curHandle.index == -1) {
-      setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-      if (legal(dx, dy, sm, me) && !outOfBounds(dx,dy,me,sm)) {
-	sm.translate(dx, dy);
-	_lastX = snapX; _lastY = snapY;
-      }
+    public void keyReleased(KeyEvent keyEvent) {
+        super.keyReleased(keyEvent);
+        updateMouseDrag(keyEvent);
     }
-    else if (_curHandle.index >= 0) {
-      // needs-more-work: check if legal
-      setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-      sm.dragHandle(snapX, snapY, _anchor.x, _anchor.y, _curHandle);
-      _lastX = snapX; _lastY = snapY;
+
+    /**
+     * Like handleMouseDragged(MouseEvent) but takes only delta mouse position as arguments. Is also called when
+     * control is pressed or released during the drag.
+     */
+    private void handleMouseDragged(boolean restrict45) {
+        int deltaMouseX = _deltaMouseX;
+        int deltaMouseY = _deltaMouseY;
+        if(restrict45 && deltaMouseY != 0) {
+            double degrees = Math.atan2(deltaMouseY, deltaMouseX);
+            degrees = degrees45 * Math.round(degrees / degrees45);
+            double r = Math.sqrt(deltaMouseX * deltaMouseX + deltaMouseY * deltaMouseY);
+            deltaMouseX = (int)(r * Math.cos(degrees));
+            deltaMouseY = (int)(r * Math.sin(degrees));
+        }
+
+        SelectionManager selectionManager = getEditor().getSelectionManager();
+        if(selectionManager.getLocked()) {
+            Globals.showStatus("Cannot Modify Locked Objects");
+            return;
+        }
+
+        if(_dragStartSelectionPosition == null) {
+            selectionManager.startDrag();
+        }
+
+        Point selectionCurrentPosition = null;
+        if(selectionManager.size() == 1 && ((selectionManager.getFigs().get(0) instanceof FigEdge) || _curHandle.index > 0)) {
+            selectionCurrentPosition = new Point(_dragStartMousePosition);
+        }
+        else {
+            selectionCurrentPosition = selectionManager.getDragLocation();
+        }
+
+        if(_dragStartSelectionPosition == null) {
+            _dragStartSelectionPosition = selectionCurrentPosition;
+        }
+
+        Point selectionNewPosition = new Point(_dragStartSelectionPosition);
+        selectionNewPosition.translate(deltaMouseX, deltaMouseY);
+        getEditor().snap(selectionNewPosition);
+        selectionNewPosition.x = Math.max(0, selectionNewPosition.x);
+        selectionNewPosition.y = Math.max(0, selectionNewPosition.y);
+
+        int deltaSelectionX = selectionNewPosition.x - selectionCurrentPosition.x;
+        int deltaSelectionY = selectionNewPosition.y - selectionCurrentPosition.y;
+        if(deltaSelectionX != 0 || deltaSelectionY != 0) {
+            if(_curHandle.index == -1) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+                if(legal(deltaSelectionX, deltaSelectionY, selectionManager)) {
+                    selectionManager.drag(deltaSelectionX, deltaSelectionY);
+                }
+            }
+            else {
+                if(_curHandle.index >= 0) {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                    selectionManager.dragHandle(selectionNewPosition.x, selectionNewPosition.y, _dragStartMousePosition.x, _dragStartMousePosition.y, _curHandle);
+                    selectionManager.endTrans();
+                }
+            }
+            // Note: if _curHandle.index == -2 then do nothing
+        }
     }
-    //Note: if _curHandle.index == -2 then do nothing
 
-    sm.endTrans();
-    //editor.scrollToShow(snapX, snapY);
-    me.consume();
-  }
+    /** When the user presses the mouse button on a Fig, this Mode
+     *  starts preparing for future drag events by finding if a handle
+     *  was clicked on.  This event is passed from ModeSelect. */
+    public void mousePressed(MouseEvent me) {
+        if(me.isConsumed()) {
+            return;
+        }
 
-  /** When the user presses the mouse button on a Fig, this Mode
-   *  starts preparing for future drag events by finding if a handle
-   *  was clicked on.  This event is passed from ModeSelect. */
-  public void mousePressed(MouseEvent me) {
-    if (me.isConsumed()) return;
-    int x = me.getX(), y = me.getY();
-    start();
-    SelectionManager sm = getEditor().getSelectionManager();
-    if (sm.size() == 0) { done(); }
-    if (sm.getLocked()) {
-      Globals.showStatus("Cannot Modify Locked Objects");
-      me.consume();
-      return;
+        int x = me.getX();
+        int y = me.getY();
+        start();
+        SelectionManager selectionManager = getEditor().getSelectionManager();
+        if(selectionManager.size() == 0) {
+            done();
+        }
+
+        if(selectionManager.getLocked()) {
+            Globals.showStatus("Cannot Modify Locked Objects");
+            me.consume();
+            return;
+        }
+
+        _dragStartMousePosition = me.getPoint();
+        _dragStartSelectionPosition = null;
+        selectionManager.hitHandle(new Rectangle(x - 4, y - 4, 8, 8), _curHandle);
+        Globals.showStatus(_curHandle.instructions);
+        selectionManager.endTrans();
     }
-    /* needs-more-work: _anchor point sign convention is backwards */
-    _anchor.x = x;
-    _anchor.y = y;
-    sm.hitHandle(new Rectangle(x-4, y-4, 8, 8), _curHandle);
-    Globals.showStatus(_curHandle.instructions);
-    sm.endTrans();
-    synchronized (snapPt) {
-      snapPt.setLocation(x, y);
-      getEditor().snap(snapPt);
-      _startX = _lastX = snapPt.x;
-      _startY = _lastY = snapPt.y;
+
+    /** On mouse up the modification interaction is done. */
+    public void mouseReleased(MouseEvent me) {
+        _dragInProcess = false;
+        if(me.isConsumed()) {
+            return;
+        }
+
+        done();
+        me.consume();
+        SelectionManager sm = getEditor().getSelectionManager();
+        sm.stopDrag();
+        List figs = sm.getFigs();
+        int figCount = figs.size();
+        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+            Fig selectedFig = (Fig)figs.get(figIndex);
+            if((selectedFig instanceof FigNode)) {
+                Rectangle bbox = selectedFig.getBounds();
+                Layer lay = selectedFig.getLayer();
+                List otherFigs = lay.getContents();
+                int otherFigsCount = otherFigs.size();
+                Fig encloser = null;
+                for(int otherFigIndex = 0; otherFigIndex < otherFigsCount; ++otherFigIndex) {
+                    Fig otherFig = (Fig)otherFigs.get(otherFigIndex);
+                    if(!(otherFig instanceof FigNode)) {
+                        continue;
+                    }
+
+                    if(!(otherFig.getUseTrapRect())) {
+                        continue;
+                    }
+
+                    //if (figs.contains(otherFig)) continue;
+                    Rectangle trap = otherFig.getTrapRect();
+                    if(trap == null) {
+                        continue;
+                    }
+
+                    // now bbox is where the fig _will_ be
+                    if((trap.contains(bbox.x, bbox.y) && trap.contains(bbox.x + bbox.width, bbox.y + bbox.height))) {
+                        encloser = otherFig;
+                    }
+                }
+
+                selectedFig.setEnclosingFig(encloser);
+            }
+            else if(selectedFig instanceof FigEdge) {
+                ((FigEdge)selectedFig).computeRoute();
+                selectedFig.endTrans();
+            }
+
+            selectedFig.endTrans();
+        }
     }
-    //System.out.println("consuming in ModeModify");
-    //me.consume();
-  }
 
-  /** On mouse up the modification interaction is done. */
-  public void mouseReleased(MouseEvent me) {
-      if (me.isConsumed()) return;
-      done();
-      me.consume();
-      SelectionManager sm = getEditor().getSelectionManager();
-      Vector figs = sm.getFigs();
-      Enumeration sels = figs.elements();
-      while (sels.hasMoreElements()) {
-          Fig selectedFig = (Fig) sels.nextElement();
-          if ((selectedFig instanceof FigNode)) {
-              Rectangle bbox = selectedFig.getBounds();
-              Layer lay = selectedFig.getLayer();
-              Vector otherFigs = lay.getContents();
-              Enumeration others = otherFigs.elements();
-              Fig encloser = null;
-              while (others.hasMoreElements()) {
-                  Fig otherFig = (Fig) others.nextElement();
-                  if (!(otherFig instanceof FigNode)) continue;
-                  if (!(otherFig.getUseTrapRect())) continue;
-                  //if (figs.contains(otherFig)) continue;
-                  Rectangle trap = otherFig.getTrapRect();
-                  if (trap == null) continue;
-                  // now bbox is where the fig _will_ be
-                  if ((trap.contains(bbox.x, bbox.y) &&
-                  trap.contains(bbox.x + bbox.width, bbox.y + bbox.height))) {
-                      encloser = otherFig;
-                  }
-              }
-              selectedFig.setEnclosingFig(encloser);
-          }
-          else if (selectedFig instanceof FigEdge) {
-              ((FigEdge)selectedFig).computeRoute();
-              selectedFig.endTrans();
-          }
-      }
-  }
-
-  public void start() {
-    _minDeltaAchieved = false;
-    super.start();
-  }
-
-  public void done() {
-    super.done();
-    SelectionManager sm = getEditor().getSelectionManager();
-    sm.cleanUp();
-    if (_highlightTrap != null) {
-      editor.damaged(_highlightTrap);
-      _highlightTrap = null;
+    public void done() {
+        super.done();
+        SelectionManager sm = getEditor().getSelectionManager();
+        sm.cleanUp();
+        if(_highlightTrap != null) {
+            editor.damaged(_highlightTrap);
+            _highlightTrap = null;
+        }
     }
-  }
 
-  public void paint(Graphics g) {
-    super.paint(g);
-    if (_highlightTrap != null) {
-      Color selectRectColor = (Color) Globals.getPrefs().getRubberbandColor();
-      g.setColor(selectRectColor);
-      g.drawRect(_highlightTrap.x-1, _highlightTrap.y-1,
-		 _highlightTrap.width+1, _highlightTrap.height+1);
-      g.drawRect(_highlightTrap.x-2, _highlightTrap.y-2,
-		 _highlightTrap.width+3, _highlightTrap.height+3);
+    public void paint(Graphics g) {
+        super.paint(g);
+        if(_highlightTrap != null) {
+            Color selectRectColor = Globals.getPrefs().getRubberbandColor();
+            g.setColor(selectRectColor);
+            g.drawRect(_highlightTrap.x - 1, _highlightTrap.y - 1, _highlightTrap.width + 1, _highlightTrap.height + 1);
+            g.drawRect(_highlightTrap.x - 2, _highlightTrap.y - 2, _highlightTrap.width + 3, _highlightTrap.height + 3);
+        }
     }
-  }
 
-  /** Reply true if the user had moved the mouse enough to signify
-   * that (s)he really wants to make a change. */
-  protected boolean checkMinDelta(int x, int y) {
-    if (x > _startX + MIN_DELTA ||
-        x < _startX - MIN_DELTA ||
-        y > _startY + MIN_DELTA ||
-        y < _startY - MIN_DELTA)
-      _minDeltaAchieved = true;
-    return _minDeltaAchieved;
-  }
-
-  protected boolean legal(int dx, int dy, SelectionManager sm, MouseEvent me) {
-    if (_highlightTrap != null) editor.damaged(_highlightTrap);
-    _highlightTrap = null;
-    Vector figs = sm.getFigs();
-    Enumeration sels = figs.elements();
-    while (sels.hasMoreElements()) {
-      Fig selectedFig = (Fig) sels.nextElement();
-      boolean selectedUseTrap = selectedFig.getUseTrapRect();
-      if (!(selectedFig instanceof FigNode)) continue;
-      Rectangle bbox = selectedFig.getBounds();
-      bbox.x += dx; bbox.y += dy;
-      Layer lay = selectedFig.getLayer();
-      Vector otherFigs = lay.getContents();
-      Enumeration others = otherFigs.elements();
-      while (others.hasMoreElements()) {
-        Fig otherFig = (Fig) others.nextElement();
-        if (!(otherFig instanceof FigNode)) continue;
-	if (!selectedUseTrap && !otherFig.getUseTrapRect()) continue;
-        if (figs.contains(otherFig)) continue;
-        Rectangle trap = otherFig.getTrapRect();
-	if (trap == null) continue;
-        // now bbox is where the fig _will_ be
-        int cornersHit = 0;
-        if (trap.contains(bbox.x, bbox.y)) cornersHit++;
-        if (trap.contains(bbox.x + bbox.width, bbox.y)) cornersHit++;
-        if (trap.contains(bbox.x, bbox.y + bbox.height)) cornersHit++;
-        if (trap.contains(bbox.x + bbox.width, bbox.y + bbox.height)) cornersHit++;
-        if (!trap.intersects(bbox)) continue;
-        if ((trap.contains(bbox.x, bbox.y) &&
-	     trap.contains(bbox.x + bbox.width, bbox.y + bbox.height))) continue;
-        if ((bbox.contains(trap.x, trap.y) &&
-	     bbox.contains(trap.x + trap.width, trap.y + trap.height))) continue;
-	_highlightTrap = trap;
-	editor.damaged(_highlightTrap);
-        return false;
-      }
+    private void damageHighlightTrap() {
+        if(_highlightTrap == null) {
+            return;
+        }
+        Rectangle r = new Rectangle(_highlightTrap);
+        r.x -= 2;
+        r.y -= 2;
+        r.width += 4;
+        r.height += 4;
+        editor.damaged(r);
     }
-    return true;
-  }
 
-  /**
-   * This method will check to see if the selection bein moved will end up
-   * off the screen and off the diagram. There is just no easy way to do this
-   * especially because there could be more than one fig selected!
-   *
-   * @param dx - horizontal distance to move
-   * @param dy - vertical distance to move
-   * @param me - the mouse event
-   * @param sm - the selection manager
-   * @returns boolean - is it out of bounds? ( T / F )
-   */
-  protected boolean outOfBounds(int dx, int dy, MouseEvent me, SelectionManager sm) {
+    private boolean legal(int dx, int dy, SelectionManager selectionManager) {
+        damageHighlightTrap();
 
-   Rectangle selectionBox = sm.getContentBounds();
+        _highlightTrap = null;
+        List figs = selectionManager.getFigs();
+        int figCount = figs.size();
+        Rectangle figBounds = new Rectangle();
+        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+            Fig selectedFig = (Fig)figs.get(figIndex);
+            boolean selectedUseTrap = selectedFig.getUseTrapRect();
+            if(!(selectedFig instanceof FigNode)) {
+                continue;
+            }
 
-   int selectionHeight = (int)selectionBox.getHeight();
-   int selectionWidth = (int)selectionBox.getWidth();
+            selectedFig.getBounds(figBounds);
+            figBounds.x += dx;
+            figBounds.y += dy;
+            Layer lay = selectedFig.getLayer();
+            List otherFigs = lay.getContents();
+            int count = otherFigs.size();
+            for(int otherFigIndex = 0; otherFigIndex < count; ++otherFigIndex) {
+                Fig otherFig = (Fig)otherFigs.get(otherFigIndex);
+                if(!(otherFig instanceof FigNode)) {
+                    continue;
+                }
 
-   // Get top-left most point of the whole selection
-   Point selectionOrigin = sm.getLocation();
+                if(!selectedUseTrap && !otherFig.getUseTrapRect()) {
+                    continue;
+                }
 
-   int selectionOriginX = (int)selectionOrigin.getX();
-   int selectionOriginY = (int)selectionOrigin.getY();
+                if(figs.contains(otherFig)) {
+                    continue;
+                }
 
-   int targetY = me.getY();
-   int targetX = me.getX();
+                if(otherFig.getEnclosingFig() == selectedFig) {
+                    continue;
+                }
 
-   // These offsets tell us where the drag point is in relation to
-   // the selection it is in.  We need this information so that we don't
-   // let varying parts of the selection go outside the bounds just because
-   // the drag point was in different parts of the selection
+                Rectangle trap = otherFig.getTrapRect();
+                if(trap == null) {
+                    continue;
+                }
 
-   int topVerticalOffset = _lastY - selectionOriginY;
-   int bottomVerticalOffset = selectionOriginY + selectionHeight - _lastY;
+                if(!trap.intersects(figBounds)) {
+                    continue;
+                }
 
-   int leftHorizontalOffset = _lastX - selectionOriginX;
-   int rightHorizontalOffset = selectionOriginX + selectionWidth - _lastX;
+                if((trap.contains(figBounds.x, figBounds.y) && trap.contains(figBounds.x + figBounds.width, figBounds.y + figBounds.height))) {
+                    continue;
+                }
 
-   /*
-    *  OK, what we're saying here is that if the destination point is less than
-    *  zero, forget it.  But if you move less than zero, but part of your figure
-    *  would be in the negative zone, you cannot do that either.
-    */
+                if((figBounds.contains(trap.x, trap.y) && figBounds.contains(trap.x + trap.width, trap.y + trap.height))) {
+                    continue;
+                }
 
-   // Check top
-   if ((targetY < 0 ) || (targetY < topVerticalOffset) ) return true;
+                _highlightTrap = trap;
+                damageHighlightTrap();
+                return false;
+            }
+        }
 
-   // Check bottom
-
-   int canvasBottomEdge = me.getComponent().getHeight();
-
-   if ((targetY > canvasBottomEdge ) ||
-      ((targetY + bottomVerticalOffset) > canvasBottomEdge ) ) return true;
-
-   // Check left
-   if ((targetX < 0 ) || (targetX < leftHorizontalOffset) ) return true;
-
-   // Check right
-
-   int canvasRightEdge = me.getComponent().getWidth();
-
-   if ((targetX > canvasRightEdge ) ||
-      ((targetX + rightHorizontalOffset) > canvasRightEdge ) ) return true;
-
-
-   // Otherwise we're ok!
-    return false;
-  }
-
-} /* end class ModeModify */
-
+        return true;
+    }
+}

@@ -31,8 +31,8 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Cmd to select all the Figs in the editor's current
  *  view that were not previously selected.
@@ -41,25 +41,26 @@ import java.util.*;
 
 public class CmdSelectInvert extends Cmd {
 
-  public CmdSelectInvert() {
-	  super("InvertSelection");
-  }
-
-  public void doIt() {
-    Editor ce = Globals.curEditor();
-    Vector selected = ce.getSelectionManager().getFigs();
-    Vector diagramContents = ce.getLayerManager().getContents();
-    Vector inverse = new Vector(diagramContents.size());
-    Enumeration contEnum = diagramContents.elements();
-    while (contEnum.hasMoreElements()) {
-      Object dc = contEnum.nextElement();
-      if (!selected.contains(dc)) inverse.addElement(dc);
+    public CmdSelectInvert() {
+        super("InvertSelection");
     }
-    ce.getSelectionManager().select(inverse);
-  }
 
-  public void undoIt() {
-    System.out.println("Undo does not make sense for CmdSelectInvert");
-  }
-} /* end class CmdSelectInvert */
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        List selected = ce.getSelectionManager().getFigs();
+        List diagramContents = ce.getLayerManager().getContents();
+        List inverse = new ArrayList(diagramContents.size());
 
+        int count = diagramContents.size();
+        for(int index = 0; index < count; ++index) {
+            Object dc = diagramContents.get(index);
+            if(!selected.contains(dc))
+                inverse.add(dc);
+        }
+        ce.getSelectionManager().select(inverse);
+    }
+
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdSelectInvert");
+    }
+}

@@ -31,153 +31,174 @@
 
 package org.tigris.gef.properties.ui;
 
-import java.beans.*;
-import java.lang.reflect.*;
-import java.awt.*;
-import javax.swing.*;
-import java.util.*;
-
 import org.tigris.gef.presentation.Fig;
+
+import javax.swing.*;
+import java.awt.*;
+import java.beans.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 /** Class that defines the interface for several different kinds of
  *  panels that can edit a group of properties. The only subclass
  *  supplied with GEF is PropSheetCategory, but others could be
  *  defined. */
 
-public class PropSheet extends JPanel
-implements PropertyChangeListener {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+public class PropSheet extends JPanel implements PropertyChangeListener {
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The object being edited. */
-  protected Object _sel = null;
+    /** The object being edited. */
+    protected Object _sel = null;
 
-  /** The changes to that object that have not been carried out yet. */
-  protected Hashtable _pendingStores = new Hashtable();
-  // //protected Hashtable _propertyDescriptors = new Hashtable();
-  protected Hashtable _pdsEditors = new Hashtable();
-  protected Hashtable _editorsPds = new Hashtable();
-
-
-  /** True iff every change shold be immeadiatly carried out. */
-  protected boolean _autoApply = true;
-  protected boolean _ignorePropChanges = false;
-
-  /** Name used to identify this sheet to the user. */
-  protected String _tabName = "Misc";
-
-  protected Font _propertiesFont = new Font("Dialog", Font.PLAIN, 10);
-  protected long _lastUpdateTime = System.currentTimeMillis();
-  public static final int MIN_UPDATE = 200;
+    /** The changes to that object that have not been carried out yet. */
+    protected Hashtable _pendingStores = new Hashtable();
+    // //protected Hashtable _propertyDescriptors = new Hashtable();
+    protected Hashtable _pdsEditors = new Hashtable();
+    protected Hashtable _editorsPds = new Hashtable();
 
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    /** True iff every change shold be immeadiatly carried out. */
+    protected boolean _autoApply = true;
+    protected boolean _ignorePropChanges = false;
 
-  public PropSheet() { }
+    /** Name used to identify this sheet to the user. */
+    protected String _tabName = "Misc";
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    protected Font _propertiesFont = new Font("Dialog", Font.PLAIN, 10);
+    protected long _lastUpdateTime = System.currentTimeMillis();
+    public static final int MIN_UPDATE = 200;
 
 
-  public void setSelection(Object s) {
-    if (_sel == s) return;
-    if (_sel instanceof Fig) ((Fig)_sel).removePropertyChangeListener(this);
-    _sel = s;
-    if (_sel instanceof Fig) ((Fig)_sel).addPropertyChangeListener(this);
-    updateComponents();
-  }
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public void setAutoApply(boolean aa) {
-    _autoApply = aa;
-    if (_autoApply) apply();
-  }
-
-  public String getTabName() { return _tabName; }
-  public void setTabName(String tn) { _tabName = tn; }
-
-  public boolean canEdit(Object item) { return true; }
-
-  public void setVisible(boolean b) {
-    super.setVisible(b);
-    if (!b) setSelection(null);
-  }
-
-  public Font getPropertiesFont() { return _propertiesFont; }
-  public void setPropertiesFont(Font f) {  _propertiesFont = f; }
-
-  ////////////////////////////////////////////////////////////////
-  // storing properties
-
-  /** When the user changes a value in a widget, record that fact
-   * until the next apply (which may be done immeadiatly). */
-  public void store(PropertyDescriptor pd, Object value) {
-    if (pd == null || value == null) return;
-    _pendingStores.put(pd, value);
-    if (_autoApply) apply();
-  }
-
-  /** Take all property changes that have been stored and actually
-   * change the state of the selected object. */
-  public void apply() {
-    try {
-      _ignorePropChanges = true;
-      if (_sel instanceof Fig)
-	((Fig)_sel).startTrans();
-      if (_sel != null) {
-	Enumeration pending = _pendingStores.keys();
-	while (pending.hasMoreElements()) {
-	  PropertyDescriptor pd = (PropertyDescriptor) pending.nextElement();
-	  applyProperty(pd, _pendingStores.get(pd));
-	}
-      }
-      //_sel.put(_pendingStores);
-      if (_sel instanceof Fig)
-	((Fig)_sel).endTrans();
-      _pendingStores.clear();
+    public PropSheet() {
     }
-    finally {
-      updateComponents();
-      _ignorePropChanges = false;
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+
+    public void setSelection(Object s) {
+        if(_sel == s)
+            return;
+        if(_sel instanceof Fig)
+            ((Fig)_sel).removePropertyChangeListener(this);
+        _sel = s;
+        if(_sel instanceof Fig)
+            ((Fig)_sel).addPropertyChangeListener(this);
+        updateComponents();
     }
-  }
 
-  protected void applyProperty(PropertyDescriptor pd, Object value) {
-    try {
-      Object args[] = { value };
-      args[0] = value;
-      Method setter = pd.getWriteMethod();
-      setter.invoke(_sel, args);
-    } catch (InvocationTargetException ex) {
-      if (ex.getTargetException() instanceof PropertyVetoException) {
-	System.out.println("Vetoed; because: " +
-			   ex.getTargetException().getMessage());
-      }
-      else
-	System.out.println("InvocationTargetException while updating " +
-		pd.getName() + "\n" +  ex.getTargetException().toString());
-    } catch (Exception ex) {
-      System.out.println("Unexpected exception while updating " +
-	    pd.getName() + "\n" + ex.toString());
+    public void setAutoApply(boolean aa) {
+        _autoApply = aa;
+        if(_autoApply)
+            apply();
     }
-  }
+
+    public String getTabName() {
+        return _tabName;
+    }
+
+    public void setTabName(String tn) {
+        _tabName = tn;
+    }
+
+    public boolean canEdit(Object item) {
+        return true;
+    }
+
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+        if(!b)
+            setSelection(null);
+    }
+
+    public Font getPropertiesFont() {
+        return _propertiesFont;
+    }
+
+    public void setPropertiesFont(Font f) {
+        _propertiesFont = f;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // storing properties
+
+    /** When the user changes a value in a widget, record that fact
+     * until the next apply (which may be done immeadiatly). */
+    public void store(PropertyDescriptor pd, Object value) {
+        if(pd == null || value == null)
+            return;
+        _pendingStores.put(pd, value);
+        if(_autoApply)
+            apply();
+    }
+
+    /** Take all property changes that have been stored and actually
+     * change the state of the selected object. */
+    public void apply() {
+        try {
+            _ignorePropChanges = true;
+            if(_sel != null) {
+                Enumeration pending = _pendingStores.keys();
+                while(pending.hasMoreElements()) {
+                    PropertyDescriptor pd = (PropertyDescriptor)pending.nextElement();
+                    applyProperty(pd, _pendingStores.get(pd));
+                }
+            }
+            //_sel.put(_pendingStores);
+            if(_sel instanceof Fig)
+                ((Fig)_sel).endTrans();
+            _pendingStores.clear();
+        }
+        finally {
+            updateComponents();
+            _ignorePropChanges = false;
+        }
+    }
+
+    protected void applyProperty(PropertyDescriptor pd, Object value) {
+        try {
+            Object args[] = {value};
+            args[0] = value;
+            Method setter = pd.getWriteMethod();
+            setter.invoke(_sel, args);
+        }
+        catch(InvocationTargetException ex) {
+            if(ex.getTargetException() instanceof PropertyVetoException) {
+                System.out.println("Vetoed; because: " + ex.getTargetException().getMessage());
+            }
+            else
+                System.out.println("InvocationTargetException while updating " + pd.getName() + "\n" + ex.getTargetException().toString());
+        }
+        catch(Exception ex) {
+            System.out.println("Unexpected exception while updating " + pd.getName() + "\n" + ex.toString());
+        }
+    }
 
 
-  /** Abandon any stored changes that have not been applied yet. */
-  public void revert() {
-    _pendingStores.clear();
-    updateComponents();
-  }
+    /** Abandon any stored changes that have not been applied yet. */
+    public void revert() {
+        _pendingStores.clear();
+        updateComponents();
+    }
 
 
-  ////////////////////////////////////////////////////////////////
-  // notifications and updates
+    ////////////////////////////////////////////////////////////////
+    // notifications and updates
 
-  public void updateComponents() { }
+    public void updateComponents() {
+    }
 
-  public void updateComponent(PropertyDescriptor pd) { updateComponents(); }
+    public void updateComponent(PropertyDescriptor pd) {
+        updateComponents();
+    }
 
-  /** The selected object may have changed one of its properties. */
+    /** The selected object may have changed one of its properties. */
 //   public void propertyChange(PropertyChangeEvent pce) {
 //     // special case for bounding box, because too many updates make dragging
 //     // choppy
@@ -193,26 +214,28 @@ implements PropertyChangeListener {
 //     }
 //   }
 
-  public void propertyChange(PropertyChangeEvent e) {
-    if (_ignorePropChanges) return; //HACK!
-    // special case for bounding box, because too many updates make dragging
-    // choppy
-    String pName = e.getPropertyName();
-    Object src = e.getSource();
-    if (src == _sel && !_ignorePropChanges) {
-      long now = System.currentTimeMillis();
-      //if ("bounds".equals(pName) && _lastUpdateTime + MIN_UPDATE > now)
-      if (_lastUpdateTime + MIN_UPDATE > now) {
-	return;
-      }
-      updateComponents(); //needs-more-work: narrow to sender?
-      // pd?
-      _lastUpdateTime = now;
+    public void propertyChange(PropertyChangeEvent e) {
+        if(_ignorePropChanges)
+            return; //HACK!
+        // special case for bounding box, because too many updates make dragging
+        // choppy
+        String pName = e.getPropertyName();
+        Object src = e.getSource();
+        if(src == _sel && !_ignorePropChanges) {
+            long now = System.currentTimeMillis();
+            //if ("bounds".equals(pName) && _lastUpdateTime + MIN_UPDATE > now)
+            if(_lastUpdateTime + MIN_UPDATE > now) {
+                return;
+            }
+            updateComponents(); //needs-more-work: narrow to sender?
+            // pd?
+            _lastUpdateTime = now;
+        }
+        else {
+            PropertyDescriptor pd = (PropertyDescriptor)_editorsPds.get(src);
+            if(pd != null)
+                store(pd, ((PropertyEditor)src).getValue());
+        }
     }
-    else {
-      PropertyDescriptor pd = (PropertyDescriptor) _editorsPds.get(src);
-      if (pd != null) store(pd, ((PropertyEditor)src).getValue());
-    }
-  }
 
 } /* end class PropSheet */

@@ -31,10 +31,12 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
 
-import org.tigris.gef.presentation.*;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Vector;
 
 /** Cmd to ungroup a selected group object.
  *
@@ -43,30 +45,35 @@ import org.tigris.gef.presentation.*;
 
 public class CmdUngroup extends Cmd {
 
-  public CmdUngroup() { super("Ungroup"); }
+    public CmdUngroup() {
+        super("Ungroup");
+    }
 
-  public void doIt() {
-    Vector ungroupedItems = new Vector();
-    Editor ce = Globals.curEditor();
-    Vector selectedFigs = ce.getSelectionManager().getFigs();
-    Enumeration eachDE = selectedFigs.elements();
-    while (eachDE.hasMoreElements()) {
-      Object o = eachDE.nextElement();
-      if (o instanceof FigGroup) {
-	FigGroup fg = (FigGroup) o;
-	Enumeration eachFig = fg.elements();//?
-	while (eachFig.hasMoreElements()) {
-	  Fig f = (Fig) eachFig.nextElement();
-	  ce.add(f);
-	  ungroupedItems.addElement(f);
-	}
-	ce.remove(fg);
-      }
-    } /* end while each selected object */
-    ce.getSelectionManager().deselectAll();
-    ce.getSelectionManager().select(ungroupedItems);
-  }
+    public void doIt() {
+        Vector ungroupedItems = new Vector();
+        Editor ce = Globals.curEditor();
+        Vector selectedFigs = ce.getSelectionManager().getFigs();
+        Enumeration eachDE = selectedFigs.elements();
+        while(eachDE.hasMoreElements()) {
+            Object o = eachDE.nextElement();
+            if(o instanceof FigGroup) {
+                FigGroup fg = (FigGroup)o;
+                List figs = fg.getFigs();
+                int figCount = figs.size();
+                for(int i = 0; i < figCount; ++i) {
+                    Fig f = (Fig)figs.get(i);
+                    ce.add(f);
+                    ungroupedItems.addElement(f);
+                }
+                ce.remove(fg);
+            }
+        } /* end while each selected object */
+        ce.getSelectionManager().deselectAll();
+        ce.getSelectionManager().select(ungroupedItems);
+    }
 
-  public void undoIt() { System.out.println("not implemented yet"); }
+    public void undoIt() {
+        System.out.println("not implemented yet");
+    }
 } /* end class CmdUngroup */
 

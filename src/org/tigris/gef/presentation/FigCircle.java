@@ -1,3 +1,4 @@
+// %1035298148423:org.tigris.gef.presentation%
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -20,25 +21,16 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-
-
 // File: FigCircle.java
 // Classes: FigCircle
 // Original Author: ics125 spring 1996
 // $Id$
-
 package org.tigris.gef.presentation;
 
-import java.applet.*;
 import java.awt.*;
-import java.io.*;
-import java.util.*;
 
 /** Primitive Fig for displaying circles and ovals. */
-
 public class FigCircle extends Fig {
-
     ////////////////////////////////////////////////////////////////
     // constants
 
@@ -47,7 +39,6 @@ public class FigCircle extends Fig {
      *  is bad design that needs to be changed. Should use just
      *  GRIP_FACTOR. */
     public static final double CIRCLE_ADJUST_RADIUS = 0.1;
-
     protected boolean _isDashed = false;
 
     ////////////////////////////////////////////////////////////////
@@ -61,7 +52,6 @@ public class FigCircle extends Fig {
 
     /** Construct a new FigCircle with the given position, size, line
      *  color, and fill color */
-
     public FigCircle(int x, int y, int w, int h, Color lColor, Color fColor) {
         super(x, y, w, h, lColor, fColor);
     }
@@ -71,19 +61,18 @@ public class FigCircle extends Fig {
 
     /** Draw this FigCircle. */
     public void paint(Graphics g) {
-        if (getDashed() && (g instanceof Graphics2D)) {
-            Graphics2D g2d = (Graphics2D) g;
+        if(getDashed() && (g instanceof Graphics2D)) {
+            Graphics2D g2d = (Graphics2D)g;
             Stroke oldStroke = g2d.getStroke();
-            float dash[] = { 10.0f, 10.0f };
-            Stroke stroke = new BasicStroke(0.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
-                1.0f, dash, 0.0f);
-
+            float[] dash = {10.0f, 10.0f};
+            Stroke stroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, dash, 0.0f);
             g2d.setStroke(stroke);
-            if (_filled && _fillColor != null) {
+            if(_filled && _fillColor != null) {
                 g.setColor(_fillColor);
                 g.fillOval(_x, _y, _w, _h);
             }
-            if (_lineWidth > 0 && _lineColor != null) {
+
+            if(_lineWidth > 0 && _lineColor != null) {
                 g.setColor(_lineColor);
                 g.drawOval(_x, _y, _w - _lineWidth, _h - _lineWidth);
             }
@@ -91,40 +80,41 @@ public class FigCircle extends Fig {
             g2d.setStroke(oldStroke);
         }
         else {
-            if (_filled && _fillColor != null) {
+            if(_filled && _fillColor != null) {
                 g.setColor(_fillColor);
                 g.fillOval(_x, _y, _w, _h);
             }
-            if (_lineWidth > 0 && _lineColor != null) {
+
+            if(_lineWidth > 0 && _lineColor != null) {
                 g.setColor(_lineColor);
-                g.drawOval(_x, _y, _w - _lineWidth, _h - _lineWidth);
+                //g.drawOval(_x, _y, _w - _lineWidth, _h - _lineWidth);  // linewidth is not used. PF
+                g.drawOval(_x, _y, _w, _h);
             }
         }
     }
 
-
-
     /** Reply true if the given coordinates are inside the circle. */
     public boolean contains(int x, int y) {
-        if (!super.contains(x, y)) return false;
-        double dx = ((double)(_x + _w/2 - x)) * 2 / _w;
-        double dy = ((double)(_y + _h/2 - y)) * 2 / _h;
+        if(!super.contains(x, y)) {
+            return false;
+        }
+
+        double dx = (double)(_x + _w / 2 - x) * 2 / _w;
+        double dy = (double)(_y + _h / 2 - y) * 2 / _h;
         double distSquared = dx * dx + dy * dy;
         return distSquared <= 1.01;
     }
 
     /** Calculate border point of elipse */
     public Point connectionPoint(Point anotherPt) {
-      double rx = _w/2;
-      double ry = _h/2;
-      double dx = anotherPt.x - _x;
-      double dy = anotherPt.y - _y;
-      double dd = ry*ry*dx*dx + rx*rx*dy*dy;
-      double mu = rx*ry/Math.sqrt(dd);
-      Point res = new Point((int)(mu*dx+_x+rx),(int)(mu*dy+_y+ry));
-      //System.out.println("connectionPoint(p) returns "+res.x+','+res.y+')');
-      return res;
+        double rx = _w / 2;
+        double ry = _h / 2;
+        double dx = anotherPt.x - _x;
+        double dy = anotherPt.y - _y;
+        double dd = ry * ry * dx * dx + rx * rx * dy * dy;
+        double mu = rx * ry / Math.sqrt(dd);
+        Point res = new Point((int)(mu * dx + _x + rx), (int)(mu * dy + _y + ry));
+        //System.out.println("connectionPoint(p) returns "+res.x+','+res.y+')');
+        return res;
     }
-} /* end class FigCircle */
-
-
+}    /* end class FigCircle */

@@ -1,3 +1,4 @@
+// %1032800241201:org.tigris.gef.base%
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -20,255 +21,460 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-
-
-
 package org.tigris.gef.base;
 
-import java.util.*;
 import java.awt.*;
+
 import java.beans.*;
 
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.ui.*;
-import org.tigris.gef.graph.*;
-import org.tigris.gef.graph.presentation.*;
-import org.tigris.gef.util.*;
+import java.util.*;
+import java.util.List;
+import java.io.Serializable;
+
+import org.tigris.gef.graph.GraphController;
+import org.tigris.gef.graph.GraphEvent;
+import org.tigris.gef.graph.GraphListener;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.presentation.DefaultGraphModel;
+
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
+
+import org.tigris.gef.ui.PaletteFig;
+import org.tigris.gef.ui.ToolBar;
+
+import org.tigris.gef.util.VectorSet;
 
 /** A diagram is just combination of a GraphModel, a Layer, and a
-    title. The GraphModel stores the connected graph representation,
-    without any graphics. The Layer stores all the Figs. */
-public class Diagram implements java.io.Serializable, GraphListener {
+ title. The GraphModel stores the connected graph representation,
+ without any graphics. The Layer stores all the Figs. */
+public class Diagram implements Serializable, GraphListener {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected String _name = "no title set";
-  protected String _comments = "(no comments given)";
-  protected LayerPerspective _lay;
-  protected transient ToolBar _toolBar;
-  public transient Vector vetoListeners;
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    protected String _name = "no title set";
+    protected String _comments = "(no comments given)";
+    protected LayerPerspective _layer;
+    protected transient ToolBar _toolBar;
+    private transient Vector vetoListeners;
+    private transient PropertyChangeSupport _changeSupport;
+    // In JDK < 1.4 there is no way to get all listener from the PropertyChangeSupport, so we keep a list here 
+    private Set _propertyChangeListeners = new HashSet();
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    /** The bean property name denoting the scale factor. Value is a Double in range [0, 1] */
+    public static final String SCALE_KEY = "scale";
 
-  public Diagram() {
-    this("untitled");
-  }
+    /** The bean property name denoting the diagram's name. Value is a String. */
+    public static final String NAME_KEY = "name";
 
-  public Diagram(String name) {
-    this(name, new DefaultGraphModel());
-  }
-
-  public Diagram(String name, GraphModel gm) {
-    this(name, gm, new LayerPerspective(name, gm));
-  }
-
-  public Diagram(String name, GraphModel gm, LayerPerspective lay) {
-    _name = name;
-    _lay = lay;
-    setGraphModel(gm);
-    //initToolBar();
-  }
-
-  protected void initToolBar() {
-    _toolBar = new PaletteFig();
-  }
-
-  public void initialize(Object owner) {
-    /* do nothing by default */
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public ToolBar getToolBar() {
-    if (_toolBar == null) initToolBar();
-    return _toolBar;
-  }
-  public void setToolBar(ToolBar tb) { _toolBar = tb; }
-
-  public String getComments() { return _comments; }
-  public void setComments(String c) throws PropertyVetoException {
-    fireVetoableChange("comments", _comments, c);
-    _comments = c;
-  }
-
-  public String getName() { return _name; }
-  public void setName(String n) throws PropertyVetoException {
-    fireVetoableChange("name", _name, n);
-    _name = n;
-  }
-
-  public String getClassAndModelID() {
-    return getClass().getName();
-  }
-
-  public GraphModel getGraphModel() { return getLayer().getGraphModel(); }
-  public void setGraphModel(GraphModel gm) {
-    GraphModel oldGM = getLayer().getGraphModel();
-    if (oldGM != null) oldGM.removeGraphEventListener(this);
-    getLayer().setGraphModel(gm);
-    gm.addGraphEventListener(this);
-  }
-
-  public GraphController getGraphController() { return getLayer().getGraphController(); }
-  public LayerPerspective getLayer() { return _lay; }
-  public void setLayer(LayerPerspective lay) { _lay = lay; }
-
-  public int countContained(VectorSet owners) {
-    int count = 0;
-    int numOwners = owners.size();
-    Vector nodes = getNodes();
-    for (int i = 0; i < nodes.size(); i++)
-      for (int j = 0; j < numOwners; j++)
-	if (nodes.elementAt(i) == owners.elementAt(j)) count++;
-    Vector edges = getEdges();
-    for (int i = 0; i < edges.size(); i++)
-      for (int j = 0; j < numOwners; j++)
-	if (edges.elementAt(i) == owners.elementAt(j)) count++;
-    Vector figs = getLayer().getContents();
-    for (int i = 0; i < figs.size(); i++)
-      for (int j = 0; j < numOwners; j++)
-	if (figs.elementAt(i) == owners.elementAt(j)) count++;
-    return count;
-  }
-
-  public Vector getNodes() {
-    // needs-more-work: should just do getGraphModel().getNodes()
-    // but that is not updated when the diagram is loaded
-    Vector res = new Vector();
-    Vector figs = getLayer().getContents();
-    int size = figs.size();
-    for (int i = 0; i < size; i++)
-		if (figs.elementAt(i) instanceof FigNode)
-			res.addElement(((FigNode)figs.elementAt(i)).getOwner());
-    return res;
-  }
-
-  public Vector getEdges() {
-    // needs-more-work: should just do getGraphModel().getEdges()
-    // but that is not updated when the diagram is loaded
-    Vector res = new Vector();
-    Vector figs = getLayer().getContents();
-    int size = figs.size();
-    for (int i = 0; i < size; i++)
-		if ( (figs.elementAt(i) instanceof FigEdge) &&   // Some figs might not have a owner?
-			 (null != ((FigEdge)figs.elementAt(i)).getOwner()))
-			res.addElement(((FigEdge)figs.elementAt(i)).getOwner());
-    return res;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors on the Layer
-  
-  public void add(Fig f) { _lay.add(f); }
-  public void remove(Fig f) { _lay.remove(f); }
-  public void removeAll(Fig f) { _lay.removeAll(); }
-  public Enumeration elements() { return _lay.elements(); }
-  public Fig hit(Rectangle r) { return _lay.hit(r); }
-  public Enumeration elementsIn(Rectangle r) { return _lay.elementsIn(r); }
-  public Fig presentationFor(Object obj) { return _lay.presentationFor(obj); }
-  public void sendToBack(Fig f) { _lay.sendToBack(f); }
-  public void bringForward(Fig f) { _lay.bringForward(f); }
-  public void sendBackward(Fig f) { _lay.sendBackward(f); }
-  public void bringToFront(Fig f) { _lay.bringToFront(f); }
-  public void reorder(Fig f, int function) { _lay.reorder(f, function); }
-
-  ////////////////////////////////////////////////////////////////
-  // graph event handlers
-
-  public void nodeAdded(GraphEvent e) {
-    try { fireVetoableChange("nodeAdded", null, null); }
-    catch (PropertyVetoException pve) { }
-  }
-  public void edgeAdded(GraphEvent e) {
-    try { fireVetoableChange("edgeAdded", null, null); }
-    catch (PropertyVetoException pve) { }
-  }
-
-  public void nodeRemoved(GraphEvent e) {
-    try { fireVetoableChange("nodeRemoved", null, null); }
-    catch (PropertyVetoException pve) { }
-  }
-
-  public void edgeRemoved(GraphEvent e) {
-    try { fireVetoableChange("edgeRemoved", null, null); }
-    catch (PropertyVetoException pve) { }
-  }
-
-  public void graphChanged(GraphEvent e) {
-    try { fireVetoableChange("graphChanged", null, null); }
-    catch (PropertyVetoException pve) { }
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // VetoableChangeSupport
-
-
-  public void preSave() { _lay.preSave(); }
-  public void postSave() { _lay.postSave(); }
-  public void postLoad() { _lay.postLoad(); }
-
-  public synchronized void
-  addVetoableChangeListener(VetoableChangeListener listener) {
-    if (vetoListeners == null)
-      vetoListeners = new Vector();
-    vetoListeners.removeElement(listener);
-    vetoListeners.addElement(listener);
-  }
-
-  public synchronized void
-  removeVetoableChangeListener(VetoableChangeListener listener) {
-    if (vetoListeners == null) return;
-    vetoListeners.removeElement(listener);
-  }
-
-  public void fireVetoableChange(String propertyName, 
-				 boolean oldValue, boolean newValue) 
-       throws PropertyVetoException {
-	 fireVetoableChange(propertyName,
-			    new Boolean(oldValue),
-			    new Boolean(newValue));
-  }
-
-  public void fireVetoableChange(String propertyName, 
-				 int oldValue, int newValue) 
-       throws PropertyVetoException {
-	 fireVetoableChange(propertyName,
-			    new Integer(oldValue),
-			    new Integer(newValue));
-  }
-
-  public void fireVetoableChange(String propertyName, 
-				 Object oldValue, Object newValue) 
-       throws PropertyVetoException {
-	 if (vetoListeners == null) return;
-    if (oldValue != null && oldValue.equals(newValue)) return;
-    PropertyChangeEvent evt =
-      new PropertyChangeEvent(this,
-			      propertyName, oldValue, newValue);
-    try {
-      for (int i = 0; i < vetoListeners.size(); i++) {
-	VetoableChangeListener target = 
-	  (VetoableChangeListener) vetoListeners.elementAt(i);
-	target.vetoableChange(evt);
-      }
-    } catch (PropertyVetoException veto) {
-      // Create an event to revert everyone to the old value.
-      evt = new PropertyChangeEvent(this, propertyName, newValue, oldValue);
-      for (int i = 0; i < vetoListeners.size(); i++) {
-	try {
-	  VetoableChangeListener target =
-	    (VetoableChangeListener) vetoListeners.elementAt(i);
-	  target.vetoableChange(evt);
-	} catch (PropertyVetoException ex) {
-	  // We just ignore exceptions that occur during reversions.
-	}
-      }
-      // And now rethrow the PropertyVetoException.
-      throw veto;
+    ////////////////////////////////////////////////////////////////
+    // constructors
+    public Diagram() {
+        this("untitled");
     }
-  }
-} /* end class Diagram */
+
+    public Diagram(String name) {
+        this(name, new DefaultGraphModel());
+    }
+
+    public Diagram(String name, GraphModel graphModel) {
+        this(name, graphModel, new LayerPerspective(name, graphModel));
+    }
+
+    public Diagram(String name, GraphModel graphModel, LayerPerspective layer) {
+        _changeSupport = new PropertyChangeSupport(this);
+        _name = name;
+        _layer = layer;
+        setGraphModel(graphModel);
+    }
+
+    protected void initToolBar() {
+        _toolBar = new PaletteFig();
+    }
+
+    public void initialize(Object owner) {
+        /* do nothing by default */
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+    public ToolBar getToolBar() {
+
+        if(_toolBar == null)
+            initToolBar();
+
+        return _toolBar;
+    }
+
+    public void setToolBar(ToolBar tb) {
+        _toolBar = tb;
+    }
+
+    public String getComments() {
+        return _comments;
+    }
+
+    public void setComments(String c) throws PropertyVetoException {
+        fireVetoableChange("comments", _comments, c);
+        _comments = c;
+    }
+
+    public String getName() {
+        return _name;
+    }
+
+    public void setName(String name) throws PropertyVetoException {
+        fireVetoableChange("name", _name, name);
+
+        String oldName = _name;
+        _name = name;
+        _changeSupport.firePropertyChange(NAME_KEY, oldName, name);
+    }
+
+    public void setShowSingleMultiplicity(boolean enable) {
+    }
+
+    public boolean getShowSingleMultiplicity() {
+        return false;
+    }
+
+    public double getScale() {
+        return getLayer().getScale();
+    }
+
+    public void setScale(double scale) {
+        double oldScale = getScale();
+        getLayer().setScale(scale);
+        firePropertyChange(SCALE_KEY, new Double(oldScale), new Double(scale));
+    }
+
+    public String getClassAndModelID() {
+        return getClass().getName();
+    }
+
+    public GraphModel getGraphModel() {
+        return getLayer().getGraphModel();
+    }
+
+    public void setGraphModel(GraphModel gm) {
+
+        GraphModel oldGM = getLayer().getGraphModel();
+
+        if(oldGM != null)
+            oldGM.removeGraphEventListener(this);
+
+        getLayer().setGraphModel(gm);
+        gm.addGraphEventListener(this);
+    }
+
+    public GraphController getGraphController() {
+        return getLayer().getGraphController();
+    }
+
+    public LayerPerspective getLayer() {
+        return _layer;
+    }
+
+    public void setLayer(LayerPerspective layer) {
+        _layer = layer;
+    }
+
+    public int countContained(VectorSet owners) {
+
+        int count = 0;
+        int numOwners = owners.size();
+        List nodes = getNodes();
+
+        for(int i = 0; i < nodes.size(); i++) {
+
+            for(int j = 0; j < numOwners; j++) {
+
+                if(nodes.get(i) == owners.elementAt(j))
+                    count++;
+            }
+        }
+
+        List edges = getEdges();
+
+        for(int i = 0; i < edges.size(); i++) {
+
+            for(int j = 0; j < numOwners; j++) {
+
+                if(edges.get(i) == owners.elementAt(j))
+                    count++;
+            }
+        }
+
+        List figs = getLayer().getContents();
+
+        for(int i = 0; i < figs.size(); i++) {
+
+            for(int j = 0; j < numOwners; j++) {
+
+                if(figs.get(i) == owners.elementAt(j))
+                    count++;
+            }
+        }
+
+        return count;
+    }
+
+    public List getNodes() {
+
+        // needs-more-work: should just do getGraphModel().getNodes()
+        // but that is not updated when the diagram is loaded
+        List res = new ArrayList();
+        List figs = getLayer().getContents();
+        int size = figs.size();
+
+        for(int i = 0; i < size; i++) {
+
+            Object fig = figs.get(i);
+
+            if(fig instanceof FigNode)
+                res.add(((FigNode)fig).getOwner());
+        }
+
+        return res;
+    }
+
+    public List getEdges() {
+
+        // needs-more-work: should just do getGraphModel().getEdges()
+        // but that is not updated when the diagram is loaded
+        List res = new Vector();
+        List figs = getLayer().getContents();
+        int size = figs.size();
+
+        for(int i = 0; i < size; i++) {
+
+            Object fig = figs.get(i);
+
+            if((fig instanceof FigEdge) && (null != ((FigEdge)figs.get(i)).getOwner()))    // Some figs might not have a owner?
+                res.add(((FigEdge)fig).getOwner());
+        }
+
+        return res;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // accessors on the Layer
+    public void add(Fig f) {
+        _layer.add(f);
+    }
+
+    public void remove(Fig f) {
+        _layer.remove(f);
+    }
+
+    public void removeAll(Fig f) {
+        _layer.removeAll();
+    }
+
+    public Enumeration elements() {
+        Enumeration result = _layer.elements();
+
+        return result;
+    }
+
+    public Fig hit(Rectangle r) {
+        return _layer.hit(r);
+    }
+
+    public Enumeration elementsIn(Rectangle r) {
+        return _layer.elementsIn(r);
+    }
+
+    public Fig presentationFor(Object obj) {
+        return _layer.presentationFor(obj);
+    }
+
+    public void sendToBack(Fig f) {
+        _layer.sendToBack(f);
+    }
+
+    public void bringForward(Fig f) {
+        _layer.bringForward(f);
+    }
+
+    public void sendBackward(Fig f) {
+        _layer.sendBackward(f);
+    }
+
+    public void bringToFront(Fig f) {
+        _layer.bringToFront(f);
+    }
+
+    public void reorder(Fig f, int function) {
+        _layer.reorder(f, function);
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // graph event handlers
+    public void nodeAdded(GraphEvent e) {
+
+        try {
+            fireVetoableChange("nodeAdded", null, null);
+        }
+         catch(PropertyVetoException pve) {
+        }
+    }
+
+    public void edgeAdded(GraphEvent e) {
+
+        try {
+            fireVetoableChange("edgeAdded", null, null);
+        }
+         catch(PropertyVetoException pve) {
+        }
+    }
+
+    public void nodeRemoved(GraphEvent e) {
+
+        try {
+            fireVetoableChange("nodeRemoved", null, null);
+        }
+         catch(PropertyVetoException pve) {
+        }
+    }
+
+    public void edgeRemoved(GraphEvent e) {
+
+        try {
+            fireVetoableChange("edgeRemoved", null, null);
+        }
+         catch(PropertyVetoException pve) {
+        }
+    }
+
+    public void graphChanged(GraphEvent e) {
+
+        try {
+            fireVetoableChange("graphChanged", null, null);
+        }
+         catch(PropertyVetoException pve) {
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // VetoableChangeSupport
+    public void preSave() {
+        _layer.preSave();
+    }
+
+    public void postSave() {
+        _layer.postSave();
+    }
+
+    public void postLoad() {
+        _layer.postLoad();
+    }
+
+    public synchronized void addVetoableChangeListener(VetoableChangeListener listener) {
+
+        if(vetoListeners == null)
+            vetoListeners = new Vector();
+
+        vetoListeners.removeElement(listener);
+        vetoListeners.addElement(listener);
+    }
+
+    public synchronized void removeVetoableChangeListener(VetoableChangeListener listener) {
+
+        if(vetoListeners == null)
+            return;
+
+        vetoListeners.removeElement(listener);
+    }
+
+    public void fireVetoableChange(String propertyName, boolean oldValue, boolean newValue) throws PropertyVetoException {
+        fireVetoableChange(propertyName, new Boolean(oldValue), new Boolean(newValue));
+    }
+
+    public void fireVetoableChange(String propertyName, int oldValue, int newValue) throws PropertyVetoException {
+        fireVetoableChange(propertyName, new Integer(oldValue), new Integer(newValue));
+    }
+
+    public void fireVetoableChange(String propertyName, Object oldValue, Object newValue) throws PropertyVetoException {
+
+        if(vetoListeners == null)
+            return;
+
+        if(oldValue != null && oldValue.equals(newValue))
+            return;
+
+        PropertyChangeEvent evt = new PropertyChangeEvent(this, propertyName, oldValue, newValue);
+
+        try {
+
+            for(int i = 0; i < vetoListeners.size(); i++) {
+
+                VetoableChangeListener target = (VetoableChangeListener)vetoListeners.elementAt(i);
+                target.vetoableChange(evt);
+            }
+        }
+         catch(PropertyVetoException veto) {
+
+            // Create an event to revert everyone to the old value.
+            evt = new PropertyChangeEvent(this, propertyName, newValue, oldValue);
+
+            for(int i = 0; i < vetoListeners.size(); i++) {
+
+                try {
+
+                    VetoableChangeListener target = (VetoableChangeListener)vetoListeners.elementAt(i);
+                    target.vetoableChange(evt);
+                }
+                 catch(PropertyVetoException ex) {
+
+                    // We just ignore exceptions that occur during reversions.
+                }
+            }
+
+            // And now rethrow the PropertyVetoException.
+            throw veto;
+        }
+    }
+
+    //
+    // beans property change event handling
+    //
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        _changeSupport.addPropertyChangeListener(l);
+        _propertyChangeListeners.add(l);
+    }
+
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener l) {
+        _changeSupport.addPropertyChangeListener(propertyName, l);
+        _propertyChangeListeners.add(l);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        removePropertyChangeListenerInt(l);
+        _propertyChangeListeners.remove(l);
+    }
+
+    private void removePropertyChangeListenerInt(PropertyChangeListener l) {
+        _changeSupport.removePropertyChangeListener(l);
+    }
+
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener l) {
+        _changeSupport.removePropertyChangeListener(propertyName, l);
+        _propertyChangeListeners.remove(l);
+    }
+
+    public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+        _changeSupport.firePropertyChange(propertyName, oldValue, newValue);
+    }
+
+    // hardcore: called when diagram should be removed - especially when project is removed.  Per.
+    public void remove() {
+        for(Iterator iterator = _propertyChangeListeners.iterator(); iterator.hasNext();) {
+            PropertyChangeListener listener = (PropertyChangeListener)iterator.next();
+            removePropertyChangeListenerInt(listener);
+        }
+
+        vetoListeners.clear();
+    }
+}

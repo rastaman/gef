@@ -23,46 +23,25 @@
 
 package org.tigris.gef.demo;
 
+import org.tigris.gef.base.*;
+import org.tigris.gef.graph.presentation.JGraph;
+import org.tigris.gef.graph.presentation.JGraphFrame;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.ui.ToolBar;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import javax.swing.*;
-
-import org.tigris.gef.ui.*;
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.presentation.*;
+import java.util.List;
 
 public class BroomStudy {
 
-  ////////////////////////////////////////////////////////////////
-  // static variables
-  public static BroomStudy SINGLETON = new BroomStudy();
-  public static String[] _Labels = {
-    " CS 11\n Prof Adams\n Bldg. A",
-    " CS 12\n Prof Adams\n Bldg. A",
-    " CS 13\n Prof Adams\n Bldg. A",
-    " CS 144\n Prof Carter\n Bldg. B",
-    " CS 124\n Prof Adams\n Bldg. B",
-    " CS 196\n Prof Hayes-Grant\n Bldg. B",
-    " CS 162\n Prof Carter\n Bldg. B",
-    " CS 204\n Prof Carter\n Bldg. A",
-    " CS 254\n Prof Ford\n Bldg. A",
-    " Math 6A\n Prof Taft\n Bldg. A",
-    " Math 6B\n Prof Taft\n Bldg. A",
-    " Math 6C\n Prof Taft\n Bldg. C",
-    " Math 8\n Prof Arthur\n Bldg. C",
-    " Math 132\n Prof Taft\n Bldg. B",
-    " Math 142\n Prof Arthur\n Bldg. E",
-    " Math 182\n Prof Hoover\n Bldg. B",
-    " Hist 1A\n Prof Hayes-Grant\n Bldg. C",
-    " Hist 1B\n Prof Hayes-Grant\n Bldg. C",
-    " Hist 13\n Prof Hoover\n Bldg. C",
-    " Hist 139\n Prof Hoover\n Bldg. D",
-    " Math 242\n Prof Arthur\n Bldg. E",
-    " Hist 269\n Prof Arthur\n Bldg. E",
-    " Hist 287\n Prof Arthur\n Bldg. E",
-    " Hist 289\n Prof Hoover\n Bldg. E"
+    ////////////////////////////////////////////////////////////////
+    // static variables
+    public static BroomStudy SINGLETON = new BroomStudy();
+    public static String[] _Labels = {" CS 11\n Prof Adams\n Bldg. A", " CS 12\n Prof Adams\n Bldg. A", " CS 13\n Prof Adams\n Bldg. A", " CS 144\n Prof Carter\n Bldg. B", " CS 124\n Prof Adams\n Bldg. B", " CS 196\n Prof Hayes-Grant\n Bldg. B", " CS 162\n Prof Carter\n Bldg. B", " CS 204\n Prof Carter\n Bldg. A", " CS 254\n Prof Ford\n Bldg. A", " Math 6A\n Prof Taft\n Bldg. A", " Math 6B\n Prof Taft\n Bldg. A", " Math 6C\n Prof Taft\n Bldg. C", " Math 8\n Prof Arthur\n Bldg. C", " Math 132\n Prof Taft\n Bldg. B", " Math 142\n Prof Arthur\n Bldg. E", " Math 182\n Prof Hoover\n Bldg. B", " Hist 1A\n Prof Hayes-Grant\n Bldg. C", " Hist 1B\n Prof Hayes-Grant\n Bldg. C", " Hist 13\n Prof Hoover\n Bldg. C", " Hist 139\n Prof Hoover\n Bldg. D", " Math 242\n Prof Arthur\n Bldg. E", " Hist 269\n Prof Arthur\n Bldg. E", " Hist 287\n Prof Arthur\n Bldg. E", " Hist 289\n Prof Hoover\n Bldg. E"
 //     " CS 11\n Intro to CS-1\n Prof Adams\n Bldg. A",
 //     " CS 12\n Intro to CS-2\n Prof Adams\n Bldg. A",
 //     " CS 13\n Intro to CS-3\n Prof Adams\n Bldg. A",
@@ -85,28 +64,29 @@ public class BroomStudy {
 //     " Hist 139\n Adv. Historiography\n Prof Hoover\n Bldg. D",
 //     " Math 242\n Ethical Issues in Statistics\n Prof Arthur\n Bldg. E",
 //     " Hist 269\n Statistics in History\n Prof Arthur\n Bldg. E"
-  };
+    };
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  protected JGraphFrame _jgf;
-  protected ToolBar _tools;
-  protected EventMeter _meter = EventMeter.SINGLETON;
+    protected JGraphFrame _jgf;
+    protected ToolBar _tools;
+    protected EventMeter _meter = EventMeter.SINGLETON;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public BroomStudy() {
-    _jgf = new JGraphFrame();
-    _tools = new ToolBar();
-    Vector buttons = new Vector();
-    JButton b;
-    b = _tools.add(new CmdSetMode(ModeSelect.class, "Select"));
-    buttons.addElement(b);
-    b = _tools.add(new CmdSetMode(ModeBroom.class, "Broom"));
-    buttons.addElement(b);
-    _tools.addSeparator();
+    public BroomStudy() {
+        _jgf = new JGraphFrame();
+        _tools = new ToolBar();
+        _tools.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+        Vector buttons = new Vector();
+        JButton b;
+        b = _tools.add(new CmdSetMode(ModeSelect.class, "Select"));
+        buttons.addElement(b);
+        b = _tools.add(new CmdSetMode(ModeBroom.class, "Broom"));
+        buttons.addElement(b);
+        _tools.addSeparator();
 //     b = _tools.add(new CmdSetMode(ModeCreateFigCircle.class,
 // 				  "Circle"));
 //     buttons.addElement(b);
@@ -115,29 +95,29 @@ public class BroomStudy {
 //     buttons.addElement(b);
 //     _tools.addSeparator();
 
-    b = _tools.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
-    buttons.addElement(b);
-    b = _tools.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
-    buttons.addElement(b);
-    b = _tools.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
-    buttons.addElement(b);
-    _tools.addSeparator();
+        b = _tools.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
+        buttons.addElement(b);
+        b = _tools.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
+        buttons.addElement(b);
+        b = _tools.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
+        buttons.addElement(b);
+        _tools.addSeparator();
 
-    b = _tools.add(new CmdAlign(CmdAlign.ALIGN_LEFTS));
-    buttons.addElement(b);
-    b = _tools.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
-    buttons.addElement(b);
-    b = _tools.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS));
-    buttons.addElement(b);
+        b = _tools.add(new CmdAlign(CmdAlign.ALIGN_LEFTS));
+        buttons.addElement(b);
+        b = _tools.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
+        buttons.addElement(b);
+        b = _tools.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS));
+        buttons.addElement(b);
 //     b = _tools.add(new CmdAlign(CmdAlign.ALIGN_TO_GRID));
 //     buttons.addElement(b);
-    _tools.addSeparator();
-    b = _tools.add(new CmdDistribute(CmdDistribute.H_SPACING));
-    buttons.addElement(b);
+        _tools.addSeparator();
+        b = _tools.add(new CmdDistribute(CmdDistribute.H_SPACING));
+        buttons.addElement(b);
 //     b = _tools.add(new CmdDistribute(CmdDistribute.H_CENTERS));
 //     buttons.addElement(b);
-    b = _tools.add(new CmdDistribute(CmdDistribute.V_SPACING));
-    buttons.addElement(b);
+        b = _tools.add(new CmdDistribute(CmdDistribute.V_SPACING));
+        buttons.addElement(b);
 //     b = _tools.add(new CmdDistribute(CmdDistribute.V_CENTERS));
 //     buttons.addElement(b);
 //     _tools.addSeparator();
@@ -148,287 +128,331 @@ public class BroomStudy {
 //     b = _tools.add(new CmdNudge(CmdNudge.UP));
 //     buttons.addElement(b);
 //     b = _tools.add(new CmdNudge(CmdNudge.DOWN));
-    //    buttons.addElement(b);
-    _tools.addSeparator();
-    _tools.add(CmdStartTask.SINGLETON);
-    _tools.add(CmdFinished.SINGLETON);
+        //    buttons.addElement(b);
+        _tools.addSeparator();
+        _tools.add(CmdStartTask.SINGLETON);
+        _tools.add(CmdFinished.SINGLETON);
 
-    _jgf.setToolBar(_tools);
+        _jgf.setToolBar(_tools);
 
-    JGraph jg = _jgf.getGraph();
-    jg.addMouseListener(_meter);
-    jg.addMouseMotionListener(_meter);
-    jg.addKeyListener(_meter);
+        JGraph jg = _jgf.getGraph();
+        jg.addMouseListener(_meter);
+        jg.addMouseMotionListener(_meter);
+        jg.addKeyListener(_meter);
 
-    Enumeration enum = buttons.elements();
-    while (enum.hasMoreElements()) {
-      b = (JButton) enum.nextElement();
-      b.addMouseListener(_meter);
-      b.addMouseMotionListener(_meter);
-      b.addKeyListener(_meter);
+        Enumeration enum = buttons.elements();
+        while(enum.hasMoreElements()) {
+            b = (JButton)enum.nextElement();
+            b.addMouseListener(_meter);
+            b.addMouseMotionListener(_meter);
+            b.addKeyListener(_meter);
+        }
+
+        // make the delete key remove elements from the underlying GraphModel
+        //_jgf.getGraph().bindKey(new CmdDispose(), KeyEvent.VK_DELETE, 0);
+
     }
 
-    // make the delete key remove elements from the underlying GraphModel
-    //_jgf.getGraph().bindKey(new CmdDispose(), KeyEvent.VK_DELETE, 0);
+    public void reset() {
+        Editor ce = Globals.curEditor();
+        ce.getSelectionManager().deselectAll();
+        List diagramContents = ce.getLayerManager().getContents();
 
-  }
+        diagramContents = new ArrayList(diagramContents);
+        int count = diagramContents.size();
+        for(int figIndex = 0; figIndex < count; ++figIndex) {
+            Fig fig = (Fig)diagramContents.get(figIndex);
+            ce.remove(fig);
+        }
 
-  public void reset() {
-    Editor ce = Globals.curEditor();
-    ce.getSelectionManager().deselectAll();
-    Vector diagramContents = ce.getLayerManager().getContents();
-    diagramContents = (Vector) diagramContents.clone();
-    Enumeration enum = diagramContents.elements();
-    while (enum.hasMoreElements()) ce.remove((Fig)enum.nextElement());
-    Font font = new Font("sans", Font.PLAIN, 10);
-    FigText figs[] = new FigText[_Labels.length];
-    int row = 30, col = 30;
-    int GAP = 24;
-    for (int i = 0; i < figs.length; i++) {
-      FigText f = new FigText(10, 10, 10, 10);
-      figs[i] = f;
-      f.setText(_Labels[i]);
-      f.setFont(font);
-      f.setJustification(FigText.JUSTIFY_LEFT);
-      f.setLocation(col, row);
-      f.setTextColor(Color.black);
-      f.setLineSpacing(-4);
-      col += f.getWidth() + GAP;
-      if (col > 800) { col = 30; row += f.getHeight() + GAP; }
-      ce.add(figs[i]);
+        Font font = new Font("sans", Font.PLAIN, 10);
+        FigText figs[] = new FigText[_Labels.length];
+        int row = 30, col = 30;
+        int GAP = 24;
+        for(int i = 0; i < figs.length; i++) {
+            FigText f = new FigText(10, 10, 10, 10);
+            figs[i] = f;
+            f.setText(_Labels[i]);
+            f.setFont(font);
+            f.setJustification(FigText.JUSTIFY_LEFT);
+            f.setLocation(col, row);
+            f.setTextColor(Color.black);
+            f.setLineSpacing(-4);
+            col += f.getWidth() + GAP;
+            if(col > 800) {
+                col = 30;
+                row += f.getHeight() + GAP;
+            }
+            ce.add(figs[i]);
+        }
     }
-  }
 
-  public void start() {
-    _jgf.setBounds(0, 0, 1000, 760);
-    _jgf.setVisible(true);
-    reset();
-  }
+    public void start() {
+        _jgf.setBounds(0, 0, 1000, 760);
+        _jgf.setVisible(true);
+        reset();
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // main
+    ////////////////////////////////////////////////////////////////
+    // main
 
-  public static void main(String args[]) {
-    Globals.setShowFigTips(false);
-    BroomStudy.SINGLETON.start();
-  }
+    public static void main(String args[]) {
+        Globals.setShowFigTips(false);
+        BroomStudy.SINGLETON.start();
+    }
 
 
 } /* end class BroomStudy */
 
 
 class CmdStartTask extends Cmd {
-  public static CmdStartTask SINGLETON = new CmdStartTask();
-  public static long StartTime = 0L;
-  public static int RunNumber = 1;
-  public CmdStartTask() { super("Start..."); }
-  public void doIt() {
-    System.out.println("\n\nRunNumber: " + RunNumber++);
-    RandomPresent rp = new RandomPresent();
-    rp.setVisible(true);
-  }
+    public static CmdStartTask SINGLETON = new CmdStartTask();
+    public static long StartTime = 0L;
+    public static int RunNumber = 1;
 
-  public void startCounting() {
-    StartTime = System.currentTimeMillis();
-    EventMeter.SINGLETON.reset();
-    BroomStudy.SINGLETON.reset();
-    CmdStartTask.SINGLETON.setEnabled(false);
-    CmdFinished.SINGLETON.setEnabled(true);
-  }
+    public CmdStartTask() {
+        super("Start...");
+    }
 
-  public void undoIt() {
-    System.out.println("Undo does not make sense for CmdStartTask");
-  }
+    public void doIt() {
+        System.out.println("\n\nRunNumber: " + RunNumber++);
+        RandomPresent rp = new RandomPresent();
+        rp.setVisible(true);
+    }
+
+    public void startCounting() {
+        StartTime = System.currentTimeMillis();
+        EventMeter.SINGLETON.reset();
+        BroomStudy.SINGLETON.reset();
+        CmdStartTask.SINGLETON.setEnabled(false);
+        CmdFinished.SINGLETON.setEnabled(true);
+    }
+
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdStartTask");
+    }
 
 }
 
 class CmdFinished extends Cmd {
-  public static CmdFinished SINGLETON = new CmdFinished();
-  public static long Duration = 0L;
-  public CmdFinished() {
-    super("Finished...");
-    setEnabled(false);
-  }
-  public void doIt() {
-    Duration = System.currentTimeMillis() - CmdStartTask.StartTime;
-    System.out.println("duration: " + (Duration / 1000.0));
-    EventMeter.SINGLETON.dump();
-    EventMeter.SINGLETON.setCounting(false);
-    CmdStartTask.SINGLETON.setEnabled(true);
-    CmdFinished.SINGLETON.setEnabled(false);
-    RandomCheck rc = new RandomCheck(false);
-    rc.setVisible(true);
-  }
-  public void undoIt() {
-    System.out.println("Undo does not make sense for CmdFinished");
-  }
+    public static CmdFinished SINGLETON = new CmdFinished();
+    public static long Duration = 0L;
+
+    public CmdFinished() {
+        super("Finished...");
+        setEnabled(false);
+    }
+
+    public void doIt() {
+        Duration = System.currentTimeMillis() - CmdStartTask.StartTime;
+        System.out.println("duration: " + (Duration / 1000.0));
+        EventMeter.SINGLETON.dump();
+        EventMeter.SINGLETON.setCounting(false);
+        CmdStartTask.SINGLETON.setEnabled(true);
+        CmdFinished.SINGLETON.setEnabled(false);
+        RandomCheck rc = new RandomCheck(false);
+        rc.setVisible(true);
+    }
+
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdFinished");
+    }
 
 }
 
 
 class EventMeter implements MouseListener, MouseMotionListener, KeyListener {
 
-  public static EventMeter SINGLETON = new EventMeter();
+    public static EventMeter SINGLETON = new EventMeter();
 
-  public int clicks = 0;
-  public int drags = 0;
-  public int keys = 0;
-  public int exits = 0;
-  public boolean dragging = false;
-  public int distance = 0;
-  public int dragDistance = 0;
-  public boolean counting = false;
+    public int clicks = 0;
+    public int drags = 0;
+    public int keys = 0;
+    public int exits = 0;
+    public boolean dragging = false;
+    public int distance = 0;
+    public int dragDistance = 0;
+    public boolean counting = false;
 
-  public int lastX = -1, lastY = -1;
+    public int lastX = -1, lastY = -1;
 
-  private EventMeter() { }
-
-  public void reset() {
-    clicks = 0;
-    drags = 0;
-    keys = 0;
-    exits = 0;
-    dragging = false;
-    distance = 0;
-    dragDistance = 0;
-    counting = true;
-  }
-
-  public void dump() {
-    System.out.println("clicks = " + clicks);
-    System.out.println("drags = " + drags);
-    System.out.println("keys = " + keys);
-    System.out.println("exits = " + exits);
-    System.out.println("distance = " + distance);
-    System.out.println("dragDistance = " + dragDistance);
-  }
-
-  public void setCounting(boolean b) { counting = b; }
-
-  public void mouseMoved(MouseEvent me) {
-    if (!counting) return;
-    if (lastY != -1) {
-      int dx = me.getX() - lastX;
-      int dy = me.getY() - lastY;
-      distance += Math.sqrt(dx*dx+dy*dy);
+    private EventMeter() {
     }
-    dragging = false;
-    lastX = me.getX();
-    lastY = me.getY();
-  }
-  public void mouseDragged(MouseEvent me) {
-    if (!counting) return;
-    if (lastY != -1) {
-      int dx = me.getX() - lastX;
-      int dy = me.getY() - lastY;
-      dragDistance += Math.sqrt(dx*dx+dy*dy);
+
+    public void reset() {
+        clicks = 0;
+        drags = 0;
+        keys = 0;
+        exits = 0;
+        dragging = false;
+        distance = 0;
+        dragDistance = 0;
+        counting = true;
     }
-    if (!dragging) drags++;
-    dragging = true;
-    lastX = me.getX();
-    lastY = me.getY();
-  }
-  public void mousePressed(MouseEvent me) {
-    if (!counting) return;
-    clicks++;
-  }
-  public void mouseReleased(MouseEvent me) { }
-  public void mouseExited(MouseEvent me) {
-    if (!counting) return;
-    exits++;
-  }
-  public void mouseEntered(MouseEvent me) { }
-  public void mouseClicked(MouseEvent me) {
-  }
-  public void keyPressed(KeyEvent ke) {  }
-  public void keyReleased(KeyEvent ke) { }
-  public void keyTyped(KeyEvent ke) {
-    if (!counting) return;
-    keys++;
-  }
+
+    public void dump() {
+        System.out.println("clicks = " + clicks);
+        System.out.println("drags = " + drags);
+        System.out.println("keys = " + keys);
+        System.out.println("exits = " + exits);
+        System.out.println("distance = " + distance);
+        System.out.println("dragDistance = " + dragDistance);
+    }
+
+    public void setCounting(boolean b) {
+        counting = b;
+    }
+
+    public void mouseMoved(MouseEvent me) {
+        if(!counting)
+            return;
+        if(lastY != -1) {
+            int dx = me.getX() - lastX;
+            int dy = me.getY() - lastY;
+            distance += Math.sqrt(dx * dx + dy * dy);
+        }
+        dragging = false;
+        lastX = me.getX();
+        lastY = me.getY();
+    }
+
+    public void mouseDragged(MouseEvent me) {
+        if(!counting)
+            return;
+        if(lastY != -1) {
+            int dx = me.getX() - lastX;
+            int dy = me.getY() - lastY;
+            dragDistance += Math.sqrt(dx * dx + dy * dy);
+        }
+        if(!dragging)
+            drags++;
+        dragging = true;
+        lastX = me.getX();
+        lastY = me.getY();
+    }
+
+    public void mousePressed(MouseEvent me) {
+        if(!counting)
+            return;
+        clicks++;
+    }
+
+    public void mouseReleased(MouseEvent me) {
+    }
+
+    public void mouseExited(MouseEvent me) {
+        if(!counting)
+            return;
+        exits++;
+    }
+
+    public void mouseEntered(MouseEvent me) {
+    }
+
+    public void mouseClicked(MouseEvent me) {
+    }
+
+    public void keyPressed(KeyEvent ke) {
+    }
+
+    public void keyReleased(KeyEvent ke) {
+    }
+
+    public void keyTyped(KeyEvent ke) {
+        if(!counting)
+            return;
+        keys++;
+    }
 } /* end class EventMeter */
 
 
 class RandomPresent extends JFrame implements ActionListener {
-  public static int NUM_RANDOMS = 6;
-  public static int[] nums = new int[NUM_RANDOMS];
+    public static int NUM_RANDOMS = 6;
+    public static int[] nums = new int[NUM_RANDOMS];
 
-  public RandomPresent() {
-    super("Short term memory load");
-    String numsStr = "";
-    Random r = new Random();
-    for (int i = 0; i < nums.length; i++) {
-      nums[i] = Math.abs(r.nextInt() % 89) + 10;
-      numsStr += nums[i] + "  ";
+    public RandomPresent() {
+        super("Short term memory load");
+        String numsStr = "";
+        Random r = new Random();
+        for(int i = 0; i < nums.length; i++) {
+            nums[i] = Math.abs(r.nextInt() % 89) + 10;
+            numsStr += nums[i] + "  ";
+        }
+        getContentPane().setLayout(new BorderLayout());
+        JLabel instr = new JLabel("Please memorize the following numbers");
+        JTextField text = new JTextField(80);
+        text.setText(numsStr);
+        text.setFont(new Font("Monospaced", Font.BOLD, 24));
+        instr.setFont(new Font("Sans", Font.BOLD, 18));
+        JButton next = new JButton("Next >");
+        getContentPane().add(instr, BorderLayout.NORTH);
+        getContentPane().add(text, BorderLayout.CENTER);
+        getContentPane().add(next, BorderLayout.SOUTH);
+        next.addActionListener(this);
+        setBounds(100, 150, 450, 100);
+        text.setEditable(false);
+        System.out.println("Generated: " + text.getText());
     }
-    getContentPane().setLayout(new BorderLayout());
-    JLabel instr = new JLabel("Please memorize the following numbers");
-    JTextField text = new JTextField(80);
-    text.setText(numsStr);
-    text.setFont(new Font("Monospaced", Font.BOLD, 24));
-    instr.setFont(new Font("Sans", Font.BOLD, 18));
-    JButton next = new JButton("Next >");
-    getContentPane().add(instr, BorderLayout.NORTH);
-    getContentPane().add(text, BorderLayout.CENTER);
-    getContentPane().add(next, BorderLayout.SOUTH);
-    next.addActionListener(this);
-    setBounds(100, 150, 450, 100);
-    text.setEditable(false);
-    System.out.println("Generated: " + text.getText());
-  }
 
-  public void actionPerformed(ActionEvent ae) {
-    setVisible(false);
-    RandomCheck rc = new RandomCheck(true);
-    rc.setVisible(true);
-  }
+    public void actionPerformed(ActionEvent ae) {
+        setVisible(false);
+        RandomCheck rc = new RandomCheck(true);
+        rc.setVisible(true);
+    }
 }
 
 
 class RandomCheck extends JFrame implements ActionListener {
-  boolean _isStart = false;
-  JTextField text;
-  public RandomCheck(boolean isStart) {
-    super("Check your memory");
-    String numsStr = "";
-    _isStart = isStart;
-    for (int i = 0; i < RandomPresent.nums.length; i++) {
-      numsStr += RandomPresent.nums[i] + "  ";
-    }
-    getContentPane().setLayout(new BorderLayout());
-    JLabel instr = new JLabel("Please enter the numbers you memorized");
-    text = new JTextField(80);
-    text.setFont(new Font("Monospaced", Font.BOLD, 24));
-    instr.setFont(new Font("Sans", Font.BOLD, 18));
-    JButton next = new JButton("Done");
-    getContentPane().add(instr, BorderLayout.NORTH);
-    getContentPane().add(text, BorderLayout.CENTER);
-    getContentPane().add(next, BorderLayout.SOUTH);
-    next.addActionListener(this);
-    setBounds(100, 150, 450, 100);
-  }
-  public void setVisible(boolean b) {
-    super.setVisible(b);
-    if (b) text.requestFocus();
-  }
+    boolean _isStart = false;
+    JTextField text;
 
-  public void actionPerformed(ActionEvent ae) {
-    setVisible(false);
-    int entered[] = new int[100];
-    int numEntered = 0, score = 0;
-    StringTokenizer st = new StringTokenizer(text.getText(), ", \t\n");
-    while (st.hasMoreElements()) {
-      String tok = st.nextToken();
-      int r = Integer.parseInt(tok);
-      entered[numEntered++] = r;
-      for (int i = 0; i < RandomPresent.nums.length; i++) {
-	if (r == RandomPresent.nums[i]) { score++; break; }
-      }
+    public RandomCheck(boolean isStart) {
+        super("Check your memory");
+        String numsStr = "";
+        _isStart = isStart;
+        for(int i = 0; i < RandomPresent.nums.length; i++) {
+            numsStr += RandomPresent.nums[i] + "  ";
+        }
+        getContentPane().setLayout(new BorderLayout());
+        JLabel instr = new JLabel("Please enter the numbers you memorized");
+        text = new JTextField(80);
+        text.setFont(new Font("Monospaced", Font.BOLD, 24));
+        instr.setFont(new Font("Sans", Font.BOLD, 18));
+        JButton next = new JButton("Done");
+        getContentPane().add(instr, BorderLayout.NORTH);
+        getContentPane().add(text, BorderLayout.CENTER);
+        getContentPane().add(next, BorderLayout.SOUTH);
+        next.addActionListener(this);
+        setBounds(100, 150, 450, 100);
     }
-    System.out.println("Entered: " + text.getText());
-    System.out.println("score: " + score);
-    if (_isStart) CmdStartTask.SINGLETON.startCounting();
-  }
+
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+        if(b)
+            text.requestFocus();
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        setVisible(false);
+        int entered[] = new int[100];
+        int numEntered = 0, score = 0;
+        StringTokenizer st = new StringTokenizer(text.getText(), ", \t\n");
+        while(st.hasMoreElements()) {
+            String tok = st.nextToken();
+            int r = Integer.parseInt(tok);
+            entered[numEntered++] = r;
+            for(int i = 0; i < RandomPresent.nums.length; i++) {
+                if(r == RandomPresent.nums[i]) {
+                    score++;
+                    break;
+                }
+            }
+        }
+        System.out.println("Entered: " + text.getText());
+        System.out.println("score: " + score);
+        if(_isStart)
+            CmdStartTask.SINGLETON.startCounting();
+    }
 }
 
 

@@ -64,7 +64,6 @@ public class CmdRemovePoint extends Cmd {
     if (sm.selections().isEmpty()) return;
     sel = (Selection) sm.selections().firstElement();
     f = (Fig) sel.getContent();
-    f.startTrans();
     f.removePoint(_selectedHandle);
     f.endTrans();
   }
