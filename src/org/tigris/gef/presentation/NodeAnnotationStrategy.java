@@ -17,9 +17,9 @@ public class NodeAnnotationStrategy extends AnnotationStrategy{
 		Fig owner = annotation.getAnnotationOwner();
 		// in this case: owner is a node
 		if (! ( (owner instanceof FigEdge) || (owner instanceof FigLine) )){
-			ArrayList list = (ArrayList)annotations.get(annotation);
-			delta_x = ((Integer)list.get(0)).intValue();
-			delta_y = ((Float)list.get(1)).floatValue();							
+			AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
+			delta_x = prop.getOffset();
+			delta_y = prop.getRatio();
 			int own_x = (int) owner.center().x;
 			int own_y = (int) owner.center().y;
 			int newX = (int) (own_x + delta_x);
@@ -29,39 +29,40 @@ public class NodeAnnotationStrategy extends AnnotationStrategy{
 		}
 		return new Point(1,1);
 	}
-		
+
 	public void storeAnnotationPosition(Fig annotation){
 		int delta_x; float delta_y;
 		Fig owner = annotation.getAnnotationOwner();
 		// in this case: owner is a node
 		if (! ( (owner instanceof FigEdge) || (owner instanceof FigLine) )){
 			Point anPos 	= annotation.center();
-			Point ownerPos 	= owner.center();		
+			Point ownerPos 	= owner.center();
 			delta_x = anPos.x-ownerPos.x;
 			delta_y = anPos.y-ownerPos.y;
 			// store values
-			ArrayList list = (ArrayList)annotations.get(annotation);
-			FigLine line = (FigLine)list.get(2);
-			list.add(0, new Integer(delta_x));
-			list.add(1, new Float(delta_y));
-			list.add(2, line);				
-			annotations.put(annotation, list);
+                        AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
+			prop.setOffset(delta_x ,prop.hasFixedOffset());
+			prop.setRatio(delta_y,prop.hasFixedRatio());
 		}
-		drawConnectingLine(annotation);
 	}
 
 	public void drawConnectingLine(Fig annotation){
+                // if duration=0 -> do not draw the connecting line
+                if (getAnnotationProperties(annotation).getLineVisibilityDuration() == 0) return;
 		Fig owner = annotation.getAnnotationOwner();
 		AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
-		FigLine line = prop.getConnectingLine();
+                FigLine line = prop.getConnectingLine();
 		line.setShape(annotation.center(), owner.center());
 		line.setLineColor(Color.red);
 		line.setFillColor(Color.red);
 		line.setDashed(true);
 		if (!(Globals.curEditor().getLayerManager().getContents().contains(line))) Globals.curEditor().add(line);
 		Globals.curEditor().getLayerManager().bringToFront(annotation);
+		Globals.curEditor().getLayerManager().sendToBack(line);
 		line.damage();
 		annotation.damage();
+		// remove line automatically
+		AnnotationLineRemover.instance().removeLineIn( getAnnotationProperties(annotation).getLineVisibilityDuration(),annotation );
         }
 		
 	// move annotations to its new position

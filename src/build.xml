@@ -254,10 +254,10 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <copy todir="${dist.dir}">
       <fileset dir="${lib.dir}" excludes="**/classes/**, **/${ignore_this}" />
     </copy>
-    <zip zipfile="${Name}-${version}.zip" basedir="${dist.dir}"/>
-    <tar tarfile="${Name}-${version}.tar" basedir="${dist.dir}"/>
-    <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar" />
-    <delete file="${Name}-${version}.tar"/>
+    <zip zipfile="${Name}-${version}-bin.zip" basedir="${dist.dir}"/>
+    <tar tarfile="${Name}-${version}-bin.tar" basedir="${dist.dir}"/>
+    <gzip zipfile="${Name}-${version}-bin.tar.gz" src="${Name}-${version}-bin.tar" />
+    <delete file="${Name}-${version}-bin.tar"/>
     <delete dir="${dist.dir}"/>
   </target>
 
@@ -273,7 +273,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <tar tarfile="${Name}-${version}-src.tar" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak GEF*"/>
     <gzip zipfile="${Name}-${version}-src.tar.gz" src="${Name}-${version}-src.tar" />
     <delete file="${Name}-${version}-src.tar"/>
-  </target>                                                                                                                                                                    
+  </target>
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
   <!-- =================================================================== -->
