@@ -159,9 +159,8 @@ public class PGMLParser extends HandlerBase {
             if(initStr != null && !initStr.equals("")) {
                 _diagram.initialize(findOwner(initStr));
             }
-        }
-        catch(Exception ex) {
-            System.out.println("could not set diagram type to " + newClassName);
+        } catch(Exception ex) {
+            //System.out.println("could not set diagram type to " + newClassName);
             ex.printStackTrace();
         }
     }
