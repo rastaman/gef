@@ -33,7 +33,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -44,10 +45,6 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 
 public abstract class SAXParserBase extends DefaultHandler {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger.getLogger(SAXParserBase.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -93,13 +90,7 @@ public abstract class SAXParserBase extends DefaultHandler {
     private boolean       stats         = true;
     private long          parseTime     = 0;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
-//    private         boolean       startElement  = false;
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
+    private static Log LOG = LogFactory.getLog(SAXParserBase.class);
 
     /**
      * @param s true if statistics have to be shown
