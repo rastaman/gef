@@ -103,11 +103,11 @@ public class ModeCreatePolyEdge extends ModeCreate {
   public void mousePressed(MouseEvent me) {
     if (me.isConsumed()) return;
     int x = me.getX(), y = me.getY();
-    //Editor _editor = Globals.curEditor();
-    Fig underMouse = _editor.hit(x, y);
+    //Editor editor = Globals.curEditor();
+    Fig underMouse = editor.hit(x, y);
     if (underMouse == null) {
       //System.out.println("bighit");
-      underMouse = _editor.hit(x-16, y-16, 32, 32);
+      underMouse = editor.hit(x-16, y-16, 32, 32);
     }
     if (underMouse == null && _npoints == 0) { done(); me.consume(); return; }
     if (!(underMouse instanceof FigNode) && _npoints == 0) {
@@ -136,9 +136,9 @@ public class ModeCreatePolyEdge extends ModeCreate {
     if (_sourceFigNode == null) { done(); me.consume(); return; }
 
     int x = me.getX(), y = me.getY();
-    Fig f = _editor.hit(x, y);
-    if (f == null) { f = _editor.hit(x-16, y-16, 32, 32); }
-    GraphModel gm = _editor.getGraphModel();
+    Fig f = editor.hit(x, y);
+    if (f == null) { f = editor.hit(x-16, y-16, 32, 32); }
+    GraphModel gm = editor.getGraphModel();
     if (!(gm instanceof MutableGraphModel)) f = null;
     MutableGraphModel mgm = (MutableGraphModel) gm;
     // needs-more-work: potential class cast exception
@@ -161,8 +161,8 @@ public class ModeCreatePolyEdge extends ModeCreate {
 	FigPoly p = (FigPoly) _newItem;
 	if (foundPort == _startPort && _npoints >= 4) p.setSelfLoop(true);
 	//_npoints = 0;
-	_editor.damaged(p);
-	//_editor.getSelectionManager().select(p);
+	editor.damaged(p);
+	//editor.getSelectionManager().select(p);
 	p._isComplete = true;
 
 	Class edgeClass = (Class) getArg("edgeClass");
@@ -180,10 +180,10 @@ public class ModeCreatePolyEdge extends ModeCreate {
 	  System.out.println("MutableGraphModel connect() return null");
 	}
 	else {
-	  LayerManager lm = _editor.getLayerManager();
+	  LayerManager lm = editor.getLayerManager();
 	  _sourceFigNode.damage();
 	  destFigNode.damage();
-	  Layer lay = _editor.getLayerManager().getActiveLayer();
+	  Layer lay = editor.getLayerManager().getActiveLayer();
 	  FigEdge fe = (FigEdge) lay.presentationFor(_newEdge);
 	  _newItem.setLineColor(Color.black);
 	  fe.setFig(_newItem);
@@ -192,8 +192,8 @@ public class ModeCreatePolyEdge extends ModeCreate {
 	  fe.setDestPortFig(destPortFig);
 	  fe.setDestFigNode(destFigNode);
 
-	  if (fe != null) _editor.getSelectionManager().select(fe);
-	  _editor.damaged(fe);
+	  if (fe != null) editor.getSelectionManager().select(fe);
+	  editor.damaged(fe);
 
           // if the new edge implements the MouseListener interface it has to receive the mouseReleased() event
           if (fe instanceof MouseListener) ((MouseListener) fe).mouseReleased(me);
@@ -201,8 +201,6 @@ public class ModeCreatePolyEdge extends ModeCreate {
           // set the new edge in place
           if (_sourceFigNode != null ) _sourceFigNode.updateEdges();
           if (destFigNode != null  ) destFigNode.updateEdges();
-
-
 	}
 	done();
 	me.consume();
@@ -210,12 +208,12 @@ public class ModeCreatePolyEdge extends ModeCreate {
       }
     }
     if (!nearLast(x, y)) {
-      _editor.damaged(_newItem);
+      editor.damaged(_newItem);
       Point snapPt = new Point(x, y);
-      _editor.snap(snapPt);
+      editor.snap(snapPt);
       ((FigPoly)_newItem).addPoint(snapPt.x, snapPt.y);
       _npoints++;
-      _editor.damaged(_newItem);
+      editor.damaged(_newItem);
     }
     _lastX = x; _lastY = y;
     me.consume();
@@ -231,12 +229,12 @@ public class ModeCreatePolyEdge extends ModeCreate {
     if (_npoints == 0) { me.consume(); return; }
     if (_newItem == null) { me.consume(); return; }
     FigPoly p = (FigPoly)_newItem;
-    _editor.damaged(_newItem); // startTrans?
+    editor.damaged(_newItem); // startTrans?
     Point snapPt = new Point(x, y);
-    _editor.snap(snapPt);
+    editor.snap(snapPt);
     _handle.index = p.getNumPoints() - 1;
     p.moveVertex(_handle, snapPt.x, snapPt.y, true);
-    _editor.damaged(_newItem); // endTrans?
+    editor.damaged(_newItem); // endTrans?
     me.consume();
   }
 
@@ -250,7 +248,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
 
   public void done() {
     super.done();
-    if (_newItem != null) _editor.damaged(_newItem);
+    if (_newItem != null) editor.damaged(_newItem);
     _newItem = null;// use this as the fig for the new FigEdge
     _npoints = 0;
     _sourceFigNode = null;
@@ -260,12 +258,11 @@ public class ModeCreatePolyEdge extends ModeCreate {
 
   ////////////////////////////////////////////////////////////////
   // key events
- 
+
   public void keyTyped(KeyEvent ke) {
     if (ke.getKeyChar() == '') { // escape
       done();
       ke.consume();
     }
   }
-
 } /* end class ModeCreatePolyEdge */

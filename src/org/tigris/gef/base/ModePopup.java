@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 package org.tigris.gef.base;
 
 import java.awt.*;
@@ -38,7 +36,7 @@ import org.tigris.gef.ui.PopupGenerator;
  *  yet. It should ask the Fig under the mouse what menu it should
  *  offer. */
 
-public class ModePopup extends Mode {
+public class ModePopup extends FigModifyingModeImpl {
 
   ////////////////////////////////////////////////////////////////
   //  constructor
@@ -56,9 +54,9 @@ public class ModePopup extends Mode {
 
   public void showPopup(MouseEvent me) {
     int x = me.getX(), y = me.getY();
-    Fig underMouse = _editor.hit(x, y);
+    Fig underMouse = editor.hit(x, y);
     if (!(underMouse instanceof PopupGenerator)) return;
-    _editor.getSelectionManager().select(underMouse);
+    editor.getSelectionManager().select(underMouse);
     JPopupMenu popup = new JPopupMenu("test");
     Vector actions = ((PopupGenerator)underMouse).getPopUpActions(me);
     int size = actions.size();
@@ -67,7 +65,7 @@ public class ModePopup extends Mode {
       if (a instanceof AbstractAction) popup.add((AbstractAction) a);
       else if (a instanceof JMenu) popup.add((JMenu) a);
     }
-    popup.show(_editor.getAwtComponent(), me.getX(), me.getY());
+    popup.show(editor.getAwtComponent(), me.getX(), me.getY());
   }
 
   ////////////////////////////////////////////////////////////////

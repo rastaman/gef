@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: ModeCreate.java
 // Classes: ModeCreate
 // Original Author: jrobbins@ics.uci.edu
@@ -58,7 +55,7 @@ import org.tigris.gef.presentation.*;
  * @see ModeCreateFigImage
  */
 
-public abstract class ModeCreate extends Mode {
+public abstract class ModeCreate extends FigModifyingModeImpl {
   ////////////////////////////////////////////////////////////////
   // static variables
 
@@ -104,7 +101,7 @@ public abstract class ModeCreate extends Mode {
     start();
     synchronized (snapPt) {
       snapPt.setLocation(me.getX(), me.getY());
-      _editor.snap(snapPt);
+      editor.snap(snapPt);
       anchorX = snapPt.x;
       anchorY = snapPt.y;
     }
@@ -120,15 +117,15 @@ public abstract class ModeCreate extends Mode {
    *  not really the same thing as dragging after creation....<p>
    *
    *  Note: _newItem has not been added to any Layer yet. So you cannot
-   *  use _newItem.damage(), instead use _editor.damaged(_newItem). */
+   *  use _newItem.damage(), instead use editor.damaged(_newItem). */
   public void mouseDragged(MouseEvent me) {
     if (me.isConsumed()) return;
     if (_newItem != null) {
-      _editor.damaged(_newItem);
+      editor.damaged(_newItem);
       creationDrag(me.getX(), me.getY());
-      _editor.damaged(_newItem);
+      editor.damaged(_newItem);
     }
-    _editor.scrollToShow(me.getX(), me.getY());
+    editor.scrollToShow(me.getX(), me.getY());
     me.consume();
   }
 
@@ -137,10 +134,10 @@ public abstract class ModeCreate extends Mode {
   public void mouseReleased(MouseEvent me) {
     if (me.isConsumed()) return;
     if (_newItem != null) {
-      _editor.damaged(_newItem);
+      editor.damaged(_newItem);
       creationDrag(me.getX(), me.getY());
-      _editor.add(_newItem);
-      _editor.getSelectionManager().select(_newItem);
+      editor.add(_newItem);
+      editor.getSelectionManager().select(_newItem);
       _newItem = null;
     }
     done();
@@ -159,7 +156,7 @@ public abstract class ModeCreate extends Mode {
     int snapX, snapY;
     synchronized (snapPt) {
       snapPt.setLocation(x, y);
-      _editor.snap(snapPt);
+      editor.snap(snapPt);
       snapX = snapPt.x;
       snapY = snapPt.y;
     }

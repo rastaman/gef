@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: ModeSelect.java
 // Classes: ModeSelect
 // Original Author: ics125 spring 1996
@@ -58,7 +56,7 @@ import org.tigris.gef.presentation.*;
  * @see Fig
  * @see Editor */
 
-public class ModeSelect extends Mode {
+public class ModeSelect extends FigModifyingModeImpl {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -108,11 +106,11 @@ public class ModeSelect extends Mode {
     _selectAnchor = new Point(x, y);
     _selectRect.setBounds(x, y, 0, 0);
     _toggleSelection = me.isShiftDown();
-    SelectionManager sm = _editor.getSelectionManager();
+    SelectionManager sm = editor.getSelectionManager();
     Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
 
     /* Check if multiple things are selected and user clicked one of them. */
-    Fig underMouse = _editor.hit(_selectAnchor);
+    Fig underMouse = editor.hit(_selectAnchor);
     if (underMouse == null && !sm.hit(hitRect)) return;
 
     Handle h = new Handle(-1);
@@ -146,10 +144,10 @@ public class ModeSelect extends Mode {
     int bound_w = Math.max(_selectAnchor.x, x) - bound_x;
     int bound_h = Math.max(_selectAnchor.y, y) - bound_y;
 
-    _editor.damaged(_selectRect);
+    editor.damaged(_selectRect);
     _selectRect.setBounds(bound_x, bound_y, bound_w, bound_h);
-    _editor.damaged(_selectRect);
-    _editor.scrollToShow(x, y);
+    editor.damaged(_selectRect);
+    editor.scrollToShow(x, y);
 
     me.consume();
   }
@@ -163,7 +161,7 @@ public class ModeSelect extends Mode {
     Vector selectList = new Vector();
 
     Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
-    Enumeration figs = _editor.figs();
+    Enumeration figs = editor.figs();
     while (figs.hasMoreElements()) {
       Fig f = (Fig) figs.nextElement();
       if ((!_toggleSelection && _selectRect.isEmpty() && f.hit(hitRect)) ||
@@ -172,17 +170,17 @@ public class ModeSelect extends Mode {
       }
     }
     if (!_selectRect.isEmpty() && selectList.isEmpty()) {
-       figs = _editor.figs();
+       figs = editor.figs();
        while (figs.hasMoreElements()) {
 	 Fig f = (Fig) figs.nextElement();
 	 if (f.intersects(_selectRect)) selectList.addElement(f);
        }
     }
-    if (_toggleSelection) _editor.getSelectionManager().toggle(selectList);
-    else _editor.getSelectionManager().select(selectList);
+    if (_toggleSelection) editor.getSelectionManager().toggle(selectList);
+    else editor.getSelectionManager().select(selectList);
 
     _selectRect.grow(1,1); /* make sure it is not empty for redraw */
-    _editor.damaged(_selectRect);
+    editor.damaged(_selectRect);
     if (me.getModifiers() == InputEvent.BUTTON3_MASK) return;
     me.consume();
   }
@@ -215,14 +213,14 @@ public class ModeSelect extends Mode {
    *  should not be in ModeSelect, I wanted to move it to ModeModify,
    *  but it is too tighly integrated with ModeSelect. */
   protected void gotoModifyMode(MouseEvent me) {
-    Mode nextMode = new ModeModify(_editor);
-    _editor.mode(nextMode);
+    FigModifyingModeImpl nextMode = new ModeModify(editor);
+    editor.mode(nextMode);
     nextMode.mousePressed(me);
   }
 
   protected void gotoBroomMode(MouseEvent me) {
-    Mode nextMode = new ModeBroom(_editor);
-    _editor.mode(nextMode);
+    FigModifyingModeImpl nextMode = new ModeBroom(editor);
+    editor.mode(nextMode);
     nextMode.mousePressed(me);
   }
 } /* end class ModeSelect */

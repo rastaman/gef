@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: ModeBroom.java
 // Classes: ModeBroom
 // Original Author: ics125 spring 1996
@@ -36,7 +34,7 @@ import java.util.*;
 
 import org.tigris.gef.presentation.*;
 
-public class ModeBroom extends Mode {
+public class ModeBroom extends FigModifyingModeImpl {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -124,8 +122,8 @@ public class ModeBroom extends Mode {
     _lastX1 = x1;  _lastY1 = y1;
     _lastX2 = x2;  _lastY2 = y2;
     _selectRect.setBounds(x1 - 14, y1 - 14, x2 - x1 + 28, y2 - y1 + 28);
-    _editor.damaged(_selectRect);
-    _editor.getSelectionManager().deselectAll();
+    editor.damaged(_selectRect);
+    editor.getSelectionManager().deselectAll();
     me.consume();
     _hint = null;
     start();
@@ -139,14 +137,14 @@ public class ModeBroom extends Mode {
     _lastMX = me.getX();
     _lastMY = me.getY();
     Point snapPt = new Point(me.getX(), me.getY());
-    _editor.snap(snapPt);
+    editor.snap(snapPt);
     int x = snapPt.x;
     int y = snapPt.y;
     int i;
     _selectRect.setBounds(x1 - 4, y1 - 4, x2 - x1 + 8, y2 - y1 + 8);
     _bigDamageRect.setLocation(x1 - 200, y1 - 200);
-    _editor.damaged(_bigDamageRect);
-    _editor.damaged(_selectRect);
+    editor.damaged(_bigDamageRect);
+    editor.damaged(_selectRect);
 
     if (_dir == UNDEFINED) {
       if (me.isShiftDown()) _broomMargin = SMALL_BROOM_WIDTH;
@@ -269,7 +267,7 @@ public class ModeBroom extends Mode {
     }
     }
     _selectRect.setBounds(x1 - 4, y1 - 4, x2 - x1 + 8, y2 - y1 + 8);
-    _editor.damaged(_selectRect);
+    editor.damaged(_selectRect);
     _hint = null;
     touching();
   }
@@ -280,9 +278,9 @@ public class ModeBroom extends Mode {
     if (me.isConsumed()) return;
     _selectRect.setBounds(x1 - 1, y1 - 1, x2 - x1 + 2, y2 - y1 + 20);
     _bigDamageRect.setLocation(x1 - 200, y1 - 200);
-    _editor.damaged(_bigDamageRect);
-    _editor.damaged(_selectRect);
-    _editor.getSelectionManager().select(_LastTouched);
+    editor.damaged(_bigDamageRect);
+    editor.damaged(_selectRect);
+    editor.getSelectionManager().select(_LastTouched);
     _draw = false;
     done();
     me.consume();
@@ -295,7 +293,7 @@ public class ModeBroom extends Mode {
     _addRect.setBounds(_lastX1, _lastY1, _lastX2 - _lastX1,
 		       _lastY2 - _lastY1);
     _addRect.add(_selectRect);
-    Enumeration figs = _editor.figs();
+    Enumeration figs = editor.figs();
     while (figs.hasMoreElements()) {
       Fig f = (Fig) figs.nextElement();
       if (_addRect.intersects(f.getBounds())) {
@@ -332,8 +330,8 @@ public class ModeBroom extends Mode {
       return;
     }
     _bigDamageRect.setLocation(x1 - 200, y1 - 200);
-    _editor.damaged(_bigDamageRect);
-    _editor.damaged(_selectRect);
+    editor.damaged(_bigDamageRect);
+    editor.damaged(_selectRect);
   }
 
   ////////////////////////////////////////////////////////////////

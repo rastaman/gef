@@ -78,12 +78,12 @@ public class ModeCreateFigPoly extends ModeCreate {
     int x = me.getX(), y = me.getY();
     if (_npoints == 0) { super.mousePressed(me); }
     if (!nearLast(x, y)) {
-      _editor.damaged(_newItem);
+      editor.damaged(_newItem);
       Point snapPt = new Point(x, y);
-      _editor.snap(snapPt);
+      editor.snap(snapPt);
       ((FigPoly)_newItem).addPoint(snapPt.x, snapPt.y);
       _npoints++;
-      _editor.damaged(_newItem);
+      editor.damaged(_newItem);
     }
     me.consume();
   }
@@ -93,13 +93,13 @@ public class ModeCreateFigPoly extends ModeCreate {
     int x = me.getX(), y = me.getY();
     if (_npoints > 2 && nearLast(x, y)) {
       FigPoly p = (FigPoly) _newItem;
-      _editor.damaged(_newItem);
+      editor.damaged(_newItem);
       _handle.index = p.getNumPoints() - 1;
       p.moveVertex(_handle, _startX, _startY, true);
       _npoints = 0;
-      _editor.damaged(p);
-      _editor.add(p);
-      _editor.getSelectionManager().select(p);
+      editor.damaged(p);
+      editor.add(p);
+      editor.getSelectionManager().select(p);
       _newItem = null;
       done();
       me.consume();
@@ -118,12 +118,12 @@ public class ModeCreateFigPoly extends ModeCreate {
     int x = me.getX(), y = me.getY();
     if (_npoints == 0) { me.consume(); return; }
     FigPoly p = (FigPoly)_newItem;
-    _editor.damaged(_newItem); // startTrans?
+    editor.damaged(_newItem); // startTrans?
     Point snapPt = new Point(x, y);
-    _editor.snap(snapPt);
+    editor.snap(snapPt);
     _handle.index = p.getNumPoints() - 1;
     p.moveVertex(_handle, snapPt.x, snapPt.y, true);
-    _editor.damaged(_newItem); // endTrans?
+    editor.damaged(_newItem); // endTrans?
     me.consume();
   }
 

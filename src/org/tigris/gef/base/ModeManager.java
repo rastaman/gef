@@ -43,7 +43,10 @@ import org.tigris.gef.event.*;
 /** ModeManager keeps track of all the Modes for a given Editor.
  *  Events are passed to the Modes for handling.  The submodes are
  *  prioritized according to their order on a stack, i.e., the last
- *  Mode added gets the first chance to handle an Event.  */
+ *  Mode added gets the first chance to handle an Event.
+ *  The Modes must be of type FigModifyingMode, because Editor can
+ *  only deal with such Modes.
+ */
 
 public class ModeManager
 implements Serializable, MouseListener, MouseMotionListener, KeyListener {
@@ -59,21 +62,21 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   private Vector _modes = new Vector();
 
   /** The Editor that owns this ModeManager. */
-  public Editor _editor;
+  public Editor editor;
 
   /** Set the parent Editor of this ModeManager */
-  public void setEditor(Editor w) { _editor = w; }
+  public void setEditor(Editor w) { editor = w; }
 
   protected EventListenerList _listeners = new EventListenerList();
 
   /** Get the parent Editor of this ModeManager */
-  public Editor getEditor() { return _editor; }
+  public Editor getEditor() { return editor; }
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   /**  Construct a ModeManager with no modes. */
-  public ModeManager(Editor ed) { _editor = ed; }
+  public ModeManager(Editor ed) { editor = ed; }
 
   ////////////////////////////////////////////////////////////////
   //  accessors
@@ -85,14 +88,15 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public void setModes(Vector newModes) { _modes = newModes; }
 
   /** Reply the top (first) Mode. */
-  public Mode top() {
+  public FigModifyingMode top() {
     if (_modes.isEmpty()) return null;
-    else return (Mode)_modes.lastElement();
+    else return (FigModifyingMode)_modes.lastElement();
   }
 
   /** Add the given Mode to the stack iff another instance
    *  of the same class is not already on the stack. */
-  public void push(Mode newMode) {
+  public void push(FigModifyingMode newMode) {
+	if ( !(newMode instanceof FigModifyingMode) ) return;
     if (!includes(newMode.getClass())) {
       _modes.addElement(newMode);
       //fireModeChanged();
@@ -100,9 +104,9 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   }
 
   /** Remove the topmost Mode iff it can exit. */
-  public Mode pop() {
+  public FigModifyingMode pop() {
     if (_modes.isEmpty()) return null;
-    Mode res = top();
+    FigModifyingMode res = top();
     if (res.canExit()) {
       _modes.removeElement(res);
       fireModeChanged();
@@ -119,7 +123,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public boolean includes(Class modeClass) {
     Enumeration subs = _modes.elements();
     while (subs.hasMoreElements()) {
-      Mode m = (Mode) subs.nextElement();
+      FigModifyingMode m = (FigModifyingMode) subs.nextElement();
       if (m.getClass() == modeClass) return true;
     }
     return false;
@@ -132,7 +136,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public void keyTyped(KeyEvent ke) {
     checkModeTransitions(ke);
     for (int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
-      Mode m = ((Mode)_modes.elementAt(i));
+      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
       m.keyTyped(ke);
     }
   }
@@ -143,7 +147,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Pass events to all modes in order, until one consumes it. */
   public void keyPressed(KeyEvent ke) {
     for (int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
-      Mode m = ((Mode)_modes.elementAt(i));
+      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
       m.keyPressed(ke);
     }
   }
@@ -151,7 +155,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Pass events to all modes in order, until one consumes it. */
   public void mouseMoved(MouseEvent me) {
     for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
-      Mode m = ((Mode)_modes.elementAt(i));
+      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
       m.mouseMoved(me);
     }
   }
@@ -159,7 +163,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Pass events to all modes in order, until one consumes it. */
   public void mouseDragged(MouseEvent me) {
     for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
-      Mode m = ((Mode)_modes.elementAt(i));
+      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
       m.mouseDragged(me);
     }
   }
@@ -168,7 +172,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public void mouseClicked(MouseEvent me) {
     checkModeTransitions(me);
     for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
-      Mode m = ((Mode)_modes.elementAt(i));
+      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
       m.mouseClicked(me);
     }
   }
@@ -177,7 +181,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public void mousePressed(MouseEvent me) {
     checkModeTransitions(me);
     for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
-      Mode m = ((Mode)_modes.elementAt(i));
+      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
       m.mousePressed(me);
     }
   }
@@ -186,7 +190,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public void mouseReleased(MouseEvent me) {
     checkModeTransitions(me);
     for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
-      Mode m = ((Mode)_modes.elementAt(i));
+      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
       m.mouseReleased(me);
     }
     //fireModeChanged();
@@ -195,7 +199,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Pass events to all modes in order, until one consumes it. */
   public void mouseEntered(MouseEvent me) {
     for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
-      Mode m = ((Mode)_modes.elementAt(i));
+      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
       m.mouseEntered(me);
     }
   }
@@ -203,7 +207,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Pass events to all modes in order, until one consumes it. */
   public void mouseExited(MouseEvent me) {
     for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
-      Mode m = ((Mode)_modes.elementAt(i));
+      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
       m.mouseExited(me);
     }
   }
@@ -222,12 +226,12 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     if (!top().canExit() && ie.getID() == MouseEvent.MOUSE_PRESSED) {
       MouseEvent me = (MouseEvent) ie;
       int x = me.getX(), y = me.getY();
-      Fig underMouse = _editor.hit(x, y);
+      Fig underMouse = editor.hit(x, y);
       if (underMouse instanceof FigNode) {
 	Object startPort = ((FigNode) underMouse).hitPort(x, y);
 	if (startPort != null) {
 	  //user clicked on a port, now drag an edge
-	  Mode createArc = new ModeCreateEdge(_editor);
+	  FigModifyingModeImpl createArc = (FigModifyingModeImpl)new ModeCreateEdge(editor);
 	  push(createArc);
 	  createArc.mousePressed(me);
 	}
@@ -251,7 +255,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     ModeChangeEvent e = null;
     for (int i = listeners.length - 2; i >= 0; i -= 2) {
       if (listeners[i] == ModeChangeListener.class) {
-       	if (e == null) e = new ModeChangeEvent(_editor, getModes());
+       	if (e == null) e = new ModeChangeEvent(editor, getModes());
        	//needs-more-work: should copy vector, use JGraph as src?
        	((ModeChangeListener)listeners[i+1]).modeChange(e);
       }
@@ -265,7 +269,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public void paint(Graphics g) {
     Enumeration modes = _modes.elements();
     while (modes.hasMoreElements()) {
-      Mode m = (Mode) modes.nextElement();
+      FigModifyingMode m = (FigModifyingMode) modes.nextElement();
       m.paint(g);
     }
   }

@@ -90,14 +90,14 @@ public class ModeCreateFigImage extends ModeCreate {
     anchorX = x;
     anchorY = y;
     Point snapPt = new Point(x, y);
-    _editor.snap(snapPt);
+    editor.snap(snapPt);
     if (null == _newItem) _newItem = createNewItem(me, snapPt.x, snapPt.y);
     me.consume();
   }
 
   /** When the mouse exits the editor, clean up the display a little. */
   public void mouseExited(MouseEvent me) {
-    _editor.damaged(_newItem);
+    editor.damaged(_newItem);
     me.consume();
   }
 
@@ -115,11 +115,11 @@ public class ModeCreateFigImage extends ModeCreate {
       me.consume();
       return;
     }
-    _editor.damaged(_newItem);
+    editor.damaged(_newItem);
     Point snapPt = new Point(x, y);
-    _editor.snap(snapPt);
+    editor.snap(snapPt);
     _newItem.setLocation(snapPt.x, snapPt.y);
-    _editor.damaged(_newItem); /* needed? */
+    editor.damaged(_newItem); /* needed? */
     me.consume();
   }
 

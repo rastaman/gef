@@ -81,9 +81,9 @@ public class ModeCreateFigInk extends ModeCreate {
     int x = me.getX(), y = me.getY();
     FigInk ink = (FigInk)_newItem;
     if (!nearLast(x, y)) {
-      _editor.damaged(_newItem); // startTrans?
+      editor.damaged(_newItem); // startTrans?
       ink.addPoint(x, y);
-      _editor.damaged(_newItem); // endTrans?
+      editor.damaged(_newItem); // endTrans?
       _lastX = x; _lastY = y;
     }
     me.consume();

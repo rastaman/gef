@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: ModeModify.java
 // Classes: ModeModify
 // Original Author: ics125 spring 1996
@@ -46,7 +43,7 @@ import org.tigris.gef.presentation.*;
  * @see Selection
  */
 
-public class ModeModify extends Mode {
+public class ModeModify extends FigModifyingModeImpl {
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -176,7 +173,7 @@ public class ModeModify extends Mode {
     //Note: if _curHandle.index == -2 then do nothing
 
     sm.endTrans();
-    //_editor.scrollToShow(snapX, snapY);
+    //editor.scrollToShow(snapX, snapY);
     me.consume();
   }
 
@@ -256,7 +253,7 @@ public class ModeModify extends Mode {
     SelectionManager sm = getEditor().getSelectionManager();
     sm.cleanUp();
     if (_highlightTrap != null) {
-      _editor.damaged(_highlightTrap);
+      editor.damaged(_highlightTrap);
       _highlightTrap = null;
     }
   }
@@ -285,7 +282,7 @@ public class ModeModify extends Mode {
   }
 
   protected boolean legal(int dx, int dy, SelectionManager sm, MouseEvent me) {
-    if (_highlightTrap != null) _editor.damaged(_highlightTrap);
+    if (_highlightTrap != null) editor.damaged(_highlightTrap);
     _highlightTrap = null;
     Vector figs = sm.getFigs();
     Enumeration sels = figs.elements();
@@ -317,7 +314,7 @@ public class ModeModify extends Mode {
         if ((bbox.contains(trap.x, trap.y) &&
 	     bbox.contains(trap.x + trap.width, trap.y + trap.height))) continue;
 	_highlightTrap = trap;
-	_editor.damaged(_highlightTrap);
+	editor.damaged(_highlightTrap);
         return false;
       }
     }
