@@ -45,14 +45,14 @@ public class LayerPerspectiveMutable extends LayerPerspective {
     // instance variables
 
     /** The underlying connected graph to be visualized. */
-    MutableGraphModel _mgm;
+    private MutableGraphModel mutableGraphModel;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
     public LayerPerspectiveMutable(String name, MutableGraphModel mgm) {
         super(name,(GraphModel)mgm);
-        _mgm = mgm;
+        mutableGraphModel = mgm;
     }
 
 
@@ -67,22 +67,24 @@ public class LayerPerspectiveMutable extends LayerPerspective {
         setMutableGraphModel((MutableGraphModel)gm);
     }
 
-    public MutableGraphModel getMutableGraphModel() { return _mgm; }
+    public MutableGraphModel getMutableGraphModel() {
+         return mutableGraphModel;
+    }
     public void setMutableGraphModel(MutableGraphModel mgm) {
         super.setGraphModel((GraphModel)mgm);
-        _mgm = mgm;
+        mutableGraphModel = mgm;
     }    
 
     ////////////////////////////////////////////////////////////////
     // Layer API
 
-    public void add(Fig f) { 
-        Object owner = f.getOwner();
+    public void add(Fig fig) { 
+        Object owner = fig.getOwner();
         // prevents duplicate nodes. 
         // To allow multiple views in one diagram, remove the following two lines.
-        if (owner != null && f instanceof FigNode &&
-                getContents(null).contains(f) &&  
-                _mgm.containsNode(owner)) {
+        if (fig instanceof FigNode &&
+                getContents(null).contains(fig) &&  
+                mutableGraphModel.containsNode(owner)) {
             // When a new node is created (using
             // GraphModelEvents), the node is first
             // added to the MutableGraphModel, then
@@ -96,7 +98,7 @@ public class LayerPerspectiveMutable extends LayerPerspective {
             // Added by oliver@freiheit.com
             return; 
         }
-        super.add(f);
+        super.add(fig);
         //if ( owner != null && _mgm.canAddNode(owner))
           //  _mgm.addNode(owner);
         // FigEdges are added by the underlying MutableGraphModel.
@@ -106,10 +108,11 @@ public class LayerPerspectiveMutable extends LayerPerspective {
         super.remove(f);
         Object owner = f.getOwner();
         if (owner != null) {
-            if (f instanceof FigEdge && _mgm.containsEdge(owner)) 
-                _mgm.removeEdge(owner); 
-            else if (f instanceof FigNode && _mgm.containsNode(owner)) 
-                _mgm.removeNode(owner);
+            if (f instanceof FigEdge && mutableGraphModel.containsEdge(owner)) {
+                mutableGraphModel.removeEdge(owner); 
+            } else if (f instanceof FigNode && mutableGraphModel.containsNode(owner)) {
+                mutableGraphModel.removeNode(owner);
+            }
         }
     }
 } /* end class LayerPerspectiveMutable */
