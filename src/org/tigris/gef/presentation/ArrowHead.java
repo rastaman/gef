@@ -70,7 +70,9 @@ public abstract class ArrowHead implements java.io.Serializable {
         Graphics2D g2 = (Graphics2D) g;
         Stroke oldStroke = g2.getStroke();
         g2.setStroke(new BasicStroke(path.getLineWidth()));
-        paint(g2, path.getLastPoint(), path.getFirstPoint());
+        int[] xs = path.getXs();
+        int[] ys = path.getYs();
+        paint(g2, new Point(xs[1], ys[1]), new Point(xs[0], ys[0]));
         g2.setStroke(oldStroke);
     }
 
@@ -78,15 +80,16 @@ public abstract class ArrowHead implements java.io.Serializable {
         Graphics2D g2 = (Graphics2D) g;
         Stroke oldStroke = g2.getStroke();
         g2.setStroke(new BasicStroke(path.getLineWidth()));
-        int len = path.getPerimeterLength();
-        paint(g2, path.getFirstPoint(), path.getLastPoint());
+        int[] xs = path.getXs();
+        int[] ys = path.getYs();
+        int pointCount = path.getNumPoints();
+        paint(g2, new Point(xs[pointCount-2], ys[pointCount-2]), new Point(xs[pointCount-1], ys[pointCount-1]));
         g2.setStroke(oldStroke);
     }
     /** return the approximate arc length of the path in pixel units */
     public int getLineLength(Point one, Point two) {
         int dxdx = (two.x - one.x) * (two.x - one.x);
         int dydy = (two.y - one.y) * (two.y - one.y);
-        //System.out.println(" ! pall dx, dy = " + dxdx + " , " + dydy);
         return (int) Math.sqrt(dxdx + dydy);
     }
 
