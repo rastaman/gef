@@ -32,7 +32,8 @@ import java.util.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import org.tigris.gef.util.*;
+import org.tigris.gef.util.Localizer;
+import org.tigris.gef.util.ResourceLoader;
 
 /** Abstract class for all editor commands. The editor serves as a
  *  command shell for executing actions in much the same way that a
@@ -46,31 +47,15 @@ import org.tigris.gef.util.*;
  *  user interface library, Cmd objects can be easily added to menus
  *  and toolbars. <p>
  *
- *  needs-more-work: canDoIt, canUndoIt predicates control
- *  graying. <p>
- *  
- *  needs-more-work: Editor will keep a history of recent
- *  actions for undo. <p>
- *
- * @see Editor
- * @see CmdOpenWindow */
+ *  TODO Implement an undo queue externally from GEF<p>
+ **/
 
-public abstract class Cmd
-    extends AbstractAction
-    implements java.io.Serializable {
-
-    ////////////////////////////////////////////////////////////////
-    // constants
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+public abstract class Cmd extends AbstractAction
+        implements java.io.Serializable {
 
     /** Arguments that configure the Cmd instance. */
     protected Hashtable _args;
     protected String _resource;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /** Construct a new Cmd with the given arguments */
     public Cmd(Hashtable args, String resource, String name) {
@@ -123,9 +108,6 @@ public abstract class Cmd
         return true;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
     /**
      * Set a new resource as basis for the localization of this command.
      */
@@ -147,20 +129,23 @@ public abstract class Cmd
 
     /** Get the object stored as an argument under the given name. */
     protected Object getArg(String key) {
-        if (_args == null)
+        if (_args == null) {
             return null;
-        else
+        } else {
             return _args.get(key);
+        }
     }
 
     /** Get an argument by name.  If it's not defined then use the given
      *  default. */
     protected Object getArg(String key, Object defaultValue) {
-        if (_args == null)
+        if (_args == null) {
             return defaultValue;
+        }
         Object res = _args.get(key);
-        if (res == null)
+        if (res == null) {
             return defaultValue;
+        }
         return res;
     }
 
@@ -204,7 +189,7 @@ public abstract class Cmd
 
     /** Undo the Cmd using information stored during its
      *  execution. <p>
-     *  needs-more-work: This is not currently implemented.
+     * TODO Abandon this. We need the memento pattern for undo
      */
     public abstract void undoIt();
 
@@ -212,6 +197,7 @@ public abstract class Cmd
     // flag to indicate if this is the first time the Cmd is being
     // done, or it it is actually being redone? What information does
     // undoIt() need to store to support redo?
+    // TODO Abandon this. We need the memento pattern for undo
 
     ////////////////////////////////////////////////////////////////
     // registered Cmds
@@ -220,23 +206,30 @@ public abstract class Cmd
      *  user to pick from. Registered Cmds serve mainly to support
      *  user interface prototyping: you can add Cmds to the
      *  CmdOpenWindow and not have to worry about where it should
-     *  eventually go in the user interface. */
+     *  eventually go in the user interface.
+     * TODO Does this really belong in GEF?
+     */
     private static Vector _registeredCmds = new Vector();
 
     /** Return a list of "well-known" Cmd instances that should
      *  appear in lists for the user to pick from.
+     * TODO Does this really belong in GEF?
      * @see CmdOpenWindow */
     public static Enumeration registeredCmds() {
         return _registeredCmds.elements();
     }
 
-    /** Add a "well-known" Cmd */
+    /** Add a "well-known" Cmd
+     * TODO Does this really belong in GEF?
+     */
     public static void register(Cmd c) {
         _registeredCmds.addElement(c);
     }
 
     /** Return the "well-known" Cmd at a given index. Useful for
-     *  displaying a list of "well-known" cmds. */
+     *  displaying a list of "well-known" cmds.
+     * TODO Does this really belong in GEF?
+     */
     public static Cmd cmdAtIndex(int i) {
         return (Cmd) _registeredCmds.elementAt(i);
     }
