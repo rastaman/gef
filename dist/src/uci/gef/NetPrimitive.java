@@ -48,7 +48,7 @@ import uci.ui.*;
  *
  * This class may be removed from future versions of GEF.
  *
- * @see DefaultgraphModel */
+ * @see uci.graph.DefaultGraphModel */
 
 public class NetPrimitive implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////

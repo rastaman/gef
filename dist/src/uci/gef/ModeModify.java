@@ -41,7 +41,7 @@ import java.util.*;
  *  on a single Fig.
  *
  * @see Fig
- * @see Seleciton
+ * @see Selection
  */
 
 public class ModeModify extends Mode {

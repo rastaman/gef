@@ -39,7 +39,7 @@ import uci.graph.*;
 /** Mode to place new a FigNode on a node in a diagram.
  *  Normally invoked via CmdCreateNode.
  *
- * @see ActionCreateNode
+ * @see CmdCreateNode
  * @see FigNode
  */
 

@@ -31,7 +31,7 @@ import java.util.*;
  *  be notified when an Editor changes its selection(s).
  *
  * @see uci.gef.Editor
- * @see uci.gef.SelectionManger */
+ * @see uci.gef.SelectionManager */
 
 public interface ModeChangeListener extends EventListener {
 

@@ -66,7 +66,7 @@ public class PrefsEditor extends Frame {
   /** Construct a new PrefsEditor and get ready to open it. This can
    * be invoked via ActionOpenWindow.
    *
-   * @see ActionOpenWindow */
+   * @see CmdOpenWindow */
   public PrefsEditor() {
     setTitle("Prefs");
     setBackground(Color.lightGray);
