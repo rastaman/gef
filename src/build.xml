@@ -129,7 +129,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <property name="build.dir" value="../build"/>
     <property name="build.src" value="${src.dir}"/>
     <property name="build.dest" value="${build.dir}/classes"/>
-    <property name="gef.classpath" value="${lib.dir}/commons-logging.jar:${lib.dir}/log4j-1.2.6.jar:${lib.dir}/xerces.jar"/>
+    <property name="gef.classpath" value="${lib.dir}/commons-logging.jar:${lib.dir}/log4j-1.2.6.jar:${lib.dir}/xerces.jar:${lib.dir}/log4j-1.2.6.jar:${lib.dir}/xerces_2_5_0.jar:${lib.dir}/batik-css-1.5.1.jar:${lib.dir}/batik-dom-1.5.1.jar:${lib.dir}/batik-ext-1.5.1.jar:${lib.dir}/batik-gvt-1.5.1.jar:${lib.dir}/batik-xml-1.5.1.jar:${lib.dir}/batik-svggen-1.5.1.jar:${lib.dir}/batik-svg-dom-1.5.1.jar:${lib.dir}/batik-parser-1.5.1.jar:${lib.dir}/batik-awt-util-1.5.1.jar:${lib.dir}/batik-util-1.5.1.jar:${lib.dir}/batik-gui-util-1.5.1.jar:${lib.dir}/xml-apis.jar"/>
     
     <property file="${user.home}/.ant.properties" />
     <property name="logger" value="org.apache.commons.logging.impl.Log4JLogger"/>
@@ -260,7 +260,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
         author="false"
         windowtitle="GEF Documentation">
         <classpath>
-	    <pathelement path="${lib.dir}/commons-logging.jar"/>
+	        <pathelement path="${lib.dir}/commons-logging.jar"/>
             <pathelement path="${lib.dir}/log4j.jar"/>
             <pathelement path="${lib.dir}/xerces.jar"/>
         </classpath>
@@ -338,7 +338,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
               author="false"
               windowtitle="GEF Documentation">
        <classpath>
-	   <pathelement path="${lib.dir}/commons-logging.jar"/>
+	       <pathelement path="${lib.dir}/commons-logging.jar"/>
            <pathelement path="${lib.dir}/log4j.jar"/>
            <pathelement path="${lib.dir}/xerces.jar"/>
        </classpath>
