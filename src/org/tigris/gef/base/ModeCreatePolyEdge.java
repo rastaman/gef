@@ -262,7 +262,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
   // key events
  
   public void keyTyped(KeyEvent ke) {
-    if (ke.getKeyChar() == '') { // escape
+    if (ke.getKeyChar() == '') { // escape
       done();
       ke.consume();
     }
