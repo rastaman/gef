@@ -31,8 +31,10 @@
 
 package org.tigris.gef.graph.presentation;
 
-import java.util.*;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,30 +57,34 @@ implements GraphNodeHooks, java.io.Serializable  {
     // instance variables
 
     /** An array of the ports on this node */
-    private Vector _ports;
+    private List _ports;
   
     private static Log LOG = LogFactory.getLog(NetNode.class);
 
-  ////////////////////////////////////////////////////////////////
-  // constructors and related methods
+    ////////////////////////////////////////////////////////////////
+    // constructors and related methods
 
-  /** Construct a new node from the given default node and number of
-   *  ports. The attributes of the default node will be used if they
-   *  are not overridden in this node (i.e., nodes have attributes and
-   *  there is a virual copy relationship between some nodes). */
-  public NetNode(NetNode deft, Vector ports) { _ports = ports; }
+    /** 
+     * Construct a new node from the given default node and number of
+     * ports. The attributes of the default node will be used if they
+     * are not overridden in this node (i.e., nodes have attributes and
+     * there is a virual copy relationship between some nodes).
+     */
+    public NetNode(NetNode deft, List ports) { _ports = ports; }
 
-  /** Construct a new NetNode with no default attributes and no ports. */
-  public NetNode() { this(null, new Vector()); }
+    /**
+     * Construct a new NetNode with no default attributes and no ports.
+     */
+    public NetNode() { this(null, new ArrayList()); }
 
-  /** Usually when nodes are created it is deon through newInstance
-   *  and there is no chance to supply a default node or to connect
-   *  this node to some other application level object. So after a
-   *  node is constructed initialize is called to supply that
-   *  information. <p>
-   *
-   * Needs-More-Work: what is the class protocol design here? */
-  public abstract void initialize(Hashtable args);
+    /** Usually when nodes are created it is deon through newInstance
+     *  and there is no chance to supply a default node or to connect
+     *  this node to some other application level object. So after a
+     *  node is constructed initialize is called to supply that
+     *  information. <p>
+     *
+     * Needs-More-Work: what is the class protocol design here? */
+    public abstract void initialize(Hashtable args);
 
     ////////////////////////////////////////////////////////////////
     // accessors
@@ -87,20 +93,20 @@ implements GraphNodeHooks, java.io.Serializable  {
     public Object getAttributes() { return null; }
 
     /** reply my NetPort with the given index. */
-    public NetPort getPort(int i) { return (NetPort) _ports.elementAt(i); }
+    public NetPort getPort(int i) { return (NetPort) _ports.get(i); }
 
     /** reply my NetPorts. */
-    public Vector getPorts() { return _ports; }
-    public void setPorts(Vector ports) { _ports = ports; }
-    public void addPort(NetPort p) { _ports.addElement(p); }
+    public List getPorts() { return _ports; }
+    public void setPorts(List ports) { _ports = ports; }
+    public void addPort(NetPort p) { _ports.add(p); }
 
 
     /** Remove this node from the underling connected graph model. */
     public void deleteFromModel() {
         LOG.debug("Deleting from model");
-        Enumeration ps = _ports.elements();
-        while (ps.hasMoreElements()) {
-            ((NetPort)ps.nextElement()).deleteFromModel();
+        Iterator ps = _ports.iterator();
+        while (ps.hasNext()) {
+            ((NetPort)ps.next()).deleteFromModel();
         }
         
         DefaultGraphModel gm =
