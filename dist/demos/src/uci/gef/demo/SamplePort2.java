@@ -67,6 +67,4 @@ public class SamplePort2 extends SamplePort implements Serializable {
     // needs-more-work: should work with subclasses too. This is
     // really a java.lang.Class method that is missing: isSubclass()
   }
-
-  static final long serialVersionUID = -1531712489556040622L;
 } /* end class SamplePort2 */

@@ -51,7 +51,5 @@ public class ModeCreateFigRRect extends ModeCreate {
   public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
     return new FigRRect(snapX, snapY, 0, 0);
   }
-
-  static final long serialVersionUID = 5332607128680312828L;
 } /* end class ModeCreateFigRRect */
 

@@ -269,7 +269,4 @@ public class Diagram implements java.io.Serializable, GraphListener {
       throw veto;
     }
   }
-
-  static final long serialVersionUID = -3642645497287401439L;
-
 } /* end class Diagram */

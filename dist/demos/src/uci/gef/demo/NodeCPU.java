@@ -152,7 +152,4 @@ public class NodeCPU extends NetNode implements Serializable {
     fn.bindPort(dataPort, obj3);
     return fn;
   }
-
-  static final long serialVersionUID = -4727051976743645287L;
-
 } /* end class NodeCPU */

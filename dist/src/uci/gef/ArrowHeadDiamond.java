@@ -102,7 +102,4 @@ public class ArrowHeadDiamond extends ArrowHead {
     g.setColor(arrowLineColor);
     g.drawPolygon(diamond);
   }
-
-  static final long serialVersionUID = 3743517930964884443L;
-
 } /* end class ArrowHeadDiamond */

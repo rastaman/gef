@@ -39,6 +39,4 @@ package uci.util;
 public interface Predicate extends java.io.Serializable {
 
   public boolean predicate(Object obj);
-
-  static final long serialVersionUID = -7512674166694210004L;
 } /* end interface Predicate */

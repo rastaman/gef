@@ -70,8 +70,5 @@ public class FigEdgeLine extends FigEdge {
       paintHighlightLine(g, f.getX1(), f.getY1(), f.getX2(), f.getY2());
     }
   }
-
-  static final long serialVersionUID = -8455231483004481128L;
-
 } /* end class FigEdgeLine */
 

@@ -139,6 +139,4 @@ public class LayerPageBreaks extends Layer {
     _paintLines = !_paintLines;
     refreshEditors();
   }
-
-  static final long serialVersionUID = 4861970222441627645L;
 } /* end class LayerPageBreaks */

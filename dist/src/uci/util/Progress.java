@@ -205,7 +205,4 @@ public class Progress extends Frame implements ActionListener {
     _p.setVisible(false);
     _p.dispose();
   }
-
-  static final long serialVersionUID = -4554332933828014635L;
-  
 } /* end class Progress */

@@ -100,7 +100,4 @@ public class EdgeData extends NetEdge implements Serializable {
   public FigEdge makePresentation(Layer lay) {
     return new FigEdgeRectiline();
   }
-
-  static final long serialVersionUID = 3557704616625241980L;
-
 } /* end class EdgeData */

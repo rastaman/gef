@@ -333,7 +333,4 @@ implements IStatusBar, Cloneable, ModeChangeListener {
     if (!Globals.getSticky() && Globals.mode() instanceof ModeSelect)
       _toolbar.unpressAllButtons();
   }
-  
-
-  static final long serialVersionUID = 7412677544814835664L;
 } /* end class JGraphFrame */

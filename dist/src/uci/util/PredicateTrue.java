@@ -45,7 +45,4 @@ public class PredicateTrue implements Predicate {
   public static PredicateTrue theInstance() {
     return _theInstance;
   }
-
-  
-  static final long serialVersionUID = 1136743715428919058L;
 } /* end class PredicateTrue */

@@ -305,8 +305,5 @@ public class FigLine extends Fig {
     calcBounds();
     firePropChange("bounds", null, null);    
   }
-
-  static final long serialVersionUID = -1388823280311397581L;
-
 } /* end class FigLine */
 

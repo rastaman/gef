@@ -94,7 +94,4 @@ public class ArrowHeadQualifier extends ArrowHead {
     temp = new FigText(x3,y3,x2,y2 , Color.blue, "Times", 8);
     temp.setText("qualifier");
   }
-
-  static final long serialVersionUID = 4785521344140183388L;
-
 } /* end class ArrowHeadQualifier */

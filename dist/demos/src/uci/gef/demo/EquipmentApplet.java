@@ -143,7 +143,4 @@ public class EquipmentApplet extends JApplet {
       "Copyright (c) 1996-1998 Regents of the University of California.\n"+
       "All rights reserved.\n\n";
   }
-
-  static final long serialVersionUID = -5151592540895237366L;
-
 } /* end class EquipmentApplet */

@@ -41,6 +41,4 @@ import uci.gef.Layer;
 public interface GraphEdgeRenderer extends java.io.Serializable {
   /** Return a Fig that can be used to represent the given edge */
   FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge);
-
-  static final long serialVersionUID = -3081556642159305118L;
 } /* end interface GraphEdgeRenderer */

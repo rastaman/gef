@@ -92,8 +92,5 @@ public class CmdReorder extends Cmd {
   public void undoIt() {
     System.out.println("Connot undo CmdReorder, yet");
   }
-
-  static final long serialVersionUID = -3129263720315040861L;
-
 } /* end class CmdReorder */
 

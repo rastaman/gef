@@ -224,6 +224,4 @@ public class LayerManager implements java.io.Serializable  {
     for (int i = 0; i < _layers.size(); i++)
       ((Layer) _layers.elementAt(i)).postLoad();
   }
-
-  static final long serialVersionUID = 1910040372518652814L;
 } /* end class LayerManager */

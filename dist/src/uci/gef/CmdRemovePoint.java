@@ -68,7 +68,4 @@ public class CmdRemovePoint extends Cmd {
   public void undoIt() {
     System.out.println("this operation currently cannot be undone");
   }
-
-  static final long serialVersionUID = 1761687061656172699L;
-
 } /* end class CmdRemovePoint */

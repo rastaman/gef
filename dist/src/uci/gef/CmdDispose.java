@@ -52,7 +52,4 @@ public class CmdDispose extends Cmd {
   }
 
   public void undoIt() { }
-
-  static final long serialVersionUID = 2499196667334037672L;
-
 } /* end class CmdDispose */

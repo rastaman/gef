@@ -67,7 +67,4 @@ public class NodeWall extends NetNode implements Serializable {
     fn.bindPort(powerPort2, obj3);
     return fn;
   }
-
-  static final long serialVersionUID = -6306614428888650160L;
-
 } /* end class NodeWall */

@@ -41,6 +41,4 @@ import uci.gef.Layer;
 public interface GraphNodeRenderer extends java.io.Serializable {
   /** Return a Fig that can be used to represent the given node */
   FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node);
-
-  static final long serialVersionUID = -1903371615366346013L;
 } /* end interface GraphNodeRenderer */

@@ -53,7 +53,4 @@ public class GraphSelectionEvent extends EventObject {
   ////////////////////////////////////////////////////////////////
   // accessors
   public Vector getSelections() { return _selections; }
-
-  static final long serialVersionUID = 964694861090302022L;
-
 } /* end class GraphSelectionEvent */

@@ -182,6 +182,4 @@ implements MutableGraphModel, java.io.Serializable {
       listen.graphChanged(ge);
     }
   }
-
-  static final long serialVersionUID = -6282336117485054663L;
 } /* end class MutableGraphSupport */

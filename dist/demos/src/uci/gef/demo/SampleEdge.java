@@ -65,7 +65,4 @@ public class SampleEdge extends NetEdge {
 
     return foo;
   }
-
-  static final long serialVersionUID = -3351193870220408015L;
-
 } /* end class SampleEdge */

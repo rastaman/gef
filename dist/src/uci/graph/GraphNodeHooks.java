@@ -74,6 +74,4 @@ public interface GraphNodeHooks extends java.io.Serializable{
   void initialize(Hashtable props);
   void setHighlight(boolean b);
   void dispose();
-  
-  static final long serialVersionUID = 6249493911977021522L;
 } /* end interface GraphNodeHooks */

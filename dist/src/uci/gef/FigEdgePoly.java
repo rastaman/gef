@@ -344,7 +344,4 @@ public class FigEdgePoly extends FigEdge {
 	paintHighlightLine(g, xs[i-1], ys[i-1], xs[i], ys[i]);
     }
   }
-
-  static final long serialVersionUID = -8604764896732440025L;
-
 } /* end class FigEdgePoly */

@@ -64,7 +64,4 @@ public class SampleNode2 extends SampleNode implements Serializable {
     fn.setBlinkPorts(true);
     return fn;
   }
-
-  static final long serialVersionUID = 6298627794743859836L;
-
 } /* end class SampleNode2 */

@@ -132,7 +132,5 @@ public class CmdCopy extends Cmd {
       selection = null;
     }
   }
-
-  static final long serialVersionUID = 1283385055733496465L;
 } /* end class CmdCopy */
 

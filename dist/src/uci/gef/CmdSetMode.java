@@ -112,7 +112,4 @@ public class CmdSetMode extends Cmd {
   public void undoIt() {
     System.out.println("undo does not make sense for setting modes");
   }
-
-  static final long serialVersionUID = -4531712223929955885L;
-
 } /* end class CmdSetMode */

@@ -67,8 +67,5 @@ public class CmdUseReshape extends Cmd {
   }
 
   public void undoIt() { System.out.println("not done yet"); }
-
-  static final long serialVersionUID = -5876319717228304371L;
-
 } /* end class CmdUseReshape */
 

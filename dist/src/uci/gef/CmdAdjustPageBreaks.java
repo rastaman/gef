@@ -52,7 +52,4 @@ public class CmdAdjustPageBreaks extends Cmd {
   }
 
   public void undoIt() { }
-
-  static final long serialVersionUID = -7371943510060203731L;
-
 } /* end class CmdAdjustPageBreaks */

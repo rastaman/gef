@@ -59,8 +59,5 @@ public class CmdSelectInvert extends Cmd {
   public void undoIt() {
     System.out.println("Undo does not make sense for CmdSelectInvert");
   }
-
-  static final long serialVersionUID = 6936776969114546088L;
-
 } /* end class CmdSelectInvert */
 

@@ -88,8 +88,5 @@ public class FigRRect extends FigRect {
 		      _radius, _radius);
     }
   }
-
-  static final long serialVersionUID = 5242299525923672421L;
-
 } /* end class FigRRect */
 

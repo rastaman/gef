@@ -287,8 +287,5 @@ public class LayerDiagram extends Layer {
     for (int i = 0; i < _contents.size(); i++)
       ((Fig) _contents.elementAt(i)).postLoad();
   }
-
-
-  static final long serialVersionUID = 8414225047168410183L;
 } /* end class LayerDiagram */
 

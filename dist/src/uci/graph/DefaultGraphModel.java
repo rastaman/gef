@@ -222,7 +222,4 @@ implements java.io.Serializable {
     addEdge(e);
     return e;
   }
-
-
-  static final long serialVersionUID = -2451989834037886234L;
 } /* end class DefaultGraphModel */

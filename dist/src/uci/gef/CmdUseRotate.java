@@ -67,8 +67,5 @@ public class CmdUseRotate extends Cmd {
   }
 
   public void undoIt() { System.out.println("not done yet"); }
-
-  static final long serialVersionUID = -541850234261920628L;
-
 } /* end class CmdUseRotate */
 

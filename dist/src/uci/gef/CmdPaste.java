@@ -128,8 +128,5 @@ public class CmdPaste extends Cmd {
       ProjectBrowser.TheInstance.getToolkit().beep();   // Or if anything else goes wrong...
     }
   }*/
-
-
-  static final long serialVersionUID = 4437472627491649087L;
 } /* end class CmdPaste */
 

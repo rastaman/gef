@@ -259,6 +259,4 @@ public class ModeCreatePolyEdge extends ModeCreate {
       ke.consume();
     }
   }
-
-  static final long serialVersionUID = 4751338603988166591L;
 } /* end class ModeCreatePolyEdge */

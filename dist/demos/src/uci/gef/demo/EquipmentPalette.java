@@ -53,8 +53,4 @@ public class EquipmentPalette extends uci.ui.ToolBar {
     add(new CmdCreateNode(NodePrinter.class, "Printer"), "Printer", "NodeOne");
     add(new CmdCreateNode(NodeWall.class, "Wall"), "Wall", "NodeOne");
   }
-
-
-  static final long serialVersionUID = 5835769152970981878L;
-
 } /* end class EquipmentPalette */

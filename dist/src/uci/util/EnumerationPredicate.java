@@ -89,7 +89,4 @@ implements Enumeration, java.io.Serializable  {
 	_nextElement = o;
     }
   }
-
-  
-  static final long serialVersionUID = -33702065612228873L;
 } /* end class EnumerationPredicate */

@@ -103,6 +103,4 @@ public abstract class ArrowHead implements java.io.Serializable {
   public double dist(double dx, double dy) {
     return Math.sqrt(dx*dx+dy*dy);
   }
-
-  static final long serialVersionUID = 4150958987048733172L;
 } /* end class ArrowHead */

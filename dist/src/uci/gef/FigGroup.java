@@ -353,8 +353,5 @@ public class FigGroup extends Fig {
     _w = bbox.width;
     _h = bbox.height;
   }
-
-  static final long serialVersionUID = 5329475606052749531L;
-
 } /* end class FigGroup */
 

@@ -162,9 +162,5 @@ implements GraphNodeHooks, java.io.Serializable  {
   /** Do some application specific actions after the node is placed in
    *  a drawing area. */
   public void postPlacement(Editor ed) { }
-
-
-
-  static final long serialVersionUID = 6562548365621157454L;
 } /* end class NetNode */
 

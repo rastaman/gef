@@ -93,8 +93,5 @@ public class CmdSelectNext extends Cmd {
   public void undoIt() {
     System.out.println("Undo does not make sense for CmdSelectNext");
   }
-
-  static final long serialVersionUID = 2762650383329916281L;
-
 } /* end class CmdSelectNext */
 

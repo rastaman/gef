@@ -114,8 +114,5 @@ public class CmdAlign extends Cmd {
   }
 
   public void undoIt() { }
-
-  static final long serialVersionUID = -2725163107655680773L;
-
 } /* end class CmdAlign */
 

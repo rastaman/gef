@@ -76,8 +76,5 @@ public class SelectionMove extends Selection {
     h.index = -1;
     h.instructions = "Move Object(s)";
   }
-
-
-  static final long serialVersionUID = -3988412251995936654L;
 } /* end class SelectionMove */
 

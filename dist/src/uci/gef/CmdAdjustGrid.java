@@ -48,7 +48,4 @@ public class CmdAdjustGrid extends Cmd {
   }
 
   public void undoIt() { }
-
-  static final long serialVersionUID = 8709869596112129058L;
-
 } /* end class CmdAdjustGrid */

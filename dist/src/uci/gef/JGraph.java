@@ -311,9 +311,6 @@ public class JGraph extends JPanel implements Cloneable {
 //   public Dimension getMinimumSize() { return new Dimension(1000, 1000); }
 
 //   public Dimension getSize() { return new Dimension(1000, 1000); }
-
-  static final long serialVersionUID = -5459241816919316496L;
-
 } /* end class JGraph */
 
 
@@ -373,8 +370,5 @@ class JGraphInternalPane extends JPanel {
 
   /** Tell Swing/AWT that JGraph can be tabbed into. */
   public boolean isFocusTraversable() { return true; }  
-
-  static final long serialVersionUID = -5067026168452437942L;
-
 } /* end class JGraphInternalPane */
 

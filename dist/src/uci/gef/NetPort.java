@@ -166,8 +166,5 @@ implements GraphPortHooks, java.io.Serializable {
     NetNode otherNode = ((NetPort)anotherPort).getParentNode();
     return myNode.canConnectTo(gm, otherNode, anotherPort, this);
   }
-
-
-  static final long serialVersionUID = 6658397967869283099L;
 } /* end class NetPort */
 

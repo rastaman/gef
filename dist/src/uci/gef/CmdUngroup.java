@@ -66,8 +66,5 @@ public class CmdUngroup extends Cmd {
   }
 
   public void undoIt() { System.out.println("not implemented yet"); }
-
-  static final long serialVersionUID = -3576991253148770113L;
-
 } /* end class CmdUngroup */
 

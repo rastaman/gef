@@ -67,7 +67,5 @@ public class SelectionRotate extends Selection {
     h.index = -2;
     h.instructions = "Object cannot be rotated";
   }
-
-  static final long serialVersionUID = -1661014460931572067L;
 } /* end class SelectionRotate */
 

@@ -174,6 +174,4 @@ public class ModeCreateEdge extends ModeCreate {
     done();
     me.consume();
   }
-
-  static final long serialVersionUID = -427957543380196265L;
 } /* end class ModeCreateEdge */

@@ -90,8 +90,5 @@ public class CmdSequence extends Cmd {
     for (int i = _cmds.size() - 1; i >= 0; --i)
       ((Cmd)_cmds.elementAt(i)).undoIt();
   }
-
-  static final long serialVersionUID = -519229891556663991L;
-
 } /* end class CmdSequence */
 

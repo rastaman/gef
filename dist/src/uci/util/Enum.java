@@ -100,7 +100,4 @@ public class Enum implements Enumeration, java.io.Serializable {
       }
     }
   }
-
-  
-  static final long serialVersionUID = 8795272597408860203L;
 } /* end class Enum */

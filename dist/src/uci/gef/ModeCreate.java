@@ -192,7 +192,5 @@ public abstract class ModeCreate extends Mode {
    *  on the given mouse down event and the state of the parent Editor
    *  (specifically, its default graphical attributes). */
   public abstract Fig createNewItem(MouseEvent me, int snapX, int snapY);
-
-  static final long serialVersionUID = -997186474502969920L;
 } /* end class ModeCreate */
 

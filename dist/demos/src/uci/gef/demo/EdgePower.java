@@ -75,7 +75,4 @@ public class EdgePower extends NetEdge implements Serializable {
   public FigEdge makePresentation(Layer lay) {
     return new FigEdgeLine();
   }
-
-  static final long serialVersionUID = -2818734475958408590L;
-
 } /* end class EdgePower */

@@ -241,7 +241,5 @@ public class LayerGrid extends Layer {
     }
     refreshEditors();
   }
-
-  static final long serialVersionUID = -6881857653751712834L;
 } /* end class LayerGrid */
 

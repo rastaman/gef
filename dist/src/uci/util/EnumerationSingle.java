@@ -58,8 +58,6 @@ implements Enumeration, java.io.Serializable {
     }
     else throw new NoSuchElementException();
   }
-  
-  static final long serialVersionUID = -4656163047752777866L;
 } /* end class EnumerationSingle */
 
 

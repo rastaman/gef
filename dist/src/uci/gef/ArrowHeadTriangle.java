@@ -74,7 +74,4 @@ public class ArrowHeadTriangle extends ArrowHead {
     g.setColor(arrowLineColor);
     g.drawPolygon(triangle);
   }
-
-  static final long serialVersionUID = 9201510549374593518L;
-
 } /* end class ArrowHeadTriangle */

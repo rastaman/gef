@@ -53,7 +53,4 @@ public class ModeChangeEvent extends EventObject {
   ////////////////////////////////////////////////////////////////
   // accessors
   public Vector getModes() { return _modes; }
-
-  //static final long serialVersionUID = 964694861090302022L;
-
 } /* end class ModeChangeEvent */

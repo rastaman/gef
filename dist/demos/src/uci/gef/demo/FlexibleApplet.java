@@ -224,7 +224,4 @@ public class FlexibleApplet extends Applet {
     //
     return info;
   }
-
-  static final long serialVersionUID = -5917674608779926046L;
-
 } /* end class FlexibleApplet */

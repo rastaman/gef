@@ -464,7 +464,4 @@ implements PropertyChangeListener, Highlightable {
     PathConv getPath() { return _path; }
     Fig getFig() { return _fig; }
   }
-
-  static final long serialVersionUID = 5276706932173784022L;
-
 } /* end class FigEdge */

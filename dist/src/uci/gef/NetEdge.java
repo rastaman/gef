@@ -160,10 +160,5 @@ implements GraphEdgeHooks, java.io.Serializable {
    *  subclasses to have a different look.  The better way to do it is
    *  to implement your own GraphEdgeRenderer. */
   public abstract FigEdge makePresentation(Layer lay);
-
-
-
-
-  static final long serialVersionUID = -1750647124723651686L;
 } /* end class NetEdge */
 

@@ -548,8 +548,5 @@ public class FigPoly extends Fig {
     _w = polyBounds.width;
     _h = polyBounds.height;
   }
-
-  static final long serialVersionUID = 469741678140186635L;
-
 } /* end class FigPoly */
 

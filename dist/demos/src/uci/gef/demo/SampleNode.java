@@ -123,7 +123,4 @@ public class SampleNode extends NetNode implements Serializable {
   public void keyPressed(KeyEvent e) {
     //    System.out.println("sample node got keyDown");
   }
-
-  static final long serialVersionUID = -8629963393808576433L;
-
 } /* end class SampleNode */

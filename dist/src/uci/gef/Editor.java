@@ -718,7 +718,4 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     _selectionManager.deselect(f);
     remove(f);
   }
-
-  static final long serialVersionUID = -3313673451324513650L;
-
 } /* end class Editor */

@@ -90,6 +90,4 @@ public abstract class PathConv implements java.io.Serializable {
     res.y += dy;
 
   }
-
-  static final long serialVersionUID = -2090491388402219290L;
 } /* end class PathConv */

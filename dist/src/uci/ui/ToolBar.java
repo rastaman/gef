@@ -257,8 +257,4 @@ public class ToolBar extends JToolBar implements MouseListener {
       return;
     }
   }
-
-  static final long serialVersionUID = -633571897049780787L;
-
-
 } /* end class ToolBar */

@@ -74,8 +74,4 @@ public class ArrowHeadComposite extends ArrowHead {
 	       path.pointAlongPerimeter(len - 1 - i*arrow_height*2));
     }
   }
-
-
-  static final long serialVersionUID = 1408058795883023563L;
-
 } /* end class ArrowHeadComposite */

@@ -49,7 +49,4 @@ public class CmdNull extends Cmd {
 
   /** This is the only undo method that works :) */
   public void undoIt() { }
-
-  static final long serialVersionUID = -6732585178941738791L;
-
 } /* end class CmdNull */

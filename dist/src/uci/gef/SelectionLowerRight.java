@@ -120,7 +120,5 @@ public class SelectionLowerRight extends Selection {
     }
     _content.setBounds(newX, newY, newW, newH);
   }
-
-  static final long serialVersionUID = 5186482042725814027L;
 } /* end class SelectionLowerRight */
 

@@ -55,7 +55,4 @@ public class CmdDelete extends Cmd {
   }
 
   public void undoIt() { }
-
-  static final long serialVersionUID = -7377351910704590075L;
-
 } /* end class CmdDelete */

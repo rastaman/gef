@@ -864,7 +864,4 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   public void postLoad() { }
 
   public void cleanUp() { }
-
-  static final long serialVersionUID = 8658160363557344358L;
-
 } /* end class Fig */

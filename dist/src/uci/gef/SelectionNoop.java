@@ -73,8 +73,5 @@ public class SelectionNoop extends Selection {
     h.index = -2;
     h.instructions = "Object cannot be moved or resized";
   }
-
-
-  static final long serialVersionUID = 5762844795338457292L;
 } /* end class SelectionNoop */
 

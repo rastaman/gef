@@ -70,8 +70,5 @@ public class FigInk extends FigPoly {
   public boolean contains(int x, int y) {
     return super.findHandle(x, y) != -1;
   }
-
-  static final long serialVersionUID = 660593786382654496L;
-
 } /* end class FigInk */
 

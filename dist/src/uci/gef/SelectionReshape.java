@@ -191,7 +191,5 @@ public class SelectionReshape extends Selection
     }
     //super.keyTyped(ke);
   }
-
-    static final long serialVersionUID = -7030659500756989233L;
 } /* end class SelectionReshape */
 
