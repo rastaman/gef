@@ -127,6 +127,9 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** The Selection object that the mouse is in. */
   protected Selection _curSel = null;
 
+  /** The scale at which to draw the diagram */
+  protected double _scale = 1.0;
+
   /** The AWT window or panel that the Editor draws to. */
   private transient Component _awt_component;
 
@@ -247,6 +250,14 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** The size of the grid for grid snap. */
   //  public int gridSize() { return 16; } // Needs-More-Work: prefs
+
+  /** Return this Editor's current display scale. */
+  public double getScale() { return _scale; }
+
+  /** Set this Editor's drawing scale.  A value of 1.0 draws at 1 to 1.
+      A value greater than 1 draws larger, less than 1 draws smaller.
+      Values equal to or less than 0 will be silently rejected. */
+  public void setScale(double scale) { if (_scale > 0) _scale = scale; }
 
   /** Return the net under the diagram being edited. */
   public GraphModel getGraphModel() {
@@ -370,8 +381,10 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  damaged region (rectangle) to this Editor's RedrawManager.   */
   public void damaged(Rectangle r) {
     //- _redrawer.add(r);
-     ((JComponent) getAwtComponent()).repaint(1000, r.x-32, r.y-32,
-     					     r.width+64, r.height+64);
+     ((JComponent) getAwtComponent()).repaint(1000, (int)(_scale * r.x)-32,
+					     (int)(_scale * r.y)-32,
+     					     (int)(_scale * r.width)+64,
+					     (int)(_scale * r.height)+64);
   }
 
   public void damaged(Fig f) {
@@ -420,6 +433,10 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *
    * @see RedrawManager */
   public synchronized void paint(Graphics g) {
+    if (g instanceof Graphics2D) {
+	Graphics2D g2 = (Graphics2D) g;
+	g2.scale(_scale, _scale);
+    }
     getLayerManager().paint(g);
     _selectionManager.paint(g);
     _modeManager.paint(g);
@@ -437,7 +454,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  is commented out right now because it causes too many out of
    *  memory errors and the size of the JGraphInternalPanel is not set
    *  properly. */
-  public void scrollToShow(int x, int y) {  
+  public void scrollToShow(int x, int y) {
     //   Component c = getAwtComponent();
     //   if (c != null && c.getParent() instanceof JViewport) {
     //     JViewport view = (JViewport) c.getParent();
@@ -552,11 +569,21 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   // JDK 1.1 AWT event handlers
 
+  /** Scales the mouse coordinates (which match the drawing scale)
+    * back to the model scale. */
+  protected MouseEvent translateMouseEvent(MouseEvent me) {
+    double xp = me.getX();
+    double yp = me.getY();
+    me.translatePoint((int) Math.round((xp / _scale) - me.getX()),
+		      (int) Math.round((yp / _scale) - me.getY()));
+    return me;
+  }
 
   /** Invoked after the mouse has been pressed and released.  All
    *  events are passed on the SelectionManager and then ModeManager. */
   public void mouseClicked(MouseEvent me) { 
     //- RedrawManager.lock();
+    translateMouseEvent(me);
     Globals.curEditor(this);
     //setUnderMouse(me);
     if (_curFig instanceof MouseListener)
@@ -570,6 +597,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Invoked when a mouse button has been pressed. */
   public void mousePressed(MouseEvent me) {
     if (me.isConsumed()) return;
+    translateMouseEvent(me);
     setActiveTextEditor(null);
     //if (getAwtComponent() != null) getAwtComponent().requestFocus();
     //- RedrawManager.lock();
@@ -586,6 +614,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Invoked when a mouse button has been released. */
   public void mouseReleased(MouseEvent me) {
     //- RedrawManager.lock();
+    translateMouseEvent(me);
     Globals.curEditor(this);
     //setUnderMouse(me);
     if (_curFig instanceof MouseListener)
@@ -601,6 +630,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     if (_activeTextEditor != null) _activeTextEditor.requestFocus();
     else if (_awt_component != null) _awt_component.requestFocus();
     //- RedrawManager.lock();
+    translateMouseEvent(me);
     Globals.curEditor(this);
     mode((FigModifyingMode)Globals.mode());
     setUnderMouse(me);
@@ -612,6 +642,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Invoked when the mouse exits the Editor. */
   public void mouseExited(MouseEvent me) {
     //- RedrawManager.lock();
+    translateMouseEvent(me);
     // Globals.curEditor(this);
     setUnderMouse(me);
     if (_curFig instanceof MouseListener)
@@ -628,6 +659,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  almost impossible.  */
   public void mouseDragged(MouseEvent me) {
     //- RedrawManager.lock();
+    translateMouseEvent(me);
     Globals.curEditor(this);
     setUnderMouse(me);
     _selectionManager.mouseDragged(me);
@@ -639,6 +671,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Invoked when the mouse button has been moved (with no buttons no down). */
   public void mouseMoved(MouseEvent me) {
     //- RedrawManager.lock();
+    translateMouseEvent(me);
     Globals.curEditor(this);
     setUnderMouse(me);
     if (_curFig != null && Globals.getShowFigTips()) {
