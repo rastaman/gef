@@ -138,8 +138,11 @@ public abstract class Layer implements java.io.Serializable {
     }
 
     // TODO - I'd query whether this is the best way to write a clone
-    // method.
-    // Also, shouldn't this class implement clonable?
+    // method. Why doesn't it call super.clone()? Why is it trying to
+    // create it descendants by reflection. The descendants should
+    // contain the clone method.
+    // Also, shouldn't this class implement clonable if it contains clone?
+    // Bob Tarling 29 Dec 2003
     public Object clone() {
         Layer lay;
         try {
