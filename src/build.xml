@@ -108,8 +108,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <property name="Name" value="GEF"/>
     <property name="name" value="gef"/>
     <!--<property name="version" value="0.9.4beta-${DSTAMP}-${TSTAMP}"/>-->
-    <property name="version" value="0.9.6"/>
-    <property name="year" value="2002"/>
+    <property name="version" value="0.10.1"/>
+    <property name="year" value="2004"/>
 
     <echo message="------------------- ${Name} ${version} (unstable) [${year}] ----------------"/>
 
@@ -130,7 +130,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <property name="build.dir" value="../build"/>
     <property name="build.src" value="${src.dir}"/>
     <property name="build.dest" value="${build.dir}/classes"/>
-    <property name="gef.classpath" value="${lib.dir}/log4j.jar:${lib.dir}/xerces.jar"/>
+    <property name="gef.classpath" value="${lib.dir}/log4j-1.2.6.jar:${lib.dir}/xerces.jar"/>
     <property file="${user.home}/.ant.properties" />
 
   </target>
