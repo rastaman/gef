@@ -119,12 +119,30 @@ public class ModePopup extends FigModifyingModeImpl {
     // event handlers
 
 
-    /** Show a popup menu on right-mouse-button up. */
-    // Note: It would be a clean implementation if we simply call isPopupTrigger() in mousePressed() and mouseClicked() also,
-    // but somehow the popup menu gets canceled immediately on mouseReleased() if it was shown in mousePressed() ...
+    /** Determine if a popup menu should be displayed by this
+     * mouse key being released
+     * */
     public void mouseReleased(MouseEvent me) {
         if(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
             showPopup(me);
         }
+    }
+    
+    /** Determine if a popup menu should be displayed by this
+     * mouse key being pressed
+     * */
+    public void mousePressed(MouseEvent me) {
+        if(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
+            showPopup(me);
+    	}
+    }
+	
+    /** Determine if a popup menu should be displayed by this
+     * mouse key being clicked
+     * */
+    public void mouseClicked(MouseEvent me) {
+        if(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
+            showPopup(me);
+    	}
     }
 }
