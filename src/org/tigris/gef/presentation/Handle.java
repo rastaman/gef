@@ -43,6 +43,23 @@ import java.net.*;
 
 public class Handle {
 
+    /** The handle in the northwest corner of a FigNode */
+    public static final int NORTHWEST = 0;
+    /** The handle in the north edge of a FigNode */
+    public static final int NORTH = 1;
+    /** The handle in the northeast corner of a FigNode */
+    public static final int NORTHEAST = 2;
+    /** The handle in the west edge of a FigNode */
+    public static final int WEST = 3;
+    /** The handle in the east edge of a FigNode */
+    public static final int EAST = 4;
+    /** The handle in the southwest corner of a FigNode */
+    public static final int SOUTHWEST = 5;
+    /** The handle in the south edge of a FigNode */
+    public static final int SOUTH = 6;
+    /** The handle in the southeast corner of a FigNode */
+    public static final int SOUTHEAST = 7;
+    
   ////////////////////////////////////////////////////////////////
   // instance variables
 
