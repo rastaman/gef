@@ -381,10 +381,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  damaged region (rectangle) to this Editor's RedrawManager.   */
   public void damaged(Rectangle r) {
     //- _redrawer.add(r);
-     ((JComponent) getAwtComponent()).repaint(1000, (int)(_scale * r.x)-32,
-					     (int)(_scale * r.y)-32,
-     					     (int)(_scale * r.width)+64,
-					     (int)(_scale * r.height)+64);
+     ((JComponent) getAwtComponent()).repaint();
   }
 
   public void damaged(Fig f) {
@@ -392,8 +389,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     // the line above should not be needed, but without it I get
     // NullPointerExceptions...
     //- if (f != null) _redrawer.add(f);
-    ((JComponent) getAwtComponent()).repaint(1000, f.getX()-32, f.getY()-32,
-					     f.getWidth()+64, f.getHeight()+64);
+    ((JComponent) getAwtComponent()).repaint();
   }
 
   public void damaged(Selection sel) {
@@ -412,7 +408,6 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     Dimension size = getAwtComponent().getSize();
     //- _redrawer.add(new Rectangle(0, 0, size.width, size.height));
     ((JComponent) getAwtComponent()).repaint();
-
   }
 
   /** Tell my RedrawManager to repair all outstanding damaged regions
@@ -420,9 +415,9 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  already gets called periodically from another thread of
    *  control. You should call it if you need a very tight user
    *  interface feedback loop... */
-  public void repairDamage() {
-    //- _redrawer.repairDamage();
-  }
+//    public void repairDamage() {
+//      //- _redrawer.repairDamage();
+//    }
 
   ////////////////////////////////////////////////////////////////
   // display methods
