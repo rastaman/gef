@@ -227,9 +227,4 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
     setFont(_target.getFont());
   }
   
-  public void cut() {
-      System.out.println("[FigTextEditor] internal cut implementation");
-      super.cut();
-  }
-  
 } /* end class FigTextEditor */
