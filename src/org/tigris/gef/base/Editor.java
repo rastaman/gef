@@ -111,8 +111,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
      *  this framework to an application. */
     protected Object _document;
 
-    /** _selections holds the SelectionMultiple object that describes
-     *  all the selection objects for what the user currently has
+    /** All the selection objects for what the user currently has
      *  selected. */
     protected SelectionManager _selectionManager = new SelectionManager(this);
 
@@ -122,10 +121,14 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     /** The grid to snap points to.   */
     protected Guide _guide = new GuideGrid(8);
 
-    /** The Fig that the mouse is in. */
+    /** The Fig that the mouse is in.
+     * @deprecated in 0.11 use getCurrentFig() this will be removed in 0.12
+     */
     protected Fig _curFig = null;
 
-    /** The Selection object that the mouse is in. */
+    /** The Selection object that the mouse is in.
+     * @deprecated in 0.11 use getCurrentSelection() this will be removed in 0.12
+     */
     protected Selection _curSel = null;
 
     /** The scale at which to draw the diagram */
@@ -152,8 +155,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 
     private RenderingHints _renderingHints = new RenderingHints(null);
   
-    /** The ancestor of _jComponent that has a peer that can create
-     *  an image. */
+    /** The context menu for this editor */
     private transient JPopupMenu _popup = null;
 
     /**
@@ -166,13 +168,6 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     // constructors and related functions
 
 
-    /**
-     * @deprecated 0.10 will be replaced in 0.11 in favour of JComponent version
-     */
-    public Editor(GraphModel gm, Component component) {
-        this(gm, (JComponent)component);
-    }
-    
     /** Construct a new Editor to edit the given NetList */
     public Editor(GraphModel gm, JComponent jComponent) {
         this(gm, jComponent, null);
@@ -190,13 +185,6 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         this(d.getGraphModel(), null, d.getLayer());
     }
 
-    /**
-     * @deprecated 0.10 will be replaced in 0.11 in favour of JComponent version
-     */
-    public Editor(GraphModel gm, Component component, Layer lay) {
-        this(gm, (JComponent)component, lay);
-    }
-    
     public Editor(GraphModel gm, JComponent jComponent, Layer lay) {
         _jComponent = jComponent;
         defineLayers(gm, lay);
@@ -284,11 +272,21 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         return _modeManager;
     }
 
-    /** Set the current user interface mode to the given Mode instance. */
+    /** Set the current user interface mode to the given Mode instance.
+     * @deprecated in 0.11 use pushMode(FigModifyingMode mode)
+     */
     public void mode(FigModifyingMode m) {
         _modeManager.push(m);
         m.setEditor(this);
         Globals.showStatus(m.instructions());
+    }
+
+    /** Pushes a new mode to the mode manager 
+     */
+    public void pushMode(FigModifyingMode mode) {
+        _modeManager.push(mode);
+        mode.setEditor(this);
+        Globals.showStatus(mode.instructions());
     }
 
     /** Set this Editor's current Mode to the next global Mode. */
@@ -306,16 +304,6 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 
     public double getScale() {
         return _scale;
-    }
-
-    /** Set this Editor's drawing scale.  A value of 1.0 draws at 1 to 1.
-     *  A value greater than 1 draws larger, less than 1 draws smaller.
-     *  Conceptually the scale is an attribute of JGraph, but the editor needs
-     *  to know it to paint accordingly. 
-     * @deprectaed in favour of getScale(double) vers 0.10 removed 0.11
-     */
-    public void setScaleInt(double scale) {
-        setScale(scale);
     }
 
     /** Set this Editor's drawing scale.  A value of 1.0 draws at 1 to 1.
@@ -926,5 +914,13 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 
     public boolean shouldPaint() {
         return _shouldPaint;
+    }
+    
+    /**
+     * Gets the selection object the mouse is in
+     * @return the selection object or null
+     */
+    public Selection getCurrentSelection() {
+    	return _curSel;
     }
 }
