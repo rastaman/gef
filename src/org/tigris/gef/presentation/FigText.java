@@ -31,7 +31,6 @@
 package org.tigris.gef.presentation;
 
 import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
 import org.tigris.gef.properties.PropCategoryManager;
 
 import java.awt.*;
@@ -482,16 +481,6 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         _textEditorClass = editorClass;
     }
 
-    /**
-     *  Overrides method of class Fig
-     *  Implements linewidths greater than one
-     */
-    public void setLineWidth(int w) {
-        //int newLW = Math.max(0, Math.min(1, w));
-        firePropChange("lineWidth", _lineWidth, w);
-        _lineWidth = w;
-    }
-
     ////////////////////////////////////////////////////////////////
     // painting methods
 
@@ -511,20 +500,22 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         int chunkY = _y + _topMargin;
         StringTokenizer lines;
 
-        if(_filled) {
-            g.setColor(_fillColor);
+        int lineWidth = getLineWidth();
+
+        if (getFilled()) {
+            g.setColor(getFillColor());
             g.fillRect(_x, _y, _w, _h);
         }
-        if(_lineWidth > 0) {
-            g.setColor(_lineColor);
+        if(lineWidth > 0) {
+            g.setColor(getLineColor());
             // test linewidth
-            if(_lineWidth == 1) {
+            if(lineWidth == 1) {
                 // paint single rectangle
-                g.drawRect(_x, _y, _w - _lineWidth, _h - _lineWidth);
+                g.drawRect(_x, _y, _w - lineWidth, _h - lineWidth);
             }
             else {
                 // paint <linewidth rectangles
-                for(int i = 0; i < _lineWidth; i++) {
+                for(int i = 0; i < lineWidth; i++) {
                     // a rectangle is painted as four connecting lines
                     g.drawLine(_x + i, _y + i, _x + _w - i, _y + i);
                     g.drawLine(_x + _w - i, _y + i, _x + _w - i, _y + _h - i);
@@ -791,10 +782,12 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      *  do not get smaller when you backspace.  */
     public void calcBounds() {
         Rectangle bounds = getBounds();
-        if(_font == null)
+        if(_font == null) {
             return;
-        if(_fm == null)
+        }
+        if (_fm == null) {
             _fm = Toolkit.getDefaultToolkit().getFontMetrics(_font);
+        }
         int overallW = 0;
         int numLines = 1;
         StringTokenizer lines = new StringTokenizer(_curText, "\n\r", true);
