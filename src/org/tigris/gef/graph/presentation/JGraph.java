@@ -163,6 +163,24 @@ public class JGraph extends JPanel implements Cloneable {
         } // end if
     }
 
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object o) {
+        if (o instanceof JGraph) {
+            JGraph other = (JGraph) o;            
+            if (((this.getCurrentDiagramId() != null
+                    && this.getCurrentDiagramId().equals(other.getCurrentDiagramId()))
+                    || (this.getCurrentDiagramId() == null
+                    && other.getCurrentDiagramId() == null))
+                    && this.getEditor().equals(other.getEditor())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
     public void addMouseListener(MouseListener listener) {
         drawingPane.addMouseListener(listener);
     }
