@@ -61,6 +61,7 @@ public class SelectionResize extends Selection {
    * </pre>
    */
   public void hitHandle(Rectangle r, Handle h) {
+    if (!_content.isResizable()) return;
     int cx = _content.getX();
     int cy = _content.getY();
     int cw = _content.getWidth();
@@ -118,6 +119,7 @@ public class SelectionResize extends Selection {
    *  handles. Needs-More-Work: someday I might implement resizing that
    *  maintains the aspect ratio. */
   public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
+    if (!_content.isResizable()) return;
     int x = _content.getX(), y = _content.getY();
     int w = _content.getWidth(), h = _content.getHeight();
     int newX = x, newY = y, newW = w, newH = h;
