@@ -29,6 +29,9 @@ import java.lang.reflect.Method;
 
 import java.util.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 // stereotype <<utility>>
 public class OCLEvaluator {
     ////////////////////////////////////////////////////////////////
@@ -38,8 +41,9 @@ public class OCLEvaluator {
     public static String GET_NAME_EXPR_1 = "self";
     public static String GET_NAME_EXPR_2 = "self.name.body";
     public static String GET_OWNER_EXPR = "self.owner";
-    ////////////////////////////////////////////////////////////////
-    // static variables
+
+    private static final Log LOG = LogFactory.getLog(OCLEvaluator.class);
+
     protected Map _scratchBindings = new Hashtable();
     protected StringBuffer _strBuf = new StringBuffer(100);
 
@@ -167,7 +171,7 @@ public class OCLEvaluator {
         } catch(NoSuchMethodException e) {
         } catch(InvocationTargetException e) {
             if(m != null) {
-                e.getTargetException().printStackTrace();
+                LOG.error("Failed to invoke method get" + toTitleCase(property) + " on " + target.getClass().getName(), e.getTargetException());
                 return null;
             }
         } catch(IllegalAccessException e) {
@@ -181,7 +185,7 @@ public class OCLEvaluator {
         } catch(NoSuchMethodException e) {
         } catch(InvocationTargetException e) {
             if(m != null) {
-                e.getTargetException().printStackTrace();
+                LOG.error("Failed to invoke method " + property + " on " + target.getClass().getName(), e.getTargetException());
                 return null;
             }
         } catch(IllegalAccessException e) {
@@ -196,9 +200,11 @@ public class OCLEvaluator {
         } catch(NoSuchMethodException e) {
         } catch(IllegalAccessException e) {
         } catch(InvocationTargetException e) {
+            if(m != null) {
+                LOG.error("Failed to invoke method " + toTitleCase(property) + " on " + target.getClass().getName(), e.getTargetException());
+                return null;
+            }
         }
-
-
         
         // We have tried all method forms so lets now try just getting the property
         Field f = null;
@@ -208,17 +214,16 @@ public class OCLEvaluator {
             return convertCollection(o);
         } catch(NoSuchFieldException e) {
             o = getExternalProperty(target, property);
-            System.out.println("external property value = " + o);
             if(o != null) {
                 return convertCollection(o);
             }
             else {
-                e.printStackTrace();
+                LOG.error("Failed to get external property " + property + " on " + target.getClass().getName(), e);
                 return null;
             }
-        } catch(Exception e) {
+        } catch(IllegalAccessException e) {
             if(f != null) {
-                e.printStackTrace();
+                LOG.error("Failed to get external property " + property + " on " + target.getClass().getName(), e);
                 return null;
             }
         }
