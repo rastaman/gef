@@ -268,8 +268,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
 	<delete file="${Name}-${version}-src.tar.gz"/>
 	<delete file="${Name}-${version}-src.zip"/>
-    <zip zipfile="${Name}-${version}-src.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak"/>
-    <tar tarfile="${Name}-${version}-src.tar" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak"/>
+    <zip zipfile="${Name}-${version}-src.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak GEF*"/>
+    <tar tarfile="${Name}-${version}-src.tar" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak GEF*"/>
     <gzip zipfile="${Name}-${version}-src.tar.gz" src="${Name}-${version}-src.tar" />
     <delete file="${Name}-${version}-src.tar"/>
   </target>                                                                                                                                                                    

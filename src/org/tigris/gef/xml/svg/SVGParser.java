@@ -83,7 +83,7 @@ public class SVGParser extends HandlerBase {
   // constructors
 
   protected SVGParser() {
-  }    
+  }
   public void characters(char[] ch,
 					   int start,
 					   int length) {
@@ -93,7 +93,7 @@ public class SVGParser extends HandlerBase {
 		_textBuf != null) {
 		_textBuf.append(ch,start,length);
 	}
-  }    
+  }
   protected Color colorByName(String name, Color defaultColor) {
 	if (name.equalsIgnoreCase("white")) return Color.white;
 	if (name.equalsIgnoreCase("lightGray")) return Color.lightGray;
@@ -113,7 +113,7 @@ public class SVGParser extends HandlerBase {
 	  System.out.println("invalid color code string: " + name);
 	}
 	return defaultColor;
-  }    
+  }
 	private void edgeStateStartElement(String tagName,AttributeList attrList)
 	{
 		if (tagName.equals("desc")) {
@@ -218,7 +218,7 @@ public class SVGParser extends HandlerBase {
 			_elementState = EDGE_STATE;
 			break;
 	}
-  }      
+  }
   protected Fig findFig(String uri) {
 	Fig f = null;
 	if (uri.indexOf(".") == -1) {
@@ -238,24 +238,24 @@ public class SVGParser extends HandlerBase {
 	  }
 	}
 	return f;
-  }    
+  }
   //needs-more-work: find object in model
   protected Object findOwner(String uri) {
 	Object own = _ownerRegistry.get(uri);
 	return own;
-  }    
+  }
   protected String[] getEntityPaths() {
 	return _entityPaths;
-  }    
+  }
   //needs-more-work: make an instance of the named class
   protected GraphModel getGraphModelFor(String desc) {
 	 System.out.println("should be: "+desc);
 	return new DefaultGraphModel();
-  }    
+  }
   protected FigCircle handleEllipse(AttributeList attrList) {
 	FigCircle f = new FigCircle(0, 0, 50, 50);
 	setAttrs(f, attrList);
-	
+
 	String cx = attrList.getValue("cx");
 	String cy = attrList.getValue("cy");
 	String rx = attrList.getValue("rx");
@@ -270,27 +270,27 @@ public class SVGParser extends HandlerBase {
 	f.setY( cyInt - ryInt );
 	f.setWidth(rxInt * 2);
 	f.setHeight(ryInt * 2);
-	
+
 	return f;
-  }        
+  }
   /* Returns Fig rather than FigGroups because this is also
 	 used for FigEdges. */
   protected Fig handleGroup(AttributeList attrList) {
 	Fig f = null;
-	
+
 	String 			clsNameBounds = attrList.getValue("class");
 	StringTokenizer	st = new StringTokenizer(clsNameBounds, ",;[] ");
 	String 			clsName = translateClassName(st.nextToken());
 	String 			xStr = null, yStr = null, wStr = null, hStr = null;
-	
-	if (st.hasMoreElements()) 
+
+	if (st.hasMoreElements())
 	{
 		xStr = st.nextToken();
 		yStr = st.nextToken();
 		wStr = st.nextToken();
 		hStr = st.nextToken();
 	}
-	
+
 	try {
 		Class nodeClass = Class.forName(translateClassName(clsName));
 		f = (Fig) nodeClass.newInstance();
@@ -299,17 +299,17 @@ public class SVGParser extends HandlerBase {
 			int y = Integer.parseInt(yStr);
 			int w = Integer.parseInt(wStr);
 			int h = Integer.parseInt(hStr);
-			
+
 			f.setBounds(x, y, w, h);
 		}
-		
+
 		if (f instanceof FigNode) {
 			FigNode fn 		= (FigNode) f;
 			_currentNode 	= fn;
 			_elementState 	= NODE_STATE;
 			_textBuf = new StringBuffer();
 		}
-		
+
 		if (f instanceof FigEdge) {
 			_currentEdge	= (FigEdge) f;
 			_elementState	= EDGE_STATE;
@@ -324,9 +324,9 @@ public class SVGParser extends HandlerBase {
 		ex.printStackTrace();
 	}
 	setAttrs(f, attrList);
-	
+
 	return f;
-  }        
+  }
   protected FigLine handleLine(AttributeList attrList) {
 	_currentLine = new FigLine(0, 0, 100, 100);
 	setAttrs(_currentLine, attrList);
@@ -334,7 +334,7 @@ public class SVGParser extends HandlerBase {
 	_y1Int = 0;
 	_elementState = LINE_STATE;
 	return _currentLine;
-  }    
+  }
   protected FigPoly handlePath(AttributeList attrList) {
 	String type = attrList.getValue("class");
 
@@ -358,7 +358,7 @@ public class SVGParser extends HandlerBase {
 
 		_currentPoly = f;
 		_elementState = POLY_STATE;
-	
+
 		// Set the path data
 		String path = attrList.getValue("d");
 		int	x = -1;
@@ -401,8 +401,8 @@ public class SVGParser extends HandlerBase {
 	}
 
 	return f;
-	
-  }      
+
+  }
   protected Fig handlePolyLine(AttributeList attrList) {
 	String clsName = translateClassName(attrList.getValue("description"));
 	if (clsName != null && clsName.indexOf("FigLine") != -1) {
@@ -411,7 +411,7 @@ public class SVGParser extends HandlerBase {
 	else {
 	  return handlePath(attrList);
 	}
-  }    
+  }
   protected FigRect handleRect(AttributeList attrList) {
 	FigRect f;
 	String cornerRadius = attrList.getValue("rx");
@@ -425,7 +425,7 @@ public class SVGParser extends HandlerBase {
 	}
 	setAttrs(f, attrList);
 	return f;
-  }      
+  }
   protected void handleSVG(AttributeList attrList) {
 	String name = attrList.getValue("id");
 	String clsName = attrList.getValue("class");
@@ -436,15 +436,15 @@ public class SVGParser extends HandlerBase {
 	catch (Exception ex) {
 		System.out.println("Exception in handleSVG");
 	}
-  }        
+  }
   protected FigText handleText(AttributeList attrList) {
 	FigText f = new FigText(100, 100, 90, 45);
 	setAttrs(f, attrList);
-	
+
 	_elementState = TEXT_STATE;
 	_textBuf = new StringBuffer();
 	_currentText = f;
-	
+
 	String style = attrList.getValue("style");
 	if (style != null)
 	{
@@ -461,7 +461,7 @@ public class SVGParser extends HandlerBase {
 		}
 	}
 	return f;
-  }          
+  }
   ////////////////////////////////////////////////////////////////
   // internal methods
 
@@ -486,7 +486,7 @@ public class SVGParser extends HandlerBase {
 	  System.out.println("could not set diagram type to " + newClassName);
 	  ex.printStackTrace();
 	  }
-  }    
+  }
   protected void lineStateStartElement(String tagName,AttributeList attrList) {
 	  if(_currentLine != null) {
 			if (tagName.equals("desc")) {
@@ -510,7 +510,7 @@ public class SVGParser extends HandlerBase {
 			_currentLine.setY2(y2Int);
 		  }
 	  }
-  }      
+  }
 	private void nodeStateStartElement(String tagName,AttributeList attrList) {
 		if (tagName.equals("desc")) {
 		}
@@ -525,7 +525,7 @@ public class SVGParser extends HandlerBase {
 			_elementState = TEXT_NODE_STATE;
 			Fig p = handleText(attrList);
 		}
-  }            
+  }
   protected Color parseColor(String name, Color defaultColor) {
 	try {
 		int start = name.indexOf("rgb",0);
@@ -544,6 +544,7 @@ public class SVGParser extends HandlerBase {
 				end 		= name.indexOf( ")", start);
 				int blue	= Integer.parseInt(name.substring( start, end ).trim());
 
+                                //System.out.println("[SVGParser] parseColor: ("+red+","+green+","+blue+")");
 				return new Color(red, green, blue);
 			}
 			return defaultColor;
@@ -574,7 +575,7 @@ public class SVGParser extends HandlerBase {
 	  System.out.println("invalid color code string: " + name);
 	}
 	return defaultColor;
-  }      
+  }
 /**
  * This method parses the 'style' attribute for a particular field
  * @return java.lang.String
@@ -624,19 +625,19 @@ protected String parseStyle(String field, String style) {
 			_currentPoly.addPoint(x2Int,y2Int);
 		  }
 	  }
-  }      
+  }
 	private void privateStateEndElement(String tagName) {
-		if (_currentNode != null) 
+		if (_currentNode != null)
 		{
 			if ( _currentEdge != null ) _currentEdge = null;
 
 			_currentNode.setPrivateData( _textBuf.toString() );
-			
+
 			String body = _textBuf.toString();
 			StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
 			Fig encloser = null;
-			
-			while (st2.hasMoreElements()) 
+
+			while (st2.hasMoreElements())
 			{
 				String t = st2.nextToken();
 				String v = "no such fig";
@@ -649,20 +650,20 @@ protected String parseStyle(String field, String style) {
 			}
 			_currentNode.setEnclosingFig(encloser);
 		}
-		
-		if (_currentEdge != null) 
+
+		if (_currentEdge != null)
 		{
 			_currentEdge.setPrivateData( _textBuf.toString() );
-			
+
 			Fig 	spf = null;
 			Fig 	dpf = null;
 			FigNode sfn = null;
 			FigNode dfn = null;
 			String body = _textBuf.toString();
-			
+
 			StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
-			
-			while (st2.hasMoreElements()) 
+
+			while (st2.hasMoreElements())
 			{
 				String t = st2.nextToken();
 				String v = st2.nextToken();
@@ -679,7 +680,7 @@ protected String parseStyle(String field, String style) {
 					dfn = (FigNode) findFig(v);
 				}
 			}
-			
+
 			_currentEdge.setSourcePortFig(spf);
 			_currentEdge.setDestPortFig(dpf);
 			_currentEdge.setSourceFigNode(sfn);
@@ -713,7 +714,7 @@ protected String parseStyle(String field, String style) {
 	  ex.printStackTrace();
 	}
 	return null;
-  }      
+  }
    public InputSource resolveEntity(java.lang.String publicId,
 								 java.lang.String systemId) {
 		InputSource source = null;
@@ -759,7 +760,7 @@ protected String parseStyle(String field, String style) {
 			source.setSystemId(systemId);
 		}
 		return source;
-   }      
+   }
   ////////////////////////////////////////////////////////////////
   // internal parsing methods
 
@@ -778,12 +779,15 @@ protected String parseStyle(String field, String style) {
 	  f.setBounds(xInt, yInt, wInt, hInt);
 	}
 
-	if (!(f instanceof FigNode))
-	{
-		// Parse Style
-		String style = attrList.getValue("style");
-		if (style != null)
-		{
+	// Parse Style
+	String style = attrList.getValue("style");
+	if (style != null) {
+	  String fillcolor = parseStyle("fill",style);
+          //System.out.println("[SVGParser] setAttrs: fillcolor = " + fillcolor);
+	  if (fillcolor != null && !fillcolor.equals(""))
+	    f.setFillColor( parseColor(fillcolor, Color.blue ) );
+
+	  if (!(f instanceof FigNode)) {
 			String linewidth = parseStyle("stroke-width",style);
 			if (linewidth != null && !linewidth.equals("")) {
 			  f.setLineWidth(Integer.parseInt(linewidth));
@@ -796,15 +800,11 @@ protected String parseStyle(String field, String style) {
 	//		if (fill != null && !fill.equals(""))
 	//		  f.setFilled(fill.equals("1") || fill.startsWith("t"));
 
-			String fillcolor = parseStyle("fill",style);
-			if (fillcolor != null && !fillcolor.equals(""))
-			  f.setFillColor( parseColor(fillcolor, Color.blue ) );
-
 			String dasharray = parseStyle("stroke-dash-array",style);
 			if (dasharray != null && !dasharray.equals("") &&
 			!dasharray.equals("1"))
 			  f.setDashed(true);
-		}
+          }
 	}
 
 	String dynobjs = attrList.getValue("dynobjects");
@@ -825,14 +825,14 @@ protected String parseStyle(String field, String style) {
 	catch (Exception ex) {
 	    System.out.println("could not set owner");
 	}
-    }       
+    }
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
   public void setOwnerRegistry(Map owners) {
 	_ownerRegistry = owners;
-  }    
+  }
   public void startElement(String elementName,AttributeList attrList) {
 	switch(_elementState) {
 		case DEFAULT_STATE:
@@ -858,7 +858,7 @@ protected String parseStyle(String field, String style) {
 		        _diagram.add(handleText(attrList));
 		    }
 		    else if (elementName.equals("line")) {
-			    
+
 			}
 		    else if (elementName.equals("line")) { /* just gets rid of the error msgs */ }
 		    else if (elementName.equals("path")) { /* just gets rid of the error msgs */ }
@@ -877,7 +877,7 @@ protected String parseStyle(String field, String style) {
 			polyStateStartElement(elementName,attrList);
 			break;
 
-		case NODE_STATE:			
+		case NODE_STATE:
 			nodeStateStartElement(elementName,attrList);
 			break;
 
@@ -885,8 +885,8 @@ protected String parseStyle(String field, String style) {
 			edgeStateStartElement(elementName,attrList);
 			break;
 	}
-  }                
+  }
   protected String translateClassName(String oldName) {
 	return oldName;
-  }    
+  }
 } /* end class SVGParser */
