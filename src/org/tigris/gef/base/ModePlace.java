@@ -168,10 +168,12 @@ public class ModePlace extends FigModifyingModeImpl {
      */
     public void mouseReleased(MouseEvent me) {
         if(me.isConsumed()) {
+            if (LOG.isDebugEnabled()) LOG.debug("MouseReleased but rejected as already consumed");
             return;
         }
         GraphModel gm = editor.getGraphModel();
         if(!(gm instanceof MutableGraphModel)) {
+            if (LOG.isDebugEnabled()) LOG.debug("MouseReleased but rejected as graph is not mutable");
             return;
         }
 
