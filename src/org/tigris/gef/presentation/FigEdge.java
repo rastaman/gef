@@ -319,11 +319,6 @@ public abstract class FigEdge extends Fig implements Connecter {
         return _fig.getPoints();
     }
 
-    /** @deprecated use getPoint(int) */
-    public Point getPoints(int i) {
-        return _fig.getPoint(i);
-    }
-
     public Point getPoint(int i) {
         return _fig.getPoint(i);
     }
