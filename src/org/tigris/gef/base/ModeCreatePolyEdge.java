@@ -31,6 +31,7 @@ package org.tigris.gef.base;
 import java.awt.*;
 import java.awt.event.*;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 
@@ -46,223 +47,271 @@ import org.tigris.gef.presentation.*;
  *  and connecting it to other model elements. */
 
 public class ModeCreatePolyEdge extends ModeCreate {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The NetPort where the arc is paintn from */
-  private Object _startPort;
+    /** The NetPort where the arc is paintn from */
+    private Object _startPort;
 
-  /** The Fig that presents the starting NetPort */
-  private Fig _startPortFig;
+    /** The Fig that presents the starting NetPort */
+    private Fig _startPortFig;
 
-  /** The FigNode on the NetNode that owns the start port */
-  private FigNode _sourceFigNode;
+    /** The FigNode on the NetNode that owns the start port */
+    private FigNode _sourceFigNode;
 
-  /** The new NetEdge that is being created */
-  private Object _newEdge;
+    /** The new NetEdge that is being created */
+    private Object _newEdge;
 
-  /** The number of points added so far. */
-  protected int _npoints = 0;
-  protected int _lastX, _lastY, _startX, _startY;
-  protected Handle _handle = new Handle(-1);
+    /** The number of points added so far. */
+    protected int _npoints = 0;
+    protected int _lastX, _lastY, _startX, _startY;
+    protected Handle _handle = new Handle(-1);
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    private static final Logger LOG = Logger.getLogger(ModeCreatePolyEdge.class);
+    
+    ////////////////////////////////////////////////////////////////
+    // constructor
 
-  public ModeCreatePolyEdge() { super(); }
-  public ModeCreatePolyEdge(Editor par) { super(par); }
-
-  ////////////////////////////////////////////////////////////////
-  // Mode API
-
-  public String instructions() {
-    return "Drag to define an edge to another port";
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // ModeCreate API
-
-  /** Create the new item that will be drawn. In this case I would
-   *  rather create the FigEdge when I am done. Here I just
-   *  create a rubberband FigLine to show during dragging. */
-  public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-    FigPoly p = new FigPoly(snapX, snapY);
-    p.setLineColor(Globals.getPrefs().getRubberbandColor());
-    p.setFillColor(null);
-    p.addPoint(snapX, snapY); // add the first point twice
-    _startX = _lastX = snapX; _startY = _lastY = snapY;
-    _npoints = 2;
-    return p;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-  /** On mousePressed determine what port the user is dragging from.
-   *  The mousePressed event is sent via ModeSelect. */
-  public void mousePressed(MouseEvent me) {
-    if (me.isConsumed()) return;
-    int x = me.getX(), y = me.getY();
-    //Editor editor = Globals.curEditor();
-    Fig underMouse = editor.hit(x, y);
-    if (underMouse == null) {
-      //System.out.println("bighit");
-      underMouse = editor.hit(x-16, y-16, 32, 32);
+    public ModeCreatePolyEdge() {
+        super();
+        if (LOG.isDebugEnabled()) LOG.debug("Created ModeCreatePolyEdge");
     }
-    if (underMouse == null && _npoints == 0) { done(); me.consume(); return; }
-    if (!(underMouse instanceof FigNode) && _npoints == 0) {
-      done();
-      me.consume();
-      return;
+    public ModeCreatePolyEdge(Editor par) {
+        super(par);
+        if (LOG.isDebugEnabled()) LOG.debug("Created ModeCreatePolyEdge for Editor");
     }
-    if (_sourceFigNode == null) { //_npoints == 0) {
-      _sourceFigNode = (FigNode) underMouse;
-      _startPort = _sourceFigNode.deepHitPort(x, y);
+
+    ////////////////////////////////////////////////////////////////
+    // Mode API
+
+    public String instructions() {
+        return "Drag to define an edge to another port";
     }
-    if (_startPort == null) { done(); me.consume(); return; }
-    _startPortFig = _sourceFigNode.getPortFig(_startPort);
 
-    if (_npoints == 0) { super.mousePressed(me); }
-    //System.out.println("ModeCreatePolyEdge");
-    me.consume();
-  }
+    ////////////////////////////////////////////////////////////////
+    // ModeCreate API
 
-  /** On mouseReleased, find the destination port, ask the GraphModel
-   *  to connect the two ports.  If that connection is allowed, then
-   *  construct a new FigEdge and add it to the Layer and send it to
-   *  the back. */
-  public void mouseReleased(MouseEvent me) {
-    if (me.isConsumed()) return;
-    if (_sourceFigNode == null) { done(); me.consume(); return; }
-
-    int x = me.getX(), y = me.getY();
-    Fig f = editor.hit(x, y);
-    if (f == null) { f = editor.hit(x-16, y-16, 32, 32); }
-    GraphModel gm = editor.getGraphModel();
-    if (!(gm instanceof MutableGraphModel)) f = null;
-    MutableGraphModel mgm = (MutableGraphModel) gm;
-    // needs-more-work: potential class cast exception
-
-    if (f instanceof FigNode) {
-      FigNode destFigNode = (FigNode) f;
-      // If its a FigNode, then check within the
-      // FigNode to see if a port exists
-      Object foundPort = destFigNode.deepHitPort(x, y);
-
-      if (foundPort == _startPort && _npoints < 4) {
-	// user made a false start
-	done();
-	me.consume();
-	return;
-      }
-
-      if (foundPort != null) {
-	Fig destPortFig = destFigNode.getPortFig(foundPort);
-	FigPoly p = (FigPoly) _newItem;
-	if (foundPort == _startPort && _npoints >= 4) p.setSelfLoop(true);
-	//_npoints = 0;
-	editor.damageAll();
-	//editor.getSelectionManager().select(p);
-	p._isComplete = true;
-
-	Class edgeClass = (Class) getArg("edgeClass");
-	if (edgeClass != null)
-	  _newEdge = mgm.connect(_startPort, foundPort, edgeClass);
-	else
-	  _newEdge = mgm.connect(_startPort, foundPort);
-
-	// Calling connect() will add the edge to the GraphModel and
-	// any LayerPersectives on that GraphModel will get a
-	// edgeAdded event and will add an appropriate FigEdge
-	// (determined by the GraphEdgeRenderer).
-
-	if (null == _newEdge) {
-	  System.out.println("MutableGraphModel connect() return null");
-	}
-	else {
-	  LayerManager lm = editor.getLayerManager();
-	  _sourceFigNode.damage();
-	  destFigNode.damage();
-	  Layer lay = editor.getLayerManager().getActiveLayer();
-	  FigEdge fe = (FigEdge) lay.presentationFor(_newEdge);
-	  _newItem.setLineColor(Color.black);
-	  fe.setFig(_newItem);
-	  fe.setSourcePortFig(_startPortFig);
-	  fe.setSourceFigNode(_sourceFigNode);
-	  fe.setDestPortFig(destPortFig);
-	  fe.setDestFigNode(destFigNode);
-
-	  if (fe != null) editor.getSelectionManager().select(fe);
-	  editor.damageAll();
-
-          // if the new edge implements the MouseListener interface it has to receive the mouseReleased() event
-          if (fe instanceof MouseListener) ((MouseListener) fe).mouseReleased(me);
-
-          // set the new edge in place
-          if (_sourceFigNode != null ) _sourceFigNode.updateEdges();
-          if (destFigNode != null  ) destFigNode.updateEdges();
-	}
-	done();
-	me.consume();
-	return;
-      }
+    /** Create the new item that will be drawn. In this case I would
+     *  rather create the FigEdge when I am done. Here I just
+     *  create a rubberband FigLine to show during dragging. */
+    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+        FigPoly p = new FigPoly(snapX, snapY);
+        p.setLineColor(Globals.getPrefs().getRubberbandColor());
+        p.setFillColor(null);
+        p.addPoint(snapX, snapY); // add the first point twice
+        _startX = _lastX = snapX;
+        _startY = _lastY = snapY;
+        _npoints = 2;
+        return p;
     }
-    if (!nearLast(x, y)) {
-      editor.damageAll();
-      Point snapPt = new Point(x, y);
-      editor.snap(snapPt);
-      ((FigPoly)_newItem).addPoint(snapPt.x, snapPt.y);
-      _npoints++;
-      editor.damageAll();
+
+    ////////////////////////////////////////////////////////////////
+    // event handlers
+
+    /** On mousePressed determine what port the user is dragging from.
+     *  The mousePressed event is sent via ModeSelect. */
+    public void mousePressed(MouseEvent me) {
+        if (me.isConsumed()) {
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but rejected as already consumed");
+            return;
+        }
+        int x = me.getX(), y = me.getY();
+        //Editor editor = Globals.curEditor();
+        Fig underMouse = editor.hit(x, y);
+        if (underMouse == null) {
+            //System.out.println("bighit");
+            underMouse = editor.hit(x - 16, y - 16, 32, 32);
+        }
+        if (underMouse == null && _npoints == 0) {
+            done();
+            me.consume();
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but nothing under mouse - consumed anyway");
+            return;
+        }
+        if (!(underMouse instanceof FigNode) && _npoints == 0) {
+            done();
+            me.consume();
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but not on a FigNode - consumed anyway");
+            return;
+        }
+        if (_sourceFigNode == null) { //_npoints == 0) {
+            _sourceFigNode = (FigNode) underMouse;
+            _startPort = _sourceFigNode.deepHitPort(x, y);
+        }
+        if (_startPort == null) {
+            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but not on a port - consumed anyway");
+            done();
+            me.consume();
+            return;
+        }
+        _startPortFig = _sourceFigNode.getPortFig(_startPort);
+
+        if (_npoints == 0) {
+            super.mousePressed(me);
+        }
+        if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected and processed by ancestor - consumed");
+        me.consume();
     }
-    _lastX = x; _lastY = y;
-    me.consume();
-  }
 
-  public void mouseMoved(MouseEvent me) {
-    mouseDragged(me);
-  }
+    /** On mouseReleased, find the destination port, ask the GraphModel
+     *  to connect the two ports.  If that connection is allowed, then
+     *  construct a new FigEdge and add it to the Layer and send it to
+     *  the back. */
+    public void mouseReleased(MouseEvent me) {
+        if (me.isConsumed())
+            return;
+        if (_sourceFigNode == null) {
+            done();
+            me.consume();
+            return;
+        }
 
-  public void mouseDragged(MouseEvent me) {
-    if (me.isConsumed()) return;
-    int x = me.getX(), y = me.getY();
-    if (_npoints == 0) { me.consume(); return; }
-    if (_newItem == null) { me.consume(); return; }
-    FigPoly p = (FigPoly)_newItem;
-    editor.damageAll(); // startTrans?
-    Point snapPt = new Point(x, y);
-    editor.snap(snapPt);
-    _handle.index = p.getNumPoints() - 1;
-    p.moveVertex(_handle, snapPt.x, snapPt.y, true);
-    editor.damageAll(); // endTrans?
-    me.consume();
-  }
+        int x = me.getX(), y = me.getY();
+        Fig f = editor.hit(x, y);
+        if (f == null) {
+            f = editor.hit(x - 16, y - 16, 32, 32);
+        }
+        GraphModel graphModel = editor.getGraphModel();
+        if (!(graphModel instanceof MutableGraphModel)) {
+            f = null;
+        }
+        
+        MutableGraphModel mutableGraphModel = (MutableGraphModel) graphModel;
+        // needs-more-work: potential class cast exception
 
-  /** Internal function to see if the user clicked twice on the same spot. */
-  protected boolean nearLast(int x, int y) {
-    return x > _lastX - Editor.GRIP_SIZE &&
-      x < _lastX + Editor.GRIP_SIZE &&
-      y > _lastY - Editor.GRIP_SIZE &&
-      y < _lastY + Editor.GRIP_SIZE;
-  }
+        if (f instanceof FigNode) {
+            FigNode destFigNode = (FigNode) f;
+            // If its a FigNode, then check within the
+            // FigNode to see if a port exists
+            Object foundPort = destFigNode.deepHitPort(x, y);
 
-  public void done() {
-    super.done();
-    if (_newItem != null) editor.damageAll();
-    _newItem = null;// use this as the fig for the new FigEdge
-    _npoints = 0;
-    _sourceFigNode = null;
-    _startPort = null;
-    _startPortFig = null;
-  }
+            if (foundPort == _startPort && _npoints < 4) {
+                // user made a false start
+                done();
+                me.consume();
+                return;
+            }
 
-  ////////////////////////////////////////////////////////////////
-  // key events
+            if (foundPort != null) {
+                Fig destPortFig = destFigNode.getPortFig(foundPort);
+                FigPoly p = (FigPoly) _newItem;
+                if (foundPort == _startPort && _npoints >= 4)
+                    p.setSelfLoop(true);
+                //_npoints = 0;
+                editor.damageAll();
+                //editor.getSelectionManager().select(p);
+                p._isComplete = true;
 
-  public void keyTyped(KeyEvent ke) {
-    if (ke.getKeyChar() == KeyEvent.VK_ESCAPE) { // escape
-      done();
-      ke.consume();
+                Class edgeClass = (Class) getArg("edgeClass");
+                if (edgeClass != null)
+                    _newEdge = mutableGraphModel.connect(_startPort, foundPort, edgeClass);
+                else
+                    _newEdge = mutableGraphModel.connect(_startPort, foundPort);
+
+                // Calling connect() will add the edge to the GraphModel and
+                // any LayerPersectives on that GraphModel will get a
+                // edgeAdded event and will add an appropriate FigEdge
+                // (determined by the GraphEdgeRenderer).
+
+                if (null == _newEdge) {
+                    LOG.warn("MutableGraphModel connect() returned null");
+                } else {
+                    LayerManager lm = editor.getLayerManager();
+                    _sourceFigNode.damage();
+                    destFigNode.damage();
+                    Layer lay = editor.getLayerManager().getActiveLayer();
+                    FigEdge fe = (FigEdge) lay.presentationFor(_newEdge);
+                    _newItem.setLineColor(Color.black);
+                    fe.setFig(_newItem);
+                    fe.setSourcePortFig(_startPortFig);
+                    fe.setSourceFigNode(_sourceFigNode);
+                    fe.setDestPortFig(destPortFig);
+                    fe.setDestFigNode(destFigNode);
+
+                    if (fe != null)
+                        editor.getSelectionManager().select(fe);
+                    editor.damageAll();
+
+                    // if the new edge implements the MouseListener interface it has to receive the mouseReleased() event
+                    if (fe instanceof MouseListener)
+                         ((MouseListener) fe).mouseReleased(me);
+
+                    // set the new edge in place
+                    if (_sourceFigNode != null)
+                        _sourceFigNode.updateEdges();
+                    if (destFigNode != null)
+                        destFigNode.updateEdges();
+                }
+                done();
+                me.consume();
+                return;
+            }
+        }
+        if (!nearLast(x, y)) {
+            editor.damageAll();
+            Point snapPt = new Point(x, y);
+            editor.snap(snapPt);
+            ((FigPoly) _newItem).addPoint(snapPt.x, snapPt.y);
+            _npoints++;
+            editor.damageAll();
+        }
+        _lastX = x;
+        _lastY = y;
+        me.consume();
     }
-  }
+
+    public void mouseMoved(MouseEvent me) {
+        mouseDragged(me);
+    }
+
+    public void mouseDragged(MouseEvent me) {
+        if (me.isConsumed())
+            return;
+        int x = me.getX(), y = me.getY();
+        if (_npoints == 0) {
+            me.consume();
+            return;
+        }
+        if (_newItem == null) {
+            me.consume();
+            return;
+        }
+        FigPoly p = (FigPoly) _newItem;
+        editor.damageAll(); // startTrans?
+        Point snapPt = new Point(x, y);
+        editor.snap(snapPt);
+        _handle.index = p.getNumPoints() - 1;
+        p.moveVertex(_handle, snapPt.x, snapPt.y, true);
+        editor.damageAll(); // endTrans?
+        me.consume();
+    }
+
+    /** Internal function to see if the user clicked twice on the same spot. */
+    protected boolean nearLast(int x, int y) {
+        return x > _lastX - Editor.GRIP_SIZE
+            && x < _lastX + Editor.GRIP_SIZE
+            && y > _lastY - Editor.GRIP_SIZE
+            && y < _lastY + Editor.GRIP_SIZE;
+    }
+
+    public void done() {
+        super.done();
+        if (_newItem != null)
+            editor.damageAll();
+        _newItem = null; // use this as the fig for the new FigEdge
+        _npoints = 0;
+        _sourceFigNode = null;
+        _startPort = null;
+        _startPortFig = null;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // key events
+
+    public void keyTyped(KeyEvent ke) {
+        if (ke.getKeyChar() == KeyEvent.VK_ESCAPE) { // escape
+            done();
+            ke.consume();
+        }
+    }
 } /* end class ModeCreatePolyEdge */

@@ -142,7 +142,7 @@ implements GraphNodeHooks, java.io.Serializable  {
   ////////////////////////////////////////////////////////////////
   // net-level constraints
 
-  /** Allow foir application specific rules about which nodes can be
+  /** Allow for application specific rules about which nodes can be
    *  connected to which other nodes. This is called from the NetPort,
    *  so the port has first say as to whether it can be connected to
    *  some other port. NetPort.canConnectTo() just calls

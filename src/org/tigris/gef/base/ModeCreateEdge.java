@@ -29,6 +29,8 @@
 package org.tigris.gef.base;
 
 import java.awt.event.*;
+
+import org.apache.log4j.Logger;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 
@@ -59,14 +61,17 @@ public class ModeCreateEdge extends ModeCreate {
     /** The new NetEdge that is being created */
     private Object _newEdge;
 
+    private static final Logger LOG = Logger.getLogger(ModeCreateEdge.class);
     ////////////////////////////////////////////////////////////////
     // constructor
 
     public ModeCreateEdge() {
         super();
+        if (LOG.isDebugEnabled()) LOG.debug("Created ModeCreateEdge");
     }
     public ModeCreateEdge(Editor par) {
         super(par);
+        if (LOG.isDebugEnabled()) LOG.debug("Created ModeCreateEdge for Editor");
     }
 
     ////////////////////////////////////////////////////////////////
@@ -97,8 +102,10 @@ public class ModeCreateEdge extends ModeCreate {
     /** On mousePressed determine what port the user is dragging from.
      *  The mousePressed event is sent via ModeSelect. */
     public void mousePressed(MouseEvent me) {
-        if (me.isConsumed())
+        if (me.isConsumed()) {
+            LOG.debug("MousePressed but rejected as already consumed");
             return;
+        }
         int x = me.getX(), y = me.getY();
         Editor ce = Globals.curEditor();
         Fig underMouse = ce.hit(x, y);
@@ -109,11 +116,13 @@ public class ModeCreateEdge extends ModeCreate {
         if (underMouse == null) {
             done();
             me.consume();
+            LOG.debug("MousePressed but nothing under - consumed");
             return;
         }
         if (!(underMouse instanceof FigNode)) {
             done();
             me.consume();
+            LOG.debug("MousePressed but not a FigNode under - consumed");
             return;
         }
         _sourceFigNode = (FigNode) underMouse;
@@ -121,9 +130,11 @@ public class ModeCreateEdge extends ModeCreate {
         if (_startPort == null) {
             done();
             me.consume();
+            LOG.debug("MousePressed but no port found - consumed");
             return;
         }
         _startPortFig = _sourceFigNode.getPortFig(_startPort);
+        LOG.debug("MousePressed start port set");
         super.mousePressed(me);
     }
 

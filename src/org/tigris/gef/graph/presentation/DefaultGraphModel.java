@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.MutableGraphSupport;
 
@@ -48,54 +49,71 @@ import org.tigris.gef.graph.MutableGraphSupport;
  * @see AdjacencyListGraphModel
  */
 
-public class DefaultGraphModel extends MutableGraphSupport
-implements java.io.Serializable {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+public class DefaultGraphModel
+    extends MutableGraphSupport
+    implements java.io.Serializable {
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  protected NetList _netList;
+    protected NetList _netList;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    private static final Logger LOG = Logger.getLogger(DefaultGraphModel.class);
+    
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public DefaultGraphModel() { _netList = new NetList(); }
+    public DefaultGraphModel() {
+        _netList = new NetList();
+    }
 
-  public DefaultGraphModel(NetList nl) { _netList = nl; }
+    public DefaultGraphModel(NetList nl) {
+        _netList = nl;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public NetList getNetList() { return _netList; }
-  public void setNetList(NetList nl) { _netList = nl; }
+    public NetList getNetList() {
+        return _netList;
+    }
+    public void setNetList(NetList nl) {
+        _netList = nl;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // invariants
+    ////////////////////////////////////////////////////////////////
+    // invariants
 
-  public boolean OK() { return _netList != null; }
+    public boolean OK() {
+        return _netList != null;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // interface GraphModel
+    ////////////////////////////////////////////////////////////////
+    // interface GraphModel
 
-  /** Return all nodes in the graph 
-   * @deprecated in 0.11 use getNodes(Collection)
-   */
-  public Vector getNodes() { return _netList.getNodes(); }
+    /** Return all nodes in the graph 
+     * @deprecated in 0.11 use getNodes(Collection)
+     */
+    public Vector getNodes() {
+        return _netList.getNodes();
+    }
 
-  /** Return all nodes in the graph
-  * @deprecated in 0.11 use getEdges(Collection)
-  */
-  public Vector getEdges() { return _netList.getEdges();}
+    /** Return all edges in the graph
+    * @deprecated in 0.11 use getEdges(Collection)
+    */
+    public Vector getEdges() {
+        return _netList.getEdges();
+    }
 
-  /** Return all ports on node or edge
-  * @deprecated in 0.11 use getPorts(Collection, Object)
-  */
-  public Vector getPorts(Object nodeOrEdge) {
-    if (nodeOrEdge instanceof NetNode)
-      return ((NetNode)nodeOrEdge).getPorts();
-    if (nodeOrEdge instanceof NetEdge)
-      return ((NetEdge)nodeOrEdge).getPorts();
-    return null; // raise exception
-  }
+    /** Return all ports on node or edge
+    * @deprecated in 0.11 use getPorts(Collection, Object)
+    */
+    public Vector getPorts(Object nodeOrEdge) {
+        if (nodeOrEdge instanceof NetNode)
+            return ((NetNode) nodeOrEdge).getPorts();
+        if (nodeOrEdge instanceof NetEdge)
+            return ((NetEdge) nodeOrEdge).getPorts();
+        return null; // raise exception
+    }
 
     /** Return all nodes in the graph */
     public Collection getNodes(Collection c) {
@@ -107,182 +125,215 @@ implements java.io.Serializable {
         return _netList.getEdges();
     }
 
-  /** Return all ports on node or edge */
-  public Collection getPorts(Collection c, Object nodeOrEdge) {
-    if (nodeOrEdge instanceof NetNode)
-      return ((NetNode)nodeOrEdge).getPorts();
-    if (nodeOrEdge instanceof NetEdge)
-      return ((NetEdge)nodeOrEdge).getPorts();
-    return null; // raise exception
-  }
-
-  /** Return the node or edge that owns the given port */
-  public Object getOwner(Object port) {
-    if (port instanceof NetPort)
-      return ((NetPort)port).getParent();
-    return null; // raise exception
-  }
-
-  /** Return all edges going to given port */
-  public Vector getInEdges(Object port) {
-    // needs-more-work: only IN edges
-    if (port instanceof NetPort)
-      return ((NetPort)port).getEdges();
-    return null; // raise exception
-  }
-
-  /** Return all edges going from given port */
-  public Vector getOutEdges(Object port) {
-    // needs-more-work: only IN edges
-    if (port instanceof NetPort)
-      return ((NetPort)port).getEdges();
-    return null; // raise exception
-  }
-
-  /** Return one end of an edge */
-  public Object getSourcePort(Object edge) {
-    if (edge instanceof NetEdge)
-      return ((NetEdge)edge).getSourcePort();
-    return null; // raise exception
-  }
-
-  /** Return  the other end of an edge */
-  public Object getDestPort(Object edge) {
-    if (edge instanceof NetEdge)
-      return ((NetEdge)edge).getDestPort();
-    return null; // raise exception
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // interface MutableGraphListener
-
-  /** Return a valid node in this graph */
-  public Object createNode( String name, Hashtable args) {
-    Object newNode;
-    //Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
-    //assert _nodeClass != null
-    try { newNode = Class.forName( name).newInstance(); }
-    catch (java.lang.ClassNotFoundException ignore) { return null; }
-    catch (java.lang.IllegalAccessException ignore) { return null; }
-    catch (java.lang.InstantiationException ignore) { return null; }
-
-    if (newNode instanceof GraphNodeHooks)
-      ((GraphNodeHooks)newNode).initialize( args);
-    return newNode;
-  }
-
-  /** Return true if the given object is a valid node in this graph */
-  public boolean canAddNode(Object node) { return (node instanceof NetNode); }
-
-  /** Return true if the given object is a valid edge in this graph */
-  public boolean canAddEdge(Object edge) { return (edge instanceof NetEdge); }
-
-  /** Remove the given node from the graph. */
-  public void removeNode(Object node) {
-    NetNode n = (NetNode) node;
-    _netList.removeNode(n);
-    fireNodeRemoved(n);
-  }
-   
-	/** Return true if dragging the given object is a valid in this graph */
-	public boolean canDragNode(Object node) { return (node instanceof NetNode); }                                      
-  /** Add the given node to the graph, if valid. */
-  public void addNode(Object node) {
-    NetNode n = (NetNode) node;
-    _netList.addNode(n);
-    fireNodeAdded(n);
-  }
-
-  /** Add the given edge to the graph, if valid. */
-  public void addEdge(Object edge) {
-    NetEdge e = (NetEdge) edge;
-    _netList.addEdge(e);
-    fireEdgeAdded(e);
-  }
-
-    public void addNodeRelatedEdges(Object node) { }
-
-
-  /** Remove the given edge from the graph. */
-  public void removeEdge(Object edge) {
-    NetEdge e = (NetEdge) edge;
-    _netList.removeEdge(e);
-    fireEdgeRemoved(e);
-  }
-
-	public void dragNode(Object node) {
-		addNode(node);
-	}                                                                                                                  
-
-        /** Return true if the two given ports can be connected by a 
-   * kind of edge to be determined by the ports. */
-  public boolean canConnect(Object srcPort, Object destPort) {
-    if (srcPort instanceof NetPort && destPort instanceof NetPort) {
-      NetPort s = (NetPort) srcPort;
-      NetPort d = (NetPort) destPort;
-      return s.canConnectTo(this, d) && d.canConnectTo(this, s);
+    /** Return all ports on node or edge */
+    public Collection getPorts(Collection c, Object nodeOrEdge) {
+        if (nodeOrEdge instanceof NetNode)
+            return ((NetNode) nodeOrEdge).getPorts();
+        if (nodeOrEdge instanceof NetEdge)
+            return ((NetEdge) nodeOrEdge).getPorts();
+        return null; // raise exception
     }
-    else return false;
-  }
 
-  /** Return true if the two given ports can be connected by the given
-   * kind of edge. */
-  public boolean canConnect(Object srcPort, Object destPort, Class edgeClass) {
-    // needs-more-work: ask edgeClass
-    return canConnect(srcPort, destPort);
-  }
-
-  /** Contruct and add a new edge of a kind determined by the ports */
-  public Object connect(Object srcPort, Object destPort) {
-    if (!canConnect(srcPort, destPort)) return null;
-    if (srcPort instanceof NetPort && destPort instanceof NetPort) {
-      NetPort s = (NetPort) srcPort;
-      NetPort d = (NetPort) destPort;
-      //System.out.println("calling makeEdgeFor:" + s.getClass().getName());
-      NetEdge e = s.makeEdgeFor(d);
-      return connectInternal(s, d, e);
+    /** Return the node or edge that owns the given port */
+    public Object getOwner(Object port) {
+        if (port instanceof NetPort)
+            return ((NetPort) port).getParent();
+        return null; // raise exception
     }
-    else return null;
-  }
 
-  /** Contruct and add a new edge of the given kind */
-  public Object connect(Object srcPort, Object destPort, Class edgeClass) {
-    if (!canConnect(srcPort, destPort)) {
-      //System.out.println("illegal connection");
-      return null;
+    /** Return all edges going to given port */
+    public Vector getInEdges(Object port) {
+        // needs-more-work: only IN edges
+        if (port instanceof NetPort)
+            return ((NetPort) port).getEdges();
+        return null; // raise exception
     }
-    if (srcPort instanceof NetPort && destPort instanceof NetPort) {
-      NetPort s = (NetPort) srcPort;
-      NetPort d = (NetPort) destPort;
-      try {
-	NetEdge e = (NetEdge) edgeClass.newInstance();
-	return connectInternal(s, d, e);
-      }
-      catch (java.lang.InstantiationException e) { }
-      catch (java.lang.IllegalAccessException e) { }
+
+    /** Return all edges going from given port */
+    public Vector getOutEdges(Object port) {
+        // needs-more-work: only IN edges
+        if (port instanceof NetPort)
+            return ((NetPort) port).getEdges();
+        return null; // raise exception
     }
-    return null;
-  }
 
-  protected Object connectInternal(NetPort s, NetPort d, NetEdge e) {
-    //System.out.println("connectInternal");
-    e.connect(this, s, d);
-    addEdge(e);
-    return e;
-  }
+    /** Return one end of an edge */
+    public Object getSourcePort(Object edge) {
+        if (edge instanceof NetEdge)
+            return ((NetEdge) edge).getSourcePort();
+        return null; // raise exception
+    }
 
-  /** Return true if the connection to the old node can be rerouted to
-   * the new node.
-   */
-  public boolean canChangeConnectedNode(Object newNode, Object oldNode, Object edge) {
-      return false;
-  }
-  
-  /** Reroutes the connection to the old node to be connected to
-   * the new node.
-   */
-  public void changeConnectedNode(Object newNode, Object oldNode, Object edge, boolean isSource) {
-  }
-  
+    /** Return  the other end of an edge */
+    public Object getDestPort(Object edge) {
+        if (edge instanceof NetEdge)
+            return ((NetEdge) edge).getDestPort();
+        return null; // raise exception
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // interface MutableGraphListener
+
+    /** Return a valid node in this graph */
+    public Object createNode(String name, Hashtable args) {
+        Object newNode;
+        //Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
+        //assert _nodeClass != null
+        try {
+            newNode = Class.forName(name).newInstance();
+        } catch (java.lang.ClassNotFoundException ignore) {
+            return null;
+        } catch (java.lang.IllegalAccessException ignore) {
+            return null;
+        } catch (java.lang.InstantiationException ignore) {
+            return null;
+        }
+
+        if (newNode instanceof GraphNodeHooks)
+             ((GraphNodeHooks) newNode).initialize(args);
+        return newNode;
+    }
+
+    /** Return true if the given object is a valid node in this graph */
+    public boolean canAddNode(Object node) {
+        return (node instanceof NetNode);
+    }
+
+    /** Return true if the given object is a valid edge in this graph */
+    public boolean canAddEdge(Object edge) {
+        return (edge instanceof NetEdge);
+    }
+
+    /** Remove the given node from the graph. */
+    public void removeNode(Object node) {
+        NetNode n = (NetNode) node;
+        _netList.removeNode(n);
+        fireNodeRemoved(n);
+    }
+
+    /** Return true if dragging the given object is a valid in this graph */
+    public boolean canDragNode(Object node) {
+        return (node instanceof NetNode);
+    }
+    /** Add the given node to the graph, if valid. */
+    public void addNode(Object node) {
+        NetNode n = (NetNode) node;
+        _netList.addNode(n);
+        fireNodeAdded(n);
+    }
+
+    /** Add the given edge to the graph, if valid. */
+    public void addEdge(Object edge) {
+        NetEdge e = (NetEdge) edge;
+        _netList.addEdge(e);
+        fireEdgeAdded(e);
+    }
+
+    public void addNodeRelatedEdges(Object node) {
+    }
+
+    /** Remove the given edge from the graph. */
+    public void removeEdge(Object edge) {
+        NetEdge e = (NetEdge) edge;
+        _netList.removeEdge(e);
+        fireEdgeRemoved(e);
+    }
+
+    public void dragNode(Object node) {
+        addNode(node);
+    }
+
+    /** Return true if the two given ports can be connected by a 
+    * kind of edge to be determined by the ports. */
+    public boolean canConnect(Object srcPort, Object destPort) {
+        if (srcPort instanceof NetPort && destPort instanceof NetPort) {
+            NetPort s = (NetPort) srcPort;
+            NetPort d = (NetPort) destPort;
+            if (LOG.isDebugEnabled()) LOG.debug("Checking with ports to see if connection valid");
+            return s.canConnectTo(this, d) && d.canConnectTo(this, s);
+        } else {
+            if (LOG.isDebugEnabled()) LOG.debug("By default, cannot connect non-NetPort objects");
+            return false;
+        }
+    }
+
+    /** Return true if the two given ports can be connected by the given
+     * kind of edge. */
+    public boolean canConnect(
+        Object srcPort,
+        Object destPort,
+        Class edgeClass) {
+        // needs-more-work: ask edgeClass
+        return canConnect(srcPort, destPort);
+    }
+
+    /** Contruct and add a new edge of a kind determined by the ports */
+    public Object connect(Object srcPort, Object destPort) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Attempting to connect " + srcPort + " to " + destPort);
+        }
+        if (!canConnect(srcPort, destPort)) {
+            LOG.warn("Connection not allowed");
+            return null;
+        }
+        if (srcPort instanceof NetPort && destPort instanceof NetPort) {
+            NetPort s = (NetPort) srcPort;
+            NetPort d = (NetPort) destPort;
+            //System.out.println("calling makeEdgeFor:" + s.getClass().getName());
+            NetEdge e = s.makeEdgeFor(d);
+            return connectInternal(s, d, e);
+        } else
+            return null;
+    }
+
+    /** Contruct and add a new edge of the given kind */
+    public Object connect(Object srcPort, Object destPort, Class edgeClass) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Attempting to connect " + srcPort + " to " + destPort + " with " + edgeClass);
+        }
+        if (!canConnect(srcPort, destPort)) {
+            LOG.warn("Connection not allowed");
+            //System.out.println("illegal connection");
+            return null;
+        }
+        if (srcPort instanceof NetPort && destPort instanceof NetPort) {
+            NetPort s = (NetPort) srcPort;
+            NetPort d = (NetPort) destPort;
+            try {
+                NetEdge e = (NetEdge) edgeClass.newInstance();
+                return connectInternal(s, d, e);
+            } catch (java.lang.InstantiationException e) {
+            } catch (java.lang.IllegalAccessException e) {
+            }
+        }
+        return null;
+    }
+
+    protected Object connectInternal(NetPort s, NetPort d, NetEdge e) {
+        //System.out.println("connectInternal");
+        e.connect(this, s, d);
+        addEdge(e);
+        return e;
+    }
+
+    /** Return true if the connection to the old node can be rerouted to
+     * the new node.
+     */
+    public boolean canChangeConnectedNode(
+        Object newNode,
+        Object oldNode,
+        Object edge) {
+        return false;
+    }
+
+    /** Reroutes the connection to the old node to be connected to
+     * the new node.
+     */
+    public void changeConnectedNode(
+        Object newNode,
+        Object oldNode,
+        Object edge,
+        boolean isSource) {
+    }
+
 } /* end class DefaultGraphModel */
