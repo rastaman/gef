@@ -68,8 +68,8 @@ implements MouseListener, PropertyChangeListener, Highlightable {
 
   /** A Vector of FigEdges that need to be rerouted when this FigNode
    *  moves. */
-  protected Vector _figEdges = new Vector(); 
-  
+  protected Vector _figEdges = new Vector();
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -261,7 +261,7 @@ implements MouseListener, PropertyChangeListener, Highlightable {
   }
 
 
-  
+
   /** Reply the Fig that displays the given NetPort. */
   public Fig getPortFig(Object np) {
     Enumeration figs = elements();
@@ -310,25 +310,35 @@ implements MouseListener, PropertyChangeListener, Highlightable {
     int nbbCenterY = nodeBBox.y + nodeBBox.height / 2;
     int pbbCenterX = portBBox.x + portBBox.width / 2;
     int pbbCenterY = portBBox.y + portBBox.height / 2;
+    int dX = pbbCenterX - nbbCenterX;
+    int dY = pbbCenterY - nbbCenterY;
 
-    if (portFig != null) {
-      int dx = (pbbCenterX - nbbCenterX) * nodeBBox.height;
-      int dy = (pbbCenterY - nbbCenterY) * nodeBBox.width;
-      double dist = Math.sqrt(dx * dx + dy * dy);
-      double ang;
-      if (dy > 0) ang = Math.acos(dx / dist);
-      else ang = Math.acos(dx / dist) + Math.PI;
-
-      if (ang < ang45) return 2;
-      else if (ang < ang135) return 1;
-      else if (ang < ang225) return -2;
-      else if (ang < ang315) return -1;
-      else return 2;
+    //
+    //   the key is the tangent of this rectangle
+    //
+    //   if you didn't care about divisions by zero,
+    //       you could do
+    //
+    //   tangentBox = nodeBBox.height/nodeBBox.width;
+    //   tangentCenters = dY/dX;
+    //   if(Math.abs(tangentCenters) > tangentBox) sector 1 or -1
+    //
+    int sector = -1;
+    if(Math.abs(dY*nodeBBox.width) > Math.abs(nodeBBox.height*(dX))) {
+        if(dY > 0) {
+            sector = 1;
+        }
     }
-    return -1;
+    else {
+        sector = 2;
+        if(dX > 0) {
+            sector = -2;
+        }
+    }
+    return sector;
   }
 
-  
+
   ////////////////////////////////////////////////////////////////
   // painting methods
 
