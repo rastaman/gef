@@ -43,24 +43,26 @@ import java.util.*;
 public abstract class MutableGraphSupport
       implements MutableGraphModel, java.io.Serializable {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  /** @deprecated 0.11, visibility will change use getGraphListeners
-   *  and setGraphListeners instead */
-  protected Vector _graphListeners;
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    /** @deprecated 0.11, visibility will change use getGraphListeners
+     *  and setGraphListeners instead */
+    protected Vector _graphListeners;
+    
+    protected ConnectionConstrainer connectionConstrainer;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
-  public MutableGraphSupport() { }
+    ////////////////////////////////////////////////////////////////
+    // constructors
+    public MutableGraphSupport() { }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public Vector getGraphListeners() { return _graphListeners; }
+    public Vector getGraphListeners() { return _graphListeners; }
 
 
-  ////////////////////////////////////////////////////////////////
-  // MutableGraphModel implementation
+    ////////////////////////////////////////////////////////////////
+    // MutableGraphModel implementation
 
     /** Return a valid node in this graph */
     public Object createNode( String name, Hashtable args) {
@@ -82,6 +84,10 @@ public abstract class MutableGraphSupport
         }
         return newNode;
     }
+    
+    protected ConnectionConstrainer getConnectionConstrainer() {
+        return connectionConstrainer;
+    }
 
 
 	/** Return true if the type of the given node can be mapped to a
@@ -102,11 +108,23 @@ public abstract class MutableGraphSupport
             return false;
         }
   
-  /** Return true if the two given ports can be connected by the given
-   *  kind of edge. By default ignore edgeClass and call
-   *  canConnect(port,port). */
+  /**
+   * Determine if the two given ports can be connected by the
+   * given kind of edge. This delegates either to the registered 
+   * ConnectionConstrainer or if unregistered then ignores
+   * edgeClass and calls canConnect(port,port).
+   * @param fromPort the source port for which to test
+   * @param toPort the destination port for which to test
+   * @param edgeClass The edge class for which test
+   */
   public boolean canConnect(Object fromPort, Object toPort, Class edgeClass) {
-    return canConnect(fromPort, toPort);
+      boolean canConnect = false;
+      if (connectionConstrainer != null) {
+          canConnect = connectionConstrainer.isConnectionValid(edgeClass, fromPort, toPort);
+      } else {
+          canConnect = canConnect(fromPort, toPort);
+      }
+    return canConnect;
   }
 
   /** Reroutes the connection to the old node to be connected to

@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import org.apache.commons.logging.*;
 import org.apache.commons.logging.impl.*;
+import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.MutableGraphSupport;
 
@@ -56,7 +57,7 @@ public class DefaultGraphModel
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private NetList _netList;
+    private NetList netList;
 
     private static Log LOG = LogFactory.getLog(DefaultGraphModel.class);
     
@@ -64,29 +65,29 @@ public class DefaultGraphModel
     // constructors
 
     public DefaultGraphModel() {
-        _netList = new NetList();
+        netList = new NetList();
     }
 
     public DefaultGraphModel(NetList nl) {
-        _netList = nl;
+        netList = nl;
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
     public NetList getNetList() {
-        return _netList;
+        return netList;
     }
     
     public void setNetList(NetList nl) {
-        _netList = nl;
+        netList = nl;
     }
 
     ////////////////////////////////////////////////////////////////
     // invariants
 
     public boolean OK() {
-        return _netList != null;
+        return netList != null;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -96,14 +97,14 @@ public class DefaultGraphModel
      * @deprecated in 0.10.4 use getNodes(Collection)
      */
     public Vector getNodes() {
-        return _netList.getNodes();
+        return netList.getNodes();
     }
 
     /** Return all edges in the graph
     * @deprecated in 0.10.4 use getEdges(Collection)
     */
     public Vector getEdges() {
-        return _netList.getEdges();
+        return netList.getEdges();
     }
 
     /** Return all ports on node or edge
@@ -119,12 +120,12 @@ public class DefaultGraphModel
 
     /** Return all nodes in the graph */
     public Collection getNodes(Collection c) {
-        return _netList.getNodes(c);
+        return netList.getNodes(c);
     }
 
     /** Return all nodes in the graph */
     public Collection getEdges(Collection c) {
-        return _netList.getEdges();
+        return netList.getEdges();
     }
 
     /** Return all ports on node or edge */
@@ -219,7 +220,7 @@ public class DefaultGraphModel
     /** Remove the given node from the graph. */
     public void removeNode(Object node) {
         NetNode n = (NetNode) node;
-        _netList.removeNode(n);
+        netList.removeNode(n);
         fireNodeRemoved(n);
     }
 
@@ -230,14 +231,14 @@ public class DefaultGraphModel
     /** Add the given node to the graph, if valid. */
     public void addNode(Object node) {
         NetNode n = (NetNode) node;
-        _netList.addNode(n);
+        netList.addNode(n);
         fireNodeAdded(n);
     }
 
     /** Add the given edge to the graph, if valid. */
     public void addEdge(Object edge) {
         NetEdge e = (NetEdge) edge;
-        _netList.addEdge(e);
+        netList.addEdge(e);
         fireEdgeAdded(e);
     }
 
@@ -247,7 +248,7 @@ public class DefaultGraphModel
     /** Remove the given edge from the graph. */
     public void removeEdge(Object edge) {
         NetEdge e = (NetEdge) edge;
-        _netList.removeEdge(e);
+        netList.removeEdge(e);
         fireEdgeRemoved(e);
     }
 
@@ -267,16 +268,6 @@ public class DefaultGraphModel
             if (LOG.isDebugEnabled()) LOG.debug("By default, cannot connect non-NetPort objects");
             return false;
         }
-    }
-
-    /** Return true if the two given ports can be connected by the given
-     * kind of edge. */
-    public boolean canConnect(
-        Object srcPort,
-        Object destPort,
-        Class edgeClass) {
-        // needs-more-work: ask edgeClass
-        return canConnect(srcPort, destPort);
     }
 
     /** Contruct and add a new edge of a kind determined by the ports */
@@ -346,6 +337,14 @@ public class DefaultGraphModel
         Object oldNode,
         Object edge,
         boolean isSource) {
+    }
+
+    /**
+     * Apply the object containing the ruleset for what edges and
+     * ports can connect in the graph
+     */
+    public void setConnectionConstrainer(ConnectionConstrainer cc) {
+        connectionConstrainer = cc;        
     }
 
 } /* end class DefaultGraphModel */

@@ -73,4 +73,8 @@ public interface GraphModel extends BaseGraphModel {
     /** Return all edges going from given port */
     Vector getOutEdges(Object port);
 
+    /** Set the rules dictating which ports are connectable by which edge
+     * @param cc A connection constrainer
+     */
+    public void setConnectionConstrainer(ConnectionConstrainer cc);
 } /* end interface GraphModel */
