@@ -161,12 +161,26 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
     /** Construct a new FigText with the given position and size */
     public FigText(int x, int y, int w, int h) {
-        this(x, y, w, h, Color.blue, "TimesRoman", 10, false);
+        super(x, y, w, h);
+        _x = x;
+        _y = y;
+        _w = w;
+        _h = h;
+        _justification = JUSTIFY_CENTER;
+        _curText = "";
+        _expandOnly = false;
     }
 
     /** Construct a new FigText with the given position, size, and attributes. */
     public FigText(int x, int y, int w, int h, boolean expandOnly) {
-        this(x, y, w, h, Color.blue, "TimesRoman", 10, expandOnly);
+        super(x, y, w, h);
+        _x = x;
+        _y = y;
+        _w = w;
+        _h = h;
+        _justification = JUSTIFY_CENTER;
+        _curText = "";
+        _expandOnly = expandOnly;
     }
     ////////////////////////////////////////////////////////////////
     // invariant
