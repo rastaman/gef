@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: ModeCreateFigPoly.java
 // Classes: ModeCreateFigPoly
 // Original Author: jrobbins@ics.uci.edu
@@ -30,10 +28,12 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.Handle;
 
 /** A Mode to interpert user input while creating a FigPoly. All of
  *  the actual event handling is inherited from ModeCreate. This class
@@ -42,97 +42,110 @@ import org.tigris.gef.presentation.*;
 
 public class ModeCreateFigPoly extends ModeCreate {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The number of points added so far. */
-  protected int _npoints = 0;
-  protected int _lastX, _lastY, _startX, _startY;
-  protected Handle _handle = new Handle(-1);
+    /** The number of points added so far. */
+    protected int _npoints = 0;
+    protected int _lastX, _lastY, _startX, _startY;
+    protected Handle _handle = new Handle(-1);
 
-  ////////////////////////////////////////////////////////////////
-  // Mode API
+    ////////////////////////////////////////////////////////////////
+    // Mode API
 
-  public String instructions() {
-    return "Click to add a point; Double-click to finish";
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // ModeCreate API
-
-  /** Create a new FigRect instance based on the given mouse down
-   *  event and the state of the parent Editor. */
-  public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-    FigPoly p = new FigPoly(snapX, snapY);
-    p.addPoint(snapX, snapY); // add the first point twice
-    _startX = _lastX = snapX; _startY = _lastY = snapY;
-    _npoints = 2;
-    return p;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // Event handlers
-
-  public void mousePressed(MouseEvent me) {
-    if (me.isConsumed()) return;
-    int x = me.getX(), y = me.getY();
-    if (_npoints == 0) { super.mousePressed(me); }
-    if (!nearLast(x, y)) {
-      editor.damageAll();
-      Point snapPt = new Point(x, y);
-      editor.snap(snapPt);
-      ((FigPoly)_newItem).addPoint(snapPt.x, snapPt.y);
-      _npoints++;
-      editor.damageAll();
+    public String instructions() {
+        return "Click to add a point; Double-click to finish";
     }
-    me.consume();
-  }
 
-  public void mouseReleased(MouseEvent me) {
-    if (me.isConsumed()) return;
-    int x = me.getX(), y = me.getY();
-    if (_npoints > 2 && nearLast(x, y)) {
-      FigPoly p = (FigPoly) _newItem;
-      editor.damageAll();
-      _handle.index = p.getNumPoints() - 1;
-      p.moveVertex(_handle, _startX, _startY, true);
-      _npoints = 0;
-      editor.damageAll();
-      editor.add(p);
-      editor.getSelectionManager().select(p);
-      _newItem = null;
-      done();
-      me.consume();
-      return;
+    ////////////////////////////////////////////////////////////////
+    // ModeCreate API
+
+    /** Create a new FigRect instance based on the given mouse down
+     *  event and the state of the parent Editor. */
+    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+        FigPoly p = new FigPoly(snapX, snapY);
+        p.addPoint(snapX, snapY); // add the first point twice
+        _startX = _lastX = snapX;
+        _startY = _lastY = snapY;
+        _npoints = 2;
+        return p;
     }
-    _lastX = x; _lastY = y;
-    me.consume();
-  }
 
-  public void mouseMoved(MouseEvent me) {
-    mouseDragged(me);
-  }
+    ////////////////////////////////////////////////////////////////
+    // Event handlers
 
-  public void mouseDragged(MouseEvent me) {
-    if (me.isConsumed()) return;
-    int x = me.getX(), y = me.getY();
-    if (_npoints == 0) { me.consume(); return; }
-    FigPoly p = (FigPoly)_newItem;
-    editor.damageAll(); // startTrans?
-    Point snapPt = new Point(x, y);
-    editor.snap(snapPt);
-    _handle.index = p.getNumPoints() - 1;
-    p.moveVertex(_handle, snapPt.x, snapPt.y, true);
-    editor.damageAll(); // endTrans?
-    me.consume();
-  }
+    public void mousePressed(MouseEvent me) {
+        if (me.isConsumed()) {
+            return;
+        }
+        int x = me.getX();
+        int y = me.getY();
+        if (_npoints == 0) {
+            super.mousePressed(me);
+        }
+        if (!nearLast(x, y)) {
+            editor.damageAll();
+            Point snapPt = new Point(x, y);
+            editor.snap(snapPt);
+            ((FigPoly) _newItem).addPoint(snapPt.x, snapPt.y);
+            _npoints++;
+            editor.damageAll();
+        }
+        me.consume();
+    }
 
-  /** Internal function to see if the user clicked twice on the same spot. */
-  protected boolean nearLast(int x, int y) {
-    return x > _lastX - Editor.GRIP_SIZE &&
-      x < _lastX + Editor.GRIP_SIZE &&
-      y > _lastY - Editor.GRIP_SIZE &&
-      y < _lastY + Editor.GRIP_SIZE;
-  }
+    public void mouseReleased(MouseEvent me) {
+        if (me.isConsumed()) {
+            return;
+        }
+        int x = me.getX(), y = me.getY();
+        if (_npoints > 2 && nearLast(x, y)) {
+            FigPoly p = (FigPoly) _newItem;
+            editor.damageAll();
+            _handle.index = p.getNumPoints() - 1;
+            p.moveVertex(_handle, _startX, _startY, true);
+            _npoints = 0;
+            editor.damageAll();
+            editor.add(p);
+            editor.getSelectionManager().select(p);
+            _newItem = null;
+            done();
+            me.consume();
+            return;
+        }
+        _lastX = x;
+        _lastY = y;
+        me.consume();
+    }
+
+    public void mouseMoved(MouseEvent me) {
+        mouseDragged(me);
+    }
+
+    public void mouseDragged(MouseEvent me) {
+        if (me.isConsumed()) {
+            return;
+        }
+        int x = me.getX(), y = me.getY();
+        if (_npoints == 0) {
+            me.consume();
+            return;
+        }
+        FigPoly p = (FigPoly) _newItem;
+        editor.damageAll(); // startTrans?
+        Point snapPt = new Point(x, y);
+        editor.snap(snapPt);
+        _handle.index = p.getNumPoints() - 1;
+        p.moveVertex(_handle, snapPt.x, snapPt.y, true);
+        editor.damageAll(); // endTrans?
+        me.consume();
+    }
+
+    /** Internal function to see if the user clicked twice on the same spot. */
+    protected boolean nearLast(int x, int y) {
+        return x > _lastX - Editor.GRIP_SIZE
+            && x < _lastX + Editor.GRIP_SIZE
+            && y > _lastY - Editor.GRIP_SIZE
+            && y < _lastY + Editor.GRIP_SIZE;
+    }
 } /* end class ModeCreateFigPoly */
-
