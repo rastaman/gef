@@ -66,9 +66,9 @@ public class VectorSet implements java.io.Serializable  {
     if (v == null) return;
     addAllElements(v.iterator());
   }
-  public void addAllElements(Enumeration enum) {
-    while (enum.hasMoreElements()) {
-      addElement(enum.nextElement());
+  public void addAllElements(Enumeration iter) {
+    while (iter.hasMoreElements()) {
+      addElement(iter.nextElement());
     }
   }
   public void addAllElements(Iterator iter) {
@@ -76,11 +76,11 @@ public class VectorSet implements java.io.Serializable  {
       addElement(iter.next());
     }
   }
-  public void addAllElementsSuchThat(Enumeration enum, Predicate p) {
-    if (p instanceof PredicateTrue) addAllElements(enum);
+  public void addAllElementsSuchThat(Enumeration iter, Predicate p) {
+    if (p instanceof PredicateTrue) addAllElements(iter);
     else 
-      while (enum.hasMoreElements()) {
-	Object e = enum.nextElement();
+      while (iter.hasMoreElements()) {
+	Object e = iter.nextElement();
 	if (p.predicate(e)) addElement(e);
       }
   }  

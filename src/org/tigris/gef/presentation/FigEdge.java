@@ -397,14 +397,14 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
     }
 
     public Fig hitFig(Rectangle r) {
-        Enumeration enum = _pathItems.elements();
+        Enumeration iter = _pathItems.elements();
         Fig res = null;
         if(_fig.hit(r)) {
             res = _fig;
         }
 
-        while(enum.hasMoreElements()) {
-            PathItem pi = (PathItem)enum.nextElement();
+        while(iter.hasMoreElements()) {
+            PathItem pi = (PathItem)iter.nextElement();
             Fig f = pi.getFig();
             if(f.hit(r)) {
                 res = f;

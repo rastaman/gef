@@ -70,9 +70,9 @@ public class NodeAnnotationStrategy extends AnnotationStrategy{
 		
 	// move annotations to its new position
 	public void translateAnnotations(Fig owner){
-		java.util.Enumeration enum = annotations.keys();
-		while (enum.hasMoreElements()){
-			Fig annotation = (Fig)enum.nextElement();
+		java.util.Enumeration iter = annotations.keys();
+		while (iter.hasMoreElements()){
+			Fig annotation = (Fig)iter.nextElement();
 			annotation.setLocation(restoreAnnotationPosition(annotation));
 			drawConnectingLine(annotation);
 			annotation.endTrans();

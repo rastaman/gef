@@ -139,10 +139,10 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
      * annotations
      */
     public void translateAnnotations(Fig owner){
-	java.util.Enumeration enum = annotations.keys();
+	java.util.Enumeration iter = annotations.keys();
 	// owner has moved; set annotations to their new positions
-	while (enum.hasMoreElements()){
-	    Fig annotation = (Fig)enum.nextElement();
+	while (iter.hasMoreElements()){
+	    Fig annotation = (Fig)iter.nextElement();
 	    annotation.setLocation(restoreAnnotationPosition(annotation));
 	    //drawConnectingLine(annotation);
 	    Globals.curEditor().getLayerManager().bringToFront(annotation);

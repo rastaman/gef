@@ -130,18 +130,18 @@ public class CmdPrint extends Cmd implements Printable {
 
         SelectionManager sm = editor.getSelectionManager();
         Vector selectedFigs = sm.getFigs();
-        Enumeration enum = null;
+        Enumeration iter = null;
 
         if(selectedFigs.size() > 0) {
-            enum = selectedFigs.elements();
+            iter = selectedFigs.elements();
         }
         else {
-            enum = editor.figs();
+            iter = editor.figs();
             drawingArea = new Rectangle();
         } // end else if
 
-        while(enum.hasMoreElements()) {
-            Fig fig = (Fig)enum.nextElement();
+        while(iter.hasMoreElements()) {
+            Fig fig = (Fig)iter.nextElement();
             Rectangle rect = fig.getBounds();
             if(drawingArea == null) {
                 drawingArea = new Rectangle(rect);

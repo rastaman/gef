@@ -140,9 +140,9 @@ public class BroomStudy {
         jg.addMouseMotionListener(_meter);
         jg.addKeyListener(_meter);
 
-        Enumeration enum = buttons.elements();
-        while(enum.hasMoreElements()) {
-            b = (JButton)enum.nextElement();
+        Enumeration iter = buttons.elements();
+        while(iter.hasMoreElements()) {
+            b = (JButton)iter.nextElement();
             b.addMouseListener(_meter);
             b.addMouseMotionListener(_meter);
             b.addKeyListener(_meter);

@@ -63,9 +63,9 @@ public abstract class AnnotationStrategy {
 	 */
     public Vector getAnnotationsVector() {
         Vector v = new Vector();
-        Enumeration enum = getAllAnnotations();
-        while (enum.hasMoreElements()) {
-            v.addElement(enum.nextElement());
+        Enumeration iter = getAllAnnotations();
+        while (iter.hasMoreElements()) {
+            v.addElement(iter.nextElement());
         }
         return v;
     }
@@ -87,9 +87,9 @@ public abstract class AnnotationStrategy {
     }
 
     public void removeAllAnnotations() {
-        java.util.Enumeration enum = annotations.keys();
-        while (enum.hasMoreElements()) {
-            Fig annotation = (Fig) enum.nextElement();
+        java.util.Enumeration iter = annotations.keys();
+        while (iter.hasMoreElements()) {
+            Fig annotation = (Fig) iter.nextElement();
             //annotation.delete();
             removeAnnotation(annotation);
         }
@@ -97,9 +97,9 @@ public abstract class AnnotationStrategy {
 
     // delete line from owner to annotation
     public void removeAllConnectingLines() {
-        java.util.Enumeration enum = annotations.keys();
-        while (enum.hasMoreElements()) {
-            Fig annotation = (Fig) enum.nextElement();
+        java.util.Enumeration iter = annotations.keys();
+        while (iter.hasMoreElements()) {
+            Fig annotation = (Fig) iter.nextElement();
             AnnotationProperties prop =
                 (AnnotationProperties) annotations.get(annotation);
             FigLine line = prop.getConnectingLine();

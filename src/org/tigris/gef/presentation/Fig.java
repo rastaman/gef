@@ -606,9 +606,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         _displayed = false;
         // annotation related
         // delete all annotations first
-        java.util.Enumeration enum = getAnnotationStrategy().getAllAnnotations();
-        while(enum.hasMoreElements()) {
-            Fig annotation = (Fig)enum.nextElement();
+        java.util.Enumeration iter = getAnnotationStrategy().getAllAnnotations();
+        while(iter.hasMoreElements()) {
+            Fig annotation = (Fig)iter.nextElement();
             getAnnotationStrategy().getAnnotationProperties(annotation).removeLine();
             removeAnnotation(annotation);
             annotation.delete();

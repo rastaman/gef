@@ -466,14 +466,14 @@ public abstract class Layer implements java.io.Serializable {
     }
 
     public Rectangle calcDrawingArea() {
-        Enumeration enum = elements();
-        if (!enum.hasMoreElements())
+        Enumeration iter = elements();
+        if (!iter.hasMoreElements())
             return new Rectangle();
 
-        Fig f = (Fig) enum.nextElement();
+        Fig f = (Fig) iter.nextElement();
         Rectangle drawingArea = new Rectangle(f.getBounds());
-        while(enum.hasMoreElements()) {
-            f = (Fig) enum.nextElement();
+        while(iter.hasMoreElements()) {
+            f = (Fig) iter.nextElement();
             drawingArea.add(f.getBounds());
         }
 

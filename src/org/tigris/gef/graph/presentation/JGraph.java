@@ -277,13 +277,13 @@ public class JGraph extends JPanel implements Cloneable {
      * Enlarges the JGraphInternalPane dimensions as necessary to insure that
      * all the contained Figs are visible.
      */
-    protected void updateDrawingSizeToIncludeAllFigs(Enumeration enum) {
-        if (enum == null) {
+    protected void updateDrawingSizeToIncludeAllFigs(Enumeration iter) {
+        if (iter == null) {
             return;
         }
         Dimension drawingSize = new Dimension(defaultSize.width, defaultSize.height);
-        while (enum.hasMoreElements()) {
-            Fig fig = (Fig) enum.nextElement();
+        while (iter.hasMoreElements()) {
+            Fig fig = (Fig) iter.nextElement();
             Rectangle rect = fig.getBounds();
             Point point = rect.getLocation();
             Dimension dim = rect.getSize();
