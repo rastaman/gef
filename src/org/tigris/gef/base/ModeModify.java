@@ -322,6 +322,11 @@ public class ModeModify extends FigModifyingModeImpl {
         editor.damaged(r);
     }
 
+    /** @deprecated 0.10. Remove in 0.11 */
+    protected boolean legal(int dx, int dy, SelectionManager sm, MouseEvent me) {
+        return legal (dx, dy, sm);
+    }
+    
     private boolean legal(int dx, int dy, SelectionManager selectionManager) {
         damageHighlightTrap();
 

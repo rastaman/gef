@@ -103,6 +103,10 @@ public class LayerPolar extends Layer {
         return c;
     }
     
+    public Vector getContents() {
+        return null;
+    }
+    
   public Fig presentationFor(Object obj) { return null; }
 
   ////////////////////////////////////////////////////////////////

@@ -90,11 +90,10 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         _selections.addElement(makeSelectionFor(f));
     }
 
-    protected void addAllFigs(List v) {
-        int count = v.size();
-        for(int i = 0; i < count; ++i) {
-            Fig fig = (Fig)v.get(i);
-            addFig(fig);
+    protected void addAllFigs(Collection c) {
+        Iterator it = c.iterator();
+        while (it.hasNext()) {
+            addFig((Fig)it.next());
         }
     }
 
@@ -169,7 +168,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         fireSelectionChanged();
     }
 
-    public void select(List items) {
+    public void select(Collection items) {
         allDamaged();
         removeAllElements();
         addAllFigs(items);
@@ -468,7 +467,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         }
     }
 
-    protected void addEnclosed(List affected, Fig f) {
+    protected void addEnclosed(Collection affected, Fig f) {
         if(!affected.contains(f)) {
             affected.add(f);
             List enclosed = f.getEnclosedFigs();

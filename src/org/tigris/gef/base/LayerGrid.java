@@ -43,6 +43,7 @@ import javax.swing.UIManager;
 
 import org.tigris.gef.presentation.*;
 import java.util.List;
+import java.util.Vector;
 
 
 /** Paint a background drawing guide consisting of horizontal and
@@ -131,6 +132,14 @@ public class LayerGrid extends Layer {
 
     public Collection getContents(Collection c) {
         return c;
+    }
+  
+    /**
+     * @deprecated 0.10 in favour of getContents(Collection)
+     * This method will be removed in release 0.11
+     */
+    public Vector getContents() {
+        return null;
     }
   
   public Fig presentationFor(Object obj) { return null; }

@@ -247,10 +247,10 @@ public abstract class Layer implements java.io.Serializable {
         return v;
     }
     
-    public List getContentsNoEdges() {
+    public Collection getContentsNoEdges(Collection c) {
         List contents = getContents();
         int size = contents.size();
-        List res = new ArrayList(size);
+        if (c == null) c = new ArrayList(size);
         for(int i = 0; i < size; i++) {
             Object o = contents.get(i);
             if(o instanceof Fig) {
@@ -258,15 +258,36 @@ public abstract class Layer implements java.io.Serializable {
                     continue;
             }
             if(!(o instanceof FigEdge))
-                res.add(o);
+                c.add(o);
         }
-        return res;
+        return c;
     }
 
-    public List getContentsEdgesOnly() {
+    /**
+     * @deprecated 0.10 in favour of getContentsNoEdges(Collection)
+     * This method will be removed in release 0.11
+     */
+    public Vector getContentsNoEdges() {
         List contents = getContents();
         int size = contents.size();
-        List res = new ArrayList(size);
+        Vector v = new Vector(size);
+        for(int i = 0; i < size; i++) {
+            Object o = contents.get(i);
+            if(o instanceof Fig) {
+                if(!((Fig)o).savingAllowed())
+                    continue;
+            }
+            if(!(o instanceof FigEdge))
+                v.add(o);
+        }
+        return v;
+    }
+
+    
+    public Collection getContentsEdgesOnly(Collection c) {
+        List contents = getContents();
+        int size = contents.size();
+        if (c == null) c = new ArrayList(size);
         for(int i = 0; i < size; i++) {
             Object o = contents.get(i);
             if(o instanceof Fig) {
@@ -274,14 +295,44 @@ public abstract class Layer implements java.io.Serializable {
                     continue;
             }
             if(o instanceof FigEdge)
-                res.add(o);
+                c.add(o);
         }
-        return res;
+        return c;
+    }
+
+    /**
+     * @deprecated 0.10 in favour of getContentsEdgesOnly(Collection)
+     * This method will be removed in release 0.11
+     */
+    public Vector getContentsEdgesOnly() {
+        List contents = getContents();
+        int size = contents.size();
+        Vector v = new Vector(size);
+        for(int i = 0; i < size; i++) {
+            Object o = contents.get(i);
+            if(o instanceof Fig) {
+                if(!((Fig)o).savingAllowed())
+                    continue;
+            }
+            if(o instanceof FigEdge)
+                v.add(o);
+        }
+        return v;
     }
 
     /** Return the list of Editors that are showing this Layer. */
-    public List getEditors() {
-        return _editors;
+    public Collection getEditors(Collection c) {
+        if (c == null) return _editors;
+        c.addAll(_editors);
+        return c;
+    }
+
+    /**
+     * @deprecated 0.10 in favour of getEditors(Collection)
+     * This method will be removed in release 0.11
+     */
+    public Vector getEditors() {
+        return new Vector(_editors);
     }
 
     /** Most Layers contain Fig, so I have empty implementations of

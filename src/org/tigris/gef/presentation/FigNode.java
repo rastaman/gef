@@ -86,8 +86,17 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
     }
 
     /** Constructs a new FigNode on the given node with the given owner
+     *  and Figs. 
+     * @deprecated 0.10 in favour of FigNode(Object, Collection). Remove in 0.11
+     */
+    public FigNode(Object node, Vector figs) {
+        this(node);
+        setFigs(figs);
+    }
+
+    /** Constructs a new FigNode on the given node with the given owner
      *  and Figs. */
-    public FigNode(Object node, List figs) {
+    public FigNode(Object node, Collection figs) {
         this(node);
         setFigs(figs);
     }

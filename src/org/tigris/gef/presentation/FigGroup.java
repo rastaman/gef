@@ -373,11 +373,13 @@ public class FigGroup extends Fig {
 
     /** Returns a list of the displayable Figs enclosed.
      *  e.g. returns the list of enclosed Figs, without
-     *  the Compartments that should not be displayed. */
+     *  the Compartments that should not be displayed.
+     * @deprecated 0.10 in favour of getDisplayedFigs(Collection). Remove in 0.11
+     */
     // added by Eric Lefevre 25 Mar 1999
     // moved here by Toby 07 Nov 2000
-    public List getDisplayedFigs() {
-        List displayed = new ArrayList();
+    public Vector getDisplayedFigs() {
+        Vector displayed = new Vector();
 
         int figCount = _figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
@@ -388,6 +390,25 @@ public class FigGroup extends Fig {
         }
 
         return displayed;
+    }
+
+    /** Returns a list of the displayable Figs enclosed.
+     *  e.g. returns the list of enclosed Figs, without
+     *  the Compartments that should not be displayed. */
+    // added by Eric Lefevre 25 Mar 1999
+    // moved here by Toby 07 Nov 2000
+    public Collection getDisplayedFigs(Collection c) {
+        if (c == null) c = new ArrayList();
+
+        int figCount = _figs.size();
+        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+            Fig f = (Fig)_figs.get(figIndex);
+            if(f.isDisplayed()) {
+                c.add(f);
+            }
+        }
+
+        return c;
     }
 
     /** Set the bounding box to the given rect. Figs in the group are

@@ -174,6 +174,13 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         this(d.getGraphModel(), null, d.getLayer());
     }
 
+    /**
+     * @deprecated 0.10 will be replaced in 0.11 in favour of JComponent version
+     */
+    public Editor(GraphModel gm, Component component, Layer lay) {
+        this(gm, (JComponent)component, lay);
+    }
+    
     public Editor(GraphModel gm, JComponent jComponent, Layer lay) {
         _jComponent = jComponent;
         defineLayers(gm, lay);

@@ -648,7 +648,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /** Return a Rectangle that completely encloses this Fig.
      * Subclasses may override getBounds(Rectangle) 
      */
-    public final Rectangle getBounds() {
+    public Rectangle getBounds() {
         return getBounds(null);
     }
 

@@ -7,9 +7,13 @@ public class NoAnnotationStrategy extends AnnotationStrategy {
         return _instance;
     }
 
-    // Diese Klasse ist nur ein Dummy fuer die Figs, die keine Annotations
-    // haben sollen. Sie wird standardmaessig fuer jede Fig angelegt.
-    private NoAnnotationStrategy() {
+    /**
+     * TODO - get this translated
+     * Diese Klasse ist nur ein Dummy fuer die Figs, die keine Annotations
+     * haben sollen. Sie wird standardmaessig fuer jede Fig angelegt.
+     * @deprecated 0.10 will become private on 0.11
+     */
+    public NoAnnotationStrategy() {
     }
 
     public void translateAnnotations(Fig owner) {

@@ -38,6 +38,8 @@ import java.awt.*;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Vector;
 
 /** This class implements a kind of Layer that contains other
  *  Layers. Layer's can be nested in an is-part-of tree. That tree can
@@ -167,10 +169,18 @@ public class LayerManager implements java.io.Serializable {
      *  Figs that are contained in this layer, reply the
      *  contents of my active layer. Maybe this should really reply _all_
      *  the contents of all layers. */
-    public List getContents() {
-        return (_activeLayer == null) ?  null : _activeLayer.getContents();
+    public Collection getContents(Collection c) {
+        return (_activeLayer == null) ?  null : _activeLayer.getContents(c);
     }
 
+    /**
+     * @deprecated 0.10 in favour of getContents(Collection)
+     * This method will be removed in release 0.11
+     */
+    public Vector getContents() {
+        return (_activeLayer == null) ?  null : _activeLayer.getContents();
+    }
+    
     ////////////////////////////////////////////////////////////////
     // painting methods
 

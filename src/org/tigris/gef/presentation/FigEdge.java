@@ -186,6 +186,12 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
     // Fig API
 
     /** Reply the bounding box for this FigEdge. */
+    public Rectangle getBounds() {
+        Rectangle r = null;
+        return getBounds(r);
+    }
+
+    /** Reply the bounding box for this FigEdge. */
     public Rectangle getBounds(Rectangle r) {
         if(r == null) {
             r = new Rectangle();

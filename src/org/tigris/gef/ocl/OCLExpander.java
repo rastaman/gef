@@ -72,8 +72,8 @@ public class OCLExpander {
             }
 
             _bindings.put("self", target);
-            java.util.List results = evaluate(_bindings, tr.guard);
-            if(results.size() > 0 && !Boolean.FALSE.equals(results.get(0))) {
+            Collection results = evaluate(_bindings, tr.guard);
+            if(results.size() > 0 && !Boolean.FALSE.equals(results.iterator().next())) {
                 expr = tr.body;
                 break;
             }
@@ -114,7 +114,7 @@ public class OCLExpander {
         String expr = line.substring(startPos + OCL_START.length(), endPos);
         suffix = line.substring(endPos + OCL_END.length()) + suffix;
         _bindings.put("self", target);
-        java.util.List results = evaluate(_bindings, expr);
+        Collection results = evaluate(_bindings, expr);
         Iterator iter = results.iterator();
         while(iter.hasNext()) {
             expand(pw, iter.next(), prefix, suffix);
@@ -123,8 +123,48 @@ public class OCLExpander {
 
     /** Find the List of templates that could apply to this target
      *  object.  That includes the templates for its class and all
+     *  superclasses.  Needs-More-Work: should cache.
+     * @deprecated 0.10 in favour of findTemplates(Object). Remove in 0.11
+     */
+    public Vector findTemplatesFor(Object target) {
+        Vector res = null;
+        boolean shared = true;
+        for(Class c = target.getClass(); c != null; c = c.getSuperclass()) {
+            Vector temps = (Vector)_templates.get(c);
+            if(temps == null) {
+                continue;
+            }
+
+            if(res == null) {
+                // if only one template applies, return it
+                res = temps;
+            }
+            else {
+                // if another template also applies, merge the two Lists,
+                // but leave the original unchanged
+                if(shared) {
+                    shared = false;
+                    Vector newRes = new Vector();
+                    for(int i = 0; i < res.size(); i++) {
+                        newRes.add(res.get(i));
+                    }
+
+                    res = newRes;
+                }
+
+                for(int j = 0; j < temps.size(); j++) {
+                    res.add(temps.get(j));
+                }
+            }
+        }
+
+        return res;
+    }
+
+    /** Find the List of templates that could apply to this target
+     *  object.  That includes the templates for its class and all
      *  superclasses.  Needs-More-Work: should cache. */
-    public List findTemplatesFor(Object target) {
+    public Collection findTemplates(Object target) {
         List res = null;
         boolean shared = true;
         for(Class c = target.getClass(); c != null; c = c.getSuperclass()) {
@@ -178,7 +218,7 @@ public class OCLExpander {
         return s;
     }
 
-    protected java.util.List evaluate(Map bindings, String expr) {
+    protected Collection evaluate(Map bindings, String expr) {
         return org.tigris.gef.ocl.OCLEvaluator.SINGLETON.eval(bindings, expr);
     }
 }

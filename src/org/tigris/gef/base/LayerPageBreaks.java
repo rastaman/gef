@@ -74,8 +74,16 @@ public class LayerPageBreaks extends Layer {
   /** Set the size of the page in pixels. */
   public void setPageSize(Dimension d) { _pageSize = d; }
 
+    /**
+     * @deprecated 0.10 in favour of getContents(Collection)
+     * This method will be removed in release 0.11
+     */
+    public Vector getContents() {
+        return null;
+    }
+    
     public Collection getContents(Collection c) {
-        return c;
+        return null;
     }
     
   public Fig presentationFor(Object obj) { return null; }
