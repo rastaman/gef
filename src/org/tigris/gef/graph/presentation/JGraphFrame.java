@@ -40,26 +40,21 @@ import org.tigris.gef.util.*;
 public class JGraphFrame extends JFrame
 implements IStatusBar, Cloneable, ModeChangeListener {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-
-  /** The toolbar (shown at top of window). */
-  protected ToolBar _toolbar = new PaletteFig();
-  /** The graph pane (shown in middle of window). */
-  protected JGraph _graph;
-  /** A statusbar (shown at bottom ow window). */
-  protected JLabel _statusbar = new JLabel(" ");
+    /** The toolbar (shown at top of window). */
+    protected ToolBar _toolbar = new PaletteFig();
+    /** The graph pane (shown in middle of window). */
+    protected JGraph _graph;
+    /** A statusbar (shown at bottom ow window). */
+    protected JLabel _statusbar = new JLabel(" ");
   
-  protected JPanel _mainPanel = new JPanel(new BorderLayout());
-  protected JPanel _graphPanel = new JPanel(new BorderLayout());
-  protected JMenuBar _menubar = new JMenuBar();
+    protected JPanel _mainPanel = new JPanel(new BorderLayout());
+    protected JPanel _graphPanel = new JPanel(new BorderLayout());
+    protected JMenuBar _menubar = new JMenuBar();
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-
-  /** Contruct a new JGraphFrame with the title "untitled" and a new
-   *  DefaultGraphModel. */
-  public JGraphFrame() { this("untitled"); }  
+    /** Contruct a new JGraphFrame with the title "untitled" and a new
+     *  DefaultGraphModel. */
+    public JGraphFrame() { this("untitled"); }
+  
   public JGraphFrame( boolean init_later) {
 	  super( "untitled");
 	  if( ! init_later)	init( new JGraph());
@@ -151,8 +146,6 @@ implements IStatusBar, Cloneable, ModeChangeListener {
    *  override this, or you can use setMenuBar(). */
   protected void setUpMenus() {
 	JMenuItem openItem,
-                  openPGMLItem,
-                  openSVGItem,
                   saveItem,
                   savePGMLItem,
                   saveSVGItem,
@@ -172,12 +165,10 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	_menubar.add(file);
 	//file.add(new CmdNew());
 	openItem = file.add(new CmdOpen());
-	openPGMLItem = file.add(new CmdOpenPGML());
-	openSVGItem = file.add(new CmdOpenSVG());
 	saveItem = file.add(new CmdSave());
 	savePGMLItem = file.add(new CmdSavePGML());
 	saveSVGItem = file.add(new CmdSaveSVG());
-    CmdPrint cmdPrint = new CmdPrint();
+        CmdPrint cmdPrint = new CmdPrint();
 	printItem = file.add(cmdPrint);
 	printPageSetupItem = file.add(new CmdPrintPageSetup(cmdPrint));
 	prefsItem = file.add(new CmdOpenWindow("org.tigris.gef.base.PrefsEditor",
@@ -197,19 +188,14 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	select.add(new CmdSelectNext(true));
 	select.add(new CmdSelectInvert());
 
-	//select.add(new CmdSelectSuchThat());
-
-	//edit.add(new CmdUndo());
-	//edit.add(new CmdRedo());
 	edit.addSeparator();
 
-	//edit.add(new CmdCut());
 	copyItem = edit.add(new CmdCopy());
 	copyItem.setMnemonic('C');
 	pasteItem = edit.add(new CmdPaste());
 	pasteItem.setMnemonic('P');
 
-	deleteItem = edit.add(new CmdDelete());
+	deleteItem = edit.add(new CmdRemoveFromGraph());
 	edit.addSeparator();
 	edit.add(new CmdUseReshape());
 	edit.add(new CmdUseResize());
