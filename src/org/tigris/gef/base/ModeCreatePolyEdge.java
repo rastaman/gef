@@ -32,7 +32,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 
@@ -353,6 +352,10 @@ public class ModeCreatePolyEdge extends ModeCreate {
         startPort = object;
     }
 
+    protected Fig getStartPortFig() {
+        return startPortFig;
+    }
+
     /**
      * @param fig
      */
@@ -360,4 +363,11 @@ public class ModeCreatePolyEdge extends ModeCreate {
         startPortFig = fig;
     }
 
+    protected Object getNewEdge() {
+        return newEdge;
+    }
+    
+    protected void setNewEdge(Object edge) {
+        newEdge = edge;
+    }
 } /* end class ModeCreatePolyEdge */
