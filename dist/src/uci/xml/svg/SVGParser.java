@@ -127,11 +127,11 @@ public class SVGParser implements ElementHandler, TagHandler {
 	int ryInt = (ry == null || ry.equals("")) ? 10 : Integer.parseInt(ry);
 	
 	f.setX( cxInt - rxInt );
-	f.setX( cyInt - ryInt );
+	f.setY( cyInt - ryInt );
 	f.setWidth(rxInt * 2);
 	f.setHeight(ryInt * 2);
 	return f;
-  }  
+  }      
   public void handleEndTag(TXElement e, boolean empty) {
 	String elementName = e.getName();
 	if ("g".equals(elementName)) _nestedGroups--;
@@ -163,74 +163,24 @@ protected Fig handleGroup(TXElement e) {
 		if (f instanceof FigNode) {
 			FigNode fn = (FigNode) f;
 			if (e.hasChildNodes()) {
-				NodeList nl = e.getChildNodes();
-				int size = nl.getLength();
-				for (int i = 0; i < size; i++) {
-					Node n = nl.item(i);
-					if (n instanceof TXElement) {
-						TXElement pe = (TXElement) n;
-						String peName = pe.getName();
-						if ("foreignObject".equals(peName)) {
-							Fig enc = null;
-							String body = pe.getText();
-							StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
-							while (st2.hasMoreElements()) {
-								String t = st2.nextToken();
-								String v = st2.nextToken();
-								if (t.equals("enclosingFig")) {
-									enc = (FigNode) findFig(v);
-									break;
-								}
-							}
-							fn.setEnclosingFig( enc );							
-						}
-					}
+				NodeList nl = e.getElementsByTagName("foreignObject");
+				if (nl.getLength()==1)
+				{
+					TXElement pe = (TXElement) nl.item(0);
+					String data = pe.getText();
+					fn.setPrivateData(data);
 				}
 			}
 		}
 		if (f instanceof FigEdge) {
 			FigEdge fe = (FigEdge) f;
 			if (e.hasChildNodes()) {
-				NodeList nl = e.getChildNodes();
-				int size = nl.getLength();
-				for (int i = 0; i < size; i++) {
-					Node n = nl.item(i);
-					if (n instanceof TXElement) {
-						TXElement pe = (TXElement) n;
-						String peName = pe.getName();
-						if ("path".equals(peName)) {
-							Fig p = handlePath(pe);
-							fe.setFig(p);
-							((FigPoly) p)._isComplete = true;
-							fe.calcBounds();
-							if (fe instanceof FigEdgePoly)
-								 ((FigEdgePoly) fe).setInitiallyLaidOut(true);
-						} else
-							if ("gef:private".equals(peName)) {
-								Fig spf = null;
-								Fig dpf = null;
-								FigNode sfn = null;
-								FigNode dfn = null;
-								String body = pe.getText();
-								StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
-								while (st2.hasMoreElements()) {
-									String t = st2.nextToken();
-									String v = st2.nextToken();
-									if (t.equals("sourcePortFig"))
-										spf = findFig(v);
-									if (t.equals("destPortFig"))
-										dpf = findFig(v);
-									if (t.equals("sourceFigNode"))
-										sfn = (FigNode) findFig(v);
-									if (t.equals("destFigNode"))
-										dfn = (FigNode) findFig(v);
-								}
-								fe.setSourcePortFig(spf);
-								fe.setDestPortFig(dpf);
-								fe.setSourceFigNode(sfn);
-								fe.setDestFigNode(dfn);
-							}
-					}
+				NodeList nl = e.getElementsByTagName("foreignObject");
+				if (nl.getLength()==1)
+				{
+					TXElement pe = (TXElement) nl.item(0);
+					String data = pe.getText();
+					fe.setPrivateData(data);
 				}
 			}
 		}
