@@ -1,8 +1,8 @@
 package org.tigris.gef.presentation;
 
-import java.util.*;
-import java.awt.*;
-import org.tigris.gef.base.*;
+import java.awt.Point;
+
+import org.tigris.gef.base.Globals;
 
 
 public class EdgeAnnotationStrategy extends AnnotationStrategy{

@@ -26,12 +26,16 @@ package org.tigris.gef.base;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.PopupGenerator;
 
-import javax.swing.*;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.Method;
 import java.util.Vector;
 import java.util.List;
+
+import javax.swing.AbstractAction;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 
 /** A permanent Mode to catch right-mouse-button events and show a
  *  popup menu.  Needs-more-work: this is not fully implemented
@@ -121,7 +125,7 @@ public class ModePopup extends FigModifyingModeImpl {
 
     /** Determine if a popup menu should be displayed by this
      * mouse key being released
-     * */
+     */
     public void mouseReleased(MouseEvent me) {
         if(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
             showPopup(me);
@@ -130,8 +134,9 @@ public class ModePopup extends FigModifyingModeImpl {
     
     /** Determine if a popup menu should be displayed by this
      * mouse key being pressed
-     * */
+     */
     public void mousePressed(MouseEvent me) {
+        //System.out.println("in ModePopup.mousePressed()");
         if(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
             showPopup(me);
     	}
@@ -139,7 +144,7 @@ public class ModePopup extends FigModifyingModeImpl {
 	
     /** Determine if a popup menu should be displayed by this
      * mouse key being clicked
-     * */
+     */
     public void mouseClicked(MouseEvent me) {
         if(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
             showPopup(me);
