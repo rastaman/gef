@@ -1,46 +1,64 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
-// Rights Reserved. Permission to use, copy, modify, and distribute this
-// software and its documentation without fee, and without a written
-// agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
-// documentation are copyrighted by The Regents of the University of
-// California. The software program and documentation are supplied "AS
-// IS", without any accompanying services from The Regents. The Regents
-// does not warrant that the operation of the program will be
-// uninterrupted or error-free. The end-user understands that the program
-// was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: CmdPrint.java
-// Classes: CmdPrint
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
+/*
+ * CmdPrint.java
+ *
+ * Copyright (c) 1996-99 The Regents of the University of California. All
+ * Rights Reserved. Permission to use, copy, modify, and distribute this
+ * software and its documentation without fee, and without a written
+ * agreement is hereby granted, provided that the above copyright notice
+ * and this paragraph appear in all copies.  This software program and
+ * documentation are copyrighted by The Regents of the University of
+ * California. The software program and documentation are supplied "AS
+ * IS", without any accompanying services from The Regents. The Regents
+ * does not warrant that the operation of the program will be
+ * uninterrupted or error-free. The end-user understands that the program
+ * was developed for research purposes and is advised not to rely
+ * exclusively on the program for any reason.  IN NO EVENT SHALL THE
+ * UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+ * SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+ * ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ * THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ * PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ * CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+ * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ */
 package org.tigris.gef.base;
 
 import java.util.*;
 import java.awt.*;
 import java.io.*;
 
+import javax.swing.*;
+
+import java.awt.print.*;
+
 import org.tigris.gef.presentation.*;
 
-/** Cmd to Print a diagram.  Only works under JDK 1.1. */
+/** 
+ * Cmd to Print a diagram.  Only works under JDK 1.2 and above. 
+ * 
+ * @author Eugenio Alvarez
+ */
+public class CmdPrint extends Cmd implements Printable {
 
-public class CmdPrint extends Cmd {
+  PrinterJob printerJob;
+  PageFormat pageFormat;
 
-  public static int OVERLAP = 0;
+  int     maxPageIndex = 1;
+  boolean fitDiagramToPage = true;
+  boolean isFirstPrintCall = true;
+  double  scale;
+  int     nCol;
 
-  public CmdPrint() { super("Print..."); }
+  double  pageX, pageY, pageWidth, pageHeight;
+
+  double  diagramX, diagramY, diagramWidth, diagramHeight;
+
+  public CmdPrint() {
+    super("Print...");
+  }
 
   public CmdPrint(String diagramName) {
     this();
@@ -56,83 +74,174 @@ public class CmdPrint extends Cmd {
   }
 
   public void doIt() {
-    Editor ce = Globals.curEditor();
-    String diagramName = (String) getArg("diagramName");
-    Boolean printPageNums = (Boolean) getArg("printPageNumbers");
-    boolean printNumbers = true;
-    if (printPageNums != null)
-      printNumbers = printPageNums.booleanValue();
+    PrinterJob printerJob = getPrinterJob();
 
-    String jobName = "Print Diagram";
-    if (diagramName != null) jobName = diagramName;
+    printerJob.setPrintable(new CmdPrint(),getPageFormat());
 
-    Toolkit tk = Toolkit.getDefaultToolkit();
-    Frame someFrame = Globals.someFrame();
-    PrintJob pjob = tk.getPrintJob(someFrame, jobName, new Properties());
-    if (pjob != null) {
-      Graphics pg = pjob.getGraphics();
-      Dimension d = pjob.getPageDimension();
-
-      int leftMargin = 15;
-      int topMargin = 15;
-      int rightMargin = 15;
-      int bottomMargin = 40;
-      int footer = 20;
-      int printableWidth = d.width - leftMargin - rightMargin;
-      int printableHeight = d.height - topMargin - bottomMargin - footer;
-      //System.out.println("pjob.getPageDimension() = " + d);
-      //Globals.showStatus("page size is: " + d);
-
-      // For the printable area, tha actual origen of Argo is (11,12),
-      // and the printable area from Argo is width = 586, and height = 769.  
-      // This was done on a 300 dpi printer.  The origen was translated
-      // by a value of 15 to provide a bit of a buffer for different printers.
-      Fig f = null;
-      Rectangle rectSize = null;
-      Rectangle drawingArea = new Rectangle(0,0);
-      Enumeration enum = ce.figs();
-      int count = 0;
-      while (enum.hasMoreElements()) { 
-	f = (Fig) enum.nextElement();
-	rectSize = f.getBounds();
-	drawingArea.add(rectSize);
+    if (printerJob.printDialog()) {
+      try {
+        printerJob.print();
+      } catch (PrinterException pe) {
+        Globals.showStatus("Error got a Printer exception");
       }
-      int pageNum = 1;
-      for (int y=0; y <= drawingArea.height; y+=printableHeight-OVERLAP) {
-	for (int x=0; x <= drawingArea.width; x+=printableWidth-OVERLAP) {
-	  if (pg == null) { pg = pjob.getGraphics(); pageNum++; }
-	  Globals.showStatus("Printing page " + pageNum);
-	  pg.setClip(0, 0, d.width, d.height);
-	  pg.clipRect(leftMargin, topMargin,
-		      printableWidth, printableHeight);
-	  pg.translate(-x + rightMargin, -y + topMargin);
-	  ce.print(pg);
-	  //System.out.println("x="+x+", y=" + y);
-	  pg.setClip(-30000, -30000, 60000, 60000);
-	  if (diagramName != null) {
-	    pg.setFont(new Font("TimesRoman", Font.PLAIN, 9));
-	    pg.setColor(Color.black);
-	    pg.drawString(diagramName,
-			  x + 10, y + printableHeight + footer);
-	  }
-	  if (printNumbers) {
-	    pg.setFont(new Font("TimesRoman", Font.PLAIN, 9));
-	    pg.setColor(Color.black);
-	    pg.drawString("Page " + pageNum,
-			  x + printableWidth - 40,
-			  y + printableHeight + footer);
-	  }
-	  pg.dispose(); // flush page
-	  pg = null;
-	}
-      }
-      pjob.end();
     }
+
     Globals.showStatus("Printing finished");
   }
 
   public void undoIt() {
     System.out.println("Undo does not make sense for CmdPrint");
   }
+
+  private boolean isFirstPrintCall() {
+    return isFirstPrintCall;
+  }
+
+  private void setFirstPrintCall(boolean b) {
+    isFirstPrintCall = b;
+  }
+
+  private boolean fitDiagramToPage() {
+    return fitDiagramToPage;
+  }
+
+  private void setFitDiagramToPage(boolean b) {
+    fitDiagramToPage = b;
+  }
+  public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) {
+    if (pageIndex >= maxPageIndex) {
+      return NO_SUCH_PAGE;
+    }
+
+    Editor editor = Globals.curEditor();
+    String diagramName = (String) getArg("diagramName");
+
+    Graphics2D g2d = (Graphics2D)graphics;
+
+    Rectangle drawingArea = null;
+
+    SelectionManager sm = editor.getSelectionManager();
+    Vector selectedFigs = sm.getFigs();
+    Enumeration enum = null;
+
+    if (selectedFigs.size() > 0 ) {
+      enum = selectedFigs.elements();
+    } else {
+      enum = editor.figs();
+      drawingArea = new Rectangle();
+    } // end else if
+
+    while( enum.hasMoreElements() ) {
+      Fig fig = (Fig) enum.nextElement();
+      Rectangle rect = fig.getBounds();
+      if (drawingArea == null) {
+          drawingArea = new Rectangle(rect);
+      }
+      drawingArea.add( rect );
+    }
+
+    if (drawingArea == null ||
+        drawingArea.width == 0 || drawingArea.height == 0 ) {
+      return NO_SUCH_PAGE;
+    }
+
+    boolean h = editor.getGridHidden();
+    editor.setGridHidden( true );
+
+    if (isFirstPrintCall()) {
+      setFirstPrintCall(false);
+
+      pageWidth  = pageFormat.getImageableWidth();
+      pageHeight = pageFormat.getImageableHeight();
+
+      pageX = pageFormat.getImageableX();
+      pageY = pageFormat.getImageableY();
+
+      diagramWidth  = (double)drawingArea.width;
+      diagramHeight = (double)drawingArea.height;
+
+      diagramX = (double)drawingArea.x;
+      diagramY = (double)drawingArea.y;
+
+      scale = Math.min(pageWidth/(double)(drawingArea.width+1),
+                       pageHeight/(double)(drawingArea.height+1));
+      if (scale < 1.0) {
+         promptFitToPage();
+      }
+      if (fitDiagramToPage()) {
+        maxPageIndex = 1;
+      } else {
+        nCol = Math.max((int)Math.ceil(diagramWidth/pageWidth),1);
+        int nRow = Math.max((int)Math.ceil(diagramHeight/pageHeight),1);
+        maxPageIndex = nCol*nRow;
+      }
+    }
+
+    if (fitDiagramToPage()) {
+      if (scale < 1.0) {
+        g2d.scale(scale,scale);
+        g2d.translate((pageX/scale)-diagramX+1,(pageY/scale)-diagramY+1);
+      } else {
+        g2d.translate(pageX-diagramX+1,pageY-diagramY+1);
+      }
+    } else {
+        double iCol = pageIndex % nCol;
+        double iRow = pageIndex / nCol;
+        double x = iCol*pageWidth;
+        double y = iRow*pageHeight;
+        g2d.translate(pageX-x+1,pageY-y+1);
+    }
+
+    editor.print( g2d );
+    editor.setGridHidden( h );
+
+    return (PAGE_EXISTS);
+  }
+
+  PrinterJob getPrinterJob() {
+    if (printerJob == null) {
+      printerJob = PrinterJob.getPrinterJob();
+    }
+    return printerJob;
+  }
+
+  PageFormat getPageFormat() {
+    if (pageFormat == null) {
+      PrinterJob pj = getPrinterJob();
+      if (pj != null) {
+        pageFormat = pj.defaultPage();
+      }
+    }
+    return pageFormat;
+  }
+
+  void setPageFormat(PageFormat pf) {
+    pageFormat = pf;
+  }
+
+  public void doPageSetup() {
+    setPageFormat(getPrinterJob().pageDialog(getPageFormat()));
+  }
+
+  private void promptFitToPage() {
+    Object[] options = {"Fit to page",
+                        "Multiple Pages"};
+
+    int n = JOptionPane.showOptionDialog(null,
+              "The diagram exceeds the current page size. Select option?",
+              "Printing Selection",
+              JOptionPane.YES_NO_OPTION,
+              JOptionPane.QUESTION_MESSAGE,
+              null,
+              options,
+              options[0]);
+
+    if (n == JOptionPane.NO_OPTION) {
+      setFitDiagramToPage(false);
+    } else {
+      setFitDiagramToPage(true);
+    }
+  }
+
 } /* end class CmdPrint */
 
