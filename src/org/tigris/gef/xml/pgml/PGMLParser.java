@@ -326,7 +326,11 @@ public class PGMLParser extends HandlerBase {
 			//System.out.println("[PGMLParser]: endElement NODE_STATE");
 	    _currentNode.updateVisState();
             _elementState = DEFAULT_STATE;
+            if (_currentNode != null && _currentEncloser != null) {
+              _currentNode.setEnclosingFig(_currentEncloser);
+            }
             _currentNode = null;
+            _currentEncloser = null;
             _textBuf = null;
         break;
 
@@ -536,6 +540,7 @@ public class PGMLParser extends HandlerBase {
   }
 
   protected FigNode _currentNode = null;
+
   /* Returns Fig rather than FigGroups because this is also
      used for FigEdges. */
   protected Fig handleGroup(AttributeList attrList) {
@@ -585,20 +590,20 @@ public class PGMLParser extends HandlerBase {
     return f;
   }
 
+    private Fig _currentEncloser = null;
+
     private void privateStateEndElement(String tagName) {
         if(_currentNode != null) {
-			if ( _currentEdge != null ) _currentEdge = null;
+	    if ( _currentEdge != null ) _currentEdge = null;
 
             String body = _textBuf.toString();
             StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
-            Fig encloser = null;
             while (st2.hasMoreElements()) {
                 String t = st2.nextToken();
                 String v = "no such fig";
                 if (st2.hasMoreElements()) v = st2.nextToken();
-                if (t.equals("enclosingFig")) encloser = findFig(v);
+                if (t.equals("enclosingFig")) _currentEncloser = findFig(v);
             }
-            _currentNode.setEnclosingFig(encloser);
         }
         if(_currentEdge != null) {
             Fig spf = null;
