@@ -376,7 +376,7 @@ implements MouseListener, PropertyChangeListener, Highlightable {
     //System.out.println("FigNode got a PropertyChangeEvent");
     String pName = pce.getPropertyName();
     Object src = pce.getSource();
-    if (pName.equals("dispose") && src == getOwner()) { delete(); }
+    if (pName.equals("disposed") && src == getOwner()) { delete(); }
     if (pName.equals("highlight") && src == getOwner())
       setHighlight(((Boolean)pce.getNewValue()).booleanValue());
   }

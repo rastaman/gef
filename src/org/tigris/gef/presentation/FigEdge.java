@@ -368,7 +368,7 @@ public String getPrivateData() {
 	//System.out.println("FigEdge got a PropertyChangeEvent");
 	String pName = pce.getPropertyName();
 	Object src = pce.getSource();
-	if (pName.equals("dispose") && src == getOwner()) { delete(); }
+	if (pName.equals("disposed") && src == getOwner()) { delete(); }
 	if (pName.equals("highlight") && src == getOwner()) {
 	  _highlight = ((Boolean)pce.getNewValue()).booleanValue();
 	  damage();

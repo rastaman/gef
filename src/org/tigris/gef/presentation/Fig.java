@@ -464,8 +464,8 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   public void dispose() {
     Object own = getOwner();
     if (own instanceof GraphNodeHooks) ((GraphNodeHooks)own).dispose();
-    if (own instanceof GraphEdgeHooks) ((GraphEdgeHooks)own).dispose();
-    if (own instanceof GraphPortHooks) ((GraphPortHooks)own).dispose();
+    else if (own instanceof GraphEdgeHooks) ((GraphEdgeHooks)own).dispose();
+    else if (own instanceof GraphPortHooks) ((GraphPortHooks)own).dispose();
     else delete();
   }
   protected int drawDashedLine(Graphics g, int phase,

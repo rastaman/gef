@@ -244,7 +244,19 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- Prepares the docs                                                   -->
   <!-- =================================================================== -->
   <target name="prepare-docs" depends="init">
-    <mkdir dir="${build.docs}"/>
+    <mkdir dir="${docs.dir}"/>
+
+    <javadoc sourcepath="${build.src}" destdir="${docs.dir}" packagenames="${packages}"
+        use="true"
+        private="false"
+        splitindex="true"
+        author="false"
+        windowtitle="GEF Documentation">
+        <classpath>
+            <pathelement path="${lib.dir}/log4j.jar"/>
+            <pathelement path="${lib.dir}/xerces.jar"/>
+        </classpath>
+    </javadoc>
   </target>
 
   <!-- =================================================================== -->
