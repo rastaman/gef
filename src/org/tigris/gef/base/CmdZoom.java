@@ -56,9 +56,9 @@ public class CmdZoom extends Cmd
         if (ed == null) return;
 
         if (_magnitude > 0.0) {
-            ed.setScaleInt(ed.getScale() * _magnitude);
+            ed.setScale(ed.getScale() * _magnitude);
         } else {
-            ed.setScaleInt(1.0);
+            ed.setScale(1.0);
         }
         ed.damageAll();
     }
@@ -72,7 +72,7 @@ public class CmdZoom extends Cmd
         if (ed == null) return;
 
         if (_magnitude > 0.0) {
-            ed.setScaleInt(ed.getScale() / _magnitude);
+            ed.setScale(ed.getScale() / _magnitude);
         } else {
             System.out.println("Cannot undo CmdZoom reset, yet.");
         }
