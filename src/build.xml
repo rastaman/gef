@@ -4,7 +4,7 @@
 
 
                            * ================== *
-                           |  How to build Argo |
+                           |  How to build GEF  |
                            * ================== *
 
            Adaption from the FOP build.xml written by Stefano Mazzocchi
@@ -138,7 +138,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <echo message="   compile   --> compiles the source code"/>
     <echo message="   dist      --> generates the ${Name} distribution as .tar.gz and .zip"/>
     <echo message="   dist-src  --> generates the ${Name} source distribution as .tar.gz and .zip"/>
-    <echo message="   clean --> cleans up the directory"/>
+    <echo message="   clean     --> cleans up the directory"/>
+    <echo message="   run       --> run sample BasicApplication"/>
     <echo message="   usage     --> show this message (default)"/>
     <echo message=""/>
     <echo message=" See the comments inside the build.xml file for more details."/>
@@ -241,6 +242,16 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 
   <target name="distclean" depends="clean">
     <deltree dir="${dist.dir}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Run GEF sample BasicApplication from compiled sources                                   -->
+  <!-- =================================================================== -->
+  <target name="run" depends="compile">
+    <echo message="--- Executing GEF sample BasicApplication ---"/>
+    <java classname="org.tigris.gef.demo.BasicApplication"
+          fork="yes"
+          classpath="${build.dest};${classpath}"/>
   </target>
 
 </project>

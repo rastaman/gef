@@ -105,6 +105,10 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 
   protected Fig _group = null;
 
+    /** True if the Fig is shown. This funct once was in FogComponent of ArgoUML */
+
+  protected boolean _displayed = true;
+
   ////////////////////////////////////////////////////////////////
   // static initializer
 
@@ -552,10 +556,12 @@ public String getPrivateData() {
   /** Method to paint this Fig.  By default it paints an "empty"
    *  space, subclasses should override this method. */
   public void paint(Graphics g) {
+      if ( _displayed ) {
 	g.setColor(Color.pink);
 	g.fillRect(_x, _y, _w, _h);
 	g.setColor(Color.black);
 	g.drawString("(undefined)", _x + _w/2, _y + _h/2);
+      }
   }  
   /** Return a point at the given distance along the path around this
    *  Fig. By default, uses perimeter of the Fig's bounding
@@ -800,4 +806,13 @@ public void setPrivateData(String data)
   public boolean within(Rectangle r) {
 	return r.contains(_x, _y) && r.contains(_x + _w, _y + _h);
   }  
+
+
+   /** Returns true if it is to be displayed. */
+   public boolean isDisplayed() { return _displayed; }
+
+   /** Determine if it is to be displayed. */
+   public void setDisplayed(boolean isDisplayed) { _displayed = isDisplayed; }
+
+
 } /* end class Fig */

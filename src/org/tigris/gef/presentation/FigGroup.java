@@ -80,7 +80,7 @@ public class FigGroup extends Fig {
   /** Accumulate a bounding box for all the Figs in the group. */
   public void calcBounds() {
 	Rectangle bbox; // could be blank final
-	Enumeration figs = _figs.elements();
+	Enumeration figs = getDisplayedFigs().elements();
 	if (figs.hasMoreElements()) bbox = ((Fig)figs.nextElement()).getBounds();
 	else bbox = new Rectangle(0, 0, 0, 0);
 	while (figs.hasMoreElements()) {
@@ -219,7 +219,7 @@ public String getPrivateData() {
 	Enumeration figs = elements();
 	while (figs.hasMoreElements()) {
 	  Fig f = (Fig) figs.nextElement();
-	  f.paint(g);
+	  if (f.isDisplayed()) f.paint(g);
 	}
   }  
   /** Delete all Fig's from the group. Fires PropertyChange with "bounds".*/
@@ -242,6 +242,27 @@ public String getPrivateData() {
 	calcBounds();
 	firePropChange("bounds", oldBounds, getBounds());
   }  
+
+  /** Returns a list of the displayable Figs enclosed. 
+   *  e.g. returns the list of enclosed Figs, without
+   *  the Compartments that should not be displayed. */
+  // added by Eric Lefevre 25 Mar 1999
+    // moved here by Toby 07 Nov 2000
+    public Vector getDisplayedFigs() {
+    Vector displayed = (Vector)getFigs().clone();
+    Fig f;
+
+    for (int i=0; i< _figs.size(); i++) {
+      f = (Fig)_figs.elementAt(i);
+      // removes the compartments that are not to be displayed
+      if ( !(f).isDisplayed() ) {
+        displayed.removeElement((Object)f);
+      }
+    }
+
+    return displayed;
+    }
+
   /** Set the bounding box to the given rect. Figs in the group are
    *  scaled to fit. Fires PropertyChange with "bounds" */
   public void setBounds(int x, int y, int w, int h) {
@@ -249,11 +270,13 @@ public String getPrivateData() {
 	Enumeration figs = _figs.elements();
 	while (figs.hasMoreElements()) {
 	  Fig f = (Fig) figs.nextElement();
-	  int newX = (_w == 0) ? x : x + ((f.getX() - _x) * w) / _w;
-	  int newY = (_h == 0) ? y : y + ((f.getY() - _y) * h) / _h;
-	  int newW = (_w == 0) ? 0 : (f.getWidth() * w) / _w;
-	  int newH = (_h == 0) ? 0 : (f.getHeight() * h) / _h;
-	  f.setBounds(newX, newY, newW, newH);
+	  if (f.isDisplayed()) {
+	      int newX = (_w == 0) ? x : x + ((f.getX() - _x) * w) / _w;
+	      int newY = (_h == 0) ? y : y + ((f.getY() - _y) * h) / _h;
+	      int newW = (_w == 0) ? 0 : f.getWidth() * (w / _w);
+	      int newH = (_h == 0) ? 0 : f.getHeight() * (h / _h);
+	      f.setBounds(newX, newY, newW, newH);
+	  }
 	}
 	calcBounds(); //_x = x; _y = y; _w = w; _h = h;
 	firePropChange("bounds", oldBounds, getBounds());
