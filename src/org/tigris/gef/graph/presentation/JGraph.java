@@ -90,11 +90,7 @@ public class JGraph extends JPanel implements Cloneable {
 
     private Hashtable _viewPortPositions = new Hashtable();
 
-    /**
-     * @deprecated 0.10.7 visibility will become private.
-     * Use getCurrentDiagramId()
-     */
-    protected String _currentDiagramId = null;
+    private String _currentDiagramId = null;
 
     ////////////////////////////////////////////////////////////////
     // constructor
