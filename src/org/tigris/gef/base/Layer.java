@@ -136,6 +136,9 @@ public abstract class Layer implements java.io.Serializable {
         _type = type;
     }
 
+    // TODO - I'd query whether this is the best way to write a clone
+    // method.
+    // Also, shouldn't this class implement clonable?
     public Object clone() {
         Layer lay;
         try {
