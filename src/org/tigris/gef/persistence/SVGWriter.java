@@ -441,6 +441,7 @@ public class SVGWriter extends Graphics {
     }
 
     private void drawRect( int x, int y, int w, int h, String style) {
+        System.out.println("[SVGWriter] drawRect: x/y/w/h = " + x + "/" + y + "/" + w + "/" + h);
 	Element rect = _svg.createElement( "rect");
 	rect.setAttribute( "x", ""+transformX( x));
 	rect.setAttribute( "y", ""+transformY( y));

@@ -76,7 +76,7 @@ public abstract class CmdSaveGraphics extends Cmd {
     //	will underreport their size and others will overreport. Various
     //	line styles seem to have the problem. Haven't spent any time
     //	trying to figure it out.
-
+/*
     int xmin = 99999, ymin = 99999;
     Fig f = null;
     Rectangle rectSize = null;
@@ -95,7 +95,9 @@ public abstract class CmdSaveGraphics extends Cmd {
     drawingArea.x = xmin;
     drawingArea.y = ymin;
     drawingArea.grow(4,4); // security border
-
+*/
+    
+    Rectangle drawingArea = ce.getLayerManager().getActiveLayer().calcDrawingArea();
     System.out.println("Bounding box: "+drawingArea);
 
     //	Tell the editor to hide the grid before exporting:

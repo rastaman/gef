@@ -78,7 +78,7 @@ public class Diagram implements java.io.Serializable, GraphListener {
   public void initialize(Object owner) {
     /* do nothing by default */
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // accessors
 

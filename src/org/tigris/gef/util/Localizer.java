@@ -204,7 +204,17 @@ public class Localizer
 		getInstance().doAddResource(binding,resourceName);
 	}
 
+	public static void addResource(String binding, String resourceName, ClassLoader loader) 
+		throws MissingResourceException {
+		getInstance().doAddResource(binding,resourceName,loader);
+	}
+
     protected synchronized void doAddResource(String binding, String resourceName) 
+        throws MissingResourceException {
+            doAddResource(binding, resourceName, getClass().getClassLoader());
+    }
+    
+    protected synchronized void doAddResource(String binding, String resourceName, ClassLoader loader)
         throws MissingResourceException {
         if ( doContainsResource(resourceName) )
             return;
@@ -212,21 +222,31 @@ public class Localizer
         Iterator iter = locales.keySet().iterator();
         
         while (iter.hasNext()) {
-            doAddResource(binding,resourceName,(Locale)iter.next());
+            doAddResource(binding,resourceName,(Locale)iter.next(), loader);
         }
     }
     
     public static void addResource(String binding, String resourceName, Locale locale) 
 		throws MissingResourceException{
 		getInstance().doAddResource(binding,resourceName,locale);
+	}        
+
+    public static void addResource(String binding, String resourceName, Locale locale, ClassLoader loader) 
+		throws MissingResourceException{
+		getInstance().doAddResource(binding,resourceName,locale,loader);
 	}
 
-    protected synchronized void doAddResource(String binding, String resourceName, Locale locale) 
+    protected synchronized void doAddResource(String binding, String resourceName, Locale locale)
+        throws MissingResourceException {
+            doAddResource(binding, resourceName, locale, getClass().getClassLoader());
+    }
+    
+    protected synchronized void doAddResource(String binding, String resourceName, Locale locale, ClassLoader loader) 
         throws MissingResourceException {
         ResourceBundle resource = null;
         if (doContainsLocale(locale) ) {
             Map resources = (Map)locales.get(locale);
-            resource = ResourceBundle.getBundle(resourceName,locale);
+            resource = ResourceBundle.getBundle(resourceName,locale, loader);
             resources.put(binding,resource);
 			if (!resourceNames.containsValue(resourceName))
 				resourceNames.put(binding,resourceName);

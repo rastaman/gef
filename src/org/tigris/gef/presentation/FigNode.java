@@ -348,6 +348,7 @@ implements MouseListener, PropertyChangeListener, Highlightable {
    *  maybe I should implement LayerHighlight instead. */
   public void paint(Graphics g) {
     super.paint(g);
+    System.out.println("[FigNode] paint: owner = " + getOwner());
     if (_highlight) {
       g.setColor(Globals.getPrefs().getHighlightColor()); /* needs-more-work */
       g.drawRect(_x - 5, _y - 5, _w + 9, _h + 8);

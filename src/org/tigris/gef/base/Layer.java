@@ -284,6 +284,29 @@ public abstract class Layer implements java.io.Serializable {
     // g.unlockColor(); // Needs-More-Work: not implemented
   }
 
+  public Rectangle calcDrawingArea() {
+      int xmin = 99999, ymin = 99999;
+      Fig f = null;
+      Rectangle rectSize = null;
+      Rectangle drawingArea = new Rectangle( 0, 0 );
+      Enumeration enum = elements();
+      while( enum.hasMoreElements() ) {
+          f = (Fig) enum.nextElement();
+          rectSize = f.getBounds();
+          xmin = Math.min( xmin, rectSize.x );
+          ymin = Math.min( ymin, rectSize.y );
+          drawingArea.add( rectSize );
+      }
+      
+      drawingArea.width -= xmin;
+      drawingArea.height -= ymin;
+      drawingArea.x = xmin;
+      drawingArea.y = ymin;
+      drawingArea.grow(4,4); // security border
+      
+      return drawingArea;
+  }
+  
   ////////////////////////////////////////////////////////////////
   // notifications and updates
 
