@@ -24,7 +24,6 @@
 // File: ResourceLoader.java
 // Classes: ResourceLoader
 // Original Author: Thorsten Sturm
-// $Id$
 
 package org.tigris.gef.util;
 

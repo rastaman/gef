@@ -24,6 +24,11 @@
  * CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
  * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
+
+// File: CmdPrint.java
+// Classes: CmdPrint
+// Original Author: jrobbins@ics.uci.edu
+
 package org.tigris.gef.base;
 
 import java.util.*;
@@ -36,9 +41,9 @@ import java.awt.print.*;
 
 import org.tigris.gef.presentation.*;
 
-/** 
- * Cmd to Print a diagram.  Only works under JDK 1.2 and above. 
- * 
+/**
+ * Cmd to Print a diagram.  Only works under JDK 1.2 and above.
+ *
  * @author Eugenio Alvarez
  */
 public class CmdPrint extends Cmd implements Printable {
@@ -57,7 +62,7 @@ public class CmdPrint extends Cmd implements Printable {
   double  diagramX, diagramY, diagramWidth, diagramHeight;
 
   public CmdPrint() {
-    super("Print...");
+    super("Print");
   }
 
   public CmdPrint(String diagramName) {

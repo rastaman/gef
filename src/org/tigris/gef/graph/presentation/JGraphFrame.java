@@ -121,35 +121,35 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	//System.out.println("TabDiagram got mode change event");
 	if (!Globals.getSticky() && Globals.mode() instanceof ModeSelect)
 	  _toolbar.unpressAllButtons();
-  }  
-  public void setGraph(JGraph g) { _graph = g; }  
+  }
+  public void setGraph(JGraph g) { _graph = g; }
   public void setGraphEdgeRenderer(GraphEdgeRenderer rend) {
 	_graph.getEditor().setGraphEdgeRenderer(rend);
-  }  
-  public void setGraphModel(GraphModel gm) { _graph.setGraphModel(gm); }  
+  }
+  public void setGraphModel(GraphModel gm) { _graph.setGraphModel(gm); }
   public void setGraphNodeRenderer(GraphNodeRenderer rend) {
 	_graph.getEditor().setGraphNodeRenderer(rend);
-  }  
+  }
   public void setJMenuBar(JMenuBar mb) {
 	_menubar = mb;
 	getContentPane().add(_menubar, BorderLayout.NORTH);
-  }  
+  }
   public void setToolBar(ToolBar tb) {
 	_toolbar = tb;
-	_mainPanel.add(_toolbar, BorderLayout.NORTH);    
-  }  
+	_mainPanel.add(_toolbar, BorderLayout.NORTH);
+  }
   /** Set up the menus and keystrokes for menu items. Subclasses can
    *  override this, or you can use setMenuBar(). */
   protected void setUpMenus() {
-	JMenuItem openItem, 
-                  openPGMLItem, 
-                  openSVGItem, 
-                  saveItem, 
-                  savePGMLItem, 
-                  saveSVGItem, 
-                  printItem, 
-                  printPageSetupItem, 
-                  prefsItem, 
+	JMenuItem openItem,
+                  openPGMLItem,
+                  openSVGItem,
+                  saveItem,
+                  savePGMLItem,
+                  saveSVGItem,
+                  printItem,
+                  printPageSetupItem,
+                  prefsItem,
                   exitItem;
 	JMenuItem selectAllItem;
 	JMenuItem deleteItem, cutItem, copyItem, pasteItem;
@@ -157,8 +157,8 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	JMenuItem groupItem, ungroupItem;
 	JMenuItem toBackItem, backwardItem, toFrontItem, forwardItem;
 	JMenuItem nudgeUpItem, nudgeDownItem, nudgeLeftItem, nudgeRightItem;
-	
-	JMenu file = new JMenu("File");
+
+	JMenu file = new JMenu(Localizer.localize("GefBase","File"));
 	file.setMnemonic('F');
 	_menubar.add(file);
 	//file.add(new CmdNew());
@@ -168,7 +168,7 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	saveItem = file.add(new CmdSave());
 	savePGMLItem = file.add(new CmdSavePGML());
 	saveSVGItem = file.add(new CmdSaveSVG());
-        CmdPrint cmdPrint = new CmdPrint();
+    CmdPrint cmdPrint = new CmdPrint();
 	printItem = file.add(cmdPrint);
 	printPageSetupItem = file.add(new CmdPrintPageSetup(cmdPrint));
 	prefsItem = file.add(new CmdOpenWindow("org.tigris.gef.base.PrefsEditor",
@@ -176,11 +176,11 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	//file.add(new CmdClose());
 	exitItem = file.add(new CmdExit());
 
-	
+
 	JMenu edit = new JMenu(Localizer.localize("GefBase","Edit"));
 	edit.setMnemonic('E');
 	_menubar.add(edit);
-	
+
 	JMenu select = new JMenu(Localizer.localize("GefBase","Select"));
 	edit.add(select);
 	selectAllItem = select.add(new CmdSelectAll());

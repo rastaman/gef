@@ -24,7 +24,6 @@
 // File: Localizer.java
 // Classes: Localizer
 // Original Author: Thorsten Sturm, Luc Maisonobe
-// $Id$
 
 package org.tigris.gef.util;
 
@@ -158,7 +157,7 @@ public class Localizer {
     throws MissingResourceException {
         if ( containsResource(resourceName) )
             return;
-        
+
         Iterator iter = resourcesByLocale.keySet().iterator();
         
         while (iter.hasNext()) {
@@ -276,7 +275,7 @@ public class Localizer {
         if ( resource == null ) {
 			return false;
 		}
-		
+
         try {
             Object object = resource.getObject(key);
 			return true;
@@ -285,7 +284,7 @@ public class Localizer {
 			return false;
 		}
 	}
-    
+
     
     /**
      * This function returns a localized menu shortcut key
