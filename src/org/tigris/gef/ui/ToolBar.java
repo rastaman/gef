@@ -60,23 +60,36 @@ public class ToolBar extends JToolBar implements MouseListener {
   }
 
   public JButton add(Action a, String name, Icon icon) {
-    JButton b = new JButton(icon);
-    if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
-      _modeButtons.addElement(b);
-    b.setToolTipText(name + " ");
-    b.setEnabled(a.isEnabled());
-    b.addActionListener(a);
-    add(b);
-    if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
-      _lockable.addElement(b);
-    PropertyChangeListener actionPropertyChangeListener =
-      createActionChangeListener(b);
-	if ( actionPropertyChangeListener != null ) {
-		a.addPropertyChangeListener(actionPropertyChangeListener);
-	}
-    b.addMouseListener(this);
-    // needs-more-work: should buttons appear stuck down while action executes?
-    return b;
+//     JButton b = new JButton(icon);
+//     if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
+//       _modeButtons.addElement(b);
+//     b.setToolTipText(name + " ");
+//     b.setEnabled(a.isEnabled());
+//     b.addActionListener(a);
+//     add(b);
+//     if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
+//       _lockable.addElement(b);
+//     PropertyChangeListener actionPropertyChangeListener =
+//       createActionChangeListener(b);
+// 	if ( actionPropertyChangeListener != null ) {
+// 		a.addPropertyChangeListener(actionPropertyChangeListener);
+// 	}
+//     b.addMouseListener(this);
+//     // needs-more-work: should buttons appear stuck down while action executes?
+//     return b;
+
+	  JButton b = super.add(a);
+	  b.setName(null);
+	  b.setText(null);
+	  b.setIcon(icon);
+	  b.setToolTipText(name + " ");
+	  if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
+		  _modeButtons.addElement(b);
+	  if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
+		  _lockable.addElement(b);
+	  b.addMouseListener(this);
+	  // needs-more-work: should buttons appear stuck down while action executes?
+	  return b;
   }
 
   public JToggleButton addToggle(Action a) {
