@@ -384,7 +384,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 	}
 	// needs-more-work: phase not taken into account
 	return (length + phase) % dashesDist;
-  }  
+  }
   protected void drawDashedPerimeter(Graphics g) {
 	Point segStart = new Point();
 	Point segEnd = new Point();
@@ -400,7 +400,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 	  i += _dashes[d];
 	  d = (d + 1) % numDashes;
 	}
-  }  
+  }
   /** This is called after an Cmd mondifies a Fig and the Fig needs to
    * be redrawn in its new position. This also unlocks the
    * RedrawManager. In general, endTrans() should be * paired with a
@@ -409,21 +409,21 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   public void endTrans() {
 	damage();
 	//RedrawManager.unlock();  // helps avoid dirt
-  }  
-  protected void firePropChange(String propName, int oldV, int newV) {
+  }
+  public void firePropChange(String propName, int oldV, int newV) {
 	firePropChange(propName, new Integer(oldV), new Integer(newV));
-  }  
+  }
   /** Creates a PropertyChangeEvent and calls all registered listeners
    *  propertyChanged() method. */
-  protected void firePropChange(String propName, Object oldV, Object newV) {
+  public void firePropChange(String propName, Object oldV, Object newV) {
 	Globals.firePropChange(this, propName, oldV, newV);
 	if (_group != null) {
 	  PropertyChangeEvent pce =
 	new PropertyChangeEvent(this, propName, oldV, newV);
 	  _group.propertyChange(pce);
 	}
-  }  
-  protected void firePropChange(String propName, boolean oldV, boolean newV) {
+  }
+  public void firePropChange(String propName, boolean oldV, boolean newV) {
 	firePropChange(propName, new Boolean(oldV), new Boolean(newV));
   }  
   /** Return a Rectangle that completely encloses this Fig. */
@@ -441,7 +441,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   public Fig getEnclosingFig() { return null; }  
   public Color getFillColor() { return _fillColor; }  
   public boolean getFilled() { return _filled; }  
-  public int getFilled01() { return _filled ? 1 : 0; }  
+  public int getFilled01() { return _filled ? 1 : 0; }
   public Point getFirstPoint() { return new Point(); }  
   public Vector getGravityPoints() { return null; }  
   public Fig getGroup() { return _group; }  
