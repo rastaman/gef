@@ -47,12 +47,9 @@ import org.tigris.gef.presentation.Handle;
  *
  *  Needs-More-Work: this mode has more responsibility than just making
  *  selections, it has become the "main mode" of the editor and it has
- *  taken resposibility for switching to other modes.  I shuold probably
+ *  taken resposibility for switching to other modes.  I should probably
  *  implement a "UIDialog" class that would have a state machine that
  *  describes the various transitions between UI modes. <p>
- *
- *  Needs-More-Work: There is currently a bug in shift clicking, you
- *  cannot unselect an individual item by shift-clicking on it. <p>
  *
  * @see ModeCreateEdge
  * @see ModeModify
@@ -92,6 +89,10 @@ public class ModeSelect extends FigModifyingModeImpl {
         return false;
     }
 
+	/** 
+	 * @deprecated in 0.11 this variable is not used. GEF will be
+	 * coded in a platform independant manner.
+	 */
     public static boolean isMacintoshUser = false;
 
     ////////////////////////////////////////////////////////////////
@@ -113,11 +114,6 @@ public class ModeSelect extends FigModifyingModeImpl {
             return;
         }
 
-        if(me.isControlDown() && !isMacintoshUser) {    // macintosh users use CTRL to activate right mouse key, so they will not get the automatic broom
-            gotoBroomMode(me);
-            return;
-        }
-
         if(me.isAltDown()) {
             return;
         }
@@ -126,7 +122,7 @@ public class ModeSelect extends FigModifyingModeImpl {
         int y = me.getY();
         _selectAnchor = new Point(x, y);
         _selectRect.setBounds(x, y, 0, 0);
-        _toggleSelection = me.isShiftDown();
+        _toggleSelection = me.isControlDown();
         SelectionManager sm = editor.getSelectionManager();
         Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
 
