@@ -600,12 +600,13 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             figEdge.translateAnnotations();
         }
 
+        /*
         // GEF is so stinking, absolutly rotten, ...
         // There used to be the whole diagram repainted.
         // Now here's a hack that repaints only the affected region:
         // First I assume that all selected figs are in the same layer, get the editors for this layer
         // rescale the region according to the editor scale, and repaint only the result.
-        // first add some extra pixels for the selection handles and arrow heads (which are not included in getBounds())
+        // first add some extra pixels for the selection handles and arrow heads (which are not included in getBounds())                
         int extraDirt = 16;
         dirtyRegion.x -= extraDirt;
         dirtyRegion.y -= extraDirt;
@@ -636,6 +637,14 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         else {
             System.out.println("Selection manager: layer is null");
         }
+        */
+        // JJones - the above hack does not work. Some figs draw outside
+        // of their bounds (FigCube for example), and the "extraDirt"
+        // may or may not take care of that extra drawing (for FigCube it
+        // does not).
+        // Therefore I'm reverting back to drawing the whole diagram.
+        // (see Issue #49)
+        _editor.damageAll();
     }
 
     public void stopDrag() {
