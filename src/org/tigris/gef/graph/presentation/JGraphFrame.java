@@ -141,7 +141,16 @@ implements IStatusBar, Cloneable, ModeChangeListener {
   /** Set up the menus and keystrokes for menu items. Subclasses can
    *  override this, or you can use setMenuBar(). */
   protected void setUpMenus() {
-	JMenuItem openItem, openPGMLItem, openSVGItem, saveItem, savePGMLItem, saveSVGItem, printItem, prefsItem, exitItem;
+	JMenuItem openItem, 
+                  openPGMLItem, 
+                  openSVGItem, 
+                  saveItem, 
+                  savePGMLItem, 
+                  saveSVGItem, 
+                  printItem, 
+                  printPageSetupItem, 
+                  prefsItem, 
+                  exitItem;
 	JMenuItem selectAllItem;
 	JMenuItem deleteItem, cutItem, copyItem, pasteItem;
 	JMenuItem editNodeItem;
@@ -159,7 +168,9 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	saveItem = file.add(new CmdSave());
 	savePGMLItem = file.add(new CmdSavePGML());
 	saveSVGItem = file.add(new CmdSaveSVG());
-	printItem = file.add(new CmdPrint());
+        CmdPrint cmdPrint = new CmdPrint();
+	printItem = file.add(cmdPrint);
+	printPageSetupItem = file.add(new CmdPrintPageSetup(cmdPrint));
 	prefsItem = file.add(new CmdOpenWindow("org.tigris.gef.base.PrefsEditor",
 					   "Preferences..."));
 	//file.add(new CmdClose());
