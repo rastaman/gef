@@ -75,30 +75,30 @@ implements GraphNodeHooks, java.io.Serializable  {
    * Needs-More-Work: what is the class protocol design here? */
   public abstract void initialize(Hashtable args);
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  /** Returns the attribute table of the node. */
-  public Object getAttributes() { return null; }
+    /** Returns the attribute table of the node. */
+    public Object getAttributes() { return null; }
 
-  /** reply my NetPort with the given index. */
-  public NetPort getPort(int i) { return (NetPort) _ports.elementAt(i); }
+    /** reply my NetPort with the given index. */
+    public NetPort getPort(int i) { return (NetPort) _ports.elementAt(i); }
 
-  /** reply my NetPorts. */
-  public Vector getPorts() { return _ports; }
-  public void setPorts(Vector ports) { _ports = ports; }
-  public void addPort(NetPort p) { _ports.addElement(p); }
+    /** reply my NetPorts. */
+    public Vector getPorts() { return _ports; }
+    public void setPorts(Vector ports) { _ports = ports; }
+    public void addPort(NetPort p) { _ports.addElement(p); }
 
 
-  /** Remove this node from the underling connected graph model. */
-  public void dispose() {
-    //System.out.println("disposing: " + toString());
-    Enumeration ps = _ports.elements();
-    while (ps.hasMoreElements()) {
-      ((NetPort)ps.nextElement()).dispose();
+    /** Remove this node from the underling connected graph model. */
+    public void dispose() {
+        //System.out.println("disposing: " + toString());
+        Enumeration ps = _ports.elements();
+        while (ps.hasMoreElements()) {
+            ((NetPort)ps.nextElement()).dispose();
+        }
+        firePropertyChange("disposed", false, true);
     }
-    firePropertyChange("disposed", false, true);
-  }
 
   ////////////////////////////////////////////////////////////////
   // Visualization related methods
