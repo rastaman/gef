@@ -64,13 +64,17 @@ public class PGMLParser extends DefaultHandler {
     protected Diagram _diagram = null;
     protected int _nestedGroups = 0;
     protected HashMap _figRegistry = null;
-    protected Map _ownerRegistry = new HashMap();
+    
+    /**
+     * Model elements indexed by a UUID.
+     */
+    protected Map _ownerRegistry = null;
     protected boolean _detectedFailure = false;
     protected String systemId = "";
 
     /**
      * A map of previously created colors mapped by an
-     * RGB string description in the for "rrr ggg bbb"
+     * RGB string description in the form "rrr ggg bbb"
      * where rrr = red value int ggg = green value int
      * and bbb = blue value int.
      */
@@ -78,7 +82,8 @@ public class PGMLParser extends DefaultHandler {
     
     ////////////////////////////////////////////////////////////////
     // constructors
-    public PGMLParser() {
+    public PGMLParser(Map modelElementsByUuid) {
+        _ownerRegistry = modelElementsByUuid;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -146,12 +151,6 @@ public class PGMLParser extends DefaultHandler {
         }
 
         return null;
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
-    public void setOwnerRegistry(Map owners) {
-        _ownerRegistry = owners;
     }
 
     ////////////////////////////////////////////////////////////////

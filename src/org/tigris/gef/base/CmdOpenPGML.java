@@ -63,7 +63,7 @@ public class CmdOpenPGML extends Cmd implements FilenameFilter {
             try {
                 Globals.showStatus("Reading " + path + filename + "...");
                 URL url = Util.fileToURL(new File(path + filename));
-                PGMLParser parser = new PGMLParser();
+                PGMLParser parser = new PGMLParser(null);
                 Diagram diag = parser.readDiagram(url);
                 Editor ed = new Editor(diag);
                 //System.out.println("load done, showing editor");
