@@ -243,6 +243,7 @@ public class FigGroup extends Fig {
     /** Get the figs that make up this group
      * @return the figs of this group
      * @deprecated 0.10 this will removed for release 0.11
+     * USED BY PGML.tee
      */
     public Vector getFigs() {
         Vector v = new Vector();

@@ -344,19 +344,31 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         calcBounds();
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public String getFontFamily() {
         return _font.getFamily();
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public void setFontFamily(String familyName) {
         Font f = new Font(familyName, _font.getStyle(), _font.getSize());
         setFont(f);
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public int getFontSize() {
         return _font.getSize();
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public void setFontSize(int size) {
         Font f = new Font(_font.getFamily(), _font.getStyle(), size);
         setFont(f);
@@ -450,7 +462,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     /** Get the String held by this FigText. Multi-line text is
-     *  represented by newline characters embedded in the String. */
+     *  represented by newline characters embedded in the String.
+     * USED BY PGML.tee
+     */
     public String getText() {
         return _curText;
     }

@@ -260,6 +260,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return annotationOwner;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public AnnotationStrategy getAnnotationStrategy() {
         return an;
     }
@@ -420,12 +423,17 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 
     /** Return the center of the given Fig. By default the center is the
      *  center of its bounding box. Subclasses may want to define
-     *  something else. */
+     *  something else. 
+     * USED BY PGML.tee
+     */
     public Point center() {
         Rectangle bbox = getBounds();
         return new Point(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public String classNameAndBounds() {
         return getClass().getName() + "[" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + "]";
     }
@@ -715,7 +723,8 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     }
 
     /** Return a Rectangle that completely encloses this Fig.
-     * Subclasses may override getBounds(Rectangle) 
+     * Subclasses may override getBounds(Rectangle).
+     * USED BY PGML.tee
      */
     public Rectangle getBounds() {
         return getBounds(null);
@@ -764,6 +773,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return null;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public Fig getEnclosingFig() {
         return null;
     }
@@ -796,10 +808,16 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return true;
     }
 
+    /**
+     * USED BY SVG.tee
+     */
     public Color getLineColor() {
         return _lineColor;
     }
 
+    /**
+     * USED BY SVG.tee
+     */
     public int getLineWidth() {
         return _lineWidth;
     }
@@ -816,22 +834,38 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return _group;
     }
 
+    /**
+     * USED BY PGML.tee
+     * @return
+     */
     public String getContext() {
         return _context;
     }
 
+    /*
+     * USED BY PGML.tee
+     */
     public int getHalfHeight() {
         return _h / 2;
     }
 
+    /*
+     * USED BY PGML.tee
+     */
     public int getHalfWidth() {
         return _w / 2;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public int getHeight() {
         return _h;
     }
 
+    /*
+     * USED BY PGML.tee
+     */
     public String getId() {
         if(getGroup() != null) {
             String gID = getGroup().getId();
@@ -882,6 +916,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return 0;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public Object getOwner() {
         return _owner;
     }
@@ -950,14 +987,23 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return false;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public int getVisState() {
         return _shown;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public int getWidth() {
         return _w;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public int getX() {
         return _x;
     }
@@ -966,6 +1012,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return new int[0];
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public int getY() {
         return _y;
     }
@@ -1204,6 +1253,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         setLocation(newX, newY);
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public void setEnclosingFig(Fig f) {
         if(f != null && f != getEnclosingFig() && _layer != null) {
             _layer.bringInFrontOf(this, f);
@@ -1327,7 +1379,10 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     }
 
     /** Sets the owner object of this Fig. Fires PropertyChangeEvent
-     *  "owner" */
+     *  "owner"
+     *
+     * USED BY PGML.tee
+     */
     public void setOwner(Object own) {
         firePropChange("owner", _owner, own);
         _owner = own;
@@ -1374,6 +1429,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         setSize(d.width, d.height);
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public void setVisState(int visState) {
         _shown = visState;
     }

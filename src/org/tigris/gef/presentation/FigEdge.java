@@ -217,10 +217,16 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         return _arrowHeadEnd;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public Fig getDestFigNode() {
         return _destFigNode;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public Fig getDestPortFig() {
         return _destPortFig;
     }
@@ -228,7 +234,9 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /** Return the Fig that will be drawn. */
+    /** Return the Fig that will be drawn.
+     * USED BY PGML.tee
+     */
     public Fig getFig() {
         return _fig;
     }
@@ -245,6 +253,9 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         return _fig.getLastPoint();
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public Color getLineColor() {
         return _fig.getLineColor();
     }
@@ -257,6 +268,9 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         return false;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public int getLineWidth() {
         return _fig.getLineWidth();
     }
@@ -344,10 +358,16 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         return _arrowHeadStart;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public Fig getSourceFigNode() {
         return _sourceFigNode;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public Fig getSourcePortFig() {
         return _sourcePortFig;
     }

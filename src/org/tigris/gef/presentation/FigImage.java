@@ -86,6 +86,10 @@ public class FigImage extends Fig implements ImageObserver {
             int snapY) {
         setLocation(snapX, snapY);
     }
+    
+    /**
+     * USED BY SVG.tee
+     */
     public URL getURL() {
         return _url;
     }

@@ -274,6 +274,9 @@ public abstract class Layer implements java.io.Serializable {
         return c;
     }
 
+    /**
+     * USED BY SVG.tee
+     */
     public List getContentsNoEdges() {
         List contents = getContents();
         int size = contents.size();
@@ -309,6 +312,9 @@ public abstract class Layer implements java.io.Serializable {
         return c;
     }
     
+    /**
+     * USED BY SVG.tee
+     */
     public List getContentsEdgesOnly() {
         List contents = getContents();
         int size = contents.size();

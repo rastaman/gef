@@ -119,6 +119,9 @@ public class Diagram implements Serializable, GraphListener {
         _comments = c;
     }
 
+    /**
+     * USED BY SVG.tee
+     */
     public String getName() {
         return _name;
     }
@@ -148,6 +151,9 @@ public class Diagram implements Serializable, GraphListener {
         firePropertyChange(SCALE_KEY, new Double(oldScale), new Double(scale));
     }
 
+    /**
+     * USED BY SVG.tee
+     */
     public String getClassAndModelID() {
         return getClass().getName();
     }

@@ -68,8 +68,12 @@ public class FigRRect extends FigRect {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  /** get and set the "roundness" of the corners. */
-  public int getCornerRadius() { return _radius; }
+  /** get and set the "roundness" of the corners.
+   * USED by PGML.tee
+   */
+  public int getCornerRadius() {
+      return _radius;
+  }
   public void setCornerRadius(int r) { _radius = r; }
 
 

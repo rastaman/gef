@@ -430,6 +430,9 @@ public class FigPoly extends Fig {
         return new Point(_xpoints[i], _ypoints[i]);
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public Vector getPointsVector() {
         Vector res = new Vector();
 
@@ -440,6 +443,9 @@ public class FigPoly extends Fig {
         return res;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public Vector getPointsVectorNotFirst() {
         Vector res = new Vector();
 
@@ -450,6 +456,9 @@ public class FigPoly extends Fig {
         return res;
     }
 
+    /**
+     * USED BY PGML.tee
+     */
     public Point getFirstPoint() {
         return getPoints(0);
     }
