@@ -163,6 +163,7 @@ public class OCLExpander {
         s = replaceAll(s, "&", "&amp;");
         s = replaceAll(s, "<", "&lt;");
         s = replaceAll(s, ">", "&gt;");
+        s = replaceAll(s, "\"", "&quot;");
         return s;
     }
 
