@@ -24,11 +24,8 @@
 package org.tigris.gef.ocl;
 
 import java.util.*;
-import java.util.Enumeration;
 import java.util.StringTokenizer;
-//import java.util.*;
 import java.io.*;
-//import com.ibm.xml.parser.*;
 import org.xml.sax.*;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
