@@ -35,7 +35,11 @@ public abstract class AnnotationStrategy{
 	// store the annotation with its properties in a hashtable
 	annotations.put(annotation, properties);
     }
-    
+
+    public int numOfAnnotations() {
+        return annotations.size();
+    }
+        
     public AnnotationProperties getAnnotationProperties(Fig annotation){
 	return (AnnotationProperties)annotations.get(annotation);
     }

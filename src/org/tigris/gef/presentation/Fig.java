@@ -145,7 +145,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   /** Construct a new Fig with the given bounds and colors. */
   public Fig(int x, int y, int w, int h, Color lineColor, Color fillColor) {
 	this(x, y, w, h, lineColor, fillColor, null);
-  }  
+  }
   ////////////////////////////////////////////////////////////////
   // constuctors
 
@@ -158,8 +158,8 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 	if (fillColor != null) _fillColor = fillColor; else _filled = false;
 	setOwner(own);
 	//annotation related
-  }  
-  
+  }
+
   //--------------------------------
   // annotation related
 
@@ -203,6 +203,8 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
      * Updates the positions of the connected annotations.
      */
     public void updateAnnotationPositions() {}
+
+    public void initAnnotations() {}
 
   // end annotation related
   //-----------------------------------

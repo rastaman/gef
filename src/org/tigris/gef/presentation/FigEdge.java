@@ -379,6 +379,17 @@ public String getPrivateData() {
 	_pathItems.removeElement(goneItem);
 	goneItem.getFig().setGroup(null);
   }
+
+  public void removePathItem(Fig goneFig) {
+        for (int i = 0; i < _pathItems.size(); i++) {
+            PathItem curItem = (PathItem)_pathItems.elementAt(i);
+            if ( curItem.getFig() == goneFig ) {
+	        removePathItem(curItem);
+                return;
+             }
+         }
+  }
+
   public void setBetweenNearestPoints(boolean un) { _useNearest = un; }
   public void setDashed(boolean d) { _fig.setDashed(d); }
   /** Set the ArrowHead at the end of this FigEdge. */

@@ -70,7 +70,7 @@ public class Util {
     if (!url.getFile().endsWith(desiredExtension)) {
       try { url = new URL(url, url.getFile() + desiredExtension); }
       catch (java.net.MalformedURLException e) {
-	throw new UnexpectedException(e);
+ throw new UnexpectedException(e);
       }
     }
     return url;

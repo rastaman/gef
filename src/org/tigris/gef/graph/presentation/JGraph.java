@@ -52,7 +52,7 @@ public class JGraph extends JPanel implements Cloneable {
   protected Editor _editor;
   protected JGraphInternalPane _drawingPane;
   protected JScrollPane _scroll;
-  protected Dimension _defaultSize = new Dimension(1000,1000);
+  protected Dimension _defaultSize = new Dimension(2000,2000);
 
   ////////////////////////////////////////////////////////////////
   // constructor
