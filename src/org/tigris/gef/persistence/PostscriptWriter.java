@@ -11,67 +11,67 @@ public class PostscriptWriter extends Graphics {
   private boolean autoClose=false;
   private static final String ellipseDef =
                   "%%BeginProcSet: ellipse 1.0 0 \n"
-		+ "/ellipsedict 8 dict def \n"
-		+ "ellipsedict /mtrx matrix put \n"
-		+ "/ellipse { ellipsedict begin \n" 
-		+ "/endangle exch def \n" 
-		+ "/startangle exch def \n" 
-		+ "/yrad exch def \n"
-		+ "/xrad exch def \n"
-		+ "/y exch def \n"
-		+ "/x exch def \n"
-		+ "/savematrix mtrx currentmatrix def \n"
-		+ "x y translate \n"
-		+ "xrad yrad scale \n"
-		+ "0 0 1 0 360 arc \n"
-		+ "savematrix setmatrix end } def \n"
+        + "/ellipsedict 8 dict def \n"
+        + "ellipsedict /mtrx matrix put \n"
+        + "/ellipse { ellipsedict begin \n"
+        + "/endangle exch def \n"
+        + "/startangle exch def \n"
+        + "/yrad exch def \n"
+        + "/xrad exch def \n"
+        + "/y exch def \n"
+        + "/x exch def \n"
+        + "/savematrix mtrx currentmatrix def \n"
+        + "x y translate \n"
+        + "xrad yrad scale \n"
+        + "0 0 1 0 360 arc \n"
+        + "savematrix setmatrix end } def \n"
                 + "%%EndProcSet: ellipse 1.0 0 \n";
   private static final String reencodeDef =
                   "%%BeginProcSet: reencode 1.0 0 \n"
                 + "/RE \n"
-		+ "{  findfont begin \n"
-		+ "  currentdict dup length dict begin \n"
-		+ "  {1 index /FID ne {def} {pop pop} ifelse} forall \n"
-		+ "  /FontName exch def dup length 0 ne \n"
-		+ "  { /Encoding Encoding 256 array copy def \n"
-		+ "      0 exch \n"
-		+ "      { dup type /nametype eq \n"
-		+ "        { Encoding 2 index 2 index put \n"
-		+ "          pop 1 add \n"
-		+ "        } \n"
-		+ "        { exch pop \n"
-		+ "        } ifelse \n"
-		+ "      } forall \n"
-		+ "  } if pop \n"
-		+ "  currentdict dup end end \n"
-		+ "  /FontName get exch definefont pop \n"
-		+ "    } bind def \n"
+        + "{  findfont begin \n"
+        + "  currentdict dup length dict begin \n"
+        + "  {1 index /FID ne {def} {pop pop} ifelse} forall \n"
+        + "  /FontName exch def dup length 0 ne \n"
+        + "  { /Encoding Encoding 256 array copy def \n"
+        + "      0 exch \n"
+        + "      { dup type /nametype eq \n"
+        + "        { Encoding 2 index 2 index put \n"
+        + "          pop 1 add \n"
+        + "        } \n"
+        + "        { exch pop \n"
+        + "        } ifelse \n"
+        + "      } forall \n"
+        + "  } if pop \n"
+        + "  currentdict dup end end \n"
+        + "  /FontName get exch definefont pop \n"
+        + "    } bind def \n"
                 + "%%EndProcSet: reencode 1.0 0 \n";
   private static final String isolatin1encoding =
                   "/isolatin1encoding \n"
-		+ "[ 32 /space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright \n"
-		+ " /parenleft /parenright /asterisk /plus /comma /hyphen /period /slash /zero /one \n"
-		+ " /two /three /four /five /six /seven /eight /nine /colon /semicolon \n"
-		+ " /less /equal /greater /question /at /A /B /C /D /E \n"
-		+ " /F /G /H /I /J /K /L /M /N /O \n"
-		+ " /P /Q /R /S /T /U /V /W /X /Y \n"
-		+ " /Z /bracketleft /backslash /bracketright /asciicircum /underscore /quoteleft /a /b /c \n"
-		+ " /d /e /f /g /h /i /j /k /l /m \n"
-		+ " /n /o /p /q /r /s /t /u /v /w \n"
-		+ " /x /y /z /braceleft /bar /braceright /asciitilde /.notdef /.notdef /.notdef \n"
-		+ " /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef \n"
-		+ " /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef \n"
-		+ " /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef \n"
-		+ " /space /exclamdown /cent /sterling /currency /yen /brokenbar /section /dieresis /copyright \n"
-		+ " /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron /degree /plusminus /twosuperior /threesuperior \n"
-		+ " /acute /mu /paragraph /periodcentered /cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf \n"
-		+ " /threequarters /questiondown /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla \n"
-		+ " /Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis /Eth /Ntilde \n"
-		+ " /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply /Oslash /Ugrave /Uacute /Ucircumflex \n"
-		+ " /Udieresis /Yacute /Thorn /germandbls /agrave /aacute /acircumflex /atilde /adieresis /aring \n"
-		+ " /ae /ccedilla /egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis \n"
-		+ " /eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide /oslash /ugrave \n"
-		+ " /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis] def \n";
+        + "[ 32 /space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright \n"
+        + " /parenleft /parenright /asterisk /plus /comma /hyphen /period /slash /zero /one \n"
+        + " /two /three /four /five /six /seven /eight /nine /colon /semicolon \n"
+        + " /less /equal /greater /question /at /A /B /C /D /E \n"
+        + " /F /G /H /I /J /K /L /M /N /O \n"
+        + " /P /Q /R /S /T /U /V /W /X /Y \n"
+        + " /Z /bracketleft /backslash /bracketright /asciicircum /underscore /quoteleft /a /b /c \n"
+        + " /d /e /f /g /h /i /j /k /l /m \n"
+        + " /n /o /p /q /r /s /t /u /v /w \n"
+        + " /x /y /z /braceleft /bar /braceright /asciitilde /.notdef /.notdef /.notdef \n"
+        + " /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef \n"
+        + " /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef \n"
+        + " /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef \n"
+        + " /space /exclamdown /cent /sterling /currency /yen /brokenbar /section /dieresis /copyright \n"
+        + " /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron /degree /plusminus /twosuperior /threesuperior \n"
+        + " /acute /mu /paragraph /periodcentered /cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf \n"
+        + " /threequarters /questiondown /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla \n"
+        + " /Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis /Eth /Ntilde \n"
+        + " /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply /Oslash /Ugrave /Uacute /Ucircumflex \n"
+        + " /Udieresis /Yacute /Thorn /germandbls /agrave /aacute /acircumflex /atilde /adieresis /aring \n"
+        + " /ae /ccedilla /egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis \n"
+        + " /eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide /oslash /ugrave \n"
+        + " /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis] def \n";
 
   private Color fColor = null;
   private Font fFont = null;
@@ -84,7 +84,7 @@ public class PostscriptWriter extends Graphics {
   }
 
   public PostscriptWriter(String filename,
-			  Rectangle boundingBox) throws IOException {
+              Rectangle boundingBox) throws IOException {
       this(new FileOutputStream(filename),boundingBox);
       autoClose = true;
   }
@@ -93,7 +93,7 @@ public class PostscriptWriter extends Graphics {
       this(stream,null);
   }
   public PostscriptWriter(OutputStream stream,
-			  Rectangle bb) throws IOException {
+              Rectangle bb) throws IOException {
       fontmap.put("Dialog","Helvetica");
       fontmap.put("SansSerif","Helvetica");
       fontmap.put("DialogInput","Monospaced");
@@ -101,10 +101,10 @@ public class PostscriptWriter extends Graphics {
       if (bb==null) {
         p.println("%!PS-Adobe-3.0");
       } else {
-	p.println("%!PS-Adobe-3.0 EPSF-3.0");
+        p.println("%!PS-Adobe-3.0 EPSF-3.0");
         p.println("%%BoundingBox: "
-		  +bb.x+" "+bb.y+" "+
-		  (bb.x+bb.width)+" "+(bb.y+bb.height));
+                    + bb.x + " " + bb.y + " "
+                    + (bb.x + bb.width) + " " + (bb.y + bb.height));
       }
       p.print(reencodeDef);
       p.print(ellipseDef);
@@ -116,7 +116,7 @@ public class PostscriptWriter extends Graphics {
       setFont(new Font("Helvetica",Font.PLAIN,12));
       setColor(Color.black);
       if (bb!=null) {
-	translate(0,bb.height+2*bb.y);
+    translate(0,bb.height+2*bb.y);
       }
   }
 
@@ -130,12 +130,12 @@ public class PostscriptWriter extends Graphics {
   }
 
   public void dispose() {
-      	p.println("showpage");
-	p.println("%%Trailer");
-	if (autoClose)
-	    p.close();
-	else
-	    p.flush();
+        p.println("showpage");
+    p.println("%%Trailer");
+    if (autoClose)
+        p.close();
+    else
+        p.flush();
   }
 
   public void setColorConversion(Color source, Color target) {
@@ -172,13 +172,13 @@ public class PostscriptWriter extends Graphics {
       FontMetrics metrics = getFontMetrics();
       String name = font.getName();
       if (fontmap.containsKey(name))
-	  name = (String)fontmap.get(name);
+      name = (String)fontmap.get(name);
       if (font.isBold() || font.isItalic()) {
-	name += "-";
-	if (font.isBold())
-	  name += "Bold";
-	if (font.isItalic())
-	  name += "Oblique";
+    name += "-";
+    if (font.isBold())
+      name += "Bold";
+    if (font.isItalic())
+      name += "Oblique";
       }
 
       p.println("isolatin1encoding /_" + name + " /" + name + " RE");
@@ -212,12 +212,12 @@ public class PostscriptWriter extends Graphics {
 
   private void handlesinglepixel(int x, int y, int pixel) {
     if (((pixel >> 24) & 0xff) == 0) {
-	  // should be transparent, is printed white:
-	  pixel = 0xffffff;
+      // should be transparent, is printed white:
+      pixel = 0xffffff;
         }
         p.print(Integer.toHexString((pixel >> 20) & 0x0f)
-	       +Integer.toHexString((pixel >> 12) & 0x0f)
-	       +Integer.toHexString((pixel >> 4)  & 0x0f));
+           +Integer.toHexString((pixel >> 12) & 0x0f)
+           +Integer.toHexString((pixel >> 4)  & 0x0f));
   }
 
   public boolean drawImage(Image img,
@@ -226,19 +226,19 @@ public class PostscriptWriter extends Graphics {
                                    int w,
                                    int h,
                                    ImageObserver observer) {
-	int iw = img.getWidth(observer), ih = img.getHeight(observer);
+    int iw = img.getWidth(observer), ih = img.getHeight(observer);
 
         p.println("gsave");
         writeCoords(x,y+h); p.println("translate");
-	writeCoords(w,-h); p.println("scale");
-	p.println("/DatenString "+iw+" string def");
-	writeCoords(iw,-ih); p.println("4 [" + iw +" 0 0 "+ (-ih) + " 0 " + ih + "]");
-	p.println("{currentfile DatenString readhexstring pop} bind");
-	p.println("false 3 colorimage");
+    writeCoords(w,-h); p.println("scale");
+    p.println("/DatenString "+iw+" string def");
+    writeCoords(iw,-ih); p.println("4 [" + iw +" 0 0 "+ (-ih) + " 0 " + ih + "]");
+    p.println("{currentfile DatenString readhexstring pop} bind");
+    p.println("false 3 colorimage");
 
         int[] pixels = new int[iw * ih];
         PixelGrabber pg = new PixelGrabber(img, 0, 0, iw, ih, pixels, 0, iw);
-	//	pg.setColorModel(Toolkit.getDefaultToolkit().getColorModel());
+    //	pg.setColorModel(Toolkit.getDefaultToolkit().getColorModel());
         try {
             pg.grabPixels();
         } catch (InterruptedException e) {
@@ -253,15 +253,15 @@ public class PostscriptWriter extends Graphics {
             for (int i = 0; i < iw; i++) {
                 handlesinglepixel(i, j, pixels[j * iw + i]);
             }
-	    if (iw % 2 == 1) p.print("0");
-	    p.println();
+        if (iw % 2 == 1) p.print("0");
+        p.println();
         }
-	if (ih % 2 == 1) {
-	  for (int i = 0; i < 3 * (iw + iw % 2); i++)
-	    p.print("0");
-	  p.println();
-	}
-	p.println("grestore");
+    if (ih % 2 == 1) {
+      for (int i = 0; i < 3 * (iw + iw % 2); i++)
+        p.print("0");
+      p.println();
+    }
+    p.println("grestore");
         return true;
   }
 
@@ -315,12 +315,12 @@ public class PostscriptWriter extends Graphics {
   }
 
   private void writeRectanglePath(int x, int y, int w, int h) {
-	p.println("newpath");
-	writeCoords(x,y); p.println("moveto");
-	writeCoords(w-1,0); p.println("rlineto");
+    p.println("newpath");
+    writeCoords(x,y); p.println("moveto");
+    writeCoords(w-1,0); p.println("rlineto");
         writeCoords(0,h-1); p.println("rlineto");
-	writeCoords(-(w-1),0); p.println("rlineto");
-	p.println("closepath");
+    writeCoords(-(w-1),0); p.println("rlineto");
+    p.println("closepath");
   }
 
   public void drawRect(int x, int y, int w, int h) {
@@ -340,11 +340,11 @@ public class PostscriptWriter extends Graphics {
   }
 
   private void writeEllipsePath(int x, int y, int w, int h, int startAngle, int arcAngle) {
-	p.println("newpath");
+    p.println("newpath");
         int dx = w/2, dy = h/2;
-	writeCoords(x + dx, y + dy);
-	writeCoords(dx, dy);
-	writeCoords(startAngle,-(startAngle+arcAngle));
+    writeCoords(x + dx, y + dy);
+    writeCoords(dx, dy);
+    writeCoords(startAngle,-(startAngle+arcAngle));
         p.println("ellipse");
   }
 
@@ -391,18 +391,18 @@ public class PostscriptWriter extends Graphics {
 
 
   private void writePolyLinePath(int xPoints[], int yPoints[], int nPoints) {
-	p.println("newpath");
-	for (int i = 0; i < nPoints; ++i) {
+    p.println("newpath");
+    for (int i = 0; i < nPoints; ++i) {
             writeCoords(xPoints[i], yPoints[i]);
-	    if (i == 0)
-	      p.println("moveto");
-	    else
-	      p.println("lineto");
+        if (i == 0)
+          p.println("moveto");
+        else
+          p.println("lineto");
         }
   }
 
   public void writePolygonPath(int xPoints[], int yPoints[], int nPoints) {
-	writePolyLinePath(xPoints, yPoints, nPoints);
+    writePolyLinePath(xPoints, yPoints, nPoints);
         p.println("closepath");
   }
 
@@ -438,8 +438,8 @@ public class PostscriptWriter extends Graphics {
 
   public void setClip(int x, int y, int w, int h) {
         clip = new Rectangle(x,y,w,h);
-	writeRectanglePath(x,y,w,h);
-	p.println("clip");
+    writeRectanglePath(x,y,w,h);
+    p.println("clip");
   }
 
   public void setClip(Shape clip) {
@@ -447,7 +447,7 @@ public class PostscriptWriter extends Graphics {
   }
 
   public void translate(int x, int y) {
-	writeCoords(x, -y); p.println("translate");
+    writeCoords(x, -y); p.println("translate");
   }
 
   public void scale(double xscale, double yscale) {
@@ -459,15 +459,15 @@ public class PostscriptWriter extends Graphics {
       int c;
       String code;
       for (int i = 0; i < buf.length(); ++i) {
-	 c = (int)buf.charAt(i);
-	 if (c >= 192 && c < 256) {
-	   buf.setCharAt(i,'\\');
-	   code = Integer.toOctalString(c);
-	   buf.insert(i+1,code);
-	   i += code.length();
-	 } else if (c == '\\' || c == '(' || c == ')') {
-	   buf.insert(i++,'\\');
-	 }
+     c = (int)buf.charAt(i);
+     if (c >= 192 && c < 256) {
+       buf.setCharAt(i,'\\');
+       code = Integer.toOctalString(c);
+       buf.insert(i+1,code);
+       i += code.length();
+     } else if (c == '\\' || c == '(' || c == ')') {
+       buf.insert(i++,'\\');
+     }
       }
       writeCoords(x, y); p.println("moveto");
       p.println("(" + buf.toString() + ") show");

@@ -578,7 +578,7 @@ public class SVGWriter extends Graphics {
     public void drawPolyline(int xPoints[], int yPoints[], int nPoints) {
 	double maxX = 0, maxY = 0;
 	Element polyline = _svg.createElement( "polyline");
-	polyline.setAttribute( "style", "fill:" + getBackgroundColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
+	polyline.setAttribute( "style", "fill:" + "none" + "; stroke:" + getColorAsString() + "; stroke-width:1");
 
 	// Create the list of points for this tag.
 	// I.e. points="100,100 150,150 200,200"

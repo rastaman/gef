@@ -36,7 +36,7 @@ import java.io.*;
 import Acme.JPM.Encoders.GifEncoder;
 
 
-/** Cmd to save a diagram as a GIF image in a supplied OutputStream. 
+/** Cmd to save a diagram as a GIF image in a supplied OutputStream.
  *  Requires the Acme.JPM.Encoders.GifEncoder class. Operates on the
  *  diagram in the current editor.
  *
@@ -46,54 +46,56 @@ import Acme.JPM.Encoders.GifEncoder;
  */
 
 public class CmdSaveGIF extends CmdSaveGraphics {
-
-  /** Used as background color in image and set transparent. Chosen because
-   *  it's unlikely to be selected by the user, and leaves the diagram readable
-   *  if viewed without transparency. */
-
-  public static final int TRANSPARENT_BG_COLOR = 0x00efefef;
-
-
-  public CmdSaveGIF() {
-    super("Save GIF...", NO_ICON);
-  }
-
-  /** Write the diagram contained by the current editor into an OutputStream
-   *  as a GIF image. */
-  protected void saveGraphics(OutputStream s, Editor ce,
-			      Rectangle drawingArea)
-                 throws IOException {
-
-    //	Create an offscreen image and render the diagram into it.
-
-    Image i = ce.createImage( drawingArea.width, drawingArea.height );
-    Graphics g = i.getGraphics();
-    g.setColor( new Color(TRANSPARENT_BG_COLOR) );
-    g.fillRect( 0, 0, drawingArea.width, drawingArea.height );
-    // a little extra won't hurt
-    g.translate( -drawingArea.x, -drawingArea.y );
-    ce.print( g );
-
-    //	Tell the Acme GIF encoder to save the image as a GIF into the
-    //	output stream. Use the TransFilter to make the background
-    //	color transparent.
-
-    try {
-      FilteredImageSource fis =
-	new FilteredImageSource( i.getSource(),
-				 new TransFilter( TRANSPARENT_BG_COLOR ) );
-      GifEncoder ge = new GifEncoder( fis, s );
-      //GifEncoder ge = new GifEncoder( i, s );
-      ge.encode();
+    
+    /** Used as background color in image and set transparent. Chosen because
+     *  it's unlikely to be selected by the user, and leaves the diagram readable
+     *  if viewed without transparency. */
+    
+    public static final int TRANSPARENT_BG_COLOR = 0x00efefef;
+    
+    
+    public CmdSaveGIF() {
+        super("Save GIF...", NO_ICON);
     }
-    catch( IOException e ) {
-      System.out.println( "GifEncoder failed: " + e );
+    
+    /** Write the diagram contained by the current editor into an OutputStream
+     *  as a GIF image. */
+    protected void saveGraphics(OutputStream s, Editor ce,
+    Rectangle drawingArea)
+    throws IOException {
+        
+        //	Create an offscreen image and render the diagram into it.
+        
+        Image i = ce.createImage( drawingArea.width, drawingArea.height );
+        Graphics g = i.getGraphics();
+        g.setColor( new Color(TRANSPARENT_BG_COLOR) );
+        g.fillRect( 0, 0, drawingArea.width, drawingArea.height );
+        // a little extra won't hurt
+        g.translate( -drawingArea.x, -drawingArea.y );
+        ce.print( g );
+        
+        //	Tell the Acme GIF encoder to save the image as a GIF into the
+        //	output stream. Use the TransFilter to make the background
+        //	color transparent.
+        
+        try {
+            FilteredImageSource fis =
+            new FilteredImageSource( i.getSource(),
+            new TransFilter( TRANSPARENT_BG_COLOR ) );
+            GifEncoder ge = new GifEncoder( fis, s );
+            //GifEncoder ge = new GifEncoder( i, s );
+            ge.encode();
+        }
+        catch( IOException e ) {
+            System.out.println( "GifEncoder failed: " + e );
+        }
+        
+        g.dispose();
+        // force garbage collection, to prevent out of memory exceptions
+        g = null;
+        i = null;
     }
-
-    g.dispose();
-    g = null;
-  }
-
+    
 } /* end class CmdSaveGIF */
 
 
@@ -102,16 +104,16 @@ public class CmdSaveGIF extends CmdSaveGraphics {
  */
 
 class TransFilter extends RGBImageFilter {
-  int _transBG;
-
-  public TransFilter( int bg ) {
-    _transBG = bg;
-    canFilterIndexColorModel = true;
-  }
-
-  public int filterRGB( int x, int y, int rgb ) {
-    // background color w/any alpha level? make it transparent
-    if( (rgb & 0x00ffffff) == _transBG ) return _transBG;
-    return 0xff000000 | rgb;  // make it 100% opaque
-  }
+    int _transBG;
+    
+    public TransFilter( int bg ) {
+        _transBG = bg;
+        canFilterIndexColorModel = true;
+    }
+    
+    public int filterRGB( int x, int y, int rgb ) {
+        // background color w/any alpha level? make it transparent
+        if( (rgb & 0x00ffffff) == _transBG ) return _transBG;
+        return 0xff000000 | rgb;  // make it 100% opaque
+    }
 } /* end class TransFilter */
