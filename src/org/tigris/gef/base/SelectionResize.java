@@ -28,7 +28,6 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
 import java.awt.*;
 
 import org.apache.log4j.Logger;
@@ -48,7 +47,7 @@ public class SelectionResize extends Selection {
     private int cw;
     private int ch;
 
-    private static final Logger LOG = Logger.getLogger(ModeDragScroll.class);
+    private static final Logger log = Logger.getLogger(ModeDragScroll.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -100,16 +99,16 @@ public class SelectionResize extends Selection {
             boolean bottomEdge = r.intersects(testRect);
             // needs-more-work: midpoints for side handles
             if (leftEdge && topEdge) {
-                h.index = 0;
+                h.index = Handle.NORTHWEST;
                 h.instructions = "Resize top left";
             } else if (rightEdge && topEdge) {
-                h.index = 2;
+                h.index = Handle.NORTHEAST;
                 h.instructions = "Resize top right";
             } else if (leftEdge && bottomEdge) {
-                h.index = 5;
+                h.index = Handle.SOUTHWEST;
                 h.instructions = "Resize bottom left";
             } else if (rightEdge && bottomEdge) {
-                h.index = 7;
+                h.index = Handle.SOUTHEAST;
                 h.instructions = "Resize bottom right";
             }
             // needs-more-work: side handles
@@ -191,7 +190,7 @@ public class SelectionResize extends Selection {
      *  maintains the aspect ratio. */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
         if (!_content.isResizable()) {
-            if (LOG.isDebugEnabled()) LOG.debug("Handle " + hand + " dragged but no action as fig is not resizable");
+            if (log.isDebugEnabled()) log.debug("Handle " + hand + " dragged but no action as fig is not resizable");
             return;
         }
 
@@ -201,54 +200,72 @@ public class SelectionResize extends Selection {
         int y = cy;
         int w = cw;
         int h = ch;
-        int newX = x, newY = y, newW = w, newH = h;
+        int newX = x, newY = y, newWidth = w, newHeight = h;
         Dimension minSize = _content.getMinimumSize();
         int minWidth = minSize.width, minHeight = minSize.height;
         switch (hand.index) {
             case -1 :
                 _content.translate(anX - mX, anY - mY);
                 return;
-            case 0 :
-                newW = x + w - mX;
-                newW = (newW < minWidth) ? minWidth : newW;
-                newH = y + h - mY;
-                newH = (newH < minHeight) ? minHeight : newH;
-                newX = x + w - newW;
-                newY = y + h - newH;
+            case Handle.NORTHWEST :
+                newWidth = x + w - mX;
+                newWidth = (newWidth < minWidth) ? minWidth : newWidth;
+                newHeight = y + h - mY;
+                newHeight = (newHeight < minHeight) ? minHeight : newHeight;
+                newX = x + w - newWidth;
+                newY = y + h - newHeight;
+                _content.setHandleBox(newX, newY, newWidth, newHeight);
+                if ((newX + newWidth) != (x + w)) {
+                    newX += (newX + newWidth) - (x + w);
+                }
+                if ((newY + newHeight) != (y + h)) {
+                    newY += (newY + newHeight) - (y + h);
+                }
+                _content.setHandleBox(newX, newY, newWidth, newHeight);
+                return;
+            case Handle.NORTH :
                 break;
-            case 1 :
+            case Handle.NORTHEAST :
+                newWidth = mX - x;
+                newWidth = (newWidth < minWidth) ? minWidth : newWidth;
+                newHeight = y + h - mY;
+                newHeight = (newHeight < minHeight) ? minHeight : newHeight;
+                newY = y + h - newHeight;
+                _content.setHandleBox(newX, newY, newWidth, newHeight);
+                if ((newY + newHeight) != (y + h)) {
+                    newY += (newY + newHeight) - (y + h);
+                }
+                _content.setHandleBox(newX, newY, newWidth, newHeight);
                 break;
-            case 2 :
-                newW = mX - x;
-                newW = (newW < minWidth) ? minWidth : newW;
-                newH = y + h - mY;
-                newH = (newH < minHeight) ? minHeight : newH;
-                newY = y + h - newH;
+            case Handle.WEST :
                 break;
-            case 3 :
+            case Handle.EAST :
                 break;
-            case 4 :
+            case Handle.SOUTHWEST :
+                newWidth = x + w - mX;
+                newWidth = (newWidth < minWidth) ? minWidth : newWidth;
+                newHeight = mY - y;
+                newHeight = (newHeight < minHeight) ? minHeight : newHeight;
+                newX = x + w - newWidth;
+                _content.setHandleBox(newX, newY, newWidth, newHeight);
+                if ((newX + newWidth) != (x + w)) {
+                    newX += (newX + newWidth) - (x + w);
+                }
+                _content.setHandleBox(newX, newY, newWidth, newHeight);
                 break;
-            case 5 :
-                newW = x + w - mX;
-                newW = (newW < minWidth) ? minWidth : newW;
-                newH = mY - y;
-                newH = (newH < minHeight) ? minHeight : newH;
-                newX = x + w - newW;
+            case Handle.SOUTH :
                 break;
-            case 6 :
-                break;
-            case 7 :
-                newW = mX - x;
-                newW = (newW < minWidth) ? minWidth : newW;
-                newH = mY - y;
-                newH = (newH < minHeight) ? minHeight : newH;
+            case Handle.SOUTHEAST :
+                newWidth = mX - x;
+                newWidth = (newWidth < minWidth) ? minWidth : newWidth;
+                newHeight = mY - y;
+                newHeight = (newHeight < minHeight) ? minHeight : newHeight;
+                _content.setHandleBox(newX, newY, newWidth, newHeight);
                 break;
             default :
-                System.out.println("invalid handle number");
+                log.error("invalid handle number for resizing fig");
                 break;
         }
-        _content.setHandleBox(newX, newY, newW, newH);
     }
 
 } /* end class SelectionResize */
