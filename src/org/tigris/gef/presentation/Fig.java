@@ -85,28 +85,28 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /**
      *  X coordinate of the Fig's bounding box. It is the responsibility of
      *  subclasses to make sure this value is ALWAYS up-to-date.
-     * @deprecated 0.11 use getters/setters
+     * @deprecated 0.11 will change to package visibility use getters/setters
      */
     protected int _x;
     
     /**
      *  Y coordinate of the Fig's bounding box. It is the responsibility of
      *  subclasses to make sure this value is ALWAYS up-to-date.
-     * @deprecated 0.11 use getters/setters
+     * @deprecated 0.11 will change to package visibility use getters/setters
      */
     protected int _y;
 
     /**
      *  Width of the Fig's bounding box. It is the responsibility of
      *  subclasses to make sure this value is ALWAYS up-to-date.
-     * @deprecated 0.11 use getters/setters
+     * @deprecated 0.11 will change to package visibility use getters/setters
      */
     protected int _w;
 
     /**
      *  Height of the Fig's bounding box. It is the responsibility of
      *  subclasses to make sure this value is ALWAYS up-to-date.
-     * @deprecated 0.11 use getters/setters
+     * @deprecated 0.11 will change to package visibility use getters/setters
      */
     protected int _h;
 
@@ -114,25 +114,25 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      *  The original width of the Fig's bounding box at construction.
      *  This value should never be updated after construction.
      */
-    protected int originalWidth;
+    int originalWidth;
     
     /**
      *  The original height of the Fig's bounding box at construction.
      *  This value should never be updated after construction.
      */
-    protected int originalHeight;
+    int originalHeight;
 
     /**
      *  The original x position of the Fig's bounding box at construction.
      *  This value should never be updated after construction.
      */
-    protected int originalX;
+    int originalX;
 
     /**
      *  The original y position of the Fig's bounding box at construction.
      *  This value should never be updated after construction.
      */
-    protected int originalY;
+    int originalY;
 
     /** Name of the resource being basis to this figs localization. */
     protected String _resource = "";
@@ -150,7 +150,13 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 
     /** True if the object should fill in its area. */
     protected boolean _filled = true;
+    
+    /**
+     * The parent Fig of which this Fig is a child
+     * @deprecated 0.11 will change to package visibility
+     */
     protected Fig _group = null;
+    
     protected String _context = "";
 
     /** True if the Fig is shown
@@ -187,7 +193,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /** Margin between this Fig and automatically routed arcs. */
     public final int BORDER = 8;
 
-    private static final Logger LOG = Logger.getLogger(Fig.class);
+    private static final Logger log = Logger.getLogger(Fig.class);
 
     /**
      * Most subclasses will not use this constructor, it is only useful
@@ -458,8 +464,16 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 
     /**
      * Can the fig can be copied and pasted
+     * @deprecated 0.11 badly spelt method use is Copyable
      */
     public boolean isCopieable() {
+        return true;
+    }
+
+    /**
+     * Can the fig can be copied and pasted
+     */
+    public boolean isCopyable() {
         return true;
     }
 
@@ -588,10 +602,10 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /** Set the HandleBox.
      * Normally this should not be used. It is intended for figures where the
      * Handlebox is different from the Bounds.
-     * Overwrite this method if HandleBox and bounds differ
+     * Overide this method if HandleBox and bounds differ
      */
     public void setHandleBox(int x, int y, int w, int h) {
-        if (LOG.isDebugEnabled()) LOG.debug("Height = " + h);
+        if (log.isDebugEnabled()) log.debug("Height = " + h);
         setBounds(x, y, w, h);
     }
 
