@@ -89,10 +89,10 @@ public class ModeSelect extends FigModifyingModeImpl {
         return false;
     }
 
-	/** 
-	 * @deprecated in 0.11 this variable is not used. GEF will be
-	 * coded in a platform independant manner.
-	 */
+    /** 
+     * @deprecated in 0.11 this variable is not used. GEF will be
+     * coded in a platform independant manner.
+     */
     public static boolean isMacintoshUser = false;
 
     ////////////////////////////////////////////////////////////////
@@ -103,18 +103,19 @@ public class ModeSelect extends FigModifyingModeImpl {
      *  the shift key is not down, then go to ModeModify. If the mouse
      *  down event happens on a port, to to ModeCreateEdge.   */
     public void mousePressed(MouseEvent me) {
-        if(me.isConsumed()) {
-            //System.out.println("ModeSelect consumed");
+        System.out.println("in ModeSelect.mousePressed()");
+        if(me.isConsumed() || me.isAltDown()) {
             return;
         }
 
-        if(me.getModifiers() == InputEvent.BUTTON3_MASK) {
+        if (me.getModifiers() == InputEvent.BUTTON3_MASK) {
             _selectAnchor = new Point(me.getX(), me.getY());
             //System.out.println("ModeSelect: from awt component " + Globals.curEditor().getJComponent());
             return;
         }
 
-        if(me.isAltDown()) {
+        if (me.isShiftDown()) {
+            gotoBroomMode(me);
             return;
         }
 
@@ -122,7 +123,7 @@ public class ModeSelect extends FigModifyingModeImpl {
         int y = me.getY();
         _selectAnchor = new Point(x, y);
         _selectRect.setBounds(x, y, 0, 0);
-        _toggleSelection = me.isControlDown();
+        _toggleSelection = (me.isControlDown() && !me.isPopupTrigger()) || me.isMetaDown();
         SelectionManager sm = editor.getSelectionManager();
         Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
 
@@ -148,13 +149,12 @@ public class ModeSelect extends FigModifyingModeImpl {
         if(underMouse != null) {
             if(_toggleSelection) {
                 sm.toggle(underMouse);
-            }
-            else if(!sm.containsFig(underMouse)) {
+            } else if(!sm.containsFig(underMouse)) {
                 sm.select(underMouse);
             }
         }
 
-        if(sm.hit(hitRect)) {
+        if (sm.hit(hitRect)) {
             //System.out.println("gotoModifyMode");
             gotoModifyMode(me);
         }
@@ -164,11 +164,7 @@ public class ModeSelect extends FigModifyingModeImpl {
 
     /** On mouse dragging, stretch the selection rectangle. */
     public void mouseDragged(MouseEvent me) {
-        if(me.isConsumed()) {
-            return;
-        }
-
-        if(me.isAltDown()) {
+        if (me.isConsumed() || me.isAltDown() || me.isMetaDown()) {
             return;
         }
 
@@ -190,10 +186,10 @@ public class ModeSelect extends FigModifyingModeImpl {
     /** On mouse up, select or toggle the selection of items under the
      *  mouse or in the selection rectangle. */
     public void mouseReleased(MouseEvent me) {
-        if(me.isConsumed()) {
+        if(me.isConsumed() || me.isMetaDown()) {
             return;
         }
-
+        
         int x = me.getX();
         int y = me.getY();
         _showSelectRect = false;
@@ -271,5 +267,18 @@ public class ModeSelect extends FigModifyingModeImpl {
         FigModifyingModeImpl nextMode = new ModeBroom(editor);
         editor.mode(nextMode);
         nextMode.mousePressed(me);
+    }
+    
+    /**
+     * Determine if a mouse event was to toggle selection of multiple items.
+     * On a Mac this is by Command-Click.
+     * On a non-mac this is by Ctrl-Click.
+     */
+    private boolean isMultiSelectTrigger(MouseEvent me) {
+        // If the control key is down and this is not a popup trigger then
+        // this cannot be a mac and will return true.
+        // If the meta key is down then this can only be a mac and will return
+        // true
+        return (me.isControlDown() && !me.isPopupTrigger()) || me.isMetaDown();
     }
 }    /* end class ModeSelect */
