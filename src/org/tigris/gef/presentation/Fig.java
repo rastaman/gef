@@ -13,6 +13,7 @@ import java.util.Vector;
 
 import javax.swing.*;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.base.*;
 
 import org.tigris.gef.graph.GraphEdgeHooks;
@@ -34,7 +35,7 @@ import org.tigris.gef.util.Localizer;
 public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerator {
     ////////////////////////////////////////////////////////////////
     // constants
-
+    
     /** The smallest size that the user can drag this Fig. */
     public final int MIN_SIZE = 4;
 
@@ -47,6 +48,12 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     ////////////////////////////////////////////////////////
     // instance variables
 
+    /**
+     * A factoryConstructed Fig has an improved resize algorithm
+     * this flag should only be set by the FigNodeFactory
+     */
+    private boolean factoryConstructed = false;
+    
     /**
      * Indicates whether this fig can be resized
      */
@@ -76,13 +83,56 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     private transient Object _owner;
 
     /**
-     *  Coordinates of the Fig's bounding box. It is the responsibility of
-     *  subclasses to make sure that these values are ALWAYS up-to-date.
+     *  X coordinate of the Fig's bounding box. It is the responsibility of
+     *  subclasses to make sure this value is ALWAYS up-to-date.
+     * @deprecated 0.11 use getters/setters
      */
     protected int _x;
+    
+    /**
+     *  Y coordinate of the Fig's bounding box. It is the responsibility of
+     *  subclasses to make sure this value is ALWAYS up-to-date.
+     * @deprecated 0.11 use getters/setters
+     */
     protected int _y;
+
+    /**
+     *  Width of the Fig's bounding box. It is the responsibility of
+     *  subclasses to make sure this value is ALWAYS up-to-date.
+     * @deprecated 0.11 use getters/setters
+     */
     protected int _w;
+
+    /**
+     *  Height of the Fig's bounding box. It is the responsibility of
+     *  subclasses to make sure this value is ALWAYS up-to-date.
+     * @deprecated 0.11 use getters/setters
+     */
     protected int _h;
+
+    /**
+     *  The original width of the Fig's bounding box at construction.
+     *  This value should never be updated after construction.
+     */
+    protected int originalWidth;
+    
+    /**
+     *  The original height of the Fig's bounding box at construction.
+     *  This value should never be updated after construction.
+     */
+    protected int originalHeight;
+
+    /**
+     *  The original x position of the Fig's bounding box at construction.
+     *  This value should never be updated after construction.
+     */
+    protected int originalX;
+
+    /**
+     *  The original y position of the Fig's bounding box at construction.
+     *  This value should never be updated after construction.
+     */
+    protected int originalY;
 
     /** Name of the resource being basis to this figs localization. */
     protected String _resource = "";
@@ -103,8 +153,13 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     protected Fig _group = null;
     protected String _context = "";
 
-    /** True if the Fig is shown. This funct once was in FogComponent of ArgoUML */
+    /** True if the Fig is shown
+     * @deprecated 0.11 use getters/setters
+     */
     protected boolean _displayed = true;
+    /** 
+     * @deprecated 0.11 use getters/setters
+     */
     public int _shown = 0;
     protected boolean _allowsSaving = true;
     protected transient boolean _selected = false;
@@ -132,9 +187,13 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /** Margin between this Fig and automatically routed arcs. */
     public final int BORDER = 8;
 
-    /** Most subclasses will not use this constructor, it is only useful
-     *  for subclasses that redefine most of the infrastructure provided
-     *  by class Fig. */
+    private static final Logger LOG = Logger.getLogger(Fig.class);
+
+    /**
+     * Most subclasses will not use this constructor, it is only useful
+     * for subclasses that redefine most of the infrastructure provided
+     * by class Fig.
+     */
     public Fig() {
         an = NoAnnotationStrategy.getInstance();
     }
@@ -159,6 +218,8 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         _y = y;
         _w = w;
         _h = h;
+        originalHeight = h;
+        originalWidth = w;
         if(lineColor != null) {
             _lineColor = lineColor;
         }
@@ -390,8 +451,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     public Object clone() {
         try {
             return super.clone();
-        }
-        catch(CloneNotSupportedException e) {
+        } catch(CloneNotSupportedException e) {
             return null;
         }
     }
@@ -531,6 +591,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      * Overwrite this method if HandleBox and bounds differ
      */
     public void setHandleBox(int x, int y, int w, int h) {
+        if (LOG.isDebugEnabled()) LOG.debug("Height = " + h);
         setBounds(x, y, w, h);
     }
 
@@ -1386,13 +1447,59 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return r.contains(_x, _y) && r.contains(_x + _w, _y + _h);
     }
 
-    /** Returns true if it is to be displayed. */
+    /** Returns true if it is to be displayed.
+     * @deprecated 0.11 in favour of isVisible()
+     */
     public boolean isDisplayed() {
         return _displayed;
     }
 
-    /** Determine if it is to be displayed. */
+    /** Determine if it is to be displayed.
+     * @deprecated 0.11 in favour of setVisible(boolean)
+     */
     public void setDisplayed(boolean isDisplayed) {
         _displayed = isDisplayed;
     }
+    
+    /** Returns true if the fig is visible */
+    public boolean isVisible() {
+        return _displayed;
+    }
+
+    /** 
+     * Set the visible status of the fig
+     */
+    public void setVisible(boolean isDisplayed) {
+        _displayed = isDisplayed;
+    }
+    
+    /**
+     * @return the original height of the Fig
+     */
+    public int getOriginalHeight() {
+        return originalHeight;
+    }
+
+    /**
+     * @return the original width of the Fig
+     */
+    public int getOriginalWidth() {
+        return originalWidth;
+    }
+
+    void setFactoryConstructed() {
+        factoryConstructed = true;
+        originalWidth = getWidth();
+        originalHeight = getHeight();
+        originalX = getX();
+        originalY = getY();
+    }
+    
+    /**
+     * @return true if this fig was constructed by a factory
+     */
+    public boolean isFactoryConstructed() {
+        return factoryConstructed;
+    }
+
 }    /* end class Fig */

@@ -32,7 +32,10 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-/** This class implements a group of Figs. */
+/** 
+ * A FigGroup is a collection of Figs to all be treated as a single item 
+ * @author Jason Robbins
+ */
 
 public class FigGroup extends Fig {
 
@@ -44,15 +47,24 @@ public class FigGroup extends Fig {
      */
     List figs;
     
-    /** @deprecated - use getExtraFrameSpace() 
-     * will change visibilty in 0.12
+    /**
+     * @deprecated visibility in 0.11 use getters and setters 
      */
     protected int _extraFrameSpace = 0;
 
-    /** The String of figs that are dynamically
-     generated. */
+    /**
+     * The String of figs that are dynamically generated.
+     * @deprecated in 0.11 this is not used
+     */
     public String _dynObjects;
 
+    /**
+     * Normally the bounds of the FigGroup is calculated whenever
+     * a Fig is added. Setting this flag to false allows multiple
+     * adds without the overhead of the calculation each time.
+     */
+    private boolean suppressCalcBounds;
+    
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -62,15 +74,6 @@ public class FigGroup extends Fig {
         figs = new ArrayList();
     }
 
-    /** Construct a new FigGroup that holds the given Figs. 
-     * @deprecated in favour of FigGroup(List)
-     */
-    public FigGroup(Vector figs) {
-        super();
-        this.figs = figs;
-        calcBounds();
-    }
-
     /** Construct a new FigGroup that holds the given Figs. */
    public FigGroup(List figs) {
         super();
@@ -78,14 +81,21 @@ public class FigGroup extends Fig {
         calcBounds();
     }
 
-    /** Empty method. Every figgroup that generates new
-     elements dynamically has to overwrite this method
-     for loading this figure. */
+    /**
+     * Empty method. Every FigGroup that generates new
+     * elements dynamically has to overwrite this method
+     * for loading this figure.
+     * TODO this needs further explanation. It has some
+     * connection with PGMLParser and SVGParser
+     */
     public void parseDynObjects(String dynStr) {
     }
 
-    /** Add a Fig to the group. Takes no action if already part of the group.
-     * Removes from any other group. New Figs are added on the top.
+    /**
+     * Add a Fig to the group.
+     * Takes no action if already part of the group.
+     * Removes from any other group it may have been in already.
+     * New Figs are added on the top.
      * @param fig the Fig to add to this group
      */
     public void addFig(Fig fig) {
@@ -119,39 +129,46 @@ public class FigGroup extends Fig {
      */
     public void setFigs(Collection figs) {
         this.figs.clear();
-        Iterator figIter = figs.iterator();
-        while(figIter.hasNext()) {
-            addFig((Fig)figIter.next());
-        }
-        calcBounds();
+        addFigs(figs);
     }
 
-    /** Accumulate a bounding box for all the Figs in the group. */
+    /**
+     * Accumulate a bounding box for all the Figs in the group.
+     * This method is called by many parts of the framework and may
+     * cause some performance problems. It is possible to suppress
+     * this mthod by calling suppressCalcBounds(true). Be sure to
+     * call calcBounds as soon as this suppression is turned off
+     * again.
+     */
     public void calcBounds() {
-        Rectangle bbox = null;
+        if (suppressCalcBounds) {
+            return;
+        }
+        Rectangle boundingBox = null;
 
         int figCount = this.figs.size();
 
+        Fig f;
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)this.figs.get(figIndex);
-            if(f.isDisplayed()) {
-                if(bbox == null) {
-                    bbox = f.getBounds();
+            f = (Fig)this.figs.get(figIndex);
+            if(f.isVisible()) {
+                if(boundingBox == null) {
+                    boundingBox = f.getBounds();
                 }
                 else {
-                    bbox.add(getSubFigBounds(f));
+                    boundingBox.add(getSubFigBounds(f));
                 }
             }
         }
 
-        if(bbox == null) {
-            bbox = new Rectangle(0, 0, 0, 0);
+        if(boundingBox == null) {
+            boundingBox = new Rectangle(0, 0, 0, 0);
         }
 
-        _x = bbox.x;
-        _y = bbox.y;
-        _w = bbox.width;
-        _h = bbox.height + _extraFrameSpace;
+        _x = boundingBox.x;
+        _y = boundingBox.y;
+        _w = boundingBox.width;
+        _h = boundingBox.height + _extraFrameSpace;
     }
 
     /**
@@ -372,10 +389,11 @@ public class FigGroup extends Fig {
     /** Paint all the Figs in this group. */
     public void paint(Graphics g) {
         int figCount = this.figs.size();
-        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+        for (int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig f = (Fig)this.figs.get(figIndex);
-            if(f.isDisplayed())
+            if (f.isVisible()) {
                 f.paint(g);
+            }
         }
     }
 
@@ -413,7 +431,7 @@ public class FigGroup extends Fig {
         int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig f = (Fig)this.figs.get(figIndex);
-            if(f.isDisplayed()) {
+            if(f.isVisible()) {
                 c.add(f);
             }
         }
@@ -421,33 +439,61 @@ public class FigGroup extends Fig {
         return c;
     }
 
-    /** Set the bounding box to the given rect. Figs in the group are
-     *  scaled to fit. Fires PropertyChange with "bounds"
+    /**
+     * Set the bounding box to the given rect. Figs in the group are
+     * scaled to fit. Fires PropertyChange with "bounds"
+     * @param x new X co ordinate for fig
+     * @param y new Y co ordinate for fig
+     * @param w new width for fig
+     * @param h new height for fig
      */
     public void setBounds(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
         int figCount = this.figs.size();
+        Fig f = null;
+        int newW;
+        int newH;
+        int newX;
+        int newY;
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)this.figs.get(figIndex);
-            if (f.isDisplayed()) {
-                int newW = f.getWidth();
-                int newH = f.getHeight();
-                int newX = f.getX();
-                int newY = f.getY();
+            f = (Fig)this.figs.get(figIndex);
+            if (isFactoryConstructed()) {
+                float proportionWidthChange = (float) w / (float) originalWidth;
+                float proportionHeightChange = (float) h / (float) originalHeight;
                 if (f.isResizable()) {
-                    newW = (_w == 0) ? 0 : (f.getWidth() * w) / _w;
-                    newH = (_h == 0) ? 0 : (f.getHeight() * h) / _h;
+                    newW = (int)(((float) f.getOriginalWidth()) * proportionWidthChange);
+                    newH = (int)(((float) f.getOriginalHeight()) * proportionHeightChange);
+                } else {
+                    newW = f.getWidth();
+                    newH = f.getHeight();
                 }
                 if (f.isMovable()) {
-                    newX = (_w == 0) ? x : x + ((f.getX() - _x) * w) / _w;
-                    newY = (_h == 0) ? y : y + ((f.getY() - _y) * h) / _h;
+                    newX = x + (int)(((float) f.originalX) * proportionWidthChange);
+                    newY = y + (int)(((float) f.originalY) * proportionHeightChange);
+                } else {
+                    newX = f.getX();
+                    newY = f.getY();
                 }
-                if (f.isMovable() || f.isResizable()) {
-                    f.setBounds(newX, newY, newW, newH);
-                }
+            } else {
+                newW = (_w == 0) ? 0 : (f.getWidth() * w) / _w;
+                newH = (_h == 0) ? 0 : (f.getHeight() * h) / _h;
+                newX = (_w == 0) ? x : x + ((f.getX() - _x) * w) / _w;
+                newY = (_y == 0) ? y : y + ((f.getY() - _y) * h) / _h;
+            }
+            if (f.isMovable() || f.isResizable()) {
+                f.setBounds(newX, newY, newW, newH);
             }
         }
-        calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+        if (isFactoryConstructed()) {
+            // calcBounds seems to screw up here if dragging the bottom
+            // left corner, so setting bounds manually.
+            _x = x;
+            _y = y;
+            _w = w;
+            _h = h;
+        } else {
+            calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+        }
         firePropChange("bounds", oldBounds, getBounds());
     }
 
@@ -461,22 +507,25 @@ public class FigGroup extends Fig {
 
     public void setFillColor(Color col) {
         int size = this.figs.size();
-        for(int i = 0; i < size; i++)
+        for(int i = 0; i < size; i++) {
             ((Fig)this.figs.get(i)).setFillColor(col);
+        }
     }
 
     public void setFilled(boolean f) {
         int size = this.figs.size();
-        for(int i = 0; i < size; i++)
+        for(int i = 0; i < size; i++) {
             ((Fig)this.figs.get(i)).setFilled(f);
+        }
     }
 
     public void setFont(Font f) {
         int size = this.figs.size();
         for(int i = 0; i < size; i++) {
             Object ft = this.figs.get(i);
-            if(ft instanceof FigText)
+            if(ft instanceof FigText) {
                 ((FigText)ft).setFont(f);
+            }
         }
     }
 
@@ -484,8 +533,9 @@ public class FigGroup extends Fig {
         int size = this.figs.size();
         for(int i = 0; i < size; i++) {
             Object ft = this.figs.get(i);
-            if(ft instanceof FigText)
+            if(ft instanceof FigText) {
                 ((FigText)ft).setFontFamily(s);
+            }
         }
     }
 
@@ -594,6 +644,36 @@ public class FigGroup extends Fig {
      */
     public Dimension getSize() {
         return new Dimension(_w, _h);
+    }
+    
+    /**
+     * Sets the factory constructed indicator to true for this and all
+     * child Figs. This should only ever be called from the factory
+     * allowing a better resizing algorithm to be used.
+     * This also makes sure that all Figs start from a zero origin.
+     */
+    protected void setFactoryConstructed() {
+        int figCount = this.figs.size();
+        Fig f = null;
+        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+            f = (Fig)figs.get(figIndex);
+            f._x -= _x;
+            f._y -= _y;
+            f.setFactoryConstructed();
+        }
+        _x = 0;
+        _y = 0;
+        super.setFactoryConstructed();
+    }
+
+    protected void zeroOrigin() {
+        int figCount = this.figs.size();
+        Fig f = null;
+        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+            f = (Fig)figs.get(figIndex);
+            f.setFactoryConstructed();
+        }
+        super.setFactoryConstructed();
     }
 
 } /* end class FigGroup */
