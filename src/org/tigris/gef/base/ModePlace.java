@@ -192,6 +192,9 @@ public class ModePlace extends FigModifyingModeImpl {
             Iterator it = otherFigs.iterator();
             while(it.hasNext()) {
                 Fig otherFig = (Fig)it.next();
+                if(!(otherFig.getUseTrapRect())) {
+                    continue;
+                }
                 if (!(otherFig instanceof FigNode)) {
                     continue;
                 }

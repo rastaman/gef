@@ -36,6 +36,7 @@ import java.util.List;
 
 import org.apache.commons.logging.*;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -359,8 +360,11 @@ public class ModeModify extends FigModifyingModeImpl {
         List figs = selectionManager.getFigs();
         int figCount = figs.size();
         Rectangle figBounds = new Rectangle();
+        boolean isCanvas = true;
+        Fig encloser = null;
+        Fig selectedFig = null;
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig selectedFig = (Fig)figs.get(figIndex);
+            selectedFig = (Fig)figs.get(figIndex);
             boolean selectedUseTrap = selectedFig.getUseTrapRect();
             if(!(selectedFig instanceof FigNode)) {
                 continue;
@@ -404,6 +408,8 @@ public class ModeModify extends FigModifyingModeImpl {
                 }
 
                 if((trap.contains(figBounds.x, figBounds.y) && trap.contains(figBounds.x + figBounds.width, figBounds.y + figBounds.height))) {
+                    isCanvas = false;
+                    encloser = otherFig;
                     continue;
                 }
 
@@ -416,7 +422,17 @@ public class ModeModify extends FigModifyingModeImpl {
                 return false;
             }
         }
+        //If it isn't dragged into any fig but into diagram canvas (null encloser).
+        GraphModel gm = editor.getGraphModel();
+        if( isCanvas )
+            return (((MutableGraphSupport)gm)
+                    .isEnclosable(((FigNode) selectedFig).getOwner(),
+                                    null));
+        //If it is dragged into any fig.
+        else
+            return (((MutableGraphSupport)gm)
+                    .isEnclosable(((FigNode) selectedFig).getOwner(),
+                                    ((FigNode) encloser).getOwner()));
 
-        return true;
     }
 }

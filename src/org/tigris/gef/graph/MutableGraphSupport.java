@@ -352,6 +352,15 @@ public abstract class MutableGraphSupport
     /** Remove all nodes and edges to reset the graph. */
     public void removeAll() {
         fireGraphChanged();
-    }    
-    
+    }
+
+    /**
+     * Returns true if handle can be enclosed into encloser.
+     */
+    public boolean isEnclosable(
+            Object handle,
+            Object encloser) {
+        return true;
+    }
+
 } /* end class MutableGraphSupport */

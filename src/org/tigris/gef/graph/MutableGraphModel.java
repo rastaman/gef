@@ -106,4 +106,9 @@ public interface MutableGraphModel extends GraphModel {
     /** Contruct and add a new edge of the given kind. Sends a notification. */
     Object connect(Object fromPort, Object toPort, Class edgeClass);
 
+    /**
+     * Returns true if handle can be enclosed into encloser.
+     */
+    boolean isEnclosable(Object handle, Object encloser);
+
 } /* end interface MutableGraphModel */
