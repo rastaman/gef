@@ -647,11 +647,11 @@ public class PGMLParser extends HandlerBase {
   }
 
   protected void setOwnerAttr(Fig f, AttributeList attrList) {
-      System.out.println("[GEF.PGMLParser]: setOwnerAttr");
+      //System.out.println("[GEF.PGMLParser]: setOwnerAttr");
     try {
       String owner = attrList.getValue("href");
       if (owner != null && !owner.equals("")) {
-          System.out.println("[GEF.PGMLParser]: setOwnerAttr");
+          //System.out.println("[GEF.PGMLParser]: setOwnerAttr");
           f.setOwner(findOwner(owner));
       }
     }
