@@ -98,7 +98,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
   protected int _rightMargin = 1;
 
   /** True if the FigText can only grow in size, never shrink. */
-  protected boolean _expandOnly = true;
+  protected boolean _expandOnly = false;
 
   /** Text justification can be JUSTIFY_LEFT, JUSTIFY_RIGHT, or JUSTIFY_CENTER. */
   protected int _justification = JUSTIFY_LEFT;
@@ -134,20 +134,31 @@ public class FigText extends Fig implements KeyListener, MouseListener {
    *  string, font, and font size. Text string is initially empty and
    *  centered. */
   public FigText(int x, int y, int w, int h,
-		 Color textColor, String familyName, int fontSize) {
+		 Color textColor, String familyName, int fontSize,
+		 boolean expandOnly) {
     super(x, y, w, h);
     _x = x; _y = y; _w = w; _h = h;
     _textColor = textColor;
     _font = new Font(familyName, Font.PLAIN, fontSize);
     _justification = JUSTIFY_CENTER;
     _curText = "";
+    _expandOnly = expandOnly;
+  }
+
+  public FigText(int x, int y, int w, int h,
+		 Color textColor, String familyName, int fontSize) {
+    this(x, y, w, h, textColor, familyName, fontSize, false);
+  }
+
+  /** Construct a new FigText with the given position and size */
+  public FigText(int x, int y, int w, int h ) {
+    this(x, y, w, h, Color.blue, "TimesRoman", 10, false);
   }
 
   /** Construct a new FigText with the given position, size, and attributes. */
-  public FigText(int x, int y, int w, int h ) {
-    this(x, y, w, h, Color.blue, "TimesRoman", 10);
+  public FigText(int x, int y, int w, int h , boolean expandOnly) {
+    this(x, y, w, h, Color.blue, "TimesRoman", 10, expandOnly);
   }
-
   ////////////////////////////////////////////////////////////////
   // invariant
 

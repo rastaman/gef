@@ -115,7 +115,6 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 
     <property name="manifest" value="org/tigris/gef/manifest.mf"/>
 
-    <property name="classpath" value="${lib.dir}/xml4j.jar"/> 
     <property name="packages" value="org.tigris.gef.* Acme.*"/>
 
     <property name="build.dir" value="../build"/>
@@ -183,7 +182,6 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 
     <javac srcdir="${build.src}"
            destdir="${build.dest}"
-	   classpath="${classpath}" 
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}"/>
