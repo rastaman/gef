@@ -40,7 +40,6 @@ import java.util.List;
 
 public class FigDiamond extends Fig {
 
-    int gravityPointsPerSide = 10;
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -73,14 +72,11 @@ public class FigDiamond extends Fig {
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
     public List getGravityPoints() {
-        ArrayList ret = new ArrayList(gravityPointsPerSide * 4);
-        int divisor = gravityPointsPerSide + 1;
-        for (int i=0; i < gravityPointsPerSide; ++i) {
-            ret.add(new Point(_x + (_w / divisor)*i, _y));
-            ret.add(new Point(_x + _w, _y + (_h / divisor)*i));
-            ret.add(new Point(_x + (_w / divisor)*i, _y + _h));
-            ret.add(new Point(_x, _y + (_h / divisor)*i));
-        }
+        ArrayList ret = new ArrayList(4);
+        ret.add(new Point(_x + _w / 2, _y));
+        ret.add(new Point(_x + _w, _y + _h / 2));
+        ret.add(new Point(_x + _w / 2, _y + _h));
+        ret.add(new Point(_x, _y + _h / 2));
         return ret;
     }
 
