@@ -754,20 +754,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     public FigTextEditor startTextEditor(InputEvent ie) {
-        //System.out.println("[FigText] startTextEditor");
-        FigTextEditor te;
-        try {
-            Object editor = _textEditorClass.newInstance();
-            if(!(editor instanceof FigTextEditor))
-                te = new FigTextEditor();
-            else
-                te = (FigTextEditor)editor;
-        }
-        catch(Exception e) {
-            te = new FigTextEditor();
-        }
+        FigTextEditor te = FigTextEditor.newInstance();
         te.init(this, ie);
-        //System.out.println("[FigText] TextEditor started");
         _editMode = true;
         return te;
     }

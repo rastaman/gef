@@ -30,45 +30,46 @@
 
 package org.tigris.gef.presentation;
 
-import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+
+import java.awt.Color;
 import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 // needs-more-work: could this be a singleton?
 
-public class FigTextEditor extends JTextPane implements PropertyChangeListener, DocumentListener, KeyListener, FocusListener {
+public abstract class FigTextEditor extends JTextPane implements PropertyChangeListener, DocumentListener, KeyListener {
 
-    FigText _target;
-    JPanel _drawingPanel;
-    JLayeredPane _layeredPane;
+    protected static int _extraSpace = 2;
+    protected static Border _border = BorderFactory.createLineBorder(Color.gray);
+    protected static boolean _makeBrighter = false;
+    protected static Color _backgroundColor = null;
 
-    private static int _extraSpace = 2;
-    private static Border _border = BorderFactory.createLineBorder(Color.gray);
-    private static boolean _makeBrighter = false;
-    private static Color _backgroundColor = null;
-
-    private static Log LOG = LogFactory.getLog(FigTextEditor.class);
-    
     /** Needs-more-work: does not open if I use tab to select the
      *  FigText. */
     public FigTextEditor() {
+    }
+    
+    private static FigTextEditor _activeTextEditor;
+
+    /**
+     * Factory method to create a new instance of a FigTextEditor.
+     * @returns a new FigTextEditor instance.
+     */
+    public static final FigTextEditor newInstance() {
+        String version = System.getProperty("java.version");
+    
+        FigTextEditor fte = null;
+        if (version.startsWith("1.2.") || version.startsWith("1.3.")) {
+            fte = new FigTextEditor13();
+        } else {
+            fte = new FigTextEditor14();
+        }
+
+        return fte;
     }
 
     public static void configure(int extraSpace, Border border, boolean makeBrighter, Color backgroundColor) {
@@ -78,113 +79,12 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         _backgroundColor = backgroundColor;
     }
 
-    public void init(FigText ft, InputEvent ie) {
-        _target = ft;
-        Editor ce = Globals.curEditor();
-        
-        _drawingPanel = (JPanel)ce.getJComponent();
-        _target.firePropChange("editing", false, true);
-        _target.addPropertyChangeListener(this);
-        // walk up and add to glass pane
-        Component awtComp = _drawingPanel;
-        while (!(awtComp instanceof JFrame) && awtComp != null) {
-            awtComp = awtComp.getParent();
-        }
-        if (!(awtComp instanceof JFrame)) {
-            LOG.warn("no JFrame");
-            return;
-        }
-        _layeredPane = ((JFrame)awtComp).getLayeredPane();
-
-        ft.calcBounds();
-        Rectangle bbox = ft.getBounds();
-
-        Color figTextBackgroundColor = ft.getFillColor();
-        Color myBackground;
-        if(_makeBrighter && !figTextBackgroundColor.equals(Color.white)) {
-            myBackground = figTextBackgroundColor.brighter();
-        }
-        else if(_backgroundColor != null) {
-            myBackground = _backgroundColor;
-        }
-        else {
-            myBackground = figTextBackgroundColor;
-        }
-
-        setBackground(myBackground);
-
-        setBorder(_border);
-
-        double scale = ce.getScale();
-        bbox.x = (int)Math.round(bbox.x * scale);
-        bbox.y = (int)Math.round(bbox.y * scale);
-
-        if(scale > 1) {
-            bbox.width = (int)Math.round(bbox.width * scale);
-            bbox.height = (int)Math.round(bbox.height * scale);
-        }
-
-        bbox = SwingUtilities.convertRectangle(_drawingPanel, bbox, _layeredPane);
-
-        // bounds will be overwritten later in updateFigText anyway...
-        setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width + _extraSpace * 2, bbox.height + _extraSpace * 2);
-        _layeredPane.add(this, JLayeredPane.POPUP_LAYER, 0);
-        String text = ft.getText();
-        
-        remove();
-        _activeTextEditor = this;
-
-        setText(text);
-
-        addKeyListener(this);
-        requestFocus();
-        getDocument().addDocumentListener(this);
-
-        setSelectionStart(0);
-        setSelectionEnd(getDocument().getLength());
-        MutableAttributeSet attr = new SimpleAttributeSet();
-        if(ft.getJustification() == FigText.JUSTIFY_CENTER)
-            StyleConstants.setAlignment(attr, StyleConstants.ALIGN_CENTER);
-        if(ft.getJustification() == FigText.JUSTIFY_RIGHT)
-            StyleConstants.setAlignment(attr, StyleConstants.ALIGN_RIGHT);
-        Font font = ft.getFont();
-        StyleConstants.setFontFamily(attr, font.getFamily());
-        StyleConstants.setFontSize(attr, font.getSize());
-        setParagraphAttributes(attr, true);
-        if(ie instanceof KeyEvent) {
-            setSelectionStart(getDocument().getLength());
-            setSelectionEnd(getDocument().getLength());
-        }
-        addFocusListener(this);
-    }
-
-    public void propertyChange(PropertyChangeEvent pve) {
-        updateFigText();
-    }
-
-    public void endEditing() {
-        updateFigText();
-        _target.endTrans();
-        Container parent = getParent();
-        if(parent != null) {
-            parent.remove(this);
-        }
-        _target.removePropertyChangeListener(this);
-        _target.firePropChange("editing", true, false);
-        removeKeyListener(this);
-        _layeredPane.remove(this);
-        //FigTextEditor.remove();
-        // Don't call remove() here, because remove() would call this method
-        // (endEditing()) for second time (unnecessarily). 
-        // Just reset the _activeTextEditor:
-        FigTextEditor._activeTextEditor = null;
-        removeFocusListener(this);
-    }
-    
-    private static FigTextEditor _activeTextEditor;
-
     public static synchronized FigTextEditor getActiveTextEditor() {
         return _activeTextEditor;
+    }
+
+    public static synchronized void setActiveTextEditor(FigTextEditor fte) {
+        _activeTextEditor = fte;
     }
 
     public static synchronized void remove() {
@@ -194,104 +94,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
             old.endEditing();
         }
     }
-
-    ////////////////////////////////////////////////////////////////
-    // event handlers for KeyListener implementaion
-
-
-    public void keyTyped(KeyEvent ke) {
-        if(ke.getKeyChar() == KeyEvent.VK_ENTER && !_target.getMultiLine()) {
-            ke.consume();
-        }
-        if(ke.getKeyCode() == KeyEvent.VK_TAB) {
-            if(!_target.getAllowsTab()) {
-                endEditing();
-                ke.consume();
-            }
-        }
-        //else super.keyTyped(ke);
-    }
-
-    public void keyReleased(KeyEvent ke) {
-    }
-
-    public void keyPressed(KeyEvent ke) {
-        if(ke.getKeyCode() == KeyEvent.VK_ENTER) {
-            if(!_target.getMultiLine()) {
-                endEditing();
-                ke.consume();
-            }
-        }
-        if(ke.getKeyCode() == KeyEvent.VK_TAB) {
-            if(!_target.getAllowsTab()) {
-                endEditing();
-                ke.consume();
-            }
-        }
-        else if(ke.getKeyCode() == KeyEvent.VK_F2) {
-            endEditing();
-            ke.consume();
-        }
-        else if(ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            // needs-more-work: should revert to orig text, or simply don't commit
-            endEditing();
-            ke.consume();
-        }
-        //else super.keyPressed(ke);
-    }
-
-
-    ////////////////////////////////////////////////////////////////
-    // event handlers for DocumentListener implementaion
-
-    public void insertUpdate(DocumentEvent e) {
-        updateFigText();
-    }
-
-    public void removeUpdate(DocumentEvent e) {
-        updateFigText();
-    }
-
-    public void changedUpdate(DocumentEvent e) {
-        updateFigText();
-    }
-
-
-    ////////////////////////////////////////////////////////////////
-    // internal utility methods
-
-    protected void updateFigText() {
-        if(_target == null)
-            return;
-        String text = getText();
-        _target.setText(text, getGraphics());
-
-        Rectangle bbox = _target.getBounds();
-        Editor ce = Globals.curEditor();
-        double scale = ce.getScale();
-        bbox.x = (int)Math.round(bbox.x * scale);
-        bbox.y = (int)Math.round(bbox.y * scale);
-
-        if(scale > 1) {
-            bbox.width = (int)Math.round(bbox.width * scale);
-            bbox.height = (int)Math.round(bbox.height * scale);
-        }
-
-        bbox = SwingUtilities.convertRectangle(_drawingPanel, bbox, _layeredPane);
-        setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width + _extraSpace * 2, bbox.height + _extraSpace * 2);
-        setFont(_target.getFont());
-    }
-
-	/**
-	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
-	 */
-	public void focusGained(FocusEvent e) {
-	}
-
-	/**
-	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
-	 */
-	public void focusLost(FocusEvent e) {
-        endEditing();
-	}
+    
+    public abstract void init(FigText ft, InputEvent ie);
+    public abstract void endEditing();
 }
