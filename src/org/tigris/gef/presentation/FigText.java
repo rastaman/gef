@@ -483,7 +483,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      */
 
     public void paint(Graphics g) {
-        if(!(_displayed))
+        if(!(isVisible()))
             return;
         //System.out.println("FigText.paint: x/y = " + _x + "/" + _y);
         //System.out.println("FigText.paint: top-/bottomMargin = " + _topMargin + "/" + _botMargin);
