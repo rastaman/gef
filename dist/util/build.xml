@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<project name="CollectionsConverter" default="build" basedir=".">
+
+<target name="init">
+ <tstamp/>
+ <property name="obj.dir" value="lib"/>
+</target>
+
+<target name="build" depends="init">
+ <property name="src.dir" value="src"/>
+
+ <mkdir dir="${obj.dir}"/>
+ <javac srcdir="${src.dir}" destdir="${obj.dir}"/>
+</target>
+
+<target name="clean" depends="init">
+ <deltree dir="${obj.dir}"/>
+</target>
+
+<target name="run" depends="build">
+ <property name="main" value="CollectionsConverter"/>
+ <property name="args" value="../src ../1.1src"/>
+
+ <java classname="${main}" args="${args}" fork="yes"
+       jvmargs="-cp ${obj.dir}"/>
+</target>
+
+</project>
