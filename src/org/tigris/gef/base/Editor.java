@@ -436,7 +436,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     getLayerManager().paint(g);
     _selectionManager.paint(g);
     _modeManager.paint(g);
-    if (_activeTextEditor != null) _activeTextEditor.repaint();
+    //if (_activeTextEditor != null) _activeTextEditor.repaint();
   }
 
   public synchronized void print(Graphics g) {
@@ -575,7 +575,18 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 		      (int) Math.round((yp / _scale) - me.getY()));
     return me;
   }
-
+  
+ /** Scales the mouse coordinates (which match the model scale)
+  * back to the drawing scale. */
+  public MouseEvent retranslateMouseEvent(MouseEvent me) {
+    double xp = me.getX();
+    double yp = me.getY();
+    int dx = (int)(xp * _scale - xp);
+    int dy = (int)(yp * _scale - yp);
+    me.translatePoint(dx, dy);
+    return me;
+  }
+  
   /** Invoked after the mouse has been pressed and released.  All
    *  events are passed on the SelectionManager and then ModeManager. */
   public void mouseClicked(MouseEvent me) { 
