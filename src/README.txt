@@ -1,3 +1,50 @@
+GEF vers 0.10.1
+
+Resolved Issues
+===============
+
+The following issues have been fixed in release 0.10.1 of GEF
+
+47   Patches from freiheit.com  
+60   selection fails with zoom != 100% 
+65   NPE in VectorSet.toString
+68   Scroll to view patch  
+69   static final attributes should be public  
+70   text on system out in PGML parser  
+72   Use of ctrl-click goes against sun standards  
+84   build.sh run does not work on linux  
+
+
+The following issues have been marked as already works
+
+5    FigTextEditor does not comply to zooming/scaling  
+
+
+The following issues have been marked as invalid
+
+21   ModeDragScroll related eventlistener exceptions  
+57   area not calculated properly for saving images  
+
+
+The following issues have been marked as wont-fix
+
+6    log4j missing from CVS repository  
+24   Problem with zooming in ArgoUML  
+76   Update website with reqd JDK  
+
+
+Deprecated methods and attributes
+=================================
+Version 0.10.1 continues the deprecation of attributes. There is also some deprecation of methods in favour of alternatives.
+
+You would be recommended to adjust your software to use non-deprecated methods as soon aspossible as these deprecated attributes and methods may now be removed without further warning.
+
+
+
+
+=========================================================================
+=========================================================================
+
 GEF vers 0.10
 
 Resolved Issues
