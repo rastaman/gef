@@ -50,6 +50,8 @@ public class FigGroup extends Fig {
          generated. */
   public String _dynObjects;
 
+  public int _shown = 1;
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -57,7 +59,7 @@ public class FigGroup extends Fig {
   public FigGroup() {
 	super();
 	_figs = new Vector();
-  }  
+  }
   /** Construct a new FigGroup that holds the given Figs. */
   public FigGroup(Vector figs) {
 	super();
@@ -76,7 +78,7 @@ public class FigGroup extends Fig {
 	_figs.addElement(f);
 	f.setGroup(this);
 	calcBounds();
-  }  
+  }
   /** Accumulate a bounding box for all the Figs in the group. */
   public void calcBounds() {
 	Rectangle bbox; // could be blank final
@@ -91,7 +93,7 @@ public class FigGroup extends Fig {
 	_y = bbox.y;
 	_w = bbox.width;
 	_h = bbox.height;
-  }  
+  }
    public Object clone() {
 	 FigGroup figClone = (FigGroup) super.clone();
 	 Vector figsClone = new Vector(_figs.size());
@@ -104,26 +106,26 @@ public class FigGroup extends Fig {
 	 }
 	 figClone._figs = figsClone;
 	 return figClone;
-   }   
+   }
   /** Returns true if any Fig in the group contains the given point. */
   public boolean contains(int x, int y) {
 	return hitFig(new Rectangle(x, y, 0, 0)) != null;
-  }  
+  }
   ////////////////////////////////////////////////////////////////
   // accessors
 
   /** Reply an Enumeration of the Figs contained in this FigGroup. */
-  public Enumeration elements() { return _figs.elements(); }  
+  public Enumeration elements() { return _figs.elements(); }
   /** Reply the Vector of Figs. */
-  public Vector getFigs() { return _figs; }  
+  public Vector getFigs() { return _figs; }
   public Color getFillColor() {
 	if (_figs.size() == 0) return super.getFillColor();
 	return ((Fig)_figs.elementAt(_figs.size()-1)).getFillColor();
-  }  
+  }
   public boolean getFilled() {
 	if (_figs.size() == 0) return super.getFilled();
 	return ((Fig)_figs.elementAt(_figs.size()-1)).getFilled();
-  }  
+  }
   public Font getFont() {
 	int size = _figs.size();
 	for (int i = 0; i < size; i++) {
@@ -131,7 +133,7 @@ public class FigGroup extends Fig {
 	  if (ft instanceof FigText) return ((FigText)ft).getFont();
 	}
 	return null;
-  }  
+  }
   public String getFontFamily() {
 	int size = _figs.size();
 	for (int i = 0; i < size; i++) {
@@ -139,7 +141,7 @@ public class FigGroup extends Fig {
 	  if (ft instanceof FigText) return ((FigText)ft).getFontFamily();
 	}
 	return "Serif";
-  }  
+  }
   public int getFontSize() {
 	int size = _figs.size();
 	for (int i = 0; i < size; i++) {
@@ -188,9 +190,12 @@ public String getPrivateData() {
 	  if (ft instanceof FigText) return ((FigText)ft).getTextFilled();
 	}
 	return false;
-  }  
+  }
+
+  public int getVisState() { return _shown; }
+
   /** Returns true if any Fig in the group hits the given rect. */
-  public boolean hit(Rectangle r) { return hitFig(r) != null; }  
+  public boolean hit(Rectangle r) { return hitFig(r) != null; }
   ////////////////////////////////////////////////////////////////
   // Fig API
 
@@ -297,7 +302,7 @@ public String getPrivateData() {
 	int size = _figs.size();
 	for (int i = 0; i < size; i++)
 	  ((Fig)_figs.elementAt(i)).setFilled(f);
-  }  
+  }
   public void setFont(Font f) {
 	int size = _figs.size();
 	for (int i = 0; i < size; i++) {
@@ -355,21 +360,24 @@ public void setPrivateData(String data) {
 	  Object ft = _figs.elementAt(i);
 	  if (ft instanceof FigText) ((FigText)ft).setTextColor(c);
 	}
-  }  
+  }
   public void setTextFillColor(Color c) {
 	int size = _figs.size();
 	for (int i = 0; i < size; i++) {
 	  Object ft = _figs.elementAt(i);
 	  if (ft instanceof FigText) ((FigText)ft).setTextFillColor(c);
 	}
-  }  
+  }
   public void setTextFilled(boolean b) {
 	int size = _figs.size();
 	for (int i = 0; i < size; i++) {
 	  Object ft = _figs.elementAt(i);
 	  if (ft instanceof FigText) ((FigText)ft).setTextFilled(b);
 	}
-  }  
+  }
+
+  public void setVisState(int visState) { _shown = visState; }
+
   /** Translate all the Fig in the list by the given offset. */
   public void translate(int dx, int dy) {
 	Rectangle oldBounds = getBounds();
@@ -380,5 +388,5 @@ public void setPrivateData(String data) {
 	}
 	_x += dx; _y += dy; // no need to call calcBounds();
 	firePropChange("bounds", oldBounds, getBounds());
-  }  
+  }
 } /* end class FigGroup */
