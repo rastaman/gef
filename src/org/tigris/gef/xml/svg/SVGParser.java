@@ -194,6 +194,12 @@ public class SVGParser extends HandlerBase {
 			_textBuf = null;
 		break;
 
+// 		case EDGE_STATE:
+// 			_elementState = DEFAULT_STATE;
+// 			_currentEdge = null;
+// 			_textBuf = null;
+// 		break;
+
 		case PRIVATE_STATE:
 			privateStateEndElement(elementName);
 			_textBuf = null;
@@ -622,6 +628,8 @@ protected String parseStyle(String field, String style) {
 	private void privateStateEndElement(String tagName) {
 		if (_currentNode != null) 
 		{
+			if ( _currentEdge != null ) _currentEdge = null;
+
 			_currentNode.setPrivateData( _textBuf.toString() );
 			
 			String body = _textBuf.toString();
