@@ -107,7 +107,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <tstamp/>
     <property name="Name" value="GEF"/>
     <property name="name" value="gef"/>
-    <property name="version" value="0.9.3beta"/>
+    <property name="version" value="0.9.3beta-${DSTAMP}-${TSTAMP}"/>
     <property name="year" value="2001"/>
 
     <echo message="------------------- ${Name} ${version} (unstable) [${year}] ----------------"/>
@@ -229,7 +229,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 	<delete file="${lib.dir}/${name}.jar"/>
 	
     <filter token="version" value="${version}"/>
-    <copy file="${src.dir}/${manifest}" tofile="${build.dir}/${manifest}" filtering="on" />
+    <copy file="${src.dir}/${manifest}" tofile="${build.dir}/${manifest}" filtering="on" overwrite="on" />
     <jar jarfile="${lib.dir}/${name}.jar"
          basedir="${build.dest}"
          includes="org/tigris/gef/** Acme/**"
