@@ -63,13 +63,7 @@ import org.tigris.gef.ocl.*;
 
 public class CmdSavePGML extends Cmd implements FilenameFilter {
 
-    private static Hashtable _templates = new Hashtable();
     private static OCLExpander _expander = null;
-
-    static {
-        _templates = TemplateReader.readFile("/org/tigris/gef/xml/dtd/PGML.tee");
-        _expander = new OCLExpander(_templates);
-    }
 
     public CmdSavePGML() {
 	    super("SaveAsPGML");
@@ -84,10 +78,9 @@ public class CmdSavePGML extends Cmd implements FilenameFilter {
 
     public void doIt() {
             //@@@ just for easy debugging
-        _templates = TemplateReader.readFile("/org/tigris/gef/xml/dtd/PGML.tee");
-        _expander = new OCLExpander(_templates);
-        
         try {
+            _expander = new OCLExpander(TemplateReader.getInstance().read("/org/tigris/gef/xml/dtd/PGML.tee"));
+                
             Editor ce = Globals.curEditor();
             Diagram d = new Diagram("junk", ce.getGraphModel(),
         		      (LayerPerspective) ce.getLayerManager().getActiveLayer());
