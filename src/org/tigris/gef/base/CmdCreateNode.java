@@ -103,7 +103,11 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
     if (!(gm instanceof MutableGraphModel)) return;
     setArg("graphModel", gm);
 
-    Mode placeMode = new ModePlace(this);
+    String instructions = null;
+    Object actionName = getValue(javax.swing.Action.NAME);
+    if(actionName != null)
+	instructions = "Click to place " + actionName.toString();
+    Mode placeMode = new ModePlace(this,instructions);          
 
     Object shouldBeSticky = getArg("shouldBeSticky");
     Globals.mode(placeMode, shouldBeSticky == Boolean.TRUE);

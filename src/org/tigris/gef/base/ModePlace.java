@@ -59,6 +59,8 @@ public class ModePlace extends FigModifyingModeImpl {
 
   protected boolean _addRelatedEdges = false;
 
+  protected String _instructions; 
+
   ////////////////////////////////////////////////////////////////
   // constructor
 
@@ -67,7 +69,15 @@ public class ModePlace extends FigModifyingModeImpl {
     _factory = gf;
     _node = null;
     _pers = null;
+    _instructions = null;
   }
+
+    public ModePlace(GraphFactory gf,String instructions) {
+	_factory = gf;
+	_node = null;
+	_pers = null;
+	_instructions = instructions;
+    } 
 
   ////////////////////////////////////////////////////////////////
   // user feedback
@@ -75,9 +85,9 @@ public class ModePlace extends FigModifyingModeImpl {
   /** A string to be shown in the status bar of the Editor when this
    * mode is on top of the ModeManager. */
   public String instructions() {
-    if (_node != null) return "Click to place " + _node.toString();
-    //if (_factory != null) return "Click to place " + _factory.toString();
-    return "";
+    if(_instructions == null)
+	_instructions = "";
+    return _instructions;  
   }
 
   /** By default all creation modes use CROSSHAIR_CURSOR. */
