@@ -52,11 +52,21 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** The underlying connected graph to be visualized. */
-  //protected NetList _net;
+  /** The underlying connected graph to be visualized.
+   * @deprecated in 0.11 will lose visibility in 0.12 use accessors
+   */
   protected GraphModel _gm;
+  /**
+  * @deprecated in 0.11 will lose visibility in 0.12 use accessors
+  */
   protected GraphController _controller;
+  /**
+  * @deprecated in 0.11 will lose visibility in 0.12 use accessors
+  */
   protected GraphNodeRenderer _nodeRenderer = new DefaultGraphNodeRenderer();
+  /**
+  * @deprecated in 0.11 will lose visibility in 0.12 use accessors
+  */
   protected GraphEdgeRenderer _edgeRenderer = new DefaultGraphEdgeRenderer();
 
   /** Classes of NetNodes and NetEdges that are to be visualized in
@@ -69,23 +79,23 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  /** Construct a new LayerPerspective with the given name, and add it to
-   *  the menu of layers. Needs-More-Work: I have not implemented a
-   *  menu of layers yet. I don't know if that is really the right user
-   *  interface */
-  public LayerPerspective(String name, GraphModel gm) {
-    super(name);
-    _gm = gm;
+    /** Construct a new LayerPerspective with the given name, and add it to
+     *  the menu of layers. Needs-More-Work: I have not implemented a
+     *  menu of layers yet. I don't know if that is really the right user
+     *  interface */
+    public LayerPerspective(String name, GraphModel gm) {
+        super(name);
+        _gm = gm;
 	_controller = null;
-    _gm.addGraphEventListener(this);
-  }
+        _gm.addGraphEventListener(this);
+    }
 
-  public LayerPerspective(String name, GraphModel gm, GraphController controller) {
-    super(name);
-    _gm = gm;
+    public LayerPerspective(String name, GraphModel gm, GraphController controller) {
+        super(name);
+        _gm = gm;
 	_controller = controller;
-    _gm.addGraphEventListener(this);
-  }
+        _gm.addGraphEventListener(this);
+    }
 
   ////////////////////////////////////////////////////////////////
   // accessors
