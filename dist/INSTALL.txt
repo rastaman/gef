@@ -1,7 +1,7 @@
 Installing GEF
 --------------
 
-last revised: 03/02/2000
+last revised: 03/16/2000
 
 
 !!!!!!!!!!!!!!!
@@ -26,6 +26,7 @@ following targets:
   ant build - compiles source files into gef/lib.  this is the default
               target.
   ant jar - creates gef.jar
+  ant javadoc - creates javadoc documentation in docs/javadoc
   ant clean - deletes compiled classes and jar files.
 
 

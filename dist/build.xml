@@ -4,13 +4,14 @@
 
 <target name="init">
  <tstamp/>
+ <property name="src.dir" value="src"/>
  <property name="obj.dir" value="lib"/>
+ <property name="javadoc.dir" value="javadoc"/>
+ <property name="packagenames" value="uci.*"/>
  <property name="jar" value="gef.jar"/>
 </target>
 
 <target name="build" depends="init">
- <property name="src.dir" value="src"/>
-
  <mkdir dir="${obj.dir}"/>
  <javac srcdir="${src.dir}" destdir="${obj.dir}"
         deprecation="${deprecation}"/>
@@ -20,9 +21,16 @@
  <jar jarfile="${jar}" basedir="${obj.dir}"/>
 </target>
 
+<target name="javadoc" depends="init">
+ <mkdir dir="${javadoc.dir}"/>
+ <javadoc sourcepath="${src.dir}" destdir="${javadoc.dir}"
+          packagenames="${packagenames}"/>
+</target>
+
 <target name="clean" depends="init">
  <deltree dir="${obj.dir}"/>
  <delete file="${jar}"/>
+ <deltree dir="${javadoc.dir}"/>
 </target>
 
 </project>
