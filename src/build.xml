@@ -310,7 +310,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <!-- Run GEF sample BasicApplication from compiled sources                                   -->
   <!-- =================================================================== -->
-  <target name="run" depends="compile">
+  <target name="run" depends="package">
     <echo message="--- Executing GEF sample BasicApplication ---"/>
     <java classname="org.tigris.gef.demo.BasicApplication" fork="yes">
           <classpath>
