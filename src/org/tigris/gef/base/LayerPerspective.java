@@ -28,11 +28,12 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
+import java.awt.Rectangle;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
 import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.graph.presentation.*;
@@ -195,41 +196,47 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   ////////////////////////////////////////////////////////////////
   // nofitications and updates
 
-  public void nodeAdded(GraphEvent ge) {
-    Object node = ge.getArg();
-    Fig oldDE = presentationFor(node);
-    // assumes each node can only appear once in a given layer
-    if (null == oldDE) {
-      if (!shouldShow(node)) { System.out.println("node rejected"); return; }
-      FigNode newFigNode = _nodeRenderer.getFigNodeFor(_gm, this, node);
-      if (newFigNode != null) {
-        newFigNode.setLayer(this);
-	putInPosition(newFigNode);
-        if (LOG.isDebugEnabled()) LOG.debug("Adding node");
-	add(newFigNode);
-      }
-      //else System.out.println("added node de is null");
+    public void nodeAdded(GraphEvent ge) {
+        Object node = ge.getArg();
+        Fig oldDE = presentationFor(node);
+        // assumes each node can only appear once in a given layer
+        if (null == oldDE) {
+            if (!shouldShow(node)) {
+                System.out.println("node rejected");
+                return;
+            }
+            FigNode newFigNode = _nodeRenderer.getFigNodeFor(_gm, this, node, null);
+            if (newFigNode != null) {
+                newFigNode.setLayer(this);
+        	putInPosition(newFigNode);
+                if (LOG.isDebugEnabled()) LOG.debug("Adding node");
+            	add(newFigNode);
+            }
+            //else System.out.println("added node de is null");
+        }
     }
-  }
 
-  public void edgeAdded(GraphEvent ge) {
-    //System.out.println("LayerPerspective got edgeAdded");
-    Object edge = ge.getArg();
-    Fig oldFig = presentationFor(edge);
-    if (null == oldFig) {
-      if (!shouldShow(edge)) { System.out.println("edge rejected"); return; }
-      FigEdge newFigEdge = _edgeRenderer.getFigEdgeFor(_gm, this, edge);
-      if (newFigEdge != null) {
-        newFigEdge.setLayer(this);
-	add(newFigEdge);
-	//insertAt(newFigEdge, 0);
-	newFigEdge.computeRoute();
-	//newFigEdge.reorder(CmdReorder.SEND_TO_BACK, this);
-	newFigEdge.endTrans();
-      }
-      //else System.out.println("added arc fig is null!!!!!!!!!!!!!!!!");
+    public void edgeAdded(GraphEvent ge) {
+        //System.out.println("LayerPerspective got edgeAdded");
+        Object edge = ge.getArg();
+        Fig oldFig = presentationFor(edge);
+        if (null == oldFig) {
+            if (!shouldShow(edge)) {
+                System.out.println("edge rejected");
+                return;
+            }
+            FigEdge newFigEdge = _edgeRenderer.getFigEdgeFor(_gm, this, edge, null);
+            if (newFigEdge != null) {
+                newFigEdge.setLayer(this);
+                add(newFigEdge);
+    	        //insertAt(newFigEdge, 0);
+                newFigEdge.computeRoute();
+                //newFigEdge.reorder(CmdReorder.SEND_TO_BACK, this);
+                newFigEdge.endTrans();
+            }
+            //else System.out.println("added arc fig is null!!!!!!!!!!!!!!!!");
+        }
     }
-  }
 
   public void nodeRemoved(GraphEvent ge) {
     // handled through NetNode subclasses

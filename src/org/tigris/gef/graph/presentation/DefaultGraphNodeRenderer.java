@@ -30,6 +30,8 @@
 
 package org.tigris.gef.graph.presentation;
 
+import java.util.Map;
+
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.graph.*;
@@ -42,12 +44,11 @@ import org.tigris.gef.graph.*;
  * @see uci.graph.demo.WordNodeRenderer */
 
 public class DefaultGraphNodeRenderer
-implements GraphNodeRenderer, java.io.Serializable {
-  /** Return a Fig that can be used to represent the given node */
-  public FigNode getFigNodeFor(GraphModel graph, Layer lay, Object node) {
-    if (node instanceof NetNode)
-      return ((NetNode)node).presentationFor(lay);
-    return null;
-  }
-
+    implements GraphNodeRenderer, java.io.Serializable {
+    /** Return a Fig that can be used to represent the given node */
+    public FigNode getFigNodeFor(GraphModel graph, Layer lay, Object node, Map styleAttributes) {
+        if (node instanceof NetNode)
+            return ((NetNode)node).presentationFor(lay);
+        return null;
+    }
 } /* end class DefaultGraphNodeRenderer */

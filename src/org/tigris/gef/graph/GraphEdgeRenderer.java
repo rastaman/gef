@@ -30,6 +30,8 @@
 
 package org.tigris.gef.graph;
 
+import java.util.Map;
+
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.FigEdge;
 
@@ -39,6 +41,13 @@ import org.tigris.gef.presentation.FigEdge;
  * @see DefaultGraphEdgeRenderer */
 
 public interface GraphEdgeRenderer extends java.io.Serializable {
-  /** Return a Fig that can be used to represent the given edge */
-  FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge);
+    /** 
+     * Factory for a FigEdge that can be used to represent the given edge
+     * @param graphmodel the model in which to place the FigEdge
+     * @param layer the layer in which to place the FigEdge
+     * @param edge the model element from which to create the FigEdge
+     * @param attributeMap an optional map of attributes to style the fig.
+     * return the new FigEdge
+     */
+    FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, Map attributesMap);
 } /* end interface GraphEdgeRenderer */

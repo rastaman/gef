@@ -30,15 +30,25 @@
 
 package org.tigris.gef.graph;
 
+import java.util.Map;
+
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.FigNode;
 
 /** An interface for FigNode factories. Similiar in concept to the
  *  Swing class TreeCellRenderer.
  *
- * @see DefaultGraphNodeRenderer */
+ * @see DefaultGraphNodeRenderer
+ */
 
 public interface GraphNodeRenderer extends java.io.Serializable {
-  /** Return a Fig that can be used to represent the given node */
-  FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node);
+    /** 
+     * Factory for a FigNode that can be used to represent the given node
+     * @param graphmodel the model in which to place the FigNode
+     * @param layer the layer in which to place the FigNode
+     * @param node the model element from which to create the FigNode
+     * @param attributeMap an optional map of attributes to style the fig.
+     * return the new FigNode
+     */
+    FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map attributesMap);
 } /* end interface GraphNodeRenderer */

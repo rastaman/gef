@@ -119,7 +119,7 @@ public class ModePlace extends FigModifyingModeImpl {
         GraphModel gm = editor.getGraphModel();
         GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
         Layer lay = editor.getLayerManager().getActiveLayer();
-        _pers = renderer.getFigNodeFor(gm, lay, _node);
+        _pers = renderer.getFigNodeFor(gm, lay, _node, null);
         if (LOG.isDebugEnabled()) LOG.debug("mousePressed: Got a fig at position (" + _pers.getX() + "," + _pers.getY() + ")");
         mouseMoved(me); // move _pers into position
         me.consume();
