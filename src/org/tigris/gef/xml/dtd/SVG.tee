@@ -1,4 +1,4 @@
-<?xml version='1.0'?>
+<?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE TemplateSet [
   <!ELEMENT TemplateSet (macro | template)* >
   <!ELEMENT macro (#PCDATA)>
@@ -43,7 +43,7 @@ font-size:<ocl>self.fontSize</ocl>
 
 <template class='org.tigris.gef.base.Diagram'>
 <![CDATA[
-<?xml version='1.0'?>
+<?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE svg SYSTEM "svg-20000303-stylable.dtd"
 [
 	<!ATTLIST g gef:href		CDATA #IMPLIED>

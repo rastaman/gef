@@ -38,8 +38,61 @@ import javax.xml.parsers.*;
 
 
 public class SVGWriter extends Graphics {
+	/**
+	 * 
+	 */
+	private static class Utf8Writer {
+		private OutputStreamWriter _writer;
+		 
+		public Utf8Writer(OutputStream out) {
+			try {
+			    _writer = new OutputStreamWriter(out, "UTF-8");
+			}
+			catch(UnsupportedEncodingException e) {
+				System.err.println("[SVGWriter] UTF-8 not supported. Switching to default." + e);
+			    _writer = new OutputStreamWriter(out);
+			}
+		}
+		 
+		public void print(String s) {
+			try {
+				_writer.write(s);
+			}
+			catch(IOException e) {
+				System.err.println("[SVGWriter] " + e);
+			}
+		}
 
-    private PrintWriter _p;
+		public void print(char c) {
+			try {
+				_writer.write(c);
+			}
+			catch(IOException e) {
+				System.err.println("[SVGWriter] " + e);
+			}
+		}
+
+		public void println(String s) {
+			try {
+				_writer.write(s);
+				_writer.write('\n');
+			}
+			catch(IOException e) {
+				System.err.println("[SVGWriter] " + e);
+			}
+		}
+
+		public void close() {
+			try {
+				_writer.close();
+			}
+			catch(IOException e) {
+				System.err.println("[SVGWriter] " + e);
+			}
+		}
+	}
+
+    private Utf8Writer _writer;
 
     Document _svg;
 
@@ -78,9 +131,9 @@ public class SVGWriter extends Graphics {
     private String SVGns = "http://www.w3.org/2000/SVG";
 
     public SVGWriter(OutputStream stream, Rectangle drawingArea) throws IOException, Exception {
-        _p = new PrintWriter(stream);
-	_drawingArea = drawingArea;
-	translate( _hInset - drawingArea.x, _vInset - drawingArea.y);
+        _writer = new Utf8Writer(stream);
+	    _drawingArea = drawingArea;
+	    translate( _hInset - drawingArea.x, _vInset - drawingArea.y);
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(false);
@@ -88,10 +141,10 @@ public class SVGWriter extends Graphics {
         DocumentBuilder builder = factory.newDocumentBuilder();
         _svg = builder.newDocument();
 
-	_root = _svg.createElement( "svg");
+	    _root = _svg.createElement( "svg");
         _root.setAttribute("xmlns","http://www.w3.org/2000/svg");
-	_root.setAttribute( "width", "" + (2 * _hInset + scaleX(_drawingArea.width)));
-	_root.setAttribute( "height", "" + (2 * _vInset + scaleY(_drawingArea.height)));
+	    _root.setAttribute( "width", "" + (2 * _hInset + scaleX(_drawingArea.width)));
+	    _root.setAttribute( "height", "" + (2 * _vInset + scaleY(_drawingArea.height)));
     }
 
     public Graphics create() { return this; }
@@ -105,8 +158,8 @@ public class SVGWriter extends Graphics {
 
     public void dispose() {
         _svg.appendChild( _root);
-	printDOMTree( _svg);
-	_p.close();
+	    printDOMTree( _svg);
+	    _writer.close();
     }
 
     public void printDOMTree( Node node) {
@@ -117,36 +170,36 @@ public class SVGWriter extends Graphics {
 	    // print the document element
 	case Node.DOCUMENT_NODE:
 	    {
-		_p.println("<?xml version=\"1.0\" ?>");
-		_p.println("<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 20001102//EN' 'http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd'>");
+		_writer.println("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+		_writer.print("<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 20001102//EN' 'http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd'>\n");
 		printDOMTree(((Document)node).getDocumentElement());
 		break;
 	    }
 	    // print element with attributes
 	case Node.ELEMENT_NODE:
 	    {
-		_p.print("<");
-		_p.print(node.getNodeName());
+		_writer.print("<");
+		_writer.print(node.getNodeName());
 
 		NamedNodeMap attrs = node.getAttributes();
 		for (int i = 0; i < attrs.getLength(); i++) {
 		    Node attr = attrs.item(i);
-		    _p.print(" " + attr.getNodeName() + "=\""
+		    _writer.print(" " + attr.getNodeName() + "=\""
 				+ attr.getNodeValue() + "\"");
 		}
 
 		NodeList children = node.getChildNodes();
 
 		if (children.getLength() > 0) {
-		    _p.println(">");
+		    _writer.println(">");
 		    int len = children.getLength();
 		    for (int i = 0; i < len; i++) printDOMTree(children.item(i));
 
-		    _p.print("</");
-		    _p.print(node.getNodeName());
-		    _p.println('>');
+		    _writer.print("</");
+		    _writer.print(node.getNodeName());
+		    _writer.println(">");
 		} else {
-		    _p.println("/>");
+		    _writer.println("/>");
 		}
 		break;
 
@@ -155,17 +208,17 @@ public class SVGWriter extends Graphics {
 	    // handle entity reference nodes
 	case Node.ENTITY_REFERENCE_NODE:
 	    {
-		_p.print("&");
-		_p.print(node.getNodeName());
-		_p.print(";");
+		_writer.print("&");
+		_writer.print(node.getNodeName());
+		_writer.print(";");
 		break;
 	    }
 	    // print cdata sections
 	case Node.CDATA_SECTION_NODE:
 	    {
-		_p.print("<![CDATA[");
-		_p.print(node.getNodeValue());
-		_p.print("]]>");
+		_writer.print("<![CDATA[");
+		_writer.print(node.getNodeValue());
+		_writer.print("]]>");
 		break;
 	    }
 	    // print text 
@@ -177,21 +230,21 @@ public class SVGWriter extends Graphics {
 		    switch (text.charAt(i)) {
 		    case '&' :
 			{
-			    _p.print("&amp;");
+			    _writer.print("&amp;");
 			    break;
 			}
 		    case '<' :
 			{
-			    _p.print("&lt;");
+			    _writer.print("&lt;");
 			    break;
 			}
 		    case '>' :
 			{
-			    _p.print("&gt;");
+			    _writer.print("&gt;");
 			    break;
 			}
 		    default :
-			_p.print(text.charAt(i));
+			_writer.print(text.charAt(i));
 		    }
 		}
 		break; 
@@ -199,14 +252,14 @@ public class SVGWriter extends Graphics {
 	    // print processing instruction
 	case Node.PROCESSING_INSTRUCTION_NODE:
 	    {
-		_p.print("<?");
-		_p.print(node.getNodeName());
+		_writer.print("<?");
+		_writer.print(node.getNodeName());
 		String data = node.getNodeValue();
 		{
-		    _p.print("");
-		    _p.print(data);
+		    _writer.print("");
+		    _writer.print(data);
 		}
-		_p.print("?>");
+		_writer.print("?>");
 		break;
 	    }
 	}
@@ -367,12 +420,12 @@ public class SVGWriter extends Graphics {
 		handlesinglepixel(i, j, pixels[j * iw + i]);
 	    }
 	    if (iw % 2 == 1) p.print("0");
-	    _p.println();
+	    _writer.println();
 	}
 	if (ih % 2 == 1) {
 	    for (int i = 0; i < 3 * (iw + iw % 2); i++)
 		p.print("0");
-	    _p.println();
+	    _writer.println();
 	}
 	p.println("grestore");
 	*/

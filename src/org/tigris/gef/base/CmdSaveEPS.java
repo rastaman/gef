@@ -53,6 +53,7 @@ public class CmdSaveEPS extends CmdSaveGraphics {
                  throws IOException {
 	  System.out.println("Writing Encapsulated PostScript...");
       PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
+      ps.translate(-drawingArea.x,-drawingArea.y);
       ce.print(ps);
       ps.dispose();
 	  System.out.println("Wrote Encapsulated PostScript.");
