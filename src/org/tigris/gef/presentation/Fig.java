@@ -42,11 +42,12 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 
     /** The size of the dashes drawn when the Fig is dashed. */
 
-    //public final int DASH_LENGTH = 5;
     // TODO deprecate these arrays. There is no such thing as a constant array.
     // these need hiding behind getters and setters
-    public static final String[] DASHED_CHOICES = {"Solid", "Dashed"};
-    public static final int[][] DASH_ARRAYS = {null, {5}, {15, 5}, {3, 10}, {3, 6, 10, 6}};
+    public static final String[] DASHED_CHOICES = {"Solid", "Dashed",     "LongDashed",  "Dotted",      "DotDash"};
+    //public static final int[][] DASH_ARRAYS   = {null,    {5,    5},    {15,    5},    {3,    10},    {3,    6,    10,    6}};     // opaque, transparent, [opaque, transparent]
+    public static final float[][] DASH_ARRAYS   = {null,    {5.0f, 5.0f}, {15.0f, 5.0f}, {3.0f, 10.0f}, {3.0f, 6.0f, 10.0f, 6.0f}};  // opaque, transparent, [opaque, transparent]
+    public static final int[]     DASH_PERIOD   = {0,        10,           20,            13,            25,                     };  // the sum of each subarray
 
     ////////////////////////////////////////////////////////
     // instance variables
@@ -128,8 +129,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      */
     protected int _lineWidth = 1;
     
-    protected int[] _dashes = null;
-    protected float[] _g2dashes = null;
+    protected float[] _dashes = null;
+    protected int     _dashStyle = 0;
+    protected int     _dashPeriod = 0;
 
     /** True if the object should fill in its area. */
     protected boolean _filled = true;
@@ -640,45 +642,26 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         }
     }
 
-    protected int drawDashedLine(Graphics g, int phase, int x1, int y1, int x2, int y2) {
+    protected int drawDashedLine(Graphics g, int phase, int x1, int y1, int x2, int y2) {             // float phase?
         int segStartX;
         int segStartY;
         int segEndX;
         int segEndY;
         int dxdx = (x2 - x1) * (x2 - x1);
         int dydy = (y2 - y1) * (y2 - y1);
-        int length = (int)Math.sqrt(dxdx + dydy);
-        int numDashes = _dashes.length;
+        int length = (int)(Math.sqrt(dxdx + dydy) + 0.5);       // This causes a smaller rounding error of 0.5pixels max. . Seems acceptable.
         int d;
-        int dashesDist = 0;
-        for(d = 0; d < numDashes; d++) {
-            dashesDist += _dashes[d];
-            // find first partial dash?
-        }
+        float lineWidth = _lineWidth;
+        Graphics2D g2D = (Graphics2D)g;
+        Stroke  OriginalStroke = g2D.getStroke();               // we need this to restore the original stroke afterwards
 
-        d = 0;
-        int i = 0;
-        while(i < length) {
-            segStartX = x1 + ((x2 - x1) * i) / length;
-            segStartY = y1 + ((y2 - y1) * i) / length;
-            i += _dashes[d];
-            d = (d + 1) % numDashes;
-            if(i >= length) {
-                segEndX = x2;
-                segEndY = y2;
-            }
-            else {
-                segEndX = x1 + ((x2 - x1) * i) / length;
-                segEndY = y1 + ((y2 - y1) * i) / length;
-            }
+        BasicStroke  DashedStroke   = new BasicStroke(lineWidth,   BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f,            _dashes,    (float)phase);
+        //                                           (float width, int cap,                int join,               float miterlimit, float[] dash, float dash_phase)
+        g2D.setStroke(DashedStroke);
+        g2D.drawLine(x1, y1, x2, y2);
+        g2D.setStroke(OriginalStroke);   // undo the manipulation of g
 
-            g.drawLine(segStartX, segStartY, segEndX, segEndY);
-            i += _dashes[d];
-            d = (d + 1) % numDashes;
-        }
-
-        // needs-more-work: phase not taken into account
-        return (length + phase) % dashesDist;
+        return (length + phase) % _dashPeriod ;
     }
     
     protected void drawDashedPerimeter(Graphics g) {
@@ -1347,12 +1330,11 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /** Set line to be dashed or not **/
     public void setDashed(boolean now_dashed) {
         if(now_dashed) {
-            _dashes = DASH_ARRAYS[1];
-            _g2dashes = new float[]{5, 5};
+            _dashes   = DASH_ARRAYS[1];
+            _dashPeriod = DASH_PERIOD[1];
         }
         else {
             _dashes = null;
-            _g2dashes = null;
         }
     }
 
