@@ -92,28 +92,24 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /**
      *  X coordinate of the Fig's bounding box. It is the responsibility of
      *  subclasses to make sure this value is ALWAYS up-to-date.
-     * @deprecated 0.11 will change to package visibility use getters/setters
      */
     protected int _x;
     
     /**
      *  Y coordinate of the Fig's bounding box. It is the responsibility of
      *  subclasses to make sure this value is ALWAYS up-to-date.
-     * @deprecated 0.11 will change to package visibility use getters/setters
      */
     protected int _y;
 
     /**
      *  Width of the Fig's bounding box. It is the responsibility of
      *  subclasses to make sure this value is ALWAYS up-to-date.
-     * @deprecated 0.11 will change to package visibility use getters/setters
      */
     protected int _w;
 
     /**
      *  Height of the Fig's bounding box. It is the responsibility of
      *  subclasses to make sure this value is ALWAYS up-to-date.
-     * @deprecated 0.11 will change to package visibility use getters/setters
      */
     protected int _h;
 
