@@ -58,55 +58,55 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     // instance variables
 
     /** Font info. */
-    protected Font _font = new Font("TimesRoman", Font.PLAIN, 10);
-    protected transient FontMetrics _fm;
-    protected int _lineHeight;
+    private Font _font = new Font("TimesRoman", Font.PLAIN, 10);
+    private transient FontMetrics _fm;
+    private int _lineHeight;
 
     /** Color of the actual text characters. */
-    protected Color _textColor = Color.black;
+    private Color _textColor = Color.black;
 
     /** Color to be drawn behind the actual text characters. Note that
      *  this will be a smaller area than the bounding box which is
      *  filled with FillColor. */
-    protected Color _textFillColor = Color.white;
+    private Color _textFillColor = Color.white;
 
     /** True if the area behind individual characters is to be filled
      *  with TextColor. */
-    protected boolean _textFilled = false;
+    private boolean _textFilled = false;
 
     /** True if the text should be editable. False for read-only. */
-    protected boolean _editable = true;
+    private boolean _editable = true;
 
-    protected Class _textEditorClass = FigTextEditor.class;
+    private Class _textEditorClass = FigTextEditor.class;
 
     /** True if the text should be underlined. needs-more-work. */
-    protected boolean _underline = false;
+    private boolean _underline = false;
 
     /** True if more than one line of text is allow. If false, newline
      *  characters will be ignored. True by default. */
-    protected boolean _multiLine = true;
+    private boolean _multiLine = true;
 
-    protected boolean _allowsTab = true;
+    private boolean _allowsTab = true;
 
     /** Extra spacing between lines. Default is 0 pixels. */
-    protected int _lineSpacing = 0;
+    private int _lineSpacing = 0;
 
     /** Internal margins between the text and the edge of the rectangle. */
-    protected int _topMargin = 1;
-    protected int _botMargin = 1;
-    protected int _leftMargin = 1;
-    protected int _rightMargin = 1;
+    private int _topMargin = 1;
+    private int _botMargin = 1;
+    private int _leftMargin = 1;
+    private int _rightMargin = 1;
 
     /** True if the FigText can only grow in size, never shrink. */
-    protected boolean _expandOnly = false;
+    private boolean _expandOnly = false;
 
-    protected boolean _editMode = false;
+    private boolean _editMode = false;
 
     /** Text justification can be JUSTIFY_LEFT, JUSTIFY_RIGHT, or JUSTIFY_CENTER. */
-    protected int _justification = JUSTIFY_LEFT;
+    private int _justification = JUSTIFY_LEFT;
 
     /** The current string to display. */
-    protected String _curText;
+    private String _curText;
 
     ////////////////////////////////////////////////////////////////
     // static initializer
@@ -129,7 +129,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         PropCategoryManager.categorizeProperty("Style", "textColor");
     }
 
-    private static Log LOG = LogFactory.getLog(FigText.class);
+    private static final Log LOG = LogFactory.getLog(FigText.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors
