@@ -18,7 +18,7 @@ public class GraphModelException extends Exception {
     }
 
     public GraphModelException(String mess, Exception e) {
-        super(mess, e);
+        super(mess);
         cause = e;
     }
     
