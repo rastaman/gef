@@ -440,7 +440,11 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      * USED BY PGML.tee
      */
     public String classNameAndBounds() {
-        return getClass().getName() + "[" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + "]";
+        if (isVisible()) {
+            return getClass().getName() + "[" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + "]";
+        } else {
+            return getClass().getName() + "[]";
+        }
     }
 
     public void cleanUp() {
