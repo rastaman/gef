@@ -34,22 +34,25 @@ package org.tigris.gef.base;
  *  any underlying Net stuctures. This differs from CmdDelete in that
  *  when an underlying NetNode is disposed, it should delete all views
  *  on it, not just the selected one.
+ * @deprecated 0.10.4 in favour of CmdDeleteFromModel
  *
  * @see SelectionManager#dispose
  * @see CmdDelete */
 
 public class CmdDispose extends Cmd {
 
-  public CmdDispose() {
-	  super("RemoveFromModel");
-  }
+    public CmdDispose() {
+        super("RemoveFromModel");
+    }
 
-  public void doIt() {
-    Editor ce = Globals.curEditor();
-    SelectionManager sm = ce.getSelectionManager();
-    sm.dispose();
-    sm.deselectAll();
-  }
+    public void doIt() {
+        System.out.println("CmdDispose");
+        Editor ce = Globals.curEditor();
+        SelectionManager sm = ce.getSelectionManager();
+        sm.dispose();
+        sm.deselectAll();
+    }
 
-  public void undoIt() { }
+    public void undoIt() {
+    }
 } /* end class CmdDispose */

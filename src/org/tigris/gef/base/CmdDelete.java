@@ -30,10 +30,15 @@
 
 package org.tigris.gef.base;
 
-/** Cmd to delete Figs from view. This does not
- *  do anything to any underlying Net or other model, it is strictly a
- *  manipulation of graphical objects.  Normally CmdDispose is the
- *  command users will want to execute.
+/** 
+ * Cmd to delete Figs from view. This does not
+ * do anything to any underlying Net or other model, it is strictly a
+ * manipulation of graphical objects.  Normally CmdDispose is the
+ * command users will want to execute.
+ * @deprecated 0.10.4 in favour of CmdRemoveFromView. The word "delete" in the classname
+ * is confusing when reading the swing guidelines. According to swing guidlelines
+ * "delete" is the strongest form of delete (which this is not) and remove is
+ * remove from context (which better describes this action).
  *
  * @see Fig
  * @see CmdDispose
@@ -54,5 +59,6 @@ public class CmdDelete extends Cmd {
         sm.delete();
     }
 
-    public void undoIt() { }
+    public void undoIt() {
+    }
 } /* end class CmdDelete */
