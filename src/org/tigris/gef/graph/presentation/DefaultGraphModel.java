@@ -55,6 +55,9 @@ public class DefaultGraphModel
     ////////////////////////////////////////////////////////////////
     // instance variables
 
+    /**
+     * @deprecated in 0.10.1 use getter/setter will become private
+     */
     protected NetList _netList;
 
     private static final Logger LOG = Logger.getLogger(DefaultGraphModel.class);
@@ -76,6 +79,7 @@ public class DefaultGraphModel
     public NetList getNetList() {
         return _netList;
     }
+    
     public void setNetList(NetList nl) {
         _netList = nl;
     }
