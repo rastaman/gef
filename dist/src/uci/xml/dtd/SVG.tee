@@ -31,7 +31,7 @@ style='
 fill:rgb(<ocl>self.TextFillColor.Red</ocl>,
 		 <ocl>self.TextFillColor.Green</ocl>,
 		 <ocl>self.TextFillColor.Blue</ocl>);
-stroke-width:<ocl>self.LineWidth</ocl>;
+stroke-width:1;
 stroke:rgb(<ocl>self.TextColor.Red</ocl>,
 		   <ocl>self.TextColor.Green</ocl>,
 		   <ocl>self.TextColor.Blue</ocl>);
@@ -213,7 +213,23 @@ rgb(
 </template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<!-- image? -->
+<template class='uci.gef.FigImage'>
+<![CDATA[
+<image
+  id='<ocl>self.id</ocl>'
+  class='<ocl>self.class.name</ocl>'
+  style='fill:none;'
+  x="<ocl>self.x</ocl>"
+  y="<ocl>self.y</ocl>"
+  width="<ocl>self.width</ocl>"
+  height="<ocl>self.height</ocl>"
+  xlink:href="<ocl>self.URL</ocl>
+>
+  <title></title>
+  <desc></desc>
+</image>
+]]>
+</template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class='uci.gef.FigGroup'>
@@ -226,10 +242,9 @@ rgb(
 >
   <desc></desc>
   <title></title>
-  <foreignObject height="0" width="0">
-    enclosingFig='Fig<ocl>self.enclosingFig.id</ocl>'
-  </foreignObject>
-  
+  <switch>
+    <foreignObject height="0" width="0"><ocl>self.PrivateData</ocl></foreignObject>
+  </switch>
   <ocl>self.figs</ocl>
 </g>
 ]]>
@@ -246,13 +261,9 @@ rgb(
 >
   <desc></desc>
   <title></title>
-  <foreignObject height="0" width="0">
-    sourcePortFig='Fig<ocl>self.sourcePortFig.id</ocl>'
-    destPortFig='Fig<ocl>self.destPortFig.id</ocl>'
-    sourceFigNode='Fig<ocl>self.sourceFigNode.id</ocl>'
-    destFigNode='Fig<ocl>self.destFigNode.id</ocl>'
-  </foreignObject>
-
+  <switch>
+    <foreignObject height="0" width="0"><ocl>self.PrivateData</ocl></foreignObject>
+  </switch<
   <ocl>self.fig</ocl>
 </g>
 ]]>
