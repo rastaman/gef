@@ -1,66 +1,229 @@
-<table border="0" cellpadding="2" width="100%" bgcolor="white">
-  <td bgcolor="#CCCC99"><strong><font color="#000033"
-face="Arial, Helvetica, sans-serif"> Getting GEF</font></strong> </td>
+
+<table width="100%" border="0" cellpadding="5" cellspacing="5" bgcolor="#f0f0f0">
+  <tr align="center"> 
+    <td width="100%" valign="top" colspan="2"> 
+      <table border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td> 
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr> 
+                <td valign="bottom" align="right" width="15" bgcolor="#f0f0f0" height="10"><img src="images/handle_nw.gif" width="5" height="5"></td>
+                <td valign="bottom" width="15" bgcolor="#CCCC99"><img src="images/handle_ne.gif" width="5" height="5"></td>
+                <td rowspan="2" bgcolor="#CCCC99"> 
+                  <table border="0" cellpadding="2">
+                    <tr> 
+                      <td><strong><font color="#000033"
+face="Arial, Helvetica, sans-serif"> Getting GEF</font></strong></td>
+                    </tr>
+                  </table>
+                </td>
+                <td align="right" valign="bottom" width="15" bgcolor="#CCCC99"><img src="images/handle_nw.gif" width="5" height="5"></td>
+                <td valign="bottom" width="20" bgcolor="#f0f0f0"><img src="images/handle_ne.gif" width="5" height="5"></td>
+              </tr>
+              <tr> 
+                <td valign="top" align="right" height="10"><img src="images/handle_sw.gif" width="5" height="5"></td>
+                <td valign="top" bgcolor="#CCCC99"><img src="images/handle_se.gif" width="5" height="5"></td>
+                <td valign="top" align="right" bgcolor="#CCCC99"><img src="images/handle_sw.gif" width="5" height="5"></td>
+                <td valign="top"><img src="images/handle_se.gif" width="5" height="5"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
   </tr>
   <tr> 
-    <td bgcolor="#f0f0f0" valign="top"> 
-      <p><b>CVS</b></p>
-      <blockquote> 
-        <p>This is the latest development distribution of GEF. The code in this 
-          distribution compiles independently of ArgoUML, but is not currently 
-          feature complete. To get GEF from CVS, set your CVSROOT environment 
-          variable like this:</p>
-        <blockquote> 
-          <pre>
+    <td width="100%" valign="top" colspan="2"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr bgcolor="#E9E9D6"> 
+          <td> 
+            <table border="0" cellpadding="0" cellspacing="0">
+              <tr> 
+                <td> 
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td valign="bottom" align="right" width="15" bgcolor="#f0f0f0" height="10"><img src="images/handle_nw.gif" width="5" height="5"></td>
+                      <td valign="bottom" width="15" bgcolor="#CCCC99"><img src="images/handle_ne.gif" width="5" height="5"></td>
+                      <td rowspan="2" bgcolor="#CCCC99"> 
+                        <table border="0" cellpadding="2">
+                          <tr> 
+                            <td><strong><font face="Arial, Helvetica, sans-serif">CVS 
+                              </font></strong></td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td align="right" valign="bottom" width="15" bgcolor="#CCCC99"><img src="images/handle_nw.gif" width="5" height="5"></td>
+                      <td valign="bottom" width="20" bgcolor="#f0f0f0"><img src="images/handle_ne.gif" width="5" height="5"></td>
+                    </tr>
+                    <tr> 
+                      <td valign="top" align="right" bgcolor="#E9E9D6" height="10"><img src="images/handle_sw.gif" width="5" height="5"></td>
+                      <td valign="top" bgcolor="#CCCC99"><img src="images/handle_se.gif" width="5" height="5"></td>
+                      <td valign="top" align="right" bgcolor="#CCCC99"><img src="images/handle_sw.gif" width="5" height="5"></td>
+                      <td valign="top" bgcolor="#E9E9D6"><img src="images/handle_se.gif" width="5" height="5"></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr bgcolor="#E9E9D6"> 
+          <td> 
+            <table border="0" cellpadding="10" cellspacing="0">
+              <tr> 
+                <td> 
+                  <p>This is the latest development distribution of GEF. The code 
+                    in this distribution compiles independently of ArgoUML, but 
+                    is not currently feature complete. To get GEF from CVS, set 
+                    your CVSROOT environment variable like this:</p>
+                  <blockquote> 
+                    <pre>
 CVSROOT=:pserver:username@cvs.tigris.org:/cvs</pre>
-        </blockquote>
-        <p>If you have been given write access to the CVS repository, then replace 
-          'username' with your own login name. Otherwise, use the username 'guest' 
-          (password is 'guest') to get read access to the CVS repository. Then 
-          log in to CVS with your password:<br>
-        </p>
-        <blockquote> 
-          <pre>cvs login
+                  </blockquote>
+                  <p>If you have been given write access to the CVS repository, 
+                    then replace 'username' with your own login name. Otherwise, 
+                    use the username 'guest' (password is 'guest') to get read 
+                    access to the CVS repository. Then log in to CVS with your 
+                    password:<br>
+                  </p>
+                  <blockquote> 
+                    <pre>cvs login
 </pre>
-        </blockquote>
-        <p>And check out the GEF distribution:<br>
-        </p>
-        <blockquote> 
-          <pre>cvs checkout gef/dist</pre>
-        </blockquote>
-        <p>This distribution uses Ant (<a href="http://jakarta.apache.org/ant">http://jakarta.apache.org/ant</a>) 
-          for its build system. Ant is a cross-platform build tool based on Java 
-          and XML, similar to 'make'. Read the INSTALL.txt file in the distribution.for 
-          details on how to build GEF with Ant.</p>
-        <p>You can also <a href="source/browse/gef/">browse CVS source code over 
-          the web</a>.</p>
-        <p>For more information on using CVS, documentation, and CVS clients, 
-          click on the "Tool Docs" menu at left and select the "Source/CVS" option. 
-          Or, click <a href="http://www.tigris.org/tools/tools_cvs.html">here</a>. 
-        </p>
-        </blockquote>
+                  </blockquote>
+                  <p>And check out the GEF distribution:<br>
+                  </p>
+                  <blockquote> 
+                    <pre>cvs checkout gef/dist</pre>
+                  </blockquote>
+                  <p>This distribution uses Ant (<a href="http://jakarta.apache.org/ant">http://jakarta.apache.org/ant</a>) 
+                    for its build system. Ant is a cross-platform build tool based 
+                    on Java and XML, similar to 'make'. Read the INSTALL.txt file 
+                    in the distribution.for details on how to build GEF with Ant.</p>
+                  <p>You can also <a href="source/browse/gef/">browse CVS source 
+                    code over the web</a>.</p>
+                  <p>For more information on using CVS, documentation, and CVS 
+                    clients, click on the "Tool Docs" menu at left and select 
+                    the "Source/CVS" option. Or, click <a href="http://www.tigris.org/tools/tools_cvs.html">here</a>. 
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td width="100%" valign="top" colspan="2">
       <p>&nbsp;</p>
       <p>Other distributions:</p>
-      <p><b>ArgoUML v.070</b></p>
-      <blockquote> 
-        <p>The latest stable source code for GEF is embedded in the ArgoUML distribution. 
-          You can download ArgoUML <a href="http://argouml.tigris.org">here</a>.</p>
-      </blockquote>
-      <p>&nbsp;</p>
-      <p><b>GEF v.060</b></p>
-      <blockquote> 
-        <p>This was the last independent distribution of GEF. It is significantly 
-          out of date compared with the latest ArgoUML v.070 code. If you're still 
-          interested in it, you can download it here:<a href="http://www.ics.uci.edu/pub/arch/gef"> 
-          </a></p>
-        <ul>
-          <li><a
-href="/v0.6/dc1.html">Download v.060 Compiled Code</a>
-          <li><a
+    </td>
+  </tr>
+  <tr>
+    <td width="100%" valign="top" colspan="2">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr bgcolor="#E9E9D6"> 
+          <td> 
+            <table border="0" cellpadding="0" cellspacing="0">
+              <tr> 
+                <td> 
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td valign="bottom" align="right" width="15" bgcolor="#f0f0f0" height="10"><img src="images/handle_nw.gif" width="5" height="5"></td>
+                      <td valign="bottom" width="15" bgcolor="#CCCC99"><img src="images/handle_ne.gif" width="5" height="5"></td>
+                      <td rowspan="2" bgcolor="#CCCC99"> 
+                        <table border="0" cellpadding="2">
+                          <tr> 
+                            <td><strong><font face="Arial, Helvetica, sans-serif">ArgoUML 
+                              v.070 </font></strong></td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td align="right" valign="bottom" width="15" bgcolor="#CCCC99"><img src="images/handle_nw.gif" width="5" height="5"></td>
+                      <td valign="bottom" width="20" bgcolor="#f0f0f0"><img src="images/handle_ne.gif" width="5" height="5"></td>
+                    </tr>
+                    <tr> 
+                      <td valign="top" align="right" bgcolor="#E9E9D6" height="10"><img src="images/handle_sw.gif" width="5" height="5"></td>
+                      <td valign="top" bgcolor="#CCCC99"><img src="images/handle_se.gif" width="5" height="5"></td>
+                      <td valign="top" align="right" bgcolor="#CCCC99"><img src="images/handle_sw.gif" width="5" height="5"></td>
+                      <td valign="top" bgcolor="#E9E9D6"><img src="images/handle_se.gif" width="5" height="5"></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr bgcolor="#E9E9D6"> 
+          <td> 
+            <table border="0" cellpadding="10" cellspacing="0">
+              <tr> 
+                <td>The latest stable source code for GEF is embedded in the ArgoUML 
+                  distribution. You can download ArgoUML <a href="http://argouml.tigris.org">here</a>.</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr> 
+    <td width="100%" valign="top" colspan="2"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr bgcolor="#E9E9D6"> 
+          <td> 
+            <table border="0" cellpadding="0" cellspacing="0">
+              <tr> 
+                <td> 
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td valign="bottom" align="right" width="15" bgcolor="#f0f0f0" height="10"><img src="images/handle_nw.gif" width="5" height="5"></td>
+                      <td valign="bottom" width="15" bgcolor="#CCCC99"><img src="images/handle_ne.gif" width="5" height="5"></td>
+                      <td rowspan="2" bgcolor="#CCCC99"> 
+                        <table border="0" cellpadding="2">
+                          <tr> 
+                            <td><strong><font face="Arial, Helvetica, sans-serif">GEF 
+                              v.060 </font></strong></td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td align="right" valign="bottom" width="15" bgcolor="#CCCC99"><img src="images/handle_nw.gif" width="5" height="5"></td>
+                      <td valign="bottom" width="20" bgcolor="#f0f0f0"><img src="images/handle_ne.gif" width="5" height="5"></td>
+                    </tr>
+                    <tr> 
+                      <td valign="top" align="right" bgcolor="#E9E9D6" height="10"><img src="images/handle_sw.gif" width="5" height="5"></td>
+                      <td valign="top" bgcolor="#CCCC99"><img src="images/handle_se.gif" width="5" height="5"></td>
+                      <td valign="top" align="right" bgcolor="#CCCC99"><img src="images/handle_sw.gif" width="5" height="5"></td>
+                      <td valign="top" bgcolor="#E9E9D6"><img src="images/handle_se.gif" width="5" height="5"></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr bgcolor="#E9E9D6"> 
+          <td> 
+            <table border="0" cellpadding="10" cellspacing="0">
+              <tr> 
+                <td> 
+                  <p>This was the last independent distribution of GEF. It is 
+                    significantly out of date compared with the latest ArgoUML 
+                    v.070 code. If you're still interested in it, you can download 
+                    it here:<a href="http://www.ics.uci.edu/pub/arch/gef"> </a></p>
+                  <ul>
+                    <li><a
+href="/v0.6/dc1.html">Download v.060 Compiled Code</a> 
+                    <li><a
 href="/v0.6/ds1.html">Download v.060 Source Code</a>
-        </ul>
-      </blockquote>
-      <p>&nbsp;</p>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
 </table>
