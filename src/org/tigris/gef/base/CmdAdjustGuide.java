@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdAdjustGuide.java
 // Classes: CmdAdjustGuide
 // Original Author: jrobbins@ics.uci.edu

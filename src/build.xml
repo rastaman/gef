@@ -297,7 +297,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <echo message="--- Executing GEF sample BasicApplication ---"/>
     <java classname="org.tigris.gef.demo.BasicApplication"
           fork="yes"
-          classpath="${build.dest};${classpath}"/>
+          classpath="${build.dest};${lib.dir}/xerces.jar;${classpath}"/>
   </target>
 
 </project>

@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: BasicApplication.java
 // Class: BasicApplication
 // original author: jrobbins@ics.uci.edu
@@ -33,9 +30,11 @@ package org.tigris.gef.demo;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Locale;
 import javax.swing.*;
 
 import org.tigris.gef.base.*;
+import org.tigris.gef.util.*;
 import org.tigris.gef.graph.presentation.*;
 
 /** A simple example of the minimum code needed to build an
@@ -52,6 +51,13 @@ public class BasicApplication {
   // constructors
 
   public BasicApplication() {
+	  // init localizer and resourceloader
+	  Localizer.addResource("GefBase","org.tigris.gef.base.BaseResourceBundle");
+	  Localizer.addResource("GefPres","org.tigris.gef.presentation.PresentationResourceBundle");
+	  Localizer.addLocale(Locale.getDefault());
+	  Localizer.switchCurrentLocale(Locale.getDefault());
+	  ResourceLoader.addResourceExtension("gif");
+	  ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
     _jgf = new JGraphFrame();
     _jgf.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent event) {

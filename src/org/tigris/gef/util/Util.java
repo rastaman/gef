@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 package org.tigris.gef.util;
 
 import java.io.File;
@@ -74,37 +72,6 @@ public class Util {
       }
     }
     return url;
-  }
-
-  public static ImageIcon loadIconResource(String imgName) {
-    return loadIconResource(imgName, imgName);
-  }
-
-  public static ImageIcon loadIconResource(String imgName, String desc) {
-    ImageIcon res = null;
-    try {
-		java.net.URL imgURL = Util.class.getResource(imageName(imgName,true));
-		if (imgURL == null)
-			imgURL = Util.class.getResource(imageName(imgName,false));
-
-		if (imgURL == null) {
-			System.out.println("Icon for " + imgName + " not found");
-			return null;
-		}
-		return new ImageIcon(imgURL, desc + " ");
-    }
-    catch (Exception ex) {
-		System.out.println("Exception in loadIconResource");
-		ex.printStackTrace();
-		return new ImageIcon(desc);
-    }
-  }
-
-  protected static String imageName(String name, boolean defaultLocation) {
-	  String imageLocation = "/org/tigris/gef/Images";
-	  if ( !defaultLocation )
-		  imageLocation = System.getProperty("gef.imageLocation","/org/tigris/gef/Images");
-	  return imageLocation + "/" + stripJunk(name) + ".gif";
   }
 
   /*

@@ -32,7 +32,7 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 
 import org.tigris.gef.base.*;
-import org.tigris.gef.util.Util;
+import org.tigris.gef.util.*;
 
 public class ToolBar extends JToolBar implements MouseListener {
   protected Vector _lockable = new Vector();
@@ -54,7 +54,7 @@ public class ToolBar extends JToolBar implements MouseListener {
   }
 
   public JButton add(Action a, String name, String iconResourceStr) {
-    Icon icon = Util.loadIconResource(iconResourceStr, name);
+    Icon icon = ResourceLoader.lookupIconResource(iconResourceStr, name);
     //System.out.println(icon);
     return add(a, name, icon);
   }
@@ -99,7 +99,7 @@ public class ToolBar extends JToolBar implements MouseListener {
   }
 
   public JToggleButton addToggle(Action a, String name, String iconResourceStr) {
-    Icon icon = Util.loadIconResource(iconResourceStr, name);
+    Icon icon = ResourceLoader.lookupIconResource(iconResourceStr, name);
     //System.out.println(icon);
     return addToggle(a, name, icon);
   }
@@ -119,8 +119,8 @@ public class ToolBar extends JToolBar implements MouseListener {
 
   public JToggleButton addToggle(Action a, String name,
 				 String upRes, String downRes) {
-    ImageIcon upIcon = Util.loadIconResource(upRes, name);
-    ImageIcon downIcon = Util.loadIconResource(downRes, name);
+    ImageIcon upIcon = ResourceLoader.lookupIconResource(upRes, name);
+    ImageIcon downIcon = ResourceLoader.lookupIconResource(downRes, name);
     JToggleButton b = new JToggleButton(upIcon);
     b.setToolTipText(name + " ");
     b.setEnabled(a.isEnabled());

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,32 +21,23 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CmdAdjustPageBreaks.java
-// Classes: CmdAdjustPageBreaks
-// Original Author: jrobbins@ics.uci.edu
+// File: PresentationResourceBundle.java
+// Classes: PresentationResourceBundle
+// Original Author: Luc Maisonobe
 // $Id$
 
-package org.tigris.gef.base;
+package org.tigris.gef.presentation;
 
-import java.awt.Event;
+import java.util.ListResourceBundle;
 
-/** An Cmd to modify the way that the PageBreaks Layer of the
- *  current document looks.  For now it just cycles among a few
- *  predefined looks.  Needs-More-Work: Should put up a PageBreaks
- *  preference dialog box or use the property sheet.  */
+public class PresentationResourceBundle extends ListResourceBundle {
 
-public class CmdAdjustPageBreaks extends Cmd {
-
-  /** Construct a new CmdAdjustPageBreaks */
-  public CmdAdjustPageBreaks() {
-    super("Adjust PageBreaks", NO_ICON);
-  }
-
-  public void doIt() {
-    Editor ce = Globals.curEditor();
-    Layer pageBreaks = (Layer) ce.getLayerManager().findLayerNamed("PageBreaks");
-    if (pageBreaks != null) pageBreaks.adjust();
-  }
-
-  public void undoIt() { }
-} /* end class CmdAdjustPageBreaks */
+	static final Object[][] _contents = {
+		{"Ordering", "Ordering"}
+	};
+	
+	public Object[][] getContents() {
+		return _contents;
+	}
+	
+}

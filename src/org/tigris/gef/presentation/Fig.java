@@ -38,6 +38,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.properties.*;
 import org.tigris.gef.ui.*;
+import org.tigris.gef.util.*;
 
 /** This class is the base class for basic drawing objects such as
  *  rectangles, lines, text, circles, etc. Also, class FigGroup
@@ -88,6 +89,9 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   protected int _y;
   protected int _w;
   protected int _h;
+
+	/** Name of the resource being basis to this figs localization. */
+	protected String _resource = "";
 
   /** Outline color of fig object. */
   protected Color _lineColor = Color.black;
@@ -161,6 +165,16 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 	setOwner(own);
 	//annotation related
   }
+
+	//------------------------
+	// localization related
+	public void setResource(String resource) { 
+		_resource = resource;
+	}
+
+	public String getResource() {
+		return _resource;
+	}
 
   //--------------------------------
   // annotation related
@@ -590,7 +604,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   public Point getPoints(int i) { return null; }  
   public Vector getPopUpActions(MouseEvent me) {
 	Vector popUpActions = new Vector();
-	JMenu orderMenu = new JMenu("Ordering");
+	JMenu orderMenu = new JMenu(Localizer.localize("GefPres","Ordering"));
 	orderMenu.add(CmdReorder.BringForward);
 	orderMenu.add(CmdReorder.SendBackward);
 	orderMenu.add(CmdReorder.BringToFront);
