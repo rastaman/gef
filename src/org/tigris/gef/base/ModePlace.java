@@ -202,6 +202,10 @@ public class ModePlace extends FigModifyingModeImpl {
                 }
             }
             _pers.setEnclosingFig(encloser);
+            if (_node instanceof GraphNodeHooks) {
+               ((GraphNodeHooks) _node).postPlacement(editor);
+            }
+            
             editor.getSelectionManager().select(_pers);
         }
         done();
