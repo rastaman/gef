@@ -174,6 +174,7 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
       if (!shouldShow(node)) { System.out.println("node rejected"); return; }
       FigNode newFigNode = _nodeRenderer.getFigNodeFor(_gm, this, node);
       if (newFigNode != null) {
+        newFigNode.setLayer(this);
 	putInPosition(newFigNode);
 	add(newFigNode);
       }
