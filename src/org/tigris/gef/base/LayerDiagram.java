@@ -272,14 +272,11 @@ public class LayerDiagram extends Layer {
             Iterator figs = (new ArrayList(_contents)).iterator();
             while(figs.hasNext()) {
                 Fig fig = (Fig)figs.next();
-                System.out.println("Checking to repaint fig "+fig);
                 if(_clipBounds == null || fig.intersects(_clipBounds)) {
                     if(painter == null) {
-                        System.out.println("Painting");
                         fig.paint(g);
                     }
                     else {
-                        System.out.println("Painting with painter "+painter);
                         painter.paint(g, fig);
                     }
                 }

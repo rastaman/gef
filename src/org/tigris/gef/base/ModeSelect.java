@@ -109,7 +109,7 @@ public class ModeSelect extends FigModifyingModeImpl {
 
         if(me.getModifiers() == InputEvent.BUTTON3_MASK) {
             _selectAnchor = new Point(me.getX(), me.getY());
-            System.out.println("ModeSelect: from awt component " + Globals.curEditor().getJComponent());
+            //System.out.println("ModeSelect: from awt component " + Globals.curEditor().getJComponent());
             return;
         }
 

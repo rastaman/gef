@@ -206,7 +206,7 @@ implements java.io.Serializable {
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object srcPort, Object destPort, Class edgeClass) {
     if (!canConnect(srcPort, destPort)) {
-      System.out.println("illegal connection");
+      //System.out.println("illegal connection");
       return null;
     }
     if (srcPort instanceof NetPort && destPort instanceof NetPort) {
@@ -223,7 +223,7 @@ implements java.io.Serializable {
   }
 
   protected Object connectInternal(NetPort s, NetPort d, NetEdge e) {
-    System.out.println("connectInternal");
+    //System.out.println("connectInternal");
     e.connect(this, s, d);
     addEdge(e);
     return e;
