@@ -31,7 +31,6 @@ package org.tigris.gef.base;
 import java.awt.event.*;
 
 import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 
@@ -51,7 +50,7 @@ public class ModeCreateEdge extends ModeCreate {
     // instance variables
 
     /** The NetPort where the arc is paintn from */
-    private Object _startPort;
+    private Object startPort;
 
     /** The Fig that presents the starting NetPort */
     private Fig _startPortFig;
@@ -127,14 +126,14 @@ public class ModeCreateEdge extends ModeCreate {
             return;
         }
         _sourceFigNode = (FigNode) underMouse;
-        _startPort = _sourceFigNode.deepHitPort(x, y);
-        if (_startPort == null) {
+        startPort = _sourceFigNode.deepHitPort(x, y);
+        if (startPort == null) {
             done();
             me.consume();
             if (LOG.isDebugEnabled()) LOG.debug("MousePressed but no port found - consumed");
             return;
         }
-        _startPortFig = _sourceFigNode.getPortFig(_startPort);
+        _startPortFig = _sourceFigNode.getPortFig(startPort);
         if (LOG.isDebugEnabled()) LOG.debug("MousePressed start port set");
         super.mousePressed(me);
     }
@@ -174,13 +173,13 @@ public class ModeCreateEdge extends ModeCreate {
             // FigNode to see if a port exists 
             Object foundPort = destFigNode.deepHitPort(x, y);
 
-            if (foundPort != null && mgm.canConnect(_startPort, foundPort)) {
+            if (foundPort != null && mgm.canConnect(startPort, foundPort)) {
                 Fig destPortFig = destFigNode.getPortFig(foundPort);
                 Class edgeClass = (Class) getArg("edgeClass");
                 if (edgeClass != null)
-                    _newEdge = mgm.connect(_startPort, foundPort, edgeClass);
+                    _newEdge = mgm.connect(startPort, foundPort, edgeClass);
                 else
-                    _newEdge = mgm.connect(_startPort, foundPort);
+                    _newEdge = mgm.connect(startPort, foundPort);
 
                 // Calling connect() will add the edge to the GraphModel and
                 // any LayerPersectives on that GraphModel will get a
@@ -215,5 +214,13 @@ public class ModeCreateEdge extends ModeCreate {
         if (LOG.isDebugEnabled()) LOG.debug("MouseReleased not on FigNode. Event consumed anyway.");
         done();
         me.consume();
+    }
+    
+    /**
+     * Get the NetPort where the arc is painted from
+     * @return Returns the startPort.
+     */
+    public Object getStartPort() {
+        return startPort;
     }
 } /* end class ModeCreateEdge */
