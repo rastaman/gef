@@ -127,57 +127,58 @@ public class JGraph extends JPanel implements Cloneable {
     return newJGraph;
   }
 
-  /* Set up some standard keystrokes and the Cmds that they invoke. */
-  public void initKeys() {
-    int shift = KeyEvent.SHIFT_MASK;
-    int ctrl = KeyEvent.CTRL_MASK;
-    int ctrlShift = KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK;
-    int alt = KeyEvent.ALT_MASK;
-    int meta = KeyEvent.META_MASK;
+    /* Set up some standard keystrokes and the Cmds that they invoke. */
+    public void initKeys() {
+        int shift = KeyEvent.SHIFT_MASK;
+        int ctrl = KeyEvent.CTRL_MASK;
+        int ctrlShift = KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK;
+        int alt = KeyEvent.ALT_MASK;
+        int meta = KeyEvent.META_MASK;
 
-    bindKey(new CmdSelectNext(true), KeyEvent.VK_TAB, 0);
-    bindKey(new CmdSelectNext(false), KeyEvent.VK_TAB, shift);
+        bindKey(new CmdSelectNext(true), KeyEvent.VK_TAB, 0);
+        bindKey(new CmdSelectNext(false), KeyEvent.VK_TAB, shift);
 
     //bindKey(new CmdDelete(), KeyEvent.VK_DELETE, 0);
     //bindKey(new CmdDispose(), KeyEvent.VK_D, ctrl);
 
-    bindKey(new CmdGroup(), KeyEvent.VK_G, ctrl);
-    bindKey(new CmdUngroup(), KeyEvent.VK_U, ctrl);
+        bindKey(new CmdGroup(), KeyEvent.VK_G, ctrl);
+        bindKey(new CmdUngroup(), KeyEvent.VK_U, ctrl);
 
-    bindKey(new CmdReorder(CmdReorder.SEND_BACKWARD), KeyEvent.VK_B, ctrl);
-    bindKey(new CmdReorder(CmdReorder.BRING_FORWARD), KeyEvent.VK_F, ctrl);
-    bindKey(new CmdReorder(CmdReorder.SEND_TO_BACK), KeyEvent.VK_B, ctrlShift);
-    bindKey(new CmdReorder(CmdReorder.BRING_TO_FRONT), KeyEvent.VK_F, ctrlShift);
+        bindKey(new CmdReorder(CmdReorder.SEND_BACKWARD), KeyEvent.VK_B, ctrl);
+        bindKey(new CmdReorder(CmdReorder.BRING_FORWARD), KeyEvent.VK_F, ctrl);
+        bindKey(new CmdReorder(CmdReorder.SEND_TO_BACK), KeyEvent.VK_B, ctrlShift);
+        bindKey(new CmdReorder(CmdReorder.BRING_TO_FRONT), KeyEvent.VK_F, ctrlShift);
 
-    bindKey(new CmdNudge(CmdNudge.LEFT), KeyEvent.VK_LEFT, 0);
-    bindKey(new CmdNudge(CmdNudge.RIGHT), KeyEvent.VK_RIGHT, 0);
-    bindKey(new CmdNudge(CmdNudge.UP), KeyEvent.VK_UP, 0);
-    bindKey(new CmdNudge(CmdNudge.DOWN), KeyEvent.VK_DOWN, 0);
+        bindKey(new CmdNudge(CmdNudge.LEFT), KeyEvent.VK_LEFT, 0);
+        bindKey(new CmdNudge(CmdNudge.RIGHT), KeyEvent.VK_RIGHT, 0);
+        bindKey(new CmdNudge(CmdNudge.UP), KeyEvent.VK_UP, 0);
+        bindKey(new CmdNudge(CmdNudge.DOWN), KeyEvent.VK_DOWN, 0);
 
-    bindKey(new CmdNudge(CmdNudge.LEFT, 8), KeyEvent.VK_LEFT, shift);
-    bindKey(new CmdNudge(CmdNudge.RIGHT, 8), KeyEvent.VK_RIGHT, shift);
-    bindKey(new CmdNudge(CmdNudge.UP, 8), KeyEvent.VK_UP, shift);
-    bindKey(new CmdNudge(CmdNudge.DOWN, 8), KeyEvent.VK_DOWN, shift);
+        bindKey(new CmdNudge(CmdNudge.LEFT, 8), KeyEvent.VK_LEFT, shift);
+        bindKey(new CmdNudge(CmdNudge.RIGHT, 8), KeyEvent.VK_RIGHT, shift);
+        bindKey(new CmdNudge(CmdNudge.UP, 8), KeyEvent.VK_UP, shift);
+        bindKey(new CmdNudge(CmdNudge.DOWN, 8), KeyEvent.VK_DOWN, shift);
 
-    bindKey(new CmdNudge(CmdNudge.LEFT, 18), KeyEvent.VK_LEFT, alt);
-    bindKey(new CmdNudge(CmdNudge.RIGHT, 18), KeyEvent.VK_RIGHT, alt);
-    bindKey(new CmdNudge(CmdNudge.UP, 18), KeyEvent.VK_UP, alt);
-    bindKey(new CmdNudge(CmdNudge.DOWN, 18), KeyEvent.VK_DOWN, alt);
+        bindKey(new CmdNudge(CmdNudge.LEFT, 18), KeyEvent.VK_LEFT, alt);
+        bindKey(new CmdNudge(CmdNudge.RIGHT, 18), KeyEvent.VK_RIGHT, alt);
+        bindKey(new CmdNudge(CmdNudge.UP, 18), KeyEvent.VK_UP, alt);
+        bindKey(new CmdNudge(CmdNudge.DOWN, 18), KeyEvent.VK_DOWN, alt);
 
-    bindKey(new CmdSelectNear(CmdSelectNear.LEFT), KeyEvent.VK_LEFT, meta);
-    bindKey(new CmdSelectNear(CmdSelectNear.RIGHT), KeyEvent.VK_RIGHT, meta);
-    bindKey(new CmdSelectNear(CmdSelectNear.UP), KeyEvent.VK_UP, meta);
-    bindKey(new CmdSelectNear(CmdSelectNear.DOWN), KeyEvent.VK_DOWN, meta);
+        bindKey(new CmdSelectNear(CmdSelectNear.LEFT), KeyEvent.VK_LEFT, meta);
+        bindKey(new CmdSelectNear(CmdSelectNear.RIGHT), KeyEvent.VK_RIGHT, meta);
+        bindKey(new CmdSelectNear(CmdSelectNear.UP), KeyEvent.VK_UP, meta);
+        bindKey(new CmdSelectNear(CmdSelectNear.DOWN), KeyEvent.VK_DOWN, meta);
+    }
 
-  }
-
-  /** Utility function to bind a keystroke to a Swing Action.  Note
-   *  that GEF Cmds are subclasses of Swing's Actions. */
-  public void bindKey(ActionListener action, int keyCode, int modifiers) {
-    _drawingPane.registerKeyboardAction(action,
-					KeyStroke.getKeyStroke(keyCode, modifiers),
-					WHEN_FOCUSED);
-  }
+    /** Utility function to bind a keystroke to a Swing Action.  Note
+     *  that GEF Cmds are subclasses of Swing's Actions. */
+    public void bindKey(ActionListener action, int keyCode, int modifiers) {
+        _drawingPane.registerKeyboardAction(
+            action,
+            KeyStroke.getKeyStroke(keyCode, modifiers),
+            WHEN_FOCUSED
+        );
+    }
 
   ////////////////////////////////////////////////////////////////
   // accessors
@@ -392,18 +393,24 @@ public class JGraph extends JPanel implements Cloneable {
 
 class JGraphInternalPane extends JPanel {
 //implements FocusListener
+    /**
+     * @deprecated visibility in 0.10.4.
+     * Will become private in a future release.
+     */
     protected Editor _editor;
     private boolean registeredWithTooltip;
 
-  public JGraphInternalPane(Editor e) {
-    _editor = e;
-    setLayout(null);
-    setDoubleBuffered(false);
-    // setAutoscrolls(true); // needs-more-work: no effect...
-    //addFocusListener(this);
-  }
+    public JGraphInternalPane(Editor e) {
+        _editor = e;
+        setLayout(null);
+        setDoubleBuffered(false);
+        // setAutoscrolls(true); // needs-more-work: no effect...
+        //addFocusListener(this);
+    }
 
-  public void paintComponent(Graphics g) { _editor.paint(g); }
+    public void paintComponent(Graphics g) {
+        _editor.paint(g);
+    }
 
 //   static int getGraphicsCount = 0;
 
@@ -449,13 +456,21 @@ class JGraphInternalPane extends JPanel {
         //}
     }
 
-  /** Tell Swing/AWT that JGraph handles tab-order itself. */
-  public boolean isManagingFocus() { return true; }
+    protected void processMouseEvent(MouseEvent e) {
+        if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+            requestFocus();
+        }
 
-  /** Tell Swing/AWT that JGraph can be tabbed into. */
-  public boolean isFocusTraversable() { return true; }
+        super.processMouseEvent(e);
+    }
+    
+      /** Tell Swing/AWT that JGraph handles tab-order itself. */
+    public boolean isManagingFocus() { return true; }
 
-  static final long serialVersionUID = -5067026168452437942L;
+    /** Tell Swing/AWT that JGraph can be tabbed into. */
+    public boolean isFocusTraversable() { return true; }
+
+    static final long serialVersionUID = -5067026168452437942L;
 
 } /* end class JGraphInternalPane */
 
