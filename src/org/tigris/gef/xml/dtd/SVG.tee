@@ -163,7 +163,12 @@ rgb(
 <path
   id='<ocl>self.id</ocl>'
   class='<ocl>self.class.name</ocl>'
-  FILL_AND_STROKE
+  style='fill:none;
+  stroke-width:<ocl>self.lineWidth</ocl>;
+  stroke:rgb(<ocl>self.lineColor.Red</ocl>,
+		     <ocl>self.lineColor.Green</ocl>,
+		     <ocl>self.lineColor.Blue</ocl>);
+  '
   d = 'M
         <ocl>self.firstPoint.x.intValue</ocl>,
 		<ocl>self.firstPoint.y.intValue</ocl>
@@ -225,8 +230,6 @@ rgb(
   height="<ocl>self.height</ocl>"
   xlink:href="<ocl>self.URL</ocl>
 >
-  <title></title>
-  <desc></desc>
 </image>
 ]]>
 </template>
@@ -240,8 +243,6 @@ rgb(
    gef:href='Fig<ocl>self.owner.id</ocl>'
    FILL_AND_STROKE
 >
-  <desc></desc>
-  <title></title>
   <switch>
     <foreignObject height="0" width="0"><ocl>self.PrivateData</ocl></foreignObject>
   </switch>
@@ -259,8 +260,6 @@ rgb(
    gef:href='Fig<ocl>self.owner.id</ocl>'
    FILL_AND_STROKE
 >
-  <desc></desc>
-  <title></title>
   <switch>
     <foreignObject height="0" width="0"><ocl>self.PrivateData</ocl></foreignObject>
   </switch>
