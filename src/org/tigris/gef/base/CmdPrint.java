@@ -237,7 +237,7 @@ public class CmdPrint extends Cmd implements Printable {
     private void promptFitToPage() {
         Object[] options = {"Fit to page", "Multiple Pages"};
 
-        int n = JOptionPane.showOptionDialog(null, "The diagram exceeds the current page size. Select option?", "Printing Selection", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        int n = JOptionPane.showOptionDialog(null, "The diagram exceeds the current page size. Select option?", "Print", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
         if(n == JOptionPane.NO_OPTION) {
             setFitDiagramToPage(false);
