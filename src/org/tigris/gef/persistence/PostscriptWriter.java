@@ -97,7 +97,7 @@ public class PostscriptWriter extends Graphics2D {
       fontmap.put("Dialog","Helvetica");
       fontmap.put("SansSerif","Helvetica");
       fontmap.put("DialogInput","Monospaced");
-      p = new PrintWriter(stream);
+      p = new PrintWriter(new OutputStreamWriter(stream, "ISO8859-1"));
       if (bb==null) {
         p.println("%!PS-Adobe-3.0");
       } else {
