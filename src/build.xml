@@ -192,6 +192,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <target name="package" depends="compile">
     <echo message="Creating the jar file ${lib.dir}/${name}.jar"/>
+    <mkdir dir="${lib.dir}"/>
 	<delete file="${lib.dir}/${name}.jar"/>
 	
     <filter token="version" value="${version}"/>
