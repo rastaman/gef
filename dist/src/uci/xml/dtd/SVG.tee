@@ -14,13 +14,13 @@
 <macro name='FILL_AND_STROKE'>
 <![CDATA[
 style='
-fill:rgb(<ocl>self.fillColor.Red</ocl>,
-		 <ocl>self.fillColor.Green</ocl>,
-		 <ocl>self.fillColor.Blue</ocl>);
-stroke-width:<ocl>self.lineWidth</ocl>;
-stroke:rgb(<ocl>self.lineColor.Red</ocl>,
-		   <ocl>self.lineColor.Green</ocl>,
-		   <ocl>self.lineColor.Blue</ocl>);
+fill:rgb(<ocl>self.FillColor.Red</ocl>,
+		 <ocl>self.FillColor.Green</ocl>,
+		 <ocl>self.FillColor.Blue</ocl>);
+stroke-width:<ocl>self.LineWidth</ocl>;
+stroke:rgb(<ocl>self.LineColor.Red</ocl>,
+		   <ocl>self.LineColor.Green</ocl>,
+		   <ocl>self.LineColor.Blue</ocl>);
 ']]>
 </macro>
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -28,13 +28,13 @@ stroke:rgb(<ocl>self.lineColor.Red</ocl>,
 <macro name='STYLE_TEXT'>
 <![CDATA[
 style='
-fill:rgb(<ocl>self.lineColor.Red</ocl>,
-		 <ocl>self.lineColor.Green</ocl>,
-		 <ocl>self.lineColor.Blue</ocl>);
-stroke-width:<ocl>self.lineWidth</ocl>;
-stroke:rgb(<ocl>self.fillColor.Red</ocl>,
-		   <ocl>self.fillColor.Green</ocl>,
-		   <ocl>self.fillColor.Blue</ocl>);
+fill:rgb(<ocl>self.TextFillColor.Red</ocl>,
+		 <ocl>self.TextFillColor.Green</ocl>,
+		 <ocl>self.TextFillColor.Blue</ocl>);
+stroke-width:<ocl>self.LineWidth</ocl>;
+stroke:rgb(<ocl>self.TextColor.Red</ocl>,
+		   <ocl>self.TextColor.Green</ocl>,
+		   <ocl>self.TextColor.Blue</ocl>);
 font:<ocl>self.fontFamily</ocl>;
 font-size:<ocl>self.fontSize</ocl>
 ']]>
@@ -44,9 +44,14 @@ font-size:<ocl>self.fontSize</ocl>
 <template class='uci.gef.Diagram'>
 <![CDATA[
 <?xml version='1.0'?>
-<!DOCTYPE svg SYSTEM "svg-20000303-shared.dtd">
-<svg description='<ocl>self.classAndModelID</ocl>'
+<!DOCTYPE svg SYSTEM "svg-20000303-stylable.dtd"
+[
+	<!ATTLIST g gef:href		CDATA #IMPLIED>
+]>
+<svg class='<ocl>self.classAndModelID</ocl>'
       id='<ocl>self.name</ocl>'
+	  height='11in'
+	  width='8in'
 >
   <ocl>self.layer.contentsNoEdges</ocl>
   <ocl>self.layer.contentsEdgesOnly</ocl>
@@ -142,7 +147,7 @@ rgb(
 <![CDATA[
 <line
   id='<ocl>self.id</ocl>'
-  description='<ocl>self.class.name</ocl>'
+  class='<ocl>self.class.name</ocl>'
   FILL_AND_STROKE
   x1 = '<ocl>self.x1.intValue</ocl>'
   y1 = '<ocl>self.y1.intValue</ocl>'
@@ -157,7 +162,7 @@ rgb(
 <![CDATA[
 <path
   id='<ocl>self.id</ocl>'
-  description='<ocl>self.class.name</ocl>'
+  class='<ocl>self.class.name</ocl>'
   FILL_AND_STROKE
   d = 'M
         <ocl>self.firstPoint.x.intValue</ocl>,
@@ -174,12 +179,12 @@ rgb(
 <![CDATA[
 <path
   id='<ocl>self.id</ocl>'
-  description='<ocl>self.class.name</ocl>'
+  class='<ocl>self.class.name</ocl>'
   FILL_AND_STROKE
   d = 'M 
 		 <ocl>self.firstPoint.x.intValue</ocl> 
 		 <ocl>self.firstPoint.y.intValue</ocl>
-	   S 
+	   C 
 		 <ocl>self.pointsVector</ocl>
 	  '
 />
@@ -191,7 +196,7 @@ rgb(
 <![CDATA[
 <path
   id='<ocl>self.id</ocl>'
-  description='<ocl>self.class.name</ocl>'
+  class='<ocl>self.class.name</ocl>'
   style='fill:none;
   stroke-width:<ocl>self.lineWidth</ocl>;
   stroke:rgb(<ocl>self.lineColor.Red</ocl>,
@@ -215,13 +220,15 @@ rgb(
 <![CDATA[
 <g
    id='<ocl>self.id</ocl>'
-   description='<ocl>self.classNameAndBounds</ocl>'
-   href='<ocl>self.owner.id</ocl>'
+   class='<ocl>self.classNameAndBounds</ocl>'
+   gef:href='Fig<ocl>self.owner.id</ocl>'
    FILL_AND_STROKE
 >
-  <private>
-    enclosingFig='<ocl>self.enclosingFig.id</ocl>'
-  </private>
+  <desc></desc>
+  <title></title>
+  <foreignObject height="0" width="0">
+    enclosingFig='Fig<ocl>self.enclosingFig.id</ocl>'
+  </foreignObject>
   
   <ocl>self.figs</ocl>
 </g>
@@ -233,16 +240,18 @@ rgb(
 <![CDATA[
 <g
    id='<ocl>self.id</ocl>'
-   description='<ocl>self.class.name</ocl>'
-   href='<ocl>self.owner.id</ocl>'
+   class='<ocl>self.class.name</ocl>'
+   gef:href='Fig<ocl>self.owner.id</ocl>'
    FILL_AND_STROKE
 >
-  <private>
-    sourcePortFig='<ocl>self.sourcePortFig.id</ocl>'
-    destPortFig='<ocl>self.destPortFig.id</ocl>'
-    sourceFigNode='<ocl>self.sourceFigNode.id</ocl>'
-    destFigNode='<ocl>self.destFigNode.id</ocl>'
-  </private>
+  <desc></desc>
+  <title></title>
+  <foreignObject height="0" width="0">
+    sourcePortFig='Fig<ocl>self.sourcePortFig.id</ocl>'
+    destPortFig='Fig<ocl>self.destPortFig.id</ocl>'
+    sourceFigNode='Fig<ocl>self.sourceFigNode.id</ocl>'
+    destFigNode='Fig<ocl>self.destFigNode.id</ocl>'
+  </foreignObject>
 
   <ocl>self.fig</ocl>
 </g>
