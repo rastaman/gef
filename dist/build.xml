@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<project name="gef" default="build" basedir=".">
+
+<target name="init">
+ <tstamp/>
+ <property name="obj.dir" value="lib"/>
+ <property name="jar" value="gef.jar"/>
+</target>
+
+<target name="build" depends="init">
+ <property name="src.dir" value="src"/>
+
+ <mkdir dir="${obj.dir}"/>
+ <javac srcdir="${src.dir}" destdir="${obj.dir}"
+        deprecation="${deprecation}"/>
+</target>
+
+<target name="jar" depends="build">
+ <jar jarfile="${jar}" basedir="${obj.dir}"/>
+</target>
+
+<target name="clean" depends="init">
+ <deltree dir="${obj.dir}"/>
+ <delete file="${jar}"/>
+</target>
+
+</project>
