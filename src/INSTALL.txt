@@ -1,6 +1,57 @@
 Installing GEF
 --------------
 
+
+last revised: 28/06/2003
+
+
+This version is in transition. Major design changes are expected
+within the next months (shouldn't take until 2004). So please
+bear in mind that when you use this version before the design
+change is finished you have to redesign your usage of the GEF
+library in the future. Waiting for the design change or participating
+in it is highly recommended before making extensive use of GEF.
+
+
+Installing on Windows:
+
+Go to the src directory and invoke "build.bat".
+
+
+Installing on Linux / Unix systems:
+
+Go to the src directory and type "sh build.sh".
+
+
+
+Troubleshooting:
+
+If any errors occure make sure that all libraries are in place
+as they are needed. Look into build.bat / build.sh to find out
+what libraries are needed.
+
+You have to have set the JAVA_HOME variable correctly. Please make
+sure this is the case. Use "set JAVA_HOME=<path_to_your_java>" or
+"export JAVA_HOME=<path_to_your_java>" to set it correctly.
+
+Please also make sure that you have set up your java environment
+correctly. Maybe you have to go to http://java.sun.com and download
+a new version.
+
+
+
+Raphael
+raphael-langerhorst@gmx.at
+
+
+
+
+
+
+
+old instructions:
+
+
 last revised: 03/01/2001
 
 
