@@ -44,7 +44,7 @@ public class CmdDeleteFromModel extends Cmd {
     }
 
     public void doIt() {
-        System.out.println("CmdDeleteFromModel");
+        //System.out.println("CmdDeleteFromModel");
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
         sm.dispose();
