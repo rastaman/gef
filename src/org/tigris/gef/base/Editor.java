@@ -140,6 +140,12 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     /** The swing panel that the Editor draws to. */
     private transient JComponent _jComponent;
 
+    /** The width of the swing panel before scaling. */
+    private transient int _naturalComponentWidth;
+
+    /** The height of the swing panel before scaling. */
+    private transient int _naturalComponentHeight;
+
     /** The ancestor of _jComponent that has a peer that can create
      *  an image. */
     private transient Component _peer_component = null;
@@ -301,8 +307,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
      * @deprectaed in favour of getScale(double) vers 0.10 removed 0.11
      */
     public void setScaleInt(double scale) {
-        _scale = scale;
-        damageAll();
+        setScale(scale);
     }
 
     /** Set this Editor's drawing scale.  A value of 1.0 draws at 1 to 1.
@@ -312,6 +317,10 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
      */
     public void setScale(double scale) {
         _scale = scale;
+        _layerManager.setScale(_scale);
+        _jComponent.setPreferredSize(new Dimension(
+                (int) (_naturalComponentWidth * _scale),
+                (int) (_naturalComponentHeight * _scale)));
         damageAll();
     }
 
@@ -530,6 +539,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
      *  area is expected to change anyway. */
     public void damageAll() {
         Rectangle r = _jComponent.getVisibleRect();
+        _jComponent.revalidate();
         _jComponent.repaint(r.x, r.y, r.width, r.height);
     }
 
@@ -650,6 +660,22 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 
     public FigTextEditor getActiveTextEditor() {
         return FigTextEditor.getActiveTextEditor();
+    }
+    
+    /**
+     * This method is called when the Editor is notified that the drawing
+     * panel's natural size has changed, typically because a new
+     * diagram has been set.
+    **/
+    public void drawingSizeChanged(Dimension dim) {
+        _naturalComponentWidth = dim.width;
+        _naturalComponentHeight = dim.height;
+        if (_jComponent != null) {            
+            _jComponent.setPreferredSize(new Dimension(
+                (int) (_naturalComponentWidth * _scale),
+                (int) (_naturalComponentHeight * _scale)));
+            _jComponent.revalidate();
+        }        
     }
 
     ////////////////////////////////////////////////////////////////

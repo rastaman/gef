@@ -52,7 +52,7 @@ public class JGraph extends JPanel implements Cloneable {
   protected Editor _editor;
   protected JGraphInternalPane _drawingPane;
   protected JScrollPane _scroll;
-  protected Dimension _defaultSize = new Dimension(6000,6000);
+  protected Dimension _defaultSize = new Dimension(6000, 6000);
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -191,7 +191,7 @@ public class JGraph extends JPanel implements Cloneable {
     _editor.getLayerManager().replaceActiveLayer(d.getLayer());
     _editor.setGraphModel(d.getGraphModel());
     _editor.getSelectionManager().deselectAll();
-    _editor.damageAll();
+    _editor.setScale(d.getScale());
     String newDiagramId = Integer.toString(d.hashCode());
     if ( newDiagramId.equals(_currentDiagramId) ) return;
     _currentDiagramId = newDiagramId;
@@ -211,8 +211,8 @@ public class JGraph extends JPanel implements Cloneable {
       if ( enum == null ) {
           return;
       } // end if
-      Dimension drawingSize = _drawingPane.getSize();
-      boolean recalSize = false;
+      Dimension drawingSize = new Dimension(
+          _defaultSize.width, _defaultSize.height);
       while( enum.hasMoreElements() ) {
           Fig fig = (Fig)enum.nextElement();
           Rectangle rect = fig.getBounds();
@@ -220,16 +220,12 @@ public class JGraph extends JPanel implements Cloneable {
           Dimension dim = rect.getSize();
           if( (point.x + dim.width + 5) > drawingSize.width ) {
               drawingSize.setSize(point.x + dim.width + 5, drawingSize.height);
-              recalSize = true;;
           } // end if
           if( (point.y + dim.height + 5) > drawingSize.height ) {
              drawingSize.setSize( drawingSize.width, point.y + dim.height + 5);
-              recalSize = true;;
           } // end if
-      } // end while
-      if ( recalSize ) {
-          setDrawingSize(drawingSize.width,drawingSize.height);
-      } // end if
+      } // end while      
+      setDrawingSize(drawingSize.width,drawingSize.height);
   } // end updateDrawingSizeToIncludeAllFigs()
 
   public void setDrawingSize(int width, int height) {
@@ -237,8 +233,7 @@ public class JGraph extends JPanel implements Cloneable {
   }
 
   public void setDrawingSize(Dimension dim) {
-    _drawingPane.setPreferredSize(dim);
-    _drawingPane.revalidate();
+    _editor.drawingSizeChanged(dim);
   }
 
   /** Get and set the GraphModel the Editor is using. */
