@@ -202,14 +202,26 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
     /**
      * Updates the positions of the connected annotations.
      */
-    public void updateAnnotationPositions() {}
+    public void updateAnnotationPositions() {
+	//System.out.println("[Fig] updateAnnotationPositions");
+	Enumeration annotations = getAnnotationStrategy().getAllAnnotations();
+	//System.out.println("[Fig] numOfAnnotations = " + getAnnotationStrategy().numOfAnnotations());
+	while (annotations.hasMoreElements()) {
+	    Fig annotation = (Fig)annotations.nextElement();
+	    Rectangle annotRect = annotation.getBounds();
+	    //System.out.println("[Fig] updateAnnotationPositions: "+annotRect.x+" "+annotRect.y);
+	    getAnnotationStrategy().storeAnnotationPosition(annotation);
+	    annotation.endTrans();
+	}
+	endTrans();
+    }
 
     public void initAnnotations() {}
 
   // end annotation related
   //-----------------------------------
-    
-  public void addPoint(int x, int y) { }  
+
+  public void addPoint(int x, int y) { }
   ////////////////////////////////////////////////////////////////
   // updates
 
@@ -504,26 +516,26 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   }
   public void firePropChange(String propName, boolean oldV, boolean newV) {
 	firePropChange(propName, new Boolean(oldV), new Boolean(newV));
-  }  
+  }
   /** Return a Rectangle that completely encloses this Fig. */
-  public Rectangle getBounds() { return new Rectangle(_x, _y, _w, _h); }  
+  public Rectangle getBounds() { return new Rectangle(_x, _y, _w, _h); }
   public Point getClosestPoint(Point anotherPt) {
 	return Geometry.ptClosestTo(getBounds(), anotherPt);
-  }  
+  }
   /** Get the dashed attribute **/
-  public boolean getDashed() { return (_dashes != null); }  
-  public int getDashed01() { return getDashed() ? 1 : 0; }  
+  public boolean getDashed() { return (_dashes != null); }
+  public int getDashed01() { return getDashed() ? 1 : 0; }
   public String getDashedString() {
 	return (_dashes == null) ? DASHED_CHOICES[0] : DASHED_CHOICES[1];
-  }  
-  public Vector getEnclosedFigs() { return null; }  
-  public Fig getEnclosingFig() { return null; }  
-  public Color getFillColor() { return _fillColor; }  
-  public boolean getFilled() { return _filled; }  
+  }
+  public Vector getEnclosedFigs() { return null; }
+  public Fig getEnclosingFig() { return null; }
+  public Color getFillColor() { return _fillColor; }
+  public boolean getFilled() { return _filled; }
   public int getFilled01() { return _filled ? 1 : 0; }
-  public Point getFirstPoint() { return new Point(); }  
-  public Vector getGravityPoints() { return null; }  
-  public Fig getGroup() { return _group; }  
+  public Point getFirstPoint() { return new Point(); }
+  public Vector getGravityPoints() { return null; }
+  public Fig getGroup() { return _group; }
     public String getContext() { return _context; }
   public int getHalfHeight() { return _h / 2; }  
   public int getHalfWidth() { return _w / 2; }  
@@ -746,11 +758,11 @@ public String getPrivateData() {
   public void setFilled(boolean f) {
 	firePropChange("filled", _filled, f);
 	_filled = f;
-  }  
+  }
   /** Sets the enclosing FigGroup of this Fig.  The enclosing group is
    * always notified of property changes, without need to add a listener. */
-  public void setGroup(Fig f) { _group = f; }  
-  public void setContext(String context) { _context = context; }  
+  public void setGroup(Fig f) { _group = f; }
+  public void setContext(String context) { _context = context; }
   public void setHeight(int h) { setBounds(_x, _y, _w, h); }  
   ////////////////////////////////////////////////////////////////
   // accessors

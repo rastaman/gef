@@ -21,14 +21,13 @@ public class AnnotationLineRemover implements ActionListener {
         }
         	
         public void removeLineIn(int millis, Fig f){
-        	// falls diese Fig schon einen Timer hat, dann starte ihn einfach nur neu,
-        	// um zu verhindern, dass die Linie des Elements, dass gerade verschoben wird
-        	// unsichtbar wird
+                // if this fig already has a timer, simply restart it to avoid hiding
+                // of the currently moved elements connecting line.
         	if (timers.containsKey(f)){
         		((Timer)timers.get(f)).restart();
         	}
-        	// sonst lege einen neuen Timer an
-        	else{	
+        	// create new timer
+        	else{
         		Timer t = new  Timer(millis, this);
         		timers.put(f,t);
         		figs.put(t,f);
@@ -40,14 +39,14 @@ public class AnnotationLineRemover implements ActionListener {
 
         public void actionPerformed(ActionEvent e){
         	//System.out.println("Event from Timer !  " + e.getSource());
-        	// die Zeit ist abgelaufen - d.h. die Linie wurde 'millis'-Millisekunden
-        	// nicht bewegt und kann geloescht werden.
-        	// Gleichzeitig kann der Timer angehalten werden.
+                // time has passed - i.e. line hasn't moved for given number of
+                // milliseconds and can therefore be removed.
+                // Timer can then be stopped.
         	Timer t = (Timer)e.getSource();
         	t.stop();
         	//((Fig)figs.get(t)).getAnnotationStrategy().removeAllConnectingLines();
         	Fig annotation = ((Fig)figs.get(t));
-        	System.out.println("*************************************" +annotation);
+        	//System.out.println("*************************************" +annotation);
                 try{
         	        annotation.getAnnotationOwner().getAnnotationStrategy().getAnnotationProperties(annotation).removeLine();
                 }

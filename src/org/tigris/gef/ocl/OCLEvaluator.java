@@ -129,7 +129,7 @@ public class OCLEvaluator {
     try {
       m = target.getClass().getMethod("get" + toTitleCase(property), null);
       o = m.invoke(target, null); // getter methods take no args =>  null
-      // System.out.println("Trying to get method " + toTitleCase(property));
+      //System.out.println("[OCLEvaluator] Trying to get method get" + toTitleCase(property) + " = " + o);
       return  convertCollection(o);
     }
     catch ( NoSuchMethodException e ) {}
@@ -147,7 +147,7 @@ public class OCLEvaluator {
     try {
       m = target.getClass().getMethod( property, null);
       o = m.invoke(target, null);
-      // System.out.println("Trying to get method " + toTitleCase(property));
+      //System.out.println("Trying to get method " + toTitleCase(property));
       return convertCollection(o);
     }
     catch ( NoSuchMethodException e ) {}
@@ -165,7 +165,7 @@ public class OCLEvaluator {
     try {
       m = target.getClass().getMethod( toTitleCase(property), null);
       o = m.invoke(target, null);
-      // System.out.println("Trying to get method" + property);
+      //System.out.println("Trying to get method" + property);
       return convertCollection(o);
     } catch ( Exception e ) {}
 

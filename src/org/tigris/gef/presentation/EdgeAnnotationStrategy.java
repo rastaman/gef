@@ -43,15 +43,15 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
 				ende = edge.getLastPoint();
 			} catch (ArrayIndexOutOfBoundsException e){
 				try{
-					start= edge.getSourcePortFig().center();	
+					start= edge.getSourcePortFig().center();
 					ende = edge.getDestPortFig().center();
 				}
 				catch(NullPointerException ne){
     					start = new Point(10,10);
     					ende = new Point(100,10);
 				}
-			} 
-			
+			}
+
 			if ((start.x == ende.x) && (start.y == ende.y)) return annotation.getLocation();
 			
 			// calculate
@@ -100,11 +100,10 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
 			AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
 			prop.setRatio(ratio,prop.hasFixedRatio());
 			prop.setOffset(d ,prop.hasFixedOffset());
-			
-			// so ungefaehr
+
 			//((PathConvPercentPlusConst)edge.getPathConvOfFig(annotation)).setPercentOffset((int)ratio, d);
-			System.out.println("ratio = " +ratio + "   d= " +d);
-			
+			//System.out.println("ratio = " +ratio + "   d= " +d);
+
 			//
 		}
 		drawConnectingLine(annotation);
@@ -116,8 +115,8 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
 		Fig owner = annotation.getAnnotationOwner();
 		AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
 		FigLine line = prop.getConnectingLine();
-		
-		
+
+
 		if (  ((FigEdge)owner).getSourcePortFig().center() == null || ((FigEdge)owner).getDestPortFig().center() == null ) return;
                 //line from annotation to center of owning edge
 		//line.setShape(annotation.center(), owner.center());
@@ -139,17 +138,17 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
 		line.damage();
 		annotation.damage();
 
-		// remove line automatically		
-		AnnotationLineRemover.instance().removeLineIn( getAnnotationProperties(annotation).getLineVisibilityDuration(),annotation );		
+		// remove line automatically
+		AnnotationLineRemover.instance().removeLineIn( getAnnotationProperties(annotation).getLineVisibilityDuration(),annotation );
         }
 
 	// move annotations
-	// this method is called, when an annotationOwner is moved without its 
+	// this method is called, when an annotationOwner is moved without its
 	// annotations
 	public void translateAnnotations(Fig owner){
 		java.util.Enumeration enum = annotations.keys();
 		// owner has moved; set annotations to their new positions
-		while (enum.hasMoreElements()){	
+		while (enum.hasMoreElements()){
 			Fig annotation = (Fig)enum.nextElement();
 			annotation.setLocation(restoreAnnotationPosition(annotation));
 			//drawConnectingLine(annotation);
@@ -157,7 +156,7 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
 			// call endtrans of annotation
 			annotation.endTrans();
 			annotation.damage();
-			
+
 		}
 		owner.damage();
 	}

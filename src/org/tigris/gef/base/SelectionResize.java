@@ -68,7 +68,9 @@ public class SelectionResize extends Selection {
    * </pre>
    */
   public void hitHandle(Rectangle r, Handle h) {
-  	updateHandleBox();
+      if (!_content.isResizable()) return;     
+
+      updateHandleBox();
     Rectangle testRect = new Rectangle(0, 0, 0, 0);
     testRect.setBounds(cx-HAND_SIZE/2, cy-HAND_SIZE/2,
 		     HAND_SIZE, ch+HAND_SIZE/2);
@@ -116,7 +118,9 @@ public class SelectionResize extends Selection {
   /** Paint the handles at the four corners and midway along each edge
    * of the bounding box.  */
   public void paint(Graphics g) {
-  	updateHandleBox();
+      if (!_content.isResizable()) return;
+
+      updateHandleBox();
     g.setColor(Globals.getPrefs().handleColorFor(_content));
     g.fillRect(cx - HAND_SIZE/2, cy - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
     g.fillRect(cx + cw - HAND_SIZE/2, cy - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
@@ -130,8 +134,11 @@ public class SelectionResize extends Selection {
    *  handles. Needs-More-Work: someday I might implement resizing that
    *  maintains the aspect ratio. */
   public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-  	updateHandleBox();								
-  	int x = cx; int y = cy; int w = cw; int h = ch;		
+      if (!_content.isResizable()) return;
+
+      updateHandleBox();								
+
+      int x = cx; int y = cy; int w = cw; int h = ch;		
     int newX = x, newY = y, newW = w, newH = h;
     Dimension minSize = _content.getMinimumSize();
     int minWidth = minSize.width, minHeight = minSize.height;
