@@ -115,15 +115,21 @@ public class FigEdgePoly extends FigEdge {
         calcBounds();
     } /* end computeRoute */
 
-    /** Internal function to actually compute the layout of the line if
-     *  it has never been done on that line before. */
+    /**
+     * Internal function to actually compute the layout of the line if
+     * it has never been done on that line before.
+     * @throws IllegalStateException if the edge is not connected to 2 ports
+     */
     protected void layoutEdge() {
         int npoints = 0;
         int xpoints[] = new int[16];
         int ypoints[] = new int[16];
         Fig sourcePortFig = getSourcePortFig();
         Fig destPortFig = getDestPortFig();
-        //System.out.println("[FigEdgePoly] layoutEdge: " + _sourcePortFig + " / " + _destPortFig);
+        
+        if (sourcePortFig == null || destPortFig == null) {
+            throw new IllegalStateException("Both the source port and dest port fig must be defined on a " + this.getClass().getName() + " before the edge can be layed out");
+        }
         Point srcPt = sourcePortFig.center();
         Point dstPt = destPortFig.center();
 
