@@ -44,7 +44,8 @@ import org.tigris.gef.presentation.*;
 
 public class CmdGroup extends Cmd {
 
-  public CmdGroup() { super("Group", NO_ICON); }
+  public CmdGroup() {
+	  super("Group");}
 
   public void doIt() {
     Editor ce = Globals.curEditor();

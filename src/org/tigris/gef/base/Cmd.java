@@ -61,10 +61,6 @@ implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // constants
 
-  // by default, every command has an icon
-  public static final boolean HAS_ICON = true;
-  public static final boolean NO_ICON = false;
-
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -84,18 +80,8 @@ implements java.io.Serializable {
 	_resource = resource;
   }
 
-  public Cmd(Hashtable args, String resource, String name, boolean hasIcon) {
-    super(Localizer.localize(resource,name));
-    if (hasIcon) {
-      Icon icon = ResourceLoader.lookupIconResource(name, name);
-      if (icon != null) putValue(Action.SMALL_ICON, icon);
-    }
-    _args = args;
-	_resource = resource;
-  }
-
-  public Cmd(String resource, String name, boolean hasIcon) {
-    this (null, resource, name, hasIcon);
+  public Cmd(String resource, String name) {
+    this (null, resource, name);
   }
 
   public Cmd(Hashtable args, String resource, String name, ImageIcon icon) {
@@ -104,22 +90,13 @@ implements java.io.Serializable {
 	_resource = resource;
   }
 
-  /** Construct a new Cmd with no arguments */
-  public Cmd(String resource, String name) { this(null, resource, name); }
-
 	/** Constructors with no resource name */
-	protected Cmd(String name) { this(null, "GefBase", name); }
+	protected Cmd(String name) {
+		this(null, "GefBase", name);
+	}
 
 	protected Cmd(Hashtable args, String name, ImageIcon icon) {
 		this(args, "GefBase", name, icon);
-	}
-
-	protected Cmd(String name, boolean hasIcon) {
-		this("GefBase", name, hasIcon);
-	}
-	
-	protected Cmd(Hashtable args, String name, boolean hasIcon) {
-		this(args, "GefBase", name, hasIcon);
 	}
 
 	protected Cmd(Hashtable args, String name) {

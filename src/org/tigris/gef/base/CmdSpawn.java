@@ -44,7 +44,7 @@ import org.tigris.gef.graph.presentation.*;
 
 public class CmdSpawn extends Cmd {
 
-  public CmdSpawn() { super("Spawn Editor", NO_ICON); }
+  public CmdSpawn() { super("SpawnEditor"); }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

@@ -10,8 +10,7 @@ import java.awt.*;
 
 /** Cmd zoom the view.  Needs-More-Work: */
 
-public class CmdZoom
-    extends Cmd
+public class CmdZoom extends Cmd
 {
     ////////////////////////////////////////////////////////////////
     // constants
@@ -36,14 +35,7 @@ public class CmdZoom
     */
     public CmdZoom(double magnitude)
     {
-        this(magnitude, NO_ICON);
-    }
-
-    /** Each time <code>doIt()</code> is invoked, adjust scaling by a
-    * factor of <code>magnitude</code>. */
-    public CmdZoom(double magnitude, boolean hasIcon)
-    {
-        super(wordFor(magnitude), hasIcon);
+        super(wordFor(magnitude));
         _magnitude = magnitude;
     }
 

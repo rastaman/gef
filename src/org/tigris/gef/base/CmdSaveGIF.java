@@ -55,7 +55,7 @@ public class CmdSaveGIF extends CmdSaveGraphics {
     
     
     public CmdSaveGIF() {
-        super("Save GIF...", NO_ICON);
+        super("SaveGIF");
     }
     
     /** Write the diagram contained by the current editor into an OutputStream

@@ -71,7 +71,9 @@ public class CmdSavePGML extends Cmd implements FilenameFilter {
     _expander = new OCLExpander(_templates);
   }
 
-  public CmdSavePGML() { super("Save as PGML...", NO_ICON); }
+  public CmdSavePGML() {
+	  super("SaveAsPGML");
+  }
 
   /** Only allow the user to select files that match the fiven
    *  filename pattern. Needs-More-Work: this is not used yet. */

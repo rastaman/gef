@@ -209,38 +209,40 @@ public class ModeModify extends FigModifyingModeImpl {
 
   /** On mouse up the modification interaction is done. */
   public void mouseReleased(MouseEvent me) {
-    if (me.isConsumed()) return;
-    done();
-    me.consume();
-    SelectionManager sm = getEditor().getSelectionManager();
-    Vector figs = sm.getFigs();
-    Enumeration sels = figs.elements();
-    while (sels.hasMoreElements()) {
-      Fig selectedFig = (Fig) sels.nextElement();
-      if (!(selectedFig instanceof FigNode)) continue;
-      Rectangle bbox = selectedFig.getBounds();
-//       Fig oldEncloser = selectedFig.getEnclosingFig();
-//       if (oldEncloser != null && oldEncloser.contains(bbox))
-// 	continue;
-      Layer lay = selectedFig.getLayer();
-      Vector otherFigs = lay.getContents();
-      Enumeration others = otherFigs.elements();
-      Fig encloser = null;
-      while (others.hasMoreElements()) {
-        Fig otherFig = (Fig) others.nextElement();
-        if (!(otherFig instanceof FigNode)) continue;
-	if (!(otherFig.getUseTrapRect())) continue;
-        //if (figs.contains(otherFig)) continue;
-        Rectangle trap = otherFig.getTrapRect();
-	if (trap == null) continue;
-        // now bbox is where the fig _will_ be
-        if ((trap.contains(bbox.x, bbox.y) &&
-             trap.contains(bbox.x + bbox.width, bbox.y + bbox.height))) {
-           encloser = otherFig;
-           }
+      if (me.isConsumed()) return;
+      done();
+      me.consume();
+      SelectionManager sm = getEditor().getSelectionManager();
+      Vector figs = sm.getFigs();
+      Enumeration sels = figs.elements();
+      while (sels.hasMoreElements()) {
+          Fig selectedFig = (Fig) sels.nextElement();
+          if ((selectedFig instanceof FigNode)) {
+              Rectangle bbox = selectedFig.getBounds();
+              Layer lay = selectedFig.getLayer();
+              Vector otherFigs = lay.getContents();
+              Enumeration others = otherFigs.elements();
+              Fig encloser = null;
+              while (others.hasMoreElements()) {
+                  Fig otherFig = (Fig) others.nextElement();
+                  if (!(otherFig instanceof FigNode)) continue;
+                  if (!(otherFig.getUseTrapRect())) continue;
+                  //if (figs.contains(otherFig)) continue;
+                  Rectangle trap = otherFig.getTrapRect();
+                  if (trap == null) continue;
+                  // now bbox is where the fig _will_ be
+                  if ((trap.contains(bbox.x, bbox.y) &&
+                  trap.contains(bbox.x + bbox.width, bbox.y + bbox.height))) {
+                      encloser = otherFig;
+                  }
+              }
+              selectedFig.setEnclosingFig(encloser);
+          }
+          else if (selectedFig instanceof FigEdge) {
+              ((FigEdge)selectedFig).computeRoute();
+              selectedFig.endTrans();
+          }
       }
-      selectedFig.setEnclosingFig(encloser);
-    }
   }
 
   public void start() {

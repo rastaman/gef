@@ -57,7 +57,7 @@ public class CmdNudge extends Cmd {
 
   public CmdNudge(int dir) { this(dir, 1); }
   public CmdNudge(int dir, int mag) {
-    super("Nudge " + wordFor(dir)); //needs-more-work: direction
+    super("Nudge" + wordFor(dir)); //needs-more-work: direction
     _direction = dir;
     _magnitude = mag;
   }

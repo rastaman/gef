@@ -63,7 +63,7 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
   }
 
   public CmdCreateNode(Hashtable args, String name) {
-    super(args, "UMLMenu", name);
+    super(args, "GefBase", name);
   }
 
   /** Construct a new Cmd with the given classes for the NetNode

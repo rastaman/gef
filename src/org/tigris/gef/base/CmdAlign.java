@@ -66,7 +66,7 @@ public class CmdAlign extends Cmd {
    * @param dir The desired alignment direction, one of the constants
    * listed above. */
   public CmdAlign(int dir) {
-    super("Align " + wordFor(dir)); //needs-more-work: direction
+    super("Align" + wordFor(dir)); //needs-more-work: direction
     direction = dir;
   }
 
@@ -78,10 +78,10 @@ public class CmdAlign extends Cmd {
     case ALIGN_RIGHTS: return "Rights";
 
     case ALIGN_CENTERS: return "Centers";
-    case ALIGN_H_CENTERS: return "Horizontal Centers";
-    case ALIGN_V_CENTERS: return "Vertical Centers";
+    case ALIGN_H_CENTERS: return "HorizontalCenters";
+    case ALIGN_V_CENTERS: return "VerticalCenters";
 
-    case ALIGN_TO_GRID: return "To Grid";
+    case ALIGN_TO_GRID: return "ToGrid";
     }
     return "";
   }

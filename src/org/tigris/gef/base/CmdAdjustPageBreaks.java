@@ -39,7 +39,7 @@ public class CmdAdjustPageBreaks extends Cmd {
 
   /** Construct a new CmdAdjustPageBreaks */
   public CmdAdjustPageBreaks() {
-    super("Adjust PageBreaks", NO_ICON);
+    super("AdjustPageBreaks");
   }
 
   public void doIt() {

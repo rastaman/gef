@@ -46,8 +46,8 @@ public abstract class CmdSaveGraphics extends Cmd {
 				       Rectangle drawingArea)
                           throws IOException;
 
-  protected CmdSaveGraphics(String name, boolean useIcon) {
-    super(name, useIcon);
+  protected CmdSaveGraphics(String name) {
+	super(name);
   }
 
   /** Set the outputStream argument. This must be done prior to saving

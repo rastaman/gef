@@ -65,17 +65,17 @@ public class CmdDistribute extends Cmd {
    * @param dir The desired alignment direction, one of the constants
    * listed above. */
   public CmdDistribute(int r) {
-    super("Distribute " + wordFor(r));
+    super("Distribute" + wordFor(r));
     _request = r;
   }
 
   protected static String wordFor(int r) {
     switch (r) {
-    case H_SPACING:    return "Horizontal Spacing";
-    case H_CENTERS:    return "Horizontal Centers";
+    case H_SPACING:    return "HorizontalSpacing";
+    case H_CENTERS:    return "HorizontalCenters";
     case H_PACK:       return "Leftward";
-    case V_SPACING:    return "Vertical Spacing";
-    case V_CENTERS:    return "Vertical Centers";
+    case V_SPACING:    return "VerticalSpacing";
+    case V_CENTERS:    return "VerticalCenters";
     case V_PACK:       return "Upward";
     }
     return "";

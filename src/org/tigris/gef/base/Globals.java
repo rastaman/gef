@@ -258,7 +258,8 @@ public class Globals {
    *
    * @see Mode#done */
   public static Mode nextMode() {
-    if (!_sticky) _mode = defaultMode();
+    if (!_sticky) 
+        _mode = defaultMode();
     return _mode;
   }
 

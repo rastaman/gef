@@ -357,15 +357,31 @@ public class FigText extends Fig implements KeyListener, MouseListener {
   public Class getTextEditorClass() {
       return _textEditorClass;
   }
-  
+
   public void setTextEditorClass(Class editorClass) {
       _textEditorClass = editorClass;
   }
-  
+
+  /**
+   *  Overrides method of class Fig
+   *  Implements linewidths greater than one
+   */
+  public void setLineWidth(int w) {
+    //int newLW = Math.max(0, Math.min(1, w));
+    firePropChange("lineWidth", _lineWidth, w);
+    _lineWidth = w;
+  }
+
   ////////////////////////////////////////////////////////////////
   // painting methods
 
-  /** Paint the FigText. */
+  /** Paint the FigText.
+   *  Distingusih between linewidth=1 and >1
+   *  If <linewidth> is equal 1, then paint a single rectangle
+   *  Otherwise paint <linewidth> nested rectangles, whereas
+   *  every rectangle is painted of 4 connecting lines.
+   */
+
   public void paint(Graphics g) {
     if (!(_displayed)) return;
     int chunkX = _x + _leftMargin;
@@ -378,7 +394,20 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
     if (_lineWidth > 0) {
       g.setColor(_lineColor);
-      g.drawRect(_x, _y, _w - _lineWidth, _h - _lineWidth);
+      // test linewidth
+      if (_lineWidth==1) {
+        // paint single rectangle
+        g.drawRect(_x, _y, _w - _lineWidth, _h - _lineWidth);
+      } else {
+        // paint <linewidth rectangles
+        for (int i=0;i<_lineWidth;i++) {
+          // a rectangle is painted as four connecting lines
+          g.drawLine(_x+i,_y+i,_x+_w-i,_y+i);
+          g.drawLine(_x+_w-i,_y+i,_x+_w-i,_y+_h-i);
+          g.drawLine(_x+_w-i,_y+_h-i,_x+i,_y+_h-i);
+          g.drawLine(_x+i,_y+_h-i,_x+i,_y+i);
+        }
+      }
     }
     if (_font != null) g.setFont(_font);
     _fm = g.getFontMetrics(_font);
@@ -507,6 +536,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     case KeyEvent.VK_HELP:
     case KeyEvent.VK_PAUSE:
     case KeyEvent.VK_DELETE:
+    case KeyEvent.VK_ESCAPE:
       return true;
     }
     if (ke.isControlDown()) return true;

@@ -41,7 +41,9 @@ import java.util.*;
 
 public class CmdSelectInvert extends Cmd {
 
-  public CmdSelectInvert() { super("Invert Selection", NO_ICON); }
+  public CmdSelectInvert() {
+	  super("InvertSelection");
+  }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

@@ -45,7 +45,9 @@ public class CmdInsertPoint extends Cmd {
   protected int _selectedHandle = 0;
 
   public CmdInsertPoint(int i) { this(); _selectedHandle = i; }
-  public CmdInsertPoint() { super("Insert a new point", NO_ICON); }
+  public CmdInsertPoint() {
+	  super("InsertANewPoint");
+  }
 
   /** Ask the current editor's selected Fig to Insert a point. */
   public void doIt() {

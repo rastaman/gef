@@ -36,7 +36,7 @@ import org.tigris.gef.persistence.*;
 public class CmdSaveSVG extends CmdSaveGraphics {
 
   public CmdSaveSVG() {
-    super("Save Scalable Vector Graphics...", NO_ICON);
+    super("SaveScalableVectorGraphics");
   }
 
   protected void saveGraphics(OutputStream s, Editor ce,

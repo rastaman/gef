@@ -43,7 +43,7 @@ import org.tigris.gef.graph.presentation.*;
  * @see CmdSave */
 
 public class CmdOpen extends Cmd implements FilenameFilter {
-  public CmdOpen() { super("Open..."); }
+  public CmdOpen() { super("Open"); }
 
   /** Only allow the user to select files that match the fiven
    *  filename pattern.  Needs-More-Work: This is not used yet. */

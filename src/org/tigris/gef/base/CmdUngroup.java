@@ -43,7 +43,7 @@ import org.tigris.gef.presentation.*;
 
 public class CmdUngroup extends Cmd {
 
-  public CmdUngroup() { super("Ungroup", NO_ICON); }
+  public CmdUngroup() { super("Ungroup"); }
 
   public void doIt() {
     Vector ungroupedItems = new Vector();

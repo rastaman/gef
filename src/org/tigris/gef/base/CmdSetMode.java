@@ -46,12 +46,12 @@ public class CmdSetMode extends Cmd {
   protected Hashtable _modeArgs;
 
   public CmdSetMode(Properties args) {
-    super(args, "Set Editor Mode");
+    super(args, "SetEditorMode");
   }
 
   /** Set the next global mode to the named mode. */
   public CmdSetMode(Class modeClass) {
-    super("Set Editor Mode");
+    super("SetEditorMode");
     setArg("desiredModeClass", modeClass);
   }
 
@@ -62,20 +62,20 @@ public class CmdSetMode extends Cmd {
 
   /** Set the next global mode to the named mode, and maybe make it sticky. */
   public CmdSetMode(Class modeClass, boolean sticky) {
-    super("Set Editor Mode");
+    super("SetEditorMode");
     setArg("desiredModeClass", modeClass);
     setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
   }
 
   /** Set the next global mode to the named mode, and set all arguments. */
   public CmdSetMode(Class modeClass, Hashtable modeArgs) {
-    super("Set Editor Mode");
+    super("SetEditorMode");
     setArg("desiredModeClass", modeClass);
     _modeArgs = modeArgs;
   }
 
   public CmdSetMode(Class modeClass, String arg, Object value) {
-    super("Set Editor Mode", NO_ICON);
+    super("SetEditorMode");
     _modeArgs = new Hashtable(1);
     _modeArgs.put(arg, value);
     setArg("desiredModeClass", modeClass);

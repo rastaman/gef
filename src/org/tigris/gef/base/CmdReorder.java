@@ -69,9 +69,9 @@ public class CmdReorder extends Cmd {
   protected static String wordFor(int f) {
     switch (f) {
     case SEND_BACKWARD: return "Backward";
-    case SEND_TO_BACK: return "To Back";
+    case SEND_TO_BACK: return "ToBack";
     case BRING_FORWARD: return "Forward";
-    case BRING_TO_FRONT: return "To Front";
+    case BRING_TO_FRONT: return "ToFront";
     }
     return "";
   }

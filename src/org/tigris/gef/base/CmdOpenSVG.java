@@ -47,7 +47,7 @@ public class CmdOpenSVG extends Cmd implements FilenameFilter {
   static final long serialVersionUID = 00000000000000L;
 
   public CmdOpenSVG() {
-	super("Open SVG...", NO_ICON);
+	super("OpenSVG");
 	setArg("filterPattern", "*.svg");
   }  
   /** Only let the user select files that match the filter. This does

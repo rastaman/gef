@@ -45,7 +45,7 @@ import org.tigris.gef.persistence.*;
 public class CmdSaveEPS extends CmdSaveGraphics {
 
   public CmdSaveEPS() {
-    super("Save Encapsulated PostScript...", NO_ICON);
+    super("SaveEncapsulatedPostScript");
   }
 
   protected void saveGraphics(OutputStream s, Editor ce,

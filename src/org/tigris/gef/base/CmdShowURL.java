@@ -49,7 +49,7 @@ public class CmdShowURL extends Cmd {
     url(s);
   }
 
-  public CmdShowURL() { super("Show URL in browser"); }
+  public CmdShowURL() { super("ShowURLInBrowser"); }
 
   public void url(URL u) { _url = u; }
 

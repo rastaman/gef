@@ -145,6 +145,15 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
     me.consume();
   }
 
+    public void keyPressed(KeyEvent ke) { 
+        if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            Globals.setSticky(false);
+            done();
+            Globals.nextMode();
+            Globals.curEditor().finishMode();
+        }
+    }
+    
   /** Update the new item to reflect the new mouse position. By
    *  default let the new item set its size, subclasses may
    *  override. If the user simply clicks instead of dragging then use

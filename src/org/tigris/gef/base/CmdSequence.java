@@ -44,7 +44,7 @@ public class CmdSequence extends Cmd {
   private Vector _cmds;
 
   /** Construct a new CmdSequence */
-  public CmdSequence() { super("Sequence of Commands"); }
+  public CmdSequence() { super("SequenceOfCommands"); }
   public CmdSequence(String name) { super(name); }
   public CmdSequence(Cmd a1, String name) {
     super(name);

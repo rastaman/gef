@@ -45,7 +45,7 @@ import org.tigris.gef.persistence.*;
 public class CmdSavePS extends CmdSaveGraphics {
 
   public CmdSavePS() {
-    super("Save PostScript...", NO_ICON);
+    super("SavePostScript");
   }
 
   protected void saveGraphics(OutputStream s, Editor ce,

@@ -46,7 +46,7 @@ import org.tigris.gef.presentation.*;
 
 public class CmdUseReshape extends Cmd {
 
-  public CmdUseReshape() { super("Use Reshape Handles", NO_ICON); }
+  public CmdUseReshape() { super("UseReshapeHandles"); }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

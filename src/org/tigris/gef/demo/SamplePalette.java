@@ -53,8 +53,8 @@ public class SamplePalette extends PaletteFig {
   public void defineButtons() {
     super.defineButtons();
 
-    add(new CmdCreateNode(org.tigris.gef.demo.SampleNode.class, "Node One"));
-    add(new CmdCreateNode(org.tigris.gef.demo.SampleNode2.class, "Node Two"));
+    add(new CmdCreateNode(org.tigris.gef.demo.SampleNode.class, "NodeOne"));
+    add(new CmdCreateNode(org.tigris.gef.demo.SampleNode2.class, "NodeTwo"));
     addSeparator();
     Cmd image1 = new CmdSetMode(ModeCreateFigImage.class,
 				"imageURL",

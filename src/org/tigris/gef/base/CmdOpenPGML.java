@@ -45,7 +45,7 @@ import org.tigris.gef.xml.pgml.*;
 public class CmdOpenPGML extends Cmd implements FilenameFilter {
 
   public CmdOpenPGML() {
-    super("Open PGML...", NO_ICON);
+    super("OpenPGML");
     setArg("filterPattern", "*.pgml");
   }
 

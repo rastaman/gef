@@ -64,24 +64,28 @@ public class LogManager {
 	 *  logging category <code>@product.small@.console.log</code>.
 	 */
 	static {
-		Category newCategory = Category.getInstance("GEF");
-		String priority = (String)System.getProperty("gef.log.level","INFO");
-		if (priority == null || priority.length() <= 0)
-			priority = "INFO";
-		newCategory.setPriority(Priority.toPriority(priority));
-		newCategory.addAppender(new ConsoleAppender(new PatternLayout(System.getProperty(CONSOLE_PREFIX, "")+ "%m%n"),
-													ConsoleAppender.SYSTEM_OUT));
-		try {
-			RollingFileAppender rolling = new RollingFileAppender(new PatternLayout("%-7r %-5p[%t]: %m%n"),
-																  System.getProperty("gef.log.location", System.getProperty("user.home")+"/GEF.log"),
-																  true);
-			rolling.setMaxFileSize("2MB");
-			newCategory.addAppender(rolling);
-		}
-		catch(Exception e) {
-			System.err.println("[LogManager] log file can't be created");
-		}
-		log = newCategory;
+            Category newCategory = Category.getInstance("GEF");
+            String priority = (String)System.getProperty("gef.log.level","INFO");
+            if (priority == null || priority.length() <= 0)
+                priority = "INFO";
+            newCategory.setPriority(Priority.toPriority(priority));
+            newCategory.addAppender(new ConsoleAppender(new PatternLayout(System.getProperty(CONSOLE_PREFIX, "")+ "%m%n"),
+            ConsoleAppender.SYSTEM_OUT));
+            // comented out to prevent file to be created
+            /*
+            try {
+                RollingFileAppender rolling = new RollingFileAppender(new PatternLayout("%-7r %-5p[%t]: %m%n"),
+                                                                      System.getProperty("gef.log.location", 
+                                                                      System.getProperty("user.home")+"/GEF.log"),
+                                                                      true);
+                rolling.setMaxFileSize("2MB");
+                newCategory.addAppender(rolling);
+            }
+            catch(Exception e) {
+                System.err.println("[LogManager] log file can't be created");
+            }
+            */
+            log = newCategory;
 	}
 }
 

@@ -39,7 +39,9 @@ import java.awt.Event;
  *  box or use property sheet.  */
 public class CmdAdjustGrid extends Cmd {
 
-  public CmdAdjustGrid() { super("Adjust Grid", NO_ICON); }
+  public CmdAdjustGrid() {
+	  super("AdjustGrid");
+  }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

@@ -63,7 +63,9 @@ import java.io.*;
 
 public class CmdSave extends Cmd implements FilenameFilter {
 
-  public CmdSave() { super("Save...", NO_ICON); }
+  public CmdSave() {
+	  super("Save");
+  }
 
   /** Only allow the user to select files that match the fiven
    *  filename pattern. Needs-More-Work: this is not used yet. */

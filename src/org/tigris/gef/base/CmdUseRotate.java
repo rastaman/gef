@@ -46,7 +46,9 @@ import org.tigris.gef.presentation.*;
 
 public class CmdUseRotate extends Cmd {
 
-  public CmdUseRotate() { super("Use Rotation Handles", NO_ICON); }
+  public CmdUseRotate() {
+	  super("UseRotationHandles");
+  }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

@@ -232,6 +232,9 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <delete file="${lib.dir}/${name}.jar"/>
 
     <filter token="version" value="${version}"/>
+    <copy todir="${build.dest}">
+      <fileset dir="${build.src}" includes="**/*.properties" excludes="CVS/**" />
+    </copy>
     <copy file="${src.dir}/${manifest}" tofile="${build.dir}/${manifest}" filtering="on" overwrite="on" />
     <jar jarfile="${lib.dir}/${name}.jar"
          basedir="${build.dest}"

@@ -340,6 +340,7 @@ public class PGMLParser extends HandlerBase {
             case EDGE_STATE:
                 //System.out.println("[PGMLParser]: endElement EDGE_STATE");
                 _elementState = DEFAULT_STATE;
+                _currentEdge.computeRoute();
                 _currentEdge.updateAnnotationPositions();
                 _currentEdge = null;
                 _currentPoly = null;
