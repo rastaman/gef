@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: FigEdgePoly.java
 // Classes: FigEdgePoly
 // Original Author: agauthie@ics.uci.edu
@@ -46,287 +44,376 @@ import java.awt.*;
 
 public class FigEdgePoly extends FigEdge {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** True if the edge has been laid out automatically once. It will
-   *  not be done automatically again since the user may have edited the
-   *  edge and I dont want to undo that work. */
-  protected boolean _initiallyLaidOut = false;
+    /** True if the edge has been laid out automatically once. It will
+     *  not be done automatically again since the user may have edited the
+     *  edge and I dont want to undo that work.
+     * @deprecated use setInitiallyLaidOut(boolean)
+     */
+    protected boolean _initiallyLaidOut = false;
 
-  ////////////////////////////////////////////////////////////////
-  // FigEdge API
+    ////////////////////////////////////////////////////////////////
+    // FigEdge API
 
-  /** Instanciate a FigPoly with its rectilinear flag set. By default
-   *  the FigPoly is black and the FigEdge has now ArrowHeads. */
-  protected Fig makeEdgeFig() {
-    FigPoly res = new FigPoly(Color.black);
-    res.setRectilinear(false);
-    res.setFixedHandles(1);
-    res.setFilled(false);
-    return res;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public void setInitiallyLaidOut(boolean b) { _initiallyLaidOut = b; }
-
-  ////////////////////////////////////////////////////////////////
-  // routing methods
-
-  /** Find the route that the edge should follow.  Basically case
-   *  analysis to route around source and destination nodes.
-   *  Needs-More-Work: A better algorithm would really be useful.
-   *  Needs-More-Work: Sometimes the edge can get non-rectilinear. */
-  public void computeRoute() {
-    if (!_initiallyLaidOut) {
-	layoutEdge();
-	_initiallyLaidOut = true;
-    }
-    FigPoly p = ((FigPoly) _fig);
-
-
-    Point srcPt = _sourcePortFig.center();
-    Point dstPt = _destPortFig.center();
-
-    if (_useNearest) {
-      if (p.getNumPoints() == 2) {
-	//? two iterations of refinement, maybe should be a for-loop
-	srcPt = _sourcePortFig.connectionPoint(p.getPoints(1));
-	dstPt = _destPortFig.connectionPoint(p.getPoints(p.getNumPoints()-2));
-	srcPt = _sourcePortFig.connectionPoint(dstPt);
-	dstPt = _destPortFig.connectionPoint(srcPt);
-      }
-      else {
-	srcPt = _sourcePortFig.connectionPoint(p.getPoints(1));
-	dstPt = _destPortFig.connectionPoint(p.getPoints(p.getNumPoints()-2));
-      }
+    /** Instantiate a FigPoly with its rectilinear flag set. By default
+     *  the FigPoly is black and the FigEdge has no ArrowHeads. */
+    protected Fig makeEdgeFig() {
+        FigPoly res = new FigPoly(Color.black);
+        res.setRectilinear(false);
+        res.setFixedHandles(1);
+        res.setFilled(false);
+        return res;
     }
 
-    setEndPoints(srcPt, dstPt);
-    calcBounds();
-  } /* end computeRoute */
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  /** Internal function to actually compute the layout of the line if
-   *  it has never been done on that line before. */
-  protected void layoutEdge() {
-    int npoints = 0;
-    int xpoints[] = new int[16];
-    int ypoints[] = new int[16];
-	//System.out.println("[FigEdgePoly] layoutEdge: " + _sourcePortFig + " / " + _destPortFig);
-    Point srcPt = _sourcePortFig.center();
-    Point dstPt = _destPortFig.center();
-
-    if (_useNearest) {
-      int xdiff = (srcPt.x-dstPt.x);
-      int ydiff = (srcPt.y-dstPt.y);
-      srcPt.x = (int) (srcPt.x - 0.1*xdiff);
-      srcPt.y = (int) (srcPt.y - 0.1*ydiff);
-      dstPt.x = (int) (dstPt.x + 0.1*xdiff);
-      dstPt.y = (int) (dstPt.y + 0.1*ydiff);
-      srcPt = _sourcePortFig.connectionPoint(dstPt);
-      dstPt = _destPortFig.connectionPoint(srcPt);
-      srcPt = _sourcePortFig.connectionPoint(dstPt);
-      dstPt = _destPortFig.connectionPoint(srcPt);
+    public void setInitiallyLaidOut(boolean b) {
+        _initiallyLaidOut = b;
     }
 
-    xpoints[npoints] = srcPt.x; ypoints[npoints++] = srcPt.y;
-    xpoints[npoints] = dstPt.x; ypoints[npoints++] = dstPt.y;
+    ////////////////////////////////////////////////////////////////
+    // routing methods
 
-    Polygon routePoly = new Polygon(xpoints, ypoints, npoints);
-    ((FigPoly)_fig).setPolygon(routePoly);
-  }
+    /** Find the route that the edge should follow.  Basically case
+     *  analysis to route around source and destination nodes.
+     *  Needs-More-Work: A better algorithm would really be useful.
+     *  Needs-More-Work: Sometimes the edge can get non-rectilinear. */
+    public void computeRoute() {
+        if (!_initiallyLaidOut) {
+            layoutEdge();
+            _initiallyLaidOut = true;
+        }
+        FigPoly p = ((FigPoly) _fig);
 
-  /** Reply a point on the given routing rect that is "straight out"
-   *  from the connection point in the proper direction. */
-  protected Point routingRectPoint(Point p, Rectangle r, int sector) {
-    switch (sector) {
-    case -1: return new Point(p.x, r.y);
-    case 2: return new Point(r.x, p.y);
-    case 1: return new Point(p.x, r.y + r.height);
-    case -2: return new Point(r.x + r.width, p.y);
-    default: System.out.println("error, undefined sector!");
-      return p;
-    }
-  }
+        Point srcPt = _sourcePortFig.center();
+        Point dstPt = _destPortFig.center();
 
-  /** Try to find a route from the last point in (xs, ys) to point (x,
-   *  y).  Try to avoid the given rectangles along the
-   *  way. Needs-More-Work: should allow a vector of rectangles to
-   *  avoid. */
-  protected int tryRoute(int x, int y, int np, int xs[], int ys[],
-			 Rectangle avoid1, Rectangle avoid2,
-			 int srcSector, int dstSector) {
-    if (np > 12 ) return 0;
-    int fx = xs[np-1], fy = ys[np-1];
-    if ((fx == x || fy == y) && segOK(fx, fy, x, y, avoid1, avoid2)) {
-      xs[np] = x; ys[np++] = y;
-      xs[np] = x; ys[np++] = y;
-      return 1;
-    }
-    if (segOK(fx,fy,fx,y,avoid1,avoid2) && segOK(fx,y,x,y,avoid1,avoid2)) {
-      xs[np] = fx; ys[np++] = y;
-      xs[np] = x; ys[np++] = y;
-      return 2;
-    }
-    if (segOK(fx,fy,x,fy,avoid1,avoid2) && segOK(x,fy,x,y,avoid1,avoid2)) {
-      xs[np] = x; ys[np++] = fy;
-      xs[np] = x; ys[np++] = y;
-      return 2;
+        if (_useNearest) {
+            if (p.getNumPoints() == 2) {
+                //? two iterations of refinement, maybe should be a for-loop
+                srcPt = _sourcePortFig.connectionPoint(p.getPoints(1));
+                dstPt =
+                    _destPortFig.connectionPoint(
+                        p.getPoints(p.getNumPoints() - 2));
+                srcPt = _sourcePortFig.connectionPoint(dstPt);
+                dstPt = _destPortFig.connectionPoint(srcPt);
+            } else {
+                srcPt = _sourcePortFig.connectionPoint(p.getPoints(1));
+                dstPt =
+                    _destPortFig.connectionPoint(
+                        p.getPoints(p.getNumPoints() - 2));
+            }
+        }
+
+        setEndPoints(srcPt, dstPt);
+        calcBounds();
+    } /* end computeRoute */
+
+    /** Internal function to actually compute the layout of the line if
+     *  it has never been done on that line before. */
+    protected void layoutEdge() {
+        int npoints = 0;
+        int xpoints[] = new int[16];
+        int ypoints[] = new int[16];
+        //System.out.println("[FigEdgePoly] layoutEdge: " + _sourcePortFig + " / " + _destPortFig);
+        Point srcPt = _sourcePortFig.center();
+        Point dstPt = _destPortFig.center();
+
+        if (_useNearest) {
+            int xdiff = (srcPt.x - dstPt.x);
+            int ydiff = (srcPt.y - dstPt.y);
+            srcPt.x = (int) (srcPt.x - 0.1 * xdiff);
+            srcPt.y = (int) (srcPt.y - 0.1 * ydiff);
+            dstPt.x = (int) (dstPt.x + 0.1 * xdiff);
+            dstPt.y = (int) (dstPt.y + 0.1 * ydiff);
+            srcPt = _sourcePortFig.connectionPoint(dstPt);
+            dstPt = _destPortFig.connectionPoint(srcPt);
+            srcPt = _sourcePortFig.connectionPoint(dstPt);
+            dstPt = _destPortFig.connectionPoint(srcPt);
+        }
+
+        xpoints[npoints] = srcPt.x;
+        ypoints[npoints++] = srcPt.y;
+        xpoints[npoints] = dstPt.x;
+        ypoints[npoints++] = dstPt.y;
+
+        Polygon routePoly = new Polygon(xpoints, ypoints, npoints);
+        ((FigPoly) _fig).setPolygon(routePoly);
     }
 
-    Point avoidPt = findAvoidPt(fx, fy, x, y, avoid1, avoid2);
-    if ((srcSector==1 || srcSector==-1 || fy==avoidPt.y) && fx!=avoidPt.x) {
-      xs[np] = avoidPt.x;
-      ys[np++] = fy;
-      return tryRoute(x,y,np,xs,ys,avoid1, avoid2, srcSector, dstSector) + 1;
+    /** Reply a point on the given routing rect that is "straight out"
+     *  from the connection point in the proper direction. */
+    protected Point routingRectPoint(Point p, Rectangle r, int sector) {
+        switch (sector) {
+            case -1 :
+                return new Point(p.x, r.y);
+            case 2 :
+                return new Point(r.x, p.y);
+            case 1 :
+                return new Point(p.x, r.y + r.height);
+            case -2 :
+                return new Point(r.x + r.width, p.y);
+            default :
+                System.out.println("error, undefined sector!");
+                return p;
+        }
     }
-    if ((srcSector==2 || srcSector==-2 || fx==avoidPt.x) && fy != avoidPt.y) {
-      xs[np] = fx;
-      ys[np++] = avoidPt.y;
-      return tryRoute(x,y,np,xs,ys,avoid1,avoid2,srcSector,dstSector) + 1;
-    }
-    return 0;
-  }
 
-  /** Find a point on the corner of one of the avoid rectangles that
-   *  is a good intermediate point for the edge layout. */
-  protected Point findAvoidPt(int fx, int fy, int x, int y,
-			      Rectangle avoid1, Rectangle avoid2) {
-    Point res = new Point(fx, fy);
-    if (avoid1.x + avoid1.width < avoid2.x) res.x = avoid2.x;
-    else if (avoid2.x + avoid2.width < avoid1.x) res.x = avoid1.x;
-    else res.x = Math.min(avoid1.x, avoid2.x);
+    /** Try to find a route from the last point in (xs, ys) to point (x,
+     *  y).  Try to avoid the given rectangles along the
+     *  way. Needs-More-Work: should allow a vector of rectangles to
+     *  avoid. */
+    protected int tryRoute(
+            int x,
+            int y,
+            int np,
+            int xs[],
+            int ys[],
+            Rectangle avoid1,
+            Rectangle avoid2,
+            int srcSector,
+            int dstSector) {
+                
+        if (np > 12) {
+            return 0;
+        }
+        int fx = xs[np - 1], fy = ys[np - 1];
+        if ((fx == x || fy == y) && segOK(fx, fy, x, y, avoid1, avoid2)) {
+            xs[np] = x;
+            ys[np++] = y;
+            xs[np] = x;
+            ys[np++] = y;
+            return 1;
+        }
+        if (segOK(fx, fy, fx, y, avoid1, avoid2)
+                && segOK(fx, y, x, y, avoid1, avoid2)) {
+            xs[np] = fx;
+            ys[np++] = y;
+            xs[np] = x;
+            ys[np++] = y;
+            return 2;
+        }
+        if (segOK(fx, fy, x, fy, avoid1, avoid2)
+                && segOK(x, fy, x, y, avoid1, avoid2)) {
+            xs[np] = x;
+            ys[np++] = fy;
+            xs[np] = x;
+            ys[np++] = y;
+            return 2;
+        }
 
-    if (avoid1.y + avoid1.height < avoid2.y) res.y = avoid2.y;
-    else if (avoid2.y + avoid2.height < avoid1.y) res.y = avoid1.y;
-    else res.y = Math.min(avoid1.y, avoid2.y);
+        Point avoidPt = findAvoidPt(fx, fy, x, y, avoid1, avoid2);
+        if ((srcSector == 1 || srcSector == -1 || fy == avoidPt.y)
+                && fx != avoidPt.x) {
+            xs[np] = avoidPt.x;
+            ys[np++] = fy;
+            return tryRoute(
+                x,
+                y,
+                np,
+                xs,
+                ys,
+                avoid1,
+                avoid2,
+                srcSector,
+                dstSector)
+                + 1;
+        }
+        if ((srcSector == 2 || srcSector == -2 || fx == avoidPt.x)
+                && fy != avoidPt.y) {
+            xs[np] = fx;
+            ys[np++] = avoidPt.y;
+            return tryRoute(
+                x,
+                y,
+                np,
+                xs,
+                ys,
+                avoid1,
+                avoid2,
+                srcSector,
+                dstSector)
+                + 1;
+        }
+        return 0;
+    }
 
-    return res;
-  }
+    /** Find a point on the corner of one of the avoid rectangles that
+     *  is a good intermediate point for the edge layout. */
+    protected Point findAvoidPt(
+            int fx,
+            int fy,
+            int x,
+            int y,
+            Rectangle avoid1,
+            Rectangle avoid2) {
+        Point res = new Point(fx, fy);
+        if (avoid1.x + avoid1.width < avoid2.x) {
+            res.x = avoid2.x;
+        } else if (avoid2.x + avoid2.width < avoid1.x) {
+            res.x = avoid1.x;
+        } else {
+            res.x = Math.min(avoid1.x, avoid2.x);
+        }
 
-  /** Reply true if the line segment from (x1, y1) to (x2, y2) does
-   *  not intersect the given avoid rectangles. */
-  protected boolean segOK(int x1, int y1, int x2, int y2,
-			  Rectangle avoid1, Rectangle avoid2) {
-    int xmin = Math.min(x1, x2);
-    int xmax = Math.max(x1, x2);
-    int ymin = Math.min(y1, y2);
-    int ymax = Math.max(y1, y2);
-    int rright = avoid1.x + avoid1.width;
-    int rbot = avoid1.y + avoid1.height;
-    if (x1 == x2) { // vertical
-      if (x1 > avoid1.x && x1 < rright &&
-	  ((ymin < avoid1.y && ymax > avoid1.y) ||
-	   (ymin < rbot && ymax > rbot)))
-	return false;
+        if (avoid1.y + avoid1.height < avoid2.y) {
+            res.y = avoid2.y;
+        } else if (avoid2.y + avoid2.height < avoid1.y) {
+            res.y = avoid1.y;
+        } else {
+            res.y = Math.min(avoid1.y, avoid2.y);
+        }
+
+        return res;
     }
-    if (y1 == y2) { // horizontal
-      if (y1 > avoid1.y && y1 < rbot &&
-	  ((xmin < avoid1.x && xmax > avoid1.x) ||
-	   (xmin < rright && xmax > rright)))
-	return false;
+
+    /** Reply true if the line segment from (x1, y1) to (x2, y2) does
+     *  not intersect the given avoid rectangles. */
+    protected boolean segOK(
+            int x1,
+            int y1,
+            int x2,
+            int y2,
+            Rectangle avoid1,
+            Rectangle avoid2) {
+                
+        int xmin = Math.min(x1, x2);
+        int xmax = Math.max(x1, x2);
+        int ymin = Math.min(y1, y2);
+        int ymax = Math.max(y1, y2);
+        
+        int rright = avoid1.x + avoid1.width;
+        int rbot = avoid1.y + avoid1.height;
+        if (x1 == x2) { // vertical
+            if (x1 > avoid1.x && x1 < rright
+                    && ((ymin < avoid1.y && ymax > avoid1.y)
+                        || (ymin < rbot && ymax > rbot))) {
+                return false;
+            }
+        }
+        if (y1 == y2) { // horizontal
+            if (y1 > avoid1.y
+                && y1 < rbot
+                && ((xmin < avoid1.x && xmax > avoid1.x)
+                    || (xmin < rright && xmax > rright)))
+                return false;
+        }
+        
+        rright = avoid2.x + avoid2.width;
+        rbot = avoid2.y + avoid2.height;
+        if (x1 == x2) { // vertical
+            if (x1 > avoid2.x
+                    && x1 < rright
+                    && ((ymin < avoid2.y && ymax > avoid2.y)
+                        || (ymin < rbot && ymax > rbot))) {
+                return false;
+            }
+        }
+        if (y1 == y2) { // horizontal
+            if (y1 > avoid2.y
+                    && y1 < rbot
+                    && ((xmin < avoid2.x && xmax > avoid2.x)
+                        || (xmin < rright && xmax > rright))) {
+                return false;
+            }
+        }
+        return true;
     }
-    rright = avoid2.x + avoid2.width;
-    rbot = avoid2.y + avoid2.height;
-    if (x1 == x2) { // vertical
-      if (x1 > avoid2.x && x1 < rright &&
-	  ((ymin < avoid2.y && ymax > avoid2.y) ||
-	   (ymin < rbot && ymax > rbot)))
-	return false;
-    }
-    if (y1 == y2) { // horizontal
-      if (y1 > avoid2.y && y1 < rbot &&
-	  ((xmin < avoid2.x && xmax > avoid2.x) ||
-	   (xmin < rright && xmax > rright)))
-	return false;
-    }
-    return true;
-  }
+
     public void moveVertex(Handle h, int x, int y, boolean ov) {
-    int i = h.index;
-    int np = _fig.getNumPoints();
-    FigPoly p = ((FigPoly) _fig);
-    if (!p.getRectilinear()) {
-      if (p._isComplete) {
-        if (i == 0) {
-          if(p._xpoints[i+1] == x && p._ypoints[i+1] == y)
-            if (p._isSelfLoop && p._npoints <= 4){;}
-            else
-              p.removePoint(i+1);
+        int i = h.index;
+        int np = _fig.getNumPoints();
+        FigPoly p = ((FigPoly) _fig);
+        if (!p.getRectilinear()) {
+            if (p._isComplete) {
+                if (i == 0) {
+                    if (p._xpoints[i + 1] == x && p._ypoints[i + 1] == y)
+                        if (p._isSelfLoop && p._npoints <= 4) {
+                            ;
+                        } else
+                            p.removePoint(i + 1);
+                } else if (i == (np - 1)) {
+                    if (p._xpoints[i - 1] == x && p._ypoints[i - 1] == y)
+                        if (p._isSelfLoop && p._npoints <= 4) {
+                            ;
+                        } else
+                            p.removePoint(i - 1);
+                }
+                if (np > 2) {
+                    //Point handlePoint = new Point(p._xpoints[i],p._ypoints[i]);
+                    Point handlePoint = new Point(x, y);
+                    Point srcPt = _sourcePortFig.center();
+                    Point dstPt = _destPortFig.center();
+                    if (i == 1 && np == 3) {
+                        srcPt = _sourcePortFig.connectionPoint(handlePoint);
+                        dstPt = _destPortFig.connectionPoint(handlePoint);
+                        p.moveVertex(new Handle(0), srcPt.x, srcPt.y, true);
+                        p.moveVertex(
+                            new Handle(np - 1),
+                            dstPt.x,
+                            dstPt.y,
+                            true);
+                        calcBounds();
+                    } else if (i == 1) {
+                        srcPt = _sourcePortFig.connectionPoint(handlePoint);
+                        p.moveVertex(new Handle(0), srcPt.x, srcPt.y, true);
+                        calcBounds();
+                    } else if (i == (np - 2)) {
+                        dstPt = _destPortFig.connectionPoint(handlePoint);
+                        p.moveVertex(
+                            new Handle(np - 1),
+                            dstPt.x,
+                            dstPt.y,
+                            true);
+                        calcBounds();
+                    }
+                }
+            }
+            p._xpoints[i] = x;
+            p._ypoints[i] = y;
         }
-        else if (i == (np-1)) {
-          if(p._xpoints[i-1] == x && p._ypoints[i-1] == y)
-            if (p._isSelfLoop && p._npoints <= 4){;}
-            else
-              p.removePoint(i-1);
+    }
+
+    /** When the user drags the handles, move individual points */
+    public void setPoints(Handle h, int mX, int mY) {
+        moveVertex(h, mX, mY, false);
+        calcBounds();
+    }
+
+    /** Add a point to this polygon. Fires PropertyChange with "bounds". */
+    public void insertPoint(int i, int x, int y) {
+        FigPoly p = ((FigPoly) _fig);
+        p.insertPoint(i, x, y);
+    }
+
+    private static Handle _TempHandle = new Handle(0);
+
+    /** Set the end points of this polygon, regardless of the number of
+     *  fixed handles. This is used when nodes move. */
+    public void setEndPoints(Point start, Point end) {
+        FigPoly p = ((FigPoly) _fig);
+        while (p._npoints < 2)
+            p.addPoint(start);
+        synchronized (_TempHandle) {
+            _TempHandle.index = 0;
+            moveVertex(_TempHandle, start.x, start.y, true);
+            _TempHandle.index = p._npoints - 1;
+            moveVertex(_TempHandle, end.x, end.y, true);
         }
-        if (np > 2) {
-          //Point handlePoint = new Point(p._xpoints[i],p._ypoints[i]);
-	  Point handlePoint = new Point(x, y);
-          Point srcPt = _sourcePortFig.center();
-          Point dstPt = _destPortFig.center();
-          if (i == 1 && np == 3) {
-            srcPt = _sourcePortFig.connectionPoint(handlePoint);
-            dstPt = _destPortFig.connectionPoint(handlePoint);
-          p.moveVertex(new Handle(0),srcPt.x,srcPt.y,true);
-          p.moveVertex(new Handle(np-1),dstPt.x,dstPt.y,true);
-          calcBounds();
-          }
-          else if (i == 1){
-            srcPt = _sourcePortFig.connectionPoint(handlePoint);
-          p.moveVertex(new Handle(0),srcPt.x,srcPt.y,true);
-          calcBounds();
-          }
-          else if (i == (np -2 )){
-            dstPt = _destPortFig.connectionPoint(handlePoint);
-          p.moveVertex(new Handle(np-1),dstPt.x,dstPt.y,true);
-          calcBounds();
-          }
+    }
+
+    public void paint(Graphics g) {
+        super.paint(g);
+        if (_highlight) {
+            FigPoly f = (FigPoly) getFig();
+            int nPoints = f.getNumPoints();
+            int xs[] = f.getXs();
+            int ys[] = f.getYs();
+            for (int i = 1; i < nPoints; i++)
+                paintHighlightLine(g, xs[i - 1], ys[i - 1], xs[i], ys[i]);
         }
-      }
-      p._xpoints[i] = x;
-      p._ypoints[i] = y;
     }
-  }
-
-  /** When the user drags the handles, move individual points */
-  public void setPoints(Handle h, int mX, int mY) {
-    moveVertex(h, mX, mY, false);
-    calcBounds();
-  }
-
-  /** Add a point to this polygon. Fires PropertyChange with "bounds". */
-  public void insertPoint(int i, int x, int y) {
-    FigPoly p = ((FigPoly) _fig);
-    p.insertPoint(i,x,y);
-  }
-
-  private static Handle _TempHandle = new Handle(0);
-
-  /** Set the end points of this polygon, regardless of the number of
-   *  fixed handles. This is used when nodes move. */
-  public void setEndPoints(Point start, Point end) {
-    FigPoly p = ((FigPoly) _fig);
-    while (p._npoints < 2) p.addPoint(start);
-    synchronized (_TempHandle) {
-      _TempHandle.index = 0;
-      moveVertex(_TempHandle, start.x, start.y, true);
-      _TempHandle.index = p._npoints - 1;
-      moveVertex(_TempHandle, end.x, end.y, true);
-    }
-  }
-
-  public void paint(Graphics g) {
-    super.paint(g);
-    if (_highlight) {
-      FigPoly f = (FigPoly) getFig();
-      int nPoints = f.getNumPoints();
-      int xs[] = f.getXs();
-      int ys[] = f.getYs();
-      for (int i = 1; i < nPoints; i++)
-	paintHighlightLine(g, xs[i-1], ys[i-1], xs[i], ys[i]);
-    }
-  }
 } /* end class FigEdgePoly */
