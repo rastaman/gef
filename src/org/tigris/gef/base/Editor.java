@@ -433,7 +433,6 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
      *  the given rectangle. This is called by all other hit methods. */
     public Fig hit(Rectangle r) {
         Fig f = getLayerManager().hit(r);
-        LOG.debug("Hit " + f);
         return f;
     }
 
