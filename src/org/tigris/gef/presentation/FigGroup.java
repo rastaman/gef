@@ -448,6 +448,27 @@ public class FigGroup extends Fig {
      * @param h new height for fig
      */
     public void setBounds(int x, int y, int w, int h) {
+        if (isFactoryConstructed()) {
+            setBoundsOnFactoryFig(x, y, w, h);
+            return;
+        }
+        Rectangle oldBounds = getBounds();
+        int figCount = this.figs.size();
+        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+            Fig f = (Fig)this.figs.get(figIndex);
+            if (f.isVisible()) {
+                int newW = (_w == 0) ? 0 : (f.getWidth() * w) / _w;
+                int newH = (_h == 0) ? 0 : (f.getHeight() * h) / _h;
+                int newX = (_w == 0) ? x : x + ((f.getX() - _x) * w) / _w;
+                int newY = (_h == 0) ? y : y + ((f.getY() - _y) * h) / _h;
+                f.setBounds(newX, newY, newW, newH);
+            }
+        }
+        calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+        firePropChange("bounds", oldBounds, getBounds());
+    }
+    
+    private void setBoundsOnFactoryFig(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
         int figCount = this.figs.size();
         Fig f = null;
@@ -457,43 +478,32 @@ public class FigGroup extends Fig {
         int newY;
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
             f = (Fig)this.figs.get(figIndex);
-            if (isFactoryConstructed()) {
-                float proportionWidthChange = (float) w / (float) originalWidth;
-                float proportionHeightChange = (float) h / (float) originalHeight;
-                if (f.isResizable()) {
-                    newW = (int)(((float) f.getOriginalWidth()) * proportionWidthChange);
-                    newH = (int)(((float) f.getOriginalHeight()) * proportionHeightChange);
-                } else {
-                    newW = f.getWidth();
-                    newH = f.getHeight();
-                }
-                if (f.isMovable()) {
-                    newX = x + (int)(((float) f.originalX) * proportionWidthChange);
-                    newY = y + (int)(((float) f.originalY) * proportionHeightChange);
-                } else {
-                    newX = f.getX();
-                    newY = f.getY();
-                }
+            float proportionWidthChange = (float) w / (float) originalWidth;
+            float proportionHeightChange = (float) h / (float) originalHeight;
+            if (f.isResizable()) {
+                newW = (int)(((float) f.getOriginalWidth()) * proportionWidthChange);
+                newH = (int)(((float) f.getOriginalHeight()) * proportionHeightChange);
             } else {
-                newW = (_w == 0) ? 0 : (f.getWidth() * w) / _w;
-                newH = (_h == 0) ? 0 : (f.getHeight() * h) / _h;
-                newX = (_w == 0) ? x : x + ((f.getX() - _x) * w) / _w;
-                newY = (_y == 0) ? y : y + ((f.getY() - _y) * h) / _h;
+                newW = f.getWidth();
+                newH = f.getHeight();
+            }
+            if (f.isMovable()) {
+                newX = x + (int)(((float) f.originalX) * proportionWidthChange);
+                newY = y + (int)(((float) f.originalY) * proportionHeightChange);
+            } else {
+                newX = f.getX();
+                newY = f.getY();
             }
             if (f.isMovable() || f.isResizable()) {
                 f.setBounds(newX, newY, newW, newH);
             }
         }
-        if (isFactoryConstructed()) {
-            // calcBounds seems to screw up here if dragging the bottom
-            // left corner, so setting bounds manually.
-            _x = x;
-            _y = y;
-            _w = w;
-            _h = h;
-        } else {
-            calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-        }
+        // calcBounds seems to screw up here if dragging the bottom
+        // left corner, so setting bounds manually.
+        _x = x;
+        _y = y;
+        _w = w;
+        _h = h;
         firePropChange("bounds", oldBounds, getBounds());
     }
 
