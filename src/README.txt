@@ -1,3 +1,25 @@
+GEF vers 0.10.10 - 1 January 2005
+
+Resolved Issues
+===============
+
+The following issues have been fixed in release 0.10.10 of GEF
+
+
+
+185  getPoints to getPoint conversion not completed  
+186  MutableGraphSupport must take on some features of DefaultGra  
+187  ModeModify should fire an event  
+188  Creating and deleting primitive figs should fire an event  
+190  Introduce Connecter interface  
+
+
+Make sure that you replace any calls to the getPoints(int) with getPoint(int)
+
+
+=========================================================================
+=========================================================================
+
 GEF vers 0.10.9 - 30 December 2004
 
 Resolved Issues
