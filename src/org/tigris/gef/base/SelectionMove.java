@@ -41,9 +41,6 @@ import org.tigris.gef.presentation.*;
 
 public class SelectionMove extends Selection {
 
-  /** The margin between the contents bbox and the frame */
-  public static final int BORDER_WIDTH = 4;
-
   /** Construct a new SelectionMove around the given DiagramElement */
   public SelectionMove(Fig f) { super(f); }
 
