@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: Converter.java
 // Classes: Converter
 // Original Author: Toby.Baier@gmx.net
@@ -61,5 +58,16 @@ public class Converter  {
 	return newOne;
     }
 
+    public static java.util.Vector convertCollection(java.util.Collection oldCol) {
+        if (oldCol == null)
+            return null;
+        
+        java.util.Vector newVec = new java.util.Vector();
+        java.util.Iterator iter = oldCol.iterator();
+        while (iter.hasNext()) {
+            newVec.addElement(iter.next());
+        }
+        return newVec;
+    }
 }
 /* end class Converter */
