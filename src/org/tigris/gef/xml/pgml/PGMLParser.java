@@ -519,9 +519,9 @@ public class PGMLParser extends DefaultHandler {
         }
     }
 
-    private FigLine _currentLine = null;
-    private int _x1Int = 0;
-    private int _y1Int = 0;
+    protected FigLine _currentLine = null;
+    protected int _x1Int = 0;
+    protected int _y1Int = 0;
 
     protected FigLine handleLine(Attributes attrList) {
         _currentLine = new FigLine(0, 0, 100, 100);
@@ -610,7 +610,7 @@ public class PGMLParser extends DefaultHandler {
         return f;
     }
 
-    private FigPoly _currentPoly = null;
+    protected FigPoly _currentPoly = null;
 
     protected FigPoly handlePath(Attributes attrList) {
         FigPoly f = new FigPoly();
@@ -620,7 +620,7 @@ public class PGMLParser extends DefaultHandler {
         return f;
     }
 
-    private void polyStateStartElement(String tagName, Attributes attrList) {
+    protected void polyStateStartElement(String tagName, Attributes attrList) {
         if(_currentPoly != null) {
             if(tagName.equals("moveto")) {
                 String x1 = attrList.getValue("x");
@@ -701,9 +701,9 @@ public class PGMLParser extends DefaultHandler {
         return f;
     }
 
-    private Fig _currentEncloser = null;
+    protected Fig _currentEncloser = null;
 
-    private void privateStateEndElement(String tagName) {
+    protected void privateStateEndElement(String tagName) {
         try {
             if(_currentNode != null) {
                 if(_currentEdge != null) {
@@ -768,7 +768,7 @@ public class PGMLParser extends DefaultHandler {
         }
     }
 
-    private void nodeStateStartElement(String tagName, Attributes attrList) {
+    protected void nodeStateStartElement(String tagName, Attributes attrList) {
         //System.out.println("[PGMLParser]: nodeStateStartElement: " + tagName);
         if(tagName.equals("private")) {
             _textBuf = new StringBuffer();
@@ -793,7 +793,7 @@ public class PGMLParser extends DefaultHandler {
 
     protected FigEdge _currentEdge = null;
 
-    private void edgeStateStartElement(String tagName, Attributes attrList) {
+    protected void edgeStateStartElement(String tagName, Attributes attrList) {
         if(tagName.equals("path")) {
             if(!_detectedFailure) {
                 Fig p = handlePath(attrList);
