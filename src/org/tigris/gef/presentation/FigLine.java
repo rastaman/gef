@@ -302,6 +302,16 @@ public class FigLine extends Fig {
     calcBounds();
     firePropChange("bounds", null, null);
   }
+  
+    /**
+     * Tests, if the given rectangle intersects with the perimeter of this polygon.
+     * @param rect The rectangle to be tested.
+     * @return True, if the rectangle intersects the perimeter, otherwise false.
+     */
+    public boolean intersectsPerimeter(Rectangle rect) {
+        return rect.intersectsLine(_x, _y, _x+_w, _y+_h);
+    }
+  
 
 } /* end class FigLine */
 
