@@ -23,4 +23,9 @@ public interface GraphController extends java.io.Serializable {
 	 */
 	public void removePresentation(Object element);
 
+	/**
+	 * Get the graphical representation of the given object.
+	 */
+	public Object presentationFor(Object data);
+
 } /* end interface GraphController */
