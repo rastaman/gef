@@ -7,8 +7,6 @@
  <property name="obj.dir" value="lib"/>
  <property name="jar" value="gef-demos.jar"/>
  <property name="gef.jar" value="..${file.separator}gef.jar"/>
-
- <echo message="!! ${gef.jar}"/>
 </target>
 
 <target name="build" depends="init">
@@ -33,6 +31,7 @@
  <echo message="======================="/>
  <echo message="usage: ant [target]"/>
  <echo message="targets:"/>
+ <echo message=" MyDemo"/>
  <echo message=" BasicApplication"/>
  <echo message=" BroomStudy"/>
  <echo message=" EquipmentApplet"/>
@@ -42,6 +41,14 @@
 </target>
 
 <!-- applications -->
+<target name="MyDemo" depends="build">
+ <property name="main" value="uci.gef.demo.MyDemo"/>
+ <property name="args" value=""/>
+
+ <java classname="${main}" args="${args}" fork="yes"
+       jvmargs="-cp ${obj.dir}${path.separator}${gef.jar}"/>
+</target>
+
 <target name="BasicApplication" depends="build">
  <property name="main" value="uci.gef.demo.BasicApplication"/>
  <property name="args" value=""/>

@@ -41,7 +41,7 @@ import java.util.Vector;         // To store the scribble in.
 import java.util.Properties;     // To store printing preferences in.
 import java.beans.*;
 
-//!esp! import uci.uml.Foundation.Core.ElementImpl;
+import uci.util.VetoableChangeEventSource;
 
 
 public class CmdPaste extends Cmd {
@@ -63,10 +63,8 @@ public class CmdPaste extends Cmd {
       f.translate(gridSze, gridSze);
       f = (Fig) f.clone();
       Object owner = f.getOwner();
-      /*!esp!
-      if (owner instanceof ElementImpl && f instanceof VetoableChangeListener)
-        ((ElementImpl)owner).addVetoableChangeListener((VetoableChangeListener)f);
-      */
+      if (owner instanceof VetoableChangeEventSource && f instanceof VetoableChangeListener)
+        ((VetoableChangeEventSource)owner).addVetoableChangeListener((VetoableChangeListener)f);
       ce.add(f);
       figs.addElement(f);
     }

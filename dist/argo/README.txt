@@ -18,7 +18,7 @@ contents of this directory will serve as a guide when making the
 actual split.
 
 
-An ANT build script is included to build ArgoUML from this source and
+An Ant build script is included to build ArgoUML from this source and
 the gef.jar built from the GEF distribution.  The build script
 requires a dev.properties file in the ANT_HOME directory which
 contains the following properties:

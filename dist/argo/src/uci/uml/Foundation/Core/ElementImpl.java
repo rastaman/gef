@@ -35,6 +35,7 @@ import uci.uml.Foundation.Extension_Mechanisms.TaggedValue;
 import uci.uml.Foundation.Extension_Mechanisms.Stereotype;
 import uci.uml.Foundation.Data_Types.Name;
 import uci.ui.Highlightable;
+import uci.util.VetoableChangeEventSource;
 
 /** Highlight is an added attribute that is not in the UML spec.  It
  *  is used in Argo/UML to visually identify the offending elements
@@ -43,7 +44,8 @@ import uci.ui.Highlightable;
  *  _propertyListeners. */
 
 
-public class ElementImpl implements Element, Highlightable {
+public class ElementImpl
+  implements Element, Highlightable, VetoableChangeEventSource {
   ////////////////////////////////////////////////////////////////
   // static variables
   protected static PropertyChangeListener _staticListener = null;
@@ -119,7 +121,7 @@ public class ElementImpl implements Element, Highlightable {
     return returnVector;
   } 
 
-  public Vector getVetoListeners() { return _vetoListeners; }
+  public Vector getVetoableChangeListeners() { return _vetoListeners; }
 
 
   public String getId() { return elementID; }

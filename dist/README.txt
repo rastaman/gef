@@ -15,11 +15,9 @@ independent GEF distribution.
 
 Notes on the distribution:
 
-03/02/2000:
-
 This is an initial split of the GEF source from the ArgoUML
 distribution, based on code checked out of the argouml repository on
-cvs.tigris.org at noon today, EST.
+cvs.tigris.org on 03/02/2000 at noon, EST.
 
 src - GEF source
 demos - GEF demos
@@ -31,6 +29,8 @@ argo - The leftover ArgoUML source after GEF has been removed.  This
        settled upon.  Includes a build script to verify that ArgoUML
        can be built from the gef.jar produced by the GEF
        distribution.
+
+Please read the INSTALL.txt file for info on how to build GEF.
 
 
 Edwin Park

@@ -39,7 +39,6 @@ import javax.swing.event.EventListenerList;
 
 import uci.util.*;
 import uci.gef.event.*;
-//!esp! import uci.uml.Foundation.Core.*; (ElementImpl)
 
 
 /** This class handles Manager selections. It is basically a
@@ -409,9 +408,8 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
       Selection s = (Selection)ss.nextElement();
       Fig f = (Fig) s.getContent();
       Object o = f.getOwner();
-      /*!esp!
-      if (o instanceof ElementImpl) {
-        Vector v =  (Vector) ((ElementImpl)o).getVetoListeners().clone();
+      if (o instanceof VetoableChangeEventSource) {
+        Vector v =  (Vector) ((VetoableChangeEventSource)o).getVetoableChangeListeners().clone();
 	Enumeration vv = v.elements();
 	vv = v.elements();
 	Object firstElem = null;
@@ -429,7 +427,6 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
 	}
 	((Fig)firstElem).dispose();
       }
-      */
     }
   }
 
