@@ -31,7 +31,6 @@
 
 package org.tigris.gef.graph.presentation;
 
-import java.util.*;
 import java.beans.*;
 
 /** Abstract superclass for all Net-level objects. I currently

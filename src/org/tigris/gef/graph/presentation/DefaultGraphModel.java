@@ -33,7 +33,6 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
 import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.MutableGraphSupport;

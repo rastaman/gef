@@ -28,11 +28,9 @@
 
 package org.tigris.gef.graph.presentation;
 
-import java.awt.*;
 import java.util.*;
 
 import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
 import org.tigris.gef.graph.*;
 
 /** This class models a port in our underlying connected graph model.
