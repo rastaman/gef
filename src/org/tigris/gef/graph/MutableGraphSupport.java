@@ -56,7 +56,7 @@ public abstract class MutableGraphSupport
         connectionConstrainer = cc;
     }
 
-    public Vector getGraphListeners() {
+    public List getGraphListeners() {
         return _graphListeners;
     }
 
