@@ -173,7 +173,11 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         removeKeyListener(this);
         _layeredPane.remove(this);
         Editor ce = Globals.curEditor();
-        FigTextEditor.remove();
+        //FigTextEditor.remove();
+        // Don't call remove() here, because remove() would call this method
+        // (endEditing()) for second time (unnecessarily). 
+        // Just reset the _activeTextEditor:
+        FigTextEditor._activeTextEditor = null;
     }
     
     private static FigTextEditor _activeTextEditor;

@@ -33,9 +33,6 @@ package org.tigris.gef.graph;
 
 import java.util.*;
 
-import org.tigris.gef.graph.*;
-import org.tigris.gef.graph.presentation.*;
-
 /** An abstract class that makes it easier to implement your own
  *  version of MutableGraphModel. This class basically includes the
  *  code for event notifications, so that you don't have to write
@@ -44,10 +41,12 @@ import org.tigris.gef.graph.presentation.*;
  * @see AdjacencyListGraphModel */
 
 public abstract class MutableGraphSupport
-implements MutableGraphModel, java.io.Serializable {
+      implements MutableGraphModel, java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
+  /** @deprecated 0.11, visibility will change use getGraphListeners
+   *  and setGraphListeners instead */
   protected Vector _graphListeners;
 
   ////////////////////////////////////////////////////////////////
@@ -62,6 +61,28 @@ implements MutableGraphModel, java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // MutableGraphModel implementation
+
+    /** Return a valid node in this graph */
+    public Object createNode( String name, Hashtable args) {
+        Object newNode;
+        //Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
+        //assert _nodeClass != null
+        try {
+            newNode = Class.forName( name).newInstance();
+        } catch (java.lang.ClassNotFoundException ignore) {
+            return null;
+        } catch (java.lang.IllegalAccessException ignore) {
+            return null;
+        } catch (java.lang.InstantiationException ignore) {
+            return null;
+        }
+
+        if (newNode instanceof GraphNodeHooks) {
+            ((GraphNodeHooks)newNode).initialize( args);
+        }
+        return newNode;
+    }
+
 
 	/** Return true if the type of the given node can be mapped to a
 	 *  type supported by this type of diagram

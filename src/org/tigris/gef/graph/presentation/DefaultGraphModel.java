@@ -129,6 +129,21 @@ implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // interface MutableGraphListener
 
+  /** Return a valid node in this graph */
+  public Object createNode( String name, Hashtable args) {
+    Object newNode;
+    //Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
+    //assert _nodeClass != null
+    try { newNode = Class.forName( name).newInstance(); }
+    catch (java.lang.ClassNotFoundException ignore) { return null; }
+    catch (java.lang.IllegalAccessException ignore) { return null; }
+    catch (java.lang.InstantiationException ignore) { return null; }
+
+    if (newNode instanceof GraphNodeHooks)
+      ((GraphNodeHooks)newNode).initialize( args);
+    return newNode;
+  }
+
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) { return (node instanceof NetNode); }
 

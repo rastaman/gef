@@ -63,6 +63,10 @@ implements IStatusBar, Cloneable, ModeChangeListener {
   /** Contruct a new JGraphFrame with the title "untitled" and a new
    *  DefaultGraphModel. */
   public JGraphFrame() { this("untitled"); }  
+  public JGraphFrame( boolean init_later) {
+	  super( "untitled");
+	  if( ! init_later)	init( new JGraph());
+  }
   /** Contruct a new JGraphFrame with the given title and a new
    *  DefaultGraphModel. */
   public JGraphFrame(String title) {
@@ -75,6 +79,14 @@ implements IStatusBar, Cloneable, ModeChangeListener {
    *  JGraph. All JGraphFrame contructors call this one. */
   public JGraphFrame(String title, JGraph jg) {
 	super(title);
+	init( jg);
+  }
+
+  public void init() {
+	  init( new JGraph());
+  }
+
+  public void init( JGraph jg) {
 	_graph = jg;
 	Container content = getContentPane();
 	setUpMenus();

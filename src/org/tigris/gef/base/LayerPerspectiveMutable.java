@@ -36,9 +36,6 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
-
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 
@@ -84,8 +81,21 @@ public class LayerPerspectiveMutable extends LayerPerspective {
         // prevents duplicate nodes. 
         // To allow multiple views in one diagram, remove the following two lines.
         if (owner != null && f instanceof FigNode &&
-            _mgm.containsNode(owner))
+                getContents(null).contains(f) &&  
+                _mgm.containsNode(owner)) {
+            // When a new node is created (using
+            // GraphModelEvents), the node is first
+            // added to the MutableGraphModel, then
+            // added to the layer (here). Thus at
+            // this point, _mgm.contains(owner), 
+            // but !_contents.contains(f), so we 
+            // have to add the Fig f to the layer.
+            // Only if both the model and the graph
+            // contain the node/the fig, we can 
+            // return without doing anything.
+            // Added by oliver@freiheit.com
             return; 
+        }
         super.add(f);
         //if ( owner != null && _mgm.canAddNode(owner))
           //  _mgm.addNode(owner);
@@ -98,7 +108,7 @@ public class LayerPerspectiveMutable extends LayerPerspective {
         if (owner != null) {
             if (f instanceof FigEdge && _mgm.containsEdge(owner)) 
                 _mgm.removeEdge(owner); 
-            else if (_mgm.containsNode(owner)) 
+            else if (f instanceof FigNode && _mgm.containsNode(owner)) 
                 _mgm.removeNode(owner);
         }
     }

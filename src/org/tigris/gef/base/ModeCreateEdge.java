@@ -134,7 +134,9 @@ public class ModeCreateEdge extends ModeCreate {
       // FigNode to see if a port exists 
       Object foundPort = destFigNode.deepHitPort(x, y);
 
-      if (foundPort != null && foundPort != _startPort) {
+      //if (foundPort != null && foundPort != _startPort && mgm.canConnect( _startPort, foundPort)) {
+      // NOTE: canConnect should be responsible to decide such things (foundPort != _startPort)
+      if (foundPort != null && mgm.canConnect( _startPort, foundPort)) {
 	Fig destPortFig = destFigNode.getPortFig(foundPort);
 	Class edgeClass = (Class) getArg("edgeClass");
 	if (edgeClass != null)
@@ -154,8 +156,9 @@ public class ModeCreateEdge extends ModeCreate {
 	  destFigNode.damage();
 	  _newItem = null;
 
-	  FigEdge fe = (FigEdge) ce.getLayerManager().getActiveLayer().
-	    presentationFor(_newEdge);
+	  Layer layer= ce.getLayerManager().getActiveLayer();
+
+	  FigEdge fe = (FigEdge)layer.presentationFor(_newEdge);
 	  fe.setSourcePortFig(_startPortFig);
 	  fe.setSourceFigNode(_sourceFigNode);
 	  fe.setDestPortFig(destPortFig);

@@ -2,6 +2,7 @@
 package org.tigris.gef.presentation;
 
 import java.awt.*;
+import java.awt.geom.*;
 import java.awt.event.MouseEvent;
 
 import java.beans.PropertyChangeEvent;
@@ -26,11 +27,12 @@ import org.tigris.gef.ui.PopupGenerator;
 
 import org.tigris.gef.util.Localizer;
 
-/** This class is the base class for basic drawing objects such as
- *  rectangles, lines, text, circles, etc. Also, class FigGroup
- *  implements a composite figure. Fig's are Diagram elements that can
- *  be placed in any LayerDiagram. Fig's are also used to define the
- *  look of FigNodes on NetNodes. */
+/**
+ *  This class is the base class for basic drawing objects such as rectangles,
+ *  lines, text, circles, etc. Also, class FigGroup implements a composite
+ *  figure. Fig's are Diagram elements that can be placed in any LayerDiagram.
+ *  Fig's are also used to define the look of FigNodes on NetNodes.
+ *
 public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerator {
     ////////////////////////////////////////////////////////////////
     // constants
@@ -43,28 +45,34 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     //public final int DASH_LENGTH = 5;
     public static String[] DASHED_CHOICES = {"Solid", "Dashed"};
     public static int[][] DASH_ARRAYS = {null, {5}, {15, 5}, {3, 10}, {3, 6, 10, 6}};
+
     ////////////////////////////////////////////////////////
     // instance variables
 
-    /** The Layer that this Fig is in.  Each Fig can be in exactly one
-     *  Layer, but there can be multiple Editors on a given Layer. */
+    /**
+     *  The Layer that this Fig is in. Each Fig can be in exactly one Layer, but
+     *  there can be multiple Editors on a given Layer.
+     */
     protected transient Layer _layer = null;
 
     /** True if this object is locked and cannot be moved by the user. */
     protected boolean _locked = false;
 
-    /** Owners are underlying objects that "own" the graphical Fig's
-     *  that represent them. For example, a FigNode and FigEdge keep a
-     *  pointer to the net-level object that they represent. Also, any
-     *  Fig can have NetPort as an owner.
+    /**
+     *  Owners are underlying objects that "own" the graphical Fig's that
+     *  represent them. For example, a FigNode and FigEdge keep a pointer to the
+     *  net-level object that they represent. Also, any Fig can have NetPort as
+     *  an owner.
      *
      * @see FigNode#setOwner
      * @see FigNode#bindPort
      */
     private transient Object _owner;
 
-    /** Coordinates of the Fig's bounding box. It is the responsibility
-     *  of subclasses to make sure that these values are ALWAYS up-to-date. */
+    /**
+     *  Coordinates of the Fig's bounding box. It is the responsibility of
+     *  subclasses to make sure that these values are ALWAYS up-to-date.
+     */
     protected int _x;
     protected int _y;
     protected int _w;
@@ -82,6 +90,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /** Thickness of line around object, for now limited to 0 or 1. */
     protected int _lineWidth = 1;
     protected int[] _dashes = null;
+    protected float[] _g2dashes = null;
 
     /** True if the object should fill in its area. */
     protected boolean _filled = true;
@@ -1040,6 +1049,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         paint(g);
     }
 
+
     ////////////////////////////////////////////////////////////////
     // property change handling
 
@@ -1051,48 +1061,57 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         }
     }
 
-    /**
-     * Force recalculating of bounds and redraw of fig.
-     */
+
+    /**  Force recalculating of bounds and redraw of fig. */
     public void redraw() {
         Rectangle rect = getBounds();
         setBounds(rect.x, rect.y, rect.width, rect.height);
         damage();
     }
 
+
     public void removePoint(int i) {
     }
 
-    /** Remove this PropertyChangeListener from the JellyBeans internal
-     *  list.  If the PropertyChangeListener isn't on the list, silently
-     *  do nothing.
+
+    /**
+     *  Remove this PropertyChangeListener from the JellyBeans internal list. If
+     *  the PropertyChangeListener isn't on the list, silently do nothing.
+     *
      */
     public void removePropertyChangeListener(PropertyChangeListener l) {
         Globals.removePropertyChangeListener(this, l);
     }
 
-    /** Change the back-to-front ordering of a Fig in
-     *  LayerDiagram. Should the Fig have any say in it?
+
+    /**
+     *  Change the back-to-front ordering of a Fig in LayerDiagram. Should the
+     *  Fig have any say in it?
      *
      * @see LayerDiagram#reorder
-     * @see CmdReorder */
+     * @see          CmdReorder
     public void reorder(int func, Layer lay) {
         lay.reorder(this, func);
     }
 
-    /** Reply a rectangle that arcs should not route through. Basically
-     *  this is the bounding box plus some margin around all egdes. */
+
+    /**
+     *  Reply a rectangle that arcs should not route through. Basically this is
+     *  the bounding box plus some margin around all egdes.
     public Rectangle routingRect() {
         return new Rectangle(_x - BORDER, _y - BORDER, _w + BORDER * 2, _h + BORDER * 2);
     }
+
 
     public boolean savingAllowed() {
         return _allowsSaving;
     }
 
+
     public void setSavingAllowed(boolean newValue) {
         _allowsSaving = newValue;
     }
+
 
     /** Set the bounds of this Fig. Fires PropertyChangeEvent "bounds". */
     public void setBounds(int x, int y, int w, int h) {
@@ -1182,11 +1201,16 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         }
     }
 
-    /** Set the line width. Zero means lines are not draw. One draws
-     *  them one pixel wide. Larger widths are not yet supported. Fires
-     *  PropertyChangeEvent "lineWidth". */
+    /**
+     *  Set the line width. Zero means lines are not drawn. One draws them one
+     *  pixel wide. Larger widths are in experimental support stadium
+     *  (hendrik@freiheit.com, 2003-02-05). Fires PropertyChangeEvent
+     *  "lineWidth".
+     *
+     * @param w The new lineWidth value
+     */
     public void setLineWidth(int w) {
-        int newLW = Math.max(0, Math.min(1, w));
+        int newLW = Math.max( 0, w );
         firePropChange("lineWidth", _lineWidth, newLW);
         _lineWidth = newLW;
     }
@@ -1195,19 +1219,16 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     public void setDashed(boolean now_dashed) {
         if(now_dashed) {
             _dashes = DASH_ARRAYS[1];
+            _g2dashes = new float[]{5, 5};
         }
         else {
             _dashes = null;
+            _g2dashes = null;
         }
     }
 
-    public void setDashedString(String dashString) {
-        if(dashString.equalsIgnoreCase("solid")) {
-            _dashes = null;
-        }
-        else {
-            _dashes = DASH_ARRAYS[1];
-        }
+    public void setDashedString( String dashString ) {
+        setDashed( dashString.equalsIgnoreCase( "solid" ) );
     }
 
     /** Move the Fig to the given position. By default translates the

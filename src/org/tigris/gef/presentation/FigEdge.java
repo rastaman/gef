@@ -67,11 +67,11 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
             _path = pc;
         }
 
-        PathConv getPath() {
+        public PathConv getPath() {
             return _path;
         }
 
-        Fig getFig() {
+        public Fig getFig() {
             return _fig;
         }
     }

@@ -50,6 +50,9 @@ public interface MutableGraphModel extends GraphModel {
   /** Return true if the given object is a valid node in this graph */
   boolean canAddNode(Object node);
 
+  /** Return a valid node in this graph */
+  Object createNode( String name, Hashtable args);
+
   /** Return true if the given object is a valid edge in this graph */
   boolean canAddEdge(Object edge);
 

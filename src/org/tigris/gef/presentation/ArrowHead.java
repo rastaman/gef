@@ -33,73 +33,97 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
-/** Abstract class to draw arrow heads on the ends of FigEdges. */
+/**
+ *  Abstract class to draw arrow heads on the ends of FigEdges.
+ */
 
 public abstract class ArrowHead implements java.io.Serializable {
-  protected int arrow_width = 7, arrow_height = 12;
-  protected Color arrowLineColor = Color.black;
-  protected Color arrowFillColor = Color.black;
+    protected int arrow_width = 7;
+    protected int arrow_height = 12;
+    protected Color arrowLineColor = Color.black;
+    protected Color arrowFillColor = Color.black;
 
-  public ArrowHead() { }
-  public ArrowHead(Color line, Color fill) {
-    setLineColor(line);
-    setFillColor(fill);
-  }
 
-  public Color getLineColor() {
-    return arrowLineColor;
-  }
+    public ArrowHead() { }
 
-  public void setLineColor(Color newColor) {
-    arrowLineColor = newColor;
-  }
 
-  public Color getFillColor() {
-    return arrowFillColor;
-  }
+    public ArrowHead(Color line, Color fill) {
+        setLineColor(line);
+        setFillColor(fill);
+    }
 
-  public void setFillColor(Color newColor) {
-    arrowFillColor = newColor;
-  }
 
-  public abstract void paint(Graphics g, Point start, Point end);
+    public Color getLineColor() {
+        return arrowLineColor;
+    }
 
-  public void paintAtHead(Graphics g, Fig path) {
-    paint(g, path.pointAlongPerimeter(5), path.pointAlongPerimeter(0));
-  }
 
-  public void paintAtTail(Graphics g, Fig path) {
-    int len = path.getPerimeterLength();
-    paint(g, path.pointAlongPerimeter(len - 6),
-	  path.pointAlongPerimeter(len - 1));
-  }
+    public void setLineColor(Color newColor) {
+        arrowLineColor = newColor;
+    }
 
-  /** return the approximate arc length of the path in pixel units */
-  public int getLineLength(Point one, Point two) {
-    int dxdx = (two.x - one.x) * (two.x - one.x);
-    int dydy = (two.y - one.y) * (two.y - one.y);
-    //System.out.println("    ! pall dx, dy = " + dxdx + " , " + dydy);
-    return (int) Math.sqrt(dxdx + dydy);
-  }
 
-  /** return a point that is dist pixels along the path */
-  public Point pointAlongLine(Point one, Point two, int dist) {
-    int len = getLineLength(one, two);
-    int p = dist;
-    if (len == 0) return one;
-    //System.out.println("    ! pall dist, len = " + dist + " , " + len);
-    return new Point(one.x + ((two.x - one.x) * p) / len,
-		     one.y + ((two.y - one.y) * p) / len);
-  }
+    public Color getFillColor() {
+        return arrowFillColor;
+    }
 
-  public double dist(int x0, int y0, int x1, int y1) {
-    double dx, dy;
-    dx = (double)(x0-x1);
-    dy = (double)(y0-y1);
-    return Math.sqrt(dx*dx+dy*dy);
-  }
 
-  public double dist(double dx, double dy) {
-    return Math.sqrt(dx*dx+dy*dy);
-  }
+    public void setFillColor(Color newColor) {
+        arrowFillColor = newColor;
+    }
+
+
+    public abstract void paint(Graphics g, Point start, Point end);
+
+
+    public void paintAtHead(Graphics g, Fig path) {
+        Graphics2D g2 = (Graphics2D) g;
+        Stroke oldStroke = g2.getStroke();
+        g2.setStroke( new BasicStroke( path.getLineWidth()));
+        paint(g2, path.pointAlongPerimeter(5), path.pointAlongPerimeter(0));
+        g2.setStroke( oldStroke );
+    }
+
+    public void paintAtTail(Graphics g, Fig path) {
+        Graphics2D g2 = (Graphics2D) g;
+        Stroke oldStroke = g2.getStroke();
+        g2.setStroke( new BasicStroke( path.getLineWidth() ) );
+        int len = path.getPerimeterLength();
+        paint(g2, path.pointAlongPerimeter(len-6), path.pointAlongPerimeter(len-1));
+        g2.setStroke( oldStroke );
+    }
+
+    /** return the approximate arc length of the path in pixel units */
+    public int getLineLength(Point one, Point two) {
+        int dxdx = (two.x - one.x) * (two.x - one.x);
+        int dydy = (two.y - one.y) * (two.y - one.y);
+        //System.out.println("    ! pall dx, dy = " + dxdx + " , " + dydy);
+        return (int) Math.sqrt(dxdx + dydy);
+    }
+
+    /** return a point that is dist pixels along the path */
+    public Point pointAlongLine(Point one, Point two, int dist) {
+        int len = getLineLength(one, two);
+        int p = dist;
+        if ( len == 0 ) {
+            return one;
+        }
+        //System.out.println("    ! pall dist, len = " + dist + " , " + len);
+        return new Point(one.x + ((two.x - one.x) * p) / len,
+                         one.y + ((two.y - one.y) * p) / len);
+    }
+
+
+    public double dist(int x0, int y0, int x1, int y1) {
+        double dx;
+        double dy;
+        dx = (double)(x0-x1);
+        dy = (double)(y0-y1);
+        return Math.sqrt(dx*dx+dy*dy);
+    }
+
+
+    public double dist(double dx, double dy) {
+        return Math.sqrt(dx*dx+dy*dy);
+    }
 } /* end class ArrowHead */

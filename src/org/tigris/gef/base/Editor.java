@@ -152,6 +152,10 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 
     private RenderingHints _renderingHints = new RenderingHints(null);
   
+    /** The ancestor of _jComponent that has a peer that can create
+     *  an image. */
+    private transient JPopupMenu _popup = null;
+
     /**
      * @deprecated in 0.10 - remove in 0.11
      */
@@ -228,6 +232,10 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     public void postSave() {
         _layerManager.postSave();
     }
+	public void setPopupMenu( JPopupMenu p) { _popup= p;}
+    
+    public JPopupMenu getPopupMenu() { return _popup; }
+    
 
     /** Called after the Editor is loaded from a file. */
     public void postLoad() {
@@ -722,6 +730,16 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         int dx = (int)(xp * _scale - xp);
         int dy = (int)(yp * _scale - yp);
         me.translatePoint(dx, dy);
+		/*
+        //System.out.println( "_curFig="+_curFig+"  _popup="+(_popup != null));
+		if( ( _curFig == null) && (_popup != null) && (me.isPopupTrigger())) {
+			//System.out.println( me.isPopupTrigger()+" x="+me.getX()+" x="+me.getY());
+			//System.out.println( _jComponent+"\n"+me.getComponent());
+			_popup.show( me.getComponent(), me.getX(), me.getY());
+			return;
+		}
+        */
+
         return me;
     }
 

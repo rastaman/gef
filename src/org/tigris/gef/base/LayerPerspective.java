@@ -218,10 +218,32 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
 
   public void nodeRemoved(GraphEvent ge) {
     // handled through NetNode subclasses
+      // no, it is not handled through subclasses.
+      // this method body was added by hendrik@freiheit.com
+      // 2003-02-20
+      Fig node = presentationFor(ge.getArg());
+      if (null != node)
+      {
+          // this is a dirty quickfix to deal with highlighted
+          // FigNodes.
+          if (node instanceof FigNode && ((FigNode)node).getHighlight())
+          {
+              ((FigNode)node).setHighlight(false);
+          }
+          remove(node);
+      }
   }
 
   public void edgeRemoved(GraphEvent ge) {
     // handled through NetEdge subclasses
+      // no, it is not handled through subclasses.
+      // this method body was added by hendrik@freiheit.com
+      // 2003-02-20
+      Fig edge = presentationFor(ge.getArg());
+      if (null != edge)
+      {
+          remove(edge);
+      }
   }
 
   public void graphChanged(GraphEvent ge) {
