@@ -25,6 +25,7 @@ package org.tigris.gef.ocl;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 
@@ -55,10 +56,24 @@ public class OCLExpander {
     }
     ////////////////////////////////////////////////////////////////
     // template expansion
+    public void expand(OutputStream w, Object target) throws ExpansionException {
+        expandContent(new PrintWriter(w), target, "", "");
+    }
+
+    /**
+     * @deprecated visibility will change to private. Use expand(OutputStream w, Object target)
+     */
     public void expand(OutputStream w, Object target, String prefix, String suffix) throws ExpansionException {
         expandContent(new PrintWriter(w), target, prefix, suffix);
     }
 
+    public void expand(Writer w, Object target) throws ExpansionException {
+        expand(w, target, "", "");
+    }
+
+    /**
+     * @deprecated visibility will change to private. Use expand(Writer w, Object target)
+     */
     public void expand(Writer w, Object target, String prefix, String suffix) throws ExpansionException {
         PrintWriter pw;
         if (w instanceof PrintWriter) {
@@ -131,7 +146,6 @@ public class OCLExpander {
             String line = st.nextToken();
             expandLine(printWriter, line, target, prefix, suffix);
         }
-        // System.out.println();
     }    // end of expand
 
     private void expandLine(PrintWriter pw, String line, Object target, String prefix, String suffix) throws ExpansionException {
@@ -144,15 +158,38 @@ public class OCLExpander {
             return;
         }
 
-        // assume one embedded expression on line
-        prefix = prefix + line.substring(0, startPos);
-        String expr = line.substring(startPos + OCL_START.length(), endPos);
-        suffix = line.substring(endPos + OCL_END.length()) + suffix;
-        _bindings.put("self", target);
-        List results = evaluate(_bindings, expr);
-        Iterator iter = results.iterator();
-        while(iter.hasNext()) {
-            expand(pw, iter.next(), prefix, suffix);
+        if (line.indexOf(OCL_START, endPos) >= 0) {
+            while (startPos >= 0) {
+                String before = line.substring(0, startPos);
+                String expr = line.substring(startPos + OCL_START.length(), endPos);
+                String after = line.substring(endPos + OCL_END.length());
+                _bindings.put("self", target);
+                List results = evaluate(_bindings, expr);
+                Iterator iter = results.iterator();
+                StringWriter sw = new StringWriter();
+                while(iter.hasNext()) {
+                    expand(sw, iter.next(), before, after);
+                }
+                line = sw.toString();
+                while (line.endsWith("\n") || line.endsWith("\r")) {
+                    line = line.substring(0, line.length()-1);
+                }
+              
+                startPos = line.indexOf(OCL_START, 0);
+                endPos = line.indexOf(OCL_END, 0);
+            }
+            pw.println(prefix + line + suffix);
+        } else {
+            // assume one embedded expression on line
+            prefix = prefix + line.substring(0, startPos);
+            String expr = line.substring(startPos + OCL_START.length(), endPos);
+            suffix = line.substring(endPos + OCL_END.length()) + suffix;
+            _bindings.put("self", target);
+            List results = evaluate(_bindings, expr);
+            Iterator iter = results.iterator();
+            while(iter.hasNext()) {
+                expand(pw, iter.next(), prefix, suffix);
+            }
         }
     }
 

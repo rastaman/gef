@@ -56,7 +56,7 @@ height="<ocl>self.height.intValue</ocl>"
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="java.awt.Color">
 <![CDATA[
-<ocl>self.RGB</ocl>
+<ocl>self.getRed</ocl> <ocl>self.getGreen</ocl> <ocl>self.getBlue</ocl>
 ]]>
 </template>
 

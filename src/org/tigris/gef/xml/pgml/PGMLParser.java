@@ -68,6 +68,14 @@ public class PGMLParser extends DefaultHandler {
     protected boolean _detectedFailure = false;
     protected String systemId = "";
 
+    /**
+     * A map of previously created colors mapped by an
+     * RGB string description in the for "rrr ggg bbb"
+     * where rrr = red value int ggg = green value int
+     * and bbb = blue value int.
+     */
+    private static final Map USED_COLORS = new HashMap();
+    
     ////////////////////////////////////////////////////////////////
     // constructors
     public PGMLParser() {
@@ -1034,6 +1042,11 @@ public class PGMLParser extends DefaultHandler {
             return Color.blue;
         }
 
+        if (name.indexOf(' ') > 0) {
+            // The color is in the format "red green blue"
+            return getColor(name);
+        }
+        
         try {
             return Color.decode(name);
         }
@@ -1042,6 +1055,25 @@ public class PGMLParser extends DefaultHandler {
         }
 
         return defaultColor;
+    }
+
+    /**
+     * A flyweight factory method for reusing the same Color
+     * value multiple times.
+     * @param rgb A string of RGB values seperated by space
+     * @return the equivilent Color
+     */
+    private static Color getColor(String rgb) {
+        Color color = (Color)USED_COLORS.get(rgb);
+        if (color == null) {
+            StringTokenizer st = new StringTokenizer(rgb, " ");
+            int red = Integer.parseInt(st.nextToken());
+            int green = Integer.parseInt(st.nextToken());
+            int blue = Integer.parseInt(st.nextToken());
+            color = new Color(red, green, blue);
+            USED_COLORS.put(rgb, color);
+        }
+        return color;
     }
 
     protected String translateClassName(String oldName) {
