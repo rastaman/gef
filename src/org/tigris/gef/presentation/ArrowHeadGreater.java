@@ -35,20 +35,6 @@ import java.awt.*;
 
 public class ArrowHeadGreater extends ArrowHead {
 
-    /**
-     * @deprecated 0.10.1 use getInstance()
-     */
-    private static ArrowHeadGreater TheInstance = new ArrowHeadGreater();
-
-    /**
-     * @deprecated 0.10.3 use constructor
-     * The singleton pattern is not coorrect for
-     * arrow heads otherwise it is not possible to have
-     * different coloured heads.
-     */
-    public static ArrowHeadGreater getInstance() {
-        return TheInstance;
-    }
     public void paint(Graphics g, Point start, Point end) {
         int    xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
