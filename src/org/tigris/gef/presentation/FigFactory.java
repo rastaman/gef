@@ -1,5 +1,7 @@
 package org.tigris.gef.presentation;
 
+import org.apache.log4j.Logger;
+
 /**
  * A default Fig factory with convenience methods
  * for creating Figs given their class.
@@ -11,6 +13,8 @@ final public class FigFactory extends AbstractFigFactory {
     private static final FigFactory instance = new FigFactory();
     
     private FigFactory() {}
+
+    private static final Logger LOG = Logger.getLogger(FigFactory.class);
     
     public static FigFactory getInstance() {
         return instance;
@@ -37,6 +41,7 @@ final public class FigFactory extends AbstractFigFactory {
             throw new FigInstantiationException();
         }
         init(fig);
+        if (LOG.isDebugEnabled()) LOG.debug("Factory created fig " + fig);
         return fig;
     }
 }

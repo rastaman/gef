@@ -1489,10 +1489,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 
     void setFactoryConstructed() {
         factoryConstructed = true;
-        originalWidth = getWidth();
-        originalHeight = getHeight();
-        originalX = getX();
-        originalY = getY();
     }
     
     /**

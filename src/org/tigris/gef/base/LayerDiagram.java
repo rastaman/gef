@@ -36,7 +36,9 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPainter;
 
@@ -59,6 +61,8 @@ public class LayerDiagram extends Layer {
     protected static int _nextLayerNumbered = 1;
     private Rectangle _clipBounds = new Rectangle();
 
+    private static final Logger LOG = Logger.getLogger(LayerDiagram.class);
+    
     ////////////////////////////////////////////////////////////////
     // constuctors and related methods
 
@@ -129,7 +133,19 @@ public class LayerDiagram extends Layer {
         if (f == null) {
             throw new IllegalArgumentException("Attempted to add a null fig to a LayerDiagram");
         }
-
+        
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Adding to layer position (" + f.getX() + "," + f.getY() + ") the fig " + f);
+            if (f instanceof FigGroup) {
+                Fig childFig = ((FigGroup)f).getFigAt(0);
+                if (childFig instanceof FigGroup) {
+                    Fig grandChildFig0 = ((FigGroup)childFig).getFigAt(0);
+                    LOG.debug("Gchild0 at position (" + grandChildFig0.getX() + "," + grandChildFig0.getY() + ") the fig " + f);
+                    Fig grandChildFig1 = ((FigGroup)childFig).getFigAt(1);
+                    LOG.debug("Gchild1 at position (" + grandChildFig1.getX() + "," + grandChildFig1.getY() + ") the fig " + f);
+                }
+            }
+        }
         _contents.remove(f);    // act like a set
         _contents.add(f);
         f.setLayer(this);

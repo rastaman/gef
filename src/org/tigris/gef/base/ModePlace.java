@@ -28,6 +28,7 @@
 
 package org.tigris.gef.base;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
@@ -37,10 +38,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
-/** Mode to place new a FigNode on a node in a diagram.
- *  Normally invoked via CmdCreateNode.
+/**
+ * Mode to place new a FigNode on a node in a diagram.
+ * Normally invoked via CmdCreateNode.
  *
  * @see CmdCreateNode
  * @see FigNode
@@ -56,7 +57,7 @@ public class ModePlace extends FigModifyingModeImpl {
     protected Object _node;
 
     /** The (new) FigNode being placed. It might be an existing
-     *  FigNode on an existing node being place in another diagram. */
+     *  FigNode on an existing node being placed in another diagram. */
     protected FigNode _pers;
 
     protected GraphFactory _factory;
@@ -65,6 +66,7 @@ public class ModePlace extends FigModifyingModeImpl {
 
     protected String _instructions; 
 
+    private static final Logger LOG = Logger.getLogger(ModePlace.class);
     ////////////////////////////////////////////////////////////////
     // constructor
 
@@ -117,6 +119,7 @@ public class ModePlace extends FigModifyingModeImpl {
         GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
         Layer lay = editor.getLayerManager().getActiveLayer();
         _pers = renderer.getFigNodeFor(gm, lay, _node);
+        if (LOG.isDebugEnabled()) LOG.debug("mousePressed: Got a fig at position (" + _pers.getX() + "," + _pers.getY() + ")");
         mouseMoved(me); // move _pers into position
         me.consume();
     }
@@ -140,7 +143,9 @@ public class ModePlace extends FigModifyingModeImpl {
         editor.damageAll();
         Point snapPt = new Point(x, y);
         editor.snap(snapPt);
+        if (LOG.isDebugEnabled()) LOG.debug("mouseMoved: About to set location (" + _pers.getX() + "," + _pers.getY() + ")");
         _pers.setLocation(snapPt.x, snapPt.y);
+        if (LOG.isDebugEnabled()) LOG.debug("mouseMoved: Location set (" + _pers.getX() + "," + _pers.getY() + ")");
         editor.damageAll();
         me.consume();
     }
@@ -166,6 +171,7 @@ public class ModePlace extends FigModifyingModeImpl {
 
         MutableGraphModel mgm = (MutableGraphModel)gm;
         if(mgm.canAddNode(_node)) {
+            LOG.debug("mouseReleased Adding fig to editor (" + _pers.getX()+"," + _pers.getY());
             editor.add(_pers);
             mgm.addNode(_node);
             if(_addRelatedEdges)

@@ -32,6 +32,8 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 /** 
  * A FigGroup is a collection of Figs to all be treated as a single item 
  * @author Jason Robbins
@@ -64,6 +66,8 @@ public class FigGroup extends Fig {
      * adds without the overhead of the calculation each time.
      */
     private boolean suppressCalcBounds;
+
+    private static final Logger log = Logger.getLogger(FigGroup.class);
     
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -476,6 +480,9 @@ public class FigGroup extends Fig {
         int newH;
         int newX;
         int newY;
+        FigGroup topGroup = getTopGroup();
+        int topLevelX = topGroup.getX();
+        int topLevelY = topGroup.getY();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
             f = (Fig)this.figs.get(figIndex);
             float proportionWidthChange = (float) w / (float) originalWidth;
@@ -488,8 +495,10 @@ public class FigGroup extends Fig {
                 newH = f.getHeight();
             }
             if (f.isMovable()) {
-                newX = x + (int)(((float) f.originalX) * proportionWidthChange);
-                newY = y + (int)(((float) f.originalY) * proportionHeightChange);
+                newX = topLevelX + (int)(((float) f.originalX) * proportionWidthChange);
+                newY = topLevelY + (int)(((float) f.originalY) * proportionHeightChange);
+                //newX = (int)(((float) f.originalX) * proportionWidthChange);
+                //newY = (int)(((float) f.originalY) * proportionHeightChange);
             } else {
                 newX = f.getX();
                 newY = f.getY();
@@ -667,23 +676,39 @@ public class FigGroup extends Fig {
         Fig f = null;
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
             f = (Fig)figs.get(figIndex);
-            f._x -= _x;
-            f._y -= _y;
             f.setFactoryConstructed();
         }
-        _x = 0;
-        _y = 0;
         super.setFactoryConstructed();
     }
 
-    protected void zeroOrigin() {
+    protected void setOriginalOrigin(int x, int y) {
+        originalX = _x;
+        originalY = _y;
+        originalWidth = _w;
+        originalHeight = _h;
         int figCount = this.figs.size();
         Fig f = null;
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
             f = (Fig)figs.get(figIndex);
-            f.setFactoryConstructed();
+            if (f instanceof FigGroup) {
+                ((FigGroup)f).setOriginalOrigin(f._x,f._y);
+            } else {
+                f.originalX = f._x;
+                f.originalY = f._y;
+                f.originalWidth = f._w;
+                f.originalHeight = f._h;
+                if (f instanceof FigRect) {
+                    log.debug(f.originalX+","+f.originalY+"    "+f.originalWidth+","+f.originalHeight);
+                }
+            }
         }
-        super.setFactoryConstructed();
     }
-
+    
+    private FigGroup getTopGroup() {
+        FigGroup topGroup = this;
+        while (topGroup.getGroup() != null) {
+            topGroup = (FigGroup) topGroup.getGroup();
+        }
+        return topGroup;
+    }
 } /* end class FigGroup */

@@ -31,6 +31,7 @@ package org.tigris.gef.base;
 import java.util.*;
 import java.awt.*;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.graph.presentation.*;
@@ -76,6 +77,8 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   /** Rectangles of where to place nodes that are automatically added. */
   protected Hashtable _nodeTypeRegions = new Hashtable();
 
+    private static final Logger LOG = Logger.getLogger(LayerPerspective.class);
+    
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -201,6 +204,7 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
       if (newFigNode != null) {
         newFigNode.setLayer(this);
 	putInPosition(newFigNode);
+        if (LOG.isDebugEnabled()) LOG.debug("Adding node");
 	add(newFigNode);
       }
       //else System.out.println("added node de is null");

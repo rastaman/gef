@@ -12,6 +12,10 @@ package org.tigris.gef.presentation;
  */
 public abstract class AbstractFigFactory {
     final protected void init(Fig fig) {
+        fig.setLocation(0,0);
+        if (fig instanceof FigGroup) {
+            ((FigGroup)fig).setOriginalOrigin(0,0);
+        }
         fig.setFactoryConstructed();
     }
 }

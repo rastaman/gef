@@ -210,8 +210,9 @@ public class LayerManager implements java.io.Serializable {
     /** When the user tries to add a new Fig to a
      *  LayerManager, pass that addition along to my active layer. */
     public void add(Fig f) {
-        if(_activeLayer != null)
+        if(_activeLayer != null) {
             _activeLayer.add(f);
+        }
     }
 
     /** When the user tries to remove a new Fig from a

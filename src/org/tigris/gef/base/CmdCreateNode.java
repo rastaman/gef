@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdCreateNode.java
 // Classes: CmdCreateNode
 // Original Author: jrobbins@ics.uci.edu
@@ -33,6 +30,7 @@ package org.tigris.gef.base;
 
 import java.util.*;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.graph.*;
 
 /*  this Cmd is executed it makes the new objects as per its
@@ -45,98 +43,129 @@ import org.tigris.gef.graph.*;
 
 public class CmdCreateNode extends Cmd implements GraphFactory {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public static Class DEFAULT_NODE_CLASS = org.tigris.gef.graph.presentation.NetNode.class;
+    ////////////////////////////////////////////////////////////////
+    // constants
+    public static Class DEFAULT_NODE_CLASS =
+        org.tigris.gef.graph.presentation.NetNode.class;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    private static final Logger LOG = Logger.getLogger(CmdCreateNode.class);
+    
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  // All instance variables are stored in the _args Hashtable
-  
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    // All instance variables are stored in the _args Hashtable
 
-  /** Construct a new Cmd with the given arguments for node class. */
-  public CmdCreateNode(Hashtable args, String resource, String name) {
-	  super(args, resource, name);
-  }
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public CmdCreateNode(Hashtable args, String name) {
-    super(args, "GefBase", name);
-  }
+    /** Construct a new Cmd with the given arguments for node class. */
+    public CmdCreateNode(Hashtable args, String resource, String name) {
+        super(args, resource, name);
+    }
 
-  /** Construct a new Cmd with the given classes for the NetNode
-   *  and its FigNode. */
-  public CmdCreateNode(Class nodeClass, String resource, String name) {
-	  this(new Hashtable(), resource, name);
-	  setArg("className", nodeClass);
-  }
+    public CmdCreateNode(Hashtable args, String name) {
+        super(args, "GefBase", name);
+    }
 
-  public CmdCreateNode(Class nodeClass, String name) {
-    this(new Hashtable(), name);
-    setArg("className", nodeClass);
-  }
+    /** Construct a new Cmd with the given classes for the NetNode
+     *  and its FigNode. */
+    public CmdCreateNode(Class nodeClass, String resource, String name) {
+        this(new Hashtable(), resource, name);
+        setArg("className", nodeClass);
+    }
 
-  /** Construct a new Cmd with the given classes for the NetNode
-   *  and its FigNode, and set the global sticky mode boolean to
-   *  the given value. This allows the user to place several nodes
-   *  rapidly.  */
-  public CmdCreateNode(Class nodeClass, boolean sticky, String resource, String name) {
-    this(nodeClass, resource, name);
-    setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
-  }
+    public CmdCreateNode(Class nodeClass, String name) {
+        this(new Hashtable(), name);
+        setArg("className", nodeClass);
+    }
 
-  public CmdCreateNode(Class nodeClass, boolean sticky, String name) {
-    this(nodeClass, name);
-    setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
-  }
+    /** Construct a new Cmd with the given classes for the NetNode
+     *  and its FigNode, and set the global sticky mode boolean to
+     *  the given value. This allows the user to place several nodes
+     *  rapidly.  */
+    public CmdCreateNode(
+        Class nodeClass,
+        boolean sticky,
+        String resource,
+        String name) {
+        this(nodeClass, resource, name);
+        setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // Cmd API
+    public CmdCreateNode(Class nodeClass, boolean sticky, String name) {
+        this(nodeClass, name);
+        setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
+    }
 
-  /** Actually instanciate the NetNode and FigNode objects and
-   * set the global next mode to ModePlace */
-  public void doIt() {
-    Editor ce = Globals.curEditor();
-    GraphModel gm = ce.getGraphModel();
-    if (!(gm instanceof MutableGraphModel)) return;
-    setArg("graphModel", gm);
+    ////////////////////////////////////////////////////////////////
+    // Cmd API
 
-    String instructions = null;
-    Object actionName = getValue(javax.swing.Action.NAME);
-    if(actionName != null)
-	instructions = "Click to place " + actionName.toString();
-    Mode placeMode = new ModePlace(this,instructions);          
+    /** Actually instanciate the NetNode and FigNode objects and
+     * set the global next mode to ModePlace */
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        GraphModel gm = ce.getGraphModel();
+        if (!(gm instanceof MutableGraphModel))
+            return;
+        setArg("graphModel", gm);
 
-    Object shouldBeSticky = getArg("shouldBeSticky");
-    Globals.mode(placeMode, shouldBeSticky == Boolean.TRUE);
-  }
+        String instructions = null;
+        Object actionName = getValue(javax.swing.Action.NAME);
+        if (actionName != null) {
+            instructions = "Click to place " + actionName.toString();
+        }
+        Mode placeMode = new ModePlace(this, instructions);
 
-  public void undoIt() {
-    System.out.println("undo is not implemented");
-  }
+        Object shouldBeSticky = getArg("shouldBeSticky");
+        Globals.mode(placeMode, shouldBeSticky == Boolean.TRUE);
+        if (LOG.isDebugEnabled()) LOG.debug("Mode set to ModePlace with sticky mode " + shouldBeSticky);
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // GraphFactory implementation
+    public void undoIt() {
+        LOG.warn("undo is not implemented");
+    }
 
-  public GraphModel makeGraphModel() { return null; }
-  public Object makeEdge() { return null; }
-  public Object makeNode() {
-    Object newNode;
-    Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
-    //assert _nodeClass != null
-    try { newNode = nodeClass.newInstance(); }
-    catch (java.lang.IllegalAccessException ignore) { return null; }
-    catch (java.lang.InstantiationException ignore) { return null; }
+    ////////////////////////////////////////////////////////////////
+    // GraphFactory implementation
 
-    if (newNode instanceof GraphNodeHooks)
-      ((GraphNodeHooks)newNode).initialize(_args);
-    return newNode;
-  }
+    public GraphModel makeGraphModel() {
+        return null;
+    }
+    
+    public Object makeEdge() {
+        return null;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // for testing purpose only
-  public Object getActiveGraphModel() { return getArg("graphModel"); }
+    /**
+     * Factory method for creating a new NetNode from the
+     * className argument.
+     * TODO This returns null on error. We need to define some
+     * basic exception classes.
+     */    
+    public Object makeNode() {
+        Object newNode;
+        Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
+        //assert _nodeClass != null
+        try {
+            newNode = nodeClass.newInstance();
+        } catch (java.lang.IllegalAccessException ignore) {
+            return null;
+        } catch (java.lang.InstantiationException ignore) {
+            return null;
+        }
+        LOG.debug("New node created " + newNode);
+
+        if (newNode instanceof GraphNodeHooks) {
+            LOG.debug("Initializing GraphNodeHooks");
+            ((GraphNodeHooks) newNode).initialize(_args);
+        }
+        return newNode;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // for testing purpose only
+    public Object getActiveGraphModel() {
+        return getArg("graphModel");
+    }
 
 } /* end class CmdCreateNode */

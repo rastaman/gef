@@ -24,7 +24,6 @@
 package org.tigris.gef.demo;
 
 import java.awt.*;
-import java.util.*;
 
 import org.tigris.gef.presentation.*;
 
@@ -32,6 +31,8 @@ public class FigSampleNode3 extends FigNode {
     Fig obj1, obj2, obj3, obj4, obj5, obj6;
     FigText obj7;
 
+    private static int nextNumber = 1;
+    
     public FigSampleNode3() {
         super();
 
@@ -81,13 +82,17 @@ public class FigSampleNode3 extends FigNode {
     
     private FigGroup makeSubSubGroup() {
         FigGroup subGroup = new FigGroup();
-        obj1 = new FigRect(-25, -25, 50, 50, Color.black, Color.white);
+        obj1 = new FigRect(-30, -30, 60, 60, Color.black, Color.white);
+        //obj1 = new FigRect(-25, -25, 50, 50, Color.black, Color.white);
         obj2 = new FigCircle(-20, -20, 40, 40, Color.red, null);
         obj3 = new FigCircle(-5, -30, 10, 10, Color.black, Color.blue);
         obj4 = new FigCircle(-5, 20, 10, 10, Color.black, Color.blue);
-        obj5 = new FigRect(-30, -5, 10, 10, Color.black, Color.green);
-        obj6 = new FigRect(20, -5, 10, 10, Color.black, Color.green);
+        //obj5 = new FigRect(-30, -5, 10, 10, Color.black, Color.green);
+        //obj6 = new FigRect(20, -5, 10, 10, Color.black, Color.green);
+        obj5 = new FigCircle(-30, -5, 10, 10, Color.black, Color.green);
+        obj6 = new FigCircle(20, -5, 10, 10, Color.black, Color.green);
         obj7 = new FigText(-10, -10, 20, 20);
+        obj7.setText("" + getNumber());
         obj7.setLineWidth(0);
         obj7.setJustification(FigText.JUSTIFY_CENTER);
 
@@ -111,11 +116,14 @@ public class FigSampleNode3 extends FigNode {
         if (!(own instanceof SampleNode))
             return;
         SampleNode node = (SampleNode) own;
-        obj7.setText("" + node.getNumber());
+        //obj7.setText("" + node.getNumber());
         bindPort(node.north, obj3);
         bindPort(node.south, obj4);
         bindPort(node.east, obj5);
         bindPort(node.west, obj6);
     }
-    
+
+    static int getNumber() {
+        return nextNumber++;
+    }    
 } /* end class FigSampleNode */
