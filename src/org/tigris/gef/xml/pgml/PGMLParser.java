@@ -23,8 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.tigris.gef.xml.pgml;
 
-import java.awt.*;
-
+import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,18 +41,24 @@ import org.tigris.gef.base.Diagram;
 
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.presentation.DefaultGraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigCircle;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigEdgePoly;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.FigRRect;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
 
-import org.tigris.gef.presentation.*;
-
-import org.xml.sax.AttributeList;
-import org.xml.sax.HandlerBase;
+import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
-public class PGMLParser extends HandlerBase {
-    ////////////////////////////////////////////////////////////////
-    // static variables
-    public static PGMLParser SINGLETON = new PGMLParser();
+public class PGMLParser extends DefaultHandler {
     ////////////////////////////////////////////////////////////////
     // instance variables
     protected Diagram _diagram = null;
@@ -65,7 +70,7 @@ public class PGMLParser extends HandlerBase {
 
     ////////////////////////////////////////////////////////////////
     // constructors
-    protected PGMLParser() {
+    public PGMLParser() {
     }
 
     ////////////////////////////////////////////////////////////////
@@ -187,7 +192,10 @@ public class PGMLParser extends HandlerBase {
     protected static final int DEFAULT_NODE_STATE = 40;
     protected static final int DEFAULT_EDGE_STATE = 50;
 
-    public void startElement(String elementName, AttributeList attrList) {
+    public void startElement(String uri,
+                String localname, 
+                String elementName, 
+                Attributes atts) throws SAXException {
         //System.out.println("[PGMLParser]: startElement " + elementName + " / " + _nestedGroups + " / " + _elementState);
         // moved here to compensate for groups that do not have default state...PJS
         if("group".equals(elementName)) {
@@ -198,28 +206,28 @@ public class PGMLParser extends HandlerBase {
 
             case DEFAULT_STATE:
                 if("group".equals(elementName)) {
-                    Fig groupFig = handleGroup(attrList);
+                    Fig groupFig = handleGroup(atts);
                     if(groupFig != null && !_detectedFailure) {
                         _diagram.add(groupFig);
                     }
                 }
                 else if(elementName.equals("pgml")) {
-                    handlePGML(attrList);
+                    handlePGML(atts);
                 }
                 else if(_nestedGroups == 0) {
                     if(elementName.equals("path")) {
-                        _diagram.add(handlePolyLine(attrList));
+                        _diagram.add(handlePolyLine(atts));
                     }
                     else if(elementName.equals("ellipse")) {
-                        _diagram.add(handleEllipse(attrList));
+                        _diagram.add(handleEllipse(atts));
                     }
                     else if(elementName.equals("rectangle")) {
-                        _diagram.add(handleRect(attrList));
+                        _diagram.add(handleRect(atts));
                     }
                     else if(elementName.equals("text")) {
                         _elementState = TEXT_STATE;
                         _textBuf = new StringBuffer();
-                        _diagram.add(handleText(attrList));
+                        _diagram.add(handleText(atts));
                     }
                     else if(elementName.equals("piewedge")) {
                     }
@@ -246,33 +254,33 @@ public class PGMLParser extends HandlerBase {
                 break;
 
             case LINE_STATE:
-                lineStateStartElement(elementName, attrList);
+                lineStateStartElement(elementName, atts);
                 break;
 
             case POLY_STATE:
-                polyStateStartElement(elementName, attrList);
+                polyStateStartElement(elementName, atts);
                 break;
 
             case POLY_EDGE_STATE:
-                polyStateStartElement(elementName, attrList);
+                polyStateStartElement(elementName, atts);
                 break;
 
             case NODE_STATE:
-                nodeStateStartElement(elementName, attrList);
+                nodeStateStartElement(elementName, atts);
                 break;
 
             case EDGE_STATE:
-                edgeStateStartElement(elementName, attrList);
+                edgeStateStartElement(elementName, atts);
                 break;
 
             case ANNOTATION_STATE:
-                annotationStateStartElement(elementName, attrList);
+                annotationStateStartElement(elementName, atts);
                 break;
         }
     }
 
-    public void endElement(String elementName) {
-        //System.out.println("[PGMLParser]: endElement " + elementName + " / " + _nestedGroups + " / " + _elementState);
+    public void endElement(String uri, String localname, String elementName) 
+    throws SAXException {
         if("group".equals(elementName)) {
             _nestedGroups--;
         }
@@ -461,7 +469,7 @@ public class PGMLParser extends HandlerBase {
         }
     }
 
-    protected void handlePGML(AttributeList attrList) {
+    protected void handlePGML(Attributes attrList) {
         String name = attrList.getValue("name");
         String scale = attrList.getValue("scale");
         String clsName = attrList.getValue("description");
@@ -493,7 +501,7 @@ public class PGMLParser extends HandlerBase {
         }
     }
 
-    protected Fig handlePolyLine(AttributeList attrList) {
+    protected Fig handlePolyLine(Attributes attrList) {
         String clsName = translateClassName(attrList.getValue("description"));
         if(clsName != null && clsName.indexOf("FigLine") != -1) {
             return handleLine(attrList);
@@ -507,7 +515,7 @@ public class PGMLParser extends HandlerBase {
     private int _x1Int = 0;
     private int _y1Int = 0;
 
-    protected FigLine handleLine(AttributeList attrList) {
+    protected FigLine handleLine(Attributes attrList) {
         _currentLine = new FigLine(0, 0, 100, 100);
         setAttrs(_currentLine, attrList);
         _x1Int = 0;
@@ -516,7 +524,7 @@ public class PGMLParser extends HandlerBase {
         return _currentLine;
     }
 
-    protected void lineStateStartElement(String tagName, AttributeList attrList) {
+    protected void lineStateStartElement(String tagName, Attributes attrList) {
         if(_currentLine != null) {
             if(tagName.equals("moveto")) {
                 String x1 = attrList.getValue("x");
@@ -539,7 +547,7 @@ public class PGMLParser extends HandlerBase {
         }
     }
 
-    protected FigCircle handleEllipse(AttributeList attrList) {
+    protected FigCircle handleEllipse(Attributes attrList) {
         FigCircle f = new FigCircle(0, 0, 50, 50);
         setAttrs(f, attrList);
         String rx = attrList.getValue("rx");
@@ -553,7 +561,7 @@ public class PGMLParser extends HandlerBase {
         return f;
     }
 
-    protected FigRect handleRect(AttributeList attrList) {
+    protected FigRect handleRect(Attributes attrList) {
         FigRect f;
         String cornerRadius = attrList.getValue("rounding");
         if(cornerRadius == null || cornerRadius.equals("")) {
@@ -572,7 +580,7 @@ public class PGMLParser extends HandlerBase {
     private FigText _currentText = null;
     protected StringBuffer _textBuf = null;
 
-    protected FigText handleText(AttributeList attrList) {
+    protected FigText handleText(Attributes attrList) {
         FigText f = new FigText(100, 100, 90, 45);
         setAttrs(f, attrList);
         _currentText = f;
@@ -596,7 +604,7 @@ public class PGMLParser extends HandlerBase {
 
     private FigPoly _currentPoly = null;
 
-    protected FigPoly handlePath(AttributeList attrList) {
+    protected FigPoly handlePath(Attributes attrList) {
         FigPoly f = new FigPoly();
         _elementState = POLY_STATE;
         setAttrs(f, attrList);
@@ -604,7 +612,7 @@ public class PGMLParser extends HandlerBase {
         return f;
     }
 
-    private void polyStateStartElement(String tagName, AttributeList attrList) {
+    private void polyStateStartElement(String tagName, Attributes attrList) {
         if(_currentPoly != null) {
             if(tagName.equals("moveto")) {
                 String x1 = attrList.getValue("x");
@@ -634,7 +642,7 @@ public class PGMLParser extends HandlerBase {
 
     /* Returns Fig rather than FigGroups because this is also
        used for FigEdges. */
-    protected Fig handleGroup(AttributeList attrList) {
+    protected Fig handleGroup(Attributes attrList) throws SAXException {
         //System.out.println("[PGMLParser]: handleGroup: ");
         Fig f = null;
         String clsNameBounds = attrList.getValue("description");
@@ -673,14 +681,12 @@ public class PGMLParser extends HandlerBase {
                 _currentEdge = (FigEdge)f;
                 _elementState = EDGE_STATE;
             }
-        }
-        catch(Exception ex) {
-            System.out.println("Exception in handleGroup");
-            ex.printStackTrace();
-        }
-        catch(NoSuchMethodError ex) {
-            System.out.println("No constructor() in class " + clsName);
-            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            throw new SAXException(ex);
+        } catch (InstantiationException ex) {
+            throw new SAXException(ex);
+        } catch (IllegalAccessException ex) {
+            throw new SAXException(ex);
         }
 
         setAttrs(f, attrList);
@@ -754,7 +760,7 @@ public class PGMLParser extends HandlerBase {
         }
     }
 
-    private void nodeStateStartElement(String tagName, AttributeList attrList) {
+    private void nodeStateStartElement(String tagName, Attributes attrList) {
         //System.out.println("[PGMLParser]: nodeStateStartElement: " + tagName);
         if(tagName.equals("private")) {
             _textBuf = new StringBuffer();
@@ -779,7 +785,7 @@ public class PGMLParser extends HandlerBase {
 
     protected FigEdge _currentEdge = null;
 
-    private void edgeStateStartElement(String tagName, AttributeList attrList) {
+    private void edgeStateStartElement(String tagName, Attributes attrList) {
         if(tagName.equals("path")) {
             if(!_detectedFailure) {
                 Fig p = handlePath(attrList);
@@ -823,8 +829,7 @@ public class PGMLParser extends HandlerBase {
         }
     }
 
-    public void annotationStateStartElement(String tagName, AttributeList attrList) {
-        //System.out.println("[PGMLParser]: annotationStateStartElement: " + tagName + " " + _elementState);
+    public void annotationStateStartElement(String tagName, Attributes attrList) {
         if(tagName.equals("text")) {
             _elementState = TEXT_ANNOTATION_STATE;
             _textBuf = new StringBuffer();
@@ -834,7 +839,7 @@ public class PGMLParser extends HandlerBase {
 
     ////////////////////////////////////////////////////////////////
     // internal parsing methods
-    protected void setAttrs(Fig f, AttributeList attrList) {
+    protected void setAttrs(Fig f, Attributes attrList) {
         String name = attrList.getValue("name");
         if(name != null && !name.equals("")) {
             _figRegistry.put(name, f);
@@ -920,7 +925,7 @@ public class PGMLParser extends HandlerBase {
         setOwnerAttr(f, attrList);
     }
 
-    protected void setOwnerAttr(Fig f, AttributeList attrList) {
+    protected void setOwnerAttr(Fig f, Attributes attrList) {
         //System.out.println("[GEF.PGMLParser]: setOwnerAttr");
         try {
             String owner = attrList.getValue("href");
