@@ -835,6 +835,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = new Vector();
         JMenu orderMenu = new JMenu(Localizer.localize("PresentationGef", "Ordering"));
+        orderMenu.setMnemonic('O');
         orderMenu.add(CmdReorder.BringForward);
         orderMenu.add(CmdReorder.SendBackward);
         orderMenu.add(CmdReorder.BringToFront);
