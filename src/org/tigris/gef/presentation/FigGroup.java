@@ -364,11 +364,14 @@ public class FigGroup extends Fig {
     ////////////////////////////////////////////////////////////////
     // Fig API
 
-    /** Retrieve the top-most Fig containing the given point, or null.
-     *  Needs-More-Work: just do a linear search.  Later, optimize this
-     *  routine using Quad Trees (or other) techniques. */
-
+    /**
+     * Retrieve the top-most Fig containing the given point, or null.
+     * Needs-More-Work: just do a linear search.  Later, optimize this
+     * routine using Quad Trees (or other) techniques.
+     * Always returns false if this FigGroup is invisible.
+     */
     public Fig hitFig(Rectangle r) {
+        if (!isVisible()) return null;
         Fig res = null;
         int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
@@ -398,13 +401,15 @@ public class FigGroup extends Fig {
 
     /** Paint all the Figs in this group. */
     public void paint(Graphics g) {
-        int figCount = this.figs.size();
-        for (int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)this.figs.get(figIndex);
-            if (f.isVisible()) {
-                f.paint(g);
-            }
-        }
+    	if (isVisible()) {
+			int figCount = this.figs.size();
+			for (int figIndex = 0; figIndex < figCount; ++figIndex) {
+				Fig f = (Fig)this.figs.get(figIndex);
+				if (f.isVisible()) {
+					f.paint(g);
+				}
+			}
+    	}
     }
 
     /** Delete all Fig's from the group. Fires PropertyChange with "bounds".*/

@@ -52,12 +52,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     // instance variables
 
     /**
-     * A factoryConstructed Fig has an improved resize algorithm
-     * this flag should only be set by the FigNodeFactory
-     */
-    private boolean factoryConstructed = false;
-    
-    /**
      * Indicates whether this fig can be moved
      */
     boolean movable = true;
@@ -1031,12 +1025,18 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return new int[0];
     }
 
-    /** Reply true if the given rectangle contains some pixels of the
-     *  Fig. This is used to determine if the user is trying to select
-     *  this Fig. Rather than ask if the mouse point is in the Fig, I
-     *  use a small rectangle around the mouse point so that small
-     *  objects and lines are easier to select. */
+    /** 
+     * Determine if the given rectangle contains some pixels of the
+     * Fig. This is used to determine if the user is trying to select
+     * this Fig. Rather than ask if the mouse point is in the Fig, I
+     * use a small rectangle around the mouse point so that small
+     * objects and lines are easier to select.
+     * If the fig is invisible this method always returns false.
+     * @param r the rectangular hit area
+     * @return true if the hit rectangle strikes this fig
+     */
     public boolean hit(Rectangle r) {
+    	if (!isVisible()) return false;
         int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
         if(_filled) {
             return cornersHit > 0;
@@ -1514,17 +1514,17 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     }
 
     /** Returns true if it is to be displayed.
-     * @deprecated 0.11 in favour of isVisible()
+     * @deprecated 0.10.5 in favour of isVisible()
      */
     public boolean isDisplayed() {
-        return _displayed;
+        return isVisible();
     }
 
     /** Determine if it is to be displayed.
-     * @deprecated 0.11 in favour of setVisible(boolean)
+     * @deprecated 0.10.5 in favour of setVisible(boolean)
      */
     public void setDisplayed(boolean isDisplayed) {
-        _displayed = isDisplayed;
+        setVisible(isDisplayed);
     }
     
     /** Returns true if the fig is visible */
@@ -1539,13 +1539,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         _displayed = isDisplayed;
     }
     
-    /**
-     * @return true if this fig was constructed by a factory
-     */
-    public boolean isFactoryConstructed() {
-        return factoryConstructed;
-    }
-
     /**
      * Set whether this Fig can be resized
      * @param true to make this Fig resizable
