@@ -33,6 +33,8 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Action;
+
 import org.tigris.gef.base.Globals;
 
 /** An abstract class that makes it easier to implement your own
@@ -45,11 +47,11 @@ import org.tigris.gef.base.Globals;
 public abstract class MutableGraphSupport
         implements MutableGraphModel, java.io.Serializable {
 
-    /** @deprecated 0.10.4, visibility will change use getGraphListeners
-     *  and setGraphListeners instead */
-    protected Vector _graphListeners;
+    private Vector _graphListeners;
 
     private ConnectionConstrainer connectionConstrainer;
+
+    private static Action saveAction;
 
     public MutableGraphSupport() {
     }
@@ -227,7 +229,9 @@ public abstract class MutableGraphSupport
     // event notifications
 
     public void fireNodeAdded(Object node) {
-        Globals.getSaveAction().setEnabled(true);
+        if (saveAction != null && !saveAction.isEnabled()) {
+            saveAction.setEnabled(true);
+        }
         if (_graphListeners == null) {
             return;
         }
@@ -240,7 +244,9 @@ public abstract class MutableGraphSupport
     }
 
     public void fireNodeRemoved(Object node) {
-        Globals.getSaveAction().setEnabled(true);
+        if (saveAction != null && !saveAction.isEnabled()) {
+            saveAction.setEnabled(true);
+        }
         if (_graphListeners == null) {
             return;
         }
@@ -253,7 +259,9 @@ public abstract class MutableGraphSupport
     }
 
     public void fireEdgeAdded(Object edge) {
-        Globals.getSaveAction().setEnabled(true);
+        if (saveAction != null && !saveAction.isEnabled()) {
+            saveAction.setEnabled(true);
+        }
         if (_graphListeners == null) {
             return;
         }
@@ -266,7 +274,9 @@ public abstract class MutableGraphSupport
     }
 
     public void fireEdgeRemoved(Object edge) {
-        Globals.getSaveAction().setEnabled(true);
+        if (saveAction != null && !saveAction.isEnabled()) {
+            saveAction.setEnabled(true);
+        }
         if (_graphListeners == null) {
             return;
         }
@@ -279,7 +289,9 @@ public abstract class MutableGraphSupport
     }
 
     public void fireGraphChanged() {
-        Globals.getSaveAction().setEnabled(true);
+        if (saveAction != null && !saveAction.isEnabled()) {
+            saveAction.setEnabled(true);
+        }
         if (_graphListeners == null) {
             return;
         }
@@ -289,5 +301,9 @@ public abstract class MutableGraphSupport
             GraphListener listen = (GraphListener) listeners.nextElement();
             listen.graphChanged(ge);
         }
+    }
+
+    public static void setSaveAction(Action action) {
+        saveAction = action;
     }
 } /* end class MutableGraphSupport */

@@ -42,7 +42,6 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import javax.swing.Action;
 
 /** This class stores global info that is needed by all Editors. For
  *  example, it aids in communication between the various Palette's and
@@ -101,8 +100,6 @@ public class Globals {
     
     public static boolean pastable = false;
     
-    private static Action saveAction;
-
     /** The directory most recently used in an open or save dialog */
     public static String LastDirectory = System.getProperty("user.home");
 
@@ -293,14 +290,6 @@ public class Globals {
         return _sticky;
     }
     
-    public static Action getSaveAction() {
-        return saveAction;
-    }
-    
-    public static void setSaveAction(Action action) {
-        saveAction = action;
-    }
-
     /** The next global mode. This is given to an editor on mouse entry */
     protected static Mode _mode;
 
