@@ -30,7 +30,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;               // ScrollPane, PopupMenu, MenuShortcut, etc.
 import java.awt.datatransfer.*;  // Clipboard, Transferable, DataFlavor, etc.
 import java.awt.event.*;         // New event model.
 import java.io.*;                // Object serialization streams.
