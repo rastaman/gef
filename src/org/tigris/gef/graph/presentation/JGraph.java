@@ -425,6 +425,11 @@ class JGraphInternalPane extends JPanel {
     return res;
   }
 
+  public Point getToolTipLocation(MouseEvent event) {
+       event = Globals.curEditor().retranslateMouseEvent(event);
+       return (super.getToolTipLocation(event));
+  }
+    
   public void setToolTipText(String text) {
     if ("".equals(text)) text = null;
     putClientProperty(TOOL_TIP_TEXT_KEY, text);

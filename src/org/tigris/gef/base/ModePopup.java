@@ -65,6 +65,7 @@ public class ModePopup extends FigModifyingModeImpl {
       if (a instanceof AbstractAction) popup.add((AbstractAction) a);
       else if (a instanceof JMenu) popup.add((JMenu) a);
     }
+    me = editor.retranslateMouseEvent(me);
     popup.show(editor.getAwtComponent(), me.getX(), me.getY());
   }
 

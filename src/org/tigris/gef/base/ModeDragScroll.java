@@ -136,6 +136,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
    * @param me 
    */
   public void mouseDragged(MouseEvent me) {
+    me = editor.retranslateMouseEvent(me);
     int x = me.getX(), y = me.getY();
     recentX = x; recentY = y;
     // are we out of this component? if so, don't do anything
