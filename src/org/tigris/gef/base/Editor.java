@@ -744,22 +744,19 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         }
     }
 
-    /** Invoked when the mouse enters the Editor. */
+    /** 
+     * Invoked when the mouse enters the Editor.
+     */
     public void mouseEntered(MouseEvent me) {
-        JComponent activeTextEditor = FigTextEditor.getActiveTextEditor();
-        if(activeTextEditor != null)
-            activeTextEditor.requestFocus();
-        else if(_jComponent != null)
-            _jComponent.requestFocus();
-        translateMouseEvent(me);
-        Globals.curEditor(this);
-        mode((FigModifyingMode)Globals.mode());
-        setUnderMouse(me);
+	translateMouseEvent(me);
+	Globals.curEditor(this);
+	mode((FigModifyingMode) Globals.mode());
+	setUnderMouse(me);
         if(_canSelectElements) {
             _modeManager.mouseEntered(me);
         }
     }
-
+        
     /** Invoked when the mouse exits the Editor. */
     public void mouseExited(MouseEvent me) {
         translateMouseEvent(me);
