@@ -5,7 +5,7 @@ import java.util.Hashtable;
 import java.awt.*;
 import java.awt.image.*;
 
-public class PostscriptWriter extends Graphics {
+public class PostscriptWriter extends Graphics2D {
 
   private PrintWriter p;
   private boolean autoClose=false;
@@ -485,4 +485,115 @@ public class PostscriptWriter extends Graphics {
    {
      throw new RuntimeException("Not supported.");
    }
+  
+  public void addRenderingHints(java.util.Map map) {
+  }
+  
+  public void clip(java.awt.Shape shape) {
+  }
+  
+  public void draw(java.awt.Shape shape) {
+  }
+  
+  public void drawGlyphVector(java.awt.font.GlyphVector glyphVector, float param, float param2) {
+  }
+  
+  public boolean drawImage(java.awt.Image image, java.awt.geom.AffineTransform affineTransform, java.awt.image.ImageObserver imageObserver) {
+      return false;
+  }
+  
+  public void drawImage(java.awt.image.BufferedImage bufferedImage, java.awt.image.BufferedImageOp bufferedImageOp, int param, int param3) {
+  }
+  
+  public void drawRenderableImage(java.awt.image.renderable.RenderableImage renderableImage, java.awt.geom.AffineTransform affineTransform) {
+  }
+  
+  public void drawRenderedImage(java.awt.image.RenderedImage renderedImage, java.awt.geom.AffineTransform affineTransform) {
+  }
+  
+  public void drawString(java.text.AttributedCharacterIterator attributedCharacterIterator, float param, float param2) {
+  }
+  
+  public void drawString(String str, float param, float param2) {
+  }
+  
+  public void fill(java.awt.Shape shape) {
+  }
+  
+  public java.awt.Color getBackground() {
+      return null;
+  }
+  
+  public java.awt.Composite getComposite() {
+      return null;
+  }
+  
+  public java.awt.GraphicsConfiguration getDeviceConfiguration() {
+      return null;
+  }
+  
+  public java.awt.font.FontRenderContext getFontRenderContext() {
+      return null;
+  }
+  
+  public java.awt.Paint getPaint() {
+      return null;
+  }
+  
+  public Object getRenderingHint(java.awt.RenderingHints.Key key) {
+      return null;
+  }
+  
+  public java.awt.RenderingHints getRenderingHints() {
+      return null;
+  }
+  
+  public java.awt.Stroke getStroke() {
+      return null;
+  }
+  
+  public java.awt.geom.AffineTransform getTransform() {
+      return null;
+  }
+  
+  public boolean hit(java.awt.Rectangle rectangle, java.awt.Shape shape, boolean param) {
+      return false;
+  }
+  
+  public void rotate(double param) {
+  }
+  
+  public void rotate(double param, double param1, double param2) {
+  }
+  
+  public void setBackground(java.awt.Color color) {
+  }
+  
+  public void setComposite(java.awt.Composite composite) {
+  }
+  
+  public void setPaint(java.awt.Paint paint) {
+  }
+  
+  public void setRenderingHint(java.awt.RenderingHints.Key key, Object obj) {
+  }
+  
+  public void setRenderingHints(java.util.Map map) {
+  }
+  
+  public void setStroke(java.awt.Stroke stroke) {
+  }
+  
+  public void setTransform(java.awt.geom.AffineTransform affineTransform) {
+  }
+  
+  public void shear(double param, double param1) {
+  }
+  
+  public void transform(java.awt.geom.AffineTransform affineTransform) {
+  }
+  
+  public void translate(double param, double param1) {
+  }
+  
 }
