@@ -306,7 +306,7 @@ public class DefaultGraphModel
         if (LOG.isDebugEnabled()) {
             LOG.debug("Attempting to connect " + srcPort + " to " + destPort + " with " + edgeClass);
         }
-        if (!canConnect(srcPort, destPort)) {
+        if (!canConnect(srcPort, destPort, edgeClass)) {
             LOG.warn("Connection not allowed");
             //System.out.println("illegal connection");
             return null;
