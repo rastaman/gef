@@ -1,102 +1,167 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-
-<HEAD>
-	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
-<X-SAS-WINDOW TOP=23 BOTTOM=597 LEFT=4 RIGHT=497>
-<LINK REV="made" HREF="mailto:jrobbins@ics.uci.edu">
-<LINK REV="owner" HREF="mailto:jrobbins@ics.uci.edu">
-<meta name=keywords content="java, UML, diagram editing, daigrams, graphs, class library, class libraries, free software, connected graphs, reusable source , JAVA, GRAPHICS, DIAGRAM EDITING, DAIGRAMS, GRAPHS, CLASS LIBRARY, CLASS LIBRARIES, FREE SOFTWARE, CONNECTED GRAPHS, REUSABLE SOURCE, Java, Graphics, Diagram Editing, Daigrams, Graphs, Class Library, Class Libraries, Free Software, Connected Graphs, Reusable Source, Src, SRC, freeware, Freeware, FREEWARE  ">
-
-	<META NAME="GENERATOR" Content="Visual Page 1.1a for Windows">
-	<TITLE>GEF: Free Java Graph Editing Framework</TITLE>
-</HEAD>
-
-<BODY TEXT="#000000" BGCOLOR="#FFFFFF">
-
-<P>
-<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="750" BGCOLOR="#FFCC00">
-	<TR>
-		<TD WIDTH="30" HEIGHT="4" BGCOLOR="#FFFFFF"></TD>
-		<TD WIDTH="148" ROWSPAN="3" BGCOLOR="#0033CC">
-			<P ALIGN="CENTER"><IMG SRC="images/UCIlogo2.gif" WIDTH="92" HEIGHT="57" ALIGN="BOTTOM" BORDER="0">
-		</TD>
-		<TD HEIGHT="4" COLSPAN="3" BGCOLOR="#FFFFFF">
-<HR ALIGN="CENTER" NOSHADE>
-		</TD>
-		<TD WIDTH="148" ROWSPAN="3">
-			<P ALIGN="CENTER"><A HREF="http://www.ics.uci.edu/pub/edcs/edcs.map"><IMG SRC="images/EDCSLogoArch.gif" WIDTH="83"
-			HEIGHT="83" ALIGN="BOTTOM" BORDER="0" USEMAP="#EDCS_LOGO" ISMAP></A>
-		</TD>
-	</TR>
-	<TR>
-		<TD WIDTH="30" ALIGN="LEFT" BGCOLOR="#FFFFFF"></TD>
-		<TD WIDTH="150" ALIGN="CENTER" VALIGN="MIDDLE" BGCOLOR="#FFFFFF">
-			<P ALIGN="RIGHT"><FONT SIZE="7" COLOR="#008080" FACE="Tahoma"><B>GEF</B></FONT>
-		</TD>
-		<TD WIDTH="20" VALIGN="TOP" BGCOLOR="#FFFFFF"></TD>
-		<TD VALIGN="MIDDLE"  NOWRAP BGCOLOR="#FFFFFF"><FONT COLOR="#008080" FACE="Tahoma"><B>Graph Editing Framework<BR>
-			</B></FONT><FONT SIZE="2" COLOR="#008080" FACE="Tahoma"><B>An Open Source Java Library for <BR>
-			Connected Graph Editors</B></FONT></TD>
-	</TR>
-	<TR>
-		<TD WIDTH="30" HEIGHT="20" BGCOLOR="#FFFFFF"></TD>
-		<TD HEIGHT="20" COLSPAN="3" BGCOLOR="#FFFFFF">
-<HR ALIGN="CENTER" NOSHADE>
-		</TD>
-	</TR>
-</TABLE>
-</P>
-<P>
-<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="648">
-	<TR>
-		<TD WIDTH="30" HEIGHT="20" VALIGN="TOP" BGCOLOR="#FFFFFF"></TD>
-		<TD WIDTH="205" HEIGHT="20"><FONT COLOR="#CC0000" FACE="Tahoma"><B>New features in GEF v0.6</B></FONT></TD>
-		<TD WIDTH="20" HEIGHT="20"><FONT COLOR="#996600" FACE="Tahoma">&nbsp;</FONT></TD>
-		<TD HEIGHT="20" VALIGN="TOP" COLSPAN="2"><FONT COLOR="#008080" FACE="Tahoma"><B>Overview</B></FONT></TD>
-	</TR>
-	<TR>
-		<TD WIDTH="30" VALIGN="TOP" ROWSPAN="3" BGCOLOR="#FFFFFF"></TD>
-		<TD WIDTH="205" VALIGN="TOP" ROWSPAN="3"><IMG SRC="images/bullet.gif" WIDTH="10" HEIGHT="10" ALIGN="BOTTOM" BORDER="0"><FONT SIZE="2" COLOR="#993300" FACE="Arial, Helvetica">
-			Now completely open source<BR>
-			<IMG SRC="images/bullet.gif" WIDTH="10" HEIGHT="10" ALIGN="BOTTOM" BORDER="0"></FONT><FONT SIZE="2" COLOR="#CC9900"
-			FACE="Arial, Helvetica"> </FONT><FONT SIZE="2" COLOR="#993300" FACE="Arial, Helvetica">Better arcs: polygonal arcs,<BR>
+<TABLE BORDER="0" CELLPADDING="2" WIDTH="100%" HEIGHT="100%" BGCOLOR="#F0F0F0">
+<TBODY>
+        	<TR>
+		<TD WIDTH="100%" ALIGN="LEFT" VALIGN="TOP" BGCOLOR="#F0F0F0">
+			<P>
+			<TABLE BORDER="0" CELLPADDING="2" WIDTH="98%" BGCOLOR="white">
+<TBODY>
+              				<TR>
+					<TD COLSPAN="3" BGCOLOR="#CC9999"><B><FONT COLOR="#FFFFCC" FACE="Tahoma">New features in GEF v0.6</FONT></B></TD>
+				</TR>
+				<TR>
+					<TD WIDTH="33%" VALIGN="TOP" BGCOLOR="#E2C7D5">
+						<P>
+						<UL>
+			<li>Better arcs: polygonal arcs,<BR>
 			&nbsp;&nbsp;&nbsp;self-loops, labels, arrowheads,<BR>
 			&nbsp;&nbsp;&nbsp;dashed lines<BR>
-			<IMG SRC="images/bullet.gif" WIDTH="10" HEIGHT="10" ALIGN="BOTTOM" BORDER="0"> Direct text editing<BR>
-			<IMG SRC="images/bullet.gif" WIDTH="10" HEIGHT="10" ALIGN="BOTTOM" BORDER="0"> Novel &quot;Broom&quot; alignment
+			<li> Direct text editing<BR>
+						</UL>
+					</TD>
+					<TD WIDTH="33%" VALIGN="TOP" BGCOLOR="#E2C7D5">
+						<UL>
+			<li> Novel &quot;Broom&quot; alignment
 			tool <BR>
-			<IMG SRC="images/bullet.gif" WIDTH="10" HEIGHT="10" ALIGN="BOTTOM" BORDER="0"> Multi-page printing<BR>
-			<IMG SRC="images/bullet.gif" WIDTH="10" HEIGHT="10" ALIGN="BOTTOM" BORDER="0"> Splines<BR>
-			<IMG SRC="images/bullet.gif" WIDTH="10" HEIGHT="10" ALIGN="BOTTOM" BORDER="0"> Limited cut-and-paste<BR>
-			<IMG SRC="images/bullet.gif" WIDTH="10" HEIGHT="10" ALIGN="BOTTOM" BORDER="0"> Runs under JDK 1.1.7 or JRE<BR>
+			<li> Multi-page printing<BR>
+						</UL>
+					</TD>
+					<TD WIDTH="33%" VALIGN="TOP" BGCOLOR="#E2C7D5">
+						<UL>
+			<li> Splines<BR>
+			<li> Limited cut-and-paste<BR>
+			<li> Runs under JDK 1.1.7 or JRE<BR>
 			&nbsp;&nbsp;&nbsp;1.1.7 with Swing 1.0.3</FONT></TD>
-		<TD WIDTH="20" HEIGHT="118"><FONT FACE="Tahoma">&nbsp;</FONT></TD>
-		<TD HEIGHT="118" VALIGN="TOP" COLSPAN="2"><FONT SIZE="2" FACE="Arial, Helvetica">GEF is a free Java library for use in the development of new connected graph
-			user interfaces. GEF can be used in any Java program that requires the ability to display and edit connected graphs
-			or structured graphics.<BR>
-			<BR>
-			GEF provides substantial functionality and a high quality user experience, yet is easy to learn and to extend.</FONT></TD>
-	</TR>
-	<TR>
-		<TD WIDTH="20" HEIGHT="20"></TD>
-		<TD WIDTH="275" HEIGHT="20" VALIGN="TOP"><FONT COLOR="#CC9900" FACE="Tahoma"><B>Timeline</B></FONT></TD>
-		<TD WIDTH="220" HEIGHT="20"><FONT COLOR="#CC9900" FACE="Tahoma"><B>Download GEF v0.6</B></FONT></TD>
-	</TR>
-	<TR>
-		<TD WIDTH="20" HEIGHT="70"></TD>
-		<TD WIDTH="275" HEIGHT="70" VALIGN="TOP"><FONT SIZE="2" FACE="Arial, Helvetica">Feb 23. 1999. New web site design.<BR>
-			Feb 23, 1999. GEF v0.6 released.<BR>
-			Mar. 1999. Est. date of GEF for JDK 1.2</FONT></TD>
-		<TD WIDTH="220" HEIGHT="70" VALIGN="TOP"><FONT SIZE="2" FACE="Arial, Helvetica">QuickStart: </FONT><A HREF="v0.6/docs/start.html"><FONT SIZE="2" FACE="Arial, Helvetica">Browse</FONT></A><FONT
-			SIZE="2" FACE="Arial, Helvetica"><BR>
-			Documentation: </FONT><A HREF="v0.6/docs/index.html"><FONT SIZE="2" FACE="Arial, Helvetica">Browse</FONT></A><FONT
-			SIZE="2" FACE="Arial, Helvetica"><BR>
-			Compiled Version: </FONT><A HREF="v0.6/dc1.html"><FONT SIZE="2" FACE="Arial, Helvetica">Download</FONT></A><FONT
-			SIZE="2" FACE="Arial, Helvetica"><BR>
-			Source Code: </FONT><A HREF="v0.6/ds1.html"><FONT SIZE="2" FACE="Arial, Helvetica">Download</FONT></A></TD>
-	</TR>
+						</UL>
+					</TD>
+				</TR>
+</TBODY>			</TABLE>
+
+
+
+<TABLE BORDER="0" CELLPADDING="2" WIDTH="98%" BGCOLOR="white">
+
+<TR>
+<TD WIDTH="100%" BGCOLOR="#CCCC99"><STRONG><font color="000033"
+FACE="Arial, Helvetica, sans-serif">
+GEF: Java Library for Connected Graph Editors
+</font></STRONG></TD>
+</TR>
+
+<TR>
+<TD WIDTH="100%" HEIGHT="100" BGCOLOR="#f0f0f0">
+
+<p>
+The goal of the GEF project is to build a graph editing library that
+can be used to construct many, high-quality graoh editing
+appications.  Some of GEF's features are:
+</p>
+
+<ul>
+
+<li>A simple, concrete design that makes the framework easy to
+understand and extend.</li>
+
+<li>Node-Port-Edge graph model that is powerful enough for the vast
+majority of connectied graph applications.</li>
+
+<li>Model-View-Controller design based on the Swing Java UI library
+makes GEF able to act as a UI to existing data structures, and also
+minimizing learning time for developers familiar with Swing.</li>
+
+<li>High-quality user interactions for moving, resizeing, reshaping,
+etc.  GEF also supports several novel interactions such as the broom
+alignment tool and secltion-action-buttons.</li>
+
+<li>Generic properties sheet based on JavaBeans introspection.</li>
+
+<li>XML-based file formats based on the PGML standard (soon to support
+SVG).</li>
+
+</ul>
+
+<P ALIGN="right">
+<A href="vision.html">Vision</A>&nbsp;|&nbsp;<A 
+href="/v06/docs/features.html">Features</A>
+</P>
+<br>
 </TABLE>
+
+
+<P>
+<TABLE BORDER="0" CELLPADDING="2" WIDTH="98%" BGCOLOR="white">
+
+<TR>
+<TD WIDTH="100%" BGCOLOR="#CCCC99"><STRONG><font color="#000033"
+FACE="Arial, Helvetica, sans-serif">
+Project Status
+</font></STRONG></TD>
+</TR>
+
+<TR>
+<TD WIDTH="100%" HEIGHT="100" BGCOLOR="#f0f0f0">
+
+<p>
+GEF has been evolving since 1996.  It has been used in numerous
+projects including <a href="http://argouml.tigris.org/">ArgoUML</a>
+and <a href="who_uses.html">others</a>.
+</p>
+
+<p>
+Lately, GEF has become very intertwined with ArgoUML.  The immediate
+goal for GEF is to factor it out into a free-standing project again.
+This will take somewhat of a code reorganization.
+</p>
+
+<br>
+</TABLE>
+
+
+<p>
+<TABLE BORDER="0" CELLPADDING="2" WIDTH="98%">
+
+<TR>
+<TD WIDTH="45%" BGCOLOR="#CCCC99"><STRONG><font color="#000033"
+FACE="Arial, Helvetica, sans-serif">
+News
+</font></STRONG></TD>
+
+<TD WIDTH="10"></TD>
+
+<TD WIDTH="45%" BGCOLOR="#CCCC99"><STRONG><font color="#000033"
+FACE="Arial, Helvetica, sans-serif">
+Upcoming Events
+</font></STRONG></TD>
+</TR>
+
+<TR>
+<TD WIDTH="50%" HEIGHT="100" VALIGN="top" BGCOLOR="#f0f0f0">
+<FONT SIZE="2">
+02/20/00 -&nbsp;GEF moves to tigris.org<BR>
+02/07/00 -&nbsp;Edwin Park becomes module owner<BR>
+</FONT>
+</TD>
+
+
+<TD WIDTH="10" HEIGHT="100"></TD>
+
+<TD WIDTH="50%" HEIGHT="100" VALIGN="top" BGCOLOR="#f0f0f0">
+<FONT SIZE="2">
+03/01/00 -&nbsp;Goal for revised web site<BR>
+03/15/00 -&nbsp;Goal for completed code reorganization<BR>
+</FONT>
+</TD>
+
+
+
+</TD>
+
+
+</TR>
+</TABLE>
+</P>
+
+
+
 
 <TABLE BORDER="0" WIDTH="750">
 	<TR>
