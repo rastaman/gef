@@ -30,6 +30,7 @@ package org.tigris.gef.graph.presentation;
 
 import java.util.Collection;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.commons.logging.Log;
@@ -80,42 +81,39 @@ public class DefaultGraphModel
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public NetList getNetList() {
-        return netList;
-    }
-    
-    public void setNetList(NetList nl) {
-        netList = nl;
-    }
+//    public NetList getNetList() {
+//        return netList;
+//    }
+//    
+//    public void setNetList(NetList nl) {
+//        netList = nl;
+//    }
 
-    ////////////////////////////////////////////////////////////////
-    // invariants
-
-    public boolean OK() {
-        return netList != null;
-    }
-
+//    ////////////////////////////////////////////////////////////////
+//    // invariants
+//
+//    public boolean OK() {
+//        return netList != null;
+//    }
+//
     ////////////////////////////////////////////////////////////////
     // interface GraphModel
 
     /** Return all nodes in the graph 
-     * @deprecated in 0.10.4 use getNodes(Collection)
      */
-    public Vector getNodes() {
+    public List getNodes() {
         return netList.getNodes();
     }
 
     /** Return all edges in the graph
-    * @deprecated in 0.10.4 use getEdges(Collection)
     */
-    public Vector getEdges() {
+    public List getEdges() {
         return netList.getEdges();
     }
 
     /** Return all ports on node or edge
-    * @deprecated in 0.10.4 use getPorts(Collection, Object)
     */
-    public Vector getPorts(Object nodeOrEdge) {
+    public List getPorts(Object nodeOrEdge) {
         if (nodeOrEdge instanceof NetNode)
             return ((NetNode) nodeOrEdge).getPorts();
         if (nodeOrEdge instanceof NetEdge)
@@ -150,7 +148,7 @@ public class DefaultGraphModel
     }
 
     /** Return all edges going to given port */
-    public Vector getInEdges(Object port) {
+    public List getInEdges(Object port) {
         Vector res = new Vector();
         Vector edge = ((NetPort) port).getEdges();
         for( int i = 0; i < edge.size(); i++ ) {
@@ -163,7 +161,7 @@ public class DefaultGraphModel
     }
 
     /** Return all edges going from given port */
-    public Vector getOutEdges(Object port) {
+    public List getOutEdges(Object port) {
         Vector res = new Vector();
         Vector edge = ((NetPort) port).getEdges();
         for( int i = 0; i < edge.size(); i++ ) {
@@ -226,6 +224,7 @@ public class DefaultGraphModel
     public void removeNode(Object node) {
         NetNode n = (NetNode) node;
         netList.removeNode(n);
+        LOG.debug("Removed node from graph model");
         fireNodeRemoved(n);
     }
 
@@ -233,10 +232,14 @@ public class DefaultGraphModel
     public boolean canDragNode(Object node) {
         return (node instanceof NetNode);
     }
+    
     /** Add the given node to the graph, if valid. */
     public void addNode(Object node) {
         NetNode n = (NetNode) node;
         netList.addNode(n);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Added a node. There are now " + netList.getNodes(null).size() + " edges");
+        }
         fireNodeAdded(n);
     }
 
@@ -244,6 +247,9 @@ public class DefaultGraphModel
     public void addEdge(Object edge) {
         NetEdge e = (NetEdge) edge;
         netList.addEdge(e);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Added an edge. There are now " + netList.getEdges(null).size() + " edges");
+        }
         fireEdgeAdded(e);
     }
 
@@ -252,6 +258,7 @@ public class DefaultGraphModel
 
     /** Remove the given edge from the graph. */
     public void removeEdge(Object edge) {
+        LOG.debug("DefaultGraphModel::removeEdge");
         NetEdge e = (NetEdge) edge;
         netList.removeEdge(e);
         fireEdgeRemoved(e);
@@ -301,7 +308,6 @@ public class DefaultGraphModel
         }
         if (!canConnect(srcPort, destPort, edgeClass)) {
             LOG.warn("Connection not allowed");
-            //System.out.println("illegal connection");
             return null;
         }
         if (srcPort instanceof NetPort && destPort instanceof NetPort) {

@@ -30,6 +30,7 @@ package org.tigris.gef.graph;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Vector;
 
 /** An abstract class that makes it easier to implement your own
@@ -163,24 +164,22 @@ public abstract class MutableGraphSupport
     // utility methods
 
     public boolean containsNode(Object node) {
-        Vector nodes = getNodes();
+        List nodes = getNodes();
         return nodes.contains(node);
     }
 
     public boolean containsEdge(Object edge) {
-        Vector edges = getEdges();
+        List edges = getEdges();
         return edges.contains(edge);
     }
 
     public boolean containsNodePort(Object port) {
-        Vector nodes = getNodes();
+        List nodes = getNodes();
         if (nodes == null) {
             return false;
         }
-        Enumeration nodeEnum = nodes.elements();
-        while (nodeEnum.hasMoreElements()) {
-            Object node = nodeEnum.nextElement();
-            Vector ports = getPorts(node);
+        for (int i=0; i < nodes.size(); ++i) {
+            List ports = getPorts(nodes.get(i));
             if (ports != null && ports.contains(port)) {
                 return true;
             }
@@ -189,14 +188,12 @@ public abstract class MutableGraphSupport
     }
 
     public boolean containsEdgePort(Object port) {
-        Vector edges = getNodes();
+        List edges = getNodes();
         if (edges == null) {
             return false;
         }
-        Enumeration edgeEnum = edges.elements();
-        while (edgeEnum.hasMoreElements()) {
-            Object edge = edgeEnum.nextElement();
-            Vector ports = getPorts(edge);
+        for (int i = 0; i < edges.size(); ++i) {
+            List ports = getPorts(edges.get(i));
             if (ports != null && ports.contains(port)) {
                 return true;
             }

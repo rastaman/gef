@@ -75,10 +75,10 @@ implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // GraphModel implementation
 
-  public Vector getNodes() { return _nodes; }
-  public Vector getEdges() { return _edges; }
+  public List getNodes() { return _nodes; }
+  public List getEdges() { return _edges; }
 
-  public abstract Vector getPorts(Object nodeOrEdge);
+  public abstract List getPorts(Object nodeOrEdge);
   public abstract Object getOwner(Object port);
 
   public Object getSourcePort(Object edge) {
@@ -91,7 +91,7 @@ implements java.io.Serializable {
     return labeledEgde[1];
   }
 
-  public Vector getInEdges(Object port) {
+  public List getInEdges(Object port) {
     Vector res = new Vector();
     Enumeration edgeEnum = _edges.elements();
     while (edgeEnum.hasMoreElements()) {
@@ -101,7 +101,7 @@ implements java.io.Serializable {
     return res;
   }
   
-  public Vector getOutEdges(Object port) {
+  public List getOutEdges(Object port) {
     Vector res = new Vector();
     Enumeration edgeEnum = _edges.elements();
     while (edgeEnum.hasMoreElements()) {

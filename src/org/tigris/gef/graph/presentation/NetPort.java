@@ -57,9 +57,8 @@ public class NetPort
 
     /**
      * The NetEdges that are connected to this port.
-     * @deprecated 0.10.5 will become private
      */
-    protected Vector _edges;
+    private Vector edges;
 
     /** 
      * The NetNode that this port is a part of.
@@ -75,7 +74,7 @@ public class NetPort
     /** Construct a new NetPort with the given parent node and no arcs. */
     public NetPort(Object parent) {
         _parent = parent;
-        _edges = new Vector();
+        edges = new Vector();
     }
 
     ////////////////////////////////////////////////////////////////
@@ -98,7 +97,7 @@ public class NetPort
 
     /** Reply a vector of NetEdges that are connected here. */
     public Vector getEdges() {
-        return _edges;
+        return edges;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -108,27 +107,28 @@ public class NetPort
      *  when the user defines a new edge. Normally, you would not call
      *  this directly, you would call NetEdge#connect(). */
     public void addEdge(NetEdge edge) {
-        _edges.addElement(edge);
+        edges.addElement(edge);
     }
 
     /** Remove an edge from the list of edge connected to this
      *  port. Called when the user disposes an edge. Normally, you would
-     *  not call this directly, you would call NetEdge#dispose().*/
+     *  not call this directly, you would call NetEdge#deleteFromModel().*/
     public void removeEdge(NetEdge edge) {
-        _edges.removeElement(edge);
+        edges.removeElement(edge);
     }
 
     /** Remove this port from the underlying connected graph model and
      *  dispose all arcs connected to it. */
-    public void dispose() {
-        int size = _edges.size();
+    public void deleteFromModel() {
+        LOG.debug("Deleting from model");
+        int size = edges.size();
         for( int i = 0; i < size; i++ ) {
             // We always just dispose the first edge as each dispose
             // results in a call-back to removing that same edge from the
             // edges list making what was the next item the new first
             // item.
-            NetEdge edge = (NetEdge) _edges.get(0);
-            edge.dispose();
+            NetEdge edge = (NetEdge) edges.get(0);
+            edge.deleteFromModel();
         }
         firePropertyChange("disposed", false, true);
     }

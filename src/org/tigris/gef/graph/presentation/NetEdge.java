@@ -33,6 +33,8 @@ package org.tigris.gef.graph.presentation;
 
 import java.util.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
@@ -46,19 +48,21 @@ import org.tigris.gef.graph.*;
 public abstract class NetEdge extends NetPrimitive
 implements GraphEdgeHooks, java.io.Serializable {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    private static Log LOG = LogFactory.getLog(NetEdge.class);
+    
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The start and end ports of this edge. */
-  protected NetPort _sourcePort;
-  protected NetPort _destPort;
+    /** The start and end ports of this edge. */
+    protected NetPort _sourcePort;
+    protected NetPort _destPort;
 
-  /** The ports that are part of this edge. Most of the time Edges do
-   *  not have any ports. However, in some connected graph notations,
-   *  users are allowed to attach notes to edges, or something that
-   *  requrires edges to go from an edge to a node, or an edge to an
-   *  edge. */
-  protected Vector _ports;
+    /** The ports that are part of this edge. Most of the time Edges do
+     *  not have any ports. However, in some connected graph notations,
+     *  users are allowed to attach notes to edges, or something that
+     *  requrires edges to go from an edge to a node, or an edge to an
+     *  edge. */
+    protected Vector _ports;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -114,19 +118,23 @@ implements GraphEdgeHooks, java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // Editor API
 
-  /** Remove this NetEdge from the underlying connected graph model. */
-  public void dispose() {
-    if (getSourcePort() != null && getDestPort() != null) {
-      _sourcePort.removeEdge(this);
-      _destPort.removeEdge(this);
-      
-      // needs-more-work: assumes no parallel edges!
-      // needs-more-work: these nulls should be GraphModels
-      _sourcePort.postDisconnect(null, getDestPort());
-      _destPort.postDisconnect(null, getSourcePort());
-      firePropertyChange("disposed", false, true);
+    /** Remove this NetEdge from the underlying connected graph model. */
+    public void deleteFromModel() {
+        LOG.debug("Deleting from model");
+        if (getSourcePort() != null && getDestPort() != null) {
+            _sourcePort.removeEdge(this);
+            _destPort.removeEdge(this);
+            
+            DefaultGraphModel gm =
+                (DefaultGraphModel)Globals.curEditor().getGraphModel();
+            gm.removeEdge(this);
+          
+            // needs-more-work: assumes no parallel edges!
+            _sourcePort.postDisconnect(gm, getDestPort());
+            _destPort.postDisconnect(gm, getSourcePort());
+            firePropertyChange("disposed", false, true);
+        }
     }
-  }
 
   ////////////////////////////////////////////////////////////////
   // diagram-level operations

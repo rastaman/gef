@@ -72,5 +72,5 @@ public interface GraphNodeHooks extends java.io.Serializable{
 
   void initialize(Hashtable props);
   void setHighlight(boolean b);
-  void dispose();
+  void deleteFromModel();
 } /* end interface GraphNodeHooks */

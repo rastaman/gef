@@ -35,5 +35,5 @@ public interface GraphEdgeHooks extends java.io.Serializable {
   void addPropertyChangeListener(PropertyChangeListener l);
   void removePropertyChangeListener(PropertyChangeListener l);
   void setHighlight(boolean b);
-  void dispose();
+  void deleteFromModel();
 } /* end interface GraphEdgeHooks */

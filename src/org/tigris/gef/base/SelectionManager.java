@@ -748,11 +748,11 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
                             continue;
                         }
 
-                        ((Fig)elem).delete();
+                        ((Fig)elem).removeFromDiagram();
                     }
                 }
 
-                ((Fig)firstElem).dispose();
+                ((Fig)firstElem).deleteFromModel();
             }
         }
     }
@@ -766,7 +766,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             Selection s = (Selection)ss.nextElement();
             Fig f = s.getContent();
             Object o = f.getOwner();
-            f.dispose();
+            f.deleteFromModel();
         }
     }
     ////////////////////////////////////////////////////////////////

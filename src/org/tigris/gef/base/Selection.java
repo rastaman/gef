@@ -171,8 +171,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    * selected Fig, to do that use one of the deselect operations in
    * SelectionManager.
    * @see SelectionManager#deselect */
-  public void delete() { _content.delete(); }
-  public void dispose() { _content.dispose(); }
+  public void delete() { _content.removeFromDiagram(); }
+  public void dispose() { _content.deleteFromModel(); }
 
   /** Move one of the handles of a selected Fig. */
   public abstract void dragHandle(int mx, int my, int an_x,int an_y, Handle h);

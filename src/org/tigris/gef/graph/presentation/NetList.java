@@ -28,7 +28,9 @@
 
 package org.tigris.gef.graph.presentation;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
 /** A class that implements the concept of a connected graph. A
@@ -45,10 +47,10 @@ public class NetList extends NetPrimitive implements java.io.Serializable {
     // instance variables
 
     /** The nodes in the NetList */
-    private Vector nodes = new Vector();
+    private ArrayList nodes = new ArrayList();
 
     /** The edges in the NetList */
-    private Vector edges = new Vector();
+    private ArrayList edges = new ArrayList();
 
     /** The name of this connected graph. */
     String name;
@@ -66,23 +68,18 @@ public class NetList extends NetPrimitive implements java.io.Serializable {
         return name;
     }
 
-    /** @deprecated 0.10.5 use setName(String) */
-    public void name(String n) { name = n; }
-    /** @deprecated 0.10.5 use getName() */
-    public String name() { return name; }
-
     public void setName(String n) { name = n; }
     public String getName() { return name; }
 
-    /** Reply the vector of nodes 
-     * @deprecated 0.10.5 use getNodes(Collection)
+    /** 
+     * Reply the vector of nodes 
      */
-    public Vector getNodes() { return nodes; }
+    public List getNodes() { return nodes; }
 
-    /** Reply the vector of edges
-    * @deprecated 0.10.5 use getNodes(Collection)
-    */
-    public Vector getEdges() { return edges; }
+    /** 
+     * Reply the vector of edges
+     */
+    public List getEdges() { return edges; }
 
     /** Reply the vector of nodes */
     public Collection getNodes(Collection c) { 
@@ -106,26 +103,26 @@ public class NetList extends NetPrimitive implements java.io.Serializable {
 
     /** Add a node to this NetList.  */
     public void addNode(NetNode n) {
-        nodes.addElement(n);
+        nodes.add(n);
     }
 
     /** Remove a node from this NetList. When a node is deleted a
      *  notification is sent out. */
     public void removeNode(NetNode n) {
         if (n != null && nodes.contains(n)) {
-            nodes.removeElement(n);
+            nodes.remove(n);
         }
     }
 
     /** Add a NetEdge to this NetList. */
     public void addEdge(NetEdge a) {
-        edges.addElement(a);
+        edges.add(a);
     }
 
     /** Remove a Edge from this NetList. */
     public void removeEdge(NetEdge a) {
         if (a != null && edges.contains(a)) {
-            edges.removeElement(a);
+            edges.remove(a);
         } 
     }
 

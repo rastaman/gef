@@ -601,8 +601,16 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     // Editor API
 
     /** Remove this Fig from the Layer being edited by the
-     *  given editor. */
+     *  given editor.
+     * @depreacted 0.10.7 use removeFromDiagram
+     */
     public void delete() {
+        removeFromDiagram();
+    }
+    
+    /** Remove this Fig from the Layer being edited by the
+     *  given editor. */
+    public void removeFromDiagram() {
         _displayed = false;
         // annotation related
         // delete all annotations first
@@ -611,7 +619,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
             Fig annotation = (Fig)iter.nextElement();
             getAnnotationStrategy().getAnnotationProperties(annotation).removeLine();
             removeAnnotation(annotation);
-            annotation.delete();
+            annotation.removeFromDiagram();
         }
 
         // end annotation related
@@ -629,20 +637,33 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      *  Figs have no underlying model, so they are just deleted. Figs
      *  that graphically present some part of an underlying model should
      *  NOT delete themselves, instead they should ask the model to
-     *  dispose, and IF it does then the figs will be notified. */
+     *  dispose, and IF it does then the figs will be notified.
+     * @deprecated 0.10.7 use deleteFromModel.
+     */
     public void dispose() {
+        deleteFromModel();
+    }
+    
+    /** Delete whatever application object this Fig is representing, the
+     *  Fig itself should automatically be deleted as a side-effect. Simple
+     *  Figs have no underlying model, so they are just deleted. Figs
+     *  that graphically present some part of an underlying model should
+     *  NOT delete themselves, instead they should ask the model to
+     *  dispose, and IF it does then the figs will be notified. */
+    public void deleteFromModel() {
+        LOG.debug("Deleting Fig from model");
         Object own = getOwner();
         if(own instanceof GraphNodeHooks) {
-            ((GraphNodeHooks)own).dispose();
+            ((GraphNodeHooks)own).deleteFromModel();
         }
         else if(own instanceof GraphEdgeHooks) {
-            ((GraphEdgeHooks)own).dispose();
+            ((GraphEdgeHooks)own).deleteFromModel();
         }
         else if(own instanceof GraphPortHooks) {
-            ((GraphPortHooks)own).dispose();
+            ((GraphPortHooks)own).deleteFromModel();
         }
         else {
-            delete();
+            removeFromDiagram();
         }
     }
 

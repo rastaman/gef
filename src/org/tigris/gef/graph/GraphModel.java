@@ -59,19 +59,19 @@ import java.util.*;
 
 public interface GraphModel extends BaseGraphModel {
     /** Return all nodes in the graph */
-    Vector getNodes();
+    List getNodes();
 
     /** Return all nodes in the graph */
-    Vector getEdges();
+    List getEdges();
 
     /** Return all ports on node or edge */
-    Vector getPorts(Object nodeOrEdge);
+    List getPorts(Object nodeOrEdge);
 
     /** Return all edges going to given port */
-    Vector getInEdges(Object port);
+    List getInEdges(Object port);
 
     /** Return all edges going from given port */
-    Vector getOutEdges(Object port);
+    List getOutEdges(Object port);
 
     /** Set the rules dictating which ports are connectable by which edge
      * @param cc A connection constrainer

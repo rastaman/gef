@@ -164,7 +164,7 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         return false;
     }
 
-    public void delete() {
+    public void removeFromDiagram() {
         if(_sourceFigNode != null) {
             _sourceFigNode.removeFigEdge(this);
         }
@@ -173,7 +173,7 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
             _destFigNode.removeFigEdge(this);
         }
 
-        super.delete();
+        super.removeFromDiagram();
     }
 
     /** Get and set the flag about using Fig connection points rather
@@ -522,7 +522,7 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         String pName = pce.getPropertyName();
         Object src = pce.getSource();
         if(pName.equals("disposed") && src == getOwner()) {
-            delete();
+            removeFromDiagram();
         }
 
         if(pName.equals("highlight") && src == getOwner()) {

@@ -30,10 +30,11 @@
 
 package org.tigris.gef.presentation;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
-import org.tigris.gef.graph.presentation.NetPort;
 import org.tigris.gef.ui.Highlightable;
 
 import java.awt.*;
@@ -44,7 +45,6 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 
 /** Class to present a node (such as a NetNode) in a diagram. */
 
@@ -52,6 +52,7 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
     ////////////////////////////////////////////////////////////////
     // constants
 
+    private static final Log LOG = LogFactory.getLog(FigNode.class);
     /** Constants useful for determining what side (north, south, east,
      *  or west) a port is located on.*/
     public static final double ang45 = Math.PI / 4;
@@ -71,9 +72,8 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
 
     /** A list of FigEdges that need to be rerouted when this FigNode
      *  moves.
-     * @deprecated in 0.10.5 use getter
      */
-    protected List _figEdges = new ArrayList();
+    private ArrayList figEdges = new ArrayList();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -111,7 +111,7 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
 
     public Object clone() {
         FigNode figClone = (FigNode)super.clone();
-        figClone._figEdges = new ArrayList(_figEdges);
+        figClone.figEdges = (ArrayList)figEdges.clone();
         return figClone;
     }
 
@@ -145,20 +145,24 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
     /** Adds a FigEdge to the list of them that need to be rerouted when
      *  this FigNode moves. */
     public void addFigEdge(FigEdge fe) {
-        _figEdges.add(fe);
+        figEdges.add(fe);
     }
 
     /** removes a FigEdge from the list of them that need to be rerouted when
      *  this FigNode moves. */
     public void removeFigEdge(FigEdge fe) {
-        _figEdges.remove(fe);
+        figEdges.remove(fe);
     }
 
 
     public Collection getFigEdges(Collection c) {
-        if (c == null) return _figEdges;
-        c.addAll(_figEdges);
+        if (c == null) return figEdges;
+        c.addAll(figEdges);
         return c;
+    }
+
+    public List getFigEdges() {
+        return (List)(figEdges.clone());
     }
 
     /** Sets the owner (a node in some underlying model). If the given
@@ -194,11 +198,11 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
     }
 
     public void setEnclosingFig(Fig f) {
-        if(f != null && f != getEnclosingFig() && _layer != null) {
-            int edgeCount = _figEdges.size();
+        if(f != null && f != getEnclosingFig() && getLayer() != null) {
+            int edgeCount = figEdges.size();
             for(int i = 0; i < edgeCount; ++i) {
-                FigEdge fe = (FigEdge)_figEdges.get(i);
-                _layer.bringInFrontOf(fe, f);
+                FigEdge fe = (FigEdge)figEdges.get(i);
+                getLayer().bringInFrontOf(fe, f);
             }
         }
         super.setEnclosingFig(f);
@@ -210,36 +214,51 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
 
     /** When a FigNode is damaged, all of its edges may need repainting. */
     public void endTrans() {
-        int edgeCount = _figEdges.size();
+        int edgeCount = figEdges.size();
         for(int i = 0; i < edgeCount; ++i) {
-            FigEdge f = (FigEdge)_figEdges.get(i);
+            FigEdge f = (FigEdge)figEdges.get(i);
             f.endTrans();
         }
         super.endTrans();
     }
 
-    /** When a FigNode is deleted, all of its edges are deleted. */
+    /** When a FigNode is deleted, all of its edges are deleted.
+     * @deprecated 0.10.7 use removeFromDiagram
+     */
     public void delete() {
-        List edgeClone = new ArrayList(_figEdges);
-        int edgeCount = edgeClone.size();
-        for(int edgeIndex = 0; edgeIndex < edgeCount; ++edgeIndex) {
-            Fig f = (Fig)edgeClone.get(edgeIndex);
-            f.delete();
+        removeFromDiagram();
+    }
+
+    /** When a FigNode is removed, all of its edges are removed. */
+    public void removeFromDiagram() {
+        // remove the edges in reverse order because to make sure
+        // that other edges in figEdge don't have their position
+        // altered as a side effect.
+        for(int i = figEdges.size()-1; i >= 0; --i) {
+            FigEdge f = (FigEdge)figEdges.get(i);
+            f.removeFromDiagram();
         }
-        super.delete();
+        super.removeFromDiagram();
     }
 
     /** When a FigNode is disposed, all of its edges are disposed. */
-    public void dispose() {
-        int edgeCount = _figEdges.size();
-        // dispose the edges in reverse order because to make sure
+    public void deleteFromModel() {
+        LOG.debug("Deleting FigNode from model");
+        // delete the edges in reverse order because to make sure
         // that other edges in figEdge don't have their position
         // altered as a side effect.
-        for(int i = edgeCount-1; i >= 0; --i) {
-            FigEdge f = (FigEdge)_figEdges.get(i);
-            f.dispose();
+        for(int i = figEdges.size()-1; i >= 0; --i) {
+            FigEdge f = (FigEdge)figEdges.get(i);
+            f.deleteFromModel();
         }
-        super.dispose();
+        super.deleteFromModel();
+    }
+
+    /** When a FigNode is disposed, all of its edges are disposed.
+     * @depreacted 0.10.7 use deleteFromModel()
+     */
+    public void dispose() {
+        deleteFromModel();
     }
 
 
@@ -323,18 +342,16 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
      * @param figs a collection to which to add the figs or null
      * @return the collection of figs
      */
-    public Collection getPortFigs(Collection figs) {
-        if (figs == null) {
-            figs = new ArrayList();
-        }
-		int figCount = this.figs.size();
+    public List getPortFigs() {
+        ArrayList portFigs = new ArrayList();
+		int figCount = figs.size();
 		for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-			Fig f = (Fig)this.figs.get(figIndex);
+			Fig f = (Fig)figs.get(figIndex);
 			if(isPortFig(f)) {
-				figs.add(f);
+                portFigs.add(f);
 			}
 		}
-        return figs;
+        return portFigs;
     }
 
 	private boolean isPortFig(Fig f) {
@@ -441,7 +458,7 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
         String pName = pce.getPropertyName();
         Object src = pce.getSource();
         if(pName.equals("disposed") && src == getOwner()) {
-            delete();
+            removeFromDiagram();
         }
         if(pName.equals("highlight") && src == getOwner())
             setHighlight(((Boolean)pce.getNewValue()).booleanValue());
@@ -519,9 +536,9 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
     }
 
     public void updateEdges() {
-        int edgeCount = _figEdges.size();
+        int edgeCount = figEdges.size();
         for(int edgeIndex = 0; edgeIndex < edgeCount; ++edgeIndex) {
-            FigEdge fe = (FigEdge)_figEdges.get(edgeIndex);
+            FigEdge fe = (FigEdge)figEdges.get(edgeIndex);
             //System.out.println("[FigNode] update edge " + fe.toString());
             fe.computeRoute();
         }
@@ -534,9 +551,9 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
     }
 
     public void cleanUp() {
-        int edgeCount = _figEdges.size();
+        int edgeCount = figEdges.size();
         for(int i = 0; i < edgeCount; ++i) {
-            FigEdge fe = (FigEdge)_figEdges.get(i);
+            FigEdge fe = (FigEdge)figEdges.get(i);
             fe.cleanUp();
         }
     }

@@ -30,6 +30,9 @@
 
 package org.tigris.gef.base;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /** 
  * Cmd to delete the Figs selected in the current editor, and dispose
  * any underlying Net stuctures. This will also remove from all other views.
@@ -39,12 +42,14 @@ package org.tigris.gef.base;
 
 public class CmdDeleteFromModel extends Cmd {
 
+    private static Log LOG = LogFactory.getLog(CmdDeleteFromModel.class);
+
     public CmdDeleteFromModel() {
         super("Delete From Model");
     }
 
     public void doIt() {
-        //System.out.println("CmdDeleteFromModel");
+        LOG.debug("Executing CmdDeleteFromModel");
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
         sm.deleteFromModel();

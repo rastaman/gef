@@ -55,5 +55,5 @@ public interface GraphPortHooks extends java.io.Serializable {
   void addPropertyChangeListener(PropertyChangeListener l);
   void removePropertyChangeListener(PropertyChangeListener l);
   void setHighlight(boolean b);
-  void dispose();
+  void deleteFromModel();
 } /* end interface GraphPortHooks */

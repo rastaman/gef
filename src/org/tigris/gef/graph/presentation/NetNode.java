@@ -32,7 +32,10 @@
 package org.tigris.gef.graph.presentation;
 
 import java.util.*;
+import java.util.logging.Logger;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
@@ -48,11 +51,13 @@ import org.tigris.gef.graph.*;
 
 public abstract class NetNode extends NetPrimitive
 implements GraphNodeHooks, java.io.Serializable  {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** An array of the ports on this node */
-  protected Vector _ports;
+    /** An array of the ports on this node */
+    private Vector _ports;
+  
+    private static Log LOG = LogFactory.getLog(NetNode.class);
 
   ////////////////////////////////////////////////////////////////
   // constructors and related methods
@@ -91,12 +96,17 @@ implements GraphNodeHooks, java.io.Serializable  {
 
 
     /** Remove this node from the underling connected graph model. */
-    public void dispose() {
-        //System.out.println("disposing: " + toString());
+    public void deleteFromModel() {
+        LOG.debug("Deleting from model");
         Enumeration ps = _ports.elements();
         while (ps.hasMoreElements()) {
-            ((NetPort)ps.nextElement()).dispose();
+            ((NetPort)ps.nextElement()).deleteFromModel();
         }
+        
+        DefaultGraphModel gm =
+            (DefaultGraphModel)Globals.curEditor().getGraphModel();
+        gm.removeNode(this);
+      
         firePropertyChange("disposed", false, true);
     }
 

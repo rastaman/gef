@@ -85,7 +85,7 @@ public class AnnotationProperties {
     // removes the line from the active diagram
     public synchronized void removeLine(){
         if (Globals.curEditor().getLayerManager().getContents(null).contains(line)) {
-            line.delete();
+            line.removeFromDiagram();
         }
     }
 		
