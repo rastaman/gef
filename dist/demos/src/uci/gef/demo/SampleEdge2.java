@@ -39,6 +39,10 @@ public class SampleEdge2 extends NetEdge {
   /** Construct a new SampleEdge2. */
   public SampleEdge2() { } /* needs-more-work */
 
+  public String getId() {
+    return toString();
+  }
+
   public FigEdge makePresentation(Layer lay) {
     return new FigEdgeRectiline();
   }

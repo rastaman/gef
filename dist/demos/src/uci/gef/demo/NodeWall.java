@@ -47,6 +47,10 @@ public class NodeWall extends NetNode implements Serializable {
   // instance variables
 
   PortPower powerPort1, powerPort2;
+
+  public String getId() {
+    return toString();
+  }
   
    /** Initialize a new NodeWall. */
   public void initialize(Hashtable args) {

@@ -60,6 +60,10 @@ public class EdgePower extends NetEdge implements Serializable {
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  public String getId() {
+    return toString();
+  }
+
   public void setVoltage(int v) { _voltage = v; }
   public int getVoltage() { return _voltage; }
 

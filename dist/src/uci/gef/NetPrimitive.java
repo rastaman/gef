@@ -50,7 +50,7 @@ import uci.ui.*;
  *
  * @see uci.graph.DefaultGraphModel */
 
-public class NetPrimitive implements java.io.Serializable {
+public abstract class NetPrimitive implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -70,6 +70,7 @@ public class NetPrimitive implements java.io.Serializable {
     firePropertyChange("highlight", old, _highlight);
   }
 
+  public abstract String getId();
 
   ////////////////////////////////////////////////////////////////
   // notifications and updates

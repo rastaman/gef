@@ -86,6 +86,10 @@ public class NodeCPU extends NetNode implements Serializable {
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  public String getId() {
+    return toString();
+  }
+
   public int getMegsOfRAM() { return _megsOfRAM; }
   public int getBusSpeedMHz() { return _busSpeedMHz; }
   public int getCPUSpeedMhz() { return _cpuSpeedMHz; }

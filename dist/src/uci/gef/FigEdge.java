@@ -90,6 +90,7 @@ implements PropertyChangeListener, Highlightable {
     setOwner(edge);
     _fig = makeEdgeFig();
     _fig.setGroup(this);
+    _fig.setLayer(getLayer());
   }
 
   /** Contruct a new FigEdge without any underlying edge. */
@@ -110,6 +111,7 @@ implements PropertyChangeListener, Highlightable {
     if (_fig != null && _fig.getGroup() == this) _fig.setGroup(null);
     _fig = f;
     _fig.setGroup(this);
+    _fig.setLayer(getLayer());
   }
 
   /** Get the Fig reprenting this FigEdge's from-port. */ 

@@ -65,6 +65,10 @@ public class NetList extends NetPrimitive implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  public String getId() {
+    return _name;
+  }
+
   public void name(String n) { _name = n; }
   public String name() { return _name; }
 

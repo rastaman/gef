@@ -51,8 +51,11 @@ public class NodePrinter extends NetNode implements Serializable {
   protected PortPower _powerPort;
   protected PortData _dataPort;
   
-   /** Initialize a new NodePrinter. */
+  public String getId() {
+    return toString();
+  }
 
+  /** Initialize a new NodePrinter. */
   public void initialize(Hashtable args) {
     addPort(_powerPort = new PortPower(this, PortPower.RECEPTICAL));
     addPort(_dataPort = new PortData(this));

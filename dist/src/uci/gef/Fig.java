@@ -219,7 +219,10 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 	return gID + "." + ((FigGroup)getGroup()).getFigs().indexOf(this);
       else return gID + ".1";
     }
-    int index = getLayer().getContents().indexOf(this);
+    Layer l = getLayer();
+    if (l == null) return "NULL_LAYER";
+    Vector c = l.getContents();
+    int index = c.indexOf(this);
     return "Fig" + index;
   }
 

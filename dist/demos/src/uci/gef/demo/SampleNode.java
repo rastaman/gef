@@ -66,7 +66,7 @@ public class SampleNode extends NetNode implements Serializable {
   static int _NextNumber = 1;
 
   public int getNumber() { return _number; }
-  public int getId() { return _number; }
+  public String getId() { return "" + _number; }
   
   public FigNode makePresentation(Layer lay) {
     FigSampleNode fn = new FigSampleNode();

@@ -74,6 +74,10 @@ public class EdgeData extends NetEdge implements Serializable {
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  public String getId() {
+    return toString();
+  }
+
   public String getCableType() { return _cableType; }
   public void setCableType(String ct) {
     if (_PossibleCableTypes.contains(ct))

@@ -75,6 +75,10 @@ implements GraphPortHooks, java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  public String getId() {
+    return toString();
+  }
+
   /** Reply the NetNode that owns this port. */
   public NetNode getParentNode() { return (NetNode) _parent; }
   public NetEdge getParentEdge() { return (NetEdge) _parent; }
