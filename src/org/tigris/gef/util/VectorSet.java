@@ -31,13 +31,18 @@
 
 package org.tigris.gef.util;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Vector;
 
 /** An Ordered, non-duplicated collecton of objects (not exactly a
  *  mathemetical set because it is ordered).  Implemented with a
  *  Vector. */
 
-public class VectorSet implements java.io.Serializable  {
+public class VectorSet implements Serializable, Set  {
   ////////////////////////////////////////////////////////////////
   // constants
   public static final int TC_LIMIT = 50;
@@ -100,8 +105,10 @@ public class VectorSet implements java.io.Serializable  {
     addAllElementsSuchThat(s.elements(), p);
   }
 
-  public void remove(Object o) {
+  public boolean remove(Object o) {
+      boolean result = contains(o);
       if (o != null) vector.removeElement(o);
+      return result;
   }
   
   public void removeElement(Object o) {
@@ -240,6 +247,63 @@ public class VectorSet implements java.io.Serializable  {
             recent = frontier;
         }
         return touched;
+    }
+    
+    public boolean isEmpty() {
+        return vector.isEmpty();
+    }
+    
+    public Iterator iterator() {
+        return vector.iterator();
+    }
+    
+    public Object[] toArray() {
+        return vector.toArray();
+    }
+    
+    public Object[] toArray(Object[] arg0) {
+        return vector.toArray(arg0);
+    }
+    
+    public boolean add(Object arg0) {
+        boolean result = contains(arg0);
+        addElement(arg0);
+        return !result;
+    }
+   
+    public boolean containsAll(Collection arg0) {
+        return vector.containsAll(arg0);
+    }
+    
+
+    public boolean addAll(Collection arg0) {
+        boolean result = containsAll(arg0);
+        addAllElements(arg0);
+        return !result;
+        
+    }
+    
+    public boolean retainAll(Collection arg0) {
+        Vector copy = (Vector) vector.clone();
+        boolean result = false;
+        for (Iterator iter=copy.iterator(); iter.hasNext();) {
+            Object elem = iter.next();
+            if (!arg0.contains(elem)) result = result || remove(elem);
+        }
+        return result;
+    }
+    
+    public boolean removeAll(Collection arg0) {
+        boolean result = false;
+        for (Iterator iter = arg0.iterator(); iter.hasNext();) {
+           result = result || remove(iter.next());
+        }
+        return result;
+        
+    }
+    
+    public void clear() {
+        vector.clear();        
     }
 
 } /* end class VectorSet */
