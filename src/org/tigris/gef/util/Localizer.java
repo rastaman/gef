@@ -303,15 +303,17 @@ public class Localizer
 
 		ResourceBundle resource = (ResourceBundle)resources.get(binding);
 		if ( resource == null ) {
-			System.out.println("[Localizer] localization failed for key " + key + " (binding: " + binding + ")");
+			//System.out.println("[Localizer] localization failed for key " + key + " (binding: " + binding + ")");
 			return key;
 		}
 		try {
 			localized = resource.getString(key);
 		}
 		catch (MissingResourceException e) {}
-		if (localized == null)
+		if (localized == null) {
+			//System.out.println("[Localizer] localization failed for key " + key + " (binding: " + binding + ")");
 			localized = key;
+		}
 
 		return localized;
     }

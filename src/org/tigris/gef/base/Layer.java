@@ -164,8 +164,12 @@ public abstract class Layer implements java.io.Serializable {
     Vector res = new Vector(size);
     for (int i = 0; i < size; i++) {
       Object o = contents.elementAt(i);
+	  if (o instanceof Fig) {
+		  if (!((Fig)o).savingAllowed())
+			  continue;
+	  }
       if (!(o instanceof FigEdge))
-	res.addElement(o);
+		  res.addElement(o);
     }
     return res;
   }
@@ -176,8 +180,12 @@ public abstract class Layer implements java.io.Serializable {
     Vector res = new Vector(size);
     for (int i = 0; i < size; i++) {
       Object o = contents.elementAt(i);
+	  if (o instanceof Fig) {
+		  if (!((Fig)o).savingAllowed())
+			  continue;
+	  }
       if (o instanceof FigEdge)
-	res.addElement(o);
+		  res.addElement(o);
     }
     return res;
   }

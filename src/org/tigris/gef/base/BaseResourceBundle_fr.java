@@ -60,7 +60,6 @@ public class BaseResourceBundle_fr extends ListResourceBundle {
         {"Nudge Right",                      "Ajuster \u00e0 droite"},
         {"Nudge Up",                         "Ajuster en haut"},
 		{"Nudge Down",                       "Ajuster en bas"},
-        {"Do nothing",                       "Ne rien faire"},
         {"Open...",                          "Ouvrir..."},
         {"Open PGML...",                     "Ouvrir PGML..."},
         {"Open SVG...",                      "Ouvrir SVG..."},
@@ -101,6 +100,16 @@ public class BaseResourceBundle_fr extends ListResourceBundle {
         {"Zoom Reset",                       "Annulation du grossisement"},
         {"Zoom In",                          "Grossir"},
         {"Zoom Out",                         "R\u00e9duire"},
+		{"Select",                           "Select"},
+		{"Broom",                            "Broom"},
+		{"Rectangle",                        "Rectangle"},
+		{"RRect",                            "RRect"},
+		{"Circle",                           "Circle"},
+		{"Line",                             "Line"},
+		{"Text",                             "Text"},
+		{"Polygon",                          "Polygon"},
+		{"Spline",                           "Spline"},
+		{"Ink",                              "Ink"},
         {"Do Nothing",                       "Ne rien faire"}
 	};
 	

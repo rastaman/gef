@@ -58,12 +58,21 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
   // constructors
 
   /** Construct a new Cmd with the given arguments for node class. */
+  public CmdCreateNode(Hashtable args, String resource, String name) {
+	  super(args, resource, name);
+  }
+
   public CmdCreateNode(Hashtable args, String name) {
-    super(args, name);
+    super(args, "UMLMenu", name);
   }
 
   /** Construct a new Cmd with the given classes for the NetNode
    *  and its FigNode. */
+  public CmdCreateNode(Class nodeClass, String resource, String name) {
+	  this(new Hashtable(), resource, name);
+	  setArg("className", nodeClass);
+  }
+
   public CmdCreateNode(Class nodeClass, String name) {
     this(new Hashtable(), name);
     setArg("className", nodeClass);
@@ -73,6 +82,11 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
    *  and its FigNode, and set the global sticky mode boolean to
    *  the given value. This allows the user to place several nodes
    *  rapidly.  */
+  public CmdCreateNode(Class nodeClass, boolean sticky, String resource, String name) {
+    this(nodeClass, resource, name);
+    setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
+  }
+
   public CmdCreateNode(Class nodeClass, boolean sticky, String name) {
     this(nodeClass, name);
     setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);

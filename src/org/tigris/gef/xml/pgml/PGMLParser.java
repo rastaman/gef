@@ -181,6 +181,7 @@ public class PGMLParser extends HandlerBase {
   private static final int DEFAULT_EDGE_STATE = 50;
 
   public void startElement(String elementName,AttributeList attrList) {
+	  //System.out.println("[PGMLParser]: startElement " + elementName + " / " + _nestedGroups + " / " + _elementState);
     switch(_elementState) {
         case DEFAULT_STATE:
         if ("group".equals(elementName)) {
@@ -194,26 +195,26 @@ public class PGMLParser extends HandlerBase {
         else if (_nestedGroups == 0) {
             if (elementName.equals("path")) {
 	        _diagram.add(handlePolyLine(attrList));
-	    }
-	    else if (elementName.equals("ellipse")) {
-	        _diagram.add(handleEllipse(attrList));
-	    }
-	    else if (elementName.equals("rectangle")) {
-	        _diagram.add(handleRect(attrList));
-	    }
-	    else if (elementName.equals("text")) {
-			_elementState = TEXT_STATE;
-			_textBuf = new StringBuffer();
-	        _diagram.add(handleText(attrList));
-	    }
-	    else if (elementName.equals("piewedge")) { }
-	    else if (elementName.equals("circle")) { }
-	    else if (elementName.equals("moveto")) { }
-	    else if (elementName.equals("lineto")) { }
-	    else if (elementName.equals("curveto")) { }
-	    else if (elementName.equals("arc")) { }
-	    else if (elementName.equals("closepath")) { }
-	    else System.out.println("unknown top-level tag: " + elementName);
+			}
+			else if (elementName.equals("ellipse")) {
+				_diagram.add(handleEllipse(attrList));
+			}
+			else if (elementName.equals("rectangle")) {
+				_diagram.add(handleRect(attrList));
+			}
+			else if (elementName.equals("text")) {
+				_elementState = TEXT_STATE;
+				_textBuf = new StringBuffer();
+				_diagram.add(handleText(attrList));
+			}
+			else if (elementName.equals("piewedge")) { }
+			else if (elementName.equals("circle")) { }
+			else if (elementName.equals("moveto")) { }
+			else if (elementName.equals("lineto")) { }
+			else if (elementName.equals("curveto")) { }
+			else if (elementName.equals("arc")) { }
+			else if (elementName.equals("closepath")) { }
+			else System.out.println("unknown top-level tag: " + elementName);
         }
         else if (_nestedGroups > 0) {
 			//System.out.println("skipping nested " + elementName);
@@ -247,12 +248,14 @@ public class PGMLParser extends HandlerBase {
   }
 
   public void endElement(String elementName) {
-    switch(_elementState) {
+	  //System.out.println("[PGMLParser]: endElement " + elementName + " / " + _nestedGroups + " / " + _elementState);
+	  if ("group".equals(elementName)) {
+		  _nestedGroups--;
+	  }
+
+	  switch(_elementState) {
         case 0:
-        if ("group".equals(elementName)) {
-            _nestedGroups--;
-        }
-        break;
+			break;
 
         case POLY_STATE:
         if(elementName.equals("path")) {
@@ -262,7 +265,7 @@ public class PGMLParser extends HandlerBase {
         break;
 
         case LINE_STATE:
-        if(elementName.equals("line")) {
+        if(elementName.equals("line") || elementName.equals("path")) {
             _elementState = DEFAULT_STATE;
             _currentLine = null;
         }
@@ -478,7 +481,6 @@ public class PGMLParser extends HandlerBase {
   private FigText _currentText = null;
   protected StringBuffer _textBuf = null;
   protected FigText handleText(AttributeList attrList) {
-      //System.out.println("[PGMLParser]: handleText");
       FigText f = new FigText(100, 100, 90, 45);
       setAttrs(f, attrList);
       _currentText = f;

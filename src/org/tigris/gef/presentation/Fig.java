@@ -116,6 +116,8 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 
   public int _shown = 0;
 
+  protected boolean _allowsSaving = true;
+
   ////////////////////////////////////////////////////////////////
   // static initializer
 
@@ -733,6 +735,11 @@ public String getPrivateData() {
   public Rectangle routingRect() {
 	return new Rectangle(_x-BORDER, _y-BORDER, _w+BORDER*2, _h+BORDER*2);
   }  
+
+	public boolean savingAllowed() { return _allowsSaving; }
+
+	public void setSavingAllowed(boolean newValue) { _allowsSaving = newValue; }
+
   /** Set the bounds of this Fig. Fires PropertyChangeEvent "bounds". */
   public void setBounds(int x, int y, int w, int h) {
 	Rectangle oldBounds = getBounds();

@@ -101,6 +101,16 @@ public class BaseResourceBundle extends ListResourceBundle {
 		{"Zoom Reset", "Zoom Reset"},
 		{"Zoom In", "Zoom In"},
 		{"Zoom Out", "Zoom Out"},
+		{"Select", "Select"},
+		{"Broom", "Broom"},
+		{"Rectangle", "Rectangle"},
+		{"RRect", "RRect"},
+		{"Circle", "Circle"},
+		{"Line", "Line"},
+		{"Text", "Text"},
+		{"Polygon", "Polygon"},
+		{"Spline", "Spline"},
+		{"Ink", "Ink"},
 		{"Do Nothing", "Do Nothing"}
 	};
 	

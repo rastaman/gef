@@ -60,7 +60,6 @@ public class BaseResourceBundle_de extends ListResourceBundle {
 		{"Nudge Right", "Nach rechts stupsen"},
 		{"Nudge Up", "Nach oben stupsen"},
 		{"Nudge Down", "Nach unten stupsen"},
-		{"Do nothing", "Nichts tun"},
 		{"Open...", "\u00d6ffnen..."},
 		{"Open PGML...", "\u00d6ffne PGML..."},
 		{"Open SVG...", "\u00d6ffne SVG..."},
@@ -100,7 +99,18 @@ public class BaseResourceBundle_de extends ListResourceBundle {
 		{"Use Rotation Handles", "Use Rotation Handles"},
 		{"Zoom Reset", "Zoom zur\u00fccksetzen"},
 		{"Zoom In", "Zoome hinein"},
-		{"Zoom Out", "Zoome heraus"}
+		{"Zoom Out", "Zoome heraus"},
+		{"Select", "Select"},
+		{"Broom", "Broom"},
+		{"Rectangle", "Rectangle"},
+		{"RRect", "RRect"},
+		{"Circle", "Circle"},
+		{"Line", "Line"},
+		{"Text", "Text"},
+		{"Polygon", "Polygon"},
+		{"Spline", "Spline"},
+		{"Ink", "Ink"},
+		{"Do nothing", "Nichts tun"}
 	};
 	
 	public Object[][] getContents() {

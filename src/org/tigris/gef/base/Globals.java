@@ -83,7 +83,7 @@ public class Globals {
   public static boolean pastable = false;
 
   /** The directory most recently used in an open or save dialog */
-  public static String LastDirectory = ".";
+  public static String LastDirectory = System.getProperty("user.home");
 
   public static String getLastDirectory() { return LastDirectory;}
   public static void setLastDirectory(String s) { LastDirectory = s;}
