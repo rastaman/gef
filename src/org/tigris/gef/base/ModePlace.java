@@ -29,7 +29,6 @@
 package org.tigris.gef.base;
 
 import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
@@ -217,6 +216,7 @@ public class ModePlace extends FigModifyingModeImpl {
 
     public void keyPressed(KeyEvent ke) {
         if(ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            LOG.debug("ESC pressed");
             leave();
         }
     }

@@ -164,6 +164,7 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
     /** Pass events to all modes in order, until one consumes it. */
     public void keyTyped(KeyEvent ke) {
         checkModeTransitions(ke);
+        LOG.debug("Esc pressed");
         for(int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
             m.keyTyped(ke);

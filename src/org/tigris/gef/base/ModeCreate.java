@@ -28,6 +28,8 @@
 
 package org.tigris.gef.base;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.presentation.Fig;
 
 import java.awt.*;
@@ -76,6 +78,8 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
     /** This holds the Fig to be added to the parent Editor. */
     protected Fig _newItem;
 
+    private static Log LOG = LogFactory.getLog(ModeCreate.class);
+    
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -157,6 +161,7 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
 
     public void keyPressed(KeyEvent ke) {
         if(ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            LOG.debug("ESC pressed");
             leave();
         }
     }
