@@ -71,8 +71,12 @@ public class OCLExpander {
         expand(w, target, "", "");
     }
 
+    public void expand(Writer w, Object target, String prefix) throws ExpansionException {
+        expand(w, target, prefix, "");
+    }
+
     /**
-     * @deprecated visibility will change to private. Use expand(Writer w, Object target)
+     * @deprecated visibility will change to private. Use expand(Writer w, Object target) or expand(Writer w, Object target, String prefix)
      */
     public void expand(Writer w, Object target, String prefix, String suffix) throws ExpansionException {
         PrintWriter pw;
