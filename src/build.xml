@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<project name="gef" default="build" basedir=".">
+
+<target name="init">
+ <tstamp/>
+ <property file="${ant.home}${file.separator}dev.properties"/>
+ <property name="src.dir" value="src"/>
+ <property name="obj.dir" value="lib"/>
+ <property name="javadoc.dir" value="javadoc"/>
+ <property name="packagenames" value="org.*"/>
+ <property name="jar" value="gef.jar"/>
+</target>
+
+<target name="build" depends="init">
+ <mkdir dir="${obj.dir}"/>
+ <javac srcdir="${src.dir}" destdir="${obj.dir}"
+        deprecation="${deprecation}"
+        classpath="${obj.dir}${path.separator}${xml4j.lib}"/>
+</target>
+
+<target name="jar" depends="build">
+ <jar jarfile="${jar}" basedir="${obj.dir}"/>
+</target>
+
+<target name="javadoc" depends="init">
+ <mkdir dir="${javadoc.dir}"/>
+ <javadoc sourcepath="${src.dir}" destdir="${javadoc.dir}"
+          packagenames="${packagenames}"/>
+</target>
+
+<target name="clean" depends="init">
+ <deltree dir="${obj.dir}"/>
+ <delete file="${jar}"/>
+ <deltree dir="${javadoc.dir}"/>
+</target>
+
+</project>

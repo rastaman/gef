@@ -1,0 +1,34 @@
+Installing GEF
+--------------
+
+last revised: 03/16/2000
+
+
+!!!!!!!!!!!!!!!
+!!! WARNING !!!
+!!!!!!!!!!!!!!!
+
+This is an UNSTABLE version of GEF.  See README.txt for details. If
+you want to try building the installation anyway, read on.  You have
+been warned.
+
+
+The distribution is built using the Ant build system
+(http://jakarta.apache.org/ant).  Once you have Ant installed, you can
+build the distribution simply by executing the command:
+
+  ant
+
+Ant operates similarly to make, but instead of a makefile, Ant uses an
+XML build file.  The build.xml file for this distribution has the
+following targets:
+
+  ant build - compiles source files into gef/lib.  this is the default
+              target.
+  ant jar - creates gef.jar
+  ant javadoc - creates javadoc documentation in docs/javadoc
+  ant clean - deletes compiled classes and jar files.
+
+
+Edwin Park
+esp@parkplace.dhs.org
