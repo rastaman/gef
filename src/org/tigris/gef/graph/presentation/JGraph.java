@@ -21,6 +21,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+
+
 package org.tigris.gef.graph.presentation;
 
 import java.util.*;
@@ -30,10 +32,11 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
+import org.tigris.gef.ui.*;
+import org.tigris.gef.graph.*;
+import org.tigris.gef.event.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
-import org.tigris.gef.event.*;
-import org.tigris.gef.graph.*;
 
 /** JGraph is a Swing component that displays a connected graph and
  *  allows interactive editing. In many ways this class serves as a
@@ -49,13 +52,13 @@ public class JGraph extends JPanel implements Cloneable {
   protected Editor _editor;
   protected JGraphInternalPane _drawingPane;
   protected JScrollPane _scroll;
+  protected Dimension _defaultSize = new Dimension(1000,1000);
 
   ////////////////////////////////////////////////////////////////
   // constructor
 
   /** Make a new JGraph with a new DefaultGraphModel.
-   * @see org.tigris.gef.graph.presentation.DefaultGraphModel
-   */
+   * @see uci.graph.DefaultGraphModel */
   public JGraph() { this(new DefaultGraphModel()); }
 
   /** Make a new JGraph with a the GraphModel and Layer from the given
@@ -71,7 +74,7 @@ public class JGraph extends JPanel implements Cloneable {
     super(false); // not double buffered. I do my own flicker-free redraw.
     _editor = ed;
     _drawingPane = new JGraphInternalPane(_editor);
-    setDrawingSize(1500, 1500);
+    setDrawingSize(getDefaultSize());
 
     _scroll = new JScrollPane(_drawingPane);
     _scroll.setBorder(null);
@@ -90,6 +93,11 @@ public class JGraph extends JPanel implements Cloneable {
     //invalidate();
     validate();
     //revalidate();
+
+    Vector layerManagerContent = ed.getLayerManager().getContents();
+    if ( layerManagerContent != null ) {
+        updateDrawingSizeToIncludeAllFigs(layerManagerContent.elements());
+    } // end if
   }
 
   public void addMouseListener(MouseListener listener) {
@@ -168,18 +176,69 @@ public class JGraph extends JPanel implements Cloneable {
   /** Get the Editor that is being displayed */
   public Editor getEditor() { return _editor; }
 
+  protected Hashtable _viewPortPositions = new Hashtable();
+  protected String    _currentDiagramId = null;
+
   /** Set the Diagram that should be displayed by setting the
    *  GraphModel and Layer that the Editor is using. */
   public void setDiagram(Diagram d) {
     if (d == null) return;
+    if ( _currentDiagramId != null ) {
+      _viewPortPositions.put(_currentDiagramId,_scroll.getViewport().getViewRect());
+    } // end if
+    setDrawingSize(getDefaultSize());
+    updateDrawingSizeToIncludeAllFigs(d.elements());
     _editor.getLayerManager().replaceActiveLayer(d.getLayer());
     _editor.setGraphModel(d.getGraphModel());
     _editor.getSelectionManager().deselectAll();
     _editor.damageAll();
+    String newDiagramId = Integer.toString(d.hashCode());
+    if ( newDiagramId.equals(_currentDiagramId) ) return;
+    _currentDiagramId = newDiagramId;
+    if ( _viewPortPositions.get(_currentDiagramId) != null ) {
+      Rectangle rect = (Rectangle)_viewPortPositions.get(_currentDiagramId);
+      _scroll.getViewport().setViewPosition(new Point(rect.x,rect.y));
+    } else {
+      _scroll.getViewport().setViewPosition(new Point());
+    } // end else if
   }
 
+  /**
+   * Enlarges the JGraphInternalPane dimensions as necessary to
+   * insure that all the contained Figs are visible.
+   */
+  protected void updateDrawingSizeToIncludeAllFigs(Enumeration enum) {
+      if ( enum == null ) {
+          return;
+      } // end if
+      Dimension drawingSize = _drawingPane.getSize();
+      boolean recalSize = false;
+      while( enum.hasMoreElements() ) {
+          Fig fig = (Fig)enum.nextElement();
+          Rectangle rect = fig.getBounds();
+          Point point   = rect.getLocation();
+          Dimension dim = rect.getSize();
+          if( (point.x + dim.width + 5) > drawingSize.width ) {
+              drawingSize.setSize(point.x + dim.width + 5, drawingSize.height);
+              recalSize = true;;
+          } // end if
+          if( (point.y + dim.height + 5) > drawingSize.height ) {
+             drawingSize.setSize( drawingSize.width, point.y + dim.height + 5);
+              recalSize = true;;
+          } // end if
+      } // end while
+      if ( recalSize ) {
+          setDrawingSize(drawingSize.width,drawingSize.height);
+      } // end if
+  } // end updateDrawingSizeToIncludeAllFigs()
+
   public void setDrawingSize(int width, int height) {
-    _drawingPane.setPreferredSize(new Dimension(width, height));
+    setDrawingSize(new Dimension(width, height));
+  }
+
+  public void setDrawingSize(Dimension dim) {
+    _drawingPane.setPreferredSize(dim);
+    _drawingPane.revalidate();
   }
 
   /** Get and set the GraphModel the Editor is using. */
@@ -187,7 +246,7 @@ public class JGraph extends JPanel implements Cloneable {
   public GraphModel getGraphModel() { return _editor.getGraphModel(); }
 
   /** Get and set the Renderer used to make FigNodes for nodes in the
-   *  GraphModel. */ 
+   *  GraphModel. */
   public void setGraphNodeRenderer(GraphNodeRenderer r) {
     _editor.setGraphNodeRenderer(r);
   }
@@ -196,7 +255,7 @@ public class JGraph extends JPanel implements Cloneable {
   }
 
   /** Get and set the Renderer used to make FigEdges for edges in the
-   *  GraphModel. */ 
+   *  GraphModel. */
   public void setGraphEdgeRenderer(GraphEdgeRenderer r) {
     _editor.setGraphEdgeRenderer(r); }
   public GraphEdgeRenderer getGraphEdgeRenderer() {
@@ -311,12 +370,24 @@ public class JGraph extends JPanel implements Cloneable {
 //   public Dimension getMinimumSize() { return new Dimension(1000, 1000); }
 
 //   public Dimension getSize() { return new Dimension(1000, 1000); }
+
+  public void setDefaultSize(int width, int height) {
+    _defaultSize = new Dimension(width, height);
+  }
+  public void setDefaultSize(Dimension dim) {
+    _defaultSize = dim;
+  }
+  public Dimension getDefaultSize() {
+    return _defaultSize;
+  }
+  static final long serialVersionUID = -5459241816919316496L;
+
 } /* end class JGraph */
 
 
 
 class JGraphInternalPane extends JPanel {
-//implements FocusListener 
+//implements FocusListener
   protected Editor _editor;
 
   public JGraphInternalPane(Editor e) {
@@ -369,6 +440,9 @@ class JGraphInternalPane extends JPanel {
   public boolean isManagingFocus() { return true; }
 
   /** Tell Swing/AWT that JGraph can be tabbed into. */
-  public boolean isFocusTraversable() { return true; }  
+  public boolean isFocusTraversable() { return true; }
+
+  static final long serialVersionUID = -5067026168452437942L;
+
 } /* end class JGraphInternalPane */
 
