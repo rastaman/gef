@@ -1,7 +1,14 @@
 // %1030438053652:org.tigris.gef.presentation%
 package org.tigris.gef.presentation;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 
 import java.beans.PropertyChangeEvent;
@@ -11,7 +18,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.JMenu;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,13 +48,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     public final int MIN_SIZE = 4;
 
     /** The size of the dashes drawn when the Fig is dashed. */
-
-    // TODO deprecate these arrays. There is no such thing as a constant array.
-    // these need hiding behind getters and setters
-    public static final String[] DASHED_CHOICES = {"Solid", "Dashed",     "LongDashed",  "Dotted",      "DotDash"};
-    //public static final int[][] DASH_ARRAYS   = {null,    {5,    5},    {15,    5},    {3,    10},    {3,    6,    10,    6}};     // opaque, transparent, [opaque, transparent]
-    public static final float[][] DASH_ARRAYS   = {null,    {5.0f, 5.0f}, {15.0f, 5.0f}, {3.0f, 10.0f}, {3.0f, 6.0f, 10.0f, 6.0f}};  // opaque, transparent, [opaque, transparent]
-    public static final int[]     DASH_PERIOD   = {0,        10,           20,            13,            25,                     };  // the sum of each subarray
+    private static final String[] DASHED_CHOICES = {"Solid", "Dashed",     "LongDashed",  "Dotted",      "DotDash"};
+    private static final float[][] DASH_ARRAYS   = {null,    {5.0f, 5.0f}, {15.0f, 5.0f}, {3.0f, 10.0f}, {3.0f, 6.0f, 10.0f, 6.0f}};  // opaque, transparent, [opaque, transparent]
+    private static final int[]     DASH_PERIOD   = {0,        10,           20,            13,            25,                     };  // the sum of each subarray
 
     ////////////////////////////////////////////////////////
     // instance variables
