@@ -265,10 +265,8 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
      *  null if none. */
     public Object hitPort(int x, int y) {
         Fig f = hitFig(new Rectangle(x, y, 1, 1));
-        System.out.println("FigNode.hitPort(x,y): f=" + f);
         if(f != null) {
             Object owner = f.getOwner();
-            System.out.println("FigNode.hitPort(x,y): owner=" + owner);
             return owner;
         } else {
             return null;

@@ -113,47 +113,23 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      */
     protected int _h;
 
-    /**
-     *  The original width of the Fig's bounding box at construction.
-     *  This value should never be updated after construction.
-     */
-    int originalWidth;
-    
-    /**
-     *  The original height of the Fig's bounding box at construction.
-     *  This value should never be updated after construction.
-     */
-    int originalHeight;
-
-    /**
-     *  The original x position of the Fig's bounding box at construction.
-     *  This value should never be updated after construction.
-     */
-    int originalX;
-
-    /**
-     *  The original y position of the Fig's bounding box at construction.
-     *  This value should never be updated after construction.
-     */
-    int originalY;
-
     /** Name of the resource being basis to this figs localization.
-     * @deprecated 0.11 will change to package visibility use getters/setters
+     * @deprecated 0.10.1 will change to package visibility use getters/setters
      */
     protected String _resource = "";
 
     /** Outline color of fig object.
-     * @deprecated 0.11 will change to package visibility use getters/setters
+     * @deprecated 0.10.1 will change to package visibility use getters/setters
      */
     protected Color _lineColor = Color.black;
 
     /** Fill color of fig object.
-     * @deprecated 0.11 will change to package visibility use getters/setters
+     * @deprecated 0.10.1 will change to package visibility use getters/setters
      */
     protected Color _fillColor = Color.white;
 
     /** Thickness of line around object, for now limited to 0 or 1.
-     * @deprecated 0.11 will change to package visibility use getters/setters
+     * @deprecated 0.10.1 will change to package visibility use getters/setters
      */
     protected int _lineWidth = 1;
     protected int[] _dashes = null;
@@ -164,18 +140,18 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     
     /**
      * The parent Fig of which this Fig is a child
-     * @deprecated 0.11 will change to package visibility
+     * @deprecated 0.10.1 will change to package visibility
      */
     protected Fig _group = null;
     
     protected String _context = "";
 
     /** True if the Fig is shown
-     * @deprecated 0.11 use getters/setters
+     * @deprecated 0.10.1 use getters/setters
      */
     protected boolean _displayed = true;
     /** 
-     * @deprecated 0.11 use getters/setters
+     * @deprecated 0.10.1 use getters/setters
      */
     public int _shown = 0;
     protected boolean _allowsSaving = true;
@@ -235,8 +211,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         _y = y;
         _w = w;
         _h = h;
-        originalHeight = h;
-        originalWidth = w;
         if(lineColor != null) {
             _lineColor = lineColor;
         } else {
@@ -1490,24 +1464,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      */
     public void setVisible(boolean isDisplayed) {
         _displayed = isDisplayed;
-    }
-    
-    /**
-     * @return the original height of the Fig
-     */
-    public int getOriginalHeight() {
-        return originalHeight;
-    }
-
-    /**
-     * @return the original width of the Fig
-     */
-    public int getOriginalWidth() {
-        return originalWidth;
-    }
-
-    void setFactoryConstructed() {
-        factoryConstructed = true;
     }
     
     /**

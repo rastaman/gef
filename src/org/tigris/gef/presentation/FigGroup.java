@@ -452,10 +452,6 @@ public class FigGroup extends Fig {
      * @param h new height for fig
      */
     public void setBounds(int x, int y, int w, int h) {
-        if (isFactoryConstructed()) {
-            setBoundsOnFactoryFig(x, y, w, h);
-            return;
-        }
         Rectangle oldBounds = getBounds();
         int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
@@ -472,50 +468,6 @@ public class FigGroup extends Fig {
         firePropChange("bounds", oldBounds, getBounds());
     }
     
-    private void setBoundsOnFactoryFig(int x, int y, int w, int h) {
-        Rectangle oldBounds = getBounds();
-        int figCount = this.figs.size();
-        Fig f = null;
-        int newW;
-        int newH;
-        int newX;
-        int newY;
-        FigGroup topGroup = getTopGroup();
-        int topLevelX = topGroup.getX();
-        int topLevelY = topGroup.getY();
-        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            f = (Fig)this.figs.get(figIndex);
-            float proportionWidthChange = (float) w / (float) originalWidth;
-            float proportionHeightChange = (float) h / (float) originalHeight;
-            if (f.isResizable()) {
-                newW = (int)(((float) f.getOriginalWidth()) * proportionWidthChange);
-                newH = (int)(((float) f.getOriginalHeight()) * proportionHeightChange);
-            } else {
-                newW = f.getWidth();
-                newH = f.getHeight();
-            }
-            if (f.isMovable()) {
-                newX = topLevelX + (int)(((float) f.originalX) * proportionWidthChange);
-                newY = topLevelY + (int)(((float) f.originalY) * proportionHeightChange);
-                //newX = (int)(((float) f.originalX) * proportionWidthChange);
-                //newY = (int)(((float) f.originalY) * proportionHeightChange);
-            } else {
-                newX = f.getX();
-                newY = f.getY();
-            }
-            if (f.isMovable() || f.isResizable()) {
-                f.setBounds(newX, newY, newW, newH);
-            }
-        }
-        // calcBounds seems to screw up here if dragging the bottom
-        // left corner, so setting bounds manually.
-        _x = x;
-        _y = y;
-        _w = w;
-        _h = h;
-        firePropChange("bounds", oldBounds, getBounds());
-    }
-
     /** Set the Vector of Figs in this group. Fires PropertyChange with "bounds". */
     public void setFigs(Vector figs) {
         Rectangle oldBounds = getBounds();
@@ -663,45 +615,6 @@ public class FigGroup extends Fig {
      */
     public Dimension getSize() {
         return new Dimension(_w, _h);
-    }
-    
-    /**
-     * Sets the factory constructed indicator to true for this and all
-     * child Figs. This should only ever be called from the factory
-     * allowing a better resizing algorithm to be used.
-     * This also makes sure that all Figs start from a zero origin.
-     */
-    protected void setFactoryConstructed() {
-        int figCount = this.figs.size();
-        Fig f = null;
-        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            f = (Fig)figs.get(figIndex);
-            f.setFactoryConstructed();
-        }
-        super.setFactoryConstructed();
-    }
-
-    protected void setOriginalOrigin(int x, int y) {
-        originalX = _x;
-        originalY = _y;
-        originalWidth = _w;
-        originalHeight = _h;
-        int figCount = this.figs.size();
-        Fig f = null;
-        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            f = (Fig)figs.get(figIndex);
-            if (f instanceof FigGroup) {
-                ((FigGroup)f).setOriginalOrigin(f._x,f._y);
-            } else {
-                f.originalX = f._x;
-                f.originalY = f._y;
-                f.originalWidth = f._w;
-                f.originalHeight = f._h;
-                if (f instanceof FigRect) {
-                    log.debug(f.originalX+","+f.originalY+"    "+f.originalWidth+","+f.originalHeight);
-                }
-            }
-        }
     }
     
     private FigGroup getTopGroup() {

@@ -56,9 +56,7 @@ public class SamplePalette extends PaletteFig {
 
     add(new CmdCreateNode(org.tigris.gef.demo.SampleNode.class, "NodeOne"));
     add(new CmdCreateNode(org.tigris.gef.demo.SampleNode2.class, "NodeTwo"));
-    JButton complexFigButton1 = add(new CmdCreateNode(org.tigris.gef.demo.SampleNode3.class, "NodeThree"));
     JButton complexFigButton2 = add(new CmdCreateNode(org.tigris.gef.demo.SampleNode4.class, "NodeFour"));
-    complexFigButton1.setText("Complex Fig from Factory");
     complexFigButton2.setText("Complex Fig");
     addSeparator();
     Cmd image1 = new CmdSetMode(ModeCreateFigImage.class,
