@@ -190,6 +190,7 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
       if (!shouldShow(edge)) { System.out.println("edge rejected"); return; }
       FigEdge newFigEdge = _edgeRenderer.getFigEdgeFor(_gm, this, edge);
       if (newFigEdge != null) {
+        newFigEdge.setLayer(this);
 	add(newFigEdge);
 	//insertAt(newFigEdge, 0);
 	newFigEdge.computeRoute();
