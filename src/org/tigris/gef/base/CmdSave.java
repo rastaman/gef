@@ -21,10 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-
 // File: CmdSave.java
 // Classes: CmdSave
 // Original Author: jrobbins@ics.uci.edu
@@ -32,9 +28,17 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
-import java.io.*;
+import java.awt.FileDialog;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+
+import org.apache.log4j.Logger;
+
 
 /** Cmd to save the current document to a binary file using Sun's
  *  ObjectSerialization library. The written file contains the Editor
@@ -63,72 +67,64 @@ import java.io.*;
 
 public class CmdSave extends Cmd implements FilenameFilter {
 
-  public CmdSave() {
-	  super("Save");
-  }
-
-  /** Only allow the user to select files that match the fiven
-   *  filename pattern. Needs-More-Work: this is not used yet. */
-  public CmdSave(String filterPattern) {
-    this();
-    setArg("filterPattern", filterPattern);
-  }
-
-  public void doIt() {
-    try {
-      Editor ce = Globals.curEditor();
-      FileDialog fd = new
-     	FileDialog(ce.findFrame(), "Save Diagram", FileDialog.SAVE);
-      fd.setFilenameFilter(this);
-      fd.setDirectory(Globals.getLastDirectory());
-      fd.show();
-      String filename = fd.getFile(); // blocking
-      String path = fd.getDirectory(); // blocking
-      Globals.setLastDirectory(path);
-      if (filename != null) {
-     	Globals.showStatus("Writing " + path + filename + "...");
-     	FileOutputStream f = new FileOutputStream(path + filename);
-     	ObjectOutput s = new ObjectOutputStream(f);
-    	System.out.println("Cmd save...");
-	ce.preSave();
-    	s.writeObject(ce);
-	ce.postSave();
-    	System.out.println("save done");
-    	Globals.showStatus("Wrote " + path + filename);
-    	f.close();
-	//ce.setTitle(filename);
-      }
+    private static final Logger LOG = Logger.getLogger(CmdSave.class);
+    
+    public CmdSave() {
+        super("Save");
     }
-    catch (FileNotFoundException ignore) {
-      System.out.println("got an FileNotFoundException");
-    }
-    //    catch (java.lang.ClassMismatchException ignore) {
-    //      System.out.println("got an ClassMismatchException");
-    //    }
-    catch (IOException ignore) {
-      System.out.println("got an IOException");
-      ignore.printStackTrace();
 
+    /** Only allow the user to select files that match the fiven
+     *  filename pattern. Needs-More-Work: this is not used yet. */
+    public CmdSave(String filterPattern) {
+        this();
+        setArg("filterPattern", filterPattern);
     }
-  }
 
-  /** Only let the user select files that match the filter. This does
-   *  not seem to be called under JDK 1.0.2 on solaris. I have not
-   *  finished this method, it currently accepts all filenames. <p>
-   *
-   *  Needs-More-Work: the source code for this method is duplicated in
-   *  CmdOpen#accept.  */
-  public boolean accept(File dir, String name) {
-    System.out.println("checking: "+ dir + " " + name);
-    if (containsArg("filterPattern")) {
-      // if pattern dosen't match, return false
-      return true;
+    public void doIt() {
+        try {
+            Editor ce = Globals.curEditor();
+            // TODO Should use JFileChooser
+            FileDialog fd =
+                new FileDialog(ce.findFrame(), "Save Diagram", FileDialog.SAVE);
+            fd.setFilenameFilter(this);
+            fd.setDirectory(Globals.getLastDirectory());
+            fd.show();
+            String filename = fd.getFile(); // blocking
+            String path = fd.getDirectory(); // blocking
+            Globals.setLastDirectory(path);
+            if (filename != null) {
+                Globals.showStatus("Writing " + path + filename + "...");
+                FileOutputStream f = new FileOutputStream(path + filename);
+                ObjectOutput s = new ObjectOutputStream(f);
+                ce.preSave();
+                s.writeObject(ce);
+                ce.postSave();
+                Globals.showStatus("Wrote " + path + filename);
+                f.close();
+            }
+        } catch (FileNotFoundException ignore) {
+            System.out.println("got an FileNotFoundException");
+        } catch (IOException ignore) {
+            System.out.println("got an IOException");
+            ignore.printStackTrace();
+        }
     }
-    return true; // no pattern was specified
-  }
 
-  public void undoIt() {
-    System.out.println("Undo does not make sense for CmdSave");
-  }
+    /** Only let the user select files that match the filter. This does
+     *  not seem to be called under JDK 1.0.2 on solaris. I have not
+     *  finished this method, it currently accepts all filenames. <p>
+     *
+     *  Needs-More-Work: the source code for this method is duplicated in
+     *  CmdOpen#accept.  */
+    public boolean accept(File dir, String name) {
+        if (containsArg("filterPattern")) {
+            // if pattern dosen't match, return false
+            return true;
+        }
+        return true; // no pattern was specified
+    }
+
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdSave");
+    }
 } /* end class CmdSave */
-
