@@ -75,8 +75,7 @@ public class OCLEvaluator {
 
         if (target instanceof Vector)  {
             targets = (Vector) target;
-        }
-        else {
+        } else {
             targets = new Vector();
             targets.addElement(target);
         }
@@ -96,9 +95,7 @@ public class OCLEvaluator {
             if(secPos == -1) {    // <expr>::= ".<property>"
                 property = expr.substring(firstPos + 1);
                 expr = "";
-            }
-            else    // <expr>::= ".<property>.<expr>"
-             {
+            } else {    // <expr>::= ".<property>.<expr>"
                 property = expr.substring(firstPos + 1, secPos);
                 expr = expr.substring(secPos);    //+1
             }
@@ -118,8 +115,7 @@ public class OCLEvaluator {
     public String toTitleCase(String s) {
         if(s.length() > 1) {
             return s.substring(0, 1).toUpperCase() + s.substring(1, s.length());
-        }
-        else {
+        } else {
             return s.toUpperCase();
         }
     }    // end of toTitleCase
@@ -137,18 +133,15 @@ public class OCLEvaluator {
             o = m.invoke(target, null);    // getter methods take no args =>  null
             //System.out.println("[OCLEvaluator] Trying to get method get" + toTitleCase(property) + " = " + o);
             return convertCollection(o);
-        }
-        catch(NoSuchMethodException e) {
-        }
-        catch(InvocationTargetException e) {
+        } catch(NoSuchMethodException e) {
+        } catch(InvocationTargetException e) {
             if(m != null) {
                 System.out.println("On Class: " + target.getClass().getName());
                 System.out.println("error in evaluating " + "get" + toTitleCase(property) + "()");
                 e.getTargetException().printStackTrace();
                 return null;
             }
-        }
-        catch(Exception e) {
+        } catch(Exception e) {
         }
 
         try {
@@ -156,18 +149,15 @@ public class OCLEvaluator {
             o = m.invoke(target, null);
             //System.out.println("Trying to get method " + toTitleCase(property));
             return convertCollection(o);
-        }
-        catch(NoSuchMethodException e) {
-        }
-        catch(InvocationTargetException e) {
+        } catch(NoSuchMethodException e) {
+        } catch(InvocationTargetException e) {
             if(m != null) {
                 System.out.println("On Class: " + target.getClass().getName());
                 System.out.println("error in evaluating " + property + "()");
                 e.getTargetException().printStackTrace();
                 return null;
             }
-        }
-        catch(Exception e) {
+        } catch(Exception e) {
         }
 
         try {
@@ -175,16 +165,14 @@ public class OCLEvaluator {
             o = m.invoke(target, null);
             //System.out.println("Trying to get method" + property);
             return convertCollection(o);
-        }
-        catch(Exception e) {
+        } catch(Exception e) {
         }
 
         try {
             f = target.getClass().getField(property);
             o = f.get(target);    // access the field f or object targe
             return convertCollection(o);
-        }
-        catch(NoSuchFieldException e) {
+        } catch(NoSuchFieldException e) {
             o = getExternalProperty(target, property);
             System.out.println("external property value = " + o);
             if(o != null) {
@@ -196,8 +184,7 @@ public class OCLEvaluator {
                 e.printStackTrace();
                 return null;
             }
-        }
-        catch(Exception e) {
+        } catch(Exception e) {
             if(f != null) {
                 System.out.println("On Class: " + target.getClass().getName());
                 System.out.println("error in evaluating field " + property);
@@ -254,4 +241,4 @@ public class OCLEvaluator {
             return o;
         }
     }
-}    // end of OCLEvaluator
+}
