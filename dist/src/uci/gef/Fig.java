@@ -129,8 +129,8 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   public Fig(int x, int y, int w, int h,
 		 Color lineColor, Color fillColor, Object own) {
     _x = x; _y = y; _w = w; _h = h;
-    if (_lineColor != null) _lineColor = lineColor; else _lineWidth = 0;
-    if (_fillColor != null) _fillColor = fillColor; else _filled = false;
+    if (lineColor != null) _lineColor = lineColor; else _lineWidth = 0;
+    if (fillColor != null) _fillColor = fillColor; else _filled = false;
     setOwner(own);
   }
 

@@ -65,7 +65,7 @@ public class ModeDragScroll extends Mode implements ActionListener {
    */
   public ModeDragScroll(Editor par) {
     super(par);
-    autoTimer = new Timer(AUTOSCROLL_DELAY,this);
+    autoTimer = new javax.swing.Timer(AUTOSCROLL_DELAY,this);
   }
 
   /** Construct a new ModeDragScroll instance. Its parent must be set
@@ -92,7 +92,7 @@ public class ModeDragScroll extends Mode implements ActionListener {
   private JViewport view = null;
   private Cursor oldCursor = null;
   private Dimension componentSize = null;
-  private Timer autoTimer;
+  private javax.swing.Timer autoTimer;
   private boolean dragScrolling = false;
   private int recentX, recentY;
 
