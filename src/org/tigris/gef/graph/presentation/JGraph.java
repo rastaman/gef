@@ -21,24 +21,57 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 package org.tigris.gef.graph.presentation;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
-import org.tigris.gef.graph.*;
-import org.tigris.gef.event.*;
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
+import javax.swing.KeyStroke;
+import javax.swing.ToolTipManager;
 
-/** JGraph is a Swing component that displays a connected graph and
- *  allows interactive editing. In many ways this class serves as a
- *  simple front-end to class Editor, and other classes which do the
- *  real work. */
+import org.tigris.gef.base.CmdGroup;
+import org.tigris.gef.base.CmdNudge;
+import org.tigris.gef.base.CmdReorder;
+import org.tigris.gef.base.CmdSelectNear;
+import org.tigris.gef.base.CmdSelectNext;
+import org.tigris.gef.base.CmdUngroup;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerDiagram;
+import org.tigris.gef.event.GraphSelectionListener;
+import org.tigris.gef.event.ModeChangeListener;
+import org.tigris.gef.graph.ConnectionConstrainer;
+import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigTextEditor;
+
+/**
+ * JGraph is a Swing component that displays a connected graph and allows
+ * interactive editing. In many ways this class serves as a simple front-end to
+ * class Editor, and other classes which do the real work.
+ */
 
 public class JGraph extends JPanel implements Cloneable {
 
@@ -47,27 +80,47 @@ public class JGraph extends JPanel implements Cloneable {
 
     /** The Editor object that is being shown in this panel */
     private Editor _editor;
+
     private JGraphInternalPane _drawingPane;
+
     private JScrollPane _scroll;
+
     private Dimension _defaultSize = new Dimension(6000, 6000);
+
+    /**
+     * @deprecated 0.10.5 will become private in future release.
+     */
+    protected Hashtable _viewPortPositions = new Hashtable();
+
+    /**
+     * @deprecated 0.10.5 will become private in future release.
+     */
+    protected String _currentDiagramId = null;
 
     ////////////////////////////////////////////////////////////////
     // constructor
 
-    /** Make a new JGraph with a new DefaultGraphModel.
-     * @see org.tigris.gef.graph.presentation.DefaultGraphModel */
+    /**
+     * Make a new JGraph with a new DefaultGraphModel.
+     * 
+     * @see org.tigris.gef.graph.presentation.DefaultGraphModel
+     */
     public JGraph() {
         this(new DefaultGraphModel());
     }
 
-    /** Make a new JGraph with a new DefaultGraphModel.
-     * @see org.tigris.gef.graph.presentation.DefaultGraphModel */
+    /**
+     * Make a new JGraph with a new DefaultGraphModel.
+     * 
+     * @see org.tigris.gef.graph.presentation.DefaultGraphModel
+     */
     public JGraph(ConnectionConstrainer cc) {
         this(new DefaultGraphModel(cc));
     }
 
-    /** Make a new JGraph with a the GraphModel and Layer from the given
-     *  Diagram. */
+    /**
+     * Make a new JGraph with a the GraphModel and Layer from the given Diagram.
+     */
     public JGraph(Diagram d) {
         this(new Editor(d));
     }
@@ -78,7 +131,7 @@ public class JGraph extends JPanel implements Cloneable {
     }
 
     /**
-     * Make a new JGraph with the given Editor.  All JGraph contructors
+     * Make a new JGraph with the given Editor. All JGraph contructors
      * eventually call this contructor.
      */
     public JGraph(Editor ed) {
@@ -86,46 +139,47 @@ public class JGraph extends JPanel implements Cloneable {
         _editor = ed;
         _drawingPane = new JGraphInternalPane(_editor);
         setDrawingSize(getDefaultSize());
-    
+
         _scroll = new JScrollPane(_drawingPane);
         _scroll.setBorder(null);
         _scroll.getHorizontalScrollBar().setUnitIncrement(25);
         _scroll.getVerticalScrollBar().setUnitIncrement(25);
-    
+
         _editor.setJComponent(_drawingPane);
         setLayout(new BorderLayout());
         add(_scroll, BorderLayout.CENTER);
         addMouseListener(_editor);
         addMouseMotionListener(_editor);
         addKeyListener(_editor);
-    
+
         initKeys();
-    
+
         validate();
-    
+
         Collection layerManagerContent = ed.getLayerManager().getContents(null);
-        if ( layerManagerContent != null ) {
-            updateDrawingSizeToIncludeAllFigs(Collections.enumeration(layerManagerContent));
+        if (layerManagerContent != null) {
+            updateDrawingSizeToIncludeAllFigs(Collections
+                    .enumeration(layerManagerContent));
         } // end if
     }
 
-  public void addMouseListener(MouseListener listener) {
-    _drawingPane.addMouseListener(listener);
-  }
+    public void addMouseListener(MouseListener listener) {
+        _drawingPane.addMouseListener(listener);
+    }
 
-  public void addMouseMotionListener(MouseMotionListener listener) {
-    _drawingPane.addMouseMotionListener(listener);
-  }
+    public void addMouseMotionListener(MouseMotionListener listener) {
+        _drawingPane.addMouseMotionListener(listener);
+    }
 
-  public void addKeyListener(KeyListener listener) {
-    _drawingPane.addKeyListener(listener);
-  }
+    public void addKeyListener(KeyListener listener) {
+        _drawingPane.addKeyListener(listener);
+    }
 
-  /** Make a copy of this JGraph so that it can be shown in another window.*/
-  public Object clone() {
-    JGraph newJGraph = new JGraph((Editor) _editor.clone());
-    return newJGraph;
-  }
+    /** Make a copy of this JGraph so that it can be shown in another window. */
+    public Object clone() {
+        JGraph newJGraph = new JGraph((Editor) _editor.clone());
+        return newJGraph;
+    }
 
     /* Set up some standard keystrokes and the Cmds that they invoke. */
     public void initKeys() {
@@ -138,16 +192,18 @@ public class JGraph extends JPanel implements Cloneable {
         bindKey(new CmdSelectNext(true), KeyEvent.VK_TAB, 0);
         bindKey(new CmdSelectNext(false), KeyEvent.VK_TAB, shift);
 
-    //bindKey(new CmdDelete(), KeyEvent.VK_DELETE, 0);
-    //bindKey(new CmdDispose(), KeyEvent.VK_D, ctrl);
+        //bindKey(new CmdDelete(), KeyEvent.VK_DELETE, 0);
+        //bindKey(new CmdDispose(), KeyEvent.VK_D, ctrl);
 
         bindKey(new CmdGroup(), KeyEvent.VK_G, ctrl);
         bindKey(new CmdUngroup(), KeyEvent.VK_U, ctrl);
 
         bindKey(new CmdReorder(CmdReorder.SEND_BACKWARD), KeyEvent.VK_B, ctrl);
         bindKey(new CmdReorder(CmdReorder.BRING_FORWARD), KeyEvent.VK_F, ctrl);
-        bindKey(new CmdReorder(CmdReorder.SEND_TO_BACK), KeyEvent.VK_B, ctrlShift);
-        bindKey(new CmdReorder(CmdReorder.BRING_TO_FRONT), KeyEvent.VK_F, ctrlShift);
+        bindKey(new CmdReorder(CmdReorder.SEND_TO_BACK), KeyEvent.VK_B,
+                ctrlShift);
+        bindKey(new CmdReorder(CmdReorder.BRING_TO_FRONT), KeyEvent.VK_F,
+                ctrlShift);
 
         bindKey(new CmdNudge(CmdNudge.LEFT), KeyEvent.VK_LEFT, 0);
         bindKey(new CmdNudge(CmdNudge.RIGHT), KeyEvent.VK_RIGHT, 0);
@@ -170,234 +226,293 @@ public class JGraph extends JPanel implements Cloneable {
         bindKey(new CmdSelectNear(CmdSelectNear.DOWN), KeyEvent.VK_DOWN, meta);
     }
 
-    /** Utility function to bind a keystroke to a Swing Action.  Note
-     *  that GEF Cmds are subclasses of Swing's Actions. */
+    /**
+     * Utility function to bind a keystroke to a Swing Action. Note that GEF
+     * Cmds are subclasses of Swing's Actions.
+     */
     public void bindKey(ActionListener action, int keyCode, int modifiers) {
-        _drawingPane.registerKeyboardAction(
-            action,
-            KeyStroke.getKeyStroke(keyCode, modifiers),
-            WHEN_FOCUSED
-        );
+        _drawingPane.registerKeyboardAction(action, KeyStroke.getKeyStroke(
+                keyCode, modifiers), WHEN_FOCUSED);
     }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  /** Get the Editor that is being displayed */
-  public Editor getEditor() { return _editor; }
-
-  protected Hashtable _viewPortPositions = new Hashtable();
-  protected String    _currentDiagramId = null;
-
-  /** Set the Diagram that should be displayed by setting the
-   *  GraphModel and Layer that the Editor is using. */
-  public void setDiagram(Diagram d) {
-    if (d == null) return;
-    if ( _currentDiagramId != null ) {
-      _viewPortPositions.put(_currentDiagramId,_scroll.getViewport().getViewRect());
-    } // end if
-    setDrawingSize(getDefaultSize());
-    updateDrawingSizeToIncludeAllFigs(d.elements());
-    _editor.getLayerManager().replaceActiveLayer(d.getLayer());
-    _editor.setGraphModel(d.getGraphModel());
-    _editor.getSelectionManager().deselectAll();
-    _editor.setScale(d.getScale());
-    String newDiagramId = Integer.toString(d.hashCode());
-    if ( newDiagramId.equals(_currentDiagramId) ) return;
-    _currentDiagramId = newDiagramId;
-    if ( _viewPortPositions.get(_currentDiagramId) != null ) {
-      Rectangle rect = (Rectangle)_viewPortPositions.get(_currentDiagramId);
-      _scroll.getViewport().setViewPosition(new Point(rect.x,rect.y));
-    } else {
-      _scroll.getViewport().setViewPosition(new Point());
-    } // end else if
-  }
-
-  /**
-   * Enlarges the JGraphInternalPane dimensions as necessary to
-   * insure that all the contained Figs are visible.
-   */
-  protected void updateDrawingSizeToIncludeAllFigs(Enumeration enum) {
-      if ( enum == null ) {
-          return;
-      } // end if
-      Dimension drawingSize = new Dimension(
-          _defaultSize.width, _defaultSize.height);
-      while( enum.hasMoreElements() ) {
-          Fig fig = (Fig)enum.nextElement();
-          Rectangle rect = fig.getBounds();
-          Point point   = rect.getLocation();
-          Dimension dim = rect.getSize();
-          if( (point.x + dim.width + 5) > drawingSize.width ) {
-              drawingSize.setSize(point.x + dim.width + 5, drawingSize.height);
-          } // end if
-          if( (point.y + dim.height + 5) > drawingSize.height ) {
-             drawingSize.setSize( drawingSize.width, point.y + dim.height + 5);
-          } // end if
-      } // end while      
-      setDrawingSize(drawingSize.width,drawingSize.height);
-  } // end updateDrawingSizeToIncludeAllFigs()
-
-  public void setDrawingSize(int width, int height) {
-    setDrawingSize(new Dimension(width, height));
-  }
-
-  public void setDrawingSize(Dimension dim) {
-    _editor.drawingSizeChanged(dim);
-  }
-
-  /** Get and set the GraphModel the Editor is using. */
-  public void setGraphModel(GraphModel gm) { _editor.setGraphModel(gm); }
-  public GraphModel getGraphModel() { return _editor.getGraphModel(); }
-
-  /** Get and set the Renderer used to make FigNodes for nodes in the
-   *  GraphModel. */
-  public void setGraphNodeRenderer(GraphNodeRenderer r) {
-    _editor.setGraphNodeRenderer(r);
-  }
-  public GraphNodeRenderer getGraphNodeRenderer() {
-    return _editor.getGraphNodeRenderer();
-  }
-
-  /** Get and set the Renderer used to make FigEdges for edges in the
-   *  GraphModel. */
-  public void setGraphEdgeRenderer(GraphEdgeRenderer r) {
-    _editor.setGraphEdgeRenderer(r); }
-  public GraphEdgeRenderer getGraphEdgeRenderer() {
-    return _editor.getGraphEdgeRenderer();
-  }
-
-  /** When the JGraph is hidden, hide its internal pane */
-  public void setVisible(boolean b) {
-    super.setVisible(b);
-    _drawingPane.setVisible(b);
-    FigTextEditor.remove();
-  }
-
-  /** Tell Swing/AWT that JGraph handles tab-order itself. */
-  public boolean isManagingFocus() { return true; }
-
-  /** Tell Swing/AWT that JGraph can be tabbed into. */
-  public boolean isFocusTraversable() { return true; }
-
-
-  ////////////////////////////////////////////////////////////////
-  // events
-
-  /** Add listener to the objects to notify whenever the Editor
-   *  changes its current selection. */
-  public void addGraphSelectionListener(GraphSelectionListener listener) {
-    getEditor().addGraphSelectionListener(listener);
-  }
-
-  public void removeGraphSelectionListener(GraphSelectionListener listener) {
-    getEditor().removeGraphSelectionListener(listener);
-  }
-
-  public void addModeChangeListener(ModeChangeListener listener) {
-    getEditor().addModeChangeListener(listener);
-  }
-
-  public void removeModeChangeListener(ModeChangeListener listener) {
-    getEditor().removeModeChangeListener(listener);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // Editor facade
-
-  public void layoutGraph() {
-    // needs-more-work: ask the editor to preform automatic layout
-  }
-
-  /** The JGraph is painted by simply painting its Editor. */
-  //public void paint(Graphics g) { _editor.paint(getGraphics()); }
-
-
-  ////////////////////////////////////////////////////////////////
-  // selection methods
-
-  /** Add the given item to this Editor's selections. */
-  public void select(Fig f) {
-    if (f == null) deselectAll();
-    else _editor.getSelectionManager().select(f);
-  }
-
-  /** Find the Fig that owns the given item and select it. */
-  public void selectByOwner(Object owner) {
-    Layer lay = _editor.getLayerManager().getActiveLayer();
-    if (lay instanceof LayerDiagram)
-      select(((LayerDiagram)lay).presentationFor(owner));
-  }
-
-  /** Find Fig that owns the given item, or the item if it is a
-   *  Fig, and select it. */
-  public void selectByOwnerOrFig(Object owner) {
-    if (owner instanceof Fig) select((Fig) owner);
-    else selectByOwner(owner);
-  }
-
-  /** Add the Fig that owns the given item to this Editor's selections. */
-  public void selectByOwnerOrNoChange(Object owner) {
-    Layer lay = _editor.getLayerManager().getActiveLayer();
-    if (lay instanceof LayerDiagram) {
-      Fig f = ((LayerDiagram)lay).presentationFor(owner);
-      if (f != null) select(f);
+    /** Get the Editor that is being displayed */
+    public Editor getEditor() {
+        return _editor;
     }
-  }
 
-  /** Remove the given item from this editors selections.   */
-  public void deselect(Fig f) { _editor.getSelectionManager().deselect(f); }
+    /**
+     * Set the Diagram that should be displayed by setting the GraphModel and
+     * Layer that the Editor is using.
+     */
+    public void setDiagram(Diagram d) {
+        if (d == null)
+            return;
+        if (_currentDiagramId != null) {
+            _viewPortPositions.put(_currentDiagramId, _scroll.getViewport()
+                    .getViewRect());
+        } // end if
+        setDrawingSize(getDefaultSize());
+        updateDrawingSizeToIncludeAllFigs(d.elements());
+        _editor.getLayerManager().replaceActiveLayer(d.getLayer());
+        _editor.setGraphModel(d.getGraphModel());
+        _editor.getSelectionManager().deselectAll();
+        _editor.setScale(d.getScale());
+        String newDiagramId = Integer.toString(d.hashCode());
+        if (newDiagramId.equals(_currentDiagramId)) {
+            return;
+        }
+        _currentDiagramId = newDiagramId;
+        if (_viewPortPositions.get(_currentDiagramId) != null) {
+            Rectangle rect = (Rectangle)_viewPortPositions.get(_currentDiagramId);
+            _scroll.getViewport().setViewPosition(new Point(rect.x, rect.y));
+        } else {
+            _scroll.getViewport().setViewPosition(new Point());
+        }
+    }
 
-  /** Select the given item if it was not already selected, and
-   *  vis-a-versa. */
-  public void toggleItem(Fig f) { _editor.getSelectionManager().toggle(f); }
+    /**
+     * Enlarges the JGraphInternalPane dimensions as necessary to insure that
+     * all the contained Figs are visible.
+     */
+    protected void updateDrawingSizeToIncludeAllFigs(Enumeration enum) {
+        if (enum == null) {
+            return;
+        }
+        Dimension drawingSize = new Dimension(_defaultSize.width, _defaultSize.height);
+        while (enum.hasMoreElements()) {
+            Fig fig = (Fig) enum.nextElement();
+            Rectangle rect = fig.getBounds();
+            Point point = rect.getLocation();
+            Dimension dim = rect.getSize();
+            if ((point.x + dim.width + 5) > drawingSize.width) {
+                drawingSize.setSize(point.x + dim.width + 5, drawingSize.height);
+            }
+            if ((point.y + dim.height + 5) > drawingSize.height) {
+                drawingSize.setSize(drawingSize.width, point.y + dim.height + 5);
+            }
+        }
+        setDrawingSize(drawingSize.width, drawingSize.height);
+    }
 
-  /** Deslect everything that is currently selected. */
-  public void deselectAll() { _editor.getSelectionManager().deselectAll(); }
+    public void setDrawingSize(int width, int height) {
+        setDrawingSize(new Dimension(width, height));
+    }
 
-  /** Select a collection of Figs. */
-  public void select(Vector items) {
-    _editor.getSelectionManager().select(items);
-  }
+    public void setDrawingSize(Dimension dim) {
+        _editor.drawingSizeChanged(dim);
+    }
 
-  /** Toggle the selection of a collection of Figs. */
-  public void toggleItems(Vector items) {
-    _editor.getSelectionManager().toggle(items);
-  }
+    /**
+     * Set the GraphModel the Editor is using.
+     */
+    public void setGraphModel(GraphModel gm) {
+        _editor.setGraphModel(gm);
+    }
 
-  /** reply a Vector of all selected Figs. Used in many Cmds.*/
-  public Vector selectedFigs() {
-    return _editor.getSelectionManager().getFigs();
-  }
+    /**
+     * Get the GraphModel the Editor is using.
+     */
+    public GraphModel getGraphModel() {
+        return _editor.getGraphModel();
+    }
 
-//   public Dimension getPreferredSize() { return new Dimension(1000, 1000); }
+    /**
+     * Get and set the Renderer used to make FigNodes for nodes in the
+     * GraphModel.
+     */
+    public void setGraphNodeRenderer(GraphNodeRenderer r) {
+        _editor.setGraphNodeRenderer(r);
+    }
 
-//   public Dimension getMinimumSize() { return new Dimension(1000, 1000); }
+    public GraphNodeRenderer getGraphNodeRenderer() {
+        return _editor.getGraphNodeRenderer();
+    }
 
-//   public Dimension getSize() { return new Dimension(1000, 1000); }
+    /**
+     * Get and set the Renderer used to make FigEdges for edges in the
+     * GraphModel.
+     */
+    public void setGraphEdgeRenderer(GraphEdgeRenderer r) {
+        _editor.setGraphEdgeRenderer(r);
+    }
 
-  public void setDefaultSize(int width, int height) {
-    _defaultSize = new Dimension(width, height);
-  }
-  public void setDefaultSize(Dimension dim) {
-    _defaultSize = dim;
-  }
-  public Dimension getDefaultSize() {
-    return _defaultSize;
-  }
-  static final long serialVersionUID = -5459241816919316496L;
+    public GraphEdgeRenderer getGraphEdgeRenderer() {
+        return _editor.getGraphEdgeRenderer();
+    }
+
+    /**
+     * When the JGraph is hidden, hide its internal pane
+     */
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+        _drawingPane.setVisible(b);
+        FigTextEditor.remove();
+    }
+
+    /**
+     * Tell Swing/AWT that JGraph handles tab-order itself.
+     */
+    public boolean isManagingFocus() {
+        return true;
+    }
+
+    /**
+     * Tell Swing/AWT that JGraph can be tabbed into.
+     */
+    public boolean isFocusTraversable() {
+        return true;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // events
+
+    /**
+     * Add listener to the objects to notify whenever the Editor changes its
+     * current selection.
+     */
+    public void addGraphSelectionListener(GraphSelectionListener listener) {
+        getEditor().addGraphSelectionListener(listener);
+    }
+
+    public void removeGraphSelectionListener(GraphSelectionListener listener) {
+        getEditor().removeGraphSelectionListener(listener);
+    }
+
+    public void addModeChangeListener(ModeChangeListener listener) {
+        getEditor().addModeChangeListener(listener);
+    }
+
+    public void removeModeChangeListener(ModeChangeListener listener) {
+        getEditor().removeModeChangeListener(listener);
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // Editor facade
+
+    /**
+     * @deprecated 0.10.5
+     * This method is not implemented so lets get rid.
+     */
+    public void layoutGraph() {
+        // needs-more-work: ask the editor to preform automatic layout
+    }
+
+    /**
+     * The JGraph is painted by simply painting its Editor.
+     */
+    //public void paint(Graphics g) { _editor.paint(getGraphics()); }
+
+    ////////////////////////////////////////////////////////////////
+    // selection methods
+    /**
+     * Add the given item to this Editor's selections.
+     */
+    public void select(Fig f) {
+        if (f == null)
+            deselectAll();
+        else
+            _editor.getSelectionManager().select(f);
+    }
+
+    /**
+     * Find the Fig that owns the given item and select it.
+     */
+    public void selectByOwner(Object owner) {
+        Layer lay = _editor.getLayerManager().getActiveLayer();
+        if (lay instanceof LayerDiagram)
+            select(((LayerDiagram) lay).presentationFor(owner));
+    }
+
+    /**
+     * Find Fig that owns the given item, or the item if it is a Fig, and select
+     * it.
+     */
+    public void selectByOwnerOrFig(Object owner) {
+        if (owner instanceof Fig)
+            select((Fig) owner);
+        else
+            selectByOwner(owner);
+    }
+
+    /**
+     * Add the Fig that owns the given item to this Editor's selections.
+     */
+    public void selectByOwnerOrNoChange(Object owner) {
+        Layer lay = _editor.getLayerManager().getActiveLayer();
+        if (lay instanceof LayerDiagram) {
+            Fig f = ((LayerDiagram) lay).presentationFor(owner);
+            if (f != null)
+                select(f);
+        }
+    }
+
+    /**
+     * Remove the given item from this editors selections.
+     */
+    public void deselect(Fig f) {
+        _editor.getSelectionManager().deselect(f);
+    }
+
+    /**
+     * Select the given item if it was not already selected, and vis-a-versa.
+     */
+    public void toggleItem(Fig f) {
+        _editor.getSelectionManager().toggle(f);
+    }
+
+    /** Deslect everything that is currently selected. */
+    public void deselectAll() {
+        _editor.getSelectionManager().deselectAll();
+    }
+
+    /** Select a collection of Figs. */
+    public void select(Vector items) {
+        _editor.getSelectionManager().select(items);
+    }
+
+    /** Toggle the selection of a collection of Figs. */
+    public void toggleItems(Vector items) {
+        _editor.getSelectionManager().toggle(items);
+    }
+
+    /** reply a Vector of all selected Figs. Used in many Cmds. */
+    public Vector selectedFigs() {
+        return _editor.getSelectionManager().getFigs();
+    }
+
+    //   public Dimension getPreferredSize() { return new Dimension(1000, 1000); }
+
+    //   public Dimension getMinimumSize() { return new Dimension(1000, 1000); }
+
+    //   public Dimension getSize() { return new Dimension(1000, 1000); }
+
+    public void setDefaultSize(int width, int height) {
+        _defaultSize = new Dimension(width, height);
+    }
+
+    public void setDefaultSize(Dimension dim) {
+        _defaultSize = dim;
+    }
+
+    public Dimension getDefaultSize() {
+        return _defaultSize;
+    }
+
+    static final long serialVersionUID = -5459241816919316496L;
 
 } /* end class JGraph */
 
-
-
 class JGraphInternalPane extends JPanel {
-//implements FocusListener
+    //implements FocusListener
     /**
-     * @deprecated visibility in 0.10.4.
-     * Will become private in a future release.
+     * @deprecated visibility in 0.10.4. Will become private in a future
+     *             release.
      */
     protected Editor _editor;
+
     private boolean registeredWithTooltip;
 
     public JGraphInternalPane(Editor e) {
@@ -412,45 +527,48 @@ class JGraphInternalPane extends JPanel {
         _editor.paint(g);
     }
 
-//   static int getGraphicsCount = 0;
+    //   static int getGraphicsCount = 0;
 
-//   public Graphics getGraphicsCounted() {
-//     getGraphicsCount = 0;
-//     Graphics g = getGraphics();
-//     System.out.println("getGraphics recurred " + getGraphicsCount + "times");
-//     return g;
-//   }
+    //   public Graphics getGraphicsCounted() {
+    //     getGraphicsCount = 0;
+    //     Graphics g = getGraphics();
+    //     System.out.println("getGraphics recurred " + getGraphicsCount + "times");
+    //     return g;
+    //   }
 
-  public Graphics getGraphics() {
-    //getGraphicsCount++;
-    Graphics res = super.getGraphics();
-    if (res == null) { return res; }
-    Component parent = getParent();
+    public Graphics getGraphics() {
+        //getGraphicsCount++;
+        Graphics res = super.getGraphics();
+        if (res == null) {
+            return res;
+        }
+        Component parent = getParent();
 
-    if (parent instanceof JViewport) {
-      JViewport view = (JViewport) parent;
-      Rectangle bounds = view.getBounds();
-      Point pos = view.getViewPosition();
-      res.clipRect(bounds.x + pos.x - 1, bounds.y + pos.y - 1,
-		   bounds.width + 1, bounds.height + 1);
+        if (parent instanceof JViewport) {
+            JViewport view = (JViewport) parent;
+            Rectangle bounds = view.getBounds();
+            Point pos = view.getViewPosition();
+            res.clipRect(bounds.x + pos.x - 1, bounds.y + pos.y - 1,
+                    bounds.width + 1, bounds.height + 1);
+        }
+        return res;
     }
-    return res;
-  }
 
-  public Point getToolTipLocation(MouseEvent event) {
-       event = Globals.curEditor().retranslateMouseEvent(event);
-       return (super.getToolTipLocation(event));
-  }
-    
+    public Point getToolTipLocation(MouseEvent event) {
+        event = Globals.curEditor().retranslateMouseEvent(event);
+        return (super.getToolTipLocation(event));
+    }
+
     public void setToolTipText(String text) {
-        if ("".equals(text)) text = null;
+        if ("".equals(text))
+            text = null;
         putClientProperty(TOOL_TIP_TEXT_KEY, text);
         ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
         //if (text != null) {
-            if (!registeredWithTooltip) {
-                toolTipManager.registerComponent(this);
-                registeredWithTooltip = true;
-            }
+        if (!registeredWithTooltip) {
+            toolTipManager.registerComponent(this);
+            registeredWithTooltip = true;
+        }
         //} else {
         //    toolTipManager.unregisterComponent(this);
         //}
@@ -463,12 +581,16 @@ class JGraphInternalPane extends JPanel {
 
         super.processMouseEvent(e);
     }
-    
-      /** Tell Swing/AWT that JGraph handles tab-order itself. */
-    public boolean isManagingFocus() { return true; }
+
+    /** Tell Swing/AWT that JGraph handles tab-order itself. */
+    public boolean isManagingFocus() {
+        return true;
+    }
 
     /** Tell Swing/AWT that JGraph can be tabbed into. */
-    public boolean isFocusTraversable() { return true; }
+    public boolean isFocusTraversable() {
+        return true;
+    }
 
     static final long serialVersionUID = -5067026168452437942L;
 
