@@ -30,7 +30,7 @@ package org.tigris.gef.base;
 
 import java.util.ListResourceBundle;
 
-public class BaseResourceBundle extends ListResourceBundle {
+public class BaseResourceBundle_es extends ListResourceBundle {
 
 	static final Object[][] _contents = {
 		{"Adjust Grid", "Ajustar cuadr\u00edcula"},

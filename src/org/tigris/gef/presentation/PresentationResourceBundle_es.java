@@ -30,7 +30,7 @@ package org.tigris.gef.presentation;
 
 import java.util.ListResourceBundle;
 
-public class PresentationResourceBundle extends ListResourceBundle {
+public class PresentationResourceBundle_es extends ListResourceBundle {
 
 	static final Object[][] _contents = {
 		{"Ordering", "Encargo"}
