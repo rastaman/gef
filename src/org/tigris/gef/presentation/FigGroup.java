@@ -421,8 +421,8 @@ public class FigGroup extends Fig {
             if(f.isDisplayed()) {
                 int newX = (_w == 0) ? x : x + ((f.getX() - _x) * w) / _w;
                 int newY = (_h == 0) ? y : y + ((f.getY() - _y) * h) / _h;
-                int newW = (_w == 0) ? 0 : f.getWidth() * (w / _w);
-                int newH = (_h == 0) ? 0 : f.getHeight() * (h / _h);
+                int newW = (_w == 0) ? 0 : (f.getWidth() * w) / _w;
+                int newH = (_h == 0) ? 0 : (f.getHeight() * h) / _h;
                 f.setBounds(newX, newY, newW, newH);
             }
         }
