@@ -226,5 +226,5 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
 	      bbox.width + EXTRA*2, bbox.height + EXTRA*2 );
     setFont(_target.getFont());
   }
-  
+
 } /* end class FigTextEditor */
