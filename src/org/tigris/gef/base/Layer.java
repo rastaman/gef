@@ -469,29 +469,22 @@ public abstract class Layer implements java.io.Serializable {
     }
 
     public Rectangle calcDrawingArea() {
-        int xmin = Integer.MAX_VALUE;
-        int ymin = Integer.MAX_VALUE;
-        Fig f = null;
-        Rectangle rectSize = null;
-        Rectangle drawingArea = new Rectangle(0, 0);
         Enumeration enum = elements();
+        if (!enum.hasMoreElements())
+            return new Rectangle();
+
+        Fig f = (Fig) enum.nextElement();
+        Rectangle drawingArea = new Rectangle(f.getBounds());
         while(enum.hasMoreElements()) {
-            f = (Fig)enum.nextElement();
-            rectSize = f.getBounds();
-            xmin = Math.min(xmin, rectSize.x);
-            ymin = Math.min(ymin, rectSize.y);
-            drawingArea.add(rectSize);
+            f = (Fig) enum.nextElement();
+            drawingArea.add(f.getBounds());
         }
 
-        drawingArea.width -= xmin;
-        drawingArea.height -= ymin;
-        drawingArea.x = xmin;
-        drawingArea.y = ymin;
         drawingArea.grow(4, 4); // security border
 
         return drawingArea;
     }
-  
+    
     ////////////////////////////////////////////////////////////////
     // notifications and updates
 
