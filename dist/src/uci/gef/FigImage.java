@@ -1,3 +1,5 @@
+package uci.gef;
+
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -30,8 +32,6 @@
 // Original Author: brw@tusc.com.au
 // $Id$
 
-package uci.gef;
-
 import java.awt.*;
 import java.awt.image.*;
 import java.util.*;
@@ -55,28 +55,34 @@ public class FigImage extends Fig implements ImageObserver {
 
   /** Construct a new FigImage with the given position, size, and Image.  */
   public FigImage(int x, int y, int w, int h, Image img) {
-    super(x, y, w, h);
-    _image = img;
-  }
-
-
+	super(x, y, w, h);
+	_image = img;
+  }  
   /** Construct a new FigImage w/ the given position and image. */
   public FigImage(int x, int y, Image i) {
-    this(x, y, 0, 0, i);
-    setWidth(i.getWidth(this));
-    setHeight(i.getHeight(this));
-  }
-
+	this(x, y, 0, 0, i);
+	setWidth(i.getWidth(this));
+	setHeight(i.getHeight(this));
+  }    
   /** Construct a new FigImage w/ the given position and URL. */
   public FigImage(int x, int y, URL imageUrl) {
-    super(x, y, 0, 0);
-    _url = imageUrl;
-    _image = Globals.getImage(_url);
-    Globals.waitForImages();
-    _w = _image.getWidth(this);
-    _h = _image.getHeight(this);
-  }
+	super(x, y, 0, 0);
+	_url = imageUrl;
+	_image = Globals.getImage(_url);
+	Globals.waitForImages();
+	_w = _image.getWidth(this);
+	_h = _image.getHeight(this);
+  }  
+  ////////////////////////////////////////////////////////////////
+  // Editor API
 
+  public void createDrag(int anchorX, int anchorY, int x, int y,
+			 int snapX, int snapY) {
+	setLocation(snapX, snapY);
+  }  
+public URL getURL() {
+	return _url;
+}
   ////////////////////////////////////////////////////////////////
   // accessors
 
@@ -87,37 +93,30 @@ public class FigImage extends Fig implements ImageObserver {
 
   public boolean imageUpdate(Image img, int infoflags,
 			     int x, int y, int w, int h) {
-    boolean done=((infoflags&(ERROR | FRAMEBITS | ALLBITS)) != 0);
-    return !done;
-  }
-
+	boolean done=((infoflags&(ERROR | FRAMEBITS | ALLBITS)) != 0);
+	return !done;
+  }  
   ////////////////////////////////////////////////////////////////
   // painting methods
 
   /** Paint this FigImage on the given Graphics. */
   public void paint(Graphics g) {
-    if (_image == null) {
-      System.out.println("reloading image");
-      if (_url != null) {
+	if (_image == null) {
+	  System.out.println("reloading image");
+	  if (_url != null) {
 	_image = Globals.getImage(_url);
 	Globals.waitForImages();
-      }
-    }
+	  }
+	}
 
-    if (_image != null)
-      g.drawImage(_image, _x, _y, _w, _h, this);
-    else {
-      g.setColor(_fillColor);
-      g.fillRect(_x, _y, _w, _h);
-    }
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // Editor API
-
-  public void createDrag(int anchorX, int anchorY, int x, int y,
-			 int snapX, int snapY) {
-    setLocation(snapX, snapY);
-  }
+	if (_image != null)
+	  g.drawImage(_image, _x, _y, _w, _h, this);
+	else {
+	  g.setColor(_fillColor);
+	  g.fillRect(_x, _y, _w, _h);
+	}
+  }  
+public void setURL(URL newURL) {
+	_url = newURL;
+}
 } /* end of FigImage class */
-
