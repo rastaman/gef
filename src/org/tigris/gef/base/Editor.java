@@ -145,6 +145,12 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     private transient Component _peer_component = null;
 
     private RenderingHints _renderingHints = new RenderingHints(null);
+  
+    /**
+     * @deprecated in 0.10 - remove in 0.11
+     */
+    protected transient FigTextEditor _activeTextEditor = null;
+    
 
     ////////////////////////////////////////////////////////////////
     // constructors and related functions
