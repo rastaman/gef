@@ -65,12 +65,12 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /**
      *  The Layer that this Fig is in. Each Fig can be in exactly one Layer, but
      *  there can be multiple Editors on a given Layer.
-     *  @deprecated 0.11 visibility will change to package
+     *  @deprecated 0.10.5 visibility will change to package
      */
     protected transient Layer _layer = null;
 
     /** True if this object is locked and cannot be moved by the user.
-     *  @deprecated 0.11 visibility will change to package
+     *  @deprecated 0.10.5 visibility will change to package
      */
     protected boolean _locked = false;
 
@@ -153,6 +153,10 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      */
     public int _shown = 0;
     protected boolean _allowsSaving = true;
+    /**
+     *  @deprecated 0.10.5 client programmers should not be able to access this
+     * they should only have access to isSelected().
+     */
     protected transient boolean _selected = false;
 
     ////////////////////////////////////////////////////////////////
@@ -1090,9 +1094,14 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return _selected;
     }
 
-    /** Returns a custom Selection object for use when this Fig is
-     *  selected by the user.  Normally SelectionManger makes the
-     *  Selection using its own rules.  This is for special cases. */
+    /** 
+     * SelectionManager calls this to attempt to create a custom Selection object
+     * when selecting a Fig. Override this only if you have specialist requirements
+     * For a selected Fig.
+     * SelectionManger uses its own rules if this method returns null.
+     * @return a specialist Selection class or null to delegate creation to the
+     *         Selection Manager.
+     */
     public Selection makeSelection() {
         return null;
     }
@@ -1100,6 +1109,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /**
      * Sets the selection state for this item.
      * @param selectionState The new selection state.
+     * @deprecated 0.10.5 client programmers should not be able to access this
+     * they should only have access to isSelected().
+     * This method is not currently called from anywhere in GEF itself.
      */
     public void setSelected(boolean selectionState) {
         _selected = selectionState;
