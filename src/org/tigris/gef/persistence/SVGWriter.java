@@ -69,8 +69,10 @@ public class SVGWriter extends Graphics {
 
     // To keep the SVG output as simple as possible, I handle all
     // the transformations and the scaling in the writer.
-    private int    xOffset = 0;
-    private int    yOffset = 0;
+    private int    _xOffset = 0;
+    private int    _yOffset = 0;
+    private int    _hInset = 10;
+    private int    _vInset = 10;
     private double xScale  = 1.0;
     private double yScale  = 1.0;
     private String SVGns = "http://www.w3.org/2000/SVG";
@@ -78,6 +80,7 @@ public class SVGWriter extends Graphics {
     public SVGWriter(OutputStream stream, Rectangle drawingArea) throws IOException, Exception {
         _p = new PrintWriter(stream);
 	_drawingArea = drawingArea;
+	translate( _hInset - drawingArea.x, _vInset - drawingArea.y);
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(false);
@@ -87,8 +90,8 @@ public class SVGWriter extends Graphics {
 
 	_root = _svg.createElement( "svg");
         _root.setAttribute("xmlns","http://www.w3.org/2000/svg");
-	_root.setAttribute( "width", "" + scaleX(_drawingArea.width));
-	_root.setAttribute( "height", "" + scaleY(_drawingArea.height));
+	_root.setAttribute( "width", "" + (2 * _hInset + scaleX(_drawingArea.width)));
+	_root.setAttribute( "height", "" + (2 * _vInset + scaleY(_drawingArea.height)));
     }
 
     public Graphics create() { return this; }
@@ -430,11 +433,11 @@ public class SVGWriter extends Graphics {
     }
 
     private int transformX( int x) {
-	return scaleX( x) + xOffset;
+	return scaleX( x) + _xOffset;
     }
 
     private int transformY( int y) {
-        return scaleY( y) + yOffset;
+        return scaleY( y) + _yOffset;
     }
 
     private void drawRect( int x, int y, int w, int h, String style) {
@@ -473,8 +476,8 @@ public class SVGWriter extends Graphics {
 
     private void drawOval( int x, int y, int w, int h, String style) {
 	Element oval = _svg.createElement( "ellipse");
-	oval.setAttribute( "cx", ""+transformX( x));
-	oval.setAttribute( "cy", ""+transformY( y));
+	oval.setAttribute( "cx", ""+transformX( x + w/2));
+	oval.setAttribute( "cy", ""+transformY( y + h/2));
 	oval.setAttribute( "rx", ""+((double)scaleX( w))/2);
 	oval.setAttribute( "ry", ""+((double)scaleY( h))/2);
 	oval.setAttribute( "style", style);
@@ -625,8 +628,8 @@ public class SVGWriter extends Graphics {
     }
 
     public void translate(int x, int y) {
-	this.xOffset = x;
-	this.yOffset = y;
+	this._xOffset = x;
+	this._yOffset = y;
     }
 
     public void scale(double xscale, double yscale) {
