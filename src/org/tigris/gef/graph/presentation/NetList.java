@@ -66,21 +66,21 @@ public class NetList extends NetPrimitive implements java.io.Serializable {
         return name;
     }
 
-    /** @deprecated 0.11 use setName(String) */
+    /** @deprecated 0.10.5 use setName(String) */
     public void name(String n) { name = n; }
-    /** @deprecated 0.11 use getName() */
+    /** @deprecated 0.10.5 use getName() */
     public String name() { return name; }
 
     public void setName(String n) { name = n; }
     public String getName() { return name; }
 
     /** Reply the vector of nodes 
-     * @deprectaed 0.11 use getNodes(Collection)
+     * @deprecated 0.10.5 use getNodes(Collection)
      */
     public Vector getNodes() { return nodes; }
 
     /** Reply the vector of edges
-    * @deprectaed 0.11 use getNodes(Collection)
+    * @deprecated 0.10.5 use getNodes(Collection)
     */
     public Vector getEdges() { return edges; }
 
