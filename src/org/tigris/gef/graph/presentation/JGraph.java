@@ -501,17 +501,22 @@ public class JGraph extends JPanel implements Cloneable {
         return defaultSize;
     }
 
+    /** Get the position of the editor's scrollpane. */
+    public Point getViewPosition() {
+        return scrollPane.getViewport().getViewPosition();
+    }
+    /** Set the position of the editor's scrollpane. */
+    public void setViewPosition(Point p) {
+        if (p != null) scrollPane.getViewport().setViewPosition(p);
+    }
+    
     static final long serialVersionUID = -5459241816919316496L;
 
 } /* end class JGraph */
 
 class JGraphInternalPane extends JPanel {
-    //implements FocusListener
-    /**
-     * @deprecated visibility in 0.10.4. Will become private in a future
-     *             release.
-     */
-    protected Editor _editor;
+    
+    private Editor _editor;
 
     private boolean registeredWithTooltip;
 
@@ -519,25 +524,13 @@ class JGraphInternalPane extends JPanel {
         _editor = e;
         setLayout(null);
         setDoubleBuffered(false);
-        // setAutoscrolls(true); // needs-more-work: no effect...
-        //addFocusListener(this);
     }
 
     public void paintComponent(Graphics g) {
         _editor.paint(g);
     }
 
-    //   static int getGraphicsCount = 0;
-
-    //   public Graphics getGraphicsCounted() {
-    //     getGraphicsCount = 0;
-    //     Graphics g = getGraphics();
-    //     System.out.println("getGraphics recurred " + getGraphicsCount + "times");
-    //     return g;
-    //   }
-
     public Graphics getGraphics() {
-        //getGraphicsCount++;
         Graphics res = super.getGraphics();
         if (res == null) {
             return res;
@@ -591,7 +584,7 @@ class JGraphInternalPane extends JPanel {
     public boolean isFocusTraversable() {
         return true;
     }
-
+    
     static final long serialVersionUID = -5067026168452437942L;
 
 } /* end class JGraphInternalPane */
