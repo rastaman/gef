@@ -44,16 +44,24 @@ public class VectorSet implements java.io.Serializable  {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-  private Vector _v;
+  private Vector vector;
 
   ////////////////////////////////////////////////////////////////
   // constructors
   
-  public VectorSet() { _v = new Vector(); }
-  public VectorSet(int n) { _v = new Vector(n); }
-  public VectorSet(Object o1) { _v = new Vector(); addElement(o1); }
+  public VectorSet() {
+      vector = new Vector();
+  }
+  public VectorSet(int n) {
+      vector = new Vector(n);
+  }
+  public VectorSet(Object o1) {
+      vector = new Vector(); addElement(o1);
+  }
 
-  public void addElement(Object o) { if (!contains(o)) _v.addElement(o); }
+  public void addElement(Object o) {
+      if (!contains(o)) vector.addElement(o);
+  }
   public void addAllElements(Collection v) {
     if (v == null) return;
     addAllElements(v.iterator());
@@ -84,22 +92,31 @@ public class VectorSet implements java.io.Serializable  {
 	if (p.predicate(e)) addElement(e);
       }
   }
-  public void addAllElements(VectorSet s) { addAllElements(s.elements()); }
+  public void addAllElements(VectorSet s) {
+      addAllElements(s.elements());
+  }
+  
   public void addAllElementsSuchThat(VectorSet s, Predicate p) {
     addAllElementsSuchThat(s.elements(), p);
   }
 
   public void remove(Object o) {
-    if (o != null) _v.removeElement(o);
+      if (o != null) vector.removeElement(o);
   }
+  
   public void removeElement(Object o) {
-    if (o != null) _v.removeElement(o);
+      if (o != null) vector.removeElement(o);
   }
-  public void removeAllElements() { _v.removeAllElements(); }
+  
+  public void removeAllElements() {
+      vector.removeAllElements();
+  }
+  
   public boolean contains(Object o) {
-    if (o != null) return _v.contains(o);
+    if (o != null) return vector.contains(o);
     return false;
   }
+  
   public boolean containsSuchThat(Predicate p) {
     return findSuchThat(p) != null;
   }
@@ -115,11 +132,17 @@ public class VectorSet implements java.io.Serializable  {
     return null;
   }
 
-  public Enumeration elements() { return _v.elements(); }
+  public Enumeration elements() {
+      return vector.elements();
+  }
 
-  public Object elementAt(int index) { return _v.elementAt(index); }
+  public Object elementAt(int index) {
+      return vector.elementAt(index);
+  }
 
-  public Vector asVector() { return _v; }
+  public Vector asVector() {
+      return vector;
+  }
 
   public boolean equals(Object o) {
     if (!(o instanceof VectorSet)) return false;
@@ -134,83 +157,89 @@ public class VectorSet implements java.io.Serializable  {
   }
 
 
-  public Object firstElement() { return _v.firstElement(); }
+  public Object firstElement() {
+      return vector.firstElement();
+  }
 
-  public int size() { return _v.size(); }
-  public String toString() {
-    String res = "Set{";
-    Enumeration eles = elements();
-    while (eles.hasMoreElements()) {
-      res += eles.nextElement().toString();
-      if (eles.hasMoreElements()) res += ", ";
+  public int size() {
+      return vector.size();
+  }
+  
+    public String toString() {
+        String res = "Set{";
+        Enumeration eles = elements();
+        while (eles.hasMoreElements()) {
+            res += eles.nextElement();
+            if (eles.hasMoreElements()) res += ", ";
+        }
+        return res + "}";
     }
-    return res + "}";
-  }
 
-  /** Reply the Set of all objects that can be reached from the
-   * receiving Set by taking steps defined by the given
-   * ChildGenerator.  The result includes the elements of the original
-   * Set. In order to avoid very deep searches which are often
-   * programming mistakes, only paths of length TC_LIMIT or less are
-   * considered. */
-  public VectorSet transitiveClosure(ChildGenerator cg) {
-    return transitiveClosure(cg, TC_LIMIT, PredicateTrue.theInstance());
-  }
-
-  /** Reply the Set of all objects that can be reached from the
-   * receiving Set by taking steps defined by the given
-   * ChildGenerator.  The result DOES NOT include the elements of the
-   * original Set. In order to avoid very deep searches which are
-   * often programming mistakes, only paths of length TC_LIMIT or less
-   * are considered.*/
-  public VectorSet reachable(ChildGenerator cg) {
-    return reachable(cg, TC_LIMIT, PredicateTrue.theInstance());
-  }
-
-  /** Reply the Set of all objects that can be reached from the
-   * receiving Set by taking steps defined by the given
-   * ChildGenerator.  The result DOES NOT include the elements of the
-   * original Set. In order to avoid very deep searches which are
-   * often programming mistakes, only paths of given max length or
-   * less are considered. Only paths consisting of elements which all
-   * cause p.predicate() to return true are considered. */
-  public VectorSet reachable(ChildGenerator cg, int max, Predicate p) {
-    VectorSet kids = new VectorSet();
-    Enumeration rootEnum = elements();
-    while (rootEnum.hasMoreElements()) {
-      Object r = rootEnum.nextElement();
-      kids.addAllElementsSuchThat(cg.gen(r), p);
+    /** Reply the Set of all objects that can be reached from the
+     * receiving Set by taking steps defined by the given
+     * ChildGenerator.  The result includes the elements of the original
+     * Set. In order to avoid very deep searches which are often
+     * programming mistakes, only paths of length TC_LIMIT or less are
+     * considered. */
+    public VectorSet transitiveClosure(ChildGenerator cg) {
+        return transitiveClosure(cg, TC_LIMIT, PredicateTrue.theInstance());
     }
-    return kids.transitiveClosure(cg, max, p);
-  }
 
-  /** Reply the Set of all objects that can be reached from the
-   * receiving Set by taking steps defined by the given
-   * ChildGenerator.  The result includes the elements of the original
-   * Set. In order to avoid very deep searches which are often
-   * programming mistakes, only paths of given max length or less are
-   * considered. Only paths consisting of elements which all cause
-   * p.predicate() to return true are considered. */
-  public VectorSet transitiveClosure(ChildGenerator cg, int max, Predicate p) {
-    int iterCount = 0;
-    int lastSize = -1;
-    VectorSet touched = new VectorSet();
-    VectorSet frontier, recent = this;
-
-    touched.addAllElements(this);
-    while ((iterCount < max) && (touched.size() > lastSize)) {
-      iterCount++;
-      lastSize = touched.size();
-      frontier = new VectorSet();
-      Enumeration recentEnum = recent.elements();
-      while (recentEnum.hasMoreElements()) {
-	Enumeration frontsEnum = cg.gen(recentEnum.nextElement());
-	frontier.addAllElementsSuchThat(frontsEnum, p);
-      }
-      touched.addAllElements(frontier);
-      recent = frontier;
+    /** Reply the Set of all objects that can be reached from the
+     * receiving Set by taking steps defined by the given
+     * ChildGenerator.  The result DOES NOT include the elements of the
+     * original Set. In order to avoid very deep searches which are
+     * often programming mistakes, only paths of length TC_LIMIT or less
+     * are considered.*/
+    public VectorSet reachable(ChildGenerator cg) {
+        return reachable(cg, TC_LIMIT, PredicateTrue.theInstance());
     }
-    return touched;
-  }
+
+    /** Reply the Set of all objects that can be reached from the
+     * receiving Set by taking steps defined by the given
+     * ChildGenerator.  The result DOES NOT include the elements of the
+     * original Set. In order to avoid very deep searches which are
+     * often programming mistakes, only paths of given max length or
+     * less are considered. Only paths consisting of elements which all
+     * cause p.predicate() to return true are considered. */
+    public VectorSet reachable(ChildGenerator cg, int max, Predicate p) {
+        VectorSet kids = new VectorSet();
+        Enumeration rootEnum = elements();
+        while (rootEnum.hasMoreElements()) {
+            Object r = rootEnum.nextElement();
+            kids.addAllElementsSuchThat(cg.gen(r), p);
+        }
+        return kids.transitiveClosure(cg, max, p);
+    }
+
+    /** Reply the Set of all objects that can be reached from the
+     * receiving Set by taking steps defined by the given
+     * ChildGenerator.  The result includes the elements of the original
+     * Set. In order to avoid very deep searches which are often
+     * programming mistakes, only paths of given max length or less are
+     * considered. Only paths consisting of elements which all cause
+     * p.predicate() to return true are considered. */
+    public VectorSet transitiveClosure(ChildGenerator cg, int max, Predicate p) {
+        int iterCount = 0;
+        int lastSize = -1;
+        VectorSet touched = new VectorSet();
+        VectorSet frontier;
+        VectorSet recent = this;
+    
+        touched.addAllElements(this);
+        while ((iterCount < max) && (touched.size() > lastSize)) {
+            iterCount++;
+            lastSize = touched.size();
+            frontier = new VectorSet();
+            Enumeration recentEnum = recent.elements();
+            while (recentEnum.hasMoreElements()) {
+            	Enumeration frontsEnum = cg.gen(recentEnum.nextElement());
+            	frontier.addAllElementsSuchThat(frontsEnum, p);
+            }
+            touched.addAllElements(frontier);
+            recent = frontier;
+        }
+        return touched;
+    }
 
 } /* end class VectorSet */
