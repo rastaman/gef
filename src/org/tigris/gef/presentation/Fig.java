@@ -954,8 +954,15 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /** Returns the prefered size of the Fig. This will be useful for
      *  automated layout. By default just uses the current
      *  size. Subclasses must override to return something useful. */
+	public Dimension getPreferredSize() {
+		return new Dimension(_w, _h);
+	}
+	/**
+	 * @deprecated 0.10.5 in favour of getPreferredSize()
+	 * @return
+	 */
     public Dimension getPreferedSize() {
-        return new Dimension(_w, _h);
+        return getPreferredSize();
     }
 
     /**
