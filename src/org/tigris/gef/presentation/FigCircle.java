@@ -74,35 +74,39 @@ public class FigCircle extends Fig {
 
     /** Draw this FigCircle. */
     public void paint(Graphics g) {
+        Color fillColor = getFillColor();
+        Color lineColor = getLineColor();
+        int lineWidth = getLineWidth();
         if(getDashed() && (g instanceof Graphics2D)) {
             Graphics2D g2d = (Graphics2D)g;
             Stroke oldStroke = g2d.getStroke();
             float[] dash = {10.0f, 10.0f};
             Stroke stroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, dash, 0.0f);
             g2d.setStroke(stroke);
-            if(_filled && _fillColor != null) {
-                g.setColor(_fillColor);
+            if(_filled && fillColor != null) {
+                g.setColor(fillColor);
                 g.fillOval(_x, _y, _w, _h);
             }
 
-            if(_lineWidth > 0 && _lineColor != null) {
-                g.setColor(_lineColor);
-                g.drawOval(_x, _y, _w - _lineWidth, _h - _lineWidth);
+            if(lineWidth > 0 && lineColor != null) {
+                g.setColor(lineColor);
+                g.drawOval(_x, _y, _w - lineWidth, _h - lineWidth);
             }
 
             g2d.setStroke(oldStroke);
-        }
-        else {
-            if(_filled && _fillColor != null) {
-                g.setColor(_fillColor);
+        } else if (_filled && fillColor != null) {
+            if(lineWidth > 0 && lineColor != null) {
+                g.setColor(lineColor);
                 g.fillOval(_x, _y, _w, _h);
             }
 
-            if(_lineWidth > 0 && _lineColor != null) {
-                g.setColor(_lineColor);
-                //g.drawOval(_x, _y, _w - _lineWidth, _h - _lineWidth);  // linewidth is not used. PF
-                g.drawOval(_x, _y, _w, _h);
+            if (!fillColor.equals(lineColor)) {
+                g.setColor(fillColor);
+                g.fillOval(_x + lineWidth, _y + lineWidth, _w - (lineWidth*2), _h - (lineWidth*2));
             }
+        } else if(lineWidth > 0 && lineColor != null) {
+            g.setColor(lineColor);
+            g.drawOval(_x, _y, _w, _h);
         }
     }
 
