@@ -1,7 +1,7 @@
 Installing GEF
 --------------
 
-last revised: 03/16/2000
+last revised: 03/01/2001
 
 
 !!!!!!!!!!!!!!!
@@ -13,22 +13,38 @@ you want to try building the installation anyway, read on.  You have
 been warned.
 
 
-The distribution is built using the Ant build system
-(http://jakarta.apache.org/ant).  Once you have Ant installed, you can
-build the distribution simply by executing the command:
+First, you have to unzip the gef archive to a directory of your choice.
+It is recommended, that the last part of the resulting path is a
+subdirectory called "src". If you use another name for the subdirectory
+the build process might fail.
 
-  ant
+The distribution is built using the Ant build system
+(http://jakarta.apache.org/ant).  You will need to have Ant 1.2+.
+Once you have Ant installed, you can build the distribution simply
+by executing the command:
+
+  ant compile
+
+This will compile all needed source files and copy the necessary helper
+files to the build directory. If you plan to use GEF as part of other
+projects, you might to build a jar file. Therefore you need to create a
+directory called "lib" on the same level your "src"-directory is on. Then
+simply type
+
+  ant package
+
+This will do all the things "ant compile" does and additionally build a
+jar file called "gef.jar" in your "lib"-directory.
 
 Ant operates similarly to make, but instead of a makefile, Ant uses an
 XML build file.  The build.xml file for this distribution has the
-following targets:
+several targets. You can type
 
-  ant build - compiles source files into gef/lib.  this is the default
-              target.
-  ant jar - creates gef.jar
-  ant javadoc - creates javadoc documentation in docs/javadoc
-  ant clean - deletes compiled classes and jar files.
+  ant
+
+to get a list of the currently available targets including a short
+description of them.
 
 
-Edwin Park
-esp@parkplace.dhs.org
+Thorsten Sturm
+Thorsten.Sturm@gentleware.de

@@ -118,7 +118,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 
     <property name="src.dir" value="../src"/>
     <property name="docs.dir" value="../docs"/>
-    <property name="lib.dir" value="../lib"/> 
+    <property name="lib.dir" value="../lib"/>
 	<property name="obj.dir" value="../lib"/>
 	<property name="dist.dir" value="../dist"/>
 
@@ -171,6 +171,9 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <copy todir="${build.dest}/org/tigris/gef/Images">
       <fileset dir="${build.src}/org/tigris/gef/Images" includes="**/**" excludes="CVS/**" />
     </copy>
+    <copy todir="${build.dest}/org/tigris/gef/xml/dtd">
+      <fileset dir="${build.src}/org/tigris/gef/xml/dtd" includes="*.dtd,*.tee,*.DTD,*.TEE" excludes="CVS/**" />
+    </copy>
   </target>
 
   <!-- =================================================================== -->
@@ -190,7 +193,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <!-- <target name="compile" depends="prepare"> -->
 
-  <!--  a handful of classes are forced to override a 
+  <!--  a handful of classes are forced to override a
            deprecated API.  Classes compiled here will
 		   not have warnings for deprecated APIS  -->
   <target name="depcompile" depends="prepare">

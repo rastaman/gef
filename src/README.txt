@@ -1,37 +1,18 @@
-last revised: 03/03/2000
+last revised: 03/01/2001
 
 !!!!!!!!!!!!!!!
 !!! WARNING !!!
 !!!!!!!!!!!!!!!
 
-This is an UNSTABLE version of GEF.  The current version of GEF is
-embedded in ArgoUML v.07 (http://argouml.tigris.org).
-
-The last independent GEF distribution was v.06, and is considerably
-out of date.  The immediate goal for development on this version is
-to separate GEF code from ArgoUML once again and produce a current,
-independent GEF distribution.
-
+This is an UNSTABLE version of GEF. It is meant for development issues only.
+Do yourself a favor and use a stable version for your all day work.
 
 Notes on the distribution:
 
-This is an initial split of the GEF source from the ArgoUML
-distribution, based on code checked out of the argouml repository on
-cvs.tigris.org on 03/02/2000 at noon, EST.
-
-src - GEF source
-demos - GEF demos
-docs - Old documentation
-argo - The leftover ArgoUML source after GEF has been removed.  This
-       directory exists solely to help track files that are migrated
-       between the ArgoUML and GEF distributions, and will be
-       removed once the boundaries of the ArgoUML/GEF separation are
-       settled upon.  Includes a build script to verify that ArgoUML
-       can be built from the gef.jar produced by the GEF
-       distribution.
+There has been some bugfixing only since the last development release of GEF.
+SVG support is added but not yet tested very well, so you better use PGML.
 
 Please read the INSTALL.txt file for info on how to build GEF.
 
-
-Edwin Park
-esp@parkplace.dhs.org
+Thorsten Sturm
+Thorsten.Sturm@gentleware.de
