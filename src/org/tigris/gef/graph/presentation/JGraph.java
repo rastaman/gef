@@ -179,7 +179,34 @@ public class JGraph extends JPanel implements Cloneable {
         }
         return false;
     }
-
+    
+    /**
+     * @see Object#hashCode()
+     *
+     * TODO: Investigate further:<p>
+     *
+     * According to a mail from GZ (6th November 2004) on the ArgoUML dev list,
+     * {@link javax.swing.RepaintManager} puts these objects in
+     * some kind of data structure that uses this function.
+     * Assuming that there is a reason for this we dare not sabotage
+     * this by short-circuiting this to 0. Instead we rely on that
+     * {@link org.tigris.gef.graph.presentation.JGraph#setDiagram(
+     * org.tigris.gef.base.Diagram)} actually removes this object from
+     * the {@link javax.swing.RepaintManager} and registers it again
+     * when resetting the diagram id.<p>
+     *
+     * This is based on the assumption that the function
+     * {@link #equals(Object)} must work as it does. I (Linus) have not
+     * understood why it must. Could someone please explain that in the
+     * javadoc.
+     */
+    public int hashCode() {
+        if (getCurrentDiagramId() == null) {
+            return 0;
+        } else {
+            return getCurrentDiagramId().hashCode();
+        }
+    }
     
     public void addMouseListener(MouseListener listener) {
         drawingPane.addMouseListener(listener);
