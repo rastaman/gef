@@ -36,6 +36,7 @@ import java.util.*;
 
 import org.tigris.gef.properties.ui.*;
 import org.tigris.gef.ui.*;
+import org.tigris.gef.util.logging.LogManager;
 
 /** This class stores global info that is needed by all Editors. For
  *  example, it aids in communication between the various Palette's and
@@ -288,68 +289,70 @@ public class Globals {
    *  this table will keep pointers that can reduce grabage
    *  collection. */
 
-  protected static Hashtable _pcListeners = new Hashtable();
+	protected static Hashtable _pcListeners = new Hashtable();
+	protected static PropertyChangeListener universalListener = null;
+	
+	/** The most listeners a Fig can have, 4. */
+	public static int MAX_LISTENERS = 4;
+	
+	/** Add a listener to a Fig.  Now the listener will get
+	 *  notifications of all property change events from that Fig. */
+	public static void addPropertyChangeListener(Object src, PropertyChangeListener l) {
+		PropertyChangeListener listeners[] = (PropertyChangeListener[]) _pcListeners.get(src);
+		if (listeners == null) {
+			listeners = new PropertyChangeListener[MAX_LISTENERS];
+			_pcListeners.put(src, listeners);
+		}
+		// debugging warning
+		if (_pcListeners.size() > 100)
+			LogManager.log.debug("_pcListeners size = " + _pcListeners.size());
+		for (int i=0; i < MAX_LISTENERS; ++i)
+			if (listeners[i] == null) { listeners[i] = l; return; }
+		LogManager.log.debug("ran out of listeners!");
+	}
 
-  /** The most listeners a Fig can have, 4. */
-  public static int MAX_LISTENERS = 4;
+	public static void addUniversalPropertyChangeListener(PropertyChangeListener pcl) {
+		universalListener = pcl;
+	}
 
-  /** Add a listener to a Fig.  Now the listener will get
-   *  notifications of all property change events from that Fig. */
-  public static void
-  addPropertyChangeListener(Object src, PropertyChangeListener l) {
-    PropertyChangeListener listeners[] =
-      (PropertyChangeListener[]) _pcListeners.get(src);
-    if (listeners == null) {
-      listeners = new PropertyChangeListener[MAX_LISTENERS];
-      _pcListeners.put(src, listeners);
-    }
-    // debugging warning
-    if (_pcListeners.size() > 100)
-      System.out.println("_pcListeners size = " + _pcListeners.size());
-    for (int i=0; i < MAX_LISTENERS; ++i)
-      if (listeners[i] == null) { listeners[i] = l; return; }
-    System.out.println("ran out of listeners!");
-  }
+	public static void removeUniversalPropertyChangeListener() {
+		universalListener = null;
+	}
 
-  public static void
-  removePropertyChangeListener(Object s, PropertyChangeListener l){
-    PropertyChangeListener listeners[] =
-      (PropertyChangeListener[]) _pcListeners.get(s);
-    boolean found = false;
-    if (listeners == null) return;
-    for (int i=0; i < MAX_LISTENERS; ++i)
-      if (listeners[i] == l) { listeners[i] = null; found = true; }
-    if (!found) System.out.println("listener not found!");
-    for (int i=0; i < MAX_LISTENERS; ++i)
-      if (listeners[i] != null) return;
-    // s has no listeners, keep Hashtable size reasonable
-    _pcListeners.remove(s);
-  }
+	public static void removePropertyChangeListener(Object s, PropertyChangeListener l){
+		PropertyChangeListener listeners[] = (PropertyChangeListener[]) _pcListeners.get(s);
+		boolean found = false;
+		if (listeners == null) return;
+		for (int i=0; i < MAX_LISTENERS; ++i)
+			if (listeners[i] == l) { listeners[i] = null; found = true; }
+		if (!found) LogManager.log.debug("listener not found!");
+		for (int i=0; i < MAX_LISTENERS; ++i)
+			if (listeners[i] != null) return;
+		// s has no listeners, keep Hashtable size reasonable
+		_pcListeners.remove(s);
+	}
 
-  /** Send a property change event to listeners of the src Fig. */
-  public static void firePropChange(Object src, String propName,
-			     boolean oldV, boolean newV) {
-    firePropChange(src, propName, new Boolean(oldV), new Boolean(newV));
-  }
+	/** Send a property change event to listeners of the src Fig. */
+	public static void firePropChange(Object src, String propName, boolean oldV, boolean newV) {
+		firePropChange(src, propName, new Boolean(oldV), new Boolean(newV));
+	}
+	
+	/** Send a property change event to listeners of the src Fig. */
+	public static void firePropChange(Object src, String propName, int oldV, int newV) {
+		firePropChange(src, propName, new Integer(oldV), new Integer(newV));
+	}
 
-  /** Send a property change event to listeners of the src Fig. */
-  public static void firePropChange(Object src, String propName,
-			     int oldV, int newV) {
-    firePropChange(src, propName, new Integer(oldV), new Integer(newV));
-  }
-
-  /** Send a property change event to listeners of the src Fig. */
-  public static void firePropChange(Object src, String propName,
-			     Object oldValue, Object newValue) {
-    if (oldValue != null && oldValue.equals(newValue)) return;
-    PropertyChangeListener listeners[] =
-      (PropertyChangeListener[]) _pcListeners.get(src);
-    if (listeners == null) return;
-    PropertyChangeEvent evt =
-      new PropertyChangeEvent(src, propName, oldValue, newValue);
-    // needs-more-work: should be thread safe, clone array?
-    for (int i=0; i < MAX_LISTENERS; ++i)
-      if (listeners[i] != null) listeners[i].propertyChange(evt);
-  }
+	/** Send a property change event to listeners of the src Fig. */
+	public static void firePropChange(Object src, String propName, Object oldValue, Object newValue) {
+		if (oldValue != null && oldValue.equals(newValue)) return;
+		PropertyChangeListener listeners[] = (PropertyChangeListener[]) _pcListeners.get(src);
+		if (listeners == null) return;
+		PropertyChangeEvent evt = new PropertyChangeEvent(src, propName, oldValue, newValue);
+		// needs-more-work: should be thread safe, clone array?
+		for (int i=0; i < MAX_LISTENERS; ++i)
+			if (listeners[i] != null) listeners[i].propertyChange(evt);
+		if (universalListener != null)
+			universalListener.propertyChange(evt);
+	}
 
 } /* end class Globals */

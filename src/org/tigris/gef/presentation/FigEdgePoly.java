@@ -114,6 +114,7 @@ public class FigEdgePoly extends FigEdge {
     int npoints = 0;
     int xpoints[] = new int[16];
     int ypoints[] = new int[16];
+	//System.out.println("[FigEdgePoly] layoutEdge: " + _sourcePortFig + " / " + _destPortFig);
     Point srcPt = _sourcePortFig.center();
     Point dstPt = _destPortFig.center();
 

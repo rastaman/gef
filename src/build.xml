@@ -130,7 +130,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <property name="build.dir" value="../build"/>
     <property name="build.src" value="${src.dir}"/>
     <property name="build.dest" value="${build.dir}/classes"/>
-
+    <property name="gef.classpath" value="${lib.dir}/log4j.jar:${lib.dir}/xerces.jar"/>
     <property file="${user.home}/.ant.properties" />
 
   </target>
@@ -205,7 +205,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
            debug="${debug}"
            deprecation="off"
            optimize="${optimize}"
-           includes="**/FigText.java,**/PrefsEditor.java,**/SVGWriter.java,**/PostscriptWriter.java"/>
+           classpath="${gef.classpath}:${java.class.path}"
+           includes="**/FigText.java,**/PrefsEditor.java,**/SVGWriter.java,**/PostscriptWriter.java,**/TemplateReader.java,**/SVGParser.java,**/PGMLParser.java"/>
 	<echo message="The previous files were known to use deprecated APIs"/>
   </target>
 
@@ -218,7 +219,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}"
-           excludes="**/FigText.java,**/PrefsEditor.java,**/SVGWriter.java,**/PostscriptWriter.java"/>
+           classpath="${gef.classpath}:${java.class.path}"
+           excludes="**/FigText.java,**/PrefsEditor.java,**/SVGWriter.java,**/PostscriptWriter.java,**/TemplateReader.java,**/SVGParser.java,**/PGMLParser.java"/>
   </target>
 
   <!-- =================================================================== -->
@@ -295,9 +297,13 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <target name="run" depends="compile">
     <echo message="--- Executing GEF sample BasicApplication ---"/>
-    <java classname="org.tigris.gef.demo.BasicApplication"
-          fork="yes"
-          classpath="${build.dest};${lib.dir}/xerces.jar;${classpath}"/>
+    <java classname="org.tigris.gef.demo.BasicApplication" fork="yes">
+          <classpath>
+                <pathelement path="${build.dest};${gef.classpath};${classpath}"/>
+          </classpath>
+          <jvmarg value="-Dgef.log.location=${src.dir}/GEF.log"/>
+          <jvmarg value="-Dgef.log.level=DEBUG"/>
+    </java>
   </target>
 
 </project>

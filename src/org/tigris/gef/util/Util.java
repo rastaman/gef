@@ -74,6 +74,27 @@ public class Util {
     return url;
   }
 
+	public static final URL exchangeURLExtension(URL url, String desiredExtension, String oldExtension) {
+		if (!url.getFile().endsWith(oldExtension)) {
+			//System.out.println("[GEF.Util] exchangeURLExtension: no exchange " + url.getFile());
+			return Util.fixURLExtension(url, desiredExtension);
+		}
+		else {
+			try {
+				//System.out.println("[GEF.Util] exchangeURLExtension: exchange");
+				String newURL = url.getFile();
+				newURL = newURL.substring(0,newURL.lastIndexOf('.'));
+				//System.out.println("[GEF.Util] exchangeURLExtension: new url = " + newURL);
+				url = new URL(url, newURL);
+				//System.out.println("[GEF.Util] exchangeURLExtension: exchanged " + url.getFile());
+			}
+			catch (java.net.MalformedURLException mue) {
+				throw new UnexpectedException(mue);
+			}
+		}
+		return url;
+	}
+
   /*
    * Strip all characters out of <var>s</var> that could not be part of a valid
    * Java identifier.  Return either the given string (if all characters were

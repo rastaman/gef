@@ -197,8 +197,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   }
 
   public void keyPressed(KeyEvent ke) {
-    if (_content instanceof KeyListener)
-      ((KeyListener)_content).keyPressed(ke);
+	  if (_content instanceof KeyListener)
+		  ((KeyListener)_content).keyPressed(ke);
   }
 
   public void keyReleased(KeyEvent ke) {

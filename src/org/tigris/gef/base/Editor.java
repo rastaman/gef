@@ -37,6 +37,7 @@ import javax.swing.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.event.*;
+import org.tigris.gef.util.logging.LogManager;
 
 /** This class provides an editor for manipulating graphical
  *  documents. The editor is the central class of the graph editing
@@ -217,10 +218,10 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
       return ed;
     }
     catch (java.lang.IllegalAccessException ignore) {
-      System.out.println("IllegalAccessException in spawn");
+      LogManager.log.error("IllegalAccessException in spawn");
     }
     catch (java.lang.InstantiationException ignore) {
-      System.out.println("InstantiationException in spawn");
+      LogManager.log.error("InstantiationException in spawn");
     }
     return null;
   }
@@ -472,6 +473,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   }
 
   public void setActiveTextEditor(FigTextEditor fte) {
+	  LogManager.log.debug("[Editor] setActiveTextEditor");
     FigTextEditor oldTextEditor = _activeTextEditor;
     _activeTextEditor = fte;
     if (oldTextEditor != null)
@@ -727,7 +729,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     if (c == null) return;
     try { c.doIt(); }
     catch (java.lang.Throwable ex) {
-      System.out.println("While executing " + c +
+      LogManager.log.debug("While executing " + c +
 			 " on event " + ie +
 			 " the following error occured:");
       ex.printStackTrace();

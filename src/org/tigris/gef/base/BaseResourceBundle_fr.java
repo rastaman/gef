@@ -110,6 +110,8 @@ public class BaseResourceBundle_fr extends ListResourceBundle {
 		{"Polygon",                          "Polygon"},
 		{"Spline",                           "Spline"},
 		{"Ink",                              "Ink"},
+		{"AskSure",                          "Are you sure"},
+		{"SureRemoveElement",                "Do you really want to remove the selected elements from diagram"},
         {"Do Nothing",                       "Ne rien faire"}
 	};
 	

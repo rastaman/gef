@@ -100,16 +100,18 @@ public class BaseResourceBundle_de extends ListResourceBundle {
 		{"Zoom Reset", "Zoom zur\u00fccksetzen"},
 		{"Zoom In", "Zoome hinein"},
 		{"Zoom Out", "Zoome heraus"},
-		{"Select", "Select"},
+		{"Select", "Ausw\u00e4hlen"},
 		{"Broom", "Broom"},
-		{"Rectangle", "Rectangle"},
+		{"Rectangle", "Rechteck"},
 		{"RRect", "RRect"},
-		{"Circle", "Circle"},
-		{"Line", "Line"},
+		{"Circle", "Kreis"},
+		{"Line", "Linie"},
 		{"Text", "Text"},
 		{"Polygon", "Polygon"},
 		{"Spline", "Spline"},
 		{"Ink", "Ink"},
+		{"AskSure", "Sind Sie sicher"},
+		{"SureRemoveElement", "Sollen die ausgew\u00e4hlten Elemente wirklich aus dem Diagramm gel\u00f6scht werden"},
 		{"Do nothing", "Nichts tun"}
 	};
 	

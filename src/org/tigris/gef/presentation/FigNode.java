@@ -446,6 +446,7 @@ implements MouseListener, PropertyChangeListener, Highlightable {
     Enumeration arcPers = _figEdges.elements();
     while (arcPers.hasMoreElements()) {
       FigEdge fe = (FigEdge) arcPers.nextElement();
+	  //System.out.println("[FigNode] update edge " + fe.toString());
       fe.computeRoute();
     }
   }

@@ -241,8 +241,6 @@ public class Diagram implements java.io.Serializable, GraphListener {
 			    new Integer(newValue));
   }
 
-
-
   public void fireVetoableChange(String propertyName, 
 				 Object oldValue, Object newValue) 
        throws PropertyVetoException {

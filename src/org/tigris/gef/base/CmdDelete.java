@@ -49,6 +49,7 @@ public class CmdDelete extends Cmd {
   /** Tell the selected Figs to remove themselves from the
    *  the diagram it is in (and thus all editors). */
   public void doIt() {
+	  System.out.println("[CmdDelete] doIt");
     Editor ce = Globals.curEditor();
     SelectionManager sm = ce.getSelectionManager();
     sm.delete();

@@ -38,6 +38,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import org.tigris.gef.properties.*;
+import org.tigris.gef.util.logging.LogManager;
 
 /** This class handles painting and editing text Fig's in a
  *  LayerDiagram. Needs-More-Work: should eventually allow styled text
@@ -99,6 +100,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
   /** True if the FigText can only grow in size, never shrink. */
   protected boolean _expandOnly = false;
+
+	protected boolean _editMode = false;
 
   /** Text justification can be JUSTIFY_LEFT, JUSTIFY_RIGHT, or JUSTIFY_CENTER. */
   protected int _justification = JUSTIFY_LEFT;
@@ -182,7 +185,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     if (_justification == JUSTIFY_LEFT) return "Left";
     else if (_justification == JUSTIFY_CENTER) return "Center";
     else if (_justification == JUSTIFY_RIGHT) return "Right";
-    System.out.println("internal error, unknown text alignment");
+    LogManager.log.error("internal error, unknown text alignment");
     return "Unknown";
   }
 
@@ -342,6 +345,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
   public void setText(String s) {
 	  _curText = s;
 	  calcBounds();
+	  _editMode = false;
   }
 
   /** Get the String held by this FigText. Multi-line text is
@@ -521,7 +525,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
   public void mouseExited(MouseEvent me) { }
 
   public FigTextEditor startTextEditor(InputEvent ie) {
+	  LogManager.log.debug("[FigText] startTextEditor");
     FigTextEditor te = new FigTextEditor(this, ie);
+	  LogManager.log.debug("[FigText] TextEditor started");
+	_editMode = true;
     return te;
   }
 
@@ -535,7 +542,6 @@ public class FigText extends Fig implements KeyListener, MouseListener {
    *  do not get smaller when you backspace.  */
   public void calcBounds() {
     Rectangle bounds = getBounds();
-    //System.out.println("[FigText] calcBounds(1) "+getText()+": "+bounds.x+","+bounds.y+","+bounds.width+","+bounds.height);
     if (_font == null) return;
     if (_fm == null) _fm = Toolkit.getDefaultToolkit().getFontMetrics(_font);
     int overallW = 0;
@@ -552,23 +558,24 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     int overallH = (_lineHeight + _lineSpacing) * numLines +
       _topMargin + _botMargin + maxDescent;
     overallW = Math.max(MIN_TEXT_WIDTH, overallW + _leftMargin + _rightMargin);
-    switch (_justification) {
-      case JUSTIFY_LEFT:
-        break;
+	if (_editMode) {
+		switch (_justification) {
+		case JUSTIFY_LEFT:
+			break;
+			
+		case JUSTIFY_CENTER:
+			if (_w < overallW)
+				_x -= (overallW - _w) / 2;
+			break;
 
-      case JUSTIFY_CENTER:
-        if (_w < overallW)
-          _x -= (overallW - _w) / 2;
-        break;
-
-      case JUSTIFY_RIGHT:
-        if (_w < overallW)
-          _x -= (overallW - _w);
-        break;
-    }
+		case JUSTIFY_RIGHT:
+			if (_w < overallW)
+				_x -= (overallW - _w);
+			break;
+		}
+	}
     _w = _expandOnly ? Math.max(_w, overallW) : overallW;
     _h = _expandOnly ? Math.max(_h, overallH) : overallH;
-    //System.out.println("[FigText] calcBounds(2): "+_x+","+_y+","+_w+","+_h);
   }
 
 } /* end class FigText */

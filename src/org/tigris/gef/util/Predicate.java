@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: Predicate.java
 // Classes: Predicate
 // Original Author: jrobbins@ics.uci.edu
@@ -38,5 +35,6 @@ package org.tigris.gef.util;
 
 public interface Predicate extends java.io.Serializable {
 
-  public boolean predicate(Object obj);
+	public boolean predicate(Object obj);
+
 } /* end interface Predicate */

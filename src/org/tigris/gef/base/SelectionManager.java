@@ -35,11 +35,13 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
+import javax.swing.*;
 import javax.swing.event.EventListenerList;
 
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.event.*;
 import org.tigris.gef.util.*;
+import org.tigris.gef.util.logging.LogManager;
 
 /** This class handles Manager selections. It is basically a
  *  collection of Selection instances. Most of its operations
@@ -483,9 +485,20 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
   public void keyReleased(KeyEvent ke) { }
 
   public void keyPressed(KeyEvent ke) {
-    Enumeration sels = ((Vector)_selections.clone()).elements();
-    while (sels.hasMoreElements() && !ke.isConsumed())
-      ((Selection) sels.nextElement()).keyPressed(ke);
+	  int keyCode = ke.getKeyCode();
+// 	  if (keyCode == KeyEvent.VK_DELETE) {
+// 		  String confirmStr = Localizer.localize("GefBase","SureRemoveElement") + "?\n";
+// 		  //needs-more-work: find a component being parent to the confirm dialog
+// 		  int response = JOptionPane.showConfirmDialog(new JFrame(), confirmStr, 
+// 													   Localizer.localize("GefBase","AskSure") + "?", 
+// 													   JOptionPane.YES_NO_OPTION);
+// 		  if (response == JOptionPane.YES_OPTION)
+// 			  delete();
+// 		  return;
+// 	  }
+	  Enumeration sels = ((Vector)_selections.clone()).elements();
+	  while (sels.hasMoreElements() && !ke.isConsumed())
+		  ((Selection) sels.nextElement()).keyPressed(ke);
   }
 
   public void mouseMoved(MouseEvent me) {

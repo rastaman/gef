@@ -38,6 +38,7 @@ public class CmdCut extends Cmd {
 	public CmdCut() { super("Cut"); }
 	
 	public void doIt() {
+		System.out.println("[CmdCut] doIt");
 		Editor ce = Globals.curEditor();
 		SelectionManager selectionManager = ce.getSelectionManager();
 		Vector copiedElements = selectionManager.selections();

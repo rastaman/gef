@@ -230,6 +230,14 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
     public void removeAnnotation(String context) {
     }
 
+	public void removeAnnotation(Fig annotationFig) {
+		if (annotationFig.isAnnotation() &&
+			(this == annotationFig.getAnnotationOwner())) {
+			Globals.curEditor().remove(annotationFig);
+			getAnnotationStrategy().removeAnnotation(annotationFig);
+		}
+	}
+
     /**
      * Updates the positions of the connected annotations.
      */

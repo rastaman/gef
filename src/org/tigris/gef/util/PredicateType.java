@@ -77,8 +77,17 @@ public class PredicateType implements Predicate {
     return false;
   }
 
+	public boolean isPredicateFor(Object o) {
+		for (int i = 0; i < _numPats; i++) {
+			if (_patterns[i].equals(o))
+				return true;
+		}
+		return false;
+	}
+
   ////////////////////////////////////////////////////////////////
   // printing
+
   public String toString() {
     if (_printString != null) return _printString;
     if (_numPats == 0) return "Any Type";

@@ -40,6 +40,7 @@ import javax.swing.text.*;
 import javax.swing.border.*;
 
 import org.tigris.gef.base.*;
+import org.tigris.gef.util.logging.LogManager;
 
 // needs-more-work: could this be a singleton?
 
@@ -60,7 +61,7 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
     _target = ft;
     Editor ce = Globals.curEditor();
     if (!(ce.getAwtComponent() instanceof JComponent)) {
-      System.out.println("not a JComponent");
+      LogManager.log.warn("not a JComponent");
       return;
     }
     drawingPanel = (JPanel) ce.getAwtComponent();
@@ -71,7 +72,7 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
     while (!(awtComp instanceof JFrame) && awtComp != null) {
       awtComp = awtComp.getParent();
     }
-    if (!(awtComp instanceof JFrame)) { System.out.println("no JFrame"); return; }
+    if (!(awtComp instanceof JFrame)) { LogManager.log.warn("no JFrame"); return; }
     _glass = (JPanel) ((JFrame)awtComp).getGlassPane();
     ft.calcBounds();
     Rectangle bbox = ft.getBounds();
@@ -109,7 +110,9 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
     setBorder(LineBorder.createGrayLineBorder());
   }
 
-  public void propertyChange(PropertyChangeEvent pve) { updateFigText(); }
+  public void propertyChange(PropertyChangeEvent pve) { 
+	  updateFigText(); 
+  }
 
   //public void focusLost(FocusEvent fe) {
   //  System.out.println("FigTextEditor lostFocus");
@@ -192,11 +195,17 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   // event handlers for DocumentListener implementaion
 
-  public void insertUpdate(DocumentEvent e) { updateFigText(); }
+  public void insertUpdate(DocumentEvent e) {
+	  updateFigText();
+  }
 
-  public void removeUpdate(DocumentEvent e) { updateFigText(); }
+  public void removeUpdate(DocumentEvent e) {
+	  updateFigText(); 
+  }
 
-  public void changedUpdate(DocumentEvent e) { updateFigText(); }
+  public void changedUpdate(DocumentEvent e) { 
+	  updateFigText(); 
+  }
 
 
   ////////////////////////////////////////////////////////////////
