@@ -134,18 +134,6 @@ public class LayerDiagram extends Layer {
             throw new IllegalArgumentException("Attempted to add a null fig to a LayerDiagram");
         }
         
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Adding to layer position (" + f.getX() + "," + f.getY() + ") the fig " + f);
-            if (f instanceof FigGroup) {
-                Fig childFig = ((FigGroup)f).getFigAt(0);
-                if (childFig instanceof FigGroup) {
-                    Fig grandChildFig0 = ((FigGroup)childFig).getFigAt(0);
-                    LOG.debug("Gchild0 at position (" + grandChildFig0.getX() + "," + grandChildFig0.getY() + ") the fig " + f);
-                    Fig grandChildFig1 = ((FigGroup)childFig).getFigAt(1);
-                    LOG.debug("Gchild1 at position (" + grandChildFig1.getX() + "," + grandChildFig1.getY() + ") the fig " + f);
-                }
-            }
-        }
         _contents.remove(f);    // act like a set
         _contents.add(f);
         f.setLayer(this);
@@ -200,10 +188,10 @@ public class LayerDiagram extends Layer {
         return c;
     }
 
-    /** Reply the contents of this layer. Do I really want to do this? */
-    public Fig[] getContents() {
-        Fig[] figs = (Fig[])_contents.toArray();
-        return figs;
+    /** Reply the contents of this layer. Do I really want to do this? 
+     */
+    public List getContents() {
+        return new Vector(_contents);
     }
 
     /** Reply the 'top' Fig under the given (mouse)
