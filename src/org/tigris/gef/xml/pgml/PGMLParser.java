@@ -182,10 +182,13 @@ public class PGMLParser extends HandlerBase {
 
   public void startElement(String elementName,AttributeList attrList) {
 	  //System.out.println("[PGMLParser]: startElement " + elementName + " / " + _nestedGroups + " / " + _elementState);
+      // moved here to compensate for groups that do not have default state...PJS
+      if ("group".equals(elementName)) {
+            _nestedGroups++;
+        }
     switch(_elementState) {
         case DEFAULT_STATE:
         if ("group".equals(elementName)) {
-            _nestedGroups++;
             _diagram.add(handleGroup(attrList));
         }
         else if (elementName.equals("pgml")) {
