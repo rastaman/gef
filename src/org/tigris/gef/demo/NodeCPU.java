@@ -150,10 +150,10 @@ public class NodeCPU extends NetNode implements Serializable {
     FigRRect obj3 = new FigRRect(imageWidth - 4, 10, 8, 15, Color.black,
 			    Color.black);
     obj3.setCornerRadius(3);
-    Vector temp_list = new Vector();
-    temp_list.addElement(obj1);
-    temp_list.addElement(obj2);
-    temp_list.addElement(obj3);
+    Collection temp_list = new ArrayList();
+    temp_list.add(obj1);
+    temp_list.add(obj2);
+    temp_list.add(obj3);
     FigNode fn = new FigNode(this, temp_list);
     fn.bindPort(powerPort, obj2);
     fn.bindPort(dataPort, obj3);

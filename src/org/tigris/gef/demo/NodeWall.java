@@ -65,10 +65,10 @@ public class NodeWall extends NetNode implements Serializable {
     Fig obj1 = new FigRect(0, 0, 200, 10, Color.black, Color.white);
     Fig obj2 = new FigRect( 3, 3, 14, 14, Color.black, Color.blue);
     Fig obj3 = new FigRect( 25, 3, 14, 14, Color.black, Color.blue);
-    Vector temp_list = new Vector();
-    temp_list.addElement(obj1);
-    temp_list.addElement(obj2);
-    temp_list.addElement(obj3);
+    Collection temp_list = new Vector();
+    temp_list.add(obj1);
+    temp_list.add(obj2);
+    temp_list.add(obj3);
     FigNode fn = new FigNode(this, temp_list);
     fn.bindPort(powerPort1, obj2);
     fn.bindPort(powerPort2, obj3);

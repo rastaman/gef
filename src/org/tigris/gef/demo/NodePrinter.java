@@ -76,10 +76,10 @@ public class NodePrinter extends NetNode implements Serializable {
     obj3.setCornerRadius(3);
 
 
-    Vector temp_list = new Vector();
-    temp_list.addElement(obj1);
-    temp_list.addElement(obj2);
-    temp_list.addElement(obj3);
+    Collection temp_list = new Vector();
+    temp_list.add(obj1);
+    temp_list.add(obj2);
+    temp_list.add(obj3);
     FigNode fn = new FigNode(this, temp_list);
 
     fn.bindPort(_powerPort, obj2);
