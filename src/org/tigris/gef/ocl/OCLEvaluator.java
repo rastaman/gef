@@ -37,7 +37,6 @@ public class OCLEvaluator {
     public static String GET_NAME_EXPR_1 = "self";
     public static String GET_NAME_EXPR_2 = "self.name.body";
     public static String GET_OWNER_EXPR = "self.owner";
-    public static OCLEvaluator SINGLETON = new OCLEvaluator();
     ////////////////////////////////////////////////////////////////
     // static variables
     protected Map _scratchBindings = new Hashtable();
@@ -83,7 +82,7 @@ public class OCLEvaluator {
         return eval(bindings, prop, targets);
     } // end of eval()
     
-    public Vector eval(Map bindings, String expr, Vector targets) {
+    private Vector eval(Map bindings, String expr, Vector targets) {
         int firstPos;
         int secPos;
         int numElements;
@@ -112,7 +111,12 @@ public class OCLEvaluator {
         return targets;
     }    // end of eval()
 
-    public String toTitleCase(String s) {
+    /**
+     * Return the first character of a string converted to upper case
+     * @param s The string to convert
+     * @return the converted string
+     */
+    private String toTitleCase(String s) {
         if(s.length() > 1) {
             return s.substring(0, 1).toUpperCase() + s.substring(1, s.length());
         } else {
@@ -120,11 +124,20 @@ public class OCLEvaluator {
         }
     }    // end of toTitleCase
 
-    public Object evaluateProperty(Object target, String property) {
+
+    /**
+     * Attempt to retrieve a named property from a target
+     * object.
+     * @param target
+     * @param property
+     * @return
+     */
+    private Object evaluateProperty(Object target, String property) {
         if(target == null) {
             return null;
         }
 
+        // First try and find a getter method in the form getProperty()
         Method m = null;
         Field f = null;
         Object o = null;
@@ -144,6 +157,7 @@ public class OCLEvaluator {
         } catch(Exception e) {
         }
 
+        // Then try and find a method in the form property()
         try {
             m = target.getClass().getMethod(property, null);
             o = m.invoke(target, null);
@@ -160,6 +174,8 @@ public class OCLEvaluator {
         } catch(Exception e) {
         }
 
+        
+        // Next try and find a method in the form Property()
         try {
             m = target.getClass().getMethod(toTitleCase(property), null);
             o = m.invoke(target, null);
@@ -168,6 +184,7 @@ public class OCLEvaluator {
         } catch(Exception e) {
         }
 
+        // We have tried all method forms so lets now try just getting the property
         try {
             f = target.getClass().getField(property);
             o = f.get(target);    // access the field f or object targe
@@ -196,13 +213,13 @@ public class OCLEvaluator {
         return null;
     }    // end of evaluateProperty
 
-    public List flatten(List v) {
+    private List flatten(List v) {
         List accum = new ArrayList();
         flattenInto(v, accum);
         return accum;
     }
 
-    public void flattenInto(Object o, List accum) {
+    private void flattenInto(Object o, List accum) {
         if(!(o instanceof List)) {
             accum.add(o);
         }
@@ -224,7 +241,7 @@ public class OCLEvaluator {
      * @param property The property to look after.
      * @return null
      */
-    public Object getExternalProperty(Object target, String property) {
+    protected Object getExternalProperty(Object target, String property) {
         //System.out.println("called default implementation");
         return null;
     }
@@ -233,7 +250,7 @@ public class OCLEvaluator {
     // is encountered, convert it to a List so the rest of the
     // OCL code still works; there may be a more efficient way,
     // but this was the least intrusive fix
-    public static Object convertCollection(Object o) {
+    private static Object convertCollection(Object o) {
         if(o instanceof Collection && !(o instanceof List)) {
             return new ArrayList((Collection)o);
         }

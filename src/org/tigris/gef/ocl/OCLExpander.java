@@ -39,13 +39,19 @@ public class OCLExpander {
     public Map _templates = new Hashtable();
     public Hashtable _bindings = new Hashtable();
     public boolean _useXMLEscapes = true;
-
+    
+    protected OCLEvaluator evaluator;
+    
     ////////////////////////////////////////////////////////////////
     // constructor
     public OCLExpander(Map templates) {
         _templates = templates;
+        createEvaluator();
     }
 
+    protected void createEvaluator() {
+        evaluator = new OCLEvaluator();
+    }
     ////////////////////////////////////////////////////////////////
     // template expansion
     public void expand(OutputStream w, Object target, String prefix, String suffix) {
@@ -180,6 +186,6 @@ public class OCLExpander {
     }
 
     protected java.util.List evaluate(Map bindings, String expr) {
-        return org.tigris.gef.ocl.OCLEvaluator.SINGLETON.eval(bindings, expr);
+        return evaluator.eval(bindings, expr);
     }
 }
