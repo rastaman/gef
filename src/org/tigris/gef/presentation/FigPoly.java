@@ -456,7 +456,6 @@ public class FigPoly extends Fig {
 
     /**
      * USED BY PGML.tee
-     * @deprecated use getPointsList
      */
     public Point[] getPoints() {
         Point[] points = new Point[getPointsList().size()];
@@ -469,7 +468,8 @@ public class FigPoly extends Fig {
     }
 
     /**
-     * USED BY PGML.tee
+     * @deprecated use getPoints and a sub-array.
+     * If called from tee file use self.points[1,*]
      */
     public Vector getPointsVectorNotFirst() {
         Vector res = new Vector();

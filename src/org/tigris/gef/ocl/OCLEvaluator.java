@@ -146,6 +146,14 @@ public class OCLEvaluator {
 
         Method m = null;
         
+        String collectionRange = null;
+        
+        int rangePos = property.indexOf('[');
+        if (rangePos >= 0) {
+            collectionRange = property.substring(rangePos);
+            property = property.substring(0,rangePos);
+        }
+        
         if (property.endsWith("()")) {
             // Lastly try and find a method in the form property(Writer)
             property = property.substring(0,property.length()-2);
@@ -167,7 +175,7 @@ public class OCLEvaluator {
             m = target.getClass().getMethod("get" + toTitleCase(property), null);
             o = m.invoke(target, null);    // getter methods take no args =>  null
             //System.out.println("[OCLEvaluator] Trying to get method get" + toTitleCase(property) + " = " + o);
-            return convertCollection(o);
+            return convertCollection(o, collectionRange);
         } catch(NoSuchMethodException e) {
         } catch(InvocationTargetException e) {
             if(m != null) {
@@ -181,7 +189,7 @@ public class OCLEvaluator {
         try {
             m = target.getClass().getMethod(property, null);
             o = m.invoke(target, null);
-            return convertCollection(o);
+            return convertCollection(o, collectionRange);
         } catch(NoSuchMethodException e) {
         } catch(InvocationTargetException e) {
             if(m != null) {
@@ -196,7 +204,7 @@ public class OCLEvaluator {
         try {
             m = target.getClass().getMethod(toTitleCase(property), null);
             o = m.invoke(target, null);
-            return convertCollection(o);
+            return convertCollection(o, collectionRange);
         } catch(NoSuchMethodException e) {
         } catch(IllegalAccessException e) {
         } catch(InvocationTargetException e) {
@@ -211,11 +219,11 @@ public class OCLEvaluator {
         try {
             f = target.getClass().getField(property);
             o = f.get(target);    // access the field f or object targe
-            return convertCollection(o);
+            return convertCollection(o, collectionRange);
         } catch(NoSuchFieldException e) {
             o = getExternalProperty(target, property);
             if(o != null) {
-                return convertCollection(o);
+                return convertCollection(o, collectionRange);
             }
             else {
                 LOG.error("Failed to get external property " + property + " on " + target.getClass().getName(), e);
@@ -276,17 +284,54 @@ public class OCLEvaluator {
     }
 
     /** 
-     * If an object is a collection then return it as an ArrayList otherwise return it unchanged.
+     * If an object is a collection then return it as an ArrayList otherwise
+     * return it unchanged.
+     * An optional range argument can be provided which will pull out a
+     * sub-collection in that range.
      * 
      * @param o the object
+     * @param range the range to extract from the collection in the form
+     *              [start,end]
      * @return the original object or ArrayList
      */
-    private static Object convertCollection(Object o) {
-        if(o instanceof Collection && !(o instanceof List)) {
-            return new ArrayList((Collection)o);
-        }
-        else {
+    private static Object convertCollection(Object o, String range) {
+        if (!(o instanceof Collection) && !(o instanceof Object[])) {
             return o;
+        }
+        
+        List list;
+        
+        if (o instanceof Object[]) {
+            list = Arrays.asList((Object[])o);
+        } else if(o instanceof List) {
+            list = (List)o;
+        } else {
+            list = new ArrayList((Collection)o);
+        }
+        
+        if (range != null) {
+            StringTokenizer st = new StringTokenizer(range, "[,]");
+            int start = getValue(st.nextToken(), list);
+            int end = getValue(st.nextToken(), list);
+            list = list.subList(start, end);
+        }
+        
+        return list;
+    }
+    
+    /**
+     * Gets a range value from a string. The string either contains a number or
+     * an asterisk. Either the number is returned or the asterisk returns
+     * the number of items in the given list.
+     * @param range a numberic value or *
+     * @param list the List from which the range refers.
+     * @return
+     */
+    private static final int getValue(String range, List list) {
+        if (range.trim().equals("*")) {
+            return list.size();
+        } else {
+            return Integer.parseInt(range);
         }
     }
 }

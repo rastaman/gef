@@ -716,22 +716,22 @@ public class PGMLParser extends DefaultHandler {
             String body = _textBuf.toString();
             StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
             while(st2.hasMoreElements()) {
-                String t = st2.nextToken();
-                String v = st2.nextToken();
-                if(t.equals("sourcePortFig")) {
-                    spf = findFig(v);
+                String attribute = st2.nextToken();
+                String value = st2.nextToken();
+                if(attribute.equals("sourcePortFig")) {
+                    spf = findFig(value);
                 }
 
-                if(t.equals("destPortFig")) {
-                    dpf = findFig(v);
+                if(attribute.equals("destPortFig")) {
+                    dpf = findFig(value);
                 }
 
-                if(t.equals("sourceFigNode")) {
-                    sfn = (FigNode)findFig(v);
+                if(attribute.equals("sourceFigNode")) {
+                    sfn = (FigNode)findFig(value);
                 }
 
-                if(t.equals("destFigNode")) {
-                    dfn = (FigNode)findFig(v);
+                if(attribute.equals("destFigNode")) {
+                    dfn = (FigNode)findFig(value);
                 }
             }
 
