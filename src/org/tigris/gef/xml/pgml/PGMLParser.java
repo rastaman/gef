@@ -54,6 +54,7 @@ public class PGMLParser extends HandlerBase {
   protected HashMap _figRegistry = null;
   protected Map _ownerRegistry = new HashMap();
 
+  protected String systemId = "";
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -88,6 +89,7 @@ public class PGMLParser extends HandlerBase {
       _figRegistry = new HashMap();
       SAXParser pc = factory.newSAXParser();
       InputSource source = new InputSource(is);
+      source.setSystemId(systemId);
 
       // what is this for?
       // source.setSystemId(url.toString());
@@ -156,7 +158,6 @@ public class PGMLParser extends HandlerBase {
 	  ex.printStackTrace();
       }
   }
-
 
   ////////////////////////////////////////////////////////////////
   // XML element handlers
