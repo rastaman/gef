@@ -34,6 +34,7 @@ package org.tigris.gef.base;
 import org.apache.log4j.Logger;
 import org.tigris.gef.event.ModeChangeEvent;
 import org.tigris.gef.event.ModeChangeListener;
+import org.tigris.gef.graph.presentation.NetPort;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 
@@ -256,19 +257,16 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
      *  transition from ModeSelect to ModeModify here, but there are too
      *  many interactions, so that code is still in ModeSelect. */
     public void checkModeTransitions(InputEvent ie) {
-        if (LOG.isDebugEnabled()) LOG.debug("Checking for mode transition");
         if(!top().canExit() && ie.getID() == MouseEvent.MOUSE_PRESSED) {
-            if (LOG.isDebugEnabled()) LOG.debug("Mouse pressed on a mode that can be exited");
             MouseEvent me = (MouseEvent)ie;
             int x = me.getX(), y = me.getY();
             Fig underMouse = editor.hit(x, y);
-            if(underMouse instanceof FigNode) {
-                if (LOG.isDebugEnabled()) LOG.debug("Mouse pressed on a FigNode");
+            if(underMouse instanceof FigNode && ((FigNode)underMouse).isDragConnectable()) {
                 Object startPort = ((FigNode)underMouse).hitPort(x, y);
                 if(startPort != null) {
-                    if (LOG.isDebugEnabled()) LOG.debug("We have a start port so changing to ModeCreateEdge");
                     //user clicked on a port, now drag an edge
-                    FigModifyingModeImpl createArc = (FigModifyingModeImpl)new ModeCreateEdge(editor);
+                    FigModifyingModeImpl createArc =
+                        (FigModifyingModeImpl)new ModeCreateEdge(editor);
                     push(createArc);
                     createArc.mousePressed(me);
                 }

@@ -71,10 +71,13 @@ public class PortPower extends NetPort implements Serializable {
   public int type() { return _type; }
   public void type(int t) { if (t==SOCKET || t == RECEPTICAL) _type = t; }
 
-  protected Class defaultEdgeClass(NetPort otherPort) {
-    try { return Class.forName("org.tigris.gef.demo.EdgePower"); }
-    catch (java.lang.ClassNotFoundException ignore) { return null; }
-  }
+    protected Class defaultEdgeClass(NetPort otherPort) {
+        try {
+            return Class.forName("org.tigris.gef.demo.EdgePower");
+        } catch (java.lang.ClassNotFoundException ignore) {
+            return null;
+        }
+    }
 
   /** Add the constraint that PortPowers can only be connected to
    *  other ports of the same type. And SOCKETs can only be connected

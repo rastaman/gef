@@ -55,10 +55,13 @@ public class SamplePort extends NetPort implements Serializable{
     }
   }
   
-  protected Class defaultEdgeClass(NetPort otherPort) {
-    try { return Class.forName("org.tigris.gef.demo.SampleEdge"); }
-    catch (java.lang.ClassNotFoundException ignore) { return null; }
-  }
+    protected Class defaultEdgeClass(NetPort otherPort) {
+        try {
+            return Class.forName("org.tigris.gef.demo.SampleEdge");
+        } catch (java.lang.ClassNotFoundException ignore) {
+            return null;
+        }
+    }
 
   /** Add the constraint that SamplePort's can only be connected to
    * other ports of the same type. */

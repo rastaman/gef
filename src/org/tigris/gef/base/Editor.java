@@ -131,7 +131,9 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
      */
     protected Selection _curSel = null;
 
-    /** The scale at which to draw the diagram */
+    /** The scale at which to draw the diagram
+     * @deprecated in 0.10.1 use getter/setter
+     */
     protected double _scale = 1.0;
 
     /** Should elements in this editor be selectable? */
@@ -243,7 +245,10 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     }
 
     /** Clone the receiving editor. Called from ActionSpawn. Subclasses
-     *  of Editor should override this method. */
+     *  of Editor should override this method.
+     * TODO shouldn't this just call super.clone() instead of using
+     * reflection? Bob 29 Jan 2004
+     */
     public Object clone() {
         try {
             Editor ed = (Editor)this.getClass().newInstance();
@@ -310,9 +315,12 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     public void setScale(double scale) {
         _scale = scale;
         _layerManager.setScale(_scale);
-        _jComponent.setPreferredSize(new Dimension(
+        _jComponent.setPreferredSize(
+            new Dimension(
                 (int) (_naturalComponentWidth * _scale),
-                (int) (_naturalComponentHeight * _scale)));
+                (int) (_naturalComponentHeight * _scale)
+            )
+        );
         damageAll();
     }
 
@@ -725,16 +733,6 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         int dx = (int)(xp * _scale - xp);
         int dy = (int)(yp * _scale - yp);
         me.translatePoint(dx, dy);
-		/*
-        //System.out.println( "_curFig="+_curFig+"  _popup="+(_popup != null));
-		if( ( _curFig == null) && (_popup != null) && (me.isPopupTrigger())) {
-			//System.out.println( me.isPopupTrigger()+" x="+me.getX()+" x="+me.getY());
-			//System.out.println( _jComponent+"\n"+me.getComponent());
-			_popup.show( me.getComponent(), me.getX(), me.getY());
-			return;
-		}
-        */
-
         return me;
     }
 
@@ -812,7 +810,8 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
      *  Editor where the first originated until the mouse button is
      *  released (regardless of whether the mouse position is within the
      *  bounds of the Editor).  BTW, this makes drag and drop editing
-     *  almost impossible.  */
+     *  almost impossible.
+     */
     public void mouseDragged(MouseEvent me) {
         translateMouseEvent(me);
         Globals.curEditor(this);

@@ -92,6 +92,15 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
         setFigs(figs);
     }
 
+    /**
+     * Returns true if dragging from a port on this fig should 
+     * automatically go to mode ModeCreateEdge 
+     * @return the drag connectable property
+     */
+    public boolean isDragConnectable() {
+        return true;
+    }
+
     public Object clone() {
         FigNode figClone = (FigNode)super.clone();
         figClone._figEdges = new ArrayList(_figEdges);
@@ -239,10 +248,14 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
      *  null if none. */
     public Object hitPort(int x, int y) {
         Fig f = hitFig(new Rectangle(x, y, 1, 1));
-        if(f != null)
-            return f.getOwner();
-        else
+        System.out.println("FigNode.hitPort(x,y): f=" + f);
+        if(f != null) {
+            Object owner = f.getOwner();
+            System.out.println("FigNode.hitPort(x,y): owner=" + owner);
+            return owner;
+        } else {
             return null;
+        }
     }
 
     /** Reply a port for the topmost Fig that actually has a port. This
@@ -250,21 +263,23 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
      *  other Figs. */
     public Object deepHitPort(int x, int y) {
         int figCount = figs.size();
-        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+        for (int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig f = (Fig)figs.get(figIndex);
             Object own = f.getOwner();
             // assumes ports are always filled
-            if(f.contains(x, y) && own != null)
+            if (f.contains(x, y) && own != null) {
                 return own;
+            }
         }
 
         Rectangle r = new Rectangle(x - 16, y - 16, 32, 32);
-        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+        for (int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig f = (Fig)figs.get(figIndex);
             Object own = f.getOwner();
             // assumes ports are always filled
-            if(f.hit(r) && own != null)
+            if (f.hit(r) && own != null) {
                 return own;
+            }
         }
 
         return null;

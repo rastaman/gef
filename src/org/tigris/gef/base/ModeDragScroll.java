@@ -57,14 +57,14 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
     private JViewport _viewport = null;
     private Cursor _oldCursor = null;
     private JComponent _component = null;
-    private Dimension _componentSize = null;
-    private Point _viewPosition = new Point();
-    private int _deltaX;
-    private int _deltaY;
-    private int _lastX;
-    private int _lastY;
+    private Dimension componentSize = null;
+    private Point viewPosition = new Point();
+    private int deltaX;
+    private int deltaY;
+    private int lastX;
+    private int lastY;
 
-    private boolean _simpleDrag = false;
+    private boolean simpleDrag = false;
 
     private static final Logger LOG = Logger.getLogger(ModeDragScroll.class);
 
@@ -78,7 +78,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
      */
     public ModeDragScroll(Editor editor) {
         super(editor);
-         autoTimer = new javax.swing.Timer(AUTOSCROLL_DELAY, this);
+        autoTimer = new javax.swing.Timer(AUTOSCROLL_DELAY, this);
     }
 
     /**
@@ -121,7 +121,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
                                   || (button2 && !isOtherDown);
 
         // if only mouse button1 is pressed, activate the auto scrolling
-        _simpleDrag = ! buttonCondition && button1;
+        simpleDrag = ! buttonCondition && button1;
 
         if(!buttonCondition) {
             if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but with wrong button condition for scrolling");
@@ -147,14 +147,14 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         me = editor.retranslateMouseEvent(me);
         _viewport = (JViewport) parent;
 
-        _viewPosition = _viewport.getViewPosition();
+        viewPosition = _viewport.getViewPosition();
         _viewportExtent = _viewport.getExtentSize();
 
-        _componentSize = _component.getSize();
-        _deltaX = 0;
-        _deltaY = 0;
-        _lastX = me.getX();
-        _lastY = me.getY();
+        componentSize = _component.getSize();
+        deltaX = 0;
+        deltaY = 0;
+        lastX = me.getX();
+        lastY = me.getY();
 
         _oldCursor = _component.getCursor();
         _component.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -162,7 +162,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         me.consume();
         editor.translateMouseEvent(me);
         // stop auto timer
-        if (_simpleDrag) {
+        if (simpleDrag) {
             autoTimer.stop();
             autoscroll = false;
             //_simpleDrag = false;
@@ -178,7 +178,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
      */
     public void mouseDragged(MouseEvent me) {
 
-        if (_simpleDrag) {
+        if (simpleDrag) {
             // examine viewport for auto scrolling
             me = editor.retranslateMouseEvent(me);
             int mouseX = me.getX();
@@ -213,23 +213,25 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
 
             int factor = (me.isShiftDown() ? 4 : 1);
 
-            _deltaX = factor * (_lastX - x);
-            _deltaY = factor * (_lastY - y);
+            deltaX = factor * (lastX - x);
+            deltaY = factor * (lastY - y);
 
-           _deltaX = Math.max(-_viewPosition.x, _deltaX);
-           _deltaX = Math.min(_componentSize.width - (_viewPosition.x + _viewportExtent.width), _deltaX);
+            deltaX = Math.max(-viewPosition.x, deltaX);
+            deltaX = Math.min(componentSize.width - (viewPosition.x + _viewportExtent.width), deltaX);
 
-            _deltaY = Math.max(-_viewPosition.y, _deltaY);
-            _deltaY = Math.min(_componentSize.height - (_viewPosition.y + _viewportExtent.height), _deltaY);
+            deltaY = Math.max(-viewPosition.y, deltaY);
+            deltaY = Math.min(componentSize.height - (viewPosition.y + _viewportExtent.height), deltaY);
 
-            _viewPosition.x += _deltaX;
-            _viewPosition.y += _deltaY;
-            _viewport.setViewPosition(_viewPosition);
+            viewPosition.x += deltaX;
+            viewPosition.y += deltaY;
+            _viewport.setViewPosition(viewPosition);
 
-            if(_deltaX != 0)
-                _lastX = x + _deltaX;
-            if(_deltaY != 0)
-                _lastY = y + _deltaY;
+            if (deltaX != 0) {
+                lastX = x + deltaX;
+            }
+            if (deltaY != 0) {
+                lastY = y + deltaY;
+            }
             me.consume();
             editor.translateMouseEvent(me);
             if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected, viewport moved and event consumed");
@@ -248,15 +250,12 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
 
             if   ( mouseX > viewRight &&  ! (viewRight > (componentSize.width - SCROLL_INCREMENT ))) {
                 // mouse moves right out of the view -> scroll to right
-
                 view.setViewPosition(new Point(viewRect.x + SCROLL_INCREMENT, viewRect.y));
                 return true;
-
             } else if ( mouseX < viewRect.x && ! (viewRect.x -  SCROLL_INCREMENT < 0)) {
                 // mouse moves left out of the viewport -> scroll to left
                 view.setViewPosition(new Point(viewRect.x - SCROLL_INCREMENT, viewRect.y));
                 return true;
-
             } else if (mouseY > viewY &&  ! (viewY > (componentSize.height -SCROLL_INCREMENT))) {
                 view.setViewPosition(new Point(viewRect.x,  viewRect.y + SCROLL_INCREMENT));
                 return true;
@@ -264,7 +263,6 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
                 view.setViewPosition(new Point(viewRect.x,  viewRect.y - SCROLL_INCREMENT));
                 return true;
             }
-
         }
         return false;
     }
@@ -278,7 +276,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         if(autoscroll) {
             autoTimer.stop();
             autoscroll = false;
-            _simpleDrag = false;
+            simpleDrag = false;
         }
 
         if(!_isScrolling) {
@@ -286,10 +284,10 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
             return;
         }
         _isScrolling = false;
-        _viewPosition = null;
+        viewPosition = null;
         _component.setCursor(_oldCursor);
         _component = null;
-        _componentSize = null;
+        componentSize = null;
         _viewport = null;
         _oldCursor = null;
         me.consume();

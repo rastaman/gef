@@ -61,16 +61,16 @@ public class ModeSelect extends FigModifyingModeImpl {
     // instance variables
 
     /** If the user drags a selection rectangle, this is the first corner. */
-    private Point _selectAnchor = new Point(0, 0);
+    private Point selectAnchor = new Point(0, 0);
 
     /** This is the seclection rectangle. */
-    private Rectangle _selectRect = new Rectangle(0, 0, 0, 0);
+    private Rectangle selectRect = new Rectangle(0, 0, 0, 0);
 
     /** True when the selection rectangle should be painted. */
-    private boolean _showSelectRect = false;
+    private boolean showSelectRect = false;
 
     /** True when the user holds the shift key to toggle selections. */
-    private boolean _toggleSelection = false;
+    private boolean toggleSelection = false;
 
     private static final Logger LOG = Logger.getLogger(ModeSelect.class);
     
@@ -117,7 +117,7 @@ public class ModeSelect extends FigModifyingModeImpl {
         }
 
         if (me.getModifiers() == InputEvent.BUTTON3_MASK) {
-            _selectAnchor = new Point(me.getX(), me.getY());
+            selectAnchor = new Point(me.getX(), me.getY());
             if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected button 3 so setting anchor point");
             // TODO should we not consume here?
             return;
@@ -132,14 +132,14 @@ public class ModeSelect extends FigModifyingModeImpl {
 
         int x = me.getX();
         int y = me.getY();
-        _selectAnchor = new Point(x, y);
-        _selectRect.setBounds(x, y, 0, 0);
-        _toggleSelection = (me.isControlDown() && !me.isPopupTrigger()) || me.isMetaDown();
+        selectAnchor = new Point(x, y);
+        selectRect.setBounds(x, y, 0, 0);
+        toggleSelection = (me.isControlDown() && !me.isPopupTrigger()) || me.isMetaDown();
         SelectionManager sm = editor.getSelectionManager();
         Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
 
         /* Check if multiple things are selected and user clicked one of them. */
-        Fig underMouse = editor.hit(_selectAnchor);
+        Fig underMouse = editor.hit(selectAnchor);
         Rectangle smallHitRect = new Rectangle(x - 1, y - 1, 3, 3);
         if(underMouse instanceof FigGroup) {
             underMouse = ((FigGroup)underMouse).deepSelect(smallHitRect);
@@ -160,7 +160,7 @@ public class ModeSelect extends FigModifyingModeImpl {
         }
 
         if(underMouse != null) {
-            if(_toggleSelection) {
+            if(toggleSelection) {
                 sm.toggle(underMouse);
             } else if(!sm.containsFig(underMouse)) {
                 sm.select(underMouse);
@@ -184,17 +184,32 @@ public class ModeSelect extends FigModifyingModeImpl {
 
         int x = me.getX();
         int y = me.getY();
-        _showSelectRect = true;
-        int boundX = Math.min(_selectAnchor.x, x);
-        int boundY = Math.min(_selectAnchor.y, y);
-        int boundW = Math.max(_selectAnchor.x, x) - boundX;
-        int boundH = Math.max(_selectAnchor.y, y) - boundY;
+        
+        showSelectRect = true;
+        
+        int boundX = Math.min(selectAnchor.x, x);
+        int boundY = Math.min(selectAnchor.y, y);
+        int boundW = Math.max(selectAnchor.x, x) - boundX;
+        int boundH = Math.max(selectAnchor.y, y) - boundY;
+        
         double scale = editor.getScale();
-        editor.damaged((int)((double)_selectRect.x * scale) - 1, (int)((double)_selectRect.y * scale) - 1, (int)(((double)_selectRect.width + 1) * scale + 2), (int)(((double)_selectRect.height + 1) * scale) + 2);
-        _selectRect.setBounds(boundX, boundY, boundW, boundH);
-        editor.damaged((int)((double)_selectRect.x * scale) - 1, (int)((double)_selectRect.y * scale) - 1, (int)(((double)_selectRect.width + 1) * scale + 2), (int)(((double)_selectRect.height + 1) * scale) + 2);
+        
+        scaleDamage(scale, selectRect);
+        
+        selectRect.setBounds(boundX, boundY, boundW, boundH);
+        
+        scaleDamage(scale, selectRect);
+        
         editor.scrollToShow(x, y);
         me.consume();
+    }
+    
+    private void scaleDamage(double scale, Rectangle rect) {
+        int newX = (int)((double)rect.x * scale) - 1;
+        int newY = (int)((double)rect.y * scale) - 1;
+        int newWidth  = (int)(((double)(rect.width  + 2)) * scale) + 2;
+        int newHeight = (int)(((double)(rect.height + 2)) * scale) + 2;
+        editor.damaged(newX, newY, newWidth, newHeight);
     }
 
     /** On mouse up, select or toggle the selection of items under the
@@ -212,37 +227,38 @@ public class ModeSelect extends FigModifyingModeImpl {
         
         int x = me.getX();
         int y = me.getY();
-        _showSelectRect = false;
+        showSelectRect = false;
         Vector selectList = new Vector();
         Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
         Enumeration figs = editor.figs();
         while(figs.hasMoreElements()) {
             Fig f = (Fig)figs.nextElement();
-            if((!_toggleSelection && _selectRect.isEmpty() && f.hit(hitRect)) || (!_selectRect.isEmpty() && f.within(_selectRect))) {
+            if ((!toggleSelection && selectRect.isEmpty() && f.hit(hitRect))
+                    || (!selectRect.isEmpty() && f.within(selectRect))) {
                 selectList.addElement(f);
             }
         }
 
-        if(!_selectRect.isEmpty() && selectList.isEmpty()) {
+        if(!selectRect.isEmpty() && selectList.isEmpty()) {
             figs = editor.figs();
             while(figs.hasMoreElements()) {
                 Fig f = (Fig)figs.nextElement();
-                if(f.intersects(_selectRect)) {
+                if(f.intersects(selectRect)) {
                     selectList.addElement(f);
                 }
             }
         }
 
-        if(_toggleSelection) {
+        if(toggleSelection) {
             editor.getSelectionManager().toggle(selectList);
         }
         else {
             editor.getSelectionManager().select(selectList);
         }
 
-        _selectRect.grow(1, 1);    /* make sure it is not empty for redraw */
-        editor.scaleRect(_selectRect);
-        editor.damaged(_selectRect);
+        selectRect.grow(1, 1);    /* make sure it is not empty for redraw */
+        editor.scaleRect(selectRect);
+        editor.damaged(selectRect);
         if(me.getModifiers() == InputEvent.BUTTON3_MASK) {
             if (LOG.isDebugEnabled()) LOG.debug("MouseReleased button 3 detected so not consumed");
             return;
@@ -266,10 +282,10 @@ public class ModeSelect extends FigModifyingModeImpl {
 
     /** Paint this mode by painting the selection rectangle if appropriate. */
     public void paint(Graphics g) {
-        if(_showSelectRect) {
+        if(showSelectRect) {
             Color selectRectColor = Globals.getPrefs().getRubberbandColor();
             g.setColor(selectRectColor);
-            g.drawRect(_selectRect.x, _selectRect.y, _selectRect.width, _selectRect.height);
+            g.drawRect(selectRect.x, selectRect.y, selectRect.width, selectRect.height);
         }
     }
 
