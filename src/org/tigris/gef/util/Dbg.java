@@ -43,7 +43,7 @@ public class Dbg {
   // needs-more-work: upgrade to sun collections
   public final static VectorSet guards = new VectorSet();
 
-  public static final void assert(boolean cond, String msg) {
+  public static final void assertTrue(boolean cond, String msg) {
     if (on && !cond) throw new AssertionException(msg);
   }
 

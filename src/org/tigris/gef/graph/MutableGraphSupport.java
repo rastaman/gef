@@ -74,6 +74,13 @@ implements MutableGraphModel, java.io.Serializable {
 	public void dragNode(Object node) {
 	}
 
+        /** Return true if the connection to the old node can be rerouted to
+         * the new node.
+         */
+        public boolean canChangeConnectedNode(Object newNode, Object oldNode, Object edge) {
+            return false;
+        }
+  
   /** Return true if the two given ports can be connected by the given
    *  kind of edge. By default ignore edgeClass and call
    *  canConnect(port,port). */
@@ -81,6 +88,12 @@ implements MutableGraphModel, java.io.Serializable {
     return canConnect(fromPort, toPort);
   }
 
+  /** Reroutes the connection to the old node to be connected to
+   * the new node.
+   */
+  public void changeConnectedNode(Object newNode, Object oldNode, Object edge, boolean isSource) {
+  }
+  
   /** Contruct and add a new edge of the given kind. By default ignore
    *  edgeClass and call connect(port,port). */
   public Object connect(Object fromPort, Object toPort, Class edgeClass) {

@@ -615,6 +615,7 @@ public class PGMLParser extends HandlerBase {
             while (st2.hasMoreElements()) {
                 String t = st2.nextToken();
                 String v = st2.nextToken();
+                System.out.println("[GEF.PGMLParser] endElement: tag = " + t);
                 if (t.equals("sourcePortFig")) spf = findFig(v);
                 if (t.equals("destPortFig")) dpf = findFig(v);
                 if (t.equals("sourceFigNode")) sfn = (FigNode) findFig(v);
@@ -785,6 +786,7 @@ public class PGMLParser extends HandlerBase {
   }
 
   protected Fig findFig(String uri) {
+      System.out.println("[GEF.PGMLParser] findFig: " + uri);
     Fig f = null;
     if (uri.indexOf(".") == -1) {
       f = (Fig) _figRegistry.get(uri);

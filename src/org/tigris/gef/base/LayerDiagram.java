@@ -96,7 +96,7 @@ public class LayerDiagram extends Layer {
   /** Add a Fig to the contents of this layer. Items are
    *  added on top of all other items. */
   public void add(Fig f) {
-    if (Dbg.on) Dbg.assert(f != null, "tried to add null Fig");
+    if (Dbg.on) Dbg.assertTrue(f != null, "tried to add null Fig");
     _contents.removeElement(f); // act like a set
     _contents.addElement(f);
     f.setLayer(this);
@@ -106,7 +106,7 @@ public class LayerDiagram extends Layer {
   /** Add a Fig to the contents of this layer. Items are
    *  added on top of all other items. */
   public void insertAt(Fig f, int index) {
-    if (Dbg.on) Dbg.assert(f != null, "tried to insert null Fig");
+    if (Dbg.on) Dbg.assertTrue(f != null, "tried to insert null Fig");
     _contents.removeElement(f); // act like a set
     _contents.insertElementAt(f, index);
     f.setLayer(this);
@@ -116,7 +116,7 @@ public class LayerDiagram extends Layer {
   /** Add a Fig to the contents of this layer. Items are
    *  added on top of all other items. */
   public int indexOf(Fig f) {
-    if (Dbg.on) Dbg.assert(f != null, "tried to find null Fig");
+    if (Dbg.on) Dbg.assertTrue(f != null, "tried to find null Fig");
     return _contents.indexOf(f);
   }
 

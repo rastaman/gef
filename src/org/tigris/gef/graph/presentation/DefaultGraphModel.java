@@ -171,7 +171,8 @@ implements java.io.Serializable {
 	public void dragNode(Object node) {
 		addNode(node);
 	}                                                                                                                  
-  /** Return true if the two given ports can be connected by a 
+
+        /** Return true if the two given ports can be connected by a 
    * kind of edge to be determined by the ports. */
   public boolean canConnect(Object srcPort, Object destPort) {
     if (srcPort instanceof NetPort && destPort instanceof NetPort) {
@@ -228,4 +229,17 @@ implements java.io.Serializable {
     return e;
   }
 
+  /** Return true if the connection to the old node can be rerouted to
+   * the new node.
+   */
+  public boolean canChangeConnectedNode(Object newNode, Object oldNode, Object edge) {
+      return false;
+  }
+  
+  /** Reroutes the connection to the old node to be connected to
+   * the new node.
+   */
+  public void changeConnectedNode(Object newNode, Object oldNode, Object edge, boolean isSource) {
+  }
+  
 } /* end class DefaultGraphModel */

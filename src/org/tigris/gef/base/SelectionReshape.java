@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: SelectionReshape.java
 // Classes: SelectionReshape
 // Original Author: jrobbins@ics.uci.edu
@@ -36,6 +33,8 @@ import java.awt.event.*;
 import java.util.*;
 
 import org.tigris.gef.presentation.*;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.graph.GraphController;
 
 /** A Selection that allows the user to reshape the selected Fig.
  *  This is used with FigPoly, FigLine, and FigInk.  One handle is
@@ -109,28 +108,33 @@ public class SelectionReshape extends Selection
   /** Change some attribute of the selected Fig when the user drags one of its
    *  handles.  */
   public void dragHandle(int mX, int mY, int anX, int anY, Handle h) {
-    // check assertions
-    if ( _content instanceof FigEdgePoly) {
-    FigEdgePoly p = ((FigEdgePoly)_content);
-    int npoints = _content.getNumPoints();
-    int[] xs = _content.getXs();
-    int[] ys = _content.getYs();
-    Rectangle r = new Rectangle(anX-4,anY-4,8,8);
-    if(h.index == p.getNumPoints()) {
-      for (int i = 0; i < npoints-1; ++i) {
-        if(Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
-          p.insertPoint(i,r.x,r.y);
-          h.index = i+1;
-          break;
-        }
+      // check assertions
+      if ( _content instanceof FigEdgePoly) {
+          FigEdgePoly p = ((FigEdgePoly)_content);
+          int npoints = _content.getNumPoints();
+          int[] xs = _content.getXs();
+          int[] ys = _content.getYs();
+          Rectangle r = new Rectangle(anX-4,anY-4,8,8);
+          if(h.index == p.getNumPoints()) {
+              for (int i = 0; i < npoints-1; ++i) {
+                  if(Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
+                      p.insertPoint(i,r.x,r.y);
+                      h.index = i+1;
+                      break;
+                  }
+              }
+          }
+          if (h.index < 0 || h.index >= p.getNumPoints())
+              System.out.println("mistake " + h.index);
+          if ((h.index == 0)||(h.index == p.getNumPoints()-1)) {
+              updateEdgeEnds(p,h,mX,mY);
+          } // end if
       }
-    }
-    if (h.index < 0 || h.index >= p.getNumPoints())
-      System.out.println("mistake " + h.index);
-    }
-    _content.setPoints(h, mX, mY);
+      _content.setPoints(h, mX, mY);
   }
 
+  protected void updateEdgeEnds(FigEdgePoly poly, Handle handle, int x, int y ) {
+  }
 
   ////////////////////////////////////////////////////////////////
   // event handlers

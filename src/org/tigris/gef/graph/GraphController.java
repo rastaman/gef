@@ -15,10 +15,10 @@ import java.util.*;
 public interface GraphController extends java.io.Serializable {
 	/**
 	 * Add a new presentation to the list of known presentations.
-	 * Each presentation consists of a data object and an object
-	 * for its graphical representation.
+	 * Each presentation consists of a data object (referrer) and 
+         * an object for its graphical representation.
 	 */
-	public boolean addPresentation(Object representation, Object data);
+	public boolean addPresentation(Object representation, Object referrer);
 
 	/**
 	 * Remove a presentation from the list of known presentations.
@@ -29,6 +29,12 @@ public interface GraphController extends java.io.Serializable {
 	 * Get the graphical representation of the given object.
 	 */
 	public Object presentationFor(Object data);
+
+	/**
+	 * Get the related data object for the given object.
+	 */
+	public Object referrerFor(Object presentation);
+
         /**
         * Tests, if the given object is a node known by the controller.
         */

@@ -291,7 +291,7 @@ public class FigPoly extends Fig {
    *  segment. Fires PropertyChange with "bounds". */
   public void removePoint(int i) {
     // needs-more-work: this assertion has been violated, track it down
-    if (Dbg.on) Dbg.assert(i >= 0 && i < _npoints, "point not found");
+    if (Dbg.on) Dbg.assertTrue(i >= 0 && i < _npoints, "point not found");
     if (_npoints < 3) return;
     int tmp[] = new int[_npoints];
     if (_rectilinear && i != 0 && i != _npoints - 1) {
