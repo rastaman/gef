@@ -24,14 +24,14 @@
 // File: ModeDragScroll.java
 // Classes: ModeDragScroll
 // Original Author: Sean Chen, schen@webex.net
-
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.ActionListener;
 
 /** A Mode that allows the user to scroll the Editor by clicking and dragging
  * with the middle mouse button.
@@ -41,261 +41,249 @@ import javax.swing.*;
  * @author Sean Chen, schen@webex.net
  */
 public class ModeDragScroll extends FigModifyingModeImpl implements ActionListener {
+    private Dimension _viewportExtent;
 
-  /** Pause time between each scroll during autoscroll (in milliseconds)
-   */
-  private final static int AUTOSCROLL_DELAY = 200;
+    // attributes for autoscrolling...
+    private boolean autoscroll = false;
+    private javax.swing.Timer autoTimer;
+    private int recentX, recentY;
+    private final static int AUTOSCROLL_DELAY = 200;
+    private static final int SCROLL_INCREMENT = 10;
 
-  /** Minimum pause time between each scroll during autoscroll
-   */
-  private final static int MIN_AUTOSCROLL_DELAY = 50;
 
-  /** For each pixel farther away from component, shave off this factor
-   *  (in milliseconds) down to MIN_AUTOSCROLL_DELAY
-   */
-  private final static int AUTOSCROLL_FACTOR = 10;
+    ////////////////////////////////////////////////////////////////
+    // constructors and related methods
 
-  ////////////////////////////////////////////////////////////////
-  // constructors and related methods
-
-  /** Construct a new ModeDragScroll with the given parent.
-   * 
-   * @param par The Editor this Mode will drag
-   */
-  public ModeDragScroll(Editor par) {
-    super(par);
-    autoTimer = new javax.swing.Timer(AUTOSCROLL_DELAY,this);
-  }
-
-  /** Construct a new ModeDragScroll instance. Its parent must be set
-   * before this instance can be used.
-   * 
-   */
-  public ModeDragScroll() { this(null); }
-
-  /** Always false since this mode can never be exited.
-   */
-  public boolean canExit() { return false; }
-
-  /** Instructions for the user.
-   */
-  public String instructions() {
-    return "Drag with mouse to scroll";
-  }
-
-  private boolean autoscroll = false;
-  private Rectangle currentView, newView = new Rectangle();
-  private Point scrollOrigin = new Point();
-  private int xcorrection = 0, ycorrection = 0;
-  private JComponent component = null;
-  private JViewport view = null;
-  private Cursor oldCursor = null;
-  private Dimension componentSize = null;
-  private javax.swing.Timer autoTimer;
-  private boolean dragScrolling = false;
-  private int recentX, recentY;
-
-  /** Grabs component to begin scrolling.  Will turn cursor into a hand.
-   * 
-   * @param me 
-   */
-  public void mousePressed(MouseEvent me) {
-    dragScrolling = (me.isAltDown());
-
-    // get the component and the view
-    component = (JComponent) editor.getAwtComponent();
-    if (component == null) return;
-    if (component != null && component.getParent() instanceof JViewport)
-      view = (JViewport) component.getParent();
-    componentSize = component.getSize();
-
-    int x = me.getX(), y = me.getY();
-    currentView = view.getViewRect();    // assume it's a new Rectangle
-    newView.width = currentView.width;
-    newView.height = currentView.height;
-    newView.x = currentView.x;
-    newView.y = currentView.y;
-    scrollOrigin.x = x; scrollOrigin.y = y;
-    xcorrection = 0;
-    ycorrection = 0;
-    // System.out.println("Reset to "+newView+" with origin at "+scrollOrigin);
-    if (dragScrolling) {
-      oldCursor = component.getCursor();
-      component.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    }
-    //if (autoscroll) {
-    autoTimer.stop();
-    autoscroll = false;
-    //}
-    if (dragScrolling) me.consume();
-  }
-
-  /** If mouse is outside the component, begins autoscrolling or speeds it up.
-   * Otherwise will just scroll.
-   * 
-   * @param me 
-   */
-  public void mouseDragged(MouseEvent me) {
-    me = editor.retranslateMouseEvent(me);
-    int x = me.getX(), y = me.getY();
-    recentX = x; recentY = y;
-    // are we out of this component? if so, don't do anything
-    // let autoscroll take over
-
-    // jer: check if we are outside of the current view rect, not the
-    // component, keep mouse x,y in view coordinates
-    if (x < currentView.x || y < currentView.y ||
-	x > currentView.x + currentView.width ||
-	y > currentView.y + currentView.height) {
-      if (x < currentView.x) {
-	newView.x = x - currentView.x;
-	newView.y = 0;
-	//System.out.println("left");
-      }
-      else if (x > currentView.x + currentView.width) {
-	newView.x = x - (currentView.x + currentView.width);
-	newView.y = 0;
-	//System.out.println("right");
-      }
-      if (y < currentView.y) {
-	newView.x = 0;
-	newView.y = y - currentView.y;
-	//System.out.println("top");
-      }
-      else if (y > currentView.y + currentView.height) {
-	newView.x = 0;
-	newView.y = y - (currentView.y + currentView.height);
-	//System.out.println("bot");
-      }
-      if (dragScrolling) {
-	newView.x = - newView.x;
-	newView.y = - newView.y;
-      }
-      if (!autoscroll) {
-	autoscroll = true;
-	autoTimer.start();
-      }
-      if (!doScroll()) {
-	autoscroll = false; // can't scroll anymore
-	autoTimer.stop();
-      }
-
-      //else {
-	//jer: keep speed constant and make steps larger
-
-	// speed up the farther away we are from the component
-	//int distance = Math.max(Math.abs(newView.x), Math.abs(newView.y));
-
-	// for each pixel, shave off AUTOSCROLL_FACTOR milliseconds
-	// down to a MIN_AUTOSCROLL_DELAY
-	// autoTimer.setDelay(Math.max(AUTOSCROLL_DELAY - 
-	// distance * AUTOSCROLL_FACTOR, 
-	// MIN_AUTOSCROLL_DELAY));
-	//autoTimer.setDelay(AUTOSCROLL_DELAY);
-      //}
-      if (dragScrolling) {
-	//System.out.println("consumed in ModeDragScroll");
-	me.consume();
-      }
-      return;
+    /**
+     * Construct a new ModeDragScroll with the given parent.
+     * 
+     * @param editor The Editor this Mode will drag
+     */
+    public ModeDragScroll(Editor editor) {
+        super(editor);
+         autoTimer = new javax.swing.Timer(AUTOSCROLL_DELAY, this);
     }
 
-    //mouse is within current view
-    autoscroll = false;
-    autoTimer.stop();
-    if (dragScrolling) {
-      x -= xcorrection;
-      y -= ycorrection;
-      newView.x = (scrollOrigin.x - x);
-      newView.y = (scrollOrigin.y - y);
-
-      if (doScroll()) {
-	scrollOrigin.x = x;
-	scrollOrigin.y = y;
-      }
-      me.consume();
+    /**
+     * Construct a new ModeDragScroll instance. Its parent must be set
+     * before this instance can be used.
+     * 
+     */
+    public ModeDragScroll() {
+        this(null);
     }
-  }
 
-  /** Perform scrolling using the delta found in newView.
-   * 
-   * @return scroll succeeded or not
-   */
-  private boolean doScroll() {
-    // check to see if we're scrolling the component off the view
-    currentView.x += newView.x;
-    currentView.y += newView.y;
-    if (currentView.x < 0 || currentView.x > (componentSize.width - currentView.width)) {
-      currentView.x -= newView.x;
-      newView.x = 0;
+    /**
+     * Always false since this mode can never be exited.
+     */
+    public boolean canExit() {
+        return false;
     }
-    if (currentView.y < 0 || currentView.y > (componentSize.height - currentView.height)) {
-      currentView.y -= newView.y;
-      newView.y = 0;
+
+    /**
+     * Instructions for the user.
+     */
+    public String instructions() {
+        return "Drag with mouse to scroll, hold down SHIFT to speed up movement";
     }
-    if (newView.x == 0 && newView.y == 0) {
-      //System.out.println("stop!!");
-      return false;
+
+    private boolean _isScrolling = false;
+    private JViewport _viewport = null;
+    private Cursor _oldCursor = null;
+    private JComponent _component = null;
+    private Dimension _componentSize = null;
+    private Point _viewPosition = new Point();
+    private int _deltaX;
+    private int _deltaY;
+    private int _lastX;
+    private int _lastY;
+
+    private boolean _simpleDrag = false;
+
+    /**
+     * Grabs component to begin scrolling.  Will turn cursor into a hand.
+     * 
+     * @param me 
+     */
+    public void mousePressed(MouseEvent me) {
+        boolean isAltDown = (me.isAltDown() || me.isAltGraphDown());
+        boolean isOtherDown = me.isMetaDown() || me.isControlDown(); // SHIFT speeds up movement
+        boolean button1 = ((me.getModifiers() & me.BUTTON1_MASK) != 0);
+        boolean button2 = ((me.getModifiers() & me.BUTTON2_MASK) != 0);
+
+        // Note JDK bug: for middle mouse button isAltDown() always returns true.
+        // (JDK 1.4 introduced ALT_DOWN_MASK to fix the bug.)
+        boolean buttonCondition =    (button1 && isAltDown && !isOtherDown)
+                                  || (button2 && !isOtherDown);
+
+        // if only mouse button1 is pressed, activate the auto scrolling
+        _simpleDrag = ! buttonCondition && button1;
+
+        if(!buttonCondition)
+            return;
+
+        // get the component ...
+        _component = editor.getJComponent();
+        if(_component == null)
+            return;
+        
+        // ... and the viewport
+        Container parent = _component.getParent();
+        if(!(parent instanceof JViewport))
+            return;
+        
+        // ok, ready to scroll
+        _isScrolling = true;
+        me = editor.retranslateMouseEvent(me);
+        _viewport = (JViewport) parent;
+
+        _viewPosition = _viewport.getViewPosition();
+        _viewportExtent = _viewport.getExtentSize();
+
+        _componentSize = _component.getSize();
+        _deltaX = 0;
+        _deltaY = 0;
+        _lastX = me.getX();
+        _lastY = me.getY();
+
+        _oldCursor = _component.getCursor();
+        _component.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+
+        me.consume();
+        editor.translateMouseEvent(me);
+        // stop auto timer
+        if (_simpleDrag) {
+            autoTimer.stop();
+            autoscroll = false;
+            //_simpleDrag = false;
+        }
     }
-    //view.scrollRectToVisible(newView);
-    view.setViewPosition(new Point(currentView.x, currentView.y));
-    //System.out.println("scrolled to "+newView+" / "+editor.getCurrentView());
-    xcorrection += newView.x;
-    ycorrection += newView.y;
-    currentView = view.getViewRect();  //jer
-    return true;
-  }
 
-  /** Stops autoscrolling.
-   * @param me 
-   */
-  public void mouseReleased(MouseEvent me) {
-    currentView = null;
-    if (dragScrolling) component.setCursor(oldCursor);
-    component = null;
-    componentSize = null;
-    view = null;
-    oldCursor = null;
-    if (autoscroll) autoTimer.stop();
-    autoscroll = false;
-    if (dragScrolling) me.consume();
-  }
+    /**
+     * If mouse is outside the component, begins autoscrolling or speeds it up.
+     * Otherwise will just scroll.
+     * 
+     * @param me 
+     */
+    public void mouseDragged(MouseEvent me) {
 
-  /** If mouse re-enters component, stops autoscrolling.
-   * @param me 
-   */
-  public void mouseEntered(MouseEvent me) {
-    if (oldCursor != null && component != null && dragScrolling) {
-      component.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-      //me.consume();
+        if (_simpleDrag) {
+            // examine viewport for auto scrolling
+            me = editor.retranslateMouseEvent(me);
+            int mouseX = me.getX();
+            int mouseY = me.getY();
+            recentX = mouseX;
+            recentY = mouseY;
+            // scroll if mouse is  outside the component
+            JComponent jComponent = editor.getJComponent();
+            if(jComponent != null && jComponent.getParent() instanceof JViewport) {
+                boolean ok = doScroll(jComponent, mouseX,mouseY);
+                if ( ok && !autoscroll) {
+                    autoscroll = true;
+                    autoTimer.start();
+                } else if (!ok) {
+                    autoscroll = false;
+                    autoTimer.stop();
+                }
+            }
+
+        } else {
+
+            if(!_isScrolling)
+                return;
+
+            me = editor.retranslateMouseEvent(me);
+            int x = me.getX();
+            int y = me.getY();
+            //System.out.println("[MOdeDragScroll] x,y: " + x +"," +y);
+
+            int factor = (me.isShiftDown() ? 4 : 1);
+
+            _deltaX = factor * (_lastX - x);
+            _deltaY = factor * (_lastY - y);
+
+           _deltaX = Math.max(-_viewPosition.x, _deltaX);
+           _deltaX = Math.min(_componentSize.width - (_viewPosition.x + _viewportExtent.width), _deltaX);
+
+            _deltaY = Math.max(-_viewPosition.y, _deltaY);
+            _deltaY = Math.min(_componentSize.height - (_viewPosition.y + _viewportExtent.height), _deltaY);
+
+            _viewPosition.x += _deltaX;
+            _viewPosition.y += _deltaY;
+            _viewport.setViewPosition(_viewPosition);
+
+            if(_deltaX != 0)
+                _lastX = x + _deltaX;
+            if(_deltaY != 0)
+                _lastY = y + _deltaY;
+            me.consume();
+            editor.translateMouseEvent(me);
+        }
     }
-    if (autoscroll) autoTimer.stop();
-    autoscroll = false;
-  }
 
+    private final boolean doScroll(JComponent jComponent, int mouseX, int mouseY) {
+        if(jComponent != null && jComponent.getParent() instanceof JViewport) {
+            Dimension componentSize = jComponent.getSize();
+            JViewport view = (JViewport)jComponent.getParent();
+            Rectangle viewRect = view.getViewRect();
+            int viewRight = viewRect.x + viewRect.width;
+            int viewY = viewRect.y + viewRect.height;
+            // test, if the mouse moves out of the viewport
+            // Then auto scrolling is activated but only within the component boundaries
 
-  /** Called by the autoTimer to scroll once during autoscrolling.
-   *  Multithreaded note: No synchronization needed because Timers will
-   *  fire this ActionEvent on the event dispatching thread
-   * 
-   * @param e 
-   */
-  // private long freeMemory = 0;
-  public void actionPerformed(ActionEvent e) {
-    /* uncomment to view memory usage 
-    if (freeMemory != 0)
-      System.out.println(freeMemory - Runtime.getRuntime().freeMemory());
-    freeMemory = Runtime.getRuntime().freeMemory();
-    */
-//     if (!doScroll()) {
-//       autoscroll = false; // can't scroll anymore
-//       autoTimer.stop();
-//     }
-    MouseEvent me = new MouseEvent(getEditor().getAwtComponent(),
-				   Event.MOUSE_DRAG, 0,
-				   InputEvent.BUTTON1_MASK,
-				   recentX, recentY, 0, false);
-    getEditor().mouseDragged(me);
-  }
+            if   ( mouseX > viewRight &&  ! (viewRight > (componentSize.width - SCROLL_INCREMENT ))) {
+                // mouse moves right out of the view -> scroll to right
 
+                view.setViewPosition(new Point(viewRect.x + SCROLL_INCREMENT, viewRect.y));
+                return true;
+
+            } else if ( mouseX < viewRect.x && ! (viewRect.x -  SCROLL_INCREMENT < 0)) {
+                // mouse moves left out of the viewport -> scroll to left
+                view.setViewPosition(new Point(viewRect.x - SCROLL_INCREMENT, viewRect.y));
+                return true;
+
+            } else if (mouseY > viewY &&  ! (viewY > (componentSize.height -SCROLL_INCREMENT))) {
+                view.setViewPosition(new Point(viewRect.x,  viewRect.y + SCROLL_INCREMENT));
+                return true;
+            } else if (mouseY < viewRect.y && ! (viewRect.y -SCROLL_INCREMENT < 0)) {
+                view.setViewPosition(new Point(viewRect.x,  viewRect.y - SCROLL_INCREMENT));
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    /**
+     * Stops scrolling, clears all references
+     * @param me 
+     */
+    public void mouseReleased(MouseEvent me) {
+        // stop autoscrolling
+        if(autoscroll) {
+            autoTimer.stop();
+            autoscroll = false;
+            _simpleDrag = false;
+        }
+
+        if(!_isScrolling)
+            return;
+        _isScrolling = false;
+        _viewPosition = null;
+        _component.setCursor(_oldCursor);
+        _component = null;
+        _componentSize = null;
+        _viewport = null;
+        _oldCursor = null;
+        me.consume();
+    }
+
+    /**
+     * Interface ActionListener: Simulate mouse dragging
+     * @param e
+     */
+     public void actionPerformed(ActionEvent e) {
+         MouseEvent me = new MouseEvent(getEditor().getJComponent(), Event.MOUSE_DRAG, 0, InputEvent.BUTTON1_MASK, recentX, recentY, 0, false);
+         getEditor().mouseDragged(me);
+     }
 }

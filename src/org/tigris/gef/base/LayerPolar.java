@@ -99,7 +99,7 @@ public class LayerPolar extends Layer {
   public void bgColor(Color c) { _bgColor = c; }
   public Color bgColor() { return _bgColor; }
 
-  public Vector getContents() { return null; }
+  public java.util.List getContents() { return null; }
   public Fig presentationFor(Object obj) { return null; }
 
   ////////////////////////////////////////////////////////////////
@@ -161,7 +161,7 @@ public class LayerPolar extends Layer {
       setHidden(false);
       Editor ce = Globals.curEditor();
       if (ce != null) {
-	Dimension d = ce.getAwtComponent().getSize();
+	Dimension d = ce.getJComponent().getSize();
 	origin(d.width / 2, d.height / 2);
       }
       else origin(100,100);

@@ -23,13 +23,15 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.util.*;
-import java.awt.event.*;
-import javax.swing.*;
-
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.PopupGenerator;
+
+import javax.swing.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.lang.reflect.Method;
+import java.util.Vector;
+import java.util.List;
 
 /** A permanent Mode to catch right-mouse-button events and show a
  *  popup menu.  Needs-more-work: this is not fully implemented
@@ -38,60 +40,78 @@ import org.tigris.gef.ui.PopupGenerator;
 
 public class ModePopup extends FigModifyingModeImpl {
 
-  ////////////////////////////////////////////////////////////////
-  //  constructor
+    ////////////////////////////////////////////////////////////////
+    //  constructor
 
-  public ModePopup(Editor par) { super(par); }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  /** Always false because I never want to get out of popup mode. */
-  public boolean canExit() { return false; }
-
-
-  public String instructions() { return " "; }
-
-  public void showPopup(MouseEvent me) {
-    int x = me.getX(), y = me.getY();
-    Fig underMouse = editor.hit(x, y);
-    if (!(underMouse instanceof PopupGenerator)) return;
-    editor.getSelectionManager().select(underMouse);
-    JPopupMenu popup = new JPopupMenu("test");
-    Vector actions = ((PopupGenerator)underMouse).getPopUpActions(me);
-    int size = actions.size();
-    for (int i = 0; i < size; ++i) {
-      Object a = actions.elementAt(i);
-      if (a instanceof AbstractAction) popup.add((AbstractAction) a);
-      else if (a instanceof JMenu) popup.add((JMenu) a);
+    public ModePopup(Editor par) {
+        super(par);
     }
-    me = editor.retranslateMouseEvent(me);
-    popup.show(editor.getAwtComponent(), me.getX(), me.getY());
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // event handlers
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  /** Show a popup menu on right-mouse-button down. */
-  // works for Solaris
-  //  public void mousePressed(MouseEvent me) {
-  //     System.out.println("mousePressed");
-  //     if (me.isPopupTrigger()) {
-  //       showPopup(me);
-  //       me.consume();
-  //     }
-  //     else System.out.println("not isPopupTrigger mousePressed");
-  //}
-
-  /** Show a popup menu on right-mouse-button up. */
-  // works for Windows
-  public void mouseReleased(MouseEvent me) {
-    //System.out.println("mouseReleased");
-    if (me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
-      showPopup(me);
-      me.consume();
+    /** Always false because I never want to get out of popup mode. */
+    public boolean canExit() {
+        return false;
     }
-    //else System.out.println("not isPopupTrigger mouseReleased");
-  }
 
-} /* end class ModePopup */
+
+    public String instructions() {
+        return " ";
+    }
+
+    public void showPopup(MouseEvent me) {
+        int x = me.getX();
+        int y = me.getY();
+        Fig underMouse = editor.hit(x, y);
+
+        if(!(underMouse instanceof PopupGenerator))
+            return;
+
+        SelectionManager selectionManager = editor.getSelectionManager();
+        if(!selectionManager.containsFig(underMouse))
+            selectionManager.select(underMouse);
+        else {
+            Vector selection = selectionManager.getFigs();
+            Vector reassertSelection = new Vector(selection);
+            selectionManager.select(reassertSelection);
+        }
+
+        Class commonClass = selectionManager.findCommonSuperClass();
+        if(commonClass != null) {
+            Object commonInstance = selectionManager.findFirstSelectionOfType(commonClass);
+
+            if(commonInstance instanceof PopupGenerator) {
+                PopupGenerator popupGenerator = (PopupGenerator) commonInstance;
+                List actions = popupGenerator.getPopUpActions(me);
+
+                JPopupMenu popup = new JPopupMenu("test");
+
+                int size = actions.size();
+                for(int i = 0; i < size; ++i) {
+                    Object a = actions.get(i);
+                    if(a instanceof AbstractAction)
+                        popup.add((AbstractAction)a);
+                    else if(a instanceof JMenu)
+                        popup.add((JMenu)a);
+                }
+                me = editor.retranslateMouseEvent(me);
+                popup.show(editor.getJComponent(), me.getX(), me.getY());
+                me.consume();
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // event handlers
+
+
+    /** Show a popup menu on right-mouse-button up. */
+    // Note: It would be a clean implementation if we simply call isPopupTrigger() in mousePressed() and mouseClicked() also,
+    // but somehow the popup menu gets canceled immediately on mouseReleased() if it was shown in mousePressed() ...
+    public void mouseReleased(MouseEvent me) {
+        if(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
+            showPopup(me);
+        }
+    }
+}

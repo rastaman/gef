@@ -20,22 +20,25 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-
-
-
 // File: LayerDiagram.java
 // Classes: LayerDiagram
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
-
 package org.tigris.gef.base;
 
 import java.awt.*;
-import java.util.*;
 
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Iterator;
+
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPainter;
+
+import org.tigris.gef.util.Dbg;
 
 /** A Layer like found in many drawing applications. It contains a
  *  collection of Fig's, ordered from back to front. Each
@@ -45,266 +48,330 @@ import org.tigris.gef.util.*;
  *  <A HREF="../features.html#graph_visualization">
  *  <TT>FEATURE: graph_visualization</TT></A>
  */
-
 public class LayerDiagram extends Layer {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The Fig's that are contained in this layer. */
-  protected Vector _contents = new Vector();
+    /** The Fig's that are contained in this layer. */
+    protected List _contents = new ArrayList();
 
-  /** A counter so that layers have default names like 'One', 'Two', ... */
-  protected static int _nextLayerNumbered = 1;
+    /** A counter so that layers have default names like 'One', 'Two', ... */
+    protected static int _nextLayerNumbered = 1;
+    private Rectangle _clipBounds = new Rectangle();
 
-  ////////////////////////////////////////////////////////////////
-  // constuctors and related methods
+    ////////////////////////////////////////////////////////////////
+    // constuctors and related methods
 
-  /** Construct a new LayerDiagram with a default name and do not put
-   *  it on the Layer's menu. */
-  public LayerDiagram() {
-    this("Layer" + numberWordFor(_nextLayerNumbered++));
-  }
-
-  /** Construct a new LayerDiagram with the given name, and add it to
-   *  the menu of layers. Needs-More-Work: I have not implemented a
-   *  menu of layers yet. I don't know if that is really the right user
-   *  interface. */
-  public LayerDiagram(String name) {
-    super(name);
-    _onMenu = true;
-  }
-
-  /** A utility function to give the spelled-out word for numbers. */
-  protected static String numberWordFor(int n) {
-    switch(n) {
-    case 1: return "One";
-    case 2: return "Two";
-    case 3: return "Three";
-    case 4: return "Four";
-    case 5: return "Five";
-    case 6: return "Six";
-    case 7: return "Seven";
-    case 8: return "Eight";
-    case 9: return "Nine";
-    default: return "Layer " + n;
+    /** Construct a new LayerDiagram with a default name and do not put
+     *  it on the Layer's menu. */
+    public LayerDiagram() {
+        this("Layer" + numberWordFor(_nextLayerNumbered++));
     }
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  /** Add a Fig to the contents of this layer. Items are
-   *  added on top of all other items. */
-  public void add(Fig f) {
-    if (Dbg.on) Dbg.assertTrue(f != null, "tried to add null Fig");
-    _contents.removeElement(f); // act like a set
-    _contents.addElement(f);
-    f.setLayer(this);
-    f.endTrans();
-  }
-
-  /** Add a Fig to the contents of this layer. Items are
-   *  added on top of all other items. */
-  public void insertAt(Fig f, int index) {
-    if (Dbg.on) Dbg.assertTrue(f != null, "tried to insert null Fig");
-    _contents.removeElement(f); // act like a set
-    _contents.insertElementAt(f, index);
-    f.setLayer(this);
-    f.endTrans();
-  }
-
-  /** Add a Fig to the contents of this layer. Items are
-   *  added on top of all other items. */
-  public int indexOf(Fig f) {
-    if (Dbg.on) Dbg.assertTrue(f != null, "tried to find null Fig");
-    return _contents.indexOf(f);
-  }
-
-  /** Remove the given Fig from this layer. */
-  public void remove(Fig f) {
-    _contents.removeElement(f);
-    f.endTrans();
-    f.setLayer(null);
-  }
-
-  /** Enumerate over all Fig's in this layer. */
-  public Enumeration elements() { return _contents.elements(); }
-
-  /** Reply the contents of this layer. Do I really want to do this? */
-  public Vector getContents() { return _contents; }
-
-  /** Reply the 'top' Fig under the given (mouse)
-   *  coordinates. Needs-More-Work: For now, just do a linear search.
-   *  Later, optimize this routine using Quad Trees (or other)
-   *  techniques.  */
-  public Fig hit(Rectangle r) {
-    /* search backward so that highest item is found first */
-    for (int i = _contents.size() - 1; i >= 0; i--) {
-      Fig f = (Fig) _contents.elementAt(i);
-      if (f.hit(r)) return f;
+    /** Construct a new LayerDiagram with the given name, and add it to
+     *  the menu of layers. Needs-More-Work: I have not implemented a
+     *  menu of layers yet. I don't know if that is really the right user
+     *  interface. */
+    public LayerDiagram(String name) {
+        super(name);
+        _onMenu = true;
     }
-    return null;
-  }
 
-  /** Delete all Fig's from this layer. */
-  public void removeAll() {
-    for (int i = _contents.size() - 1; i >= 0; i--) {
-      Fig f = (Fig) _contents.elementAt(i);
-      f.setLayer(null);
+    public Enumeration elements() {
+        return Collections.enumeration(_contents);
     }
-    _contents.removeAllElements();
-    //notify?
-  }
 
-  /** Find the FigNode that is being used to visualize the
-   * given NetPort, or null if there is none in this layer. */
-  public FigNode getPortFig(Object port) {
-    Enumeration figs = elements();
-    while (figs.hasMoreElements()) {
-      Fig f = (Fig) figs.nextElement();
-      if (f instanceof FigNode) {
-    FigNode fn = (FigNode) f;
-    Fig port_fig = fn.getPortFig(port);
-    if (port_fig != null) return fn;
-      }
+    /** A utility function to give the spelled-out word for numbers. */
+    protected static String numberWordFor(int n) {
+        switch(n) {
+
+            case 1:
+                return "One";
+
+            case 2:
+                return "Two";
+
+            case 3:
+                return "Three";
+
+            case 4:
+                return "Four";
+
+            case 5:
+                return "Five";
+
+            case 6:
+                return "Six";
+
+            case 7:
+                return "Seven";
+
+            case 8:
+                return "Eight";
+
+            case 9:
+                return "Nine";
+
+            default:
+                return "Layer " + n;
+        }
     }
-    return null;
-  }
 
-  /** Find the Fig that visualized the given NetNode in
-   * this layer, or null if there is none. */
-  public Fig presentationFor(Object obj) {
-    Enumeration figs = elements();
-    while (figs.hasMoreElements()) {
-      Fig f = (Fig) figs.nextElement();
-      if (f.getOwner() == obj) return f;
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    /** Add a Fig to the contents of this layer. Items are
+     *  added on top of all other items. */
+    public void add(Fig f) {
+        if(Dbg.on) {
+            Dbg.assertTrue(f != null, "tried to add null Fig");
+        }
+
+        _contents.remove(f);    // act like a set
+        _contents.add(f);
+        f.setLayer(this);
+        f.endTrans();
     }
-    return null;
-  }
 
-  public int presentationCountFor(Object obj) {
-    int count = 0;
-    Enumeration figs = elements();
-    while (figs.hasMoreElements()) {
-      Fig f = (Fig) figs.nextElement();
-      if (f.getOwner() == obj) count++;
+    /** Add a Fig to the contents of this layer. Items are
+     *  added on top of all other items. */
+    public void insertAt(Fig f, int index) {
+        if(Dbg.on) {
+            Dbg.assertTrue(f != null, "tried to insert null Fig");
+        }
+
+        _contents.remove(f);    // act like a set
+        _contents.add(index, f);
+        f.setLayer(this);
+        f.endTrans();
     }
-    return count;
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // painting methods
+    /** Add a Fig to the contents of this layer. Items are
+     *  added on top of all other items. */
+    public int indexOf(Fig f) {
+        if(Dbg.on) {
+            Dbg.assertTrue(f != null, "tried to find null Fig");
+        }
 
-  /** Paint all the Fig's that belong to this layer. */
-  public void paintContents(Graphics g) {  // kept for backwards compatibility
-      paintContents(g,null);
-  }
-
-  /** Paint all the Fig's that belong to this layer using a given FigPainter.
-   *  If painter is null, the Fig's are painted directly.
-   */
-  public void paintContents(Graphics g, FigPainter painter) {
-    Rectangle clip = g.getClipBounds();
-    Enumeration figs = elements();
-    while (figs.hasMoreElements()) {
-      Fig fig = (Fig) figs.nextElement();
-      if (   clip == null
-          // || fig.getBounds().intersects(clip))
-          || fig.intersects(clip))  // In Java 1.4 Rectangle.intersects(r) returns false if r has zero height or width
-                                    // (e.g. horizontal or vertical lines). Better use our own definition.
-      {
-          if (painter==null)
-             fig.paint(g);
-          else
-             painter.paint(g,fig);
-      }
-
+        return _contents.indexOf(f);
     }
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // ordering of Figs
-
-  /** Reorder the given Fig in this layer. */
-  public void sendToBack(Fig f) {
-    _contents.removeElement(f);
-    _contents.insertElementAt(f, 0);
-  }
-
-  /** Reorder the given Fig in this layer. */
-  public void bringToFront(Fig f) {
-    _contents.removeElement(f);
-    _contents.addElement(f);
-  }
-
-  /** Reorder the given Fig in this layer. Needs-more-work:
-   * Should come backward/forward until they change positions with an
-   * object they overlap. Maybe... */
-  public void sendBackward(Fig f) {
-    int i = _contents.indexOf(f);
-    if (i == -1 || i == 0) return;
-    Object prevFig = _contents.elementAt(i - 1);
-    _contents.setElementAt(prevFig, i);
-    _contents.setElementAt(f, i - 1);
-  }
-
-  /** Reorder the given Fig in this layer. */
-  public void bringForward(Fig f) {
-    int i = _contents.indexOf(f);
-    if (i == -1 || i == _contents.size()-1) return;
-    Object nextFig = _contents.elementAt(i + 1);
-    _contents.setElementAt(nextFig, i);
-    _contents.setElementAt(f, i + 1);
-  }
-
-  /** Reorder the given Fig in this layer. */
-  public void bringInFrontOf(Fig f1, Fig f2) {
-    int i1 = _contents.indexOf(f1);
-    int i2 = _contents.indexOf(f2);
-    if (i1 == -1) return;
-    if (i2 == -1) return;
-    if (i1 >= i2) return;
-    _contents.removeElement(f1);
-    _contents.insertElementAt(f1, i2);
-//     Object frontFig = _contents.elementAt(i1);
-//     Object backFig = _contents.elementAt(i2);
-//     _contents.setElementAt(frontFig, i2);
-//     _contents.setElementAt(backFig, i1);
-  }
-
-  /** Reorder the given Fig in this layer. */
-  public void reorder(Fig f, int function) {
-    switch (function) {
-    case CmdReorder.SEND_TO_BACK:
-      sendToBack(f);
-      break;
-    case CmdReorder.BRING_TO_FRONT:
-      bringToFront(f);
-      break;
-    case CmdReorder.SEND_BACKWARD:
-      sendBackward(f);
-      break;
-    case CmdReorder.BRING_FORWARD:
-      bringForward(f);
-      break;
+    /** Remove the given Fig from this layer. */
+    public void remove(Fig f) {
+        _contents.remove(f);
+        f.endTrans();
+        f.setLayer(null);
     }
-  }
 
-  public void preSave() {
-    for (int i = 0; i < _contents.size(); i++)
-      ((Fig) _contents.elementAt(i)).preSave();
-  }
+    /** Reply the contents of this layer. Do I really want to do this? */
+    public List getContents() {
+        return _contents;
+    }
 
-  public void postSave() {
-    for (int i = 0; i < _contents.size(); i++)
-      ((Fig) _contents.elementAt(i)).postSave();
-  }
+    /** Reply the 'top' Fig under the given (mouse)
+     *  coordinates. Needs-More-Work: For now, just do a linear search.
+     *  Later, optimize this routine using Quad Trees (or other)
+     *  techniques.  */
+    public Fig hit(Rectangle r) {
 
-  public void postLoad() {
-    for (int i = 0; i < _contents.size(); i++)
-      ((Fig) _contents.elementAt(i)).postLoad();
-  }
+        /* search backward so that highest item is found first */
+        for(int i = _contents.size() - 1; i >= 0; i--) {
+            Fig f = (Fig)_contents.get(i);
+            if(f.hit(r)) {
+                return f;
+            }
+        }
 
+        return null;
+    }
 
-} /* end class LayerDiagram */
+    /** Delete all Fig's from this layer. */
+    public void removeAll() {
+        for(int i = _contents.size() - 1; i >= 0; i--) {
+            Fig f = (Fig)_contents.get(i);
+            f.setLayer(null);
+        }
 
+        _contents.clear();
+        //notify?
+    }
+
+    /** Find the FigNode that is being used to visualize the
+     * given NetPort, or null if there is none in this layer. */
+    public FigNode getPortFig(Object port) {
+        Enumeration figs = elements();
+        while(figs.hasMoreElements()) {
+            Fig f = (Fig)figs.nextElement();
+            if(f instanceof FigNode) {
+                FigNode fn = (FigNode)f;
+                Fig port_fig = fn.getPortFig(port);
+                if(port_fig != null) {
+                    return fn;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /** Find the Fig that visualized the given NetNode in
+     * this layer, or null if there is none. */
+    public Fig presentationFor(Object obj) {
+        int figCount = _contents.size();
+        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+            Fig fig = (Fig)_contents.get(figIndex);
+            if(fig.getOwner() == obj) {
+                return fig;
+            }
+        }
+
+        return null;
+    }
+
+    public int presentationCountFor(Object obj) {
+        int count = 0;
+        int figCount = _contents.size();
+        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+            Fig fig = (Fig)_contents.get(figIndex);
+            if(fig.getOwner() == obj) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // painting methods
+
+    /** Paint all the Fig's that belong to this layer. */
+    public void paintContents(Graphics g) {    // kept for backwards compatibility
+        paintContents(g, null);
+    }
+
+    /** Paint all the Fig's that belong to this layer using a given FigPainter.
+     *  If painter is null, the Fig's are painted directly.
+     */
+    public void paintContents(Graphics g, FigPainter painter) {
+        g.getClipBounds(_clipBounds);
+        synchronized(_contents) {
+            Iterator figs = (new ArrayList(_contents)).iterator();
+            while(figs.hasNext()) {
+                Fig fig = (Fig)figs.next();
+                if(_clipBounds == null || fig.intersects(_clipBounds)) {
+                    if(painter == null) {
+                        fig.paint(g);
+                    }
+                    else {
+                        painter.paint(g, fig);
+                    }
+                }
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // ordering of Figs
+
+    /** Reorder the given Fig in this layer. */
+    public void sendToBack(Fig f) {
+        _contents.remove(f);
+        _contents.add(0, f);
+    }
+
+    /** Reorder the given Fig in this layer. */
+    public void bringToFront(Fig f) {
+        _contents.remove(f);
+        _contents.add(f);
+    }
+
+    /** Reorder the given Fig in this layer. Needs-more-work:
+     * Should come backward/forward until they change positions with an
+     * object they overlap. Maybe... */
+    public void sendBackward(Fig f) {
+        int i = _contents.indexOf(f);
+        if(i == -1 || i == 0) {
+            return;
+        }
+
+        Object prevFig = _contents.get(i - 1);
+        _contents.set(i, prevFig);
+        _contents.set(i - 1, f);
+    }
+
+    /** Reorder the given Fig in this layer. */
+    public void bringForward(Fig f) {
+        int i = _contents.indexOf(f);
+        if(i == -1 || i == _contents.size() - 1) {
+            return;
+        }
+
+        Object nextFig = _contents.get(i + 1);
+        _contents.set(i, nextFig);
+        _contents.set(i + 1, f);
+    }
+
+    /** Reorder the given Fig in this layer. */
+    public void bringInFrontOf(Fig f1, Fig f2) {
+        int i1 = _contents.indexOf(f1);
+        int i2 = _contents.indexOf(f2);
+        if(i1 == -1) {
+            return;
+        }
+
+        if(i2 == -1) {
+            return;
+        }
+
+        if(i1 >= i2) {
+            return;
+        }
+
+        _contents.remove(f1);
+        _contents.add(i2, f1);
+        //     Object frontFig = _contents.elementAt(i1);
+        //     Object backFig = _contents.elementAt(i2);
+        //     _contents.setElementAt(frontFig, i2);
+        //     _contents.setElementAt(backFig, i1);
+    }
+
+    /** Reorder the given Fig in this layer. */
+    public void reorder(Fig f, int function) {
+        switch(function) {
+
+            case CmdReorder.SEND_TO_BACK:
+                sendToBack(f);
+                break;
+
+            case CmdReorder.BRING_TO_FRONT:
+                bringToFront(f);
+                break;
+
+            case CmdReorder.SEND_BACKWARD:
+                sendBackward(f);
+                break;
+
+            case CmdReorder.BRING_FORWARD:
+                bringForward(f);
+                break;
+        }
+    }
+
+    public void preSave() {
+        for(int i = 0; i < _contents.size(); i++) {
+            ((Fig)_contents.get(i)).preSave();
+        }
+    }
+
+    public void postSave() {
+        for(int i = 0; i < _contents.size(); i++) {
+            ((Fig)_contents.get(i)).postSave();
+        }
+    }
+
+    public void postLoad() {
+        for(int i = 0; i < _contents.size(); i++) {
+            ((Fig)_contents.get(i)).postLoad();
+        }
+    }
+}

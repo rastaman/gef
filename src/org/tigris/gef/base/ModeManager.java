@@ -31,14 +31,17 @@
 
 package org.tigris.gef.base;
 
+import org.tigris.gef.event.ModeChangeEvent;
+import org.tigris.gef.event.ModeChangeListener;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
+
+import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 import java.io.Serializable;
-import javax.swing.event.EventListenerList;
-
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.event.*;
+import java.util.Enumeration;
+import java.util.Vector;
 
 /** ModeManager keeps track of all the Modes for a given Editor.
  *  Events are passed to the Modes for handling.  The submodes are
@@ -48,230 +51,259 @@ import org.tigris.gef.event.*;
  *  only deal with such Modes.
  */
 
-public class ModeManager
-implements Serializable, MouseListener, MouseMotionListener, KeyListener {
+public class ModeManager implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The stack of Mode's that are all active simultainously, the
-   *  order of Mode's on the stack is their priority, i.e., the
-   *  topmost Mode gets the first chance to handle an incoming
-   *  Event. Needs-More-Work: this is a time critical part of the
-   *  system and should be faster, use an array instead of a Vector.*/
-  private Vector _modes = new Vector();
+    /** The stack of Mode's that are all active simultainously, the
+     *  order of Mode's on the stack is their priority, i.e., the
+     *  topmost Mode gets the first chance to handle an incoming
+     *  Event. Needs-More-Work: this is a time critical part of the
+     *  system and should be faster, use an array instead of a Vector.*/
+    private Vector _modes = new Vector();
 
-  /** The Editor that owns this ModeManager. */
-  public Editor editor;
+    /** The Editor that owns this ModeManager. */
+    public Editor editor;
 
-  /** Set the parent Editor of this ModeManager */
-  public void setEditor(Editor w) { editor = w; }
-
-  protected EventListenerList _listeners = new EventListenerList();
-
-  /** Get the parent Editor of this ModeManager */
-  public Editor getEditor() { return editor; }
-
-  ////////////////////////////////////////////////////////////////
-  // constructors
-
-  /**  Construct a ModeManager with no modes. */
-  public ModeManager(Editor ed) { editor = ed; }
-
-  ////////////////////////////////////////////////////////////////
-  //  accessors
-
-  /** Reply the stack of Mode's. */
-  public Vector getModes() { return _modes; }
-
-  /** Set the entire stack of Mode's. */
-  public void setModes(Vector newModes) { _modes = newModes; }
-
-  /** Reply the top (first) Mode. */
-  public FigModifyingMode top() {
-    if (_modes.isEmpty()) return null;
-    else return (FigModifyingMode)_modes.lastElement();
-  }
-
-  /** Add the given Mode to the stack iff another instance
-   *  of the same class is not already on the stack. */
-  public void push(FigModifyingMode newMode) {
-	if ( !(newMode instanceof FigModifyingMode) ) return;
-    if (!includes(newMode.getClass())) {
-      _modes.addElement(newMode);
-      //fireModeChanged();
+    /** Set the parent Editor of this ModeManager */
+    public void setEditor(Editor w) {
+        editor = w;
     }
-  }
 
-  /** Remove the topmost Mode iff it can exit. */
-  public FigModifyingMode pop() {
-    if (_modes.isEmpty()) return null;
-    FigModifyingMode res = top();
-    if (res.canExit()) {
-      _modes.removeElement(res);
-      fireModeChanged();
+    protected EventListenerList _listeners = new EventListenerList();
+
+    /** Get the parent Editor of this ModeManager */
+    public Editor getEditor() {
+        return editor;
     }
-    return res;
-  }
 
-  /** Remove all Modes that can exit. */
-  public void popAll() {
-    while (!_modes.isEmpty() && top().canExit())
-      _modes.removeElement(top());
-  }
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public boolean includes(Class modeClass) {
-    Enumeration subs = _modes.elements();
-    while (subs.hasMoreElements()) {
-      FigModifyingMode m = (FigModifyingMode) subs.nextElement();
-      if (m.getClass() == modeClass) return true;
+    /**  Construct a ModeManager with no modes. */
+    public ModeManager(Editor ed) {
+        editor = ed;
     }
-    return false;
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // event handlers
+    ////////////////////////////////////////////////////////////////
+    //  accessors
 
-  /** Pass events to all modes in order, until one consumes it. */
-  public void keyTyped(KeyEvent ke) {
-    checkModeTransitions(ke);
-    for (int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
-      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
-      m.keyTyped(ke);
+    /** Reply the stack of Mode's. */
+    public Vector getModes() {
+        return _modes;
     }
-  }
 
-  /** Do nothing, this event are not passed to the Modes. */
-  public void keyReleased(KeyEvent ke) { }
-
-  /** Pass events to all modes in order, until one consumes it. */
-  public void keyPressed(KeyEvent ke) {
-    for (int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
-      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
-      m.keyPressed(ke);
+    /** Set the entire stack of Mode's. */
+    public void setModes(Vector newModes) {
+        _modes = newModes;
     }
-  }
 
-  /** Pass events to all modes in order, until one consumes it. */
-  public void mouseMoved(MouseEvent me) {
-    for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
-      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
-      m.mouseMoved(me);
+    /** Reply the top (first) Mode. */
+    public FigModifyingMode top() {
+        if(_modes.isEmpty())
+            return null;
+        else
+            return (FigModifyingMode)_modes.lastElement();
     }
-  }
 
-  /** Pass events to all modes in order, until one consumes it. */
-  public void mouseDragged(MouseEvent me) {
-    for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
-      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
-      m.mouseDragged(me);
+    /** Add the given Mode to the stack if another instance
+     *  of the same class is not already on the stack. */
+    public void push(FigModifyingMode newMode) {
+        if(!(newMode instanceof FigModifyingMode))
+            return;
+        if(!includes(newMode.getClass())) {
+            _modes.addElement(newMode);
+            //fireModeChanged();
+        }
     }
-  }
 
-  /** Pass events to all modes in order, until one consumes it. */
-  public void mouseClicked(MouseEvent me) {
-    checkModeTransitions(me);
-    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
-      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
-      m.mouseClicked(me);
+    /** Remove the topmost Mode if it can exit. */
+    public FigModifyingMode pop() {
+        if(_modes.isEmpty())
+            return null;
+        FigModifyingMode res = top();
+        if(res.canExit()) {
+            _modes.removeElement(res);
+            fireModeChanged();
+        }
+        return res;
     }
-  }
 
-  /** Pass events to all modes in order, until one consumes it. */
-  public void mousePressed(MouseEvent me) {
-    checkModeTransitions(me);
-    for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
-      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
-      m.mousePressed(me);
+    /** Remove all Modes that can exit. */
+    public void popAll() {
+        while(!_modes.isEmpty() && top().canExit())
+            _modes.removeElement(top());
     }
-  }
 
-  /** Pass events to all modes in order, until one consumes it. */
-  public void mouseReleased(MouseEvent me) {
-    checkModeTransitions(me);
-    for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
-      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
-      m.mouseReleased(me);
+    public boolean includes(Class modeClass) {
+        Enumeration subs = _modes.elements();
+        while(subs.hasMoreElements()) {
+            FigModifyingMode m = (FigModifyingMode)subs.nextElement();
+            if(m.getClass() == modeClass)
+                return true;
+        }
+        return false;
     }
-    //fireModeChanged();
-  }
 
-  /** Pass events to all modes in order, until one consumes it. */
-  public void mouseEntered(MouseEvent me) {
-    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
-      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
-      m.mouseEntered(me);
+    /**
+     * Finish all modes immediately.
+     */
+    public void leaveAll() {
+        for(int i = _modes.size() - 1; i >= 0; --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.leave();
+        }
     }
-  }
+    ////////////////////////////////////////////////////////////////
+    // event handlers
 
-  /** Pass events to all modes in order, until one consumes it. */
-  public void mouseExited(MouseEvent me) {
-    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
-      FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.elementAt(i));
-      m.mouseExited(me);
+    /** Pass events to all modes in order, until one consumes it. */
+    public void keyTyped(KeyEvent ke) {
+        checkModeTransitions(ke);
+        for(int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.keyTyped(ke);
+        }
     }
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // mode transitions
-
-  /** Check for events that should cause transitions from one Mode to
-   *  another or otherwise change the ModeManager. Really this should be
-   *  specified in a subclass of ModeManager, because ModeManager should
-   *  not make assumptions about the look-and-feel of all future
-   *  applications.  Needs-More-Work: I would like to put the
-   *  transition from ModeSelect to ModeModify here, but there are too
-   *  many interactions, so that code is still in ModeSelect. */
-  public void checkModeTransitions(InputEvent ie) {
-    if (!top().canExit() && ie.getID() == MouseEvent.MOUSE_PRESSED) {
-      MouseEvent me = (MouseEvent) ie;
-      int x = me.getX(), y = me.getY();
-      Fig underMouse = editor.hit(x, y);
-      if (underMouse instanceof FigNode) {
-	Object startPort = ((FigNode) underMouse).hitPort(x, y);
-	if (startPort != null) {
-	  //user clicked on a port, now drag an edge
-	  FigModifyingModeImpl createArc = (FigModifyingModeImpl)new ModeCreateEdge(editor);
-	  push(createArc);
-	  createArc.mousePressed(me);
-	}
-      }
+    /** Pass events to all modes in order, until one consumes it. */
+    public void keyReleased(KeyEvent ke) {
+        for(int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.keyReleased(ke);
+        }
     }
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // mode events
-
-  public void addModeChangeListener(ModeChangeListener listener) {
-    _listeners.add(ModeChangeListener.class, listener);
-  }
-
-  public void removeModeChangeListener(ModeChangeListener listener) {
-    _listeners.remove(ModeChangeListener.class, listener);
-  }
-
-  protected void fireModeChanged() {
-    Object[] listeners = _listeners.getListenerList();
-    ModeChangeEvent e = null;
-    for (int i = listeners.length - 2; i >= 0; i -= 2) {
-      if (listeners[i] == ModeChangeListener.class) {
-       	if (e == null) e = new ModeChangeEvent(editor, getModes());
-       	//needs-more-work: should copy vector, use JGraph as src?
-       	((ModeChangeListener)listeners[i+1]).modeChange(e);
-      }
+    /** Pass events to all modes in order, until one consumes it. */
+    public void keyPressed(KeyEvent ke) {
+        for(int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.keyPressed(ke);
+        }
     }
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // painting methods
-
-  /** Paint each mode in the stack: bottom to top. */
-  public void paint(Graphics g) {
-    Enumeration modes = _modes.elements();
-    while (modes.hasMoreElements()) {
-      FigModifyingMode m = (FigModifyingMode) modes.nextElement();
-      m.paint(g);
+    /** Pass events to all modes in order, until one consumes it. */
+    public void mouseMoved(MouseEvent me) {
+        for(int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseMoved(me);
+        }
     }
-  }
 
-} /* end class ModeManager */
+    /** Pass events to all modes in order, until one consumes it. */
+    public void mouseDragged(MouseEvent me) {
+        for(int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseDragged(me);
+        }
+    }
+
+    /** Pass events to all modes in order, until one consumes it. */
+    public void mouseClicked(MouseEvent me) {
+        checkModeTransitions(me);
+        for(int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseClicked(me);
+        }
+    }
+
+    /** Pass events to all modes in order, until one consumes it. */
+    public void mousePressed(MouseEvent me) {
+        checkModeTransitions(me);
+        for(int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mousePressed(me);
+        }
+    }
+
+    /** Pass events to all modes in order, until one consumes it. */
+    public void mouseReleased(MouseEvent me) {
+        checkModeTransitions(me);
+        for(int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseReleased(me);
+        }
+        //fireModeChanged();
+    }
+
+    /** Pass events to all modes in order, until one consumes it. */
+    public void mouseEntered(MouseEvent me) {
+        for(int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseEntered(me);
+        }
+    }
+
+    /** Pass events to all modes in order, until one consumes it. */
+    public void mouseExited(MouseEvent me) {
+        for(int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseExited(me);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // mode transitions
+
+    /** Check for events that should cause transitions from one Mode to
+     *  another or otherwise change the ModeManager. Really this should be
+     *  specified in a subclass of ModeManager, because ModeManager should
+     *  not make assumptions about the look-and-feel of all future
+     *  applications.  Needs-More-Work: I would like to put the
+     *  transition from ModeSelect to ModeModify here, but there are too
+     *  many interactions, so that code is still in ModeSelect. */
+    public void checkModeTransitions(InputEvent ie) {
+        if(!top().canExit() && ie.getID() == MouseEvent.MOUSE_PRESSED) {
+            MouseEvent me = (MouseEvent)ie;
+            int x = me.getX(), y = me.getY();
+            Fig underMouse = editor.hit(x, y);
+            if(underMouse instanceof FigNode) {
+                Object startPort = ((FigNode)underMouse).hitPort(x, y);
+                if(startPort != null) {
+                    //user clicked on a port, now drag an edge
+                    FigModifyingModeImpl createArc = (FigModifyingModeImpl)new ModeCreateEdge(editor);
+                    push(createArc);
+                    createArc.mousePressed(me);
+                }
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // mode events
+
+    public void addModeChangeListener(ModeChangeListener listener) {
+        _listeners.add(ModeChangeListener.class, listener);
+    }
+
+    public void removeModeChangeListener(ModeChangeListener listener) {
+        _listeners.remove(ModeChangeListener.class, listener);
+    }
+
+    protected void fireModeChanged() {
+        Object[] listeners = _listeners.getListenerList();
+        ModeChangeEvent e = null;
+        for(int i = listeners.length - 2; i >= 0; i -= 2) {
+            if(listeners[i] == ModeChangeListener.class) {
+                if(e == null)
+                    e = new ModeChangeEvent(editor, getModes());
+                //needs-more-work: should copy vector, use JGraph as src?
+                ((ModeChangeListener)listeners[i + 1]).modeChange(e);
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // painting methods
+
+    /** Paint each mode in the stack: bottom to top. */
+    public void paint(Graphics g) {
+        Enumeration modes = _modes.elements();
+        while(modes.hasMoreElements()) {
+            FigModifyingMode m = (FigModifyingMode)modes.nextElement();
+            m.paint(g);
+        }
+    }
+
+}

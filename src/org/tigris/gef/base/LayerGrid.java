@@ -28,32 +28,33 @@
 // Classes: LayerGrid
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
+// $Id$
+
 
 package org.tigris.gef.base;
 
-import java.util.*;
+import org.tigris.gef.presentation.Fig;
+
 import java.awt.*;
+
 
 import javax.swing.UIManager;
 
 import org.tigris.gef.presentation.*;
+import java.util.List;
+
 
 /** Paint a background drawing guide consisting of horizontal and
  *  vertical lines in a neutral color. This feature is common to many
  *  drawing applications (e.g., MacDraw).  LayerGrid is in concept a
  *  Layer, just like any other so it can be composed, locked, grayed,
  *  hidden, and reordered. <p>
- *
- *  Needs-More-Work: Since I am using image stamping and AWT does not
- *  support transparent pixels, any Layer underneath an instance of
- *  LayerGrid will not be seen. Image stamping is nice because it is
- *  fast, but I need to think of some other fast way to do it... */
-
-
+ */
 public class LayerGrid extends Layer {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+
 
   /** The spacing between the lines. */
   private int _spacing = 16;
@@ -127,7 +128,7 @@ public class LayerGrid extends Layer {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public Vector getContents() { return null; }
+  public List getContents() { return null; }
   public Fig presentationFor(Object obj) { return null; }
 
   
@@ -254,7 +255,7 @@ public class LayerGrid extends Layer {
     _stamp = null;
     setHidden(false); 
     switch (_style) {
-    case 0: 
+    case 0:
         _paintLines = true; 
         _paintDots = true;
         _spacing = 16; 
@@ -265,7 +266,7 @@ public class LayerGrid extends Layer {
         _spacing = 8; 
         break;
     case 2: 
-        _paintLines = false; 
+        _paintLines = false;
         _paintDots = true;
         _spacing = 16; 
         break;
@@ -282,4 +283,3 @@ public class LayerGrid extends Layer {
     refreshEditors();
   }
 } /* end class LayerGrid */
-

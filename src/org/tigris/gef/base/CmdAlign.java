@@ -107,7 +107,6 @@ public class CmdAlign extends Cmd {
 
     for (int i = 0; i < size; i++) {
       Fig f = (Fig) figs.elementAt(i);
-      f.startTrans();
       f.align(bbox, direction, ce);
       f.endTrans();
     }

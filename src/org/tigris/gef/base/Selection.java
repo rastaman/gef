@@ -96,9 +96,6 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Abstract method to display the selection handleds. */
   public void paint(Graphics g) { }
 
-  /** Tell the content to start a transaction that causes damage */
-  public void startTrans() { getContent().startTrans(); }
-
   /** Tell the content to end a transaction that causes damage */
   public void endTrans() { getContent().endTrans(); }
 

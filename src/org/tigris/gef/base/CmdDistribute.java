@@ -178,7 +178,6 @@ public class CmdDistribute extends Cmd {
 
     for (int i = 0; i < size; i++) {
       f = (Fig) figs.elementAt(i);
-      f.startTrans();
       switch (_request) {
       case H_SPACING:
       case H_PACK:
