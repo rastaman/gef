@@ -48,7 +48,7 @@ import org.tigris.gef.graph.*;
 public abstract class NetEdge extends NetPrimitive
 implements GraphEdgeHooks, java.io.Serializable {
 
-    private static Log LOG = LogFactory.getLog(NetEdge.class);
+    private static final Log LOG = LogFactory.getLog(NetEdge.class);
     
     ////////////////////////////////////////////////////////////////
     // instance variables
