@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: ModeCreatePolyEdge.java
 // Classes: ModeCreateEdge
 // Original Author: agauthie@ics.uci.edu
@@ -196,6 +194,15 @@ public class ModeCreatePolyEdge extends ModeCreate {
 
 	  if (fe != null) _editor.getSelectionManager().select(fe);
 	  _editor.damaged(fe);
+
+          // if the new edge implements the MouseListener interface it has to receive the mouseReleased() event
+          if (fe instanceof MouseListener) ((MouseListener) fe).mouseReleased(me);
+
+          // set the new edge in place
+          if (_sourceFigNode != null ) _sourceFigNode.updateEdges();
+          if (destFigNode != null  ) destFigNode.updateEdges();
+
+
 	}
 	done();
 	me.consume();
@@ -253,11 +260,12 @@ public class ModeCreatePolyEdge extends ModeCreate {
 
   ////////////////////////////////////////////////////////////////
   // key events
-
+ 
   public void keyTyped(KeyEvent ke) {
-    if (ke.getKeyChar() == '') { // escape
+    if (ke.getKeyChar() == '') { // escape
       done();
       ke.consume();
     }
   }
+
 } /* end class ModeCreatePolyEdge */
