@@ -42,28 +42,40 @@ import org.tigris.gef.presentation.*;
 
 public class JGraph extends JPanel implements Cloneable {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The Editor object that is being shown in this panel */
-  protected Editor _editor;
-  protected JGraphInternalPane _drawingPane;
-  protected JScrollPane _scroll;
-  protected Dimension _defaultSize = new Dimension(6000, 6000);
+    /** The Editor object that is being shown in this panel */
+    private Editor _editor;
+    private JGraphInternalPane _drawingPane;
+    private JScrollPane _scroll;
+    private Dimension _defaultSize = new Dimension(6000, 6000);
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    ////////////////////////////////////////////////////////////////
+    // constructor
 
-  /** Make a new JGraph with a new DefaultGraphModel.
-   * @see org.tigris.gef.graph.presentation.DefaultGraphModel */
-  public JGraph() { this(new DefaultGraphModel()); }
+    /** Make a new JGraph with a new DefaultGraphModel.
+     * @see org.tigris.gef.graph.presentation.DefaultGraphModel */
+    public JGraph() {
+        this(new DefaultGraphModel());
+    }
 
-  /** Make a new JGraph with a the GraphModel and Layer from the given
-   *  Diagram. */
-  public JGraph(Diagram d) { this(new Editor(d)); }
+    /** Make a new JGraph with a new DefaultGraphModel.
+     * @see org.tigris.gef.graph.presentation.DefaultGraphModel */
+    public JGraph(ConnectionConstrainer cc) {
+        this(new DefaultGraphModel(cc));
+    }
 
-  /** Make a new JGraph with the given GraphModel */
-  public JGraph(GraphModel gm) { this(new Editor(gm, null)); }
+    /** Make a new JGraph with a the GraphModel and Layer from the given
+     *  Diagram. */
+    public JGraph(Diagram d) {
+        this(new Editor(d));
+    }
+
+    /** Make a new JGraph with the given GraphModel */
+    public JGraph(GraphModel gm) {
+        this(new Editor(gm, null));
+    }
 
     /**
      * Make a new JGraph with the given Editor.  All JGraph contructors
