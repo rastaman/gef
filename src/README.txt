@@ -1,3 +1,139 @@
+GEF vers 0.10.9 - 30 December 2004
+
+Resolved Issues
+===============
+
+The following issues have been fixed in release 0.10.9 of GEF
+
+
+
+100  Rename getPreferedSize()  
+149  Colors are not saved correctly  
+154  FigGroup should remember its own style.  
+178  Allow multiple ocl tags on a single line in tee file  
+181  Add a FigDiamond  
+182  Allow registration of save action  
+183  Add accessors to extend ModeCreatePolyEdge  
+
+
+There have been some other minor changes converting Vector to List if
+you have any trouble compiling simply change your return or argument type.
+
+
+
+=========================================================================
+=========================================================================
+
+GEF vers 0.10.8 - 9 November 2004
+
+Resolved Issues
+===============
+
+The following issues have been fixed in release 0.10.8 of GEF
+
+
+
+168  Resetting NetList in DefaultGraphModel
+169  New method to support mousewheel in JGraph's JScrollPane's J
+172  ModeCreateEdge: getter for private variable
+173  Improve error reporting from TemplateReader
+174  VectorSet should implement the Set interface
+175  Specifiy an equals method for JGraph
+
+
+
+
+=========================================================================
+=========================================================================
+
+GEF vers 0.10.7 - 27 September 2004
+
+Resolved Issues
+===============
+
+The following issues have been fixed in release 0.10.7 of GEF
+
+
+
+46   FigTextEditor should stop editing when it loses focus  
+120  PGMLParser uses deprecated API  
+147  Make keyPressed more robust against deleted modes  
+163  typo in FigText.setJustification  
+164  NetEdge.dispose() Does not delete the edge from the model  
+165  Fig writes debug output with System.out.println()  
+166  Change GraphModel to return Lists  
+
+
+
+
+=========================================================================
+=========================================================================
+
+GEF vers 0.10.6 - 5 September 2004
+
+Resolved Issues
+===============
+
+The following issues have been fixed in release 0.10.6 of GEF
+
+
+156  Get/Set scroll view position  
+157  NPE when debug logging through ModeCreateEdge  
+160  OCLEvaluator should not be singleton  
+161  Dont allow null for port settings of edge  
+162  Allow OCL expression to delegate wring to to some method  
+
+
+
+
+=========================================================================
+=========================================================================
+
+GEF vers 0.10.5a - 10 August 2004
+
+Resolved Issues
+===============
+
+The following issues have been fixed in release 0.10.5a of GEF
+
+
+155 Bug in FigNode.dispose
+
+
+
+
+=========================================================================
+=========================================================================
+
+GEF vers 0.10.5 - 9 August 2004
+
+Resolved Issues
+===============
+
+The following issues have been fixed in release 0.10.5 of GEF
+
+3   Improve usability of Issuezilla  
+32  IZ subcomponent request  
+46  FigTextEditor should stop editing when it loses focus  
+61  FigGroup.addFig does not remove fig from old group  
+92  postPlacement event  
+98  Methods referred to in tee files should be clearly javadoced  
+109 Defect on FigNode.getPortFigs()  
+110 hitting invisible Figs  
+113 Use Graphics2D to draw good dashed lines  
+124 Document logging  
+139 DefaultGraphModel not using Collection arguments  
+142 DefaultGraphModel disposing element fix  
+145 Rename any enum variables  
+148 Honour the Visible flag while dragging FigNodes  
+153 OCLEvaluator bad end of line render unbuildable under Debian  
+
+
+
+
+=========================================================================
+=========================================================================
+
 GEF vers 0.10.4 - 11 June 2004
 
 Resolved Issues
@@ -32,7 +168,7 @@ GEF vers 0.10.3
 Resolved Issues
 ===============
 
-The following issues have been fixed in release 0.10.2 of GEF
+The following issues have been fixed in release 0.10.3 of GEF
 
 
 108  Bad hit area  
