@@ -388,7 +388,8 @@ public class JGraph extends JPanel implements Cloneable {
 
 class JGraphInternalPane extends JPanel {
 //implements FocusListener
-  protected Editor _editor;
+    protected Editor _editor;
+    private boolean registeredWithTooltip;
 
   public JGraphInternalPane(Editor e) {
     _editor = e;
@@ -430,16 +431,19 @@ class JGraphInternalPane extends JPanel {
        return (super.getToolTipLocation(event));
   }
     
-  public void setToolTipText(String text) {
-    if ("".equals(text)) text = null;
-    putClientProperty(TOOL_TIP_TEXT_KEY, text);
-    ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
-    //if (text != null) {
-    toolTipManager.registerComponent(this);
-    //} else {
-    //    toolTipManager.unregisterComponent(this);
-    //}
-  }
+    public void setToolTipText(String text) {
+        if ("".equals(text)) text = null;
+        putClientProperty(TOOL_TIP_TEXT_KEY, text);
+        ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
+        //if (text != null) {
+            if (!registeredWithTooltip) {
+                toolTipManager.registerComponent(this);
+                registeredWithTooltip = true;
+            }
+        //} else {
+        //    toolTipManager.unregisterComponent(this);
+        //}
+    }
 
   /** Tell Swing/AWT that JGraph handles tab-order itself. */
   public boolean isManagingFocus() { return true; }
