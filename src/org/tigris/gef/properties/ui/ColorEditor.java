@@ -32,7 +32,6 @@
 package org.tigris.gef.properties.ui;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import java.beans.*;
 

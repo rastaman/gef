@@ -31,11 +31,7 @@
 
 package org.tigris.gef.graph.presentation;
 
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.*;
-import java.beans.*;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;

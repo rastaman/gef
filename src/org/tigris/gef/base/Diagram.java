@@ -28,7 +28,6 @@ import java.awt.*;
 import java.beans.*;
 
 import java.util.*;
-import java.util.List;
 import java.io.Serializable;
 
 import org.tigris.gef.graph.GraphController;
@@ -184,25 +183,28 @@ public class Diagram implements Serializable, GraphListener {
 
         int count = 0;
         int numOwners = owners.size();
-        List nodes = getNodes();
 
-        for(int i = 0; i < nodes.size(); i++) {
+        Iterator nodeIter = getNodes(null).iterator();
+        while (nodeIter.hasNext()) {
+            Object node = nodeIter.next();
 
-            for(int j = 0; j < numOwners; j++) {
+            for (int j = 0; j < numOwners; j++) {
 
-                if(nodes.get(i) == owners.elementAt(j))
+                if (node == owners.elementAt(j)) {
                     count++;
+                }
             }
         }
 
-        List edges = getEdges();
+        Iterator edgeIter = getEdges(null).iterator();
+        while (edgeIter.hasNext()) {
+            Object edge = edgeIter.next();
 
-        for(int i = 0; i < edges.size(); i++) {
+            for (int j = 0; j < numOwners; j++) {
 
-            for(int j = 0; j < numOwners; j++) {
-
-                if(edges.get(i) == owners.elementAt(j))
+                if (edge == owners.elementAt(j)) {
                     count++;
+                }
             }
         }
 
@@ -246,17 +248,6 @@ public class Diagram implements Serializable, GraphListener {
     }
 
     /**
-     * Get all the figs that are a node.
-     * @return the nodes
-     * @deprecated 0.10 This method will be removed in release 0.11
-     */
-    public Vector getNodes() {
-        Vector v = new Vector();
-        v.addAll(getNodes(null));
-        return v;
-    }
-    
-    /**
      * Get all the figs that are edges.
      * @param edges the collection in which to place the edges or null
      *              if a new collection should be created
@@ -280,17 +271,6 @@ public class Diagram implements Serializable, GraphListener {
         return edges;
     }
 
-    /**
-     * Get all the figs that are an edge.
-     * @return the edges
-     * @deprecated 0.10 This method will be removed in release 0.11
-     */
-    public Vector getEdges() {
-        Vector v = new Vector();
-        v.addAll(getEdges(null));
-        return v;
-    }
-    
     ////////////////////////////////////////////////////////////////
     // accessors on the Layer
     public void add(Fig f) {

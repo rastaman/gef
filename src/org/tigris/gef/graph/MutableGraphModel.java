@@ -41,7 +41,8 @@ import org.tigris.gef.graph.*;
  *
  * @see DefaultGraphModel
  * @see AdjacencyListGraphModel
- * @see uci.graph.demo.WordTransforms */
+ * @see uci.graph.demo.WordTransforms
+ */
 
 public interface MutableGraphModel extends GraphModel {
   /** Return true if the given object is present as a node in the graph */

@@ -29,10 +29,7 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
 
-import org.tigris.gef.ui.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.event.*;
 import org.tigris.gef.base.*;

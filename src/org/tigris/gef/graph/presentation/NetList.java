@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: NetList.java
 // Classes: NetList
 // Original Author: ics125 spring 1996
@@ -31,8 +28,8 @@
 
 package org.tigris.gef.graph.presentation;
 
-import java.util.*;
-import java.awt.*;
+import java.util.Collection;
+import java.util.Vector;
 
 /** A class that implements the concept of a connected graph. A
  *  NetList is not any one object in the connected graph, it is the
@@ -44,57 +41,84 @@ import java.awt.*;
 
 public class NetList extends NetPrimitive implements java.io.Serializable {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The nodes in the NetList */
-  private Vector _nodes = new Vector();
+    /** The nodes in the NetList */
+    private Vector nodes = new Vector();
 
-  /** The edges in the NetList */
-  private Vector _edges = new Vector();
+    /** The edges in the NetList */
+    private Vector edges = new Vector();
 
-  /** The name of this connected graph. */
-  String _name;
+    /** The name of this connected graph. */
+    String name;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  /** Construct a new NetList with no contained nodes. */
-  public NetList() { }
+    /** Construct a new NetList with no contained nodes. */
+    public NetList() { }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public String getId() {
-    return _name;
-  }
+    public String getId() {
+        return name;
+    }
 
-  public void name(String n) { _name = n; }
-  public String name() { return _name; }
+    /** @deprecated 0.11 use setName(String) */
+    public void name(String n) { name = n; }
+    /** @deprecated 0.11 use getName() */
+    public String name() { return name; }
 
-  /** Reply the vector of nodes */
-  public Vector getNodes() { return _nodes; }
+    public void setName(String n) { name = n; }
+    public String getName() { return name; }
 
-  /** Reply the vector of edges */
-  public Vector getEdges() { return _edges; }
+    /** Reply the vector of nodes 
+     * @deprectaed 0.11 use getNodes(Collection)
+     */
+    public Vector getNodes() { return nodes; }
 
-  /** Add a node to this NetList.  */
-  public void addNode(NetNode n) { _nodes.addElement(n); }
+    /** Reply the vector of edges
+    * @deprectaed 0.11 use getNodes(Collection)
+    */
+    public Vector getEdges() { return edges; }
 
-  /** Remove a node from this NetList. When a node is deleted a
-   *  notification is sent out. */
-  public void removeNode(NetNode n) {
-    if (n != null && _nodes.contains(n)) _nodes.removeElement(n);
-  }
+    /** Reply the vector of nodes */
+    public Collection getNodes(Collection c) { 
+        return nodes;
+    }
 
-  /** Add a NetEdge to this NetList. */
-  public void addEdge(NetEdge a) { _edges.addElement(a); }
+    /** Reply the vector of edges */
+    public Collection getEdges(Collection c) {
+        return edges;
+    }
 
-  /** Remove a Edge from this NetList. */
-  public void removeEdge(NetEdge a) {
-    if (a != null && _edges.contains(a)) _edges.removeElement(a);
-  }
+    /** Add a node to this NetList.  */
+    public void addNode(NetNode n) {
+        nodes.addElement(n);
+    }
 
-  static final long serialVersionUID = -238774170084340147L;
+    /** Remove a node from this NetList. When a node is deleted a
+     *  notification is sent out. */
+    public void removeNode(NetNode n) {
+        if (n != null && nodes.contains(n)) {
+            nodes.removeElement(n);
+        }
+    }
+
+    /** Add a NetEdge to this NetList. */
+    public void addEdge(NetEdge a) {
+        edges.addElement(a);
+    }
+
+    /** Remove a Edge from this NetList. */
+    public void removeEdge(NetEdge a) {
+        if (a != null && edges.contains(a)) {
+            edges.removeElement(a);
+        } 
+    }
+
+    static final long serialVersionUID = -238774170084340147L;
 } /* end class NetList */
 

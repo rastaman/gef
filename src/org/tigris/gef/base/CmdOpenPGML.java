@@ -28,7 +28,6 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
 import java.io.*;
 import java.awt.*;
 import java.net.*;

@@ -28,9 +28,12 @@
 
 package org.tigris.gef.graph.presentation;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.Vector;
 
-import org.tigris.gef.graph.*;
+import org.tigris.gef.graph.GraphNodeHooks;
+import org.tigris.gef.graph.MutableGraphSupport;
 
 /** This interface provides a facade to a net-level
  *  representation. Similiar in concept to the Swing class
@@ -73,14 +76,39 @@ implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // interface GraphModel
 
-  /** Return all nodes in the graph */
+  /** Return all nodes in the graph 
+   * @deprecated in 0.11 use getNodes(Collection)
+   */
   public Vector getNodes() { return _netList.getNodes(); }
 
-  /** Return all nodes in the graph */
+  /** Return all nodes in the graph
+  * @deprecated in 0.11 use getEdges(Collection)
+  */
   public Vector getEdges() { return _netList.getEdges();}
 
-  /** Return all ports on node or edge */
+  /** Return all ports on node or edge
+  * @deprecated in 0.11 use getPorts(Collection, Object)
+  */
   public Vector getPorts(Object nodeOrEdge) {
+    if (nodeOrEdge instanceof NetNode)
+      return ((NetNode)nodeOrEdge).getPorts();
+    if (nodeOrEdge instanceof NetEdge)
+      return ((NetEdge)nodeOrEdge).getPorts();
+    return null; // raise exception
+  }
+
+    /** Return all nodes in the graph */
+    public Collection getNodes(Collection c) {
+        return _netList.getNodes(c);
+    }
+
+    /** Return all nodes in the graph */
+    public Collection getEdges(Collection c) {
+        return _netList.getEdges();
+    }
+
+  /** Return all ports on node or edge */
+  public Collection getPorts(Collection c, Object nodeOrEdge) {
     if (nodeOrEdge instanceof NetNode)
       return ((NetNode)nodeOrEdge).getPorts();
     if (nodeOrEdge instanceof NetEdge)

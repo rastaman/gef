@@ -53,7 +53,7 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   // instance variables
 
   /** The underlying connected graph to be visualized.
-   * @deprecated in 0.11 will lose visibility in 0.12 use accessors
+   * @deprecated in 0.11 use getGraphModel2()/setGraphModel2()
    */
   protected GraphModel _gm;
   /**

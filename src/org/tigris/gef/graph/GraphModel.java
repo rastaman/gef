@@ -52,33 +52,25 @@ import java.util.*;
  * existing application.
  *
  * @see DefaultGraphModel
- * @see AdjacencyListGraphModel */
+ * @see AdjacencyListGraphModel
+ * TODO create a GraphModel2 to supercede this which
+ * returns collections.
+ */
 
-public interface GraphModel extends java.io.Serializable {
-  /** Return all nodes in the graph */
-  Vector getNodes();
+public interface GraphModel extends BaseGraphModel {
+    /** Return all nodes in the graph */
+    Vector getNodes();
 
-  /** Return all nodes in the graph */
-  Vector getEdges();
+    /** Return all nodes in the graph */
+    Vector getEdges();
 
-  /** Return all ports on node or edge */
-  Vector getPorts(Object nodeOrEdge);
+    /** Return all ports on node or edge */
+    Vector getPorts(Object nodeOrEdge);
 
-  /** Return the node or edge that owns the given port */
-  Object getOwner(Object port);
+    /** Return all edges going to given port */
+    Vector getInEdges(Object port);
 
-  /** Return all edges going to given port */
-  Vector getInEdges(Object port);
+    /** Return all edges going from given port */
+    Vector getOutEdges(Object port);
 
-  /** Return all edges going from given port */
-  Vector getOutEdges(Object port);
-
-  /** Return one end of an edge */
-  Object getSourcePort(Object edge);
-
-  /** Return  the other end of an edge */
-  Object getDestPort(Object edge);
-
-  void addGraphEventListener(GraphListener listener);
-  void removeGraphEventListener(GraphListener listener);
 } /* end interface GraphModel */

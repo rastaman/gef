@@ -31,8 +31,6 @@
 
 package org.tigris.gef.demo;
 
-import java.awt.*;
-import java.util.Vector;
 import java.io.*;
 
 import org.tigris.gef.graph.*;

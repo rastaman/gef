@@ -1,10 +1,8 @@
 package org.tigris.gef.presentation;
 
 import java.util.*;
-import java.awt.Color;
 import java.awt.Point;
 import org.tigris.gef.base.*;
-import java.beans.*;
 
 /**
  * Each class serving as AnnotationOwner gets an AnnotationStrategy saying how the

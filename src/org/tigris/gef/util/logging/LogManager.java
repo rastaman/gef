@@ -28,17 +28,14 @@
 
 package org.tigris.gef.util.logging;
 
-import java.util.*;
-import java.io.*;
-  
 import org.apache.log4j.*;
-import org.apache.log4j.helpers.*;
 
 /**
  * This class is based on the LogManager for ArgoUML initially provided by Phil Sager
  * and enhanced by Thorsten Sturm for Gentleware. It mainly enables logging on both
  * the console and a log file. The location of the log file as well as the logging 
  * priority can be configured.
+ * @deprecated 0.11 we will use standard log4j
  */
 
 public class LogManager {
@@ -62,6 +59,7 @@ public class LogManager {
 	
 	/** Instance initialization to create
 	 *  logging category <code>@product.small@.console.log</code>.
+         * @deprecated 0.11 we will use standard log4j
 	 */
 	static {
             Category newCategory = Category.getInstance("GEF");

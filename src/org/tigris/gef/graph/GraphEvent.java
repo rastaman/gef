@@ -31,7 +31,6 @@
 package org.tigris.gef.graph;
 
 import java.util.EventObject;
-import java.util.EventListener;
 
 /** A notification that a graph has changed.  The source is the object
  *  that implements GraphModel. The argument is the specific

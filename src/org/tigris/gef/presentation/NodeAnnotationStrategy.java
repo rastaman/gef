@@ -1,6 +1,5 @@
 package org.tigris.gef.presentation;
 
-import java.util.*;
 import java.awt.*;
 import org.tigris.gef.base.*;
 

@@ -25,16 +25,8 @@
 package org.tigris.gef.ui;
 
 import java.awt.*;
-import java.util.*;
 
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-
 
 public class ColorRenderer extends DefaultListCellRenderer {
   public Component getListCellRendererComponent(JList list,

@@ -30,8 +30,8 @@
 
 package org.tigris.gef.presentation;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.properties.PropCategoryManager;
-import org.tigris.gef.util.logging.LogManager;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -129,6 +129,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         PropCategoryManager.categorizeProperty("Style", "textColor");
     }
 
+    private static final Logger LOG = Logger.getLogger(FigText.class);
+
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -188,7 +190,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             return "Center";
         else if(_justification == JUSTIFY_RIGHT)
             return "Right";
-        LogManager.log.error("internal error, unknown text alignment");
+        LOG.error("internal error, unknown text alignment");
         return "Unknown";
     }
 

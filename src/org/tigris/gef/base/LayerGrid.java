@@ -38,13 +38,7 @@ import org.tigris.gef.presentation.Fig;
 import java.awt.*;
 import java.util.Collection;
 
-
 import javax.swing.UIManager;
-
-import org.tigris.gef.presentation.*;
-import java.util.List;
-import java.util.Vector;
-
 
 /** Paint a background drawing guide consisting of horizontal and
  *  vertical lines in a neutral color. This feature is common to many

@@ -31,11 +31,7 @@
 package org.tigris.gef.base;
 
 import java.awt.Point;
-import java.awt.datatransfer.*;  // Clipboard, Transferable, DataFlavor, etc.
-import java.awt.event.*;         // New event model.
-import java.io.*;                // Object serialization streams.
 import java.util.*;              // Mainly for Enumeration
-import java.util.zip.*;          // Data compression/decompression streams.
 import java.beans.*;
 
 import org.tigris.gef.presentation.*;

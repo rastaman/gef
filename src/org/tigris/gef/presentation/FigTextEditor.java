@@ -30,9 +30,9 @@
 
 package org.tigris.gef.presentation;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.util.logging.LogManager;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -61,6 +61,8 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     private static boolean _makeBrighter = false;
     private static Color _backgroundColor = null;
 
+    private static final Logger LOG = Logger.getLogger(FigTextEditor.class);
+    
     /** Needs-more-work: does not open if I use tab to select the
      *  FigText. */
     public FigTextEditor() {
@@ -76,20 +78,17 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     public void init(FigText ft, InputEvent ie) {
         _target = ft;
         Editor ce = Globals.curEditor();
-        if(!(ce.getJComponent() instanceof JComponent)) {
-            LogManager.log.warn("not a JComponent");
-            return;
-        }
+        
         _drawingPanel = (JPanel)ce.getJComponent();
         _target.firePropChange("editing", false, true);
         _target.addPropertyChangeListener(this);
         // walk up and add to glass pane
         Component awtComp = _drawingPanel;
-        while(!(awtComp instanceof JFrame) && awtComp != null) {
+        while (!(awtComp instanceof JFrame) && awtComp != null) {
             awtComp = awtComp.getParent();
         }
-        if(!(awtComp instanceof JFrame)) {
-            LogManager.log.warn("no JFrame");
+        if (!(awtComp instanceof JFrame)) {
+            LOG.warn("no JFrame");
             return;
         }
         _layeredPane = ((JFrame)awtComp).getLayeredPane();

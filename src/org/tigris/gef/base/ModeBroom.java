@@ -34,7 +34,6 @@ import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
 import org.tigris.gef.presentation.Fig;

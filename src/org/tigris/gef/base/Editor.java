@@ -36,7 +36,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigTextEditor;
-import org.tigris.gef.util.logging.LogManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -254,10 +253,10 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
             return ed;
         }
         catch(java.lang.IllegalAccessException ignore) {
-            LogManager.log.error("IllegalAccessException in spawn");
+            LOG.error("IllegalAccessException in spawn");
         }
         catch(java.lang.InstantiationException ignore) {
-            LogManager.log.error("InstantiationException in spawn");
+            LOG.error("InstantiationException in spawn");
         }
         return null;
     }
@@ -893,8 +892,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
             c.doIt();
         }
         catch(java.lang.Throwable ex) {
-            LogManager.log.debug("While executing " + c + " on event " + ie + " the following error occured:");
-            ex.printStackTrace();
+            LOG.debug("While executing " + c + " on event " + ie + " the following error occured:", ex);
         }
     }
 

@@ -28,8 +28,8 @@
 
 package org.tigris.gef.base;
 
+import org.apache.log4j.Logger;
 import org.tigris.gef.ui.IStatusBar;
-import org.tigris.gef.util.logging.LogManager;
 
 import java.applet.Applet;
 import java.applet.AppletContext;
@@ -70,6 +70,8 @@ public class Globals {
      *  disappear. */
     public static String defaultStatus = "  ";
 
+    private static final Logger LOG = Logger.getLogger(Globals.class);
+    
     /** If we are running as an applet, Store the Applet and
      *  AppletContext in a well known place. */
     public static void setApplet(Applet a) {
@@ -87,8 +89,11 @@ public class Globals {
         return _applet;
     }
 
-    /** Until jdk 1.2, this will be our clipboard */
+    /** Until jdk 1.2, this will be our clipboard
+     * TODO we have now gone beyond JDK1.2
+     */
     public static Vector clipBoard;
+    
     public static boolean pastable = false;
 
     /** The directory most recently used in an open or save dialog */
@@ -364,14 +369,15 @@ public class Globals {
             _pcListeners.put(src, listeners);
         }
         // debugging warning
-        if(_pcListeners.size() > 100)
-            LogManager.log.debug("_pcListeners size = " + _pcListeners.size());
+        if (LOG.isDebugEnabled() && _pcListeners.size() > 100) {
+            LOG.debug("_pcListeners size = " + _pcListeners.size());
+        }
         for(int i = 0; i < MAX_LISTENERS; ++i)
             if(listeners[i] == null) {
                 listeners[i] = l;
                 return;
             }
-        LogManager.log.debug("ran out of listeners!");
+        if (LOG.isDebugEnabled()) LOG.debug("ran out of listeners!");
     }
 
     public static void addUniversalPropertyChangeListener(PropertyChangeListener pcl) {
@@ -382,18 +388,20 @@ public class Globals {
         universalListener = null;
     }
 
-    public static void removePropertyChangeListener(Object s, PropertyChangeListener l) {
+    public static void removePropertyChangeListener(Object s, PropertyChangeListener listener) {
         PropertyChangeListener listeners[] = (PropertyChangeListener[])_pcListeners.get(s);
         boolean found = false;
         if(listeners == null)
             return;
-        for(int i = 0; i < MAX_LISTENERS; ++i)
-            if(listeners[i] == l) {
+        for (int i = 0; i < MAX_LISTENERS; ++i) {
+            if (listeners[i] == listener) {
                 listeners[i] = null;
                 found = true;
             }
-        if(!found)
-            LogManager.log.debug("listener not found!");
+        }
+        if (LOG.isDebugEnabled() && !found) {
+            LOG.debug("listener not found!");
+        }
         for(int i = 0; i < MAX_LISTENERS; ++i)
             if(listeners[i] != null)
                 return;
