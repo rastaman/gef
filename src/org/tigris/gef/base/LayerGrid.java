@@ -34,6 +34,8 @@ package org.tigris.gef.base;
 import java.util.*;
 import java.awt.*;
 
+import javax.swing.UIManager;
+
 import org.tigris.gef.presentation.*;
 
 /** Paint a background drawing guide consisting of horizontal and
@@ -98,7 +100,22 @@ public class LayerGrid extends Layer {
   // constructors
 
   /** Construct a new LayerGrid and name it 'Grid'. */
-  public LayerGrid() { super("Grid"); }
+  public LayerGrid() {
+  	super("Grid");
+    //Use the default background color as the color between the lines and dots
+	_bgColor = UIManager.getColor("Panel.background");
+	if (_bgColor == null) {
+	 _bgColor = Color.lightGray;
+	} 	
+  	
+	// The color of the lines and dots should be slightly darker than the
+	// background color
+	final float scale = 0.9f;
+	_color = new Color(
+			 (int) (_bgColor.getRed() * scale),
+			 (int) (_bgColor.getGreen() * scale),
+			 (int) (_bgColor.getBlue() * scale)); 
+  }
 
   /** Construct a new LayerGrid with the given foreground color,
    * background color, line spacing, and lines/dots flag. */
