@@ -103,7 +103,7 @@ public class CmdSetMode extends Cmd {
     try { mode = (Mode) desiredModeClass.newInstance(); }
     catch (java.lang.InstantiationException ignore) {  return; }
     catch (java.lang.IllegalAccessException ignore) { return; }
-    mode.setArgs(_modeArgs);
+    mode.init(_modeArgs);
     Boolean shouldBeSticky = (Boolean) getArg("shouldBeSticky");
     if (shouldBeSticky == null) Globals.mode(mode);
     else Globals.mode(mode, shouldBeSticky.booleanValue());
