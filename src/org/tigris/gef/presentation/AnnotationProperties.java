@@ -3,8 +3,8 @@ package org.tigris.gef.presentation;
 import java.awt.Color;
 import org.tigris.gef.base.*;
 
-// each Anotation has one associated AnotationProperties object
-public class AnotationProperties {
+// each Annotation has one associated AnnotationProperties object
+public class AnnotationProperties {
 
         private boolean fixedOffset = false;
         private boolean fixedRatio = false;
@@ -17,11 +17,11 @@ public class AnotationProperties {
 	private boolean remote = false;
 	
 	
-	public AnotationProperties(){
+	public AnnotationProperties(){
 		this(false,5,false,(float)0.5);
 	}	
 
-        public AnotationProperties(boolean fixedOffset, int offset, boolean fixedRatio, float ratio){
+        public AnnotationProperties(boolean fixedOffset, int offset, boolean fixedRatio, float ratio){
                 this.offset = offset;
                 this.ratio = ratio;
                 this.fixedOffset = fixedOffset;
@@ -29,7 +29,7 @@ public class AnotationProperties {
 		// connectingLine visible for 300 ms
         }
 
-	public AnotationProperties(int offset, float ratio){
+	public AnnotationProperties(int offset, float ratio){
 		this(false, offset, false, ratio);
 	}
 
@@ -73,12 +73,12 @@ public class AnotationProperties {
 		return line;
 	}
 	
-	// line is visible only if anotation is visible
-	protected boolean lineIsVisible(Fig anotation){ 
-		return anotationIsVisible(anotation);
+	// line is visible only if annotation is visible
+	protected boolean lineIsVisible(Fig annotation){ 
+		return annotationIsVisible(annotation);
 	}
 	
-	protected boolean anotationIsVisible(Fig anotation){
+	protected boolean annotationIsVisible(Fig annotation){
 		return true;
 	}
 	

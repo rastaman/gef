@@ -5,9 +5,9 @@ import javax.swing.*;
 import java.util.Hashtable;
 import java.awt.Point;
 
-public class AnotationHelper{
+public class AnnotationHelper{
          
-        private static AnotationHelper theInstance = null;
+        private static AnnotationHelper theInstance = null;
 
 	private float ratio;
 	private int offset;
@@ -16,15 +16,15 @@ public class AnotationHelper{
 	private Point normpoint = new Point();
 
 
-        private AnotationHelper(){
+        private AnnotationHelper(){
         }
         
-        public static AnotationHelper instance(){
-        	if (theInstance==null) theInstance = new AnotationHelper();
+        public static AnnotationHelper instance(){
+        	if (theInstance==null) theInstance = new AnnotationHelper();
         	return theInstance;
         }
         public int getNormOffset(Point p0, Point p1, Point p2){
-		// p0: anotation's position
+		// p0: annotation's position
 	  	// p1: edge's starting point
   		// p2: edge's ending point
 		dd = (float)( ( (p2.x-p1.x)*(p0.y-p1.y) - (p0.x-p1.x)*(p2.y-p1.y) ) /
@@ -35,7 +35,7 @@ public class AnotationHelper{
   	}
 
 	public float getRatio(Point r1, Point r0, Point r2){
-    		// r1: position of anotation;
+    		// r1: position of annotation;
 	  	// r0: edge's starting point
   		// r2: edge's ending point
   	 	//edge's direction vector
@@ -76,7 +76,7 @@ public class AnotationHelper{
         }
 
 	public Point getNormPointOnEdge(Point r1, Point r0, Point r2){
-    		// r1: position of anotation;
+    		// r1: position of annotation;
 	  	// r0: edge's starting point
   		// r2: edge's ending point
   	 	//edge's direction vector

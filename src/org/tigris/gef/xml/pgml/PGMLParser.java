@@ -54,8 +54,6 @@ public class PGMLParser extends HandlerBase {
   protected HashMap _figRegistry = null;
   protected Map _ownerRegistry = new HashMap();
 
-  protected boolean _anotationsTag = false;
-
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -170,21 +168,19 @@ public class PGMLParser extends HandlerBase {
   private static final int NODE_STATE = 4;
   private static final int EDGE_STATE = 5;
   private static final int PRIVATE_STATE = 6;
+  private static final int ANNOTATION_STATE = 7;
 
   private static final int PRIVATE_NODE_STATE = 46;
   private static final int PRIVATE_EDGE_STATE = 56;
+  private static final int ANNOTATION_EDGE_STATE = 57;
   private static final int TEXT_NODE_STATE = 41;
   private static final int TEXT_EDGE_STATE = 51;
+  private static final int TEXT_ANNOTATION_STATE = 71;
+  private static final int POLY_EDGE_STATE = 53;
   private static final int DEFAULT_NODE_STATE = 40;
   private static final int DEFAULT_EDGE_STATE = 50;
 
   public void startElement(String elementName,AttributeList attrList) {
-     //sb: anotation handling
-     if (elementName.equals("anotations")){
-        handleStartAnotations(elementName,attrList);
-        return;
-     }
-
     switch(_elementState) {
         case DEFAULT_STATE:
         if ("group".equals(elementName)) {
@@ -232,6 +228,10 @@ public class PGMLParser extends HandlerBase {
         polyStateStartElement(elementName,attrList);
         break;
 
+        case POLY_EDGE_STATE:
+        polyStateStartElement(elementName,attrList);
+        break;
+
         case NODE_STATE:
 			nodeStateStartElement(elementName,attrList);
 			break;
@@ -239,26 +239,14 @@ public class PGMLParser extends HandlerBase {
         case EDGE_STATE:
         edgeStateStartElement(elementName,attrList);
         break;
+
+        case ANNOTATION_STATE:
+	    annotationStateStartElement(elementName,attrList);
+	    break;
     }
   }
-
-  public void handleStartAnotations(String elementName, AttributeList attrList){
-        _anotationsTag = true;
-        //System.out.println("==========handling anotations START=====");
-  }
-  public void handleEndAnotations(String elementName){
-        _anotationsTag = false;
-        //System.out.println("==========handling anotations END=====");
-  }
-
 
   public void endElement(String elementName) {
-    //sb: anotation handling
-    if (elementName.equals("anotations")){
-        handleEndAnotations(elementName);
-        return;
-    }
-
     switch(_elementState) {
         case 0:
         if ("group".equals(elementName)) {
@@ -310,6 +298,24 @@ public class PGMLParser extends HandlerBase {
 			}
 			break;
 
+        case TEXT_ANNOTATION_STATE:
+	    System.out.println("[PGMLParser]: endElement TEXT_ANNOTATION_STATE: " + _textBuf.toString());
+	    if(elementName.equals("text")) {
+		_currentText.setText(_textBuf.toString());
+		_currentEdge.addAnnotation(_currentText,"text",_currentText.getContext());
+		_elementState = ANNOTATION_STATE;
+		_currentText = null;
+		_textBuf = null;
+	    }
+	    break;
+	    
+        case POLY_EDGE_STATE:
+	    if(elementName.equals("path")) {
+		_elementState = EDGE_STATE;
+		_currentPoly = null;
+	    }
+	    break;
+
         case NODE_STATE:
 			//System.out.println("[PGMLParser]: endElement NODE_STATE");
             _elementState = DEFAULT_STATE;
@@ -318,11 +324,18 @@ public class PGMLParser extends HandlerBase {
         break;
 
         case EDGE_STATE:
-			//System.out.println("[PGMLParser]: endElement EDGE_STATE");
+	    System.out.println("[PGMLParser]: endElement EDGE_STATE");
             _elementState = DEFAULT_STATE;
-            _currentNode = null;
+	    _currentEdge.updateAnnotationPositions();
+            _currentEdge = null;
+	    _currentPoly = null;
             _textBuf = null;
-        break;
+	    break;
+
+        case ANNOTATION_STATE:
+	    System.out.println("[PGMLParser]: endElement ANNOTATION_STATE");
+            _elementState = EDGE_STATE;
+	    break;
 
         case PRIVATE_STATE:
 			//System.out.println("[PGMLParser]: endElement PRIVATE_STATE");
@@ -460,31 +473,23 @@ public class PGMLParser extends HandlerBase {
   private FigText _currentText = null;
   private StringBuffer _textBuf = null;
   protected FigText handleText(AttributeList attrList) {
-	  //System.out.println("[PGMLParser]: handleText");
-    FigText f = new FigText(100, 100, 90, 45);
-    setAttrs(f, attrList);
-    _currentText = f;
-    //_elementState = TEXT_STATE;
-    //_textBuf = new StringBuffer();
-	//String text = e.getText();
-	//f.setText(text);
-    String font = attrList.getValue("font");
-    if (font != null && !font.equals("")) f.setFontFamily(font);
-    String textsize = attrList.getValue("textsize");
-    if (textsize != null && !textsize.equals("")) {
-      int textsizeInt = Integer.parseInt(textsize);
-      f.setFontSize(textsizeInt);
-    }
-
-    // sb: anotation related
-    /*
-    if (_anotationsTag){
-        System.out.println(" ====== Text in AnotationTag found !=============");
-        System.out.println(" ====== Text: " + attrList.getValue("name") + "  AnOwner: " + _currentEdge);
-    }
-    */
-
-    return f;
+      //System.out.println("[PGMLParser]: handleText");
+      FigText f = new FigText(100, 100, 90, 45);
+      setAttrs(f, attrList);
+      _currentText = f;
+      //_elementState = TEXT_STATE;
+      //_textBuf = new StringBuffer();
+      //String text = e.getText();
+      //f.setText(text);
+      String font = attrList.getValue("font");
+      if (font != null && !font.equals("")) f.setFontFamily(font);
+      String textsize = attrList.getValue("textsize");
+      if (textsize != null && !textsize.equals("")) {
+	  int textsizeInt = Integer.parseInt(textsize);
+	  f.setFontSize(textsizeInt);
+      }
+      
+      return f;
   }
 
   private FigPoly _currentPoly = null;
@@ -507,7 +512,7 @@ public class PGMLParser extends HandlerBase {
               //_currentLine.setX1(_x1Int);
               //_currentLine.setY1(_y1Int);
 			  _currentPoly.addPoint(_x1Int,_y1Int);
-              //System.out.println("[PGMLParser] polyStateStartElement: x1="+x1+" y1="+y1);
+              System.out.println("[PGMLParser] polyStateStartElement: x1="+x1+" y1="+y1);
           }
           else if(tagName.equals("lineto")) {
             String x2 = attrList.getValue("x");
@@ -517,9 +522,10 @@ public class PGMLParser extends HandlerBase {
             //_currentLine.setX2(x2Int);
             //_currentLine.setY2(y2Int);
 			_currentPoly.addPoint(x2Int,y2Int);
-              //System.out.println("[PGMLParser] polyStateStartElement: x2="+x2+" y2="+y2);
+              System.out.println("[PGMLParser] polyStateStartElement: x2="+x2+" y2="+y2);
           }
       }
+      System.out.println("[PGMLParser] polyStateStartElement: numPoints"+_currentPoly.getNumPoints());
   }
 
   private FigNode _currentNode = null;
@@ -632,18 +638,25 @@ public class PGMLParser extends HandlerBase {
     private FigEdge _currentEdge = null;
     private void edgeStateStartElement(String tagName,AttributeList attrList)
     {
-		//System.out.println("[PGMLParser]: edgeStateStartElement: " + tagName + " " + _elementState);
+	System.out.println("[PGMLParser]: edgeStateStartElement: " + tagName + " " + _elementState);
         if (tagName.equals("path")) {
             Fig p = handlePath(attrList);
+	    _elementState = POLY_EDGE_STATE;
             _currentEdge.setFig(p);
             ((FigPoly)p)._isComplete = true;
             _currentEdge.calcBounds();
+	    System.out.println("[PGMLParser]: edgeStateStartElement: cur= " + _currentEdge.getNumPoints());
             if (_currentEdge instanceof FigEdgePoly) {
                 ((FigEdgePoly)_currentEdge).setInitiallyLaidOut(true);
             }
+	    _currentEdge.updateAnnotationPositions();
         }
         else if (tagName.equals("private")) {
             _elementState = PRIVATE_EDGE_STATE;
+            _textBuf = new StringBuffer();
+        }
+        else if (tagName.equals("annotations")) {
+            _elementState = ANNOTATION_STATE;
             _textBuf = new StringBuffer();
         }
         else if (tagName.equals("text")) {
@@ -656,6 +669,15 @@ public class PGMLParser extends HandlerBase {
 			_textBuf = new StringBuffer();
 			_elementState = DEFAULT_EDGE_STATE;
 		}
+    }
+
+    public void annotationStateStartElement(String tagName, AttributeList attrList){
+	System.out.println("[PGMLParser]: annotationStateStartElement: " + tagName + " " + _elementState);
+	if (tagName.equals("text")) {
+	    _elementState = TEXT_ANNOTATION_STATE;
+	    _textBuf = new StringBuffer();
+	    FigText p = handleText(attrList);
+	}
     }
 
   ////////////////////////////////////////////////////////////////
@@ -674,9 +696,9 @@ public class PGMLParser extends HandlerBase {
       int wInt = (w == null || w.equals("")) ? 20 : Integer.parseInt(w);
       int hInt = (h == null || h.equals("")) ? 20 : Integer.parseInt(h);
       f.setBounds(xInt, yInt, wInt, hInt);
-        //System.out.println("[PGMLParser]: setAttrs: " + name);
-        //System.out.println("[PGMLParser]: setAttrs: x="+x+" y="+y);
-        //System.out.println("[PGMLParser]: setAttrs: w="+w+" h="+h);
+        System.out.println("[PGMLParser]: setAttrs: " + name);
+        System.out.println("[PGMLParser]: setAttrs: x="+x+" y="+y);
+        System.out.println("[PGMLParser]: setAttrs: w="+w+" h="+h);
     }
     String linewidth = attrList.getValue("stroke");
     if (linewidth != null && !linewidth.equals("")) {
@@ -705,6 +727,11 @@ public class PGMLParser extends HandlerBase {
         fg.parseDynObjects(dynobjs);
       }
     }
+
+    String context = attrList.getValue("context");
+    if (context != null && !context.equals(""))
+      f.setContext(context);
+
     setOwnerAttr(f, attrList);
   }
 

@@ -105,6 +105,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 
   protected Fig _group = null;
 
+    protected String _context = "";
     /** True if the Fig is shown. This funct once was in FogComponent of ArgoUML */
 
   protected boolean _displayed = true;
@@ -136,7 +137,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   /** Most subclasses will not use this constructor, it is only useful
    *  for subclasses that redefine most of the infrastructure provided
    *  by class Fig. */
-  public Fig() { an = new NoAnotationStrategy(); }  
+  public Fig() { an = new NoAnnotationStrategy(); }  
   /** Construct a new Fig with the given bounds. */
   public Fig(int x, int y, int w, int h) {
 	this(x, y, w, h, Color.black, Color.white, null);
@@ -156,48 +157,56 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 	if (lineColor != null) _lineColor = lineColor; else _lineWidth = 0;
 	if (fillColor != null) _fillColor = fillColor; else _filled = false;
 	setOwner(own);
-	//anotation related
+	//annotation related
   }  
   
   //--------------------------------
-  // anotation related
+  // annotation related
 
-  protected AnotationStrategy an = new NoAnotationStrategy();
+  protected AnnotationStrategy an = new NoAnnotationStrategy();
+  protected boolean annotationStatus = false;
+  protected Fig annotationOwner;
 
-  protected Fig anotationOwner;
-
-  // legt den AnotationOwner fest
-  public void setAnotationOwner(Fig f){
-	anotationOwner = f;
-	// der Aufruf dieser Methode macht dieses Objekt zur Anotation
-	anotationStatus=true;
+  // legt den AnnotationOwner fest
+  public void setAnnotationOwner(Fig f){
+	annotationOwner = f;
+	// der Aufruf dieser Methode macht dieses Objekt zur Annotation
+	annotationStatus=true;
   }
 
-  public Fig getAnotationOwner(){
-	return anotationOwner;
+  public Fig getAnnotationOwner(){
+	return annotationOwner;
   }
 
-  public AnotationStrategy getAnotationStrategy(){
+  public AnnotationStrategy getAnnotationStrategy(){
 	return an;
   }
 
-  //** Set the AnotationStrategy for this fig */
-  //** using this method will discard the previous AnotationStrategy */
-  public void setAnotationStrategy(AnotationStrategy a){
+  //** Set the AnnotationStrategy for this fig */
+  //** using this method will discard the previous AnnotationStrategy */
+  public void setAnnotationStrategy(AnnotationStrategy a){
         an = a;
   }
 
-  boolean anotationStatus = false;
-
-  // returns true if this fig is an anotation of any other fig
-  public boolean isAnotation(){
-  	return anotationStatus;
+  // returns true if this fig is an annotation of any other fig
+  public boolean isAnnotation(){
+  	return annotationStatus;
   }
-  // end anotation related
+
+    /**
+     * Adds a new Annotation of type "text" to fig.
+     */
+    public void addAnnotation(Fig annotation, String type, String context) {
+    }
+
+    /**
+     * Updates the positions of the connected annotations.
+     */
+    public void updateAnnotationPositions() {}
+
+  // end annotation related
   //-----------------------------------
-  
-  
-  
+    
   public void addPoint(int x, int y) { }  
   ////////////////////////////////////////////////////////////////
   // updates
@@ -380,16 +389,16 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
    *  given editor. */
   public void delete() {
   	_displayed = false;
-  	// anotation related
-  	// delete all anotations first
-        java.util.Enumeration enum = getAnotationStrategy().getAllAnotations();
+  	// annotation related
+  	// delete all annotations first
+        java.util.Enumeration enum = getAnnotationStrategy().getAllAnnotations();
         while (enum.hasMoreElements()){
-        	Fig anotation = (Fig)enum.nextElement();
-        	getAnotationStrategy().getAnotationProperties(anotation).removeLine();
-                getAnotationStrategy().removeAnotation(anotation);
-                anotation.delete();
+        	Fig annotation = (Fig)enum.nextElement();
+        	getAnnotationStrategy().getAnnotationProperties(annotation).removeLine();
+                getAnnotationStrategy().removeAnnotation(annotation);
+                annotation.delete();
         }
-        // end anotation related
+        // end annotation related
 	if (_layer != null) { _layer.deleted(this); }
 	setOwner(null);
   }  
@@ -461,19 +470,18 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
    * endTrans(). */
   public void endTrans() {
 
-  	// anotation related
-  	if (this.isAnotation()){
-                if (!(Globals.curEditor().getSelectionManager().containsFig(this.getAnotationOwner())) && Globals.curEditor().getSelectionManager().containsFig(this) ){
-                        (getAnotationOwner().an).storeAnotationPosition(this);
-                }
+  	// annotation related
+  	if (this.isAnnotation()){
+	    if (!(Globals.curEditor().getSelectionManager().containsFig(this.getAnnotationOwner())) && Globals.curEditor().getSelectionManager().containsFig(this) ){
+		(getAnnotationOwner().an).storeAnnotationPosition(this);
+	    }
         }
-
-
-        if (!(getAnotationStrategy() instanceof NoAnotationStrategy)){
-                getAnotationStrategy().translateAnotations(this);
+		
+        if (!(getAnnotationStrategy() instanceof NoAnnotationStrategy)){
+	    getAnnotationStrategy().translateAnnotations(this);
         }
-
-        // end anotation related
+	
+        // end annotation related
 	damage();
 	//RedrawManager.unlock();  // helps avoid dirt
   }
@@ -514,6 +522,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   public Point getFirstPoint() { return new Point(); }  
   public Vector getGravityPoints() { return null; }  
   public Fig getGroup() { return _group; }  
+    public String getContext() { return _context; }
   public int getHalfHeight() { return _h / 2; }  
   public int getHalfWidth() { return _w / 2; }  
   public int getHeight() { return _h; }
@@ -739,6 +748,7 @@ public String getPrivateData() {
   /** Sets the enclosing FigGroup of this Fig.  The enclosing group is
    * always notified of property changes, without need to add a listener. */
   public void setGroup(Fig f) { _group = f; }  
+  public void setContext(String context) { _context = context; }  
   public void setHeight(int h) { setBounds(_x, _y, _w, h); }  
   ////////////////////////////////////////////////////////////////
   // accessors
@@ -833,9 +843,9 @@ public void setPrivateData(String data)
    *  startTrans() MUST be matched with a call to endTrans(). */
   public void startTrans() {
   	/*
-  	if (this.isAnotation()){
-                if (!(Globals.curEditor().getSelectionManager().containsFig(this.getAnotationOwner())) && Globals.curEditor().getSelectionManager().containsFig(this) ){
-                        (getAnotationOwner().an).storeAnotationPosition(this);
+  	if (this.isAnnotation()){
+                if (!(Globals.curEditor().getSelectionManager().containsFig(this.getAnnotationOwner())) && Globals.curEditor().getSelectionManager().containsFig(this) ){
+                        (getAnnotationOwner().an).storeAnnotationPosition(this);
                 }
         }
         */

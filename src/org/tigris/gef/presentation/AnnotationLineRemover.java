@@ -4,19 +4,19 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.Hashtable;
 
-public class AnotationLineRemover implements ActionListener {           
+public class AnnotationLineRemover implements ActionListener {           
          
         private Hashtable timers; // FIG | Timer
         private Hashtable figs;   // Timer | Fig (nur der bequemlichkeit wegen ;-)
-        private static AnotationLineRemover theInstance = null; 
+        private static AnnotationLineRemover theInstance = null; 
 
-        private AnotationLineRemover(){
+        private AnnotationLineRemover(){
     		timers = new Hashtable();
     		figs = new Hashtable();
         }
         
-        public static AnotationLineRemover instance(){
-        	if (theInstance==null) theInstance = new AnotationLineRemover();
+        public static AnnotationLineRemover instance(){
+        	if (theInstance==null) theInstance = new AnnotationLineRemover();
         	return theInstance;
         }
         	
@@ -45,11 +45,11 @@ public class AnotationLineRemover implements ActionListener {
         	// Gleichzeitig kann der Timer angehalten werden.
         	Timer t = (Timer)e.getSource();
         	t.stop();
-        	//((Fig)figs.get(t)).getAnotationStrategy().removeAllConnectingLines();
-        	Fig anotation = ((Fig)figs.get(t));
-        	System.out.println("*************************************" +anotation);
+        	//((Fig)figs.get(t)).getAnnotationStrategy().removeAllConnectingLines();
+        	Fig annotation = ((Fig)figs.get(t));
+        	System.out.println("*************************************" +annotation);
                 try{
-        	        anotation.getAnotationOwner().getAnotationStrategy().getAnotationProperties(anotation).removeLine();
+        	        annotation.getAnnotationOwner().getAnnotationStrategy().getAnnotationProperties(annotation).removeLine();
                 }
                 catch (Exception ex){}
         }	
