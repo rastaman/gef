@@ -55,6 +55,11 @@ public interface MutableGraphModel extends GraphModel {
   /** Return true if the given object is a valid edge in this graph */
   boolean canAddEdge(Object edge);
 
+	/** Return true if the type of the given object can be mapped to
+	 *  a supported type.
+	 */
+	boolean canDragNode(Object node);
+
   /** Remove the given node from the graph. Sends a notification. */
   void removeNode(Object node);
 
@@ -72,6 +77,9 @@ public interface MutableGraphModel extends GraphModel {
 
   /** Remove the given edge from the graph. Sends a notification. */
   void removeEdge(Object edge);
+	
+	/** Create a new node based on the given node and add it to the graph */
+	void dragNode(Object node);
 
   /** Return true if the two given ports can be connected by a 
    * kind of edge to be determined by the ports. */

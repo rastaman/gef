@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: Globals.java
 // Classes: Globals
 // Original Author: jrobbins@ics.uci.edu
@@ -83,6 +80,7 @@ public class Globals {
 
   /** Until jdk 1.2, this will be our clipboard */
   public static Vector clipBoard;
+  public static boolean pastable = false;
 
   /** The directory most recently used in an open or save dialog */
   public static String LastDirectory = ".";
