@@ -594,6 +594,7 @@ public class PGMLParser extends HandlerBase {
             java.net.URL url = new java.net.URL(systemId);
             try {
 	        source = new InputSource(url.openStream());
+            source.setSystemId(systemId);
 	        if (publicId != null) source.setPublicId(publicId);
             }
             catch (java.io.IOException e) {
@@ -614,6 +615,7 @@ public class PGMLParser extends HandlerBase {
                     }
                     if(is != null) {
                         source = new InputSource(is);
+                        source.setSystemId(systemId);
                         if(publicId != null) source.setPublicId(publicId);
                     }
                 }
@@ -627,6 +629,7 @@ public class PGMLParser extends HandlerBase {
         //
         if(source == null) {
             source = new InputSource();
+            source.setSystemId(systemId);
         }
         return source;
    }

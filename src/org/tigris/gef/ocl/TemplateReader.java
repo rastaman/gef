@@ -83,7 +83,9 @@ public class TemplateReader extends org.xml.sax.HandlerBase {
     factory.setValidating(false);
     try {
         SAXParser pc = factory.newSAXParser();
-        pc.parse(in,this);
+        InputSource source = new InputSource(in);
+        source.setSystemId(new java.net.URL("file",null,fileName).toString());
+        pc.parse(source,this);
     }
     catch (Exception ex) {
         ex.printStackTrace();

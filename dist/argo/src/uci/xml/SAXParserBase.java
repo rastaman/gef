@@ -84,6 +84,7 @@ public abstract class SAXParserBase extends HandlerBase {
     parser.setEntityResolver(this);
     try {
       InputSource input = new InputSource(url.openStream());
+      input.setSystemId(url.toString());
       start = System.currentTimeMillis();
       parser.parse(input);
       end = System.currentTimeMillis();
@@ -159,6 +160,7 @@ public abstract class SAXParserBase extends HandlerBase {
     try {
       URL testIt = new URL(systemId);
       InputSource s = new InputSource(testIt.openStream());
+      s.setSystemId(systemId);
       return s;
     } catch (Exception e) {
       if (_dbg || _verbose)
@@ -167,7 +169,8 @@ public abstract class SAXParserBase extends HandlerBase {
       URL url = SAXParserBase.class.getResource("/uci/xml/dtd/" + dtdName);
       if (_dbg || _verbose)
 	System.out.println("NOTE: Using DTD " + url.toString());
-      return new InputSource(url.toString());
+       InputSource s = new InputSource(url.toString());
+       s.setSystemId(systemId);
     }
   }
 

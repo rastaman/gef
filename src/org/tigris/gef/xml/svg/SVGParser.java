@@ -544,7 +544,9 @@ protected String parseStyle(String field, String style) {
         SAXParser pc = factory.newSAXParser();
         initDiagram("org.tigris.gef.base.Diagram");
         _figRegistry = new Hashtable();
-        pc.parse(is,this);
+        InputSource source = new InputSource(is);
+        source.setSystemId(url.toString());
+        pc.parse(source,this);
 
          is.close();
 	  return _diagram;
@@ -628,6 +630,7 @@ protected String parseStyle(String field, String style) {
             java.net.URL url = new java.net.URL(systemId);
             try {
 	        source = new InputSource(url.openStream());
+            source.setSystemId(systemId);
 	        if (publicId != null) source.setPublicId(publicId);
             }
             catch (java.io.IOException e) {
@@ -648,6 +651,7 @@ protected String parseStyle(String field, String style) {
                     }
                     if(is != null) {
                         source = new InputSource(is);
+                        source.setSystemId(systemId);
                         if(publicId != null) source.setPublicId(publicId);
                     }
                 }
@@ -661,6 +665,7 @@ protected String parseStyle(String field, String style) {
         //
         if(source == null) {
             source = new InputSource();
+            source.setSystemId(systemId);
         }
         return source;
    }
