@@ -55,10 +55,16 @@ public class NetPort
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** The NetEdges that are connected to this port. */
+    /**
+     * The NetEdges that are connected to this port.
+     * @deprecated 0.10.5 will become private
+     */
     protected Vector _edges;
 
-    /** The NetNode that this port is a part of. */
+    /** 
+     * The NetNode that this port is a part of.
+     * @deprecated 0.10.5 will become private
+     */
     protected Object _parent;
 
     private static Log LOG = LogFactory.getLog(NetPort.class);
@@ -115,14 +121,17 @@ public class NetPort
     /** Remove this port from the underlying connected graph model and
      *  dispose all arcs connected to it. */
     public void dispose() {
-        Enumeration edges = _edges.elements();
-        while (edges.hasMoreElements()) {
-            NetEdge e = (NetEdge) edges.nextElement();
-            e.dispose();
+        int size = _edges.size();
+        for( int i = 0; i < size; i++ ) {
+            // We always just dispose the first edge as each dispose
+            // results in a call-back to removing that same edge from the
+            // edges list making what was the next item the new first
+            // item.
+            NetEdge edge = (NetEdge) _edges.get(0);
+            edge.dispose();
         }
         firePropertyChange("disposed", false, true);
     }
-
     ////////////////////////////////////////////////////////////////
     // net-level hooks
 

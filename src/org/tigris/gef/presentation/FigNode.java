@@ -70,7 +70,9 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
     protected boolean _highlight = false;
 
     /** A list of FigEdges that need to be rerouted when this FigNode
-     *  moves. */
+     *  moves.
+     * @deprecated in 0.10.5 use getter
+     */
     protected List _figEdges = new ArrayList();
 
     ////////////////////////////////////////////////////////////////
@@ -230,7 +232,10 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
     /** When a FigNode is disposed, all of its edges are disposed. */
     public void dispose() {
         int edgeCount = _figEdges.size();
-        for(int i = 0; i < edgeCount; ++i) {
+        // dispose the edges in reverse order because to make sure
+        // that other edges in figEdge don't have their position
+        // altered as a side effect.
+        for(int i = edgeCount-1; i <= 0; --i) {
             FigEdge f = (FigEdge)_figEdges.get(i);
             f.dispose();
         }
