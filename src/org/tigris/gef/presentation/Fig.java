@@ -613,11 +613,12 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         removeFromDiagram();
     }
     
-    /** Remove this Fig from the Layer being edited by the
-     *  given editor. */
+    /**
+     * Remove this Fig from the Layer it belongs to.
+     */
     public void removeFromDiagram() {
         _displayed = false;
-        // annotation related
+        
         // delete all annotations first
         java.util.Enumeration iter = getAnnotationStrategy().getAllAnnotations();
         while(iter.hasMoreElements()) {
@@ -627,9 +628,10 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
             annotation.removeFromDiagram();
         }
 
-        // end annotation related
         if(_layer != null) {
-            _layer.deleted(this);
+            Layer oldLayer = _layer;
+            _layer.remove(this);
+            oldLayer.deleted(this);
         }
 
         // ak: remove this figure from the enclosed figures of the encloser
