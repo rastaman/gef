@@ -264,6 +264,27 @@ public class DefaultGraphModel
         fireEdgeRemoved(e);
     }
 
+    /** Remove all the nodes from the graph. */
+    public void removeAllNodes() {
+        LOG.debug("Removing all the nodes from the graph.");
+        netList.removeAllNodes();
+        fireGraphChanged();
+    }
+
+    /** Remove all the edges from the graph. */
+    public void removeAllEdges() {
+        LOG.debug("Removing all the edges from the graph.");
+        netList.removeAllEdges();
+        fireGraphChanged();
+    }
+
+    /** Remove all nodes and edges to reset the graph. */
+    public void removeAll() {
+        netList.removeAllEdges();
+        netList.removeAllNodes();
+        fireGraphChanged();
+    }    
+    
     public void dragNode(Object node) {
         addNode(node);
     }

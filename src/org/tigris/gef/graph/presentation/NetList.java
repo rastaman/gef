@@ -125,7 +125,17 @@ public class NetList extends NetPrimitive implements java.io.Serializable {
             edges.remove(a);
         } 
     }
-
+    
+    /** Remove all the nodes from this NetList. */
+    public void removeAllNodes() {
+        nodes.clear();
+    }
+    
+    /** Remove all the edges from this NetList. */
+    public void removeAllEdges() {
+        edges.clear();
+    }
+    
     static final long serialVersionUID = -238774170084340147L;
 } /* end class NetList */
 

@@ -40,45 +40,42 @@ import javax.xml.parsers.SAXParser;
 
 public class TemplateReader extends DefaultHandler {
     
+    /**
+     * @deprecated visibility will alter use getInstance()
+     */
     public final static TemplateReader SINGLETON = new TemplateReader();
 
     private static final Log LOG = LogFactory.getLog(TemplateReader.class);
   
-    Hashtable _templates;  /* Class -> Vector of TemplateRecord */
-    Vector _macros;
+    private Hashtable _templates;  /* Class -> Vector of TemplateRecord */
+    private Vector _macros;
 
     private TemplateRecord _currentTemplate = null;
     private MacroRecord _currentMacro = null;
+    
+    private String filename;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
-  protected TemplateReader() { }
+    protected TemplateReader() { }
 
-  ////////////////////////////////////////////////////////////////
-  // static methods
-  public static Hashtable readFile(String fileName) {
-    return SINGLETON.read(fileName);
-  }
+    public static TemplateReader getInstance() {
+        return SINGLETON;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // reading methods
-    public Hashtable read(String fileName) {
+    public Hashtable read(String filename) throws FileNotFoundException {
+        this.filename = filename;
         InputStream in = null;
         try {
-            in = TemplateReader.class.getResourceAsStream(fileName);
+            in = TemplateReader.class.getResourceAsStream(filename);
         } catch (Exception ex) {
         }
         if (in == null) {
-            String relativePath = fileName;
+            String relativePath = filename;
             if(relativePath.startsWith("/")) {
                 relativePath = relativePath.substring(1);
             }
-            try {
-                in = new FileInputStream(relativePath);
-            } catch(Exception ex) {
-            }
+            in = new FileInputStream(relativePath);
         }
-        if(in == null) return null;
+        if (in == null) return null;
 
         _templates = new Hashtable();
         _macros = new Vector();
@@ -88,7 +85,7 @@ public class TemplateReader extends DefaultHandler {
         try {
             SAXParser pc = factory.newSAXParser();
             InputSource source = new InputSource(in);
-            source.setSystemId(new java.net.URL("file",null,fileName).toString());
+            source.setSystemId(new java.net.URL("file",null,filename).toString());
             pc.parse(source,this);
         }
         catch (Exception ex) {
@@ -129,7 +126,8 @@ public class TemplateReader extends DefaultHandler {
             try {
                 classObj = Class.forName(className);
             } catch (ClassNotFoundException e) {
-                throw new SAXException("Can't find the class named " + className, e);
+                throw new SAXException("Can't find the class " + className + 
+                        " refered to in the file " + filename, e);
             }
 
             _currentTemplate = new TemplateRecord(classObj,guard,null);
