@@ -1,3 +1,49 @@
+GEF vers 0.10.4
+
+Resolved Issues
+===============
+
+The following issues have been fixed in release 0.10.4 of GEF
+
+
+7    DELETE: FigActivation & FigDynPort - Argo specific classes  
+13   assert keyword and Dbg.java  
+105  Special rules for connecting figs  
+122  RESO  FIXE  paintAtHead should not assume Graphics2D  
+126  Update build.xml for batik  
+130  Arrow heads not appearing  
+131  DefaultGraphModel edge connection fix  
+132  SplitGraphPane  
+134  Add executable to release  
+136  Remove deprecated LogManager
+
+
+
+=========================================================================
+=========================================================================
+
+GEF vers 0.10.3
+
+Resolved Issues
+===============
+
+The following issues have been fixed in release 0.10.2 of GEF
+
+
+108  Bad hit area  
+112  Tee file template mechanism can corrupt PGML save  
+113  Use Graphics2D to draw good dashed lines  
+114  Ugly arrowheads can be avoided by passing the complete line  
+115  CmdSaveGraphics prints trace information on stdout  
+116  base.LayerDiagram.paintContents(Graphics, FigPainter) doesn'  
+119  FigText constructors use wrong defaults  
+
+
+
+
+=========================================================================
+=========================================================================
+
 GEF vers 0.10.2
 
 The version has been released in order to fix 2 major bugs introduced in vers 0.10.1
