@@ -1048,7 +1048,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      *  figs with zero height or width are handled correctly.
      */
     public boolean intersectsPerimeter(Rectangle r) {
-        System.out.println("x="+_x+" y="+_y+" w="+_w+" h="+_h);
         return (r.intersectsLine(_x, _y, _x, _y + _h) && r.intersectsLine(_x, _y + _h, _x + _w, _y + _h) && r.intersectsLine(_x + _w, _y + _h, _x + _w, _y) && r.intersectsLine(_x + _w, _y, _x, _y));
     }
 
