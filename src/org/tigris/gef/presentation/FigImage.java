@@ -33,7 +33,6 @@ import java.awt.image.*;
 import java.net.*;
 
 import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
 import org.tigris.gef.base.*;
 
 /** Primitive Fig to paint images (such as icons) on a LayerDiagram. */
@@ -127,7 +126,7 @@ public class FigImage extends Fig implements ImageObserver {
         if (_image != null)
             g.drawImage(_image, getX(), getY(), getWidth(), getHeight(), this);
         else {
-            g.setColor(_fillColor);
+            g.setColor(getFillColor());
             g.fillRect(getX(), getY(), getWidth(), getHeight());
         }
     }
