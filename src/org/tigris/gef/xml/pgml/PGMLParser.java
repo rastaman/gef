@@ -64,11 +64,23 @@ public class PGMLParser extends HandlerBase {
   // main parsing methods
 
   public synchronized Diagram readDiagram(URL url) {
+      try {
+	  return readDiagram(url.openStream());
+      } catch (IOException e) {
+	  System.out.println("Couldn't open InputStream! "+e);
+	  e.printStackTrace();
+      }
+      return null;
+  }
+
+  public synchronized Diagram readDiagram(InputStream is) {
+      return readDiagram(is, true);
+  }
+
+  public synchronized Diagram readDiagram(InputStream is, boolean closeStream) {
     try {
-      InputStream is = url.openStream();
-      String filename = url.getFile();
       System.out.println("=======================================");
-      System.out.println("== READING DIAGRAM: " + url);
+      System.out.println("== READING DIAGRAM");
       SAXParserFactory factory = SAXParserFactory.newInstance();
       factory.setNamespaceAware(false);
       factory.setValidating(false);
@@ -76,10 +88,18 @@ public class PGMLParser extends HandlerBase {
       _figRegistry = new HashMap();
       SAXParser pc = factory.newSAXParser();
       InputSource source = new InputSource(is);
-      source.setSystemId(url.toString());
+
+      // what is this for?
+      // source.setSystemId(url.toString());
       pc.parse(source,this);
-      source = null;
-      is.close();
+      // source = null;
+      if (closeStream) {
+	  System.out.println("closing stream now (in PGMLParser.readDiagram)");	  
+	  is.close();
+      }
+      else {
+	  System.out.println("leaving stream OPEN!");
+      }
       return _diagram;
     }
     catch(SAXException saxEx) {
