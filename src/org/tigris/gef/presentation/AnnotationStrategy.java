@@ -9,22 +9,22 @@ import java.beans.*;
 /**
  * Each class serving as AnnotationOwner gets an AnnotationStrategy saying how the
  * Annotations should behave when the AnnotationOwner changes its position (e.g. move
- * in parallel). 
+ * in parallel).
  */
 
 public abstract class AnnotationStrategy{
     // hashtable of all annotations
     Hashtable annotations = new Hashtable();  // annotation | AnnotationProperties
-    
+
     public Point restoreAnnotationPosition(Fig annotation){ return new Point(1,1); }
     // this method auto-moves the annotations
     public abstract void translateAnnotations(Fig owner);
     // calculates and stores the values necessary for correct auto-movement
     public abstract void storeAnnotationPosition(Fig annotation);
-    
+
     // should the line from annotation to owner be visible ?
     protected boolean lineIsVisible(Fig annotation){ return true; };
-    
+
     // all figs added to an owner fig with this method become annotations of that fig
     public void addAnnotation(Fig owner, Fig annotation, AnnotationProperties properties){
 	// restrictions
@@ -39,11 +39,11 @@ public abstract class AnnotationStrategy{
     public int numOfAnnotations() {
         return annotations.size();
     }
-        
+
     public AnnotationProperties getAnnotationProperties(Fig annotation){
 	return (AnnotationProperties)annotations.get(annotation);
     }
-    
+
     public Enumeration getAllAnnotations(){
 	return annotations.keys();
     }
@@ -62,9 +62,12 @@ public abstract class AnnotationStrategy{
 	annotations.remove(annotation);
 	addAnnotation(owner, annotation, properties);
     }
-    
+
     public void removeAnnotation(Fig annotation){
-	if (annotations.get(annotation) != null)
+        AnnotationProperties props = getAnnotationProperties(annotation);
+	if (props != null)
+            props.removeLine();
+            annotation.unsetAnnotationOwner();
 	    annotations.remove(annotation);
     }
     

@@ -6,6 +6,8 @@
 
 package org.tigris.gef.graph;
 
+import java.util.*;
+
 /**
  * This interface is the basis for each class that
  * handles the control of pairs of data and representational objects.
@@ -35,4 +37,8 @@ public interface GraphController extends java.io.Serializable {
         * Tests, if the given object is an edge known by the controller.
         */
         public boolean containsEdge(Object edge);
+
+        public Vector getNodes();
+
+        public Vector getEdges();
 } /* end interface GraphController */

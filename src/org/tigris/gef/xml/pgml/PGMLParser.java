@@ -94,7 +94,7 @@ public class PGMLParser extends HandlerBase {
       pc.parse(source,this);
       // source = null;
       if (closeStream) {
-	  System.out.println("closing stream now (in PGMLParser.readDiagram)");	  
+	  System.out.println("closing stream now (in PGMLParser.readDiagram)");
 	  is.close();
       }
       else {
@@ -299,17 +299,19 @@ public class PGMLParser extends HandlerBase {
 			break;
 
         case TEXT_ANNOTATION_STATE:
-	    //System.out.println("[PGMLParser]: endElement TEXT_ANNOTATION_STATE: " + _textBuf.toString());
-	    if(elementName.equals("text")) {
-		_currentText.setText(_textBuf.toString());
-		_currentEdge.addAnnotation(_currentText,"text",_currentText.getContext());
-		_elementState = ANNOTATION_STATE;
-		_currentText = null;
-		_textBuf = null;
-	    }
-	    break;
-
-        case POLY_EDGE_STATE:
+			//System.out.println("[PGMLParser]: endElement TEXT_ANNOTATION_STATE: " + _textBuf.toString());
+			if(elementName.equals("text")) {
+				//System.out.println("[GEF.PGMLParser] text annotation: "+_currentText.getBounds());
+				_currentText.setText(_textBuf.toString());
+				//System.out.println("[GEF.PGMLParser] text annotation: "+_currentText.getBounds());
+				_currentEdge.addAnnotation(_currentText,"text",_currentText.getContext());
+				_elementState = ANNOTATION_STATE;
+				_currentText = null;
+				_textBuf = null;
+			}
+			break;
+			
+	    case POLY_EDGE_STATE:
 	    if(elementName.equals("path")) {
 		_elementState = EDGE_STATE;
 		_currentPoly = null;
@@ -318,6 +320,7 @@ public class PGMLParser extends HandlerBase {
 
         case NODE_STATE:
 			//System.out.println("[PGMLParser]: endElement NODE_STATE");
+	    _currentNode.updateVisState();
             _elementState = DEFAULT_STATE;
             _currentNode = null;
             _textBuf = null;
@@ -476,6 +479,10 @@ public class PGMLParser extends HandlerBase {
       //System.out.println("[PGMLParser]: handleText");
       FigText f = new FigText(100, 100, 90, 45);
       setAttrs(f, attrList);
+      if ( _elementState == TEXT_ANNOTATION_STATE ) {
+        Rectangle rect = f.getBounds();
+        f.recalcAnnotationBounds(rect);
+      }
       _currentText = f;
       //_elementState = TEXT_STATE;
       //_textBuf = new StringBuffer();
@@ -732,6 +739,14 @@ public class PGMLParser extends HandlerBase {
     String context = attrList.getValue("context");
     if (context != null && !context.equals(""))
       f.setContext(context);
+
+    String visState = attrList.getValue("shown");
+    //System.out.println("[PGMLParser]: setAttrs: " + visState);
+    if (visState != null && !visState.equals("")) {
+	int visStateInt = Integer.parseInt(visState);
+	//System.out.println("[PGMLParser]: setAttrs: " + visStateInt);
+	f.setVisState(visStateInt);
+    }
 
     setOwnerAttr(f, attrList);
   }

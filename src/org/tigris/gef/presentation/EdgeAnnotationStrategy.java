@@ -116,7 +116,6 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
 		AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
 		FigLine line = prop.getConnectingLine();
 
-
 		if (  ((FigEdge)owner).getSourcePortFig().center() == null || ((FigEdge)owner).getDestPortFig().center() == null ) return;
                 //line from annotation to center of owning edge
 		//line.setShape(annotation.center(), owner.center());

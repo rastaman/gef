@@ -68,40 +68,43 @@ public class SelectionResize extends Selection {
    * </pre>
    */
   public void hitHandle(Rectangle r, Handle h) {
-      if (!_content.isResizable()) return;     
+      if (_content.isResizable()){     
 
-      updateHandleBox();
-    Rectangle testRect = new Rectangle(0, 0, 0, 0);
-    testRect.setBounds(cx-HAND_SIZE/2, cy-HAND_SIZE/2,
-		     HAND_SIZE, ch+HAND_SIZE/2);
-    boolean leftEdge = r.intersects(testRect);
-    testRect.setBounds(cx+cw-HAND_SIZE/2, cy-HAND_SIZE/2,
-		     HAND_SIZE, ch+HAND_SIZE/2);
-    boolean rightEdge = r.intersects(testRect);
-    testRect.setBounds(cx-HAND_SIZE/2, cy-HAND_SIZE/2,
-		     cw+HAND_SIZE/2, HAND_SIZE);
-    boolean topEdge = r.intersects(testRect);
-    testRect.setBounds(cx-HAND_SIZE/2, cy+ch-HAND_SIZE/2,
-		     cw+HAND_SIZE/2, HAND_SIZE);
-    boolean bottomEdge = r.intersects(testRect);
-    // needs-more-work: midpoints for side handles
-    if (leftEdge && topEdge) {
-      h.index = 0; h.instructions = "Resize top left";
-    }
-    else if (rightEdge && topEdge) {
-      h.index = 2;
-      h.instructions = "Resize top right";
-    }
-    else if (leftEdge && bottomEdge) {
-      h.index = 5;
-      h.instructions = "Resize bottom left";
-    }
-    else if (rightEdge && bottomEdge) {
-      h.index = 7;
-      h.instructions = "Resize bottom right";
-    }
-    // needs-more-work: side handles
-    else { h.index = -1; h.instructions = "Move object(s)"; }
+	  updateHandleBox();
+	  Rectangle testRect = new Rectangle(0, 0, 0, 0);
+	  testRect.setBounds(cx-HAND_SIZE/2, cy-HAND_SIZE/2,
+			     HAND_SIZE, ch+HAND_SIZE/2);
+	  boolean leftEdge = r.intersects(testRect);
+	  testRect.setBounds(cx+cw-HAND_SIZE/2, cy-HAND_SIZE/2,
+			     HAND_SIZE, ch+HAND_SIZE/2);
+	  boolean rightEdge = r.intersects(testRect);
+	  testRect.setBounds(cx-HAND_SIZE/2, cy-HAND_SIZE/2,
+			     cw+HAND_SIZE/2, HAND_SIZE);
+	  boolean topEdge = r.intersects(testRect);
+	  testRect.setBounds(cx-HAND_SIZE/2, cy+ch-HAND_SIZE/2,
+			     cw+HAND_SIZE/2, HAND_SIZE);
+	  boolean bottomEdge = r.intersects(testRect);
+	  // needs-more-work: midpoints for side handles
+	  if (leftEdge && topEdge) {
+	      h.index = 0; h.instructions = "Resize top left";
+	  }
+	  else if (rightEdge && topEdge) {
+	      h.index = 2;
+	      h.instructions = "Resize top right";
+	  }
+	  else if (leftEdge && bottomEdge) {
+	      h.index = 5;
+	      h.instructions = "Resize bottom left";
+	  }
+	  else if (rightEdge && bottomEdge) {
+	      h.index = 7;
+	      h.instructions = "Resize bottom right";
+	  }
+	  // needs-more-work: side handles
+	  else { h.index = -1; h.instructions = "Move object(s)"; }
+      }
+      else { h.index = -1; h.instructions = "Move object(s)"; }
+      
   }
 
   /** Update the private variables cx etc. that represent the rectangle on
@@ -118,16 +121,33 @@ public class SelectionResize extends Selection {
   /** Paint the handles at the four corners and midway along each edge
    * of the bounding box.  */
   public void paint(Graphics g) {
-      if (!_content.isResizable()) return;
+      if (_content.isResizable()){
 
-      updateHandleBox();
-    g.setColor(Globals.getPrefs().handleColorFor(_content));
-    g.fillRect(cx - HAND_SIZE/2, cy - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
-    g.fillRect(cx + cw - HAND_SIZE/2, cy - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
-    g.fillRect(cx - HAND_SIZE/2, cy + ch - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
-    g.fillRect(cx + cw - HAND_SIZE/2, cy + ch - HAND_SIZE/2,
-	       HAND_SIZE, HAND_SIZE);
-    super.paint(g);
+	  updateHandleBox();
+	  g.setColor(Globals.getPrefs().handleColorFor(_content));
+	  g.fillRect(cx - HAND_SIZE/2, cy - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
+	  g.fillRect(cx + cw - HAND_SIZE/2, cy - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
+	  g.fillRect(cx - HAND_SIZE/2, cy + ch - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
+	  g.fillRect(cx + cw - HAND_SIZE/2, cy + ch - HAND_SIZE/2,
+		     HAND_SIZE, HAND_SIZE);	
+      }
+      else{
+	  int x = _content.getX();
+	  int y = _content.getY();
+	  int w = _content.getWidth();
+	  int h = _content.getHeight();
+	  g.setColor(Globals.getPrefs().handleColorFor(_content));
+	  g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH,
+		     w + BORDER_WIDTH * 2 - 1, h + BORDER_WIDTH * 2 - 1);
+	  g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1,
+		     w + BORDER_WIDTH * 2 + 2 - 1, h + BORDER_WIDTH * 2 + 2 - 1);
+	  g.fillRect(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
+	  g.fillRect(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
+	  g.fillRect(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
+	  g.fillRect(x + w, y + h, HAND_SIZE, HAND_SIZE);
+      }
+      
+      super.paint(g);
   }
 
   /** Change some attribute of the selected Fig when the user drags one of its

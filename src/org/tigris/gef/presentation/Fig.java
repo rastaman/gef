@@ -110,6 +110,8 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 
   protected boolean _displayed = true;
 
+  public int _shown = 0;
+
   ////////////////////////////////////////////////////////////////
   // static initializer
 
@@ -141,7 +143,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   /** Construct a new Fig with the given bounds. */
   public Fig(int x, int y, int w, int h) {
 	this(x, y, w, h, Color.black, Color.white, null);
-  }  
+  }
   /** Construct a new Fig with the given bounds and colors. */
   public Fig(int x, int y, int w, int h, Color lineColor, Color fillColor) {
 	this(x, y, w, h, lineColor, fillColor, null);
@@ -167,11 +169,16 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   protected boolean annotationStatus = false;
   protected Fig annotationOwner;
 
-  // legt den AnnotationOwner fest
+  // specifies the AnnotationOwner
   public void setAnnotationOwner(Fig f){
 	annotationOwner = f;
-	// der Aufruf dieser Methode macht dieses Objekt zur Annotation
-	annotationStatus=true;
+	setAnnotationStatus(true);
+  }
+
+  // fig is not an annotation any longer
+  public void unsetAnnotationOwner() {
+        annotationOwner = null;
+        setAnnotationStatus(false);
   }
 
   public Fig getAnnotationOwner(){
@@ -193,10 +200,18 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   	return annotationStatus;
   }
 
+  public void setAnnotationStatus(boolean newValue) {
+        //System.out.println("[Fig] setAnnotationStatus: " + newValue);
+        annotationStatus = newValue;
+  }
+
     /**
      * Adds a new Annotation of type "text" to fig.
      */
     public void addAnnotation(Fig annotation, String type, String context) {
+    }
+
+    public void removeAnnotation(String context) {
     }
 
     /**
@@ -209,7 +224,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 	while (annotations.hasMoreElements()) {
 	    Fig annotation = (Fig)annotations.nextElement();
 	    Rectangle annotRect = annotation.getBounds();
-	    //System.out.println("[Fig] updateAnnotationPositions: "+annotRect.x+" "+annotRect.y);
+	    //System.out.println("[Fig] updateAnnotationPositions: "+annotRect.x+" "+annotRect.y+" "+annotRect.width+" "+annotRect.height);
 	    getAnnotationStrategy().storeAnnotationPosition(annotation);
 	    annotation.endTrans();
 	}
@@ -597,6 +612,7 @@ public String getPrivateData() {
   }  
   public Rectangle getTrapRect() { return getBounds(); }  
   public boolean getUseTrapRect() { return false; }  
+  public int getVisState() { return _shown; }
   public int getWidth() { return _w; }  
   public int getX() { return _x; }  
   public int[] getXs() { return new int[0]; }  
@@ -842,6 +858,7 @@ public void setPrivateData(String data)
   }  
   /** Sets the size of the Fig. Fires property "bounds". */
   public final void setSize(Dimension d) { setSize(d.width, d.height); }  
+  public void setVisState(int visState) { _shown = visState; }
   public void setWidth(int w) { setBounds(_x, _y, w, _h); }  
   // needs-more-work: property change events?
   public void setX(int x) { setBounds(x, _y, _w, _h); }  
@@ -901,6 +918,9 @@ public void setPrivateData(String data)
 	_x += dx; _y += dy;
 	firePropChange("bounds", oldBounds, getBounds());
   }
+
+    public void updateVisState() {}
+
   /** Reply true if the entire Fig is contained within the given
    *  Rectangle. This can be used by ModeSelect to select Figs that
    *  are totally within the selection rectangle. */

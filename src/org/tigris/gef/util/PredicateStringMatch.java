@@ -61,7 +61,9 @@ public class PredicateStringMatch implements Predicate {
   }
 
   public boolean predicate(Object o) {
+    if ( o == null ) return false;
     String target = o.toString();
+    //System.out.println("[PredicateStringMatch] predicate: " + target);
     if (!target.startsWith(_patterns[0])) return false;
     if (!target.endsWith(_patterns[_numPats-1])) return false;
     for (int i = 0; i < _numPats; i++) {

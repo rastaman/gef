@@ -339,7 +339,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
   public void append(String s) { setText(_curText + s); }
 
   /** set the current String to be the given String. */
-  public void setText(String s) { _curText = s; calcBounds(); }
+  public void setText(String s) {
+	  _curText = s;
+	  calcBounds();
+  }
 
   /** Get the String held by this FigText. Multi-line text is
    *  represented by newline characters embedded in the String. */
@@ -516,7 +519,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
   public void mouseEntered(MouseEvent me) { }
   
   public void mouseExited(MouseEvent me) { }
-  
+
   public FigTextEditor startTextEditor(InputEvent ie) {
     FigTextEditor te = new FigTextEditor(this, ie);
     return te;
@@ -549,22 +552,29 @@ public class FigText extends Fig implements KeyListener, MouseListener {
       _topMargin + _botMargin + maxDescent;
     overallW = Math.max(MIN_TEXT_WIDTH, overallW + _leftMargin + _rightMargin);
     switch (_justification) {
-      case JUSTIFY_LEFT: 
+      case JUSTIFY_LEFT:
         break;
-      
+
       case JUSTIFY_CENTER:
-        if (_w < overallW) 
+        if (_w < overallW)
           _x -= (overallW - _w) / 2;
         break;
-    
-      case JUSTIFY_RIGHT: 
-        if (_w < overallW) 
-          _x -= (overallW - _w); 
+
+      case JUSTIFY_RIGHT:
+        if (_w < overallW)
+          _x -= (overallW - _w);
         break;
     }
     _w = _expandOnly ? Math.max(_w, overallW) : overallW;
     _h = _expandOnly ? Math.max(_h, overallH) : overallH;
-    
+
   }
+
+  //needs-more-work: this is only a hack. the origination of the problem lies
+  // within the storing of the annotations.
+  public void recalcAnnotationBounds(Rectangle rect) {
+        setBounds(rect.x+5,rect.y,rect.width,rect.height);
+  }
+
 } /* end class FigText */
 
