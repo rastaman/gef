@@ -27,11 +27,7 @@
 // $Id$
 package org.tigris.gef.presentation;
 
-import org.tigris.gef.base.CmdInsertPoint;
-import org.tigris.gef.base.CmdRemovePoint;
 import org.tigris.gef.base.Geometry;
-import org.tigris.gef.base.Selection;
-import org.tigris.gef.util.Dbg;
 
 import java.awt.*;
 import java.util.Vector;
@@ -347,8 +343,9 @@ public class FigPoly extends Fig {
     public void removePoint(int i) {
 
         // needs-more-work: this assertion has been violated, track it down
-        if(Dbg.on)
-            Dbg.assertTrue(i >= 0 && i < _npoints, "point not found");
+        if (i < 0 || i >= _npoints) {
+            throw new IllegalArgumentException("Point not found in LayerDiagram");
+        }
 
         if(_npoints < 3)
             return;

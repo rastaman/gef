@@ -39,9 +39,11 @@ public class FigGroup extends Fig {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** The Fig's contained in this FigGroup  
-     * @deprecated - use getFigs() */
-    protected List _figs;
+    /** 
+     * The Fig's contained in this FigGroup  
+     */
+    List _figs;
+    
     /** @deprecated - use getExtraFrameSpace() */
     protected int _extraFrameSpace = 0;
 

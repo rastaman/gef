@@ -31,10 +31,7 @@
 
 package org.tigris.gef.presentation;
 
-import java.applet.*;
 import java.awt.*;
-import java.io.*;
-import java.util.*;
 
 /** Draws a Diamond at the end of a FigEdge. */
 

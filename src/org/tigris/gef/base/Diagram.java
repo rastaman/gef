@@ -206,14 +206,15 @@ public class Diagram implements Serializable, GraphListener {
             }
         }
 
-        List figs = getLayer().getContents();
+        Collection figs = getLayer().getContents(null);
 
-        for(int i = 0; i < figs.size(); i++) {
-
+        Iterator it = figs.iterator();
+        while(it.hasNext()) {
+            Object fig = it.next();
             for(int j = 0; j < numOwners; j++) {
-
-                if(figs.get(i) == owners.elementAt(j))
+                if(fig == owners.elementAt(j)) {
                     count++;
+                }
             }
         }
 
@@ -232,11 +233,10 @@ public class Diagram implements Serializable, GraphListener {
         if (nodes == null) {
             nodes = new ArrayList();
         }
-        List figs = getLayer().getContents();
-        int size = figs.size();
-
-        for (int i=0; i < size; i++) {
-            Object fig = figs.get(i);
+        Collection figs = getLayer().getContents(null);
+        Iterator it = figs.iterator();
+        while (it.hasNext()) {
+            Object fig = it.next();
             if (fig instanceof FigNode) {
                 nodes.add(((FigNode)fig).getOwner());
             }
@@ -268,15 +268,15 @@ public class Diagram implements Serializable, GraphListener {
         if (edges == null) {
             edges = new ArrayList();
         }
-        List figs = getLayer().getContents();
-        int size = figs.size();
+        Collection figs = getLayer().getContents(null);
 
-        for (int i = 0; i < size; i++) {
-            Object fig = figs.get(i);
-            if((fig instanceof FigEdge) && (null != ((FigEdge)figs.get(i)).getOwner()))    // Some figs might not have a owner?
+        Iterator it = figs.iterator();
+        while (it.hasNext()) {
+            Object fig = it.next();
+            if((fig instanceof FigEdge) && (null != ((FigEdge)fig).getOwner()))    // Some figs might not have a owner?
                 edges.add(((FigEdge)fig).getOwner());
         }
-
+        
         return edges;
     }
 

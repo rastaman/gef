@@ -40,8 +40,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPainter;
 
-import org.tigris.gef.util.Dbg;
-
 /** A Layer like found in many drawing applications. It contains a
  *  collection of Fig's, ordered from back to front. Each
  *  LayerDiagram contains part of the overall picture that the user is
@@ -123,10 +121,13 @@ public class LayerDiagram extends Layer {
     // accessors
 
     /** Add a Fig to the contents of this layer. Items are
-     *  added on top of all other items. */
+     *  added on top of all other items.
+     * @param f the fig to add
+     * @throws IllegalArgumentException if the fig is null
+     */
     public void add(Fig f) {
-        if(Dbg.on) {
-            Dbg.assertTrue(f != null, "tried to add null Fig");
+        if (f == null) {
+            throw new IllegalArgumentException("Attempted to add a null fig to a LayerDiagram");
         }
 
         _contents.remove(f);    // act like a set
@@ -136,10 +137,13 @@ public class LayerDiagram extends Layer {
     }
 
     /** Add a Fig to the contents of this layer. Items are
-     *  added on top of all other items. */
+     *  added on top of all other items.
+     * @param f the fig to insert
+     * @throws IllegalArgumentException if the fig is null
+     */
     public void insertAt(Fig f, int index) {
-        if(Dbg.on) {
-            Dbg.assertTrue(f != null, "tried to insert null Fig");
+        if (f == null) {
+            throw new IllegalArgumentException("Attempted to insert a null fig to a LayerDiagram");
         }
 
         _contents.remove(f);    // act like a set
@@ -149,10 +153,13 @@ public class LayerDiagram extends Layer {
     }
 
     /** Add a Fig to the contents of this layer. Items are
-     *  added on top of all other items. */
+     *  added on top of all other items.
+     * @param f the fig to insert
+     * @throws IllegalArgumentException if the fig is null
+     */
     public int indexOf(Fig f) {
-        if(Dbg.on) {
-            Dbg.assertTrue(f != null, "tried to find null Fig");
+        if (f == null) {
+            throw new IllegalArgumentException("Attempted to find the index of a null fig in a LayerDiagram");
         }
 
         return _contents.indexOf(f);

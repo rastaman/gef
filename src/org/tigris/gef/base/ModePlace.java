@@ -35,6 +35,8 @@ import org.tigris.gef.presentation.FigNode;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /** Mode to place new a FigNode on a node in a diagram.
@@ -172,17 +174,20 @@ public class ModePlace extends FigModifyingModeImpl {
             Fig encloser = null;
             Rectangle bbox = _pers.getBounds();
             Layer lay = editor.getLayerManager().getActiveLayer();
-            List otherFigs = lay.getContents();
-            int otherFigCount = otherFigs.size();
-            for(int otherFigIndex = 0; otherFigIndex < otherFigCount; ++otherFigIndex) {
-                Fig otherFig = (Fig)otherFigs.get(otherFigIndex);
-                if(!(otherFig instanceof FigNode))
+            Collection otherFigs = lay.getContents(null);
+            Iterator it = otherFigs.iterator();
+            while(it.hasNext()) {
+                Fig otherFig = (Fig)it.next();
+                if(!(otherFig instanceof FigNode)) {
                     continue;
-                if(otherFig.equals(_pers))
+                }
+                if(otherFig.equals(_pers)) {
                     continue;
+                }
                 Rectangle trap = otherFig.getTrapRect();
-                if(trap != null && (trap.contains(bbox.x, bbox.y) && trap.contains(bbox.x + bbox.width, bbox.y + bbox.height)))
+                if(trap != null && (trap.contains(bbox.x, bbox.y) && trap.contains(bbox.x + bbox.width, bbox.y + bbox.height))) {
                     encloser = otherFig;
+                }
             }
             _pers.setEnclosingFig(encloser);
             editor.getSelectionManager().select(_pers);

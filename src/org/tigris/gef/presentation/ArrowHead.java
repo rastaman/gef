@@ -28,10 +28,7 @@
 
 package org.tigris.gef.presentation;
 
-import java.applet.*;
 import java.awt.*;
-import java.io.*;
-import java.util.*;
 
 /**
  *  Abstract class to draw arrow heads on the ends of FigEdges.

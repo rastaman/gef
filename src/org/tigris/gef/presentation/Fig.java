@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
@@ -783,12 +784,12 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
             }
         }
 
-        Layer l = getLayer();
-        if(l == null) {
+        Layer layer = getLayer();
+        if(layer == null) {
             return "LAYER_NULL";
         }
 
-        List c = l.getContents();
+        List c = (List)layer.getContents(null);
         int index = c.indexOf(this);
         return "Fig" + index;
     }

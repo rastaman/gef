@@ -30,6 +30,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.tigris.gef.presentation.Fig;
@@ -254,11 +256,11 @@ public class ModeModify extends FigModifyingModeImpl {
             if((selectedFig instanceof FigNode)) {
                 Rectangle bbox = selectedFig.getBounds();
                 Layer lay = selectedFig.getLayer();
-                List otherFigs = lay.getContents();
-                int otherFigsCount = otherFigs.size();
+                Collection otherFigs = lay.getContents(null);
                 Fig encloser = null;
-                for(int otherFigIndex = 0; otherFigIndex < otherFigsCount; ++otherFigIndex) {
-                    Fig otherFig = (Fig)otherFigs.get(otherFigIndex);
+                Iterator it = otherFigs.iterator();
+                while(it.hasNext()) {
+                    Fig otherFig = (Fig)it.next();
                     if(!(otherFig instanceof FigNode)) {
                         continue;
                     }
@@ -345,10 +347,10 @@ public class ModeModify extends FigModifyingModeImpl {
             figBounds.x += dx;
             figBounds.y += dy;
             Layer lay = selectedFig.getLayer();
-            List otherFigs = lay.getContents();
-            int count = otherFigs.size();
-            for(int otherFigIndex = 0; otherFigIndex < count; ++otherFigIndex) {
-                Fig otherFig = (Fig)otherFigs.get(otherFigIndex);
+            Collection otherFigs = lay.getContents(null);
+            Iterator it = otherFigs.iterator();
+            while(it.hasNext()) {
+                Fig otherFig = (Fig)it.next();
                 if(!(otherFig instanceof FigNode)) {
                     continue;
                 }

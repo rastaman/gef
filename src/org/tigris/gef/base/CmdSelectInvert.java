@@ -32,6 +32,8 @@
 package org.tigris.gef.base;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /** Cmd to select all the Figs in the editor's current
@@ -48,14 +50,15 @@ public class CmdSelectInvert extends Cmd {
     public void doIt() {
         Editor ce = Globals.curEditor();
         List selected = ce.getSelectionManager().getFigs();
-        List diagramContents = ce.getLayerManager().getContents();
+        Collection diagramContents = ce.getLayerManager().getContents(null);
         List inverse = new ArrayList(diagramContents.size());
 
-        int count = diagramContents.size();
-        for(int index = 0; index < count; ++index) {
-            Object dc = diagramContents.get(index);
-            if(!selected.contains(dc))
+        Iterator it = diagramContents.iterator();
+        while(it.hasNext()) {
+            Object dc = it.next();
+            if(!selected.contains(dc)) {
                 inverse.add(dc);
+            }
         }
         ce.getSelectionManager().select(inverse);
     }

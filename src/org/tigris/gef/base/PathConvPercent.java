@@ -30,10 +30,7 @@
 
 package org.tigris.gef.base;
 
-import java.applet.*;
 import java.awt.*;
-import java.io.*;
-import java.util.*;
 
 import org.tigris.gef.presentation.*;
 
