@@ -313,7 +313,7 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
     }
 
     /** Reply a Vector of Fig's that have some port as their owner
-     * @deprecated release 0.10 will be removed 0.11 in favour of getPortFigs(Collection)
+     * @deprecated release 0.10 will be removed in favour of getPortFigs(Collection)
      */
     public Vector getPortFigs() {
         Vector v = new Vector();
@@ -329,11 +329,12 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
         if (figs == null) {
             figs = new ArrayList();
         }
-        int figCount = figs.size();
+        int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig f = (Fig)this.figs.get(figIndex);
-            if(f.getOwner() != null)
+            if(f.getOwner() != null) {
                 figs.add(f);
+            }
         }
         return figs;
     }
