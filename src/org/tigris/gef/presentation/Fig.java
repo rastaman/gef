@@ -136,7 +136,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   /** Most subclasses will not use this constructor, it is only useful
    *  for subclasses that redefine most of the infrastructure provided
    *  by class Fig. */
-  public Fig() { }  
+  public Fig() { an = new NoAnotationStrategy(); }  
   /** Construct a new Fig with the given bounds. */
   public Fig(int x, int y, int w, int h) {
 	this(x, y, w, h, Color.black, Color.white, null);
@@ -151,11 +151,53 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   /** Construct a new Fig with the given bounds, colors, and owner. */
   public Fig(int x, int y, int w, int h,
 		 Color lineColor, Color fillColor, Object own) {
+	this();
 	_x = x; _y = y; _w = w; _h = h;
 	if (lineColor != null) _lineColor = lineColor; else _lineWidth = 0;
 	if (fillColor != null) _fillColor = fillColor; else _filled = false;
 	setOwner(own);
+	//anotation related
   }  
+  
+  //--------------------------------
+  // anotation related
+
+  protected AnotationStrategy an = new NoAnotationStrategy();
+
+  protected Fig anotationOwner;
+
+  // legt den AnotationOwner fest
+  public void setAnotationOwner(Fig f){
+	anotationOwner = f;
+	// der Aufruf dieser Methode macht dieses Objekt zur Anotation
+	anotationStatus=true;
+  }
+
+  public Fig getAnotationOwner(){
+	return anotationOwner;
+  }
+
+  public AnotationStrategy getAnotationStrategy(){
+	return an;
+  }
+
+  //** Set the AnotationStrategy for this fig */
+  //** using this method will discard the previous AnotationStrategy */
+  public void setAnotationStrategy(AnotationStrategy a){
+        an = a;
+  }
+
+  boolean anotationStatus = false;
+
+  // returns true if this fig is an anotation of any other fig
+  public boolean isAnotation(){
+  	return anotationStatus;
+  }
+  // end anotation related
+  //-----------------------------------
+  
+  
+  
   public void addPoint(int x, int y) { }  
   ////////////////////////////////////////////////////////////////
   // updates
@@ -172,7 +214,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
    *  prevent garbage collection. */
   public void addPropertyChangeListener(PropertyChangeListener l) {
 	Globals.addPropertyChangeListener(this, l);
-  }  
+  }
   /** Align this Fig with the given rectangle. Some subclasses may
    *  need to know the editor that initiated this action.  */
   public void align(Rectangle r, int direction, Editor ed) {
@@ -337,6 +379,17 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   /** Remove this Fig from the Layer being edited by the
    *  given editor. */
   public void delete() {
+  	_displayed = false;
+  	// anotation related
+  	// delete all anotations first
+        java.util.Enumeration enum = getAnotationStrategy().getAllAnotations();
+        while (enum.hasMoreElements()){
+        	Fig anotation = (Fig)enum.nextElement();
+        	getAnotationStrategy().getAnotationProperties(anotation).removeLine();
+                getAnotationStrategy().removeAnotation(anotation);
+                anotation.delete();
+        }
+        // end anotation related
 	if (_layer != null) { _layer.deleted(this); }
 	setOwner(null);
   }  
@@ -407,12 +460,28 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
    * startTrans(), although it is alright to have extra calls to
    * endTrans(). */
   public void endTrans() {
+
+  	// anotation related
+  	if (this.isAnotation()){
+                if (!(Globals.curEditor().getSelectionManager().containsFig(this.getAnotationOwner())) && Globals.curEditor().getSelectionManager().containsFig(this) ){
+                        (getAnotationOwner().an).storeAnotationPosition(this);
+                }
+        }
+
+
+        if (!(getAnotationStrategy() instanceof NoAnotationStrategy)){
+                getAnotationStrategy().translateAnotations(this);
+        }
+
+        // end anotation related
 	damage();
 	//RedrawManager.unlock();  // helps avoid dirt
   }
+
   public void firePropChange(String propName, int oldV, int newV) {
 	firePropChange(propName, new Integer(oldV), new Integer(newV));
   }
+
   /** Creates a PropertyChangeEvent and calls all registered listeners
    *  propertyChanged() method. */
   public void firePropChange(String propName, Object oldV, Object newV) {
@@ -447,7 +516,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   public Fig getGroup() { return _group; }  
   public int getHalfHeight() { return _h / 2; }  
   public int getHalfWidth() { return _w / 2; }  
-  public int getHeight() { return _h; }  
+  public int getHeight() { return _h; }
   public String getId() {
 	if (getGroup() != null) {
 	  String gID = getGroup().getId();
@@ -464,7 +533,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   public Point getLastPoint() { return new Point();}  
   public Layer getLayer() { return _layer; }  
   public Color getLineColor() { return _lineColor; }  
-  public int getLineWidth() { return _lineWidth; }  
+  public int getLineWidth() { return _lineWidth; }
   /** Returns a point that is the upper left corner of the Fig's
    *  bounding box. */
   public Point getLocation() { return new Point(_x, _y); }  
@@ -519,7 +588,7 @@ public String getPrivateData() {
 	int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
 	if (_filled) return cornersHit > 0;
 	else return cornersHit > 0 && cornersHit < 4;
-  }  
+  }
   public void insertPoint(int i, int x, int y) { }  
   /** Reply true if the object intersects the given rectangle. Used
    *  for selective redrawing and by ModeSelect to select all Figs
@@ -572,7 +641,7 @@ public String getPrivateData() {
 	return res;
   }  
   public void postLoad() { }  
-  public void postSave() { }  
+  public void postSave() { }
   public void preSave() { }  
 //   public void assignShadowColor(Color c) { _shadowColor = c; } //?
 //   public void setShadowColor(Color c) { _shadowColor = c; }
@@ -591,7 +660,7 @@ public String getPrivateData() {
    *  FigNode may want to override this method. */
   public void propertyChange(PropertyChangeEvent pce) {
 	if (_group != null) _group.propertyChange(pce);
-  }  
+  }
   public void removePoint(int i) { }  
   /** Remove this PropertyChangeListener from the JellyBeans internal
    *  list.  If the PropertyChangeListener isn't on the list, silently
@@ -680,7 +749,7 @@ public String getPrivateData() {
   public void setLayer(Layer lay) {
 	firePropChange("layer", _layer, lay);
 	_layer = lay;
-  }  
+  }
   /** Internal function to change the line color attribute. Other code
    *  should use put(String key, Object value). */
   //public void assignLineColor(Color col) { _lineColor = col; } //?
@@ -752,7 +821,7 @@ public void setPrivateData(String data)
   public void setWidth(int w) { setBounds(_x, _y, w, _h); }  
   // needs-more-work: property change events?
   public void setX(int x) { setBounds(x, _y, _w, _h); }  
-  public void setXs(int[] xs) { }  
+  public void setXs(int[] xs) { }
   public void setY(int y) { setBounds(_x, y, _w, _h); }  
   public void setYs(int[] ys) { }  
   /** This indicates that some Cmd is starting a manipulation on the
@@ -763,7 +832,15 @@ public void setPrivateData(String data)
    *  the RedrawManager is key to avoiding "screen dirt". Each call to
    *  startTrans() MUST be matched with a call to endTrans(). */
   public void startTrans() {
-	damage();
+  	/*
+  	if (this.isAnotation()){
+                if (!(Globals.curEditor().getSelectionManager().containsFig(this.getAnotationOwner())) && Globals.curEditor().getSelectionManager().containsFig(this) ){
+                        (getAnotationOwner().an).storeAnotationPosition(this);
+                }
+        }
+        */
+        
+
 	//RedrawManager.lock(); // helps avoid dirt
   }  
   /** Reshape the given rectangle to be my bounding box. */
@@ -799,7 +876,7 @@ public void setPrivateData(String data)
 	Rectangle oldBounds = getBounds();
 	_x += dx; _y += dy;
 	firePropChange("bounds", oldBounds, getBounds());
-  }  
+  }
   /** Reply true if the entire Fig is contained within the given
    *  Rectangle. This can be used by ModeSelect to select Figs that
    *  are totally within the selection rectangle. */

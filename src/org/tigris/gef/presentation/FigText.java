@@ -350,6 +350,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
   /** Paint the FigText. */
   public void paint(Graphics g) {
+    if (!(_displayed)) return;
     int chunkX = _x + _leftMargin;
     int chunkY = _y + _topMargin;
     StringTokenizer lines;

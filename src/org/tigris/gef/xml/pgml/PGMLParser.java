@@ -54,6 +54,8 @@ public class PGMLParser extends HandlerBase {
   protected HashMap _figRegistry = null;
   protected Map _ownerRegistry = new HashMap();
 
+  protected boolean _anotationsTag = false;
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -115,7 +117,7 @@ public class PGMLParser extends HandlerBase {
       }
       else {
         ex.printStackTrace();
-      }        
+      }
     }
     catch (Exception ex) {
       System.out.println("Exception in readDiagram");
@@ -186,8 +188,9 @@ public class PGMLParser extends HandlerBase {
         else if (elementName.equals("pgml")) {
             handlePGML(attrList);
         }
+
         else if (_nestedGroups == 0) {
-	    if (elementName.equals("path")) {
+            if (elementName.equals("path")) {
 	        _diagram.add(handlePolyLine(attrList));
 	    }
 	    else if (elementName.equals("ellipse")) {
@@ -223,7 +226,7 @@ public class PGMLParser extends HandlerBase {
         polyStateStartElement(elementName,attrList);
         break;
 
-        case NODE_STATE:			
+        case NODE_STATE:
 			nodeStateStartElement(elementName,attrList);
 			break;
 
@@ -231,7 +234,22 @@ public class PGMLParser extends HandlerBase {
         edgeStateStartElement(elementName,attrList);
         break;
     }
+
+     //sb: anotation handling
+     if (elementName.equals("anotations")){
+        handleStartAnotations(elementName,attrList);
+     }
   }
+
+  public void handleStartAnotations(String elementName, AttributeList attrList){
+        _anotationsTag = true;
+        //System.out.println("==========handling anotations START=====");
+  }
+  public void handleEndAnotations(String elementName){
+        _anotationsTag = false;
+        //System.out.println("==========handling anotations END=====");
+  }
+
 
   public void endElement(String elementName) {
     switch(_elementState) {
@@ -331,6 +349,10 @@ public class PGMLParser extends HandlerBase {
             _elementState = EDGE_STATE;
             _textBuf = null;
         break;
+    }
+    //sb: anotation handling
+    if (elementName.equals("anotations")){
+        handleEndAnotations(elementName);
     }
   }
 
@@ -448,6 +470,15 @@ public class PGMLParser extends HandlerBase {
       int textsizeInt = Integer.parseInt(textsize);
       f.setFontSize(textsizeInt);
     }
+
+    // sb: anotation related
+    /*
+    if (_anotationsTag){
+        System.out.println(" ====== Text in AnotationTag found !=============");
+        System.out.println(" ====== Text: " + attrList.getValue("name") + "  AnOwner: " + _currentEdge);
+    }
+    */
+
     return f;
   }
 
