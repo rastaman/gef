@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Class-Path:
+
+Name: org/tigris/gef
+Specification-Title: GEF Graph Editing Framework
+Specification-Version: @version@
+Specification-Vendor: University of California
+Implementation-Vendor: University of California
+Implementation-Version: @version@
+Implementation-Title: GEF Graph Editing Framework

@@ -113,6 +113,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <property name="lib.dir" value="../lib"/> 
 	<property name="obj.dir" value="../lib"/>
 
+    <property name="manifest" value="org/tigris/gef/manifest.mf"/>
+
     <property name="classpath" value="${lib.dir}/xml4j.jar"/> 
     <property name="packages" value="org.tigris.gef.* Acme.*"/>
 
@@ -193,9 +195,17 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <target name="package" depends="compile">
     <echo message="Creating the jar file ${lib.dir}/${name}.jar"/>
 	<delete file="${lib.dir}/${name}.jar"/>
+	
+    <filter token="version" value="${version}"/>
+    <copyfile src="${manifest}"
+              dest="${classes}/${manifest}"
+              filtering="on"
+    />
     <jar jarfile="${lib.dir}/${name}.jar"
          basedir="${build.dest}"
-         includes="org/tigris/gef/** Acme/**"/>
+         includes="org/tigris/gef/** Acme/**"
+         excludes="${classes}/${manifest}"
+         manifest="${classes}/${manifest}"/>
   </target>
 
   <!-- =================================================================== -->
