@@ -15,7 +15,6 @@ public class XmlConnectionConstrainer extends ConnectionConstrainer {
     public XmlConnectionConstrainer(Document doc) throws GraphModelException {
         try {
             Element root = doc.getDocumentElement();
-            System.out.println(root.getNodeName());
             Element connectionsElement = (Element)root.getElementsByTagName("connections").item(0);
             NodeList connectionNodes = connectionsElement.getElementsByTagName("connection");
             
