@@ -56,10 +56,7 @@ public class DefaultGraphModel
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /**
-     * @deprecated in 0.10.1 use getter/setter will become private
-     */
-    protected NetList _netList;
+    private NetList _netList;
 
     private static Log LOG = LogFactory.getLog(DefaultGraphModel.class);
     
@@ -96,21 +93,21 @@ public class DefaultGraphModel
     // interface GraphModel
 
     /** Return all nodes in the graph 
-     * @deprecated in 0.11 use getNodes(Collection)
+     * @deprecated in 0.10.4 use getNodes(Collection)
      */
     public Vector getNodes() {
         return _netList.getNodes();
     }
 
     /** Return all edges in the graph
-    * @deprecated in 0.11 use getEdges(Collection)
+    * @deprecated in 0.10.4 use getEdges(Collection)
     */
     public Vector getEdges() {
         return _netList.getEdges();
     }
 
     /** Return all ports on node or edge
-    * @deprecated in 0.11 use getPorts(Collection, Object)
+    * @deprecated in 0.10.4 use getPorts(Collection, Object)
     */
     public Vector getPorts(Object nodeOrEdge) {
         if (nodeOrEdge instanceof NetNode)
