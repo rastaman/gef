@@ -63,6 +63,17 @@ implements MutableGraphModel, java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // MutableGraphModel implementation
 
+	/** Return true if the type of the given node can be mapped to a
+	 *  type supported by this type of diagram
+	 */
+	public boolean canDragNode(Object node) {
+		return false;
+	}
+
+	/** Create a new node based on the given one and add it to the graph.*/
+	public void dragNode(Object node) {
+	}
+
   /** Return true if the two given ports can be connected by the given
    *  kind of edge. By default ignore edgeClass and call
    *  canConnect(port,port). */
