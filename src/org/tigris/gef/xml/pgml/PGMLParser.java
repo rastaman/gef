@@ -1112,7 +1112,7 @@ public class PGMLParser extends HandlerBase {
     }
 
     protected void setDetectedFailure(boolean newValue) {
-        System.out.println("set detected failure to " + newValue);
+        //System.out.println("set detected failure to " + newValue);
         _detectedFailure = newValue;
     }
 }    /* end class PGMLParser */
