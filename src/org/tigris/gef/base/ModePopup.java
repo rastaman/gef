@@ -85,7 +85,7 @@ public class ModePopup extends FigModifyingModeImpl {
                 PopupGenerator popupGenerator = (PopupGenerator) commonInstance;
                 List actions = popupGenerator.getPopUpActions(me);
 
-                JPopupMenu popup = new JPopupMenu("test");
+                JPopupMenu popup = new JPopupMenu();
 
                 int size = actions.size();
                 for(int i = 0; i < size; ++i) {
@@ -94,6 +94,10 @@ public class ModePopup extends FigModifyingModeImpl {
                         popup.add((AbstractAction)a);
                     else if(a instanceof JMenu)
                         popup.add((JMenu)a);
+                    else if(a instanceof JMenuItem)
+                        popup.add((JMenuItem)a);
+                    else if(a instanceof JSeparator)
+                        popup.add((JSeparator)a);
                 }
                 me = editor.retranslateMouseEvent(me);
                 popup.show(editor.getJComponent(), me.getX(), me.getY());
