@@ -1,3 +1,23 @@
+GEF vers 0.10.11 - 1 January 2005
+
+Resolved Issues
+===============
+
+The following issues have been fixed in release 0.10.11 of GEF
+
+
+
+192 	DEFECT 	P3 	All 	issues@gef 	RESO 	FIXE 	JGraph should provide a hashCode method
+193 	PATCH 	P1 	All 	issues@gef 	RESO 	FIXE 	Save action for portable network graphics
+196 	ENHANC 	P3 	All 	issues@gef 	RESO 	FIXE 	Add an attribute list to the renderers to pass style attribu
+197 	DEFECT 	P3 	All 	issues@gef 	RESO 	FIXE 	Take SAXParserBase from ArgoUML
+198 	DEFECT 	P3 	All 	issues@gef 	RESO 	FIXE 	Enclosed figs can't be placed directly
+
+
+
+=========================================================================
+=========================================================================
+
 GEF vers 0.10.10 - 1 January 2005
 
 Resolved Issues
