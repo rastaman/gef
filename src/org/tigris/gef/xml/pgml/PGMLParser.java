@@ -75,7 +75,10 @@ public class PGMLParser extends HandlerBase {
       initDiagram("org.tigris.gef.base.Diagram");
       _figRegistry = new HashMap();
       SAXParser pc = factory.newSAXParser();
-      pc.parse(is,this);
+      InputSource source = new InputSource(is);
+      source.setSystemId(url.toString());
+      pc.parse(source,this);
+      source = null;
       is.close();
       return _diagram;
     }

@@ -38,69 +38,39 @@ public class OCLEvaluator {
   public static String GET_NAME_EXPR_2 = "self.name.body";
   public static String GET_OWNER_EXPR = "self.owner";
 
+  public static OCLEvaluator SINGLETON = new OCLEvaluator();
+
   ////////////////////////////////////////////////////////////////
   // static variables
-  protected static Hashtable _scratchBindings = new Hashtable();
-  protected static StringBuffer _strBuf = new StringBuffer(100);
+  protected Map _scratchBindings = new Hashtable();
+  protected StringBuffer _strBuf = new StringBuffer(100);
 
-  ////////////////////////////////////////////////////////////////
-  // static methods
-  public static synchronized String evalToString(Object self, String expr) {
-    String res = null;
-    //    if (GET_NAME_EXPR_1.equals(expr) && self instanceof Element) {
-    //      res = ((Element)self).getName().getBody();
-    //      if (res == null || "".equals(res)) res = "(anon)";
-    //    }
-    //    if (GET_NAME_EXPR_2.equals(expr) && self instanceof Element) {
-    //      res = ((Element)self).getName().getBody();
-    //      if (res == null || "".equals(res)) res = "(anon)";
-    //    }
-    //    if (GET_OWNER_EXPR.equals(expr) && self instanceof Feature) {
-    //      res = ((Feature)self).getOwner().getName().getBody();
-    //      if (res == null || "".equals(res)) res = "(anon)";
-    //    }
-    if (res == null) res = evalToString(self, expr, ", ");
-    return res;
+  protected OCLEvaluator() {
   }
 
-  public static synchronized String evalToString(Object self,
+  public synchronized String evalToString(Object self, String expr) {
+    return evalToString(self, expr, ", ");
+  }
+
+  public synchronized String evalToString(Object self,
 						 String expr, String sep) {
     _scratchBindings.put("self", self);
-    Vector values = eval(_scratchBindings, expr);
+    java.util.List values = eval(_scratchBindings, expr);
     _strBuf.setLength(0);
-    int size = values.size();
-    for (int i = 0; i < size; i++) {
-      Object v = values.elementAt(i);
-      //      if (v instanceof Element) {
-      //	v = ((Element)v).getName().getBody();
-      //	if ("".equals(v)) v = "(anon)";
-      //      }
-      //      if (v instanceof Expression) {
-      //	v = ((Expression)v).getBody().getBody();
-      //	if ("".equals(v)) v = "(unspecified)";
-      //      }
-      if (! "".equals(v)) {
+    Iterator iter = values.iterator();
+    while(iter.hasNext()) {
+      String v = iter.next().toString();
+      if (v.length() > 0) {
 	_strBuf.append(v);
-	if (i < size - 1) _strBuf.append(sep);
+	if (iter.hasNext()) _strBuf.append(sep);
       }
     }
     return _strBuf.toString();
   }
 
-  public static Vector eval(Hashtable bindings, String expr) {
+  public java.util.List eval(Map bindings, String expr) {
     int firstPos = expr.indexOf(".");
-    String bindExpr = expr;
-    String prop = null;
-    if(firstPos == -1) {
-        bindExpr.concat(".");
-        prop = "";
-    }
-    else {
-        bindExpr = expr.substring(0,firstPos);
-        prop = expr.substring(firstPos);
-    }
-
-    Object target = bindings.get(bindExpr);
+    Object target = bindings.get(expr.substring(0, firstPos));
     Vector targets;
 
     if (target instanceof Vector)  {
@@ -110,10 +80,11 @@ public class OCLEvaluator {
       targets = new Vector();
       targets.addElement(target);
     }
+    String prop = expr.substring(firstPos);
     return eval(bindings, prop, targets);
   } // end of eval()
 
-  public static Vector eval(Hashtable bindings, String expr, Vector targets) {
+  public Vector eval(Map bindings, String expr, Vector targets) {
     int firstPos, secPos, numElements;
     String property;
 
@@ -139,7 +110,7 @@ public class OCLEvaluator {
     return targets;
   } // end of eval()
 
-  public static String toTitleCase(String s) {
+  public String toTitleCase(String s) {
     if ( s.length() > 1 ) {
       return s.substring(0, 1).toUpperCase()
 + s.substring (1, s.length() );
@@ -149,7 +120,7 @@ public class OCLEvaluator {
   } // end of toTitleCase
 
 
-  public static Object evaluateProperty(Object target, String property) {
+  public Object evaluateProperty(Object target, String property) {
     if (target == null) return null;
     Method m = null;
     Field  f = null;
@@ -159,7 +130,7 @@ public class OCLEvaluator {
       m = target.getClass().getMethod("get" + toTitleCase(property), null);
       o = m.invoke(target, null); // getter methods take no args =>  null
       // System.out.println("Trying to get method " + toTitleCase(property));
-      return  o;
+      return  convertCollection(o);
     }
     catch ( NoSuchMethodException e ) {}
     catch ( InvocationTargetException e ) {
@@ -177,7 +148,7 @@ public class OCLEvaluator {
       m = target.getClass().getMethod( property, null);
       o = m.invoke(target, null);
       // System.out.println("Trying to get method " + toTitleCase(property));
-      return o;
+      return convertCollection(o);
     }
     catch ( NoSuchMethodException e ) {}
     catch ( InvocationTargetException e ) {
@@ -195,13 +166,13 @@ public class OCLEvaluator {
       m = target.getClass().getMethod( toTitleCase(property), null);
       o = m.invoke(target, null);
       // System.out.println("Trying to get method" + property);
-      return o;
+      return convertCollection(o);
     } catch ( Exception e ) {}
 
     try {
       f = target.getClass().getField(property);
       o = f.get(target);  // access the field f or object targe
-      return o;
+      return convertCollection(o);
     }
     catch ( NoSuchFieldException e ) {
       System.out.println("On Class: " + target.getClass().getName());
@@ -222,14 +193,14 @@ public class OCLEvaluator {
   } // end of evaluateProperty
 
 
-  public static Vector flatten(Vector v) {
+  public Vector flatten(Vector v) {
     Vector accum = new Vector();
     flattenInto(v, accum);
     return accum;
   }
 
 
-  public static void flattenInto(Object o, Vector accum) {
+  public void flattenInto(Object o, Vector accum) {
     if ( !(o instanceof Vector) ) {
       accum.addElement(o);
     } else {
@@ -240,4 +211,16 @@ public class OCLEvaluator {
     }
   }
 
+
+  // added this method 02/08/00 (JH) - if an instance of Collection
+  // is encountered, convert it to a Vector so the rest of the
+  // OCL code still works; there may be a more efficient way,
+  // but this was the least intrusive fix
+  public static Object convertCollection(Object o) {
+      if (o instanceof Collection) {
+          return new Vector((Collection)o);
+      } else {
+          return o;
+      }
+  }
 }  // end of OCLEvaluator

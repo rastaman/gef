@@ -40,14 +40,14 @@ public class OCLExpander {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  public Hashtable _templates = new Hashtable();
+  public Map _templates = new Hashtable();
   public Hashtable _bindings = new Hashtable();
   public boolean _useXMLEscapes = true;
 
   ////////////////////////////////////////////////////////////////
   // constructor
 
-  public OCLExpander(Hashtable templates) {
+  public OCLExpander(Map templates) {
     _templates = templates;
   }
 
@@ -65,8 +65,8 @@ public class OCLExpander {
       TemplateRecord tr = (TemplateRecord) exprs.elementAt(i);
       if (tr.guard == null || tr.guard.equals("")) { expr = tr.body; break; }
       _bindings.put("self", target);
-      Vector results = OCLEvaluator.eval(_bindings, tr.guard);
-      if (results.size() > 0 && !Boolean.FALSE.equals(results.elementAt(0))) {
+      java.util.List results = evaluate(_bindings, tr.guard);
+      if (results.size() > 0 && !Boolean.FALSE.equals(results.get(0))) {
 	expr = tr.body;
 	break;
       }
@@ -105,10 +105,10 @@ public class OCLExpander {
     String expr = line.substring(startPos + OCL_START.length(), endPos);
     suffix = line.substring(endPos + OCL_END.length()) + suffix;
     _bindings.put("self", target);
-    Vector results = OCLEvaluator.eval(_bindings, expr);
-    int size = results.size();
-    for (int i = 0; i < size; i++) {
-      expand(pw, results.elementAt(i), prefix, suffix);
+    java.util.List results = evaluate(_bindings, expr);
+    Iterator iter = results.iterator();
+    while(iter.hasNext()) {
+      expand(pw, iter.next(), prefix, suffix);
     }
   }
 
@@ -159,5 +159,9 @@ public class OCLExpander {
       index = s.indexOf(pat, index + repLen);
     }
     return s;
+  }
+
+  protected java.util.List evaluate(Map bindings,String expr) {
+    return org.tigris.gef.ocl.OCLEvaluator.SINGLETON.eval(bindings,expr);
   }
 } /* end class OCLExpander */

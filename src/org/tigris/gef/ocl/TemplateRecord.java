@@ -65,5 +65,7 @@ public class TemplateRecord {
     _buf.append(ch,start,length);
   }
 
-
+  public Class getKey() {
+    return key;
+  }
 } /** end class TemplateRecord */

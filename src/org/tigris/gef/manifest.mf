@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Class-Path: xerces.jar jaxp.jar parser.jar xml4j.jar
+Class-Path: xerces.jar jaxp.jar crimson.jar parser.jar xml4j.jar
 
 Name: org/tigris/gef/base/
 Specification-Title: GEF Graph Editing Framework

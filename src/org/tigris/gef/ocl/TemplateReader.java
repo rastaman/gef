@@ -41,10 +41,8 @@ public class TemplateReader extends org.xml.sax.HandlerBase {
   Hashtable _templates;  /* Class -> Vector of TemplateRecord */
   Vector _macros;
 
-  private java.util.List _stack = new ArrayList();
-  private int _stackPointer = 0;
-  private TemplateRecord _stackTopTemplate = null;
-  private MacroRecord _stackTopMacro = null;
+  private TemplateRecord _currentTemplate = null;
+  private MacroRecord _currentMacro = null;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -97,14 +95,13 @@ public class TemplateReader extends org.xml.sax.HandlerBase {
     }
 
     public void startDocument() {
-        _stackPointer = 0;
-        _stackTopTemplate = null;
-        _stackTopMacro = null;
+        _currentTemplate = null;
+        _currentMacro = null;
     }
 
     public void endDocument() {
-        _stackTopTemplate = null;
-        _stackTopMacro = null;
+        _currentTemplate = null;
+        _currentMacro = null;
     }
 
     public void ignorableWhitespace(char[] ch,
@@ -130,79 +127,69 @@ public class TemplateReader extends org.xml.sax.HandlerBase {
 	System.out.println("TemplateReader: Class " + className + " not found");
       }
 
-      _stackTopTemplate = new TemplateRecord(classObj,guard,null);
-      _stackTopMacro = null;
-      _stack.add(_stackPointer++,_stackTopTemplate);
+      _currentTemplate = new TemplateRecord(classObj,guard,null);
+      _currentMacro = null;
 
     }
     else if (tagName.equals("macro")) {
 //      String body = e.getText().trim();
       String name = attrList.getValue("name");
-      _stackTopMacro = new MacroRecord(name, null);
-      _stackTopTemplate = null;
-      _stack.add(_stackPointer++,_stackTopMacro);
+      _currentMacro = new MacroRecord(name, null);
+      _currentTemplate = null;
     }
     else {
-      _stackTopMacro = null;
-      _stackTopTemplate = null;
-      _stack.add(_stackPointer++,null);
-      System.out.println("unknown tag: " + tagName);
+      _currentMacro = null;
+      _currentTemplate = null;
+      if(!tagName.equals("TemplateSet")) {
+        System.out.println("unknown tag: " + tagName);
+      }
     }
   }
 
   public void characters(char[] ch,
                        int start,
                        int length) {
-      if(_stackTopMacro != null) {
-        _stackTopMacro.characters(ch,start,length);
+      if(_currentMacro != null) {
+        _currentMacro.characters(ch,start,length);
       }
       else {
-        if(_stackTopTemplate != null) {
-            _stackTopTemplate.characters(ch,start,length);
+        if(_currentTemplate != null) {
+            _currentTemplate.characters(ch,start,length);
         }
       }
   }
 
   public void endElement(java.lang.String name) {
-    if(_stackTopTemplate != null) {
-      String body = _stackTopTemplate.getBody().trim();
+    if(_currentTemplate != null && name.equals("template")) {
+      String body = _currentTemplate.getBody().trim();
       body = expandMacros(body);
-      _stackTopTemplate.setBody(body);
-      Class classObj = _stackTopTemplate.getClass();
+      _currentTemplate.setBody(body);
+      Class classObj = _currentTemplate.getKey();
       Vector existing = (Vector) _templates.get(classObj);
       if (existing == null) existing = new Vector();
-      existing.addElement(_stackTopTemplate);
+      existing.addElement(_currentTemplate);
       _templates.put(classObj, existing);
+      _currentTemplate = null;
     }
     else {
-        if(_stackTopMacro != null) {
-            String body = _stackTopMacro.getBody().trim();
+        if(_currentMacro != null && name.equals("macro")) {
+            String body = _currentMacro.getBody().trim();
             body = expandMacros(body);
-            _stackTopMacro.setBody(body);
+            _currentMacro.setBody(body);
             boolean inserted = false;
-            int newNameLength = _stackTopMacro.getName().length();
+            int newNameLength = _currentMacro.getName().length();
             int size = _macros.size();
             for (int i = 0; i < size && !inserted; i++) {
 	        String n = ((MacroRecord)_macros.elementAt(i)).name;
 	        if (n.length() < newNameLength) {
-	            _macros.insertElementAt(_stackTopMacro, i);
+	            _macros.insertElementAt(_currentMacro, i);
 	            inserted = true;
 	        }
             }
             if (!inserted) {
-                _macros.addElement(_stackTopMacro);
+                _macros.addElement(_currentMacro);
             }
-        }
-    }
-    _stackTopTemplate = null;
-    _stackTopMacro = null;
-    Object top = _stack.get(--_stackPointer);
-    if(top instanceof TemplateRecord) {
-        _stackTopTemplate = (TemplateRecord) top;
-    }
-    else {
-        if(top instanceof MacroRecord) {
-            _stackTopMacro = (MacroRecord) top;
+            _currentMacro = null;
         }
     }
   }
