@@ -78,9 +78,6 @@ public class Localizer
 		return key;
 	}
 
-	public static void addResource(String key) {
-	}
-
     /**
      * This method tests, if a resource with the given name is registered.
 	 *
