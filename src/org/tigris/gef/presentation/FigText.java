@@ -80,6 +80,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
   /** True if the text should be editable. False for read-only. */
   protected boolean _editable = true;
 
+  protected Class _textEditorClass = FigTextEditor.class;
+  
   /** True if the text should be underlined. needs-more-work. */
   protected boolean _underline = false;
 
@@ -352,6 +354,14 @@ public class FigText extends Fig implements KeyListener, MouseListener {
    *  represented by newline characters embedded in the String. */
   public String getText() { return _curText; }
 
+  public Class getTextEditorClass() {
+      return _textEditorClass;
+  }
+  
+  public void setTextEditorClass(Class editorClass) {
+      _textEditorClass = editorClass;
+  }
+  
   ////////////////////////////////////////////////////////////////
   // painting methods
 
@@ -525,11 +535,22 @@ public class FigText extends Fig implements KeyListener, MouseListener {
   public void mouseExited(MouseEvent me) { }
 
   public FigTextEditor startTextEditor(InputEvent ie) {
-	  LogManager.log.debug("[FigText] startTextEditor");
-    FigTextEditor te = new FigTextEditor(this, ie);
-	  LogManager.log.debug("[FigText] TextEditor started");
-	_editMode = true;
-    return te;
+      LogManager.log.debug("[FigText] startTextEditor");
+      FigTextEditor te;
+      try {
+          Object editor = _textEditorClass.newInstance();
+          if (!(editor instanceof FigTextEditor))
+              te = new FigTextEditor();
+          else
+              te = (FigTextEditor)editor;
+      }
+      catch(Exception e) {
+          te = new FigTextEditor();
+      }
+      te.init(this,ie);
+      LogManager.log.debug("[FigText] TextEditor started");
+      _editMode = true;
+      return te;
   }
 
 

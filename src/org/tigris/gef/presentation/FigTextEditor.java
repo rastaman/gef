@@ -57,7 +57,9 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
 
   /** Needs-more-work: does not open if I use tab to select the
    *  FigText. */
-  public FigTextEditor(FigText ft, InputEvent ie) {
+  public FigTextEditor() {}
+  
+  public void init(FigText ft, InputEvent ie) {
     _target = ft;
     Editor ce = Globals.curEditor();
     if (!(ce.getAwtComponent() instanceof JComponent)) {
@@ -224,4 +226,10 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
 	      bbox.width + EXTRA*2, bbox.height + EXTRA*2 );
     setFont(_target.getFont());
   }
+  
+  public void cut() {
+      System.out.println("[FigTextEditor] internal cut implementation");
+      super.cut();
+  }
+  
 } /* end class FigTextEditor */

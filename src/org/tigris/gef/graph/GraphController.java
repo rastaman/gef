@@ -47,4 +47,10 @@ public interface GraphController extends java.io.Serializable {
         public Vector getNodes();
 
         public Vector getEdges();
+        
+        /**
+         * Counts the number of presentations known to the GraphController
+         * for the given referrer.
+         */
+        public int countPresentationsFor(Object referrer);
 } /* end interface GraphController */

@@ -94,16 +94,16 @@ public class PGMLParser extends HandlerBase {
       pc.parse(source,this);
       // source = null;
       if (closeStream) {
-	  System.out.println("closing stream now (in PGMLParser.readDiagram)");
+	  //System.out.println("closing stream now (in PGMLParser.readDiagram)");
 	  is.close();
       }
       else {
-	  System.out.println("leaving stream OPEN!");
+	  //System.out.println("leaving stream OPEN!");
       }
       return _diagram;
     }
     catch(SAXException saxEx) {
-      System.out.println("Exception in readDiagram");
+      System.err.println("Exception in readDiagram");
         //
         //  a SAX exception could have been generated
         //    because of another exception.
@@ -118,7 +118,7 @@ public class PGMLParser extends HandlerBase {
       }
     }
     catch (Exception ex) {
-      System.out.println("Exception in readDiagram");
+      System.err.println("Exception in readDiagram");
       ex.printStackTrace();
     }
     return null;
