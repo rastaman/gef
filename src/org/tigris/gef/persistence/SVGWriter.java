@@ -604,13 +604,13 @@ public class SVGWriter extends Graphics {
     }
 
     public void drawString(String t, int x, int y) {
-	Element text = _svg.createElement("text");
-	text.setAttribute( "x", ""+transformX( x));
+        Element text = _svg.createElement("text");
+        text.setAttribute( "x", ""+transformX( x));
         text.setAttribute( "y", ""+transformY( y));
-	text.appendChild( _svg.createTextNode( t));
-	_root.appendChild( text);
+        text.setAttribute( "style", "font-family:Verdana; font-size:8pt;");
+        text.appendChild( _svg.createTextNode( t));
+        _root.appendChild( text);
     }
-
 
     // if you want to compile this with jdk1.1, you have to comment out this method.
     // if you want to compile this with jdk1.2, you MUST NOT comment out this method.
