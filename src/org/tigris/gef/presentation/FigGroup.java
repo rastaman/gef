@@ -42,9 +42,11 @@ public class FigGroup extends Fig {
     /** 
      * The Fig's contained in this FigGroup  
      */
-    List _figs;
+    List figs;
     
-    /** @deprecated - use getExtraFrameSpace() */
+    /** @deprecated - use getExtraFrameSpace() 
+     * will change visibilty in 0.12
+     */
     protected int _extraFrameSpace = 0;
 
     /** The String of figs that are dynamically
@@ -57,7 +59,7 @@ public class FigGroup extends Fig {
     /** Construct a new FigGroup that holds no Figs. */
     public FigGroup() {
         super();
-        _figs = new ArrayList();
+        figs = new ArrayList();
     }
 
     /** Construct a new FigGroup that holds the given Figs. 
@@ -65,14 +67,14 @@ public class FigGroup extends Fig {
      */
     public FigGroup(Vector figs) {
         super();
-        _figs = figs;
+        this.figs = figs;
         calcBounds();
     }
 
     /** Construct a new FigGroup that holds the given Figs. */
    public FigGroup(List figs) {
         super();
-        _figs = figs;
+        this.figs = figs;
         calcBounds();
     }
 
@@ -92,7 +94,7 @@ public class FigGroup extends Fig {
             if (group != null) {
                 ((FigGroup)group).removeFig(fig);
             }
-            _figs.add(fig);
+            this.figs.add(fig);
             fig.setGroup(this);
             calcBounds();
         }
@@ -116,7 +118,7 @@ public class FigGroup extends Fig {
      * @param figs Collection of figs to be set.
      */
     public void setFigs(Collection figs) {
-        _figs.clear();
+        this.figs.clear();
         Iterator figIter = figs.iterator();
         while(figIter.hasNext()) {
             addFig((Fig)figIter.next());
@@ -128,10 +130,10 @@ public class FigGroup extends Fig {
     public void calcBounds() {
         Rectangle bbox = null;
 
-        int figCount = _figs.size();
+        int figCount = this.figs.size();
 
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
+            Fig f = (Fig)this.figs.get(figIndex);
             if(f.isDisplayed()) {
                 if(bbox == null) {
                     bbox = f.getBounds();
@@ -166,16 +168,16 @@ public class FigGroup extends Fig {
 
     public Object clone() {
         FigGroup figClone = (FigGroup)super.clone();
-        int figCount = _figs.size();
+        int figCount = this.figs.size();
         List figsClone = new ArrayList(figCount);
         for(int i = 0; i < figCount; ++i) {
-            Fig tempFig = (Fig)_figs.get(i);
+            Fig tempFig = (Fig)this.figs.get(i);
             Fig tempFigClone = (Fig)tempFig.clone();
             figsClone.add(tempFigClone);
             tempFigClone.setGroup(figClone);
         }
 
-        figClone._figs = figsClone;
+        figClone.figs = figsClone;
         return figClone;
     }
 
@@ -190,12 +192,12 @@ public class FigGroup extends Fig {
      * @depreacted 0.10 this will be replaced in 0.11 in favour of iterator()
      */
     public Enumeration elements() {
-        return new Vector(_figs).elements();
+        return new Vector(this.figs).elements();
     }
 
     /** Reply an Iterator of the Figs contained in this FigGroup. */
     public Iterator iterator() {
-        return _figs.iterator();
+        return this.figs.iterator();
     }
 
     /** Get the figs that make up this group
@@ -203,8 +205,8 @@ public class FigGroup extends Fig {
      * @return the figs of this group added to the given collection
      */
     public Collection getFigs(Collection c) {
-        if (c == null) return _figs;
-        c.addAll(_figs);
+        if (c == null) return this.figs;
+        c.addAll(this.figs);
         return c;
     }
 
@@ -213,7 +215,7 @@ public class FigGroup extends Fig {
      * @param i position of fig within this group
      */
     public Fig getFigAt(int i) {
-        return (Fig)_figs.get(i);
+        return (Fig)this.figs.get(i);
     }
 
     /** Get the figs that make up this group
@@ -222,26 +224,26 @@ public class FigGroup extends Fig {
      */
     public Vector getFigs() {
         Vector v = new Vector();
-        v.addAll(_figs);
+        v.addAll(this.figs);
         return v;
     }
 
     public Color getFillColor() {
-        if(_figs.size() == 0)
+        if(this.figs.size() == 0)
             return super.getFillColor();
-        return ((Fig)_figs.get(_figs.size() - 1)).getFillColor();
+        return ((Fig)this.figs.get(this.figs.size() - 1)).getFillColor();
     }
 
     public boolean getFilled() {
-        if(_figs.size() == 0)
+        if(this.figs.size() == 0)
             return super.getFilled();
-        return ((Fig)_figs.get(_figs.size() - 1)).getFilled();
+        return ((Fig)this.figs.get(this.figs.size() - 1)).getFilled();
     }
 
     public Font getFont() {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++) {
-            Object ft = _figs.get(i);
+            Object ft = this.figs.get(i);
             if(ft instanceof FigText)
                 return ((FigText)ft).getFont();
         }
@@ -249,9 +251,9 @@ public class FigGroup extends Fig {
     }
 
     public String getFontFamily() {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++) {
-            Object ft = _figs.get(i);
+            Object ft = this.figs.get(i);
             if(ft instanceof FigText)
                 return ((FigText)ft).getFontFamily();
         }
@@ -259,9 +261,9 @@ public class FigGroup extends Fig {
     }
 
     public int getFontSize() {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++) {
-            Object ft = _figs.get(i);
+            Object ft = this.figs.get(i);
             if(ft instanceof FigText)
                 return ((FigText)ft).getFontSize();
         }
@@ -269,15 +271,15 @@ public class FigGroup extends Fig {
     }
 
     public Color getLineColor() {
-        if(_figs.size() == 0)
+        if(this.figs.size() == 0)
             return super.getLineColor();
-        return ((Fig)_figs.get(_figs.size() - 1)).getLineColor();
+        return ((Fig)this.figs.get(this.figs.size() - 1)).getLineColor();
     }
 
     public int getLineWidth() {
-        if(_figs.size() == 0)
+        if(this.figs.size() == 0)
             return super.getLineWidth();
-        return ((Fig)_figs.get(_figs.size() - 1)).getLineWidth();
+        return ((Fig)this.figs.get(this.figs.size() - 1)).getLineWidth();
     }
 
     public String getPrivateData() {
@@ -290,9 +292,9 @@ public class FigGroup extends Fig {
     }
 
     public Color getTextColor() {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++) {
-            Object ft = _figs.get(i);
+            Object ft = this.figs.get(i);
             if(ft instanceof FigText)
                 return ((FigText)ft).getTextColor();
         }
@@ -300,9 +302,9 @@ public class FigGroup extends Fig {
     }
 
     public Color getTextFillColor() {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++) {
-            Object ft = _figs.get(i);
+            Object ft = this.figs.get(i);
             if(ft instanceof FigText)
                 return ((FigText)ft).getTextFillColor();
         }
@@ -310,9 +312,9 @@ public class FigGroup extends Fig {
     }
 
     public boolean getTextFilled() {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++) {
-            Object ft = _figs.get(i);
+            Object ft = this.figs.get(i);
             if(ft instanceof FigText)
                 return ((FigText)ft).getTextFilled();
         }
@@ -341,9 +343,9 @@ public class FigGroup extends Fig {
 
     public Fig hitFig(Rectangle r) {
         Fig res = null;
-        int figCount = _figs.size();
+        int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
+            Fig f = (Fig)this.figs.get(figIndex);
             if(f.hit(r))
                 res = f;
         }
@@ -351,15 +353,16 @@ public class FigGroup extends Fig {
         return res;
     }
 
+    /** Groups are resizable by default (see super class),
+     *  but not reshapable, and not rotatable (for now).
+     */
     public boolean isReshapable() {
         return false;
     }
 
-    /** Groups are resizable, but not reshapable, and not rotatable (for now). */
-    public boolean isResizable() {
-        return true;
-    }
-
+    /** Groups are resizable by default (see super class),
+     *  but not reshapable, and not rotatable (for now).
+     */
     public boolean isRotatable() {
         return false;
     }
@@ -368,9 +371,9 @@ public class FigGroup extends Fig {
 
     /** Paint all the Figs in this group. */
     public void paint(Graphics g) {
-        int figCount = _figs.size();
+        int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
+            Fig f = (Fig)this.figs.get(figIndex);
             if(f.isDisplayed())
                 f.paint(g);
         }
@@ -379,22 +382,22 @@ public class FigGroup extends Fig {
     /** Delete all Fig's from the group. Fires PropertyChange with "bounds".*/
     public void removeAll() {
         Rectangle oldBounds = getBounds();
-        int figCount = _figs.size();
+        int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
+            Fig f = (Fig)this.figs.get(figIndex);
             f.setGroup(null);
         }
-        _figs.clear();
+        this.figs.clear();
         calcBounds();
         firePropChange("bounds", oldBounds, getBounds());
     }
 
     /** Remove a Fig from the group. Fires PropertyChange with "bounds". */
     public void removeFig(Fig f) {
-        if(!_figs.contains(f))
+        if(!this.figs.contains(f))
             return;
         Rectangle oldBounds = getBounds();
-        _figs.remove(f);
+        this.figs.remove(f);
         f.setGroup(null);
         calcBounds();
         firePropChange("bounds", oldBounds, getBounds());
@@ -403,35 +406,13 @@ public class FigGroup extends Fig {
     /** Returns a list of the displayable Figs enclosed.
      *  e.g. returns the list of enclosed Figs, without
      *  the Compartments that should not be displayed.
-     * @deprecated 0.10 in favour of getDisplayedFigs(Collection). Remove in 0.11
      */
-    // added by Eric Lefevre 25 Mar 1999
-    // moved here by Toby 07 Nov 2000
-    public Vector getDisplayedFigs() {
-        Vector displayed = new Vector();
-
-        int figCount = _figs.size();
-        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
-            if(f.isDisplayed()) {
-                displayed.add(f);
-            }
-        }
-
-        return displayed;
-    }
-
-    /** Returns a list of the displayable Figs enclosed.
-     *  e.g. returns the list of enclosed Figs, without
-     *  the Compartments that should not be displayed. */
-    // added by Eric Lefevre 25 Mar 1999
-    // moved here by Toby 07 Nov 2000
     public Collection getDisplayedFigs(Collection c) {
         if (c == null) c = new ArrayList();
 
-        int figCount = _figs.size();
+        int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
+            Fig f = (Fig)this.figs.get(figIndex);
             if(f.isDisplayed()) {
                 c.add(f);
             }
@@ -441,18 +422,29 @@ public class FigGroup extends Fig {
     }
 
     /** Set the bounding box to the given rect. Figs in the group are
-     *  scaled to fit. Fires PropertyChange with "bounds" */
+     *  scaled to fit. Fires PropertyChange with "bounds"
+     */
     public void setBounds(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
-        int figCount = _figs.size();
+        int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
-            if(f.isDisplayed()) {
-                int newX = (_w == 0) ? x : x + ((f.getX() - _x) * w) / _w;
-                int newY = (_h == 0) ? y : y + ((f.getY() - _y) * h) / _h;
-                int newW = (_w == 0) ? 0 : (f.getWidth() * w) / _w;
-                int newH = (_h == 0) ? 0 : (f.getHeight() * h) / _h;
-                f.setBounds(newX, newY, newW, newH);
+            Fig f = (Fig)this.figs.get(figIndex);
+            if (f.isDisplayed()) {
+                int newW = f.getWidth();
+                int newH = f.getHeight();
+                int newX = f.getX();
+                int newY = f.getY();
+                if (f.isResizable()) {
+                    newW = (_w == 0) ? 0 : (f.getWidth() * w) / _w;
+                    newH = (_h == 0) ? 0 : (f.getHeight() * h) / _h;
+                }
+                if (f.isMovable()) {
+                    newX = (_w == 0) ? x : x + ((f.getX() - _x) * w) / _w;
+                    newY = (_h == 0) ? y : y + ((f.getY() - _y) * h) / _h;
+                }
+                if (f.isMovable() || f.isResizable()) {
+                    f.setBounds(newX, newY, newW, newH);
+                }
             }
         }
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
@@ -462,45 +454,45 @@ public class FigGroup extends Fig {
     /** Set the Vector of Figs in this group. Fires PropertyChange with "bounds". */
     public void setFigs(Vector figs) {
         Rectangle oldBounds = getBounds();
-        _figs = figs;
+        this.figs = figs;
         calcBounds();
         firePropChange("bounds", oldBounds, getBounds());
     }
 
     public void setFillColor(Color col) {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++)
-            ((Fig)_figs.get(i)).setFillColor(col);
+            ((Fig)this.figs.get(i)).setFillColor(col);
     }
 
     public void setFilled(boolean f) {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++)
-            ((Fig)_figs.get(i)).setFilled(f);
+            ((Fig)this.figs.get(i)).setFilled(f);
     }
 
     public void setFont(Font f) {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++) {
-            Object ft = _figs.get(i);
+            Object ft = this.figs.get(i);
             if(ft instanceof FigText)
                 ((FigText)ft).setFont(f);
         }
     }
 
     public void setFontFamily(String s) {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++) {
-            Object ft = _figs.get(i);
+            Object ft = this.figs.get(i);
             if(ft instanceof FigText)
                 ((FigText)ft).setFontFamily(s);
         }
     }
 
     public void setFontSize(int s) {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++) {
-            Object ft = _figs.get(i);
+            Object ft = this.figs.get(i);
             if(ft instanceof FigText)
                 ((FigText)ft).setFontSize(s);
         }
@@ -509,15 +501,15 @@ public class FigGroup extends Fig {
     // Fig Accessors
 
     public void setLineColor(Color col) {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++)
-            ((Fig)_figs.get(i)).setLineColor(col);
+            ((Fig)this.figs.get(i)).setLineColor(col);
     }
 
     public void setLineWidth(int w) {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++)
-            ((Fig)_figs.get(i)).setLineWidth(w);
+            ((Fig)this.figs.get(i)).setLineWidth(w);
     }
 
     public void setPrivateData(String data) {
@@ -538,27 +530,27 @@ public class FigGroup extends Fig {
     // FigText Accessors
 
     public void setTextColor(Color c) {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++) {
-            Object ft = _figs.get(i);
+            Object ft = this.figs.get(i);
             if(ft instanceof FigText)
                 ((FigText)ft).setTextColor(c);
         }
     }
 
     public void setTextFillColor(Color c) {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++) {
-            Object ft = _figs.get(i);
+            Object ft = this.figs.get(i);
             if(ft instanceof FigText)
                 ((FigText)ft).setTextFillColor(c);
         }
     }
 
     public void setTextFilled(boolean b) {
-        int size = _figs.size();
+        int size = this.figs.size();
         for(int i = 0; i < size; i++) {
-            Object ft = _figs.get(i);
+            Object ft = this.figs.get(i);
             if(ft instanceof FigText)
                 ((FigText)ft).setTextFilled(b);
         }
@@ -576,9 +568,9 @@ public class FigGroup extends Fig {
     /** Translate all the Fig in the list by the given offset. */
     public void translate(int dx, int dy) {
         Rectangle oldBounds = getBounds();
-        int figCount = _figs.size();
+        int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
+            Fig f = (Fig)this.figs.get(figIndex);
             f.translate(dx, dy);
         }
         _x += dx;

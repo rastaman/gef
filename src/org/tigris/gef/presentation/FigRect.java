@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: FigRect.java
 // Classes: FigRect
 // Original Author: ics125 spring 1996
@@ -40,40 +37,53 @@ import java.util.*;
 
 public class FigRect extends Fig implements Serializable {
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  /** Construct a new FigRect w/ the given position and size. */
-  public FigRect(int x, int y, int w, int h){
-    super(x, y, w, h);
-  }
-
-  /** Construct a new FigRect w/ the given position, size, line color,
-   *  and fill color. */
-  public FigRect(int x, int y, int w, int h, Color lColor, Color fColor) {
-    super(x, y, w, h, lColor, fColor);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // painting methods
-
-  /** Paint this FigRect */
-  public void paint(Graphics g) {
-    if (_filled && _fillColor != null) {
-      g.setColor(_fillColor);
-      g.fillRect(_x, _y, _w, _h);
+    /** Construct a new resizable FigRect with the given position and size. */
+    public FigRect(int x, int y, int w, int h) {
+        super(x, y, w, h);
     }
-    if (_lineWidth > 0 && _lineColor != null) {
-      g.setColor(_lineColor);
-      if (!getDashed()) g.drawRect(_x, _y, _w - _lineWidth, _h - _lineWidth);
-      else {
-	int phase = 0;
-	phase = drawDashedLine(g, phase, _x, _y, _x + _w, _y);
-	phase = drawDashedLine(g, phase, _x + _w, _y, _x + _w, _y + _h);
-	phase = drawDashedLine(g, phase, _x + _w, _y + _h, _x, _y + _h);
-	phase = drawDashedLine(g, phase, _x, _y + _h, _x, _y);
-      }
+
+    /** Construct a new resizable FigRect with the given position, size, line color,
+     *  and fill color. */
+    public FigRect(int x, int y, int w, int h, Color lColor, Color fColor) {
+        super(x, y, w, h, lColor, fColor);
     }
-  }
+
+    /** Construct a new FigRect w/ the given position and size. */
+    public FigRect(int x, int y, int w, int h, boolean resizable) {
+        super(x, y, w, h);
+        this.resizable = resizable;
+    }
+
+    /** Construct a new FigRect w/ the given position, size, line color,
+     *  and fill color. */
+    public FigRect(int x, int y, int w, int h, boolean resizable, Color lColor, Color fColor) {
+        super(x, y, w, h, lColor, fColor);
+        this.resizable = resizable;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // painting methods
+
+    /** Paint this FigRect */
+    public void paint(Graphics g) {
+        if (_filled && _fillColor != null) {
+            g.setColor(_fillColor);
+            g.fillRect(_x, _y, _w, _h);
+        }
+        if (_lineWidth > 0 && _lineColor != null) {
+            g.setColor(_lineColor);
+            if (!getDashed())
+                g.drawRect(_x, _y, _w - _lineWidth, _h - _lineWidth);
+            else {
+                int phase = 0;
+                phase = drawDashedLine(g, phase, _x, _y, _x + _w, _y);
+                phase = drawDashedLine(g, phase, _x + _w, _y, _x + _w, _y + _h);
+                phase = drawDashedLine(g, phase, _x + _w, _y + _h, _x, _y + _h);
+                phase = drawDashedLine(g, phase, _x, _y + _h, _x, _y);
+            }
+        }
+    }
 } /* end class FigRect */
-

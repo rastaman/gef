@@ -41,19 +41,27 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /** The size of the dashes drawn when the Fig is dashed. */
 
     //public final int DASH_LENGTH = 5;
-    public static String[] DASHED_CHOICES = {"Solid", "Dashed"};
-    public static int[][] DASH_ARRAYS = {null, {5}, {15, 5}, {3, 10}, {3, 6, 10, 6}};
+    public static final String[] DASHED_CHOICES = {"Solid", "Dashed"};
+    public static final int[][] DASH_ARRAYS = {null, {5}, {15, 5}, {3, 10}, {3, 6, 10, 6}};
 
     ////////////////////////////////////////////////////////
     // instance variables
 
     /**
+     * Indicates whether this fig can be resized
+     */
+    boolean resizable = true;
+    
+    /**
      *  The Layer that this Fig is in. Each Fig can be in exactly one Layer, but
      *  there can be multiple Editors on a given Layer.
+     *  @deprecated 0.11 visibility will change to package
      */
     protected transient Layer _layer = null;
 
-    /** True if this object is locked and cannot be moved by the user. */
+    /** True if this object is locked and cannot be moved by the user.
+     *  @deprecated 0.11 visibility will change to package
+     */
     protected boolean _locked = false;
 
     /**
@@ -964,7 +972,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 
     /** Returns true if this Fig can be resized by the user. */
     public boolean isResizable() {
-        return true;
+        return resizable;
     }
 
     /** Returns true if this Fig can be rotated by the user. */

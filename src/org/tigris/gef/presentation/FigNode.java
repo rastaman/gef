@@ -51,8 +51,7 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
     // constants
 
     /** Constants useful for determining what side (north, south, east,
-     *  or west) a port is located on. Maybe this should really be in
-     *  FigNode. */
+     *  or west) a port is located on.*/
     public static final double ang45 = Math.PI / 4;
     public static final double ang135 = 3 * Math.PI / 4;
     public static final double ang225 = 5 * Math.PI / 4;
@@ -86,16 +85,8 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
     }
 
     /** Constructs a new FigNode on the given node with the given owner
-     *  and Figs. 
-     * @deprecated 0.10 in favour of FigNode(Object, Collection). Remove in 0.11
+     *  and Figs.
      */
-    public FigNode(Object node, Vector figs) {
-        this(node);
-        setFigs(figs);
-    }
-
-    /** Constructs a new FigNode on the given node with the given owner
-     *  and Figs. */
     public FigNode(Object node, Collection figs) {
         this(node);
         setFigs(figs);
@@ -139,15 +130,6 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
         if (c == null) return _figEdges;
         c.addAll(_figEdges);
         return c;
-    }
-
-    /**
-     * @deprecated 0.10 removed in 0.11
-     */
-    public Vector getFigEdges() {
-        Vector v = new Vector();
-        v.addAll(_figEdges);
-        return v;
     }
 
     /** Sets the owner (an node in some underlying model). If the given
@@ -267,9 +249,9 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
      *  allows users to drag edges to or from ports that are hidden by
      *  other Figs. */
     public Object deepHitPort(int x, int y) {
-        int figCount = _figs.size();
+        int figCount = figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
+            Fig f = (Fig)figs.get(figIndex);
             Object own = f.getOwner();
             // assumes ports are always filled
             if(f.contains(x, y) && own != null)
@@ -278,7 +260,7 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
 
         Rectangle r = new Rectangle(x - 16, y - 16, 32, 32);
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
+            Fig f = (Fig)figs.get(figIndex);
             Object own = f.getOwner();
             // assumes ports are always filled
             if(f.hit(r) && own != null)
@@ -291,9 +273,9 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
 
     /** Reply the Fig that displays the given NetPort. */
     public Fig getPortFig(Object np) {
-        int figCount = _figs.size();
+        int figCount = figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
+            Fig f = (Fig)figs.get(figIndex);
             if(f.getOwner() == np)
                 return f;
         }
@@ -317,9 +299,9 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
         if (figs == null) {
             figs = new ArrayList();
         }
-        int figCount = _figs.size();
+        int figCount = figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
+            Fig f = (Fig)this.figs.get(figIndex);
             if(f.getOwner() != null)
                 figs.add(f);
         }
@@ -432,9 +414,9 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
 
     /** Make the port Figs visible. Used when blinkingPorts is true. */
     public void showPorts() {
-        int figCount = _figs.size();
+        int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
+            Fig f = (Fig)this.figs.get(figIndex);
             if(f.getOwner() != null) {
                 f.setLineWidth(1);
                 f.setFilled(true);
@@ -445,9 +427,9 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
 
     /** Make the port Figs invisible. Used when blinkingPorts is true. */
     public void hidePorts() {
-        int figCount = _figs.size();
+        int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)_figs.get(figIndex);
+            Fig f = (Fig)this.figs.get(figIndex);
             if(f.getOwner() != null) {
                 f.setLineWidth(0);
                 f.setFilled(false);
