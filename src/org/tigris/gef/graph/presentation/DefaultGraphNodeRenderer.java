@@ -41,7 +41,7 @@ import org.tigris.gef.graph.*;
  *  to make its own FigNode.
  *
  * @see org.tigris.gef.graph.presentation.NetNode#presentationFor 
- * @see uci.graph.demo.WordNodeRenderer */
+ */
 
 public class DefaultGraphNodeRenderer
     implements GraphNodeRenderer, java.io.Serializable {
@@ -49,6 +49,12 @@ public class DefaultGraphNodeRenderer
     public FigNode getFigNodeFor(GraphModel graph, Layer lay, Object node, Map styleAttributes) {
         if (node instanceof NetNode)
             return ((NetNode)node).presentationFor(lay);
+        return null;
+    }
+    /** Return a Fig that can be used to represent the given node */
+    public FigNode getFigNodeFor(Object node, Map styleAttributes) {
+        if (node instanceof NetNode)
+            return ((NetNode)node).presentationFor(null);
         return null;
     }
 } /* end class DefaultGraphNodeRenderer */

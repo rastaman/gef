@@ -40,7 +40,7 @@ import org.tigris.gef.graph.*;
  *  Swing class TreeCellRenderer.
  *
  * @see org.tigris.gef.graph.presentation.NetEdge#presentationFor 
- * @see uci.graph.demo.TranscriptionRenderer */
+ */
 
 public class DefaultGraphEdgeRenderer
     implements GraphEdgeRenderer, java.io.Serializable {
@@ -48,5 +48,11 @@ public class DefaultGraphEdgeRenderer
     public FigEdge getFigEdgeFor(GraphModel graph, Layer lay, Object edge, Map styleAttributes) {
         if (!(edge instanceof NetEdge))  return null;
         return ((NetEdge)edge).presentationFor(lay);
+    }
+    
+    /** Return a Fig that can be used to represent the given Edge */
+    public FigEdge getFigEdgeFor(Object edge, Map styleAttributes) {
+        if (!(edge instanceof NetEdge))  return null;
+        return ((NetEdge)edge).presentationFor(null);
     }
 } /* end class DefaultGraphEdgeRenderer */

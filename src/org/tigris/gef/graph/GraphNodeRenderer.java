@@ -51,4 +51,12 @@ public interface GraphNodeRenderer extends java.io.Serializable {
      * return the new FigNode
      */
     FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map attributesMap);
+    
+    /** 
+     * Factory for a FigNode that can be used to represent the given node
+     * @param node the model element from which to create the FigNode
+     * @param attributeMap an optional map of attributes to style the fig.
+     * return the new FigNode
+     */
+    FigNode getFigNodeFor(Object node, Map attributesMap);
 } /* end interface GraphNodeRenderer */

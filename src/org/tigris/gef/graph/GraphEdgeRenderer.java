@@ -50,4 +50,12 @@ public interface GraphEdgeRenderer extends java.io.Serializable {
      * return the new FigEdge
      */
     FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, Map attributesMap);
+    
+    /** 
+     * Factory for a FigEdge that can be used to represent the given edge
+     * @param edge the model element from which to create the FigEdge
+     * @param attributeMap an optional map of attributes to style the fig.
+     * return the new FigEdge
+     */
+    FigEdge getFigEdgeFor(Object edge, Map attributesMap);
 } /* end interface GraphEdgeRenderer */
