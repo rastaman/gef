@@ -28,8 +28,8 @@
 
 package org.tigris.gef.util;
 
-import java.util.*;
 import javax.swing.*;
+import java.util.*;
 
 /**
  *  This class manages the resource locations needed within the
@@ -38,212 +38,131 @@ import javax.swing.*;
  *
  */
 
-public class ResourceLoader
-{
-    private HashMap resourceCache;
-    private List resourceLocations;
-    private List resourceExtensions;
-    
-    private static ResourceLoader instance = null;
+public class ResourceLoader {
+	private static HashMap _resourceCache = new HashMap();
+	private static List _resourceLocations = new ArrayList();
+	private static List _resourceExtensions = new ArrayList();
 
-    private ResourceLoader() {
-        resourceCache = new HashMap();
-        resourceLocations = new ArrayList();
-        resourceExtensions = new ArrayList();
-    }
-    
-    private static ResourceLoader getInstance() {
-        if ( instance == null )
-            instance = new ResourceLoader();
-        return instance;
-    }
-    
-    /**
-     * This method tries to find an ImageIcon for the given name
-     * in all known locations. The file extension of the used image
-     * file can be any of the known extensions.
-     *
-     * @param resource Name of the image to be looked after.
-     * @param desc A description for the ImageIcon.
-     * @param loader The class loader that should be used for loading the resource.
-     * @return ImageIcon for the given name, null if no image could be found.
-     */
-    public static ImageIcon lookupIconResource(String resource) {
-        return getInstance().doLookupIconResource(resource);
-    }
+	/**
+	 * This method tries to find an ImageIcon for the given name
+	 * in all known locations. The file extension of the used image
+	 * file can be any of the known extensions.
+	 *
+	 * @param resource Name of the image to be looked after.
+	 * @param desc A description for the ImageIcon.
+	 * @param loader The class loader that should be used for loading the resource.
+	 * @return ImageIcon for the given name, null if no image could be found.
+	 */
+	public static ImageIcon lookupIconResource(String resource) {
+		return lookupIconResource(resource, resource);
+	}
 
-    public static ImageIcon lookupIconResource(String resource, String desc) {
-        return getInstance().doLookupIconResource(resource,desc);
-    }
+	public static ImageIcon lookupIconResource(String resource, String desc) {
+		return lookupIconResource(resource, desc, null);
+	}
 
-    public static ImageIcon lookupIconResource(String resource, ClassLoader loader) {
-        return getInstance().doLookupIconResource(resource,loader);
-    }
+	public static ImageIcon lookupIconResource(String resource, ClassLoader loader) {
+		return lookupIconResource(resource, resource, loader);
+	}
 
-    public static ImageIcon lookupIconResource(String resource, String desc, ClassLoader loader) {
-        return getInstance().doLookupIconResource(resource,desc,loader);
-    }
+	public static ImageIcon lookupIconResource(String resource, String desc, ClassLoader loader) {
+		String strippedName = Util.stripJunk(resource);
+		if(isInCache(strippedName))
+			return (ImageIcon) _resourceCache.get(strippedName);
 
-    /**
-     * This method adds a new location to the list of known locations. 
-     *
-     * @param location String representation of the new location.
-     */
-    public static void addResourceLocation(String location) {
-        getInstance().doAddResourceLocation(location);
-    }
+		ImageIcon res = null;
+		java.net.URL imgURL = null;
+		try {
+			for(Iterator extensions = _resourceExtensions.iterator(); extensions.hasNext();) {
+				String tmpExt = (String) extensions.next();
+				for(Iterator locations = _resourceLocations.iterator(); locations.hasNext();) {
+					String imageName = (String) locations.next() + "/" + strippedName + "." + tmpExt;
+					//System.out.println("[ResourceLoader] try loading " + imageName);
+					if(loader == null)
+						imgURL = ResourceLoader.class.getResource(imageName);
+					else
+						imgURL = loader.getResource(imageName);
+					if(imgURL != null)
+						break;
+				}
+				if(imgURL != null)
+					break;
+			}
+			if(imgURL == null)
+				return null;
+			res = new ImageIcon(imgURL, desc);
+			synchronized(_resourceCache) {
+				_resourceCache.put(strippedName, res);
+			}
+			return res;
+		}
+		catch(Exception ex) {
+			System.err.println("Exception in looking up IconResource");
+			ex.printStackTrace();
+			return new ImageIcon(strippedName);
+		}
+	}
 
-    /**
-     * This method adds a new extension to the list of known extensions. 
-     *
-     * @param ext String representation of the new extension.
-     */
-    public static void addResourceExtension(String ext) {
-        getInstance().doAddResourceExtension(ext);
-    }
+	/**
+	 * This method adds a new location to the list of known locations.
+	 *
+	 * @param location String representation of the new location.
+	 */
+	public static void addResourceLocation(String location) {
+		if(!containsLocation(location))
+			_resourceLocations.add(location);
+	}
 
-    /**
-     * This method removes a location from the list of known locations. 
-     *
-     * @param location String representation of the location to be removed.
-     */
-    public static void removeResourceLocation(String location) {
-        getInstance().doRemoveResourceLocation(location);
-    }
+	/**
+	 * This method adds a new extension to the list of known extensions.
+	 *
+	 * @param ext String representation of the new extension.
+	 */
+	public static void addResourceExtension(String extension) {
+		if(!containsExtension(extension))
+			_resourceExtensions.add(extension);
+	}
 
-    /**
-     * This method removes a extension from the list of known extensions. 
-     *
-     * @param ext String representation of the extension to be removed.
-     */
-    public static void removeResourceExtension(String ext) {
-        getInstance().doRemoveResourceExtension(ext);
-    }
+	/**
+	 * This method removes a location from the list of known locations.
+	 *
+	 * @param location String representation of the location to be removed.
+	 */
+	public static void removeResourceLocation(String location) {
+		for(Iterator iter = _resourceLocations.iterator(); iter.hasNext();) {
+			String loc = (String) iter.next();
+			if(loc.equals(location)) {
+				_resourceLocations.remove(loc);
+				break;
+			}
+		}
+	}
 
-    public static boolean containsExtension(String ext) {
-        return getInstance().doContainsExtension(ext);
-    }
-    
-    public static boolean containsLocation(String location) {
-        return getInstance().doContainsLocation(location);
-    }
-    
-    public static boolean isInCache(String resource) {
-        return getInstance().doIsInCache(resource);
-    }
-    
-    protected synchronized void doAddResourceLocation(String location) {
-        if ( resourceLocations == null ) 
-            return;
-        
-        if ( !doContainsLocation(location) )
-            resourceLocations.add(location);
-    }
+	/**
+	 * This method removes a extension from the list of known extensions.
+	 *
+	 * @param ext String representation of the extension to be removed.
+	 */
+	public static void removeResourceExtension(String extension) {
+		for(Iterator iter = _resourceExtensions.iterator(); iter.hasNext();) {
+			String ext = (String) iter.next();
+			if(ext.equals(extension)) {
+				_resourceExtensions.remove(ext);
+				break;
+			}
+		}
+	}
 
-    protected synchronized void doAddResourceExtension(String extension) {
-        if ( resourceExtensions == null ) 
-            return;
-        
-        if ( !doContainsExtension(extension) )
-            resourceExtensions.add(extension);
-    }
+	public static boolean containsExtension(String extension) {
+		return _resourceExtensions.contains(extension);
+	}
 
-    protected synchronized void doRemoveResourceLocation(String location) {
-        if ( resourceLocations == null ) 
-            return;
+	public static boolean containsLocation(String location) {
+		return _resourceLocations.contains(location);
+	}
 
-        for ( Iterator iter = resourceLocations.iterator(); iter.hasNext();) {
-            String loc = (String)iter.next();
-            if ( loc.equals(location) ) {
-                resourceLocations.remove(loc);
-                break;
-            }
-        }
-    }
-
-    protected synchronized void doRemoveResourceExtension(String extension) {
-        if ( resourceExtensions == null ) 
-            return;
-        
-        for ( Iterator iter = resourceExtensions.iterator(); iter.hasNext();) {
-            String ext = (String)iter.next();
-            if ( ext.equals(extension) ) {
-                resourceExtensions.remove(ext);
-                break;
-            }
-        }
-    }
-
-    protected boolean doContainsExtension(String extension) {
-        if ( resourceExtensions == null ) 
-            return false;
-        
-        return resourceExtensions.contains(extension);
-    }
-
-    protected boolean doContainsLocation(String location) {
-        if ( resourceLocations == null ) 
-            return false;
-        
-        return resourceLocations.contains(location);
-    }
-
-    protected boolean doIsInCache(String resource) {
-        if ( resourceCache == null ) 
-            return false;
-        
-        return resourceCache.containsKey(resource);
-    }
-
-    protected ImageIcon doLookupIconResource(String resource) {
-        return doLookupIconResource(resource, resource);
-    }
-
-    protected ImageIcon doLookupIconResource(String resource, String desc) {
-        return doLookupIconResource(resource, desc, null);
-    }
-
-    protected ImageIcon doLookupIconResource(String resource, ClassLoader loader) {
-        return doLookupIconResource(resource, resource, loader);
-    }
-    
-    protected ImageIcon doLookupIconResource(String resource, String desc, ClassLoader loader) {
-        String strippedName = Util.stripJunk(resource);
-        if ( doIsInCache(strippedName) )
-            return (ImageIcon)resourceCache.get(strippedName);
-        
-        ImageIcon res = null;
-        java.net.URL imgURL = null;
-        try {
-            for (Iterator extensions = resourceExtensions.iterator(); extensions.hasNext();) {
-                String tmpExt = (String)extensions.next();
-                for (Iterator locations = resourceLocations.iterator(); locations.hasNext();) {
-                    String imageName = (String)locations.next()+"/"+strippedName+"."+tmpExt;
-                    //System.out.println("[ResourceLoader] try loading " + imageName);
-                    if (loader == null)
-                        imgURL = getClass().getResource(imageName);
-                    else
-                        imgURL = loader.getResource(imageName);
-                    if (imgURL != null)
-                        break;
-                }
-                if (imgURL != null)
-                    break;
-            }
-            if ( imgURL == null )
-                return null;
-            res = new ImageIcon(imgURL, desc);
-            synchronized(resourceCache) {
-                resourceCache.put(strippedName,res);
-            }
-            return res;
-        }
-        catch (Exception ex) {
-            System.err.println("Exception in looking up IconResource");
-            ex.printStackTrace();
-            return new ImageIcon(strippedName);
-        }
-    }
-        
+	public static boolean isInCache(String resource) {
+		return _resourceCache.containsKey(resource);
+	}
 } /* end class ResourceLoader */
 

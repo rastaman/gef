@@ -43,42 +43,13 @@ import javax.swing.*;
  */
 
 public class Localizer {
-    private static Localizer instance = null;
+    private static Map			resourcesByLocale	= new HashMap();
+    private	static Map			resourceNames		= new HashMap();
+    private	static Locale		defaultLocale		= Locale.getDefault();
+    private	static Map			defaultResources	= new HashMap();
     
-    private Map locales;
-    private Map resourceNames;
-    private Locale defaultLocale;
-    private Map defaultResources;
-    
-    private Localizer() {
-        locales = new HashMap();
-        resourceNames = new HashMap();
-        defaultLocale = Locale.getDefault();
-        defaultResources = new HashMap();
-        locales.put(defaultLocale,defaultResources);
-    }
-    
-    protected static Localizer getInstance() {
-        if ( instance == null )
-            instance = new Localizer();
-        
-        return instance;
-    }
-    
-    public static void initialize() {
-        instance = new Localizer();
-    }
-    
-    public static String localize(String key) {
-        return key;
-    }
-    
-    public static KeyStroke getShortcut(String key) {
-        return null;
-    }
-    
-    public static String getMnemonic(String key) {
-        return key;
+    static {
+        resourcesByLocale.put(defaultLocale, defaultResources);
     }
     
     /**
@@ -88,10 +59,6 @@ public class Localizer {
      * @return True, if a resource with the given name is registered, otherwise false.
      */
     public static boolean containsResource(String resource) {
-        return getInstance().doContainsResource(resource);
-    }
-    
-    protected boolean doContainsResource(String resource) {
         return resourceNames.containsValue(resource);
     }
     
@@ -102,11 +69,7 @@ public class Localizer {
      * @return True, if the given locale is registered, otherwise false.
      */
     public static boolean containsLocale(Locale locale) {
-        return getInstance().doContainsLocale(locale);
-    }
-    
-    protected boolean doContainsLocale(Locale locale) {
-        return locales.containsKey(locale);
+        return resourcesByLocale.containsKey(locale);
     }
     
     /**
@@ -118,10 +81,6 @@ public class Localizer {
      * @see java..util.Locale
      */
     public static void addLocale(Locale locale) {
-        getInstance().doAddLocale(locale);
-    }
-    
-    protected synchronized void doAddLocale(Locale locale) {
         Map resources = new HashMap();
         Iterator iter = resourceNames.keySet().iterator();
         
@@ -140,7 +99,7 @@ public class Localizer {
                 continue;
             }
         }
-        locales.put(locale,resources);
+        resourcesByLocale.put(locale,resources);
     }
     
     /**
@@ -151,16 +110,12 @@ public class Localizer {
      * @see java..util.Locale
      */
     public static void switchCurrentLocale(Locale locale) {
-        getInstance().doSwitchCurrentLocale(locale);
-    }
-    
-    protected synchronized void doSwitchCurrentLocale(Locale locale) {
-        if (!locales.containsKey(locale))
-            doAddLocale(locale);
+        if (!resourcesByLocale.containsKey(locale))
+            addLocale(locale);
         
         if (!defaultLocale.equals(locale)) {
             defaultLocale = locale;
-            defaultResources = (Map)locales.get(locale);
+            defaultResources = (Map)resourcesByLocale.get(locale);
         }
     }
     
@@ -170,10 +125,6 @@ public class Localizer {
      * @return The current locale
      */
     public static Locale getCurrentLocale() {
-        return getInstance().doGetCurrentLocale();
-    }
-    
-    protected Locale doGetCurrentLocale() {
         return defaultLocale;
     }
     
@@ -184,14 +135,10 @@ public class Localizer {
      * @return Map of all resources and their names bound to the given locale.
      */
     public static Map getResourcesFor(Locale locale) {
-        return getInstance().doGetResourcesFor(locale);
-    }
-    
-    protected Map doGetResourcesFor(Locale locale) {
-        if (!doContainsLocale(locale))
+        if (!containsLocale(locale))
             return null;
         
-        return (Map)locales.get(locale);
+        return (Map)resourcesByLocale.get(locale);
     }
     
     /**
@@ -202,53 +149,33 @@ public class Localizer {
      * @param binding Name under which the resource should be registered.
      * @param locale Locale to which the resource should be bound.
      */
-    public static void addResource(String binding, String resourceName)
+    public static synchronized void addResource(String binding, String resourceName)
     throws MissingResourceException {
-        getInstance().doAddResource(binding,resourceName);
+        addResource(binding, resourceName, Localizer.class.getClassLoader());
     }
     
-    public static void addResource(String binding, String resourceName, ClassLoader loader)
+    public static synchronized void addResource(String binding, String resourceName, ClassLoader loader)
     throws MissingResourceException {
-        getInstance().doAddResource(binding,resourceName,loader);
-    }
-    
-    protected synchronized void doAddResource(String binding, String resourceName)
-    throws MissingResourceException {
-        doAddResource(binding, resourceName, getClass().getClassLoader());
-    }
-    
-    protected synchronized void doAddResource(String binding, String resourceName, ClassLoader loader)
-    throws MissingResourceException {
-        if ( doContainsResource(resourceName) )
+        if ( containsResource(resourceName) )
             return;
         
-        Iterator iter = locales.keySet().iterator();
+        Iterator iter = resourcesByLocale.keySet().iterator();
         
         while (iter.hasNext()) {
-            doAddResource(binding,resourceName,(Locale)iter.next(), loader);
+            addResource(binding,resourceName,(Locale)iter.next(), loader);
         }
     }
     
-    public static void addResource(String binding, String resourceName, Locale locale)
+    public static synchronized void addResource(String binding, String resourceName, Locale locale)
     throws MissingResourceException{
-        getInstance().doAddResource(binding,resourceName,locale);
+        addResource(binding,resourceName,locale, Localizer.class.getClassLoader());
     }
     
-    public static void addResource(String binding, String resourceName, Locale locale, ClassLoader loader)
+    public static synchronized void addResource(String binding, String resourceName, Locale locale, ClassLoader loader)
     throws MissingResourceException{
-        getInstance().doAddResource(binding,resourceName,locale,loader);
-    }
-    
-    protected synchronized void doAddResource(String binding, String resourceName, Locale locale)
-    throws MissingResourceException {
-        doAddResource(binding, resourceName, locale, getClass().getClassLoader());
-    }
-    
-    protected synchronized void doAddResource(String binding, String resourceName, Locale locale, ClassLoader loader)
-    throws MissingResourceException {
         ResourceBundle resource = null;
-        if (doContainsLocale(locale) ) {
-            Map resources = (Map)locales.get(locale);
+        if (containsLocale(locale) ) {
+            Map resources = (Map)resourcesByLocale.get(locale);
             resource = ResourceBundle.getBundle(resourceName,locale, loader);
             resources.put(binding,resource);
             if (!resourceNames.containsValue(resourceName))
@@ -265,14 +192,10 @@ public class Localizer {
      * @param locale Locale to be removed.
      */
     public static void removeLocale(Locale locale) {
-        getInstance().doRemoveLocale(locale);
-    }
-    
-    protected synchronized void doRemoveLocale(Locale locale) {
         if ( defaultLocale.equals(locale) )
-            doSwitchCurrentLocale(Locale.getDefault());
+            switchCurrentLocale(Locale.getDefault());
         
-        locales.remove(locale);
+        resourcesByLocale.remove(locale);
     }
     
     /**
@@ -282,15 +205,11 @@ public class Localizer {
      * @param binding Name under which the resource to be removed is registered.
      */
     public static void removeResource(String binding) {
-        getInstance().doRemoveResource(binding);
-    }
-    
-    protected synchronized void doRemoveResource(String binding) {
-        Iterator iter = locales.keySet().iterator();
+        Iterator iter = resourcesByLocale.keySet().iterator();
         
         while (iter.hasNext()) {
             Locale tmpLocale = (Locale)iter.next();
-            ((Map)locales.get(tmpLocale)).remove(binding);
+            ((Map)resourcesByLocale.get(tmpLocale)).remove(binding);
         }
         resourceNames.remove(binding);
     }
@@ -307,26 +226,26 @@ public class Localizer {
      *    ResourceBundles, the key itself if no localization has been found.
      */
     public static String localize(String binding, String key) {
-        return getInstance().doLocalize(binding,key);
-    }
-    
-    private final String doLocalize(String binding, String key) {
-        return doLocalize(binding, key, defaultLocale, defaultResources);
+        return localize(binding, key, defaultLocale, defaultResources);
     }
     
     public static String localize(String binding, String key, Locale locale, Map resources) {
-        return getInstance().doLocalize(binding, key, locale, resources);
-    }
-    
-    private final String doLocalize(String binding, String key, Locale locale, Map resources) {
-        if (locale == null || resources == null || !doContainsLocale(locale))
+        if(locale == null || resources == null || !containsLocale(locale)) {
+			if(System.getProperty("showLocalizeErrors", "false").equals("true")) {
+				System.out.println("[Localizer] localization failed for key " + key + " (binding: " + binding + ")");
+				try { throw new Exception(); } catch(Exception e) { e.printStackTrace();}
+			}
             return key;
+		}
         
         String localized = null;
         
         ResourceBundle resource = (ResourceBundle)resources.get(binding);
         if ( resource == null ) {
-            //System.out.println("[Localizer] localization failed for key " + key + " (binding: " + binding + ")");
+			if(System.getProperty("showLocalizeErrors", "false").equals("true")) {
+				System.out.println("[Localizer] localization failed for key " + key + " (binding: " + binding + ")");
+				try { throw new Exception(); } catch(Exception e) { e.printStackTrace();}
+			}
             return key;
         }
         try {
@@ -334,12 +253,39 @@ public class Localizer {
         }
         catch (MissingResourceException e) {}
         if (localized == null) {
-            //System.out.println("[Localizer] localization failed for key " + key + " (binding: " + binding + ")");
+			if(System.getProperty("showLocalizeErrors", "false").equals("true")) {
+				System.out.println("[Localizer] localization failed for key " + key + " (binding: " + binding + ")");
+				try { throw new Exception(); } catch(Exception e) { e.printStackTrace();}
+			}
             localized = key;
         }
         
         return localized;
     }
+	
+	public static boolean containsKey(String binding, String key) {
+		return containsKey(binding, key, defaultLocale, defaultResources);
+	}
+
+	public static boolean containsKey(String binding, String key, Locale locale, Map resources) {
+        if(locale == null || resources == null || !containsLocale(locale)) {
+			return false;
+		}
+
+		ResourceBundle resource = (ResourceBundle)resources.get(binding);
+        if ( resource == null ) {
+			return false;
+		}
+		
+        try {
+            Object object = resource.getObject(key);
+			return true;
+        }
+        catch (MissingResourceException e) {
+			return false;
+		}
+	}
+    
     
     /**
      * This function returns a localized menu shortcut key
@@ -349,22 +295,14 @@ public class Localizer {
      * @param key Shortcut string to be localized.
      * @return Localized KeyStroke object.
      */
-    public static KeyStroke getShortcut(String binding, String key) {
-        return getInstance().doGetShortcut(binding,key);
-    }
-    
-    private final KeyStroke doGetShortcut(String binding, String key) {
-        return doGetShortcut(binding, key, defaultLocale, defaultResources);
+    protected final static String SHORTCUT_MODIFIER = "shortcut";
+
+	public static KeyStroke getShortcut(String binding, String key) {
+        return getShortcut(binding, key, defaultLocale, defaultResources);
     }
     
     public static KeyStroke getShortcut(String binding, String key, Locale locale, Map resources) {
-        return getInstance().doGetShortcut(binding, key, locale, resources);
-    }
-    
-    protected final static String SHORTCUT_MODIFIER = "shortcut";
-    
-    private final KeyStroke doGetShortcut(String binding, String key, Locale locale, Map resources) {
-        if (locale == null || resources == null || !doContainsLocale(locale))
+        if (locale == null || resources == null || !containsLocale(locale))
             return null;
         
         KeyStroke stroke = null;
@@ -404,6 +342,5 @@ public class Localizer {
         catch(NullPointerException e) {}
         return stroke;
     }
-    
 } /* end class Localizer */
 
