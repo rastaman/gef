@@ -336,6 +336,8 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 
     // end annotation related
     //-----------------------------------
+    // TODO We really need some javadoc for this. How is this supposed to be
+    // used. WHy isn't this extended by FigEdgePoly?
     public void addPoint(int x, int y) {
     }
 

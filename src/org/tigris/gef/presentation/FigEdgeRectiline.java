@@ -30,7 +30,6 @@
 
 package org.tigris.gef.presentation;
 
-import java.util.*;
 import java.awt.*;
 
 /** A Fig that paints edges between ports. This version

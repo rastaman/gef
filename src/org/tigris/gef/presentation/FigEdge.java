@@ -620,6 +620,12 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         calcBounds();
     }
 
+    public void setPoint(int i, int x, int y) {
+        _fig.setPoints(i, x, y);
+        calcBounds();
+    }
+
+    /** @deprecated 0.10.2 in favour of setPoint(int,int,int) */
     public void setPoints(int i, int x, int y) {
         _fig.setPoints(i, x, y);
         calcBounds();
@@ -630,6 +636,7 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         calcBounds();
     }
 
+    /** @deprecated 0.10.2 this method does nothing so lets get rid */
     public void setPrivateData(String data) {
         // this method did nothing, so I commented out this Exception throwing code. Toby
         //    StringTokenizer tokenizer = new StringTokenizer(data,"=\"' ");

@@ -377,8 +377,16 @@ public class FigEdgePoly extends FigEdge {
         }
     }
 
-    /** When the user drags the handles, move individual points */
+    /** When the user drags the handles, move individual points 
+     * @deprecated 0.10.2 in favour of setPoint(Handle, int, int)
+     */
     public void setPoints(Handle h, int mX, int mY) {
+        moveVertex(h, mX, mY, false);
+        calcBounds();
+    }
+
+    /** When the user drags the handles, move individual points */
+    public void setPoint(Handle h, int mX, int mY) {
         moveVertex(h, mX, mY, false);
         calcBounds();
     }
