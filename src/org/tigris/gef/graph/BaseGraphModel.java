@@ -30,8 +30,6 @@
 
 package org.tigris.gef.graph;
 
-import java.util.*;
-
 /** This interface provides a facade to a net-level
  *  representation. Similiar in concept to the Swing class
  *  TreeModel.<p>
