@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Main-Class: org.tigris.gef.demo.BasicApplication
 Class-Path: xerces.jar jaxp.jar crimson.jar parser.jar xml4j.jar
 
 Name: org/tigris/gef/base/
