@@ -77,7 +77,9 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
     public FigNode() {
     }
 
-    /** Constructs a new FigNode on the given node with the given owner. */
+    /** Constructs a new FigNode on the given node with the given owner.
+     * @param node The model item that this node represents
+     */
     public FigNode(Object node) {
         setOwner(node);
         // if (node instanceof GraphNodeHooks)
@@ -86,6 +88,8 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
 
     /** Constructs a new FigNode on the given node with the given owner
      *  and Figs.
+     * @param node the model item that this node represents
+     * @param figs the figs to be contained as a group by this FigNode 
      */
     public FigNode(Object node, Collection figs) {
         this(node);
@@ -117,7 +121,19 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
         hidePorts();
     }
 
+    /**
+     * @deprecated in favour of isBlinkPorts()
+     * @return
+     */
     public boolean getBlinkPorts() {
+        return _blinkPorts;
+    }
+
+    /**
+     * Determine if ports are set to appear only on mouseover.
+     * @return true if ports are set to appear only on mouseover.
+     */
+    public boolean isBlinkPorts() {
         return _blinkPorts;
     }
 
@@ -141,9 +157,10 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
         return c;
     }
 
-    /** Sets the owner (an node in some underlying model). If the given
+    /** Sets the owner (a node in some underlying model). If the given
      *  node implements GraphNodeHooks, then the FigNode will register
-     *  itself as a listener on the node. */
+     *  itself as a listener on the node.
+     */
     public void setOwner(Object node) {
         Object oldOwner = getOwner();
         if(oldOwner instanceof GraphNodeHooks)
