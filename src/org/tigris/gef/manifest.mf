@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Class-Path:
+Class-Path: xerces.jar
 
-Name: org/tigris/gef
+Name: org/tigris/gef/base/
 Specification-Title: GEF Graph Editing Framework
 Specification-Version: @version@
 Specification-Vendor: University of California

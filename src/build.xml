@@ -204,7 +204,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <jar jarfile="${lib.dir}/${name}.jar"
          basedir="${build.dest}"
          includes="org/tigris/gef/** Acme/**"
-         excludes="${classes}/${manifest}"
+         excludes="${manifest}"
          manifest="${classes}/${manifest}"/>
   </target>
 
