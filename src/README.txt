@@ -1,3 +1,22 @@
+GEF vers 0.10.2
+
+The version has been released in order to fix 2 major bugs introduced in vers 0.10.1
+
+Resolved Issues
+===============
+
+The following issues have been fixed in release 0.10.2 of GEF
+
+95   Decouple CmdCreateNode from the model  
+96   Methods referred to in tee file should be reinstated  
+97   getContents() should be reinstated returning a List  
+
+
+
+
+=========================================================================
+=========================================================================
+
 GEF vers 0.10.1
 
 Resolved Issues
