@@ -30,13 +30,17 @@ package org.tigris.gef.presentation;
 
 import org.tigris.gef.presentation.Fig;
 
-import java.awt.*;
-import java.util.Vector;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Primitive Fig to paint rectangles on a LayerDiagram. */
 
 public class FigDiamond extends Fig {
 
+    int gravityPointsPerSide = 10;
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -68,12 +72,15 @@ public class FigDiamond extends Fig {
      * Makes sure that the edges stick to the outline of the fig.
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
-    public Vector getGravityPoints() {
-        Vector ret = new Vector();
-        ret.add(new Point(_x + _w / 2, _y));
-        ret.add(new Point(_x + _w, _y + _h / 2));
-        ret.add(new Point(_x + _w / 2, _y + _h));
-        ret.add(new Point(_x, _y + _h / 2));
+    public List getGravityPoints() {
+        ArrayList ret = new ArrayList(gravityPointsPerSide * 4);
+        int divisor = gravityPointsPerSide + 1;
+        for (int i=0; i < gravityPointsPerSide; ++i) {
+            ret.add(new Point(_x + (_w / divisor)*i, _y));
+            ret.add(new Point(_x + _w, _y + (_h / divisor)*i));
+            ret.add(new Point(_x + (_w / divisor)*i, _y + _h));
+            ret.add(new Point(_x, _y + (_h / divisor)*i));
+        }
         return ret;
     }
 

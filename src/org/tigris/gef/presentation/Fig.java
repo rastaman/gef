@@ -482,15 +482,15 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      * needs-more-work: define gravity points, berths
      */
     public Point connectionPoint(Point anotherPt) {
-        Vector grav = getGravityPoints();
+        List grav = getGravityPoints();
         if(grav != null && grav.size() > 0) {
             int ax = anotherPt.x;
             int ay = anotherPt.y;
-            Point bestPoint = (Point)grav.elementAt(0);
+            Point bestPoint = (Point)grav.get(0);
             int bestDist = Integer.MAX_VALUE;
             int size = grav.size();
             for(int i = 0; i < size; i++) {
-                Point gp = (Point)grav.elementAt(i);
+                Point gp = (Point)grav.get(i);
                 int dx = gp.x - ax;
                 int dy = gp.y - ay;
                 int dist = dx * dx + dy * dy;
@@ -827,7 +827,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return new Point();
     }
 
-    public Vector getGravityPoints() {
+    public List getGravityPoints() {
         return null;
     }
 

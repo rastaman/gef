@@ -29,7 +29,13 @@ package org.tigris.gef.presentation;
 
 import org.tigris.gef.base.Geometry;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 /** Primitive Fig to paint Polygons on a LayerDiagram. FigPolys
@@ -410,15 +416,6 @@ public class FigPoly extends Fig {
     }
 
     /** 
-     * Create a new Point object containg the coordinate
-     * of a specified point
-     * @deprecated in favour of getPoint()
-     */
-    public Point getPoints(int i) {
-        return new Point(_xpoints[i], _ypoints[i]);
-    }
-
-    /** 
      * Find the required line break and return it's corordinates as a Point.
      * This results in a new object instantiation on every
      * call, if multiple calls are required consider 
@@ -433,8 +430,21 @@ public class FigPoly extends Fig {
     /**
      * USED BY PGML.tee
      */
+    public List getPointsList() {
+        ArrayList res = new ArrayList();
+
+        for(int i = 0; i < _npoints; i++) {
+            res.add(new Point(_xpoints[i], _ypoints[i]));
+        }
+
+        return res;
+    }
+
+    /**
+     * USED BY PGML.tee
+     */
     public Vector getPointsVector() {
-        Vector res = new Vector();
+        Vector res = new Vector(_npoints);
 
         for(int i = 0; i < _npoints; i++) {
             res.addElement(new Point(_xpoints[i], _ypoints[i]));
@@ -504,7 +514,7 @@ public class FigPoly extends Fig {
         return Geometry.ptClosestTo(_xpoints, _ypoints, _npoints, anotherPt);
     }
 
-    public Vector getGravityPoints() {
+    public List getGravityPoints() {
         return getPointsVector();
     }
 
