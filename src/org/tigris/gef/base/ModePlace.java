@@ -110,8 +110,9 @@ public class ModePlace extends FigModifyingModeImpl {
 
     /** Move the perpective along with the mouse. */
     public void mousePressed(MouseEvent me) {
-        if(me.isConsumed())
+        if(me.isConsumed()) {
             return;
+        }
         _node = _factory.makeNode();
         start();
         editor = Globals.curEditor();
@@ -133,9 +134,11 @@ public class ModePlace extends FigModifyingModeImpl {
 
     /** Move the perpective along with the mouse. */
     public void mouseMoved(MouseEvent me) {
-        if(me.isConsumed())
+        if(me.isConsumed()) {
             return;
-        int x = me.getX(), y = me.getY();
+        }
+        int x = me.getX();
+        int y = me.getY();
         if(_pers == null) {
             me.consume();
             return;
@@ -163,19 +166,22 @@ public class ModePlace extends FigModifyingModeImpl {
     /** Actually add the Perpective to the diagram.
      */
     public void mouseReleased(MouseEvent me) {
-        if(me.isConsumed())
+        if(me.isConsumed()) {
             return;
+        }
         GraphModel gm = editor.getGraphModel();
-        if(!(gm instanceof MutableGraphModel))
+        if(!(gm instanceof MutableGraphModel)) {
             return;
+        }
 
         MutableGraphModel mgm = (MutableGraphModel)gm;
         if(mgm.canAddNode(_node)) {
             LOG.debug("mouseReleased Adding fig to editor (" + _pers.getX()+"," + _pers.getY());
             editor.add(_pers);
             mgm.addNode(_node);
-            if(_addRelatedEdges)
+            if (_addRelatedEdges) {
                 mgm.addNodeRelatedEdges(_node);
+            }
 
             Fig encloser = null;
             Rectangle bbox = _pers.getBounds();
