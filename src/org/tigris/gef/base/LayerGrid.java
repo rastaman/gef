@@ -36,6 +36,7 @@ package org.tigris.gef.base;
 import org.tigris.gef.presentation.Fig;
 
 import java.awt.*;
+import java.util.Collection;
 
 
 import javax.swing.UIManager;
@@ -128,7 +129,10 @@ public class LayerGrid extends Layer {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public List getContents() { return null; }
+    public Collection getContents(Collection c) {
+        return c;
+    }
+  
   public Fig presentationFor(Object obj) { return null; }
 
   

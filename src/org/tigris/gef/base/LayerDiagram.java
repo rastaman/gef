@@ -29,6 +29,7 @@ package org.tigris.gef.base;
 import java.awt.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
@@ -53,7 +54,7 @@ public class LayerDiagram extends Layer {
     // instance variables
 
     /** The Fig's that are contained in this layer. */
-    protected List _contents = new ArrayList();
+    private List _contents = new ArrayList();
 
     /** A counter so that layers have default names like 'One', 'Two', ... */
     protected static int _nextLayerNumbered = 1;
@@ -164,8 +165,10 @@ public class LayerDiagram extends Layer {
     }
 
     /** Reply the contents of this layer. Do I really want to do this? */
-    public List getContents() {
-        return _contents;
+    public Collection getContents(Collection c) {
+        if (c == null) return _contents; 
+        c.addAll(_contents);
+        return c;
     }
 
     /** Reply the 'top' Fig under the given (mouse)
@@ -258,11 +261,14 @@ public class LayerDiagram extends Layer {
             Iterator figs = (new ArrayList(_contents)).iterator();
             while(figs.hasNext()) {
                 Fig fig = (Fig)figs.next();
+                System.out.println("Checking to repaint fig "+fig);
                 if(_clipBounds == null || fig.intersects(_clipBounds)) {
                     if(painter == null) {
+                        System.out.println("Painting");
                         fig.paint(g);
                     }
                     else {
+                        System.out.println("Painting with painter "+painter);
                         painter.paint(g, fig);
                     }
                 }

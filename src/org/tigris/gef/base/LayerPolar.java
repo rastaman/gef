@@ -99,7 +99,10 @@ public class LayerPolar extends Layer {
   public void bgColor(Color c) { _bgColor = c; }
   public Color bgColor() { return _bgColor; }
 
-  public java.util.List getContents() { return null; }
+    public Collection getContents(Collection c) {
+        return c;
+    }
+    
   public Fig presentationFor(Object obj) { return null; }
 
   ////////////////////////////////////////////////////////////////

@@ -81,10 +81,12 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
 
     public ModeCreate(Editor par) {
         super(par);
+        System.out.println("Created mode " + this + " on editor " + par);
     }
 
     public ModeCreate() {
         super();
+        System.out.println("Created mode " + this);
     }
 
     ////////////////////////////////////////////////////////////////

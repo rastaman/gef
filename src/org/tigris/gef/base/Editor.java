@@ -39,6 +39,7 @@ import org.tigris.gef.util.logging.LogManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Component;
 import java.awt.event.*;
 import java.io.Serializable;
 import java.util.Enumeration;
@@ -143,10 +144,19 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
      *  an image. */
     private transient Component _peer_component = null;
 
+    private RenderingHints _renderingHints = new RenderingHints(null);
+
     ////////////////////////////////////////////////////////////////
     // constructors and related functions
 
 
+    /**
+     * @deprecated 0.10 will be replaced in 0.11 in favour of JComponent version
+     */
+    public Editor(GraphModel gm, Component component) {
+        this(gm, (JComponent)component);
+    }
+    
     /** Construct a new Editor to edit the given NetList */
     public Editor(GraphModel gm, JComponent jComponent) {
         this(gm, jComponent, null);
@@ -163,8 +173,6 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     public Editor(Diagram d) {
         this(d.getGraphModel(), null, d.getLayer());
     }
-
-    private RenderingHints _renderingHints = new RenderingHints(null);
 
     public Editor(GraphModel gm, JComponent jComponent, Layer lay) {
         _jComponent = jComponent;
@@ -277,8 +285,19 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
      *  A value greater than 1 draws larger, less than 1 draws smaller.
      *  Conceptually the scale is an attribute of JGraph, but the editor needs
      *  to know it to paint accordingly. 
+     * @deprectaed in favour of getScale(double) vers 0.10 removed 0.11
      */
     public void setScaleInt(double scale) {
+        _scale = scale;
+        damageAll();
+    }
+
+    /** Set this Editor's drawing scale.  A value of 1.0 draws at 1 to 1.
+     *  A value greater than 1 draws larger, less than 1 draws smaller.
+     *  Conceptually the scale is an attribute of JGraph, but the editor needs
+     *  to know it to paint accordingly. 
+     */
+    public void setScale(double scale) {
         _scale = scale;
         damageAll();
     }
@@ -475,6 +494,14 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         damaged(bounds);
     }
 
+    public void damaged(Fig f) {
+        //- if (_redrawer == null) _redrawer = new RedrawManager(this);
+        // the line above should not be needed, but without it I get
+        // NullPointerExceptions...
+        //- if (f != null) _redrawer.add(f);
+        ((JComponent) getJComponent()).repaint();
+    }
+
     public void scaleRect(Rectangle bounds) {
         bounds.x = (int)Math.floor(bounds.x * _scale);
         bounds.y = (int)Math.floor(bounds.y * _scale);
@@ -549,6 +576,13 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     ////////////////////////////////////////////////////////////////
     // Frame and panel related methods
 
+    /**
+     * @deprecated 0.10 replacing in 0.11 in favour of getJComponent()
+     */
+    public Component getAwtComponent() {
+        return (Component)_jComponent;
+    }
+
     public JComponent getJComponent() {
         return _jComponent;
     }
@@ -601,6 +635,9 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         return _jComponent.getBackground();
     }
 
+    public FigTextEditor getActiveTextEditor() {
+        return FigTextEditor.getActiveTextEditor();
+    }
 
     ////////////////////////////////////////////////////////////////
     // event handlers

@@ -40,7 +40,9 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
 
 /** Class to present a node (such as a NetNode) in a diagram. */
 
@@ -124,8 +126,19 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
     }
 
 
-    public List getFigEdges() {
-        return _figEdges;
+    public Collection getFigEdges(Collection c) {
+        if (c == null) return _figEdges;
+        c.addAll(_figEdges);
+        return c;
+    }
+
+    /**
+     * @deprecated 0.10 removed in 0.11
+     */
+    public Vector getFigEdges() {
+        Vector v = new Vector();
+        v.addAll(_figEdges);
+        return v;
     }
 
     /** Sets the owner (an node in some underlying model). If the given
@@ -278,16 +291,30 @@ public class FigNode extends FigGroup implements MouseListener, PropertyChangeLi
         return null;
     }
 
-    /** Reply a Vector of Fig's that have some port as their owner */
-    public List getPortFigs() {
-        List res = new ArrayList();
+    /** Reply a Vector of Fig's that have some port as their owner
+     * @deprecated release 0.10 will be removed 0.11 in favour of getPortFigs(Collection)
+     */
+    public Vector getPortFigs() {
+        Vector v = new Vector();
+        v.addAll(getPortFigs(null));
+        return v;
+    }
+
+    /** Get all the figs that have some port as their owner
+     * @param figs a collection to which to add the figs or null
+     * @return the collection of figs
+     */
+    public Collection getPortFigs(Collection figs) {
+        if (figs == null) {
+            figs = new ArrayList();
+        }
         int figCount = _figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig f = (Fig)_figs.get(figIndex);
             if(f.getOwner() != null)
-                res.add(f);
+                figs.add(f);
         }
-        return res;
+        return figs;
     }
 
 

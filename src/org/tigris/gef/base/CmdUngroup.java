@@ -35,6 +35,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -51,25 +52,24 @@ public class CmdUngroup extends Cmd {
 
     public void doIt() {
         Vector ungroupedItems = new Vector();
-        Editor ce = Globals.curEditor();
-        Vector selectedFigs = ce.getSelectionManager().getFigs();
+        Editor currentEditor = Globals.curEditor();
+        Vector selectedFigs = currentEditor.getSelectionManager().getFigs();
         Enumeration eachDE = selectedFigs.elements();
         while(eachDE.hasMoreElements()) {
             Object o = eachDE.nextElement();
             if(o instanceof FigGroup) {
                 FigGroup fg = (FigGroup)o;
-                List figs = fg.getFigs();
-                int figCount = figs.size();
-                for(int i = 0; i < figCount; ++i) {
-                    Fig f = (Fig)figs.get(i);
-                    ce.add(f);
+                Iterator it = fg.getFigs(null).iterator();
+                while(it.hasNext()) {
+                    Fig f = (Fig)it.next();
+                    currentEditor.add(f);
                     ungroupedItems.addElement(f);
                 }
-                ce.remove(fg);
+                currentEditor.remove(fg);
             }
         } /* end while each selected object */
-        ce.getSelectionManager().deselectAll();
-        ce.getSelectionManager().select(ungroupedItems);
+        currentEditor.getSelectionManager().deselectAll();
+        currentEditor.getSelectionManager().select(ungroupedItems);
     }
 
     public void undoIt() {

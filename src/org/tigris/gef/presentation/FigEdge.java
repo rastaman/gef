@@ -132,6 +132,7 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
         _y = res.y;
         _w = res.width;
         _h = res.height;
+        System.out.println("Bound calculated x="+_x+" y="+_y+" w="+_w+" h="+_h);
     }
 
     public void cleanUp() {
@@ -380,6 +381,7 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
 
     public boolean intersects(Rectangle r) {
         if(_fig.intersectsPerimeter(r)) {
+            System.out.println("Intersects perimeter");
             return true;
         }
 
@@ -388,10 +390,12 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
             Fig f = ((PathItem)_pathItems.elementAt(i)).getFig();
             //only pathitems represented in a layer (i.e. being displayed) are of interest
             if(f.getLayer() != null && f.intersects(r)) {
+                System.out.println("Intersects");
                 return true;
             }
         }
 
+        System.out.println("Doesn't intersect");
         return false;
     }
 
@@ -581,6 +585,7 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener, Hig
     /** Set the edge (some object in an underlying model) that this
      *  FigEdge should represent. */
     public void setOwner(Object own) {
+        System.out.println("Setting owner of " + this + " to " + own);
         Object oldOwner = getOwner();
         if(oldOwner instanceof GraphEdgeHooks) {
             ((GraphEdgeHooks)oldOwner).removePropertyChangeListener(this);

@@ -49,6 +49,7 @@ public class SampleEdge extends NetEdge {
   }
 
   public FigEdge makePresentation(Layer lay) {
+    //FigEdge foo = new FigEdgePoly();
     FigEdge foo = new FigEdgeLine();
     foo.setSourceArrowHead(new ArrowHeadTriangle());
 

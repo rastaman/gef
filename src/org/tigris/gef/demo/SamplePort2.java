@@ -54,6 +54,7 @@ public class SamplePort2 extends SamplePort implements Serializable {
   }
 
   protected Class defaultEdgeClass(NetPort otherPort) {
+//    try { return Class.forName("org.tigris.gef.demo.SampleEdge"); }
     try { return Class.forName("org.tigris.gef.demo.SampleEdge2"); }
     catch (java.lang.ClassNotFoundException ignore) { return null; }
   }

@@ -165,14 +165,36 @@ public class FigGroup extends Fig {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /** Reply an Enumeration of the Figs contained in this FigGroup. */
-    public Iterator elements() {
+    /** Reply an Enumeration of the Figs contained in this FigGroup.
+     * @depreacted 0.10 this will be replaced in 0.11 in favour of iterator()
+     */
+    public Enumeration elements() {
+        return new Vector(_figs).elements();
+    }
+
+    /** Reply an Iterator of the Figs contained in this FigGroup. */
+    public Iterator iterator() {
         return _figs.iterator();
     }
 
-    /** Reply the list of Figs. */
-    public List getFigs() {
-        return _figs;
+    /** Get the figs that make up this group
+     * @param c a collection to populate with the figs
+     * @return the figs of this group added to the given collection
+     */
+    public Collection getFigs(Collection c) {
+        if (c == null) return _figs;
+        c.addAll(_figs);
+        return c;
+    }
+
+    /** Get the figs that make up this group
+     * @return the figs of this group
+     * @deprecated 0.10 this will removed for release 0.11
+     */
+    public Vector getFigs() {
+        Vector v = new Vector();
+        v.addAll(_figs);
+        return v;
     }
 
     public Color getFillColor() {

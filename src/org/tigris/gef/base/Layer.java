@@ -40,8 +40,10 @@ import org.tigris.gef.util.PredFigNodeInRect;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Vector;
 
 /** A Layer is like a drawing layer in high-end drawing applications
  *  (e.g., MacDraw Pro).  A Layer is like a sheet of clear plastic that
@@ -226,8 +228,25 @@ public abstract class Layer implements java.io.Serializable {
         return _onMenu;
     }
 
-    public abstract List getContents();
+    /**
+     * Get the figs that make up this layer.
+     * @param edges the collection in which to place the edges or null
+     *              if a new collection should be created
+     * @return the edges
+     */
+    public abstract Collection getContents(Collection c);
 
+    /**
+     * Get the figs that make up this layer.
+     * @return the figs
+     * @deprecated 0.10 This method will be removed in release 0.11
+     */
+    public Vector getContents() {
+        Vector v = new Vector();
+        v.addAll(getContents(null));
+        return v;
+    }
+    
     public List getContentsNoEdges() {
         List contents = getContents();
         int size = contents.size();

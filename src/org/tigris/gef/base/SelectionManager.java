@@ -72,6 +72,12 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         _editor = ed;
     }
 
+    /**
+     * @deprecated 0.10 no longer required. Removed in ver 0.11
+     */
+    public void startTrans() {
+    }
+    
     ////////////////////////////////////////////////////////////////
     // accessors
 

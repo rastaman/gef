@@ -55,7 +55,7 @@ public class Diagram implements Serializable, GraphListener {
     // instance variables
     protected String _name = "no title set";
     protected String _comments = "(no comments given)";
-    protected LayerPerspective _layer;
+    private LayerPerspective _layer;
     protected transient ToolBar _toolBar;
     private transient Vector vetoListeners;
     private transient PropertyChangeSupport _changeSupport;
@@ -220,44 +220,77 @@ public class Diagram implements Serializable, GraphListener {
         return count;
     }
 
-    public List getNodes() {
-
+    /**
+     * Get all the figs that are a node.
+     * @param nodes the collection in which to place the nodes or null
+     *              if a new collection should be created
+     * @return the nodes
+     */
+    public Collection getNodes(Collection nodes) {
         // needs-more-work: should just do getGraphModel().getNodes()
         // but that is not updated when the diagram is loaded
-        List res = new ArrayList();
+        if (nodes == null) {
+            nodes = new ArrayList();
+        }
         List figs = getLayer().getContents();
         int size = figs.size();
 
-        for(int i = 0; i < size; i++) {
-
+        for (int i=0; i < size; i++) {
             Object fig = figs.get(i);
-
-            if(fig instanceof FigNode)
-                res.add(((FigNode)fig).getOwner());
+            if (fig instanceof FigNode) {
+                nodes.add(((FigNode)fig).getOwner());
+            }
         }
 
-        return res;
+        return nodes;
     }
 
-    public List getEdges() {
-
+    /**
+     * Get all the figs that are a node.
+     * @return the nodes
+     * @deprecated 0.10 This method will be removed in release 0.11
+     */
+    public Vector getNodes() {
+        Vector v = new Vector();
+        v.addAll(getNodes(null));
+        return v;
+    }
+    
+    /**
+     * Get all the figs that are edges.
+     * @param edges the collection in which to place the edges or null
+     *              if a new collection should be created
+     * @return the edges
+     */
+    public Collection getEdges(Collection edges) {
         // needs-more-work: should just do getGraphModel().getEdges()
         // but that is not updated when the diagram is loaded
-        List res = new Vector();
+        if (edges == null) {
+            edges = new ArrayList();
+        }
         List figs = getLayer().getContents();
         int size = figs.size();
 
-        for(int i = 0; i < size; i++) {
-
+        for (int i = 0; i < size; i++) {
             Object fig = figs.get(i);
-
             if((fig instanceof FigEdge) && (null != ((FigEdge)figs.get(i)).getOwner()))    // Some figs might not have a owner?
-                res.add(((FigEdge)fig).getOwner());
+                edges.add(((FigEdge)fig).getOwner());
         }
 
-        return res;
+        return edges;
     }
 
+    /**
+     * Get all the figs that are an edge.
+     * @return the edges
+     * @deprecated 0.10 This method will be removed in release 0.11
+     */
+    public Vector getEdges() {
+        Vector v = new Vector();
+        v.addAll(getEdges(null));
+        return v;
+    }
+    
     ////////////////////////////////////////////////////////////////
     // accessors on the Layer
     public void add(Fig f) {
