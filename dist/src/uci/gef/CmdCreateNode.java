@@ -47,10 +47,6 @@ import uci.graph.*;
 public class CmdCreateNode extends Cmd implements GraphFactory {
 
   ////////////////////////////////////////////////////////////////
-  // constants
-  public static Class DEFAULT_NODE_CLASS = uci.gef.demo.SampleNode.class;
-
-  ////////////////////////////////////////////////////////////////
   // instance variables
 
   // All instance variables are stored in the _args Hashtable
@@ -108,8 +104,8 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
 
   public Object makeNode() {
     Object newNode;
-    Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
-    //assert _nodeClass != null
+    Class nodeClass = (Class) getArg("className");
+    if (nodeClass == null) return null;
     try { newNode = nodeClass.newInstance(); }
     catch (java.lang.IllegalAccessException ignore) { return null; }
     catch (java.lang.InstantiationException ignore) { return null; }
