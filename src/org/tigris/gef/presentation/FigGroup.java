@@ -39,9 +39,10 @@ public class FigGroup extends Fig {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** The Fig's contained in this FigGroup */
-    //? use array for speed?
+    /** The Fig's contained in this FigGroup  
+     * @deprecated - use getFigs() */
     protected List _figs;
+    /** @deprecated - use getExtraFrameSpace() */
     protected int _extraFrameSpace = 0;
 
     /** The String of figs that are dynamically
@@ -70,11 +71,20 @@ public class FigGroup extends Fig {
     public void parseDynObjects(String dynStr) {
     }
 
-    /** Add a Fig to the group.  New Figs are added on the top. */
-    public void addFig(Fig f) {
-        _figs.add(f);
-        f.setGroup(this);
-        calcBounds();
+    /** Add a Fig to the group. Takes no action if already part of the group.
+     * Removes from any other group. New Figs are added on the top.
+     * @param fig the Fig to add to this group
+     */
+    public void addFig(Fig fig) {
+        Fig group = fig.getGroup();
+        if (group != this) {
+            if (fig != null) {
+                ((FigGroup)group).removeFig(fig);
+            }
+            _figs.add(fig);
+            fig.setGroup(this);
+            calcBounds();
+        }
     }
 
     /**
