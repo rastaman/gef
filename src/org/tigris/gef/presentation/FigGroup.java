@@ -48,12 +48,25 @@ public class FigGroup extends Fig {
     /** 
      * The Fig's contained in this FigGroup  
      */
-    List figs;
+    ArrayList figs;
     
     /**
      * @deprecated visibility in 0.10.5 use getters and setters 
      */
     protected int _extraFrameSpace = 0;
+    
+    /** Color of the actual text characters. */
+    private Color textColor = Color.black;
+
+    /** Color to be drawn behind the actual text characters. Note that
+     *  this will be a smaller area than the bounding box which is
+     *  filled with FillColor. */
+    private Color textFillColor = Color.white;
+
+    /** True if the area behind individual characters is to be filled
+     *  with TextColor. */
+    private boolean textFilled = false;
+
 
     /**
      * The String of figs that are dynamically generated.
@@ -82,7 +95,7 @@ public class FigGroup extends Fig {
     /** Construct a new FigGroup that holds the given Figs. */
    public FigGroup(List figs) {
         super();
-        this.figs = figs;
+        this.figs = new ArrayList(figs);
         calcBounds();
     }
 
@@ -191,7 +204,7 @@ public class FigGroup extends Fig {
     public Object clone() {
         FigGroup figClone = (FigGroup)super.clone();
         int figCount = this.figs.size();
-        List figsClone = new ArrayList(figCount);
+        ArrayList figsClone = new ArrayList(figCount);
         for(int i = 0; i < figCount; ++i) {
             Fig tempFig = (Fig)this.figs.get(i);
             Fig tempFigClone = (Fig)tempFig.clone();
@@ -242,27 +255,24 @@ public class FigGroup extends Fig {
 
     /** Get the figs that make up this group
      * @return the figs of this group
-     * @deprecated 0.10 this will removed for release 0.11
      * USED BY PGML.tee
      */
-    public Vector getFigs() {
-        Vector v = new Vector();
-        v.addAll(this.figs);
-        return v;
+    public List getFigs() {
+        return (List)this.figs.clone();
     }
 
-    public Color getFillColor() {
-        if(this.figs.size() == 0)
-            return super.getFillColor();
-        return ((Fig)this.figs.get(this.figs.size() - 1)).getFillColor();
-    }
-
-    public boolean getFilled() {
-        if(this.figs.size() == 0)
-            return super.getFilled();
-        return ((Fig)this.figs.get(this.figs.size() - 1)).getFilled();
-    }
-
+//    public Color getFillColor() {
+//        if(this.figs.size() == 0)
+//            return super.getFillColor();
+//        return ((Fig)this.figs.get(this.figs.size() - 1)).getFillColor();
+//    }
+//
+//    public boolean getFilled() {
+//        if(this.figs.size() == 0)
+//            return super.getFilled();
+//        return ((Fig)this.figs.get(this.figs.size() - 1)).getFilled();
+//    }
+//
     public Font getFont() {
         int size = this.figs.size();
         for(int i = 0; i < size; i++) {
@@ -293,17 +303,17 @@ public class FigGroup extends Fig {
         return 10;
     }
 
-    public Color getLineColor() {
-        if(this.figs.size() == 0)
-            return super.getLineColor();
-        return ((Fig)this.figs.get(this.figs.size() - 1)).getLineColor();
-    }
-
-    public int getLineWidth() {
-        if(this.figs.size() == 0)
-            return super.getLineWidth();
-        return ((Fig)this.figs.get(this.figs.size() - 1)).getLineWidth();
-    }
+//    public Color getLineColor() {
+//        if(this.figs.size() == 0)
+//            return super.getLineColor();
+//        return ((Fig)this.figs.get(this.figs.size() - 1)).getLineColor();
+//    }
+//
+//    public int getLineWidth() {
+//        if(this.figs.size() == 0)
+//            return super.getLineWidth();
+//        return ((Fig)this.figs.get(this.figs.size() - 1)).getLineWidth();
+//    }
 
     /**
      * TODO document
@@ -316,36 +326,6 @@ public class FigGroup extends Fig {
         }
 
         return "";
-    }
-
-    public Color getTextColor() {
-        int size = this.figs.size();
-        for(int i = 0; i < size; i++) {
-            Object ft = this.figs.get(i);
-            if(ft instanceof FigText)
-                return ((FigText)ft).getTextColor();
-        }
-        return null;
-    }
-
-    public Color getTextFillColor() {
-        int size = this.figs.size();
-        for(int i = 0; i < size; i++) {
-            Object ft = this.figs.get(i);
-            if(ft instanceof FigText)
-                return ((FigText)ft).getTextFillColor();
-        }
-        return null;
-    }
-
-    public boolean getTextFilled() {
-        int size = this.figs.size();
-        for(int i = 0; i < size; i++) {
-            Object ft = this.figs.get(i);
-            if(ft instanceof FigText)
-                return ((FigText)ft).getTextFilled();
-        }
-        return false;
     }
 
     /**
@@ -479,10 +459,10 @@ public class FigGroup extends Fig {
         firePropChange("bounds", oldBounds, getBounds());
     }
     
-    /** Set the Vector of Figs in this group. Fires PropertyChange with "bounds". */
-    public void setFigs(Vector figs) {
+    /** Set the Figs in this group. Fires PropertyChange with "bounds". */
+    public void setFigs(List figs) {
         Rectangle oldBounds = getBounds();
-        this.figs = figs;
+        this.figs = new ArrayList(figs);
         calcBounds();
         firePropChange("bounds", oldBounds, getBounds());
     }
@@ -492,6 +472,7 @@ public class FigGroup extends Fig {
         for(int i = 0; i < size; i++) {
             ((Fig)this.figs.get(i)).setFillColor(col);
         }
+        super.setFillColor(col);
     }
 
     public void setFilled(boolean f) {
@@ -499,6 +480,7 @@ public class FigGroup extends Fig {
         for(int i = 0; i < size; i++) {
             ((Fig)this.figs.get(i)).setFilled(f);
         }
+        super.setFilled(f);
     }
 
     public void setFont(Font f) {
@@ -534,14 +516,18 @@ public class FigGroup extends Fig {
 
     public void setLineColor(Color col) {
         int size = this.figs.size();
-        for(int i = 0; i < size; i++)
+        for(int i = 0; i < size; i++) {
             ((Fig)this.figs.get(i)).setLineColor(col);
+        }
+        super.setLineColor(col);
     }
 
     public void setLineWidth(int w) {
         int size = this.figs.size();
-        for(int i = 0; i < size; i++)
+        for(int i = 0; i < size; i++) {
             ((Fig)this.figs.get(i)).setLineWidth(w);
+        }
+        super.setLineWidth(w);
     }
 
     public void setPrivateData(String data) {
@@ -562,30 +548,57 @@ public class FigGroup extends Fig {
     // FigText Accessors
 
     public void setTextColor(Color c) {
+        firePropChange("textColor", textColor, c);
         int size = this.figs.size();
         for(int i = 0; i < size; i++) {
             Object ft = this.figs.get(i);
-            if(ft instanceof FigText)
+            if(ft instanceof FigText) {
                 ((FigText)ft).setTextColor(c);
+            } else if(ft instanceof FigGroup) {
+                ((FigGroup)ft).setTextColor(c);
+            }
         }
+        textColor = c;
     }
 
     public void setTextFillColor(Color c) {
+        firePropChange("textFillColor", textFillColor, c);
         int size = this.figs.size();
         for(int i = 0; i < size; i++) {
             Object ft = this.figs.get(i);
-            if(ft instanceof FigText)
+            if(ft instanceof FigText) {
                 ((FigText)ft).setTextFillColor(c);
+            } else if(ft instanceof FigGroup) {
+                ((FigGroup)ft).setTextFillColor(c);
+            }
         }
+        textFillColor = c;
     }
 
     public void setTextFilled(boolean b) {
+        firePropChange("textFilled", textFilled, b);
         int size = this.figs.size();
         for(int i = 0; i < size; i++) {
             Object ft = this.figs.get(i);
-            if(ft instanceof FigText)
+            if (ft instanceof FigText) {
                 ((FigText)ft).setTextFilled(b);
+            } else if (ft instanceof FigGroup) {
+                ((FigGroup)ft).setTextFilled(b);
+            }
         }
+        textFilled = b;
+    }
+
+    public Color getTextColor() {
+        return textColor;
+    }
+
+    public Color getTextFillColor() {
+        return textFillColor;
+    }
+
+    public boolean getTextFilled() {
+        return textFilled;
     }
 
     /**
