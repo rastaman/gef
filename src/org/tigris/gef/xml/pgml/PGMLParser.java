@@ -959,8 +959,8 @@ public class PGMLParser extends HandlerBase {
             }
 
             while(st.hasMoreElements()) {
+                String subIndex = st.nextToken();
                 if(f instanceof FigGroup) {
-                    String subIndex = st.nextToken();
                     int i = Integer.parseInt(subIndex);
                     f = (Fig)((FigGroup)f).getFigs().get(i);
                 }
