@@ -56,7 +56,7 @@ import org.tigris.gef.util.*;
  * @see CmdOpenWindow */
 
 public abstract class Cmd extends AbstractAction
-implements java.io.Serializable {
+        implements java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -64,9 +64,9 @@ implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** Arguments that configure the Cmd instance. */
-	protected Hashtable _args;
-	protected String _resource;
+    /** Arguments that configure the Cmd instance. */
+    protected Hashtable _args;
+    protected String _resource;
 
   ////////////////////////////////////////////////////////////////
   // constructors

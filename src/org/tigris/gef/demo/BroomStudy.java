@@ -156,12 +156,12 @@ public class BroomStudy {
     public void reset() {
         Editor ce = Globals.curEditor();
         ce.getSelectionManager().deselectAll();
-        List diagramContents = ce.getLayerManager().getContents();
+        Collection diagramContents = ce.getLayerManager().getContents(null);
 
         diagramContents = new ArrayList(diagramContents);
-        int count = diagramContents.size();
-        for(int figIndex = 0; figIndex < count; ++figIndex) {
-            Fig fig = (Fig)diagramContents.get(figIndex);
+        Iterator it = diagramContents.iterator();
+        while(it.hasNext()) {
+            Fig fig = (Fig)it.next();
             ce.remove(fig);
         }
 

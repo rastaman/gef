@@ -33,6 +33,7 @@ package org.tigris.gef.base;
 
 import org.tigris.gef.presentation.Fig;
 
+import java.util.Collection;
 import java.util.List;
 
 /** Cmd to select the next (or previous) Fig in the
@@ -79,7 +80,7 @@ public class CmdSelectNext extends Cmd {
             offset = -1;
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
-        List diagramContents = ce.getLayerManager().getContents();
+        List diagramContents = (List)ce.getLayerManager().getContents(null);
         int diagramSize = diagramContents.size();
         int newIndex = diagramSize + 1;
 

@@ -179,16 +179,6 @@ public class LayerDiagram extends Layer {
         return c;
     }
 
-    /**
-     * @deprecated 0.10 in favour of getContents(Collection)
-     * This method will be removed in release 0.11
-     */
-    public Vector getContents() {
-        Vector v = new Vector(_contents.size());
-        v.addAll(_contents);
-        return v;
-    }
-    
     /** Reply the 'top' Fig under the given (mouse)
      *  coordinates. Needs-More-Work: For now, just do a linear search.
      *  Later, optimize this routine using Quad Trees (or other)

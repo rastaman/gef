@@ -68,37 +68,37 @@ public class JGraph extends JPanel implements Cloneable {
   /** Make a new JGraph with the given GraphModel */
   public JGraph(GraphModel gm) { this(new Editor(gm, null)); }
 
-  /** Make a new JGraph with the given Editor.  All JGraph contructors
-   *  eventually call this contructor. */
-  public JGraph(Editor ed) {
-    super(false); // not double buffered. I do my own flicker-free redraw.
-    _editor = ed;
-    _drawingPane = new JGraphInternalPane(_editor);
-    setDrawingSize(getDefaultSize());
-
-    _scroll = new JScrollPane(_drawingPane);
-    _scroll.setBorder(null);
-    _scroll.getHorizontalScrollBar().setUnitIncrement(25);
-    _scroll.getVerticalScrollBar().setUnitIncrement(25);
-
-    _editor.setJComponent(_drawingPane);
-    setLayout(new BorderLayout());
-    add(_scroll, BorderLayout.CENTER);
-    addMouseListener(_editor);
-    addMouseMotionListener(_editor);
-    addKeyListener(_editor);
-
-    initKeys();
-
-    //invalidate();
-    validate();
-    //revalidate();
-
-    java.util.List layerManagerContent = ed.getLayerManager().getContents();
-    if ( layerManagerContent != null ) {
-        updateDrawingSizeToIncludeAllFigs(Collections.enumeration(layerManagerContent));
-    } // end if
-  }
+    /**
+     * Make a new JGraph with the given Editor.  All JGraph contructors
+     * eventually call this contructor.
+     */
+    public JGraph(Editor ed) {
+        super(false); // not double buffered. I do my own flicker-free redraw.
+        _editor = ed;
+        _drawingPane = new JGraphInternalPane(_editor);
+        setDrawingSize(getDefaultSize());
+    
+        _scroll = new JScrollPane(_drawingPane);
+        _scroll.setBorder(null);
+        _scroll.getHorizontalScrollBar().setUnitIncrement(25);
+        _scroll.getVerticalScrollBar().setUnitIncrement(25);
+    
+        _editor.setJComponent(_drawingPane);
+        setLayout(new BorderLayout());
+        add(_scroll, BorderLayout.CENTER);
+        addMouseListener(_editor);
+        addMouseMotionListener(_editor);
+        addKeyListener(_editor);
+    
+        initKeys();
+    
+        validate();
+    
+        Collection layerManagerContent = ed.getLayerManager().getContents(null);
+        if ( layerManagerContent != null ) {
+            updateDrawingSizeToIncludeAllFigs(Collections.enumeration(layerManagerContent));
+        } // end if
+    }
 
   public void addMouseListener(MouseListener listener) {
     _drawingPane.addMouseListener(listener);

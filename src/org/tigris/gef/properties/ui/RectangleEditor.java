@@ -137,7 +137,7 @@ public class RectangleEditor extends JPanel implements PropertyEditor {
 
   public void processEvent(AWTEvent event) {
     if (event.getSource() != this &&
-	event.getID() == event.ACTION_EVENT_MASK) {
+	event.getID() == AWTEvent.ACTION_EVENT_MASK) {
       readFields();
       return;
     }

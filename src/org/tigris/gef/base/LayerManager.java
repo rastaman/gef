@@ -173,14 +173,6 @@ public class LayerManager implements java.io.Serializable {
         return (_activeLayer == null) ?  null : _activeLayer.getContents(c);
     }
 
-    /**
-     * @deprecated 0.10 in favour of getContents(Collection)
-     * This method will be removed in release 0.11
-     */
-    public Vector getContents() {
-        return (_activeLayer == null) ?  null : _activeLayer.getContents();
-    }
-    
     ////////////////////////////////////////////////////////////////
     // painting methods
 

@@ -46,24 +46,28 @@ public class NodeAnnotationStrategy extends AnnotationStrategy{
 		}
 	}
 
-	public void drawConnectingLine(Fig annotation){
-                // if duration=0 -> do not draw the connecting line
-                if (getAnnotationProperties(annotation).getLineVisibilityDuration() == 0) return;
-		Fig owner = annotation.getAnnotationOwner();
-		AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
-                FigLine line = prop.getConnectingLine();
-		line.setShape(annotation.center(), owner.center());
-		line.setLineColor(Color.red);
-		line.setFillColor(Color.red);
-		line.setDashed(true);
-		if (!(Globals.curEditor().getLayerManager().getContents().contains(line))) Globals.curEditor().add(line);
-		Globals.curEditor().getLayerManager().bringToFront(annotation);
-		Globals.curEditor().getLayerManager().sendToBack(line);
-		line.damage();
-		annotation.damage();
-		// remove line automatically
-		AnnotationLineRemover.instance().removeLineIn( getAnnotationProperties(annotation).getLineVisibilityDuration(),annotation );
+    public void drawConnectingLine(Fig annotation){
+        // if duration=0 -> do not draw the connecting line
+        if (getAnnotationProperties(annotation).getLineVisibilityDuration() == 0) {
+            return;
         }
+    	Fig owner = annotation.getAnnotationOwner();
+    	AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
+        FigLine line = prop.getConnectingLine();
+    	line.setShape(annotation.center(), owner.center());
+    	line.setLineColor(Color.red);
+    	line.setFillColor(Color.red);
+    	line.setDashed(true);
+    	if (!(Globals.curEditor().getLayerManager().getContents(null).contains(line))) {
+            Globals.curEditor().add(line);
+        } 
+    	Globals.curEditor().getLayerManager().bringToFront(annotation);
+    	Globals.curEditor().getLayerManager().sendToBack(line);
+    	line.damage();
+    	annotation.damage();
+    	// remove line automatically
+    	AnnotationLineRemover.instance().removeLineIn( getAnnotationProperties(annotation).getLineVisibilityDuration(),annotation );
+    }
 		
 	// move annotations to its new position
 	public void translateAnnotations(Fig owner){

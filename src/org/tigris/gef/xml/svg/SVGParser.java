@@ -219,26 +219,28 @@ public class SVGParser extends HandlerBase {
 			break;
 	}
   }
-  protected Fig findFig(String uri) {
-	Fig f = null;
-	if (uri.indexOf(".") == -1) {
-	  f = (Fig) _figRegistry.get(uri);
-	}
-	else {
-	  StringTokenizer st = new StringTokenizer(uri, ".");
-	  String figNum = st.nextToken();
-	  f = (Fig) _figRegistry.get(figNum);
-	  if (f instanceof FigEdge) return ((FigEdge)f).getFig();
-	  while (st.hasMoreElements()) {
-	if (f instanceof FigGroup) {
-	  String subIndex = st.nextToken();
-	  int i = Integer.parseInt(subIndex);
-	  f = (Fig)((FigGroup)f).getFigs().get(i);
-	}
-	  }
-	}
-	return f;
-  }
+    protected Fig findFig(String uri) {
+        Fig f = null;
+        if (uri.indexOf(".") == -1) {
+            f = (Fig) _figRegistry.get(uri);
+        } else {
+            StringTokenizer st = new StringTokenizer(uri, ".");
+            String figNum = st.nextToken();
+            f = (Fig) _figRegistry.get(figNum);
+            if (f instanceof FigEdge) {
+                return ((FigEdge)f).getFig();
+            } 
+            while (st.hasMoreElements()) {
+                if (f instanceof FigGroup) {
+                    String subIndex = st.nextToken();
+                    int i = Integer.parseInt(subIndex);
+                    f = ((FigGroup)f).getFigAt(i);
+                }
+            }
+        }
+        return f;
+    }
+    
   //needs-more-work: find object in model
   protected Object findOwner(String uri) {
 	Object own = _ownerRegistry.get(uri);

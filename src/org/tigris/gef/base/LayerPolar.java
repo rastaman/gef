@@ -103,6 +103,9 @@ public class LayerPolar extends Layer {
         return c;
     }
     
+    /**
+     * @deprecated This method will be removed in Version 0.11
+     */
     public Vector getContents() {
         return null;
     }

@@ -82,11 +82,12 @@ public class AnnotationProperties {
 		return true;
 	}
 	
-	// removes the line from the active diagram
-	public synchronized void removeLine(){
-		if (Globals.curEditor().getLayerManager().getContents().contains(line))
-				line.delete();
-	}
+    // removes the line from the active diagram
+    public synchronized void removeLine(){
+        if (Globals.curEditor().getLayerManager().getContents(null).contains(line)) {
+            line.delete();
+        }
+    }
 		
 
 } // end of class

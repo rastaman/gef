@@ -87,8 +87,9 @@ public abstract class AnnotationStrategy{
 	    Fig annotation = (Fig)enum.nextElement();
 	    AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
 	    FigLine line = prop.getConnectingLine();
-	    if (Globals.curEditor().getLayerManager().getContents().contains(line))
+	    if (Globals.curEditor().getLayerManager().getContents(null).contains(line)) {
 		Globals.curEditor().remove(line);
+            }
 	}
     }
     

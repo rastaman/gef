@@ -108,8 +108,8 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
     public void mousePressed(MouseEvent me) {
         boolean isAltDown = (me.isAltDown() || me.isAltGraphDown());
         boolean isOtherDown = me.isMetaDown() || me.isControlDown(); // SHIFT speeds up movement
-        boolean button1 = ((me.getModifiers() & me.BUTTON1_MASK) != 0);
-        boolean button2 = ((me.getModifiers() & me.BUTTON2_MASK) != 0);
+        boolean button1 = ((me.getModifiers() & MouseEvent.BUTTON1_MASK) != 0);
+        boolean button2 = ((me.getModifiers() & MouseEvent.BUTTON2_MASK) != 0);
 
         // Note JDK bug: for middle mouse button isAltDown() always returns true.
         // (JDK 1.4 introduced ALT_DOWN_MASK to fix the bug.)

@@ -777,7 +777,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         if(getGroup() != null) {
             String gID = getGroup().getId();
             if(getGroup() instanceof FigGroup) {
-                return gID + "." + ((FigGroup)getGroup()).getFigs().indexOf(this);
+                return gID + "." + ((List)((FigGroup)getGroup()).getFigs(null)).indexOf(this);
             }
             else {
                 return gID + ".1";

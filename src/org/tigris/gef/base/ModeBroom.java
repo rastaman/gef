@@ -31,7 +31,9 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -304,10 +306,10 @@ public class ModeBroom extends FigModifyingModeImpl {
                 else {
                     FigNode fn = (FigNode)f;
                     fn.superTranslate(dx, dy);
-                    List figEdges = fn.getFigEdges();
-                    int feSize = figEdges.size();
-                    for(int j = 0; j < feSize; j++) {
-                        FigEdge fe = (FigEdge)figEdges.get(j);
+                    Collection figEdges = fn.getFigEdges(null);
+                    Iterator it = figEdges.iterator();
+                    while(it.hasNext()) {
+                        FigEdge fe = (FigEdge)it.next();
                         if(nonMovingEdges.contains(fe) && !movingEdges.contains(fe)) {
                             movingEdges.addElement(fe);
                             fe.translateEdge(dx, dy);

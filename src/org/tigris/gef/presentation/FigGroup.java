@@ -208,6 +208,14 @@ public class FigGroup extends Fig {
         return c;
     }
 
+    /**
+     * Get the fig within this group with the given index position
+     * @param i position of fig within this group
+     */
+    public Fig getFigAt(int i) {
+        return (Fig)_figs.get(i);
+    }
+
     /** Get the figs that make up this group
      * @return the figs of this group
      * @deprecated 0.10 this will removed for release 0.11

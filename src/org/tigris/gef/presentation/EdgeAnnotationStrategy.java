@@ -114,7 +114,7 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
 	    }
 	} catch (ArrayIndexOutOfBoundsException e){
 	    line.setShape(annotation.center(), 
-			  helper.getClosestPointOnEdge(annotation.center(), 
+			  AnnotationHelper.getClosestPointOnEdge(annotation.center(), 
 						       ((FigEdge)owner).getSourcePortFig().center(), 
 						       ((FigEdge)owner).getDestPortFig().center() ));
 	}
@@ -122,7 +122,9 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
 	line.setFillColor(getAnnotationProperties(annotation).getLineColor());
 	line.setDashed(true);
 	// draw the line
-	if (!(Globals.curEditor().getLayerManager().getContents().contains(line))) Globals.curEditor().add(line);
+	if (!(Globals.curEditor().getLayerManager().getContents(null).contains(line))) {
+            Globals.curEditor().add(line);
+        }
 	Globals.curEditor().getLayerManager().bringToFront(annotation);
 	//
 	line.damage();

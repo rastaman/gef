@@ -27,12 +27,8 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
 import java.awt.*;
-import java.awt.image.*;
 import java.io.*;
-
-import org.tigris.gef.presentation.*;
 
 /** Abstract Cmd to save a diagram as Graphics in a supplied OutputStream. 
  *  Operates on the diagram in the current editor.
