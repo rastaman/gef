@@ -1,3 +1,5 @@
+package org.tigris.gef.xml.svg;
+
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -21,23 +23,21 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.tigris.gef.xml.svg;
-
 import java.util.*;
 import java.awt.*;
 import java.io.*;
 import java.net.URL;
 
-//import com.ibm.xml.parser.*;
-import javax.xml.parsers.*;
-import org.w3c.dom.*;
-
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
 import org.tigris.gef.graph.presentation.*;
+import org.tigris.gef.graph.*;
+
 import org.tigris.gef.xml.*;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.parsers.SAXParser;
 import org.xml.sax.*;
+
 
 public class SVGParser extends HandlerBase {
 
@@ -49,15 +49,170 @@ public class SVGParser extends HandlerBase {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  protected Diagram _diagram = null;
-  protected int _nestedGroups = 0;
-  protected Hashtable _figRegistry;
-  protected Hashtable _ownerRegistry;
+  protected Diagram   _diagram = null;
+  protected int       _nestedGroups = 0;
+  protected HashMap _figRegistry = null;
+  protected Map _ownerRegistry = new HashMap();
 
+  ////////////////////////////////////////////////////////////////
+  // XML element handlers
+  private int _elementState = 0;
+  private static final int DEFAULT_STATE = 0;
+  private static final int TEXT_STATE = 1;
+  private static final int LINE_STATE = 2;
+  private static final int POLY_STATE = 3;
+  private static final int NODE_STATE = 4;
+  private static final int EDGE_STATE = 5;
+  private static final int PRIVATE_STATE = 6;
+
+  private static final int PRIVATE_NODE_STATE = 64;
+  private static final int PRIVATE_EDGE_STATE = 65;
+  private static final int TEXT_NODE_STATE = 14;
+  private static final int TEXT_EDGE_STATE = 15;
+
+  private FigLine _currentLine = null;
+  private int _x1Int = 0;
+  private int _y1Int = 0;
+  private FigText _currentText = null;
+  private StringBuffer _textBuf = null;
+  private FigPoly _currentPoly = null;
+  private FigNode _currentNode = null;
+  private FigEdge _currentEdge = null;
+  private String[] _entityPaths = { "/org/tigris/gef/xml/dtd/" };
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  protected SVGParser() { }
+  protected SVGParser() {
+  }    
+  public void characters(char[] ch,
+					   int start,
+					   int length) {
+	if((_elementState == TEXT_STATE || _elementState == PRIVATE_STATE ||
+		_elementState == TEXT_NODE_STATE || _elementState == TEXT_EDGE_STATE ||
+		_elementState == PRIVATE_NODE_STATE || _elementState == PRIVATE_EDGE_STATE) &&
+		_textBuf != null) {
+		_textBuf.append(ch,start,length);
+	}
+  }    
+  protected Color colorByName(String name, Color defaultColor) {
+	if (name.equalsIgnoreCase("white")) return Color.white;
+	if (name.equalsIgnoreCase("lightGray")) return Color.lightGray;
+	if (name.equalsIgnoreCase("gray")) return Color.gray;
+	if (name.equalsIgnoreCase("darkGray")) return Color.darkGray;
+	if (name.equalsIgnoreCase("black")) return Color.black;
+	if (name.equalsIgnoreCase("red")) return Color.red;
+	if (name.equalsIgnoreCase("pink")) return Color.pink;
+	if (name.equalsIgnoreCase("orange")) return Color.orange;
+	if (name.equalsIgnoreCase("yellow")) return Color.yellow;
+	if (name.equalsIgnoreCase("green")) return Color.green;
+	if (name.equalsIgnoreCase("magenta")) return Color.magenta;
+	if (name.equalsIgnoreCase("cyan")) return Color.cyan;
+	if (name.equalsIgnoreCase("blue")) return Color.blue;
+	try { return Color.decode(name); }
+	catch (Exception ex) {
+	  System.out.println("invalid color code string: " + name);
+	}
+	return defaultColor;
+  }    
+	private void edgeStateStartElement(String tagName,AttributeList attrList)
+	{
+		if (tagName.equals("desc")) {
+		}
+		else if (tagName.equals("title")) {
+		}
+		else if (tagName.equals("path")) {
+			Fig p = handlePath(attrList);
+			_currentEdge.setFig(p);
+			((FigPoly)p)._isComplete = true;
+			_currentEdge.calcBounds();
+			if (_currentEdge instanceof FigEdgePoly) {
+				((FigEdgePoly)_currentEdge).setInitiallyLaidOut(true);
+			}
+		}
+		else if (tagName.equals("switch")) {
+			_elementState = PRIVATE_EDGE_STATE;
+			_textBuf = new StringBuffer();
+		}
+		else if (tagName.equals("text")) {
+			_elementState = TEXT_EDGE_STATE;
+			_textBuf = new StringBuffer();
+			Fig p = handleText(attrList);
+		}
+	}
+  public void endElement(String elementName) {
+	switch(_elementState) {
+		case 0:
+		if ("g".equals(elementName)) {
+			_nestedGroups--;
+		}
+		break;
+
+		case POLY_STATE:
+		if(elementName.equals("path")) {
+			_elementState = DEFAULT_STATE;
+			_currentPoly = null;
+		}
+		break;
+
+		case LINE_STATE:
+		if(elementName.equals("line")) {
+			_elementState = DEFAULT_STATE;
+			_currentLine = null;
+		}
+		break;
+
+		case TEXT_STATE:
+		if(elementName.equals("text")) {
+			_currentText.setText(_textBuf.toString());
+			_elementState = DEFAULT_STATE;
+			_currentText = null;
+			_textBuf = null;
+		}
+		break;
+
+		case TEXT_NODE_STATE:
+		if(elementName.equals("text")) {
+			_currentText.setText(_textBuf.toString());
+			_elementState = NODE_STATE;
+			_currentText = null;
+			_textBuf = null;
+		}
+		break;
+
+		case TEXT_EDGE_STATE:
+		if(elementName.equals("text")) {
+			_currentText.setText(_textBuf.toString());
+			_elementState = EDGE_STATE;
+			_currentText = null;
+			_textBuf = null;
+		}
+		break;
+
+		case NODE_STATE:
+			_elementState = DEFAULT_STATE;
+			_currentNode = null;
+			_textBuf = null;
+		break;
+
+		case PRIVATE_STATE:
+			privateStateEndElement(elementName);
+			_textBuf = null;
+			_elementState = DEFAULT_STATE;
+			break;
+
+		case PRIVATE_NODE_STATE:
+			privateStateEndElement(elementName);
+			_textBuf = null;
+			_elementState = NODE_STATE;
+			break;
+
+		case PRIVATE_EDGE_STATE:
+			privateStateEndElement(elementName);
+			_textBuf = null;
+			_elementState = EDGE_STATE;
+			break;
+	}
+  }      
   protected Fig findFig(String uri) {
 	Fig f = null;
 	if (uri.indexOf(".") == -1) {
@@ -77,86 +232,24 @@ public class SVGParser extends HandlerBase {
 	  }
 	}
 	return f;
-  }
+  }    
   //needs-more-work: find object in model
   protected Object findOwner(String uri) {
 	Object own = _ownerRegistry.get(uri);
 	return own;
-  }
+  }    
+  protected String[] getEntityPaths() {
+	return _entityPaths;
+  }    
   //needs-more-work: make an instance of the named class
   protected GraphModel getGraphModelFor(String desc) {
+	 System.out.println("should be: "+desc);
 	return new DefaultGraphModel();
-  }
-
-  private int _state = 0;
-  private static final int DEFAULT_STATE = 0;
-  private static final int FIG_STATE = 1;
-  private static final int TEXT_STATE = 2;
-  private static final int FOREIGN_STATE = 3;
-
-    public void startElement(String elementName,AttributeList attrList) {
-        try {
-            switch(_state) {
-                case DEFAULT_STATE:
-                if (elementName.equals("svg")) {
-                    handleSVG(attrList);
-                }
-                else if (elementName.equals("g")) {
-                    _nestedGroups++;
-                    _diagram.add(handleGroup(attrList));
-                }
-                else if (_nestedGroups == 0) {
-                    if (elementName.equals("path")) {
-                        _diagram.add(handlePath(attrList));
-                    }
-                    else if (elementName.equals("ellipse")) {
-                        _diagram.add(handleEllipse(attrList));
-                    }
-                    else if (elementName.equals("rect")) {
-                        _diagram.add(handleRect(attrList));
-                    }
-                    else if (elementName.equals("text")) {
-                        _diagram.add(handleText(attrList));
-                    }
-                    else if (elementName.equals("line")) {
-                        _diagram.add(handleLine(attrList));
-                    }
-                    else {
-                        System.out.println("unknown top-level tag: " + elementName);
-                    }
-                }
-                else if (_nestedGroups > 0) {
-                    //System.out.println("skipping nested " + elementName);
-                }
-                break;
-
-                case FIG_STATE:
-                figStartElement(elementName,attrList);
-                break;
-            }
-        }
-        catch (Exception ex) {
-            System.out.println("Exception in SVGParser handleElement");
-            ex.printStackTrace();
-        }
-    }
-
-    public void characters(char[] chars,int offset,int len) {
-        switch(_state) {
-            case FOREIGN_STATE:
-            foreignCharacters(chars,offset,len);
-            break;
-
-            case TEXT_STATE:
-            textCharacters(chars,offset,len);
-            break;
-        }
-    }
-
+  }    
   protected FigCircle handleEllipse(AttributeList attrList) {
 	FigCircle f = new FigCircle(0, 0, 50, 50);
 	setAttrs(f, attrList);
-
+	
 	String cx = attrList.getValue("cx");
 	String cy = attrList.getValue("cy");
 	String rx = attrList.getValue("rx");
@@ -171,142 +264,73 @@ public class SVGParser extends HandlerBase {
 	f.setY( cyInt - ryInt );
 	f.setWidth(rxInt * 2);
 	f.setHeight(ryInt * 2);
+	
 	return f;
-  }
-
-    public void endElement(String elementName) {
-        switch(_state) {
-            case DEFAULT_STATE:
-	    if ("g".equals(elementName)) _nestedGroups--;
-            break;
-
-            case FIG_STATE:
-            figEndElement(elementName);
-            break;
-
-            case FOREIGN_STATE:
-            foreignEndElement(elementName);
-            break;
-
-            case TEXT_STATE:
-            textEndElement(elementName);
-            break;
-        }
-    }
-
-  private FigNode _fn = null;
-  private FigEdge _fe = null;
-
+  }        
   /* Returns Fig rather than FigGroups because this is also
- used for FigEdges. */
-    protected Fig handleGroup(AttributeList attrList) {
+	 used for FigEdges. */
+  protected Fig handleGroup(AttributeList attrList) {
 	Fig f = null;
-	String clsNameBounds = attrList.getValue("class");
-	StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
-	String clsName = st.nextToken();
-	String xStr = null, yStr = null, wStr = null, hStr = null;
-	if (st.hasMoreElements()) {
+	
+	String 			clsNameBounds = attrList.getValue("class");
+	StringTokenizer	st = new StringTokenizer(clsNameBounds, ",;[] ");
+	String 			clsName = translateClassName(st.nextToken());
+	String 			xStr = null, yStr = null, wStr = null, hStr = null;
+	
+	if (st.hasMoreElements()) 
+	{
 		xStr = st.nextToken();
 		yStr = st.nextToken();
 		wStr = st.nextToken();
 		hStr = st.nextToken();
 	}
+	
 	try {
-            Class nodeClass = Class.forName(clsName);
-            f = (Fig) nodeClass.newInstance();
-            if (xStr != null && !xStr.equals("")) {
-                    int x = Integer.parseInt(xStr);
-                    int y = Integer.parseInt(yStr);
-                    int w = Integer.parseInt(wStr);
-                    int h = Integer.parseInt(hStr);
-                    f.setBounds(x, y, w, h);
-            }
-            if (f instanceof FigNode) {
-                _fn = (FigNode) f;
-                _fe = null;
-                _foreignBuffer = null;
-                _foreignCount = 0;
-                _state = FIG_STATE;
-            }
-            if (f instanceof FigEdge) {
-                _fn = null;
-                _fe = (FigEdge) f;
-                _foreignBuffer = null;
-                _foreignCount = 0;
-                _state = FIG_STATE;
-            }
-	} catch (Exception ex) {
+		Class nodeClass = Class.forName(translateClassName(clsName));
+		f = (Fig) nodeClass.newInstance();
+		if (xStr != null && !xStr.equals("")) {
+			int x = Integer.parseInt(xStr);
+			int y = Integer.parseInt(yStr);
+			int w = Integer.parseInt(wStr);
+			int h = Integer.parseInt(hStr);
+			
+			f.setBounds(x, y, w, h);
+		}
+		
+		if (f instanceof FigNode) {
+			FigNode fn 		= (FigNode) f;
+			_currentNode 	= fn;
+			_elementState 	= NODE_STATE;
+			_textBuf = new StringBuffer();
+		}
+		
+		if (f instanceof FigEdge) {
+			_currentEdge	= (FigEdge) f;
+			_elementState	= EDGE_STATE;
+		}
+	}
+	catch (Exception ex) {
 		System.out.println("Exception in handleGroup");
 		ex.printStackTrace();
-	} catch (NoSuchMethodError ex) {
+	}
+	catch (NoSuchMethodError ex) {
 		System.out.println("No constructor() in class " + clsName);
 		ex.printStackTrace();
 	}
+	setAttrs(f, attrList);
+	
 	return f;
-}
-
-    private StringBuffer _foreignBuffer = null;
-    private int _foreignCount = 0;
-    private void figStartElement(String tagName,AttributeList attrList) {
-        if(tagName.equals("foreignObject")) {
-            _state = FOREIGN_STATE;
-            _foreignCount++;
-            _foreignBuffer = new StringBuffer();
-        }
-    }
-
-    private void foreignCharacters(char[] chars,int start,int length) {
-        _foreignBuffer.append(chars,start,length);
-    }
-
-    private void foreignEndElement(String tagName) {
-        if(tagName.equals("foreignObject")) {
-            _state = FIG_STATE;
-        }
-    }
-
-    private void figEndElement(String tagName) {
-        if(_foreignCount == 1 && _foreignBuffer != null) {
-            String data = _foreignBuffer.toString();
-            if(_fn != null) {
-                _fn.setPrivateData(data);
-            }
-            else {
-                _fe.setPrivateData(data);
-            }
-        }
-        _foreignBuffer = null;
-        _fn = null;
-        _fe = null;
-        _state = DEFAULT_STATE;
-    }
-
-  protected FigLine handleLine(AttributeList e) {
-	FigLine f = new FigLine(0, 0, 100, 100);
-	setAttrs(f, e);
-
-	// Get the start and end
-	String x1 = e.getValue("x1");
-	String y1 = e.getValue("y1");
-	String x2 = e.getValue("x2");
-	String y2 = e.getValue("y2");
-
-	// Convert to integers
-	int x1Int = (x1 == null || x1.equals("")) ? 0 : Integer.parseInt(x1);
-	int y1Int = (y1 == null || y1.equals("")) ? 0 : Integer.parseInt(y1);
-	int x2Int = (x2 == null || x2.equals("")) ? x1Int : Integer.parseInt(x2);
-	int y2Int = (y2 == null || y2.equals("")) ? y1Int : Integer.parseInt(y2);
-
-	// Set the values
-	f.setX1(x1Int);
-	f.setY1(y1Int);
-	f.setX2(x2Int);
-	f.setY2(y2Int);
-
-	return f;
-  }
-  protected FigPoly handlePath(AttributeList e) {
-	String type = e.getValue("class");
+  }        
+  protected FigLine handleLine(AttributeList attrList) {
+	_currentLine = new FigLine(0, 0, 100, 100);
+	setAttrs(_currentLine, attrList);
+	_x1Int = 0;
+	_y1Int = 0;
+	_elementState = LINE_STATE;
+	return _currentLine;
+  }    
+  protected FigPoly handlePath(AttributeList attrList) {
+	String type = attrList.getValue("class");
 
 	FigPoly f = null;
 	if (type.equals("org.tigris.gef.presentation.FigPoly"))
@@ -324,10 +348,13 @@ public class SVGParser extends HandlerBase {
 	if (f != null)
 	{
 		// Set the default attributes
-		setAttrs(f, e);
+		setAttrs(f, attrList);
 
+		_currentPoly = f;
+		_elementState = POLY_STATE;
+	
 		// Set the path data
-		String path = e.getValue("d");
+		String path = attrList.getValue("d");
 		int	x = -1;
 		int	y = -1;
 
@@ -368,10 +395,20 @@ public class SVGParser extends HandlerBase {
 	}
 
 	return f;
-  }
-  protected FigRect handleRect(AttributeList e) {
+	
+  }      
+  protected Fig handlePolyLine(AttributeList attrList) {
+	String clsName = translateClassName(attrList.getValue("description"));
+	if (clsName != null && clsName.indexOf("FigLine") != -1) {
+	  return handleLine(attrList);
+	}
+	else {
+	  return handlePath(attrList);
+	}
+  }    
+  protected FigRect handleRect(AttributeList attrList) {
 	FigRect f;
-	String cornerRadius = e.getValue("rx");
+	String cornerRadius = attrList.getValue("rx");
 	if (cornerRadius == null || cornerRadius.equals("")) {
 	  f = new FigRect(0, 0, 80, 80);
 	}
@@ -380,37 +417,35 @@ public class SVGParser extends HandlerBase {
 	  int rInt = Integer.parseInt(cornerRadius);
 	  ((FigRRect)f).setCornerRadius(rInt);
 	}
-	setAttrs(f, e);
+	setAttrs(f, attrList);
 	return f;
-  }
-  ////////////////////////////////////////////////////////////////
-  // XML element handlers
-
-  protected void handleSVG(AttributeList e) {
-	String name = e.getValue("gef:name");
-	String clsName = e.getValue("class");
+  }      
+  protected void handleSVG(AttributeList attrList) {
+	String name = attrList.getValue("id");
+	String clsName = attrList.getValue("class");
 	try {
 	  if (clsName != null && !clsName.equals("")) initDiagram(clsName);
 	  if (name != null && !name.equals("")) _diagram.setName(name);
 	}
-	catch (Exception ex) { System.out.println("Exception in handleSVG"); }
-  }
-
-  private FigText _ft = null;
-  private StringBuffer _textBuffer = null;
-  protected FigText handleText(AttributeList e) {
+	catch (Exception ex) {
+		System.out.println("Exception in handleSVG");
+	}
+  }        
+  protected FigText handleText(AttributeList attrList) {
 	FigText f = new FigText(100, 100, 90, 45);
-	setAttrs(f, e);
-        _state = TEXT_STATE;
-        _textBuffer = new StringBuffer();
-        _ft = f;
-	String style = e.getValue("style");
+	setAttrs(f, attrList);
+	
+	_elementState = TEXT_STATE;
+	_textBuf = new StringBuffer();
+	_currentText = f;
+	
+	String style = attrList.getValue("style");
 	if (style != null)
 	{
 		String font = parseStyle("font",style);
 		if (font != null)
 		{
-                    f.setFontFamily(font);
+					f.setFontFamily(font);
 		}
 		String size = parseStyle("font-size",style);
 		if (size != null)
@@ -420,42 +455,71 @@ public class SVGParser extends HandlerBase {
 		}
 	}
 	return f;
-  }
-
-  void textCharacters(char[] chars,int offset, int len) {
-    _textBuffer.append(chars,offset,len);
-  }
-
-  void textEndElement(String tagName) {
-    _ft.setText(_textBuffer.toString());
-    _ft = null;
-    _textBuffer = null;
-    _state = DEFAULT_STATE;
-  }
-
-
+  }          
   ////////////////////////////////////////////////////////////////
   // internal methods
 
   protected void initDiagram(String diagDescr) {
-	String clsName = diagDescr;
-	String initStr = null;
-	int bar = diagDescr.indexOf("|");
-	if (bar != -1) {
+	  String clsName = diagDescr;
+	  String initStr = null;
+	  int bar = diagDescr.indexOf("|");
+	  if (bar != -1) {
 	  clsName = diagDescr.substring(0, bar);
 	  initStr = diagDescr.substring(bar + 1);
-	}
-	try {
-	  Class cls = Class.forName(clsName);
+	  }
+
+	  String newClassName = translateClassName(clsName);
+	  try {
+	  Class cls = Class.forName(newClassName);
 	  _diagram = (Diagram) cls.newInstance();
+
 	  if (initStr != null && !initStr.equals(""))
-	_diagram.initialize(findOwner(initStr));
-	}
-	catch (Exception ex) {
-	  System.out.println("could not set diagram type to " + clsName);
+	      _diagram.initialize(findOwner(initStr));
+	  }
+	  catch (Exception ex) {
+	  System.out.println("could not set diagram type to " + newClassName);
 	  ex.printStackTrace();
-	}
-  }
+	  }
+  }    
+  protected void lineStateStartElement(String tagName,AttributeList attrList) {
+	  if(_currentLine != null) {
+			if (tagName.equals("desc")) {
+			}
+			else if (tagName.equals("title")) {
+			}
+		  if(tagName.equals("moveto")) {
+			  String x1 = attrList.getValue("x");
+			  String y1 = attrList.getValue("y");
+			  _x1Int = (x1 == null || x1.equals("")) ? 0 : Integer.parseInt(x1);
+			  _y1Int = (y1 == null || y1.equals("")) ? 0 : Integer.parseInt(y1);
+			  _currentLine.setX1(_x1Int);
+			  _currentLine.setY1(_y1Int);
+		  }
+		  else if(tagName.equals("lineto")) {
+			String x2 = attrList.getValue("x");
+			String y2 = attrList.getValue("y");
+			int x2Int = (x2 == null || x2.equals("")) ? _x1Int : Integer.parseInt(x2);
+			int y2Int = (y2 == null || y2.equals("")) ? _y1Int : Integer.parseInt(y2);
+			_currentLine.setX2(x2Int);
+			_currentLine.setY2(y2Int);
+		  }
+	  }
+  }      
+	private void nodeStateStartElement(String tagName,AttributeList attrList) {
+		if (tagName.equals("desc")) {
+		}
+		else if (tagName.equals("title")) {
+		}
+		else if (tagName.equals("switch")) {
+			_textBuf = new StringBuffer();
+			_elementState = PRIVATE_NODE_STATE;
+		}
+		else if (tagName.equals("text")) {
+			_textBuf = new StringBuffer();
+			_elementState = TEXT_NODE_STATE;
+			Fig p = handleText(attrList);
+		}
+  }            
   protected Color parseColor(String name, Color defaultColor) {
 	try {
 		int start = name.indexOf("rgb",0);
@@ -504,7 +568,7 @@ public class SVGParser extends HandlerBase {
 	  System.out.println("invalid color code string: " + name);
 	}
 	return defaultColor;
-  }
+  }      
 /**
  * This method parses the 'style' attribute for a particular field
  * @return java.lang.String
@@ -529,6 +593,91 @@ protected String parseStyle(String field, String style) {
 
 	return null;
 }
+  private void polyStateStartElement(String tagName,AttributeList attrList) {
+	  if(_currentPoly != null) {
+			if (tagName.equals("desc")) {
+			}
+			else if (tagName.equals("title")) {
+			}
+			else if (tagName.equals("moveto")) {
+			  String x1 = attrList.getValue("x");
+			  String y1 = attrList.getValue("y");
+			  _x1Int = (x1 == null || x1.equals("")) ? 0 : Integer.parseInt(x1);
+			  _y1Int = (y1 == null || y1.equals("")) ? 0 : Integer.parseInt(y1);
+			  //_currentLine.setX1(_x1Int);
+			  //_currentLine.setY1(_y1Int);
+			  _currentPoly.addPoint(_x1Int,_y1Int);
+		  }
+		  else if(tagName.equals("lineto")) {
+			String x2 = attrList.getValue("x");
+			String y2 = attrList.getValue("y");
+			int x2Int = (x2 == null || x2.equals("")) ? _x1Int : Integer.parseInt(x2);
+			int y2Int = (y2 == null || y2.equals("")) ? _y1Int : Integer.parseInt(y2);
+			//_currentLine.setX2(x2Int);
+			//_currentLine.setY2(y2Int);
+			_currentPoly.addPoint(x2Int,y2Int);
+		  }
+	  }
+  }      
+	private void privateStateEndElement(String tagName) {
+		if (_currentNode != null) 
+		{
+			_currentNode.setPrivateData( _textBuf.toString() );
+			
+			String body = _textBuf.toString();
+			StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
+			Fig encloser = null;
+			
+			while (st2.hasMoreElements()) 
+			{
+				String t = st2.nextToken();
+				String v = "no such fig";
+				if (st2.hasMoreElements()) v = st2.nextToken();
+				if (t.equals("enclosingFig")) {
+					encloser = findFig(v);
+				}
+				if (t.equals("text")) {
+				}
+			}
+			_currentNode.setEnclosingFig(encloser);
+		}
+		
+		if (_currentEdge != null) 
+		{
+			_currentEdge.setPrivateData( _textBuf.toString() );
+			
+			Fig 	spf = null;
+			Fig 	dpf = null;
+			FigNode sfn = null;
+			FigNode dfn = null;
+			String body = _textBuf.toString();
+			
+			StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
+			
+			while (st2.hasMoreElements()) 
+			{
+				String t = st2.nextToken();
+				String v = st2.nextToken();
+				if (t.equals("sourcePortFig")) {
+					spf = findFig(v);
+				}
+				if (t.equals("destPortFig")) {
+					dpf = findFig(v);
+				}
+				if (t.equals("sourceFigNode")) {
+					sfn = (FigNode) findFig(v);
+				}
+				if (t.equals("destFigNode")) {
+					dfn = (FigNode) findFig(v);
+				}
+			}
+			
+			_currentEdge.setSourcePortFig(spf);
+			_currentEdge.setDestPortFig(dpf);
+			_currentEdge.setSourceFigNode(sfn);
+			_currentEdge.setDestFigNode(dfn);
+		}
+	}
   ////////////////////////////////////////////////////////////////
   // main parsing methods
 
@@ -538,17 +687,17 @@ protected String parseStyle(String field, String style) {
 	  String filename = url.getFile();
 	  System.out.println("=======================================");
 	  System.out.println("== READING DIAGRAM: " + url);
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        factory.setNamespaceAware(false);
-        factory.setValidating(false);
-        SAXParser pc = factory.newSAXParser();
-        initDiagram("org.tigris.gef.base.Diagram");
-        _figRegistry = new Hashtable();
-        InputSource source = new InputSource(is);
-        source.setSystemId(url.toString());
-        pc.parse(source,this);
-
-         is.close();
+	  SAXParserFactory factory = SAXParserFactory.newInstance();
+	  factory.setNamespaceAware(false);
+	  factory.setValidating(false);
+	  initDiagram("org.tigris.gef.base.Diagram");
+	  _figRegistry = new HashMap();
+	  SAXParser pc = factory.newSAXParser();
+	  InputSource source = new InputSource(is);
+	  source.setSystemId(url.toString());
+	  pc.parse(source,this);
+	  source = null;
+	  is.close();
 	  return _diagram;
 	}
 	catch (Exception ex) {
@@ -556,18 +705,64 @@ protected String parseStyle(String field, String style) {
 	  ex.printStackTrace();
 	}
 	return null;
-  }
+  }      
+   public InputSource resolveEntity(java.lang.String publicId,
+								 java.lang.String systemId) {
+		InputSource source = null;
+		try {
+			java.net.URL url = new java.net.URL(systemId);
+			try {
+	        source = new InputSource(url.openStream());
+			source.setSystemId(systemId);
+	        if (publicId != null) source.setPublicId(publicId);
+			}
+			catch (java.io.IOException e) {
+	        if (systemId.endsWith(".dtd")) {
+					int i = systemId.lastIndexOf('/');
+					i++;	// go past '/' if there, otherwise advance to 0
+					String[] entityPaths = getEntityPaths();
+					InputStream is = null;
+					for(int pathIndex = 0; pathIndex < entityPaths.length && is == null; pathIndex++) {
+						String DTD_DIR = entityPaths[pathIndex];
+						is = getClass().getResourceAsStream(DTD_DIR + systemId.substring(i));
+						if(is == null) {
+							try {
+								is = new FileInputStream(DTD_DIR.substring(1) + systemId.substring(i));
+							}
+							catch(Exception ex) {}
+						}
+					}
+					if(is != null) {
+						source = new InputSource(is);
+						source.setSystemId(systemId);
+						if(publicId != null) source.setPublicId(publicId);
+					}
+				}
+			}
+	}
+		catch(Exception ex) {
+		}
+
+		//
+		//   returning an "empty" source is better than failing
+		//
+		if(source == null) {
+			source = new InputSource();
+			source.setSystemId(systemId);
+		}
+		return source;
+   }      
   ////////////////////////////////////////////////////////////////
   // internal parsing methods
 
-  protected void setAttrs(Fig f, AttributeList e) {
-	String name = e.getValue("name");
+  protected void setAttrs(Fig f, AttributeList attrList) {
+	String name = attrList.getValue("id");
 	if (name != null && !name.equals("")) _figRegistry.put(name, f);
-	String x = e.getValue("x");
+	String x = attrList.getValue("x");
 	if (x != null && !x.equals("")) {
-	  String y = e.getValue("y");
-	  String w = e.getValue("width");
-	  String h = e.getValue("height");
+	  String y = attrList.getValue("y");
+	  String w = attrList.getValue("width");
+	  String h = attrList.getValue("height");
 	  int xInt = Integer.parseInt(x);
 	  int yInt = (y == null || y.equals("")) ? 0 : Integer.parseInt(y);
 	  int wInt = (w == null || w.equals("")) ? 20 : Integer.parseInt(w);
@@ -575,99 +770,111 @@ protected String parseStyle(String field, String style) {
 	  f.setBounds(xInt, yInt, wInt, hInt);
 	}
 
-	// Parse Style
-	String style = e.getValue("style");
-	if (style != null)
+	if (!(f instanceof FigNode))
 	{
-		String linewidth = parseStyle("stroke-width",style);
-		if (linewidth != null && !linewidth.equals("")) {
-		  f.setLineWidth(Integer.parseInt(linewidth));
+		// Parse Style
+		String style = attrList.getValue("style");
+		if (style != null)
+		{
+			String linewidth = parseStyle("stroke-width",style);
+			if (linewidth != null && !linewidth.equals("")) {
+			  f.setLineWidth(Integer.parseInt(linewidth));
+			}
+			String strokecolor = parseStyle("stroke",style);
+			if (strokecolor != null && !strokecolor.equals(""))
+			  f.setLineColor( parseColor(strokecolor, Color.blue ) );
+
+	//		String fill = e.getAttribute("fill-texture");
+	//		if (fill != null && !fill.equals(""))
+	//		  f.setFilled(fill.equals("1") || fill.startsWith("t"));
+
+			String fillcolor = parseStyle("fill",style);
+			if (fillcolor != null && !fillcolor.equals(""))
+			  f.setFillColor( parseColor(fillcolor, Color.blue ) );
+
+			String dasharray = parseStyle("stroke-dash-array",style);
+			if (dasharray != null && !dasharray.equals("") &&
+			!dasharray.equals("1"))
+			  f.setDashed(true);
 		}
-		String strokecolor = parseStyle("stroke",style);
-		if (strokecolor != null && !strokecolor.equals(""))
-		  f.setLineColor( parseColor(strokecolor, Color.blue ) );
+	}
 
-//		String fill = e.getAttribute("fill-texture");
-//		if (fill != null && !fill.equals(""))
-//		  f.setFilled(fill.equals("1") || fill.startsWith("t"));
-
-		String fillcolor = parseStyle("fill",style);
-		if (fillcolor != null && !fillcolor.equals(""))
-		  f.setFillColor( parseColor(fillcolor, Color.blue ) );
-
-		String dasharray = parseStyle("stroke-dash-array",style);
-		if (dasharray != null && !dasharray.equals("") &&
-		!dasharray.equals("1"))
-		  f.setDashed(true);
+	String dynobjs = attrList.getValue("dynobjects");
+	if (dynobjs != null && dynobjs.length() != 0) {
+	  if (f instanceof FigGroup) {
+		FigGroup fg = (FigGroup) f;
+		fg.parseDynObjects(dynobjs);
+	  }
 	}
 
 	try {
-	  String owner = e.getValue("gef:href");
+	  String owner = attrList.getValue("href");
 	  if (owner != null && !owner.equals("")) f.setOwner(findOwner(owner));
 	}
 	catch (Exception ex) {
 	  System.out.println("could not set owner");
 	}
-  }
+  }          
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void setOwnerRegistery(Hashtable owners) {
+  public void setOwnerRegistry(Map owners) {
 	_ownerRegistry = owners;
-  }
+  }    
+  public void startElement(String elementName,AttributeList attrList) {
+	switch(_elementState) {
+		case DEFAULT_STATE:
+			if ("g".equals(elementName)) {
+				_nestedGroups++;
+				_diagram.add(handleGroup(attrList));
+			}
+			else if (elementName.equals("svg")) {
+				handleSVG(attrList);
+			}
+			else if (_nestedGroups == 0) {
+		    if (elementName.equals("path")) {
+		        _diagram.add(handlePolyLine(attrList));
+		    }
+		    else if (elementName.equals("ellipse")) {
+		        _diagram.add(handleEllipse(attrList));
+		    }
+		    else if (elementName.equals("rect")) {
+		        _diagram.add(handleRect(attrList));
+		    }
+		    else if (elementName.equals("text")) {
+				_elementState = TEXT_STATE;
+		        _diagram.add(handleText(attrList));
+		    }
+		    else if (elementName.equals("line")) {
+			    
+			}
+		    else if (elementName.equals("line")) { /* just gets rid of the error msgs */ }
+		    else if (elementName.equals("path")) { /* just gets rid of the error msgs */ }
+		    else System.out.println("unknown top-level tag: " + elementName);
+			}
+			else if (_nestedGroups > 0) {
+				//System.out.println("skipping nested " + elementName);
+			}
+			break;
 
+		case LINE_STATE:
+			lineStateStartElement(elementName,attrList);
+			break;
 
-  private String[] _entityPaths = { "/org/tigris/gef/xml/dtd/" };
-  protected String[] getEntityPaths() {
-    return _entityPaths;
-  }
+		case POLY_STATE:
+			polyStateStartElement(elementName,attrList);
+			break;
 
+		case NODE_STATE:			
+			nodeStateStartElement(elementName,attrList);
+			break;
 
-   public InputSource resolveEntity(java.lang.String publicId,
-                                 java.lang.String systemId) {
-        InputSource source = null;
-        try {
-            java.net.URL url = new java.net.URL(systemId);
-            try {
-	        source = new InputSource(url.openStream());
-            source.setSystemId(systemId);
-	        if (publicId != null) source.setPublicId(publicId);
-            }
-            catch (java.io.IOException e) {
-	        if (systemId.endsWith(".dtd")) {
-                    int i = systemId.lastIndexOf('/');
-                    i++;	// go past '/' if there, otherwise advance to 0
-                    String[] entityPaths = getEntityPaths();
-                    InputStream is = null;
-                    for(int pathIndex = 0; pathIndex < entityPaths.length && is == null; pathIndex++) {
-                        String DTD_DIR = entityPaths[pathIndex];
-                        is = getClass().getResourceAsStream(DTD_DIR + systemId.substring(i));
-                        if(is == null) {
-                            try {
-                                is = new FileInputStream(DTD_DIR.substring(1) + systemId.substring(i));
-                            }
-                            catch(Exception ex) {}
-                        }
-                    }
-                    if(is != null) {
-                        source = new InputSource(is);
-                        source.setSystemId(systemId);
-                        if(publicId != null) source.setPublicId(publicId);
-                    }
-                }
-            }
+		case EDGE_STATE:
+			edgeStateStartElement(elementName,attrList);
+			break;
 	}
-        catch(Exception ex) {
-        }
-
-        //
-        //   returning an "empty" source is better than failing
-        //
-        if(source == null) {
-            source = new InputSource();
-            source.setSystemId(systemId);
-        }
-        return source;
-   }
-
+  }                
+  protected String translateClassName(String oldName) {
+	return oldName;
+  }    
 } /* end class SVGParser */
