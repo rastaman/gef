@@ -79,13 +79,13 @@ public class JGraph extends JPanel implements Cloneable {
     // instance variables
 
     /** The Editor object that is being shown in this panel */
-    private Editor _editor;
+    private Editor editor;
 
-    private JGraphInternalPane _drawingPane;
+    private JGraphInternalPane drawingPane;
 
-    private JScrollPane _scroll;
+    private JScrollPane scrollPane;
 
-    private Dimension _defaultSize = new Dimension(6000, 6000);
+    private Dimension defaultSize = new Dimension(6000, 6000);
 
     /**
      * @deprecated 0.10.5 will become private in future release.
@@ -136,21 +136,21 @@ public class JGraph extends JPanel implements Cloneable {
      */
     public JGraph(Editor ed) {
         super(false); // not double buffered. I do my own flicker-free redraw.
-        _editor = ed;
-        _drawingPane = new JGraphInternalPane(_editor);
+        editor = ed;
+        drawingPane = new JGraphInternalPane(editor);
         setDrawingSize(getDefaultSize());
 
-        _scroll = new JScrollPane(_drawingPane);
-        _scroll.setBorder(null);
-        _scroll.getHorizontalScrollBar().setUnitIncrement(25);
-        _scroll.getVerticalScrollBar().setUnitIncrement(25);
+        scrollPane = new JScrollPane(drawingPane);
+        scrollPane.setBorder(null);
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(25);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(25);
 
-        _editor.setJComponent(_drawingPane);
+        editor.setJComponent(drawingPane);
         setLayout(new BorderLayout());
-        add(_scroll, BorderLayout.CENTER);
-        addMouseListener(_editor);
-        addMouseMotionListener(_editor);
-        addKeyListener(_editor);
+        add(scrollPane, BorderLayout.CENTER);
+        addMouseListener(editor);
+        addMouseMotionListener(editor);
+        addKeyListener(editor);
 
         initKeys();
 
@@ -164,20 +164,20 @@ public class JGraph extends JPanel implements Cloneable {
     }
 
     public void addMouseListener(MouseListener listener) {
-        _drawingPane.addMouseListener(listener);
+        drawingPane.addMouseListener(listener);
     }
 
     public void addMouseMotionListener(MouseMotionListener listener) {
-        _drawingPane.addMouseMotionListener(listener);
+        drawingPane.addMouseMotionListener(listener);
     }
 
     public void addKeyListener(KeyListener listener) {
-        _drawingPane.addKeyListener(listener);
+        drawingPane.addKeyListener(listener);
     }
 
     /** Make a copy of this JGraph so that it can be shown in another window. */
     public Object clone() {
-        JGraph newJGraph = new JGraph((Editor) _editor.clone());
+        JGraph newJGraph = new JGraph((Editor) editor.clone());
         return newJGraph;
     }
 
@@ -231,7 +231,7 @@ public class JGraph extends JPanel implements Cloneable {
      * Cmds are subclasses of Swing's Actions.
      */
     public void bindKey(ActionListener action, int keyCode, int modifiers) {
-        _drawingPane.registerKeyboardAction(action, KeyStroke.getKeyStroke(
+        drawingPane.registerKeyboardAction(action, KeyStroke.getKeyStroke(
                 keyCode, modifiers), WHEN_FOCUSED);
     }
 
@@ -240,7 +240,7 @@ public class JGraph extends JPanel implements Cloneable {
 
     /** Get the Editor that is being displayed */
     public Editor getEditor() {
-        return _editor;
+        return editor;
     }
 
     /**
@@ -251,15 +251,15 @@ public class JGraph extends JPanel implements Cloneable {
         if (d == null)
             return;
         if (_currentDiagramId != null) {
-            _viewPortPositions.put(_currentDiagramId, _scroll.getViewport()
+            _viewPortPositions.put(_currentDiagramId, scrollPane.getViewport()
                     .getViewRect());
         } // end if
         setDrawingSize(getDefaultSize());
         updateDrawingSizeToIncludeAllFigs(d.elements());
-        _editor.getLayerManager().replaceActiveLayer(d.getLayer());
-        _editor.setGraphModel(d.getGraphModel());
-        _editor.getSelectionManager().deselectAll();
-        _editor.setScale(d.getScale());
+        editor.getLayerManager().replaceActiveLayer(d.getLayer());
+        editor.setGraphModel(d.getGraphModel());
+        editor.getSelectionManager().deselectAll();
+        editor.setScale(d.getScale());
         String newDiagramId = Integer.toString(d.hashCode());
         if (newDiagramId.equals(_currentDiagramId)) {
             return;
@@ -267,9 +267,9 @@ public class JGraph extends JPanel implements Cloneable {
         _currentDiagramId = newDiagramId;
         if (_viewPortPositions.get(_currentDiagramId) != null) {
             Rectangle rect = (Rectangle)_viewPortPositions.get(_currentDiagramId);
-            _scroll.getViewport().setViewPosition(new Point(rect.x, rect.y));
+            scrollPane.getViewport().setViewPosition(new Point(rect.x, rect.y));
         } else {
-            _scroll.getViewport().setViewPosition(new Point());
+            scrollPane.getViewport().setViewPosition(new Point());
         }
     }
 
@@ -281,7 +281,7 @@ public class JGraph extends JPanel implements Cloneable {
         if (enum == null) {
             return;
         }
-        Dimension drawingSize = new Dimension(_defaultSize.width, _defaultSize.height);
+        Dimension drawingSize = new Dimension(defaultSize.width, defaultSize.height);
         while (enum.hasMoreElements()) {
             Fig fig = (Fig) enum.nextElement();
             Rectangle rect = fig.getBounds();
@@ -302,21 +302,21 @@ public class JGraph extends JPanel implements Cloneable {
     }
 
     public void setDrawingSize(Dimension dim) {
-        _editor.drawingSizeChanged(dim);
+        editor.drawingSizeChanged(dim);
     }
 
     /**
      * Set the GraphModel the Editor is using.
      */
     public void setGraphModel(GraphModel gm) {
-        _editor.setGraphModel(gm);
+        editor.setGraphModel(gm);
     }
 
     /**
      * Get the GraphModel the Editor is using.
      */
     public GraphModel getGraphModel() {
-        return _editor.getGraphModel();
+        return editor.getGraphModel();
     }
 
     /**
@@ -324,11 +324,11 @@ public class JGraph extends JPanel implements Cloneable {
      * GraphModel.
      */
     public void setGraphNodeRenderer(GraphNodeRenderer r) {
-        _editor.setGraphNodeRenderer(r);
+        editor.setGraphNodeRenderer(r);
     }
 
     public GraphNodeRenderer getGraphNodeRenderer() {
-        return _editor.getGraphNodeRenderer();
+        return editor.getGraphNodeRenderer();
     }
 
     /**
@@ -336,11 +336,11 @@ public class JGraph extends JPanel implements Cloneable {
      * GraphModel.
      */
     public void setGraphEdgeRenderer(GraphEdgeRenderer r) {
-        _editor.setGraphEdgeRenderer(r);
+        editor.setGraphEdgeRenderer(r);
     }
 
     public GraphEdgeRenderer getGraphEdgeRenderer() {
-        return _editor.getGraphEdgeRenderer();
+        return editor.getGraphEdgeRenderer();
     }
 
     /**
@@ -348,7 +348,7 @@ public class JGraph extends JPanel implements Cloneable {
      */
     public void setVisible(boolean b) {
         super.setVisible(b);
-        _drawingPane.setVisible(b);
+        drawingPane.setVisible(b);
         FigTextEditor.remove();
     }
 
@@ -414,14 +414,14 @@ public class JGraph extends JPanel implements Cloneable {
         if (f == null)
             deselectAll();
         else
-            _editor.getSelectionManager().select(f);
+            editor.getSelectionManager().select(f);
     }
 
     /**
      * Find the Fig that owns the given item and select it.
      */
     public void selectByOwner(Object owner) {
-        Layer lay = _editor.getLayerManager().getActiveLayer();
+        Layer lay = editor.getLayerManager().getActiveLayer();
         if (lay instanceof LayerDiagram)
             select(((LayerDiagram) lay).presentationFor(owner));
     }
@@ -441,7 +441,7 @@ public class JGraph extends JPanel implements Cloneable {
      * Add the Fig that owns the given item to this Editor's selections.
      */
     public void selectByOwnerOrNoChange(Object owner) {
-        Layer lay = _editor.getLayerManager().getActiveLayer();
+        Layer lay = editor.getLayerManager().getActiveLayer();
         if (lay instanceof LayerDiagram) {
             Fig f = ((LayerDiagram) lay).presentationFor(owner);
             if (f != null)
@@ -453,34 +453,34 @@ public class JGraph extends JPanel implements Cloneable {
      * Remove the given item from this editors selections.
      */
     public void deselect(Fig f) {
-        _editor.getSelectionManager().deselect(f);
+        editor.getSelectionManager().deselect(f);
     }
 
     /**
      * Select the given item if it was not already selected, and vis-a-versa.
      */
     public void toggleItem(Fig f) {
-        _editor.getSelectionManager().toggle(f);
+        editor.getSelectionManager().toggle(f);
     }
 
     /** Deslect everything that is currently selected. */
     public void deselectAll() {
-        _editor.getSelectionManager().deselectAll();
+        editor.getSelectionManager().deselectAll();
     }
 
     /** Select a collection of Figs. */
     public void select(Vector items) {
-        _editor.getSelectionManager().select(items);
+        editor.getSelectionManager().select(items);
     }
 
     /** Toggle the selection of a collection of Figs. */
     public void toggleItems(Vector items) {
-        _editor.getSelectionManager().toggle(items);
+        editor.getSelectionManager().toggle(items);
     }
 
     /** reply a Vector of all selected Figs. Used in many Cmds. */
     public Vector selectedFigs() {
-        return _editor.getSelectionManager().getFigs();
+        return editor.getSelectionManager().getFigs();
     }
 
     //   public Dimension getPreferredSize() { return new Dimension(1000, 1000); }
@@ -490,15 +490,15 @@ public class JGraph extends JPanel implements Cloneable {
     //   public Dimension getSize() { return new Dimension(1000, 1000); }
 
     public void setDefaultSize(int width, int height) {
-        _defaultSize = new Dimension(width, height);
+        defaultSize = new Dimension(width, height);
     }
 
     public void setDefaultSize(Dimension dim) {
-        _defaultSize = dim;
+        defaultSize = dim;
     }
 
     public Dimension getDefaultSize() {
-        return _defaultSize;
+        return defaultSize;
     }
 
     static final long serialVersionUID = -5459241816919316496L;
