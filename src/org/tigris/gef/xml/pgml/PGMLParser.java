@@ -626,10 +626,17 @@ public class PGMLParser extends HandlerBase {
         fg.parseDynObjects(dynobjs);
       }
     }
+    setOwnerAttr(f, attrList);
+  }
 
+  protected void setOwnerAttr(Fig f, AttributeList attrList) {
+      System.out.println("[GEF.PGMLParser]: setOwnerAttr");
     try {
       String owner = attrList.getValue("href");
-      if (owner != null && !owner.equals("")) f.setOwner(findOwner(owner));
+      if (owner != null && !owner.equals("")) {
+          System.out.println("[GEF.PGMLParser]: setOwnerAttr");
+          f.setOwner(findOwner(owner));
+      }
     }
     catch (Exception ex) {
       System.out.println("could not set owner");

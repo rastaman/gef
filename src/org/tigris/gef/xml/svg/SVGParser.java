@@ -806,15 +806,19 @@ protected String parseStyle(String field, String style) {
 		fg.parseDynObjects(dynobjs);
 	  }
 	}
+	setOwnerAttr(f,attrList);
+  }
 
+    protected void setOwnerAttr(Fig f, AttributeList attrList) {
 	try {
-	  String owner = attrList.getValue("href");
-	  if (owner != null && !owner.equals("")) f.setOwner(findOwner(owner));
+	    String owner = attrList.getValue("href");
+	    if (owner != null && !owner.equals("")) f.setOwner(findOwner(owner));
 	}
 	catch (Exception ex) {
-	  System.out.println("could not set owner");
+	    System.out.println("could not set owner");
 	}
-  }          
+    }       
+
   ////////////////////////////////////////////////////////////////
   // accessors
 
