@@ -61,6 +61,7 @@ public class LayerGrid extends Layer {
    *  lines and it looks less cluttered. But lines are more familiar to
    *  some people. */
   private boolean _paintLines = false;
+  private boolean _paintDots = true;
 
   /** The image stamp is used to paint the grid quickly. Basically I
    *  make a pretty big off screen image and paint my grid on it, then I
@@ -140,7 +141,7 @@ public class LayerGrid extends Layer {
       else{ _stamp =Globals.curEditor().createImage(_stampWidth,_stampHeight);}
       if (_stamp != null) {
 	if (_paintLines) paintLines(_stamp, _paintBackground);
-	else paintDots(_stamp, _paintBackground);
+	else if (_paintDots) paintDots(_stamp, _paintBackground);
       }
     }
 
@@ -234,12 +235,32 @@ public class LayerGrid extends Layer {
   public void adjust() {
     _style = (_style + 1) % NUM_STYLES;
     _stamp = null;
+    setHidden(false); 
     switch (_style) {
-    case 0: setHidden(false); _paintLines = true; _spacing = 16; break;
-    case 1: setHidden(false); _paintLines = true; _spacing = 8; break;
-    case 2: setHidden(false); _paintLines = false; _spacing = 16; break;
-    case 3: setHidden(false); _paintLines = false; _spacing = 32; break;
-    case 4: setHidden(true); break;
+    case 0: 
+        _paintLines = true; 
+        _paintDots = true;
+        _spacing = 16; 
+        break;
+    case 1: 
+        _paintLines = true; 
+        _paintDots = true;
+        _spacing = 8; 
+        break;
+    case 2: 
+        _paintLines = false; 
+        _paintDots = true;
+        _spacing = 16; 
+        break;
+    case 3: 
+        _paintLines = false; 
+        _paintDots = true;
+        _spacing = 32; 
+        break;
+    case 4: 
+        _paintLines = false; 
+        _paintDots = false;
+        break;
     }
     refreshEditors();
   }

@@ -368,6 +368,7 @@ public class Localizer
 			stroke = (KeyStroke)resource.getObject(key);
 		}
 		catch (MissingResourceException e) {}
+		catch (NullPointerException e) {}
 
 		return stroke;
     }

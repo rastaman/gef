@@ -18,7 +18,7 @@ You are running not running ANT 1.2
 
            Adaption from the FOP build.xml written by Stefano Mazzocchi
                 by Giacomo Pati with some addition by Fotis Jannidis
-	   Adapted by Andreas Rueckert
+       Adapted by Andreas Rueckert
 
 
 Introduction
@@ -43,10 +43,10 @@ property should be set to match the JVM you want to use. That's it.
 Building instructions
 =====================
 
-First, make sure your current working directory is where this very file is 
+First, make sure your current working directory is where this very file is
 located. Then just type
 
-ant 
+ant
 
 if everything is right and all the required packages are visible, this action
 will show you a usage message.
@@ -113,15 +113,15 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 
     <echo message="------------------- ${Name} ${version} (unstable) [${year}] ----------------"/>
 
-    <property name="debug" value="off"/>
+    <property name="debug" value="on"/>
     <property name="optimize" value="on"/>
     <property name="deprecation" value="on"/>
 
     <property name="src.dir" value="../src"/>
     <property name="docs.dir" value="../docs"/>
     <property name="lib.dir" value="../lib"/>
-	<property name="obj.dir" value="../lib"/>
-	<property name="dist.dir" value="../dist"/>
+    <property name="obj.dir" value="../lib"/>
+    <property name="dist.dir" value="../dist"/>
 
     <property name="manifest" value="org/tigris/gef/manifest.mf"/>
 
@@ -141,9 +141,9 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <target name="usage">
     <echo message=""/>
     <echo message=""/>
-	<!--  substitution didn't work   -->
+    <!--  substitution didn't work   -->
     <echo message="GEF Build file"/>
-	<echo message="Requires ANT 1.2 or later."/>
+    <echo message="Requires ANT 1.2 or later."/>
     <echo message="-------------------------------------------------------------"/>
     <echo message=""/>
     <echo message=" available targets are:"/>
@@ -185,7 +185,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <target name="update" depends="prepare">
     <echo message="Updating from CVS "/>
     <cvs dest="${src.dir}"
-	 command="update"
+     command="update"
     />
   </target>
 
@@ -196,7 +196,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 
   <!--  a handful of classes are forced to override a
            deprecated API.  Classes compiled here will
-		   not have warnings for deprecated APIS  -->
+           not have warnings for deprecated APIS  -->
   <target name="depcompile" depends="prepare">
     <!-- create directories -->
     <mkdir dir="${build.dest}"/>
@@ -207,7 +207,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
            optimize="${optimize}"
            classpath="${gef.classpath}:${java.class.path}"
            includes="**/FigText.java,**/PrefsEditor.java,**/SVGWriter.java,**/PostscriptWriter.java,**/TemplateReader.java,**/SVGParser.java,**/PGMLParser.java"/>
-	<echo message="The previous files were known to use deprecated APIs"/>
+    <echo message="The previous files were known to use deprecated APIs"/>
   </target>
 
   <target name="compile" depends="depcompile">
@@ -229,7 +229,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <target name="package" depends="compile">
     <echo message="Creating the jar file ${lib.dir}/${name}.jar"/>
     <mkdir dir="${lib.dir}"/>
-	<delete file="${lib.dir}/${name}.jar"/>
+    <delete file="${lib.dir}/${name}.jar"/>
 
     <filter token="version" value="${version}"/>
     <copy file="${src.dir}/${manifest}" tofile="${build.dir}/${manifest}" filtering="on" overwrite="on" />
@@ -269,8 +269,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <target name="dist-src" depends="init">
     <echo message="Building the source distribution files (zip,tar)"/>
     <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
-	<delete file="${Name}-${version}-src.tar.gz"/>
-	<delete file="${Name}-${version}-src.zip"/>
+    <delete file="${Name}-${version}-src.tar.gz"/>
+    <delete file="${Name}-${version}-src.zip"/>
     <zip zipfile="${Name}-${version}-src.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak GEF*"/>
     <tar tarfile="${Name}-${version}-src.tar" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak GEF*"/>
     <gzip zipfile="${Name}-${version}-src.tar.gz" src="${Name}-${version}-src.tar" />
@@ -281,11 +281,11 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <target name="clean" depends="init">
     <delete dir="${build.dir}"/>
-	<delete file="${lib.dir}/gef.jar"/>
-	<delete file="${src.dir}/${Name}-${version}.zip"/>
-	<delete file="${src.dir}/${Name}-${version}.tar.gz"/>
-	<delete file="${src.dir}/${Name}-${version}-src.zip"/>
-	<delete file="${src.dir}/${Name}-${version}-src.tar.gz"/>
+    <delete file="${lib.dir}/gef.jar"/>
+    <delete file="${src.dir}/${Name}-${version}.zip"/>
+    <delete file="${src.dir}/${Name}-${version}.tar.gz"/>
+    <delete file="${src.dir}/${Name}-${version}-src.zip"/>
+    <delete file="${src.dir}/${Name}-${version}-src.tar.gz"/>
   </target>
 
   <target name="distclean" depends="clean">

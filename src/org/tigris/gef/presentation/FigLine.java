@@ -99,17 +99,17 @@ public class FigLine extends Fig {
   }
   public void setY1(int y1) {
     _y1 = y1;
-    calcBounds(); 
+    calcBounds();
     firePropChange("bounds", null, null);
   }
   public void setX2(int x2) {
     _x2 = x2;
-    calcBounds(); 
+    calcBounds();
     firePropChange("bounds", null, null);
   }
   public void setY2(int y2) {
     _y2 = y2;
-    calcBounds(); 
+    calcBounds();
     firePropChange("bounds", null, null);
   }
 
@@ -130,7 +130,7 @@ public class FigLine extends Fig {
     calcBounds();
     firePropChange("bounds", null, null);
   }
-  
+
   /** returns an array of lenfth 2 that has the line's endpoints. */
   public Point[] getPoints() {
     Point[] ps = new Point[2];
@@ -138,7 +138,7 @@ public class FigLine extends Fig {
     ps[1] = new Point(_x2, _y2);
     return ps;
   }
-  
+
   /** Move point i to location (x, y). Argument i must be 0 or 1.
    *  Fires PropertyChange with "bounds". */
   public void setPoints(int i, int x, int y) {
@@ -146,9 +146,9 @@ public class FigLine extends Fig {
     else if (i == 1) { _x2 = x; _y2 = y; }
     else throw new IndexOutOfBoundsException("FigLine has exactly 2 points");
     calcBounds();
-    firePropChange("bounds", null, null);    
+    firePropChange("bounds", null, null);
   }
-  
+
   /** returns the ith point. Argument i must be 0 or 1. */
   public Point getPoints(int i) {
     if (i == 0) { return new Point(_x1, _y1); }
@@ -158,7 +158,7 @@ public class FigLine extends Fig {
 
   /** Returns the number of points. Lines always have 2 points. */
   public int getNumPoints() { return 2; }
-  
+
   /** Returns an array of the X coordinates of all (2) points. */
   public int[] getXs() {
     int[] xs = new int[2];
@@ -199,7 +199,7 @@ public class FigLine extends Fig {
     _x2 = (_w == 0) ? x : x + ((_x2 - _x) * w) / _w;
     _y2 = (_h == 0) ? y : y + ((_y2 - _y) * h) / _h;
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-    firePropChange("bounds", null, null);    
+    firePropChange("bounds", null, null);
   }
 
   /** Replys the point that other connected Figs should attach
@@ -213,7 +213,7 @@ public class FigLine extends Fig {
   public void translate(int dx, int dy) {
     _x1 += dx; _y1 += dy; _x2 += dx; _y2 += dy;
     _x += dx; _y += dy; // dont calcBounds because _w and _h are unchanged
-    firePropChange("bounds", null, null);    
+    firePropChange("bounds", null, null);
   }
 
   /** Update the bounding box so that it encloses (_x1, _y1)--(_x2, _y2). */
@@ -229,7 +229,7 @@ public class FigLine extends Fig {
     if (_lineWidth > 0) {
       if (getDashed()) {
         g.setColor(_lineColor);
-	drawDashedLine(g, 0, _x1, _y1, _x2, _y2);
+    drawDashedLine(g, 0, _x1, _y1, _x2, _y2);
       }
       else {
         g.setColor(_lineColor);
@@ -248,11 +248,11 @@ public class FigLine extends Fig {
    int recipnumerator = (p1.x - p2.x) * -1;
    int recipdenominator = (p1.y - p2.y);
 
-   // find the point offset on the line that gives a 
+   // find the point offset on the line that gives a
    // correct offset
 
    double a = offset / Math.sqrt(recipnumerator * recipnumerator +
-		  recipdenominator * recipdenominator);
+          recipdenominator * recipdenominator);
    Point newPoint = new Point((int) (recipdenominator * a),
        (int) (recipnumerator * a));
 
@@ -274,29 +274,20 @@ public class FigLine extends Fig {
 
    Point offsetAmount =
      getOffsetAmount(_pathFigure.pointAlongPerimeter(pointToGet + 5),
-	      _pathFigure.pointAlongPerimeter(pointToGet - 5), offset);
+          _pathFigure.pointAlongPerimeter(pointToGet - 5), offset);
 
    return new Point(linePoint.x + offsetAmount.x,
-	     linePoint.y + offsetAmount.y);
+         linePoint.y + offsetAmount.y);
   }
 */
-  /** Reply true iff the given point is "near" the line. Nearness
+  /** Reply true if the given point is "near" the line. Nearness
    *  allows the user to more easily select the line with the
    *  mouse. Needs-More-Work: I should probably have two functions
    *  contains() which gives a strict geometric version, and hit() which
    *  is for selection by mouse clicks. */
    public boolean hit(Rectangle r) {
-     return Geometry.intersects(r, _x1, _y1, _x2, _y2);
+     return intersects(r);
    }
-
-  /** Reply true iff this line passes through, or is even partly
-   *  inside the given rectangle, or if any corner of the rect is on
-   *  the line. What happens if the line runs along one edge of the
-   *  rect, but not all the way to either corner? */
-   public boolean intersects(Rectangle r) {
-     return Geometry.intersects(r, _x1, _y1, _x2, _y2);
-   }
-
 
   /** Resize the object for drag on creation. It bypasses the things
    *  done in resize so that the position of the object can be kept as
@@ -305,11 +296,11 @@ public class FigLine extends Fig {
    * @see FigLine#drag
    */
   public void createDrag(int anchorX, int anchorY, int x, int y,
-			 int snapX, int snapY) {
+             int snapX, int snapY) {
     _x2 = snapX;
     _y2 = snapY;
     calcBounds();
-    firePropChange("bounds", null, null);    
+    firePropChange("bounds", null, null);
   }
 
 } /* end class FigLine */

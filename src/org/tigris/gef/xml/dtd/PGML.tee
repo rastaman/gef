@@ -23,7 +23,7 @@ strokecolor="<ocl>self.lineColor</ocl>"
 
 <template class="org.tigris.gef.base.Diagram">
 <![CDATA[
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE pgml SYSTEM "pgml.dtd">
 <pgml description="<ocl>self.classAndModelID</ocl>"
       name="<ocl>self.name</ocl>"
@@ -181,7 +181,7 @@ height="<ocl>self.height.intValue</ocl>"
   <private>
     enclosingFig="<ocl>self.enclosingFig.id</ocl>"
   </private>
-  
+
   <ocl>self.figs</ocl>
 </group>
 ]]>
