@@ -33,6 +33,10 @@ package org.tigris.gef.util;
 
 import java.util.*;
 
+/**
+ * @deprecated in 0.10.14. This class is undocumented, appears to be unused
+ * and fails to compile under JDK5. This will be deleted ASAP.
+ */
 public class Enum implements Enumeration, java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
