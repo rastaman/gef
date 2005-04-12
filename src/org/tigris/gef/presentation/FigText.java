@@ -75,7 +75,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     private boolean _textFilled = false;
 
     /** True if the text should be editable. False for read-only. */
-    private boolean _editable = true;
+    private boolean editable = true;
 
     private Class _textEditorClass = FigTextEditor.class;
 
@@ -252,12 +252,12 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     public boolean getEditable() {
-        return _editable;
+        return editable;
     }
 
     public void setEditable(boolean e) {
-        firePropChange("editable", _editable, e);
-        _editable = e;
+        firePropChange("editable", editable, e);
+        editable = e;
     }
 
     public boolean getUnderline() {
@@ -670,7 +670,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      *  also catch arrow keys and mouse clicks for full text
      *  editing... someday... */
     public void keyTyped(KeyEvent ke) {
-        if(!_editable)
+        if(!editable)
             return;
 //     int mods = ke.getModifiers();
 //     if (mods != 0 && mods != KeyEvent.SHIFT_MASK) return;
@@ -686,23 +686,30 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
     /** This method handles backspace and enter. */
     public void keyPressed(KeyEvent ke) {
-        if(!ke.isActionKey() && !isNonStartEditingKey(ke)) {
-            if(!_editable)
-                return;
+        if(isStartEditingKey(ke) && editable) {
             FigTextEditor te = startTextEditor(ke);
-            if(System.getProperty("java.version").startsWith("1.4"))
+            if (!isJdk13()) {
                 te.setText(te.getText() + ke.getKeyChar());
+            }
             ke.consume();
         }
+    }
+    
+    private boolean isJdk13() {
+        return (System.getProperty("java.version").startsWith("1.3"));
     }
 
     /** Not used, does nothing. */
     public void keyReleased(KeyEvent ke) {
-        if(!_editable)
+        if(!editable)
             return;
     }
 
-    protected boolean isNonStartEditingKey(KeyEvent ke) {
+    protected boolean isStartEditingKey(KeyEvent ke) {
+        if (ke.isActionKey()) {
+            return false;
+        }
+        
         int keyCode = ke.getKeyCode();
         switch(keyCode) {
             case KeyEvent.VK_TAB:
@@ -716,26 +723,23 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             case KeyEvent.VK_PAUSE:
             case KeyEvent.VK_DELETE:
             case KeyEvent.VK_ESCAPE:
-                return true;
+                return false;
         }
         if(ke.isControlDown())
-            return true;
+            return false;
         if(ke.isAltDown())
-            return true;
+            return false;
         if(ke.isMetaDown())
-            return true;
-        return false;
+            return false;
+        return true;
     }
     ////////////////////////////////////////////////////////////////
     // event handlers: KeyListener implemtation
 
     public void mouseClicked(MouseEvent me) {
-        //System.out.println("[FigText] mouseClicked");
         if(me.isConsumed())
             return;
-        if(me.getClickCount() >= 2) {
-            if(!_editable)
-                return;
+        if(me.getClickCount() >= 2 && editable) {
             startTextEditor(me);
             me.consume();
         }
