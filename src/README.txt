@@ -1,4 +1,52 @@
-GEF vers 0.10.11 - 1 January 2005
+GEF vers 0.10.14 - 12 April 2005
+
+Resolved Issues
+===============
+
+207  Fig.removeFromDiagram() should remove from any diagram
+208  Postscript eps doesn't draw dashed lines
+209  First character of text edit is lost on JRE1.5
+
+
+
+=========================================================================
+=========================================================================
+
+GEF vers 0.10.13 - 7 March 2005
+
+Resolved Issues
+===============
+
+170  Unclear dialog title "Printing Selection"
+206  Can't drag primitive figs
+
+
+
+=========================================================================
+=========================================================================
+
+GEF vers 0.10.12 - 16 February 2005
+
+Resolved Issues
+===============
+
+74   PGMLParser should not be singleton
+123  Use batik for SVG
+194  VectorSet should implement List interface
+199  restrict figs being placed and moved into other figs
+200  SVGWriter should extend Graphic2D, not Graphics
+201  saving graphics into ps/eps doesn't work with guillemets
+202  Saving graphics as ps/eps doesn't handle dashed lines
+203  Three arg connect should be all Object
+204  PGMLParser is hiding exceptions
+205  Allow range expression for collections in tee files
+
+
+
+=========================================================================
+=========================================================================
+
+GEF vers 0.10.11 - 23 January 2005
 
 Resolved Issues
 ===============
@@ -7,11 +55,11 @@ The following issues have been fixed in release 0.10.11 of GEF
 
 
 
-192 	DEFECT 	P3 	All 	issues@gef 	RESO 	FIXE 	JGraph should provide a hashCode method
-193 	PATCH 	P1 	All 	issues@gef 	RESO 	FIXE 	Save action for portable network graphics
-196 	ENHANC 	P3 	All 	issues@gef 	RESO 	FIXE 	Add an attribute list to the renderers to pass style attribu
-197 	DEFECT 	P3 	All 	issues@gef 	RESO 	FIXE 	Take SAXParserBase from ArgoUML
-198 	DEFECT 	P3 	All 	issues@gef 	RESO 	FIXE 	Enclosed figs can't be placed directly
+192  JGraph should provide a hashCode method
+193  Save action for portable network graphics
+196  Add an attribute list to the renderers to pass style attribu
+197  Take SAXParserBase from ArgoUML
+198  Enclosed figs can't be placed directly
 
 
 
