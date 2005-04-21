@@ -6,6 +6,7 @@ Resolved Issues
 207  Fig.removeFromDiagram() should remove from any diagram
 208  Postscript eps doesn't draw dashed lines
 209  First character of text edit is lost on JRE1.5
+210  Deprecate Enum
 
 
 
