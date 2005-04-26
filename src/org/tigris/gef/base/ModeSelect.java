@@ -94,12 +94,6 @@ public class ModeSelect extends FigModifyingModeImpl {
         return false;
     }
 
-    /** 
-     * @deprecated in 0.10.1 this variable is not used. GEF will be
-     * coded in a platform independant manner.
-     */
-    public static boolean isMacintoshUser = false;
-
     ////////////////////////////////////////////////////////////////
     // event handlers
 

@@ -72,12 +72,6 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         _editor = ed;
     }
 
-    /**
-     * @deprecated 0.10 no longer required. Removed in ver 0.11
-     */
-    public void startTrans() {
-    }
-    
     ////////////////////////////////////////////////////////////////
     // accessors
 
@@ -702,17 +696,6 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             Selection sel = (Selection)sels.nextElement();
             Fig f = sel.getContent();
             f.cleanUp();
-        }
-    }
-
-    /**
-     * When a multiple selection are deleted, each selection is deleted
-     * @deprecated 0.10.4 Use the better described removeFromGraph
-     **/
-    public void delete() {
-        Enumeration ss = ((Vector)_selections.clone()).elements();
-        while(ss.hasMoreElements()) {
-            ((Selection)ss.nextElement()).delete();
         }
     }
 

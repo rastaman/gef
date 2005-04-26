@@ -60,10 +60,7 @@ public class OCLExpander {
         expandContent(new PrintWriter(w), target, "", "");
     }
 
-    /**
-     * @deprecated visibility will change to private. Use expand(OutputStream w, Object target)
-     */
-    public void expand(OutputStream w, Object target, String prefix, String suffix) throws ExpansionException {
+    private void expand(OutputStream w, Object target, String prefix, String suffix) throws ExpansionException {
         expandContent(new PrintWriter(w), target, prefix, suffix);
     }
 
@@ -75,10 +72,7 @@ public class OCLExpander {
         expand(w, target, prefix, "");
     }
 
-    /**
-     * @deprecated visibility will change to private. Use expand(Writer w, Object target) or expand(Writer w, Object target, String prefix)
-     */
-    public void expand(Writer w, Object target, String prefix, String suffix) throws ExpansionException {
+    private void expand(Writer w, Object target, String prefix, String suffix) throws ExpansionException {
         PrintWriter pw;
         if (w instanceof PrintWriter) {
             pw = (PrintWriter)w;

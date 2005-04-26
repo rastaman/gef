@@ -44,15 +44,9 @@ public interface GraphController extends java.io.Serializable {
         */
         public boolean containsEdge(Object edge);
 
-        /** deprecated 0.11 will be removed in 0.12 use getNodes(Collection) */
-        public Vector getNodes();
+        public List getNodes();
 
-        /** deprecated 0.11 will be removed in 0.12 use getEdges(Collection) */
-        public Vector getEdges();
-        
-        public Collection getNodes(Collection c);
-        
-        public Collection getEdges(Collection c);
+        public List getEdges();
         
         /**
          * Counts the number of presentations known to the GraphController

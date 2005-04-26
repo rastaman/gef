@@ -38,11 +38,12 @@ import org.tigris.gef.util.EnumerationPredicate;
 import org.tigris.gef.util.PredFigInRect;
 import org.tigris.gef.util.PredFigNodeInRect;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -254,25 +255,6 @@ public abstract class Layer implements java.io.Serializable {
     }
     
     /**
-     * @deprecated 0.10.2 in favour of getContentsNoEdges()
-     */
-    public Collection getContentsNoEdges(Collection c) {
-        List contents = getContents();
-        int size = contents.size();
-        if (c == null) c = new ArrayList(size);
-        for(int i = 0; i < size; i++) {
-            Object o = contents.get(i);
-            if(o instanceof Fig) {
-                if(!((Fig)o).savingAllowed())
-                    continue;
-            }
-            if(!(o instanceof FigEdge))
-                c.add(o);
-        }
-        return c;
-    }
-
-    /**
      * USED BY SVG.tee
      */
     public List getContentsNoEdges() {
@@ -292,25 +274,6 @@ public abstract class Layer implements java.io.Serializable {
     }
 
     /**
-     * @deprecated 0.10.2 in favour of getContentsNoEdges()
-     */
-    public Collection getContentsEdgesOnly(Collection c) {
-        List contents = getContents();
-        int size = contents.size();
-        if (c == null) c = new ArrayList(size);
-        for(int i = 0; i < size; i++) {
-            Object o = contents.get(i);
-            if(o instanceof Fig) {
-                if(!((Fig)o).savingAllowed())
-                    continue;
-            }
-            if(o instanceof FigEdge)
-                c.add(o);
-        }
-        return c;
-    }
-    
-    /**
      * USED BY SVG.tee
      */
     public List getContentsEdgesOnly() {
@@ -327,13 +290,6 @@ public abstract class Layer implements java.io.Serializable {
                 v.add(o);
         }
         return v;
-    }
-
-    /** @deprecated 0.10.5 in favour of getEditors() */
-    public Collection getEditors(Collection c) {
-        if (c == null) return _editors;
-        c.addAll(_editors);
-        return c;
     }
 
     /** Return the list of Editors that are showing this Layer. */

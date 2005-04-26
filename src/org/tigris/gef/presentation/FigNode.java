@@ -37,11 +37,12 @@ import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
 import org.tigris.gef.ui.Highlightable;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -125,14 +126,6 @@ public class FigNode extends FigGroup implements
     public void setBlinkPorts(boolean b) {
         _blinkPorts = b;
         hidePorts();
-    }
-
-    /**
-     * @deprecated in favour of isBlinkPorts()
-     * @return
-     */
-    public boolean getBlinkPorts() {
-        return _blinkPorts;
     }
 
     /**
@@ -222,13 +215,6 @@ public class FigNode extends FigGroup implements
             f.endTrans();
         }
         super.endTrans();
-    }
-
-    /** When a FigNode is deleted, all of its edges are deleted.
-     * @deprecated 0.10.7 use removeFromDiagram
-     */
-    public void delete() {
-        removeFromDiagram();
     }
 
     /** When a FigNode is removed, all of its edges are removed. */

@@ -130,7 +130,7 @@ public class SelectionReshape extends Selection
               updateEdgeEnds(p,h,mX,mY);
           } // end if
       }
-      _content.setPoints(h, mX, mY);
+      _content.setPoint(h, mX, mY);
   }
 
   public void updateEdgeEnds(FigEdgePoly poly, Handle handle, int x, int y ) {

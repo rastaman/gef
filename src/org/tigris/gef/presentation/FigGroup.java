@@ -28,12 +28,15 @@ package org.tigris.gef.presentation;
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.*;
 import java.util.List;
 
 import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
 
 /** 
  * A FigGroup is a collection of Figs to all be treated as a single item 
@@ -50,10 +53,7 @@ public class FigGroup extends Fig {
      */
     ArrayList figs;
     
-    /**
-     * @deprecated visibility in 0.10.5 use getters and setters 
-     */
-    protected int _extraFrameSpace = 0;
+    private int _extraFrameSpace = 0;
     
     /** Color of the actual text characters. */
     private Color textColor = Color.black;
@@ -66,13 +66,6 @@ public class FigGroup extends Fig {
     /** True if the area behind individual characters is to be filled
      *  with TextColor. */
     private boolean textFilled = false;
-
-
-    /**
-     * The String of figs that are dynamically generated.
-     * @deprecated in 0.11 this is not used
-     */
-    public String _dynObjects;
 
     /**
      * Normally the bounds of the FigGroup is calculated whenever
@@ -233,17 +226,6 @@ public class FigGroup extends Fig {
     /** Reply an Iterator of the Figs contained in this FigGroup. */
     public Iterator iterator() {
         return this.figs.iterator();
-    }
-
-    /** Get the figs that make up this group
-     * @param c a collection to populate with the figs
-     * @return the figs of this group added to the given collection
-     * @deprecated use getFigs()
-     */
-    public Collection getFigs(Collection c) {
-        if (c == null) return this.figs;
-        c.addAll(this.figs);
-        return c;
     }
 
     /**

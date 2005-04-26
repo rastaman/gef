@@ -39,10 +39,8 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
 public class TemplateReader extends DefaultHandler {
-    /**
-     * @deprecated visibility will alter use getInstance()
-     */
-    public final static TemplateReader SINGLETON = new TemplateReader();
+    
+    private final static TemplateReader INSTANCE = new TemplateReader();
 
     private static final Log LOG = LogFactory.getLog(TemplateReader.class);
   
@@ -57,7 +55,7 @@ public class TemplateReader extends DefaultHandler {
     protected TemplateReader() { }
 
     public static TemplateReader getInstance() {
-        return SINGLETON;
+        return INSTANCE;
     }
 
     public Hashtable read(String filename) throws FileNotFoundException {

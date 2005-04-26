@@ -27,7 +27,6 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.graph.GraphEdgeHooks;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
-import org.tigris.gef.graph.MutableGraphSupport;
 
 import org.tigris.gef.properties.PropCategoryManager;
 
@@ -117,21 +116,18 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 
     /**
      * Outline color of fig object.
-     * @deprecated 0.10.1 will change to package visibility use getters/setters
      */
-    protected Color _lineColor = Color.black;
+    Color _lineColor = Color.black;
 
     /**
      * Fill color of fig object.
-     * @deprecated 0.10.1 will change to package visibility use getters/setters
      */
-    protected Color _fillColor = Color.white;
+    Color _fillColor = Color.white;
 
     /**
      * Thickness of line around object, for now limited to 0 or 1.
-     * @deprecated 0.10.1 will change to package visibility use getters/setters
      */
-    protected int _lineWidth = 1;
+    int _lineWidth = 1;
     
     protected float[] _dashes = null;
     protected int     _dashStyle = 0;
@@ -457,14 +453,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 
     /**
      * Can the fig can be copied and pasted
-     * @deprecated 0.11 badly spelt method use is Copyable
-     */
-    public boolean isCopieable() {
-        return true;
-    }
-
-    /**
-     * Can the fig can be copied and pasted
      */
     public boolean isCopyable() {
         return true;
@@ -605,14 +593,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     ////////////////////////////////////////////////////////////////
     // Editor API
 
-    /** Remove this Fig from the Layer being edited by the
-     *  given editor.
-     * @deprecated 0.10.7 use removeFromDiagram
-     */
-    public void delete() {
-        removeFromDiagram();
-    }
-    
     /**
      * Remove this Fig from the Layer it belongs to.
      */
@@ -639,18 +619,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         setOwner(null);
     }
 
-    /** Delete whatever application object this Fig is representing, the
-     *  Fig itself should automatically be deleted as a side-effect. Simple
-     *  Figs have no underlying model, so they are just deleted. Figs
-     *  that graphically present some part of an underlying model should
-     *  NOT delete themselves, instead they should ask the model to
-     *  dispose, and IF it does then the figs will be notified.
-     * @deprecated 0.10.7 use deleteFromModel.
-     */
-    public void dispose() {
-        deleteFromModel();
-    }
-    
     /** Delete whatever application object this Fig is representing, the
      *  Fig itself should automatically be deleted as a side-effect. Simple
      *  Figs have no underlying model, so they are just deleted. Figs
@@ -875,7 +843,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         if(getGroup() != null) {
             String gID = getGroup().getId();
             if(getGroup() instanceof FigGroup) {
-                return gID + "." + ((List)((FigGroup)getGroup()).getFigs(null)).indexOf(this);
+                return gID + "." + ((List)((FigGroup)getGroup()).getFigs()).indexOf(this);
             }
             else {
                 return gID + ".1";
@@ -1119,17 +1087,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      */
     public Selection makeSelection() {
         return null;
-    }
-
-    /**
-     * Sets the selection state for this item.
-     * @param selectionState The new selection state.
-     * @deprecated 0.10.5 client programmers should not be able to access this
-     * they should only have access to isSelected().
-     * This method is not currently called from anywhere in GEF itself.
-     */
-    public void setSelected(boolean selectionState) {
-        _selected = selectionState;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -1409,39 +1366,19 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     public void setPoints(Point[] ps) {
     }
 
-    /** deprecated 0.10.5 by Bob Tarling use setPoint(int, int, int) */
-    public void setPoints(int i, int x, int y) {
-        setPoint(i, x, y);
-    }
-
     public void setPoint(int i, int x, int y) {
     }
 
-    /** deprecated 0.10.5 by Bob Tarling use setPoint(int, Point) */
-    public final void setPoints(int i, Point p) {
-        setPoint(i, p);
-    }
-
     public final void setPoint(int i, Point p) {
-        setPoints(i, p.x, p.y);
-    }
-
-    /** deprecated 0.10.5 by Bob Tarling use setPoint(Handle, int, int) */
-    public void setPoints(Handle h, int x, int y) {
-        setPoint(h, x, y);
+        setPoint(i, p.x, p.y);
     }
 
     public void setPoint(Handle h, int x, int y) {
-        setPoints(h.index, x, y);
-    }
-
-    /** deprecated 0.10.5 by Bob Tarling use setPoint(Handle, int, int) */
-    public final void setPoints(Handle h, Point p) {
-        setPoint(h, p);
+        setPoint(h.index, x, y);
     }
 
     public final void setPoint(Handle h, Point p) {
-        setPoints(h, p.x, p.y);
+        setPoint(h, p.x, p.y);
     }
 
     /**
@@ -1542,20 +1479,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return r.contains(_x, _y) && r.contains(_x + _w, _y + _h);
     }
 
-    /** Returns true if it is to be displayed.
-     * @deprecated 0.10.5 in favour of isVisible()
-     */
-    public boolean isDisplayed() {
-        return isVisible();
-    }
-
-    /** Determine if it is to be displayed.
-     * @deprecated 0.10.5 in favour of setVisible(boolean)
-     */
-    public void setDisplayed(boolean isDisplayed) {
-        setVisible(isDisplayed);
-    }
-    
     /** Returns true if the fig is visible */
     public boolean isVisible() {
         return _displayed;

@@ -46,31 +46,20 @@ import org.tigris.gef.graph.presentation.*;
  *  represented in a GraphModel and controlled by a GraphController. */
 
 public class LayerPerspective extends LayerDiagram implements GraphListener {
-  ////////////////////////////////////////////////////////////////
-  // constants
 
-  /** The space between node FigNodes that are automatically places. */
-  public static final int GAP = 16;
+    /** The space between node FigNodes that are automatically places. */
+    public static final int GAP = 16;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-
-  /** The underlying connected graph to be visualized.
-   * @deprecated in 0.11 use getGraphModel2()/setGraphModel2()
-   */
-  protected GraphModel _gm;
-  /**
-  * @deprecated in 0.11 will lose visibility in 0.12 use accessors
-  */
-  protected GraphController _controller;
-  /**
-  * @deprecated in 0.11 will lose visibility in 0.12 use accessors
-  */
-  protected GraphNodeRenderer _nodeRenderer = new DefaultGraphNodeRenderer();
-  /**
-  * @deprecated in 0.11 will lose visibility in 0.12 use accessors
-  */
-  protected GraphEdgeRenderer _edgeRenderer = new DefaultGraphEdgeRenderer();
+    /**
+     * The underlying connected graph to be visualized.
+     */
+    private GraphModel _gm;
+  
+    private GraphController _controller;
+  
+    private GraphNodeRenderer _nodeRenderer = new DefaultGraphNodeRenderer();
+  
+    private GraphEdgeRenderer _edgeRenderer = new DefaultGraphEdgeRenderer();
 
   /** Classes of NetNodes and NetEdges that are to be visualized in
    *  this perspective. */

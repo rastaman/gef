@@ -36,7 +36,6 @@ import java.util.List;
 
 import org.apache.commons.logging.*;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -348,11 +347,6 @@ public class ModeModify extends FigModifyingModeImpl {
         editor.damaged(r);
     }
 
-    /** @deprecated 0.10. Remove in 0.10.6 */
-    protected boolean legal(int dx, int dy, SelectionManager sm, MouseEvent me) {
-        return legal (dx, dy, sm);
-    }
-    
     private boolean legal(int dx, int dy, SelectionManager selectionManager) {
         damageHighlightTrap();
 

@@ -62,9 +62,8 @@ public class NetPort
 
     /** 
      * The NetNode that this port is a part of.
-     * @deprecated 0.10.5 will become private
      */
-    protected Object _parent;
+    private Object _parent;
 
     private static Log LOG = LogFactory.getLog(NetPort.class);
     

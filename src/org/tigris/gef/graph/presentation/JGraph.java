@@ -434,14 +434,6 @@ public class JGraph extends JPanel implements Cloneable {
     // Editor facade
 
     /**
-     * @deprecated 0.10.5
-     * This method is not implemented so lets get rid.
-     */
-    public void layoutGraph() {
-        // needs-more-work: ask the editor to preform automatic layout
-    }
-
-    /**
      * The JGraph is painted by simply painting its Editor.
      */
     //public void paint(Graphics g) { _editor.paint(getGraphics()); }

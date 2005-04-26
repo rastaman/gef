@@ -539,13 +539,16 @@ public class FigPoly extends Fig {
     /** Paint the FigPoly on the given Graphics */
     public void paint(Graphics g) {
 
-        if(_filled && _fillColor != null) {
-            g.setColor(_fillColor);
+        Color fillColor = getFillColor();
+        Color lineColor = getLineColor();
+        
+        if(_filled && fillColor != null) {
+            g.setColor(fillColor);
             g.fillPolygon(_xpoints, _ypoints, _npoints);
         }
 
-        if(_lineWidth > 0 && _lineColor != null) {
-            g.setColor(_lineColor);
+        if(getLineWidth() > 0 && lineColor != null) {
+            g.setColor(lineColor);
 
             if(!getDashed())
                 g.drawPolyline(_xpoints, _ypoints, _npoints);

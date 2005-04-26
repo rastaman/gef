@@ -122,20 +122,20 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     /** The grid to snap points to.   */
     protected Guide _guide = new GuideGrid(8);
 
-    /** The Fig that the mouse is in.
-     * @deprecated in 0.11 use getCurrentFig() this will be removed in 0.12
+    /**
+     * The Fig that the mouse is in.
      */
-    protected Fig _curFig = null;
+    private Fig _curFig = null;
 
-    /** The Selection object that the mouse is in.
-     * @deprecated in 0.11 use getCurrentSelection() this will be removed in 0.12
+    /**
+     * The Selection object that the mouse is in.
      */
-    protected Selection _curSel = null;
+    private Selection _curSel = null;
 
-    /** The scale at which to draw the diagram
-     * @deprecated in 0.10.1 use getter/setter
+    /**
+     * The scale at which to draw the diagram
      */
-    protected double _scale = 1.0;
+    private double _scale = 1.0;
 
     /** Should elements in this editor be selectable? */
     protected boolean _canSelectElements = true;
@@ -188,9 +188,9 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         _jComponent = jComponent;
         defineLayers(gm, lay);
 
-        mode(new ModeSelect(this));
-        mode(new ModePopup(this));
-        mode(new ModeDragScroll(this));
+        pushMode(new ModeSelect(this));
+        pushMode(new ModePopup(this));
+        pushMode(new ModeDragScroll(this));
         Globals.curEditor(this);
 
         _renderingHints.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
@@ -274,15 +274,6 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         return _modeManager;
     }
 
-    /** Set the current user interface mode to the given Mode instance.
-     * @deprecated in 0.11 use pushMode(FigModifyingMode mode)
-     */
-    public void mode(FigModifyingMode m) {
-        _modeManager.push(m);
-        m.setEditor(this);
-        Globals.showStatus(m.instructions());
-    }
-
     /** Pushes a new mode to the mode manager 
      */
     public void pushMode(FigModifyingMode mode) {
@@ -294,7 +285,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     /** Set this Editor's current Mode to the next global Mode. */
     public void finishMode() {
         _modeManager.pop();
-        mode((FigModifyingMode)Globals.mode());
+        pushMode((FigModifyingMode)Globals.mode());
         Globals.clearStatus();
     }
 
@@ -614,13 +605,6 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     ////////////////////////////////////////////////////////////////
     // Frame and panel related methods
 
-    /**
-     * @deprecated 0.10 replacing in 0.11 in favour of getJComponent()
-     */
-    public Component getAwtComponent() {
-        return (Component)_jComponent;
-    }
-
     public JComponent getJComponent() {
         return _jComponent;
     }
@@ -794,7 +778,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     public void mouseEntered(MouseEvent me) {
 	translateMouseEvent(me);
 	Globals.curEditor(this);
-	mode((FigModifyingMode) Globals.mode());
+	pushMode((FigModifyingMode) Globals.mode());
 	setUnderMouse(me);
         if(_canSelectElements) {
             _modeManager.mouseEntered(me);

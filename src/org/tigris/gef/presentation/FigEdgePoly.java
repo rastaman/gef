@@ -54,9 +54,8 @@ public class FigEdgePoly extends FigEdge {
     /** True if the edge has been laid out automatically once. It will
      *  not be done automatically again since the user may have edited the
      *  edge and I dont want to undo that work.
-     * @deprecated use setInitiallyLaidOut(boolean)
      */
-    protected boolean _initiallyLaidOut = false;
+    private boolean _initiallyLaidOut = false;
 
     ////////////////////////////////////////////////////////////////
     // FigEdge API
@@ -392,14 +391,6 @@ public class FigEdgePoly extends FigEdge {
             p._ypoints[i] = y;
         }
     }
-
-//    /** When the user drags the handles, move individual points 
-//     * @deprecated 0.10.2 in favour of setPoint(Handle, int, int)
-//     */
-//    public void setPoints(Handle h, int mX, int mY) {
-//        moveVertex(h, mX, mY, false);
-//        calcBounds();
-//    }
 
     /** When the user drags the handles, move individual points */
     public void setPoint(Handle h, int mX, int mY) {

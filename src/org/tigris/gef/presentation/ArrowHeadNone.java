@@ -30,10 +30,7 @@
 
 package org.tigris.gef.presentation;
 
-import java.applet.*;
 import java.awt.*;
-import java.io.*;
-import java.util.*;
 
 /** Draws no arrow head at the end of a FigEdge. */
 public class ArrowHeadNone extends ArrowHead {

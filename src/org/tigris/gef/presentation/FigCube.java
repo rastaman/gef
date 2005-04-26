@@ -31,7 +31,6 @@
 
 package org.tigris.gef.presentation;
 
-import java.util.*;
 import java.awt.*;
 import java.io.*;
 
