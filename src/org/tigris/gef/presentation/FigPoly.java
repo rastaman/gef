@@ -36,7 +36,6 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /** Primitive Fig to paint Polygons on a LayerDiagram. FigPolys
  *  contain a set of points that define the polygon, a boolean to
@@ -442,20 +441,6 @@ public class FigPoly extends Fig {
 
     /**
      * USED BY PGML.tee
-     * @deprecated use getPointsList
-     */
-    public Vector getPointsVector() {
-        Vector res = new Vector(_npoints);
-
-        for(int i = 0; i < _npoints; i++) {
-            res.addElement(new Point(_xpoints[i], _ypoints[i]));
-        }
-
-        return res;
-    }
-
-    /**
-     * USED BY PGML.tee
      */
     public Point[] getPoints() {
         Point[] points = new Point[getPointsList().size()];
@@ -465,20 +450,6 @@ public class FigPoly extends Fig {
         }
 
         return points;
-    }
-
-    /**
-     * @deprecated use getPoints and a sub-array.
-     * If called from tee file use self.points[1,*]
-     */
-    public Vector getPointsVectorNotFirst() {
-        Vector res = new Vector();
-
-        for(int i = 1; i < _npoints; i++) {
-            res.addElement(new Point(_xpoints[i], _ypoints[i]));
-        }
-
-        return res;
     }
 
     /**
@@ -530,7 +501,7 @@ public class FigPoly extends Fig {
     }
 
     public List getGravityPoints() {
-        return getPointsVector();
+        return getPointsList();
     }
 
     ////////////////////////////////////////////////////////////////

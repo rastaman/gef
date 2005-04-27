@@ -655,34 +655,6 @@ public abstract class FigEdge extends Fig implements Connecter {
         calcBounds();
     }
 
-    /** @deprecated 0.10.2 this method does nothing so lets get rid */
-    public void setPrivateData(String data) {
-        // this method did nothing, so I commented out this Exception throwing code. Toby
-        //    StringTokenizer tokenizer = new StringTokenizer(data,"=\"' ");
-        //    while (tokenizer.hasMoreTokens()) {
-        //       String tok = tokenizer.nextToken();
-        //       if (tok.equals("sourcePortFig")) {
-        //          String s = tokenizer.nextToken();
-        //          int value = Integer.parseInt( s );
-        //       }
-        //       else if (tok.equals("destPortFig")) {
-        //          String s = tokenizer.nextToken();
-        //          int value = Integer.parseInt( s );
-        //       }
-        //       else if (tok.equals("sourceFigNode")) {
-        //          String s = tokenizer.nextToken();
-        //          int value = Integer.parseInt( s );
-        //       }
-        //       else if (tok.equals("destFigNode")) {
-        //          String s = tokenizer.nextToken();
-        //          int value = Integer.parseInt( s );
-        //       }
-        //       else {
-        //          /* Unknown value */
-        //       }
-        //    }
-    }
-
     /** Set the ArrowHead at the start of this FigEdge. */
     public void setSourceArrowHead(ArrowHead newArrow) {
         _arrowHeadStart = newArrow;
