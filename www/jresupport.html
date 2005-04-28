@@ -1,0 +1,40 @@
+<html>
+<head>
+
+<meta name="keywords"
+content="GEF, Graph Editing Framework, Diagrams, ArgoUML, software engineering, CASE, Java, XML, SVG">
+
+<style type="text/css">
+/* <![CDATA[ */
+@import url(http://www.tigris.org/branding/css/ns4_toxins.css);
+/* ]]> */
+</style>
+ <link rel="stylesheet" type="text/css" href="http://www.tigris.org/branding/css/main.css" media="screen" />
+ <link rel="stylesheet" type="text/css" href="http://www.tigris.org/branding/css/print.css" media="print" />
+
+<title>JRE and JDK Support</title>
+
+</head>
+<body>
+
+<div class="app">
+
+<h3>JRE and JDK Support</h3>
+
+<p>It is the policy that development of GEF will be targeted to work on all versions of the JRE that have not ended their life according to the <a href="http://java.sun.com/products/archive/eol.policy.html">Java Technology End of Life Policy</a>.</p>
+
+<p>This means that the latest versions of JRE1.3 and above are currently supported. JRE1.2 and before are specifically not supported.</p>
+
+<p>Certain classes are used internally in GEF that have been released in more recent versions of the JRE, this allows for scroll wheel support for those using JRE1.4 and above. GEF first checks your JRE version before trying to access these classes. For this reason the GEF is currently build using JDK1.4.</p>
+
+<p>GEF will also provide some support classes that can be used only by those who know their application will be targeted at a JRE above JRE1.3. For example CmdSavePNG require JRE1.4 as a minimum and will throw an exception otherwise as it relies on the 1.4 JFC.</p>
+
+<p>When a JRE reaches it end of life does not necessarily follow that GEF support will be immediately dropped. The statement above is that of the minimum that we will always support, we may choose to continue support for a longer period of time.</p>
+
+<p>Support for a JRE will not be dropped until a definite advantage can be seen in the development of GEF. This may be to use new language features in the codebase or simply reduce the amount of testing required.</p>
+
+<p>The user community will be informed of any intention to drop support of a JRE and feedback will be taken into account to possibly postpone such actions.</p>
+
+</div>
+</body>
+</html>
