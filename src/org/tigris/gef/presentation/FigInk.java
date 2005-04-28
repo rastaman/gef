@@ -32,11 +32,6 @@
 
 package org.tigris.gef.presentation;
 
-import java.applet.*;
-import java.awt.*;
-import java.io.*;
-import java.util.*;
-
 /** Primitive Fig to paint Ink on a LayerDiagram. Ink is like an open
  *  polygon with no fill.  The main difference between FigInk and
  *  FigPoly is in the way that they are created.

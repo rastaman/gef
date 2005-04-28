@@ -31,8 +31,15 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.io.*;
+import java.awt.Dimension;
+import java.awt.FileDialog;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 
 import org.tigris.gef.graph.presentation.*;
 
@@ -42,14 +49,14 @@ import org.tigris.gef.graph.presentation.*;
  * @see CmdSave */
 
 public class CmdOpen extends Cmd implements FilenameFilter {
-  public CmdOpen() { super("Open"); }
+    public CmdOpen() { super("Open"); }
 
-  /** Only allow the user to select files that match the fiven
-   *  filename pattern.  Needs-More-Work: This is not used yet. */
-  public CmdOpen(String filterPattern) {
-    this();
-    setArg("filterPattern", filterPattern);
-  }
+    /** Only allow the user to select files that match the fiven
+     *  filename pattern.  Needs-More-Work: This is not used yet. */
+    public CmdOpen(String filterPattern) {
+        this();
+        setArg("filterPattern", filterPattern);
+    }
 
   public void doIt() {
     try {
@@ -58,7 +65,7 @@ public class CmdOpen extends Cmd implements FilenameFilter {
 	new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
       fd.setFilenameFilter(this);
       fd.setDirectory(Globals.getLastDirectory());
-      fd.show();
+      fd.setVisible(true);
       String filename = fd.getFile(); // blocking
       String path = fd.getDirectory(); // blocking
       Globals.setLastDirectory(path);
@@ -67,13 +74,9 @@ public class CmdOpen extends Cmd implements FilenameFilter {
     	Globals.showStatus("Reading " + path + filename + "...");
     	FileInputStream fis = new FileInputStream(path + filename);
     	ObjectInput s = new ObjectInputStream(fis);
-    	//System.out.println("Cmd load...");
     	Editor ed = (Editor) s.readObject();
 	ed.postLoad();
 	if (fis != null) fis.close();   
-	//System.out.println("load done, showing editor");
-	//System.out.println(ed.toString());
-	//System.out.println(ed.getLayerManager().toString());
     	Globals.showStatus("Read " + path + filename);
 	JGraphFrame jgf = new JGraphFrame(path + filename, ed);
 	Object d = getArg("dimension");
@@ -100,7 +103,6 @@ public class CmdOpen extends Cmd implements FilenameFilter {
    * Needs-More-Work: The source code for this function is duplicated
    * in CmdSave#accept.  */
   public boolean accept(File dir, String name) {
-    System.out.println("checking: "+ dir + " " + name);
     if (containsArg("filterPattern")) {
       // if pattern dosen't match, return false
       return true;

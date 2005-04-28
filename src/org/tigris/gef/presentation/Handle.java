@@ -31,9 +31,7 @@
 
 package org.tigris.gef.presentation;
 
-import java.applet.*;
-import java.awt.*;
-import java.net.*;
+import java.awt.Cursor;
 
 /** This class stores the index of the handle that the user is dragging. I
  *  originally used a simple int, but some dragHandle() methods need to change

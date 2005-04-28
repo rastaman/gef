@@ -30,8 +30,8 @@
 
 package org.tigris.gef.presentation;
 
-import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 

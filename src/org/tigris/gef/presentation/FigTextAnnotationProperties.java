@@ -1,8 +1,5 @@
 package org.tigris.gef.presentation;
 
-import org.tigris.gef.base.*;
-
-
 // each Annotation has one associated AnnotationProperties object
 public class FigTextAnnotationProperties extends AnnotationProperties{
 	

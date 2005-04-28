@@ -30,8 +30,8 @@
 
 package org.tigris.gef.presentation;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Graphics;
 
 import org.tigris.gef.properties.*;
 

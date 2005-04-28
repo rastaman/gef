@@ -28,9 +28,7 @@
 
 package org.tigris.gef.presentation;
 
-import java.util.*;
-import java.awt.*;
-import java.io.*;
+import java.awt.Color;
 
 /** An FigEdge that shows a straight line from the source port
  *  to the destination port. */

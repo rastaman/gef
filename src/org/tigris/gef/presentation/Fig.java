@@ -143,7 +143,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     
     protected String _context = "";
 
-    /** True if the Fig is shown
+    /**
+     * True if the Fig is shown
+     * TODO: rename to "visible"
      */
     private boolean _displayed = true;
     

@@ -23,10 +23,10 @@
 
 package org.tigris.gef.presentation;
 
-import java.applet.*;
-import java.awt.*;
-import java.io.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Polygon;
+import java.util.BitSet;
 
 public class FigSpline extends FigPoly {
 

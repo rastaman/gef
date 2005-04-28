@@ -28,14 +28,16 @@
 
 package org.tigris.gef.base;
 
-import java.awt.event.ActionEvent;
-import java.util.*;
+import java.util.Hashtable;
 
 import javax.swing.Action;
 
-import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
-import org.tigris.gef.graph.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.tigris.gef.graph.GraphFactory;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeHooks;
+import org.tigris.gef.graph.MutableGraphModel;
 
 /*  this Cmd is executed it makes the new objects as per its
  *  arguments, and then it sets the global next mode to ModePlace so
