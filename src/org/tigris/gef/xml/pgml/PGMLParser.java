@@ -56,6 +56,7 @@ import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.util.ColorUtility;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -79,14 +80,6 @@ public class PGMLParser extends DefaultHandler {
     protected boolean _detectedFailure = false;
     protected String systemId = "";
 
-    /**
-     * A map of previously created colors mapped by an
-     * RGB string description in the form "rrr ggg bbb"
-     * where rrr = red value int ggg = green value int
-     * and bbb = blue value int.
-     */
-    private static final Map USED_COLORS = new HashMap();
-    
     ////////////////////////////////////////////////////////////////
     // constructors
     public PGMLParser(Map modelElementsByUuid) {
@@ -865,7 +858,7 @@ public class PGMLParser extends DefaultHandler {
 
         String strokecolor = attrList.getValue("strokecolor");
         if(strokecolor != null && !strokecolor.equals("")) {
-            f.setLineColor(colorByName(strokecolor, Color.blue));
+            f.setLineColor(ColorUtility.getColor(strokecolor, Color.blue));
         }
 
         String fill = attrList.getValue("fill");
@@ -875,7 +868,7 @@ public class PGMLParser extends DefaultHandler {
 
         String fillcolor = attrList.getValue("fillcolor");
         if(fillcolor != null && !fillcolor.equals("")) {
-            f.setFillColor(colorByName(fillcolor, Color.white));
+            f.setFillColor(ColorUtility.getColor(fillcolor, Color.white));
         }
 
         String dasharray = attrList.getValue("dasharray");
@@ -963,93 +956,6 @@ public class PGMLParser extends DefaultHandler {
     protected GraphModel getGraphModelFor(String desc) {
         //System.out.println("should be: "+desc);
         return new DefaultGraphModel();
-    }
-
-    protected Color colorByName(String name, Color defaultColor) {
-        if(name.equalsIgnoreCase("white")) {
-            return Color.white;
-        }
-
-        if(name.equalsIgnoreCase("lightGray")) {
-            return Color.lightGray;
-        }
-
-        if(name.equalsIgnoreCase("gray")) {
-            return Color.gray;
-        }
-
-        if(name.equalsIgnoreCase("darkGray")) {
-            return Color.darkGray;
-        }
-
-        if(name.equalsIgnoreCase("black")) {
-            return Color.black;
-        }
-
-        if(name.equalsIgnoreCase("red")) {
-            return Color.red;
-        }
-
-        if(name.equalsIgnoreCase("pink")) {
-            return Color.pink;
-        }
-
-        if(name.equalsIgnoreCase("orange")) {
-            return Color.orange;
-        }
-
-        if(name.equalsIgnoreCase("yellow")) {
-            return Color.yellow;
-        }
-
-        if(name.equalsIgnoreCase("green")) {
-            return Color.green;
-        }
-
-        if(name.equalsIgnoreCase("magenta")) {
-            return Color.magenta;
-        }
-
-        if(name.equalsIgnoreCase("cyan")) {
-            return Color.cyan;
-        }
-
-        if(name.equalsIgnoreCase("blue")) {
-            return Color.blue;
-        }
-
-        if (name.indexOf(' ') > 0) {
-            // The color is in the format "red green blue"
-            return getColor(name);
-        }
-        
-        try {
-            return Color.decode(name);
-        }
-        catch(Exception ex) {
-            System.out.println("invalid color code string: " + name);
-        }
-
-        return defaultColor;
-    }
-
-    /**
-     * A flyweight factory method for reusing the same Color
-     * value multiple times.
-     * @param rgb A string of RGB values seperated by space
-     * @return the equivilent Color
-     */
-    private static Color getColor(String rgb) {
-        Color color = (Color)USED_COLORS.get(rgb);
-        if (color == null) {
-            StringTokenizer st = new StringTokenizer(rgb, " ");
-            int red = Integer.parseInt(st.nextToken());
-            int green = Integer.parseInt(st.nextToken());
-            int blue = Integer.parseInt(st.nextToken());
-            color = new Color(red, green, blue);
-            USED_COLORS.put(rgb, color);
-        }
-        return color;
     }
 
     protected String translateClassName(String oldName) {
