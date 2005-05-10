@@ -237,7 +237,9 @@ public class ColorUtility {
      * @param color
      */
     private static void cacheColor(Color color) {
-        cacheColor(Integer.valueOf(color.getRGB()), color);
+        cacheColor(new Integer(color.getRGB()), color);
+        // TODO when JRE1.3 dropped.
+        //cacheColor(Integer.valueOf(color.getRGB()), color);
     }
     
     /**
