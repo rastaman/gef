@@ -115,7 +115,11 @@ public abstract class Layer implements java.io.Serializable {
      *  Needs-More-Work. */
     protected boolean _onMenu = false;
 
-    /** A list of the Editors that are displaying this Layer. */
+    /**
+     * A list of the Editors that are displaying this Layer.
+     * @deprecated in 0.11.1 will lose visibility in a future release
+     * use addEditor(), removeEditor() and getEditors().
+     */
     public transient List _editors = new ArrayList();
 
     ////////////////////////////////////////////////////////////////
