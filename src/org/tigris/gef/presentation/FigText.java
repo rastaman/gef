@@ -473,10 +473,16 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         return _curText;
     }
 
+    /**
+     * @deprecated in 0.11.1 it appears that the editor must always be FigTextEditor
+     */
     public Class getTextEditorClass() {
         return _textEditorClass;
     }
 
+    /**
+     * @deprecated in 0.11.1 it appears that the editor must always be FigTextEditor
+     */
     public void setTextEditorClass(Class editorClass) {
         _textEditorClass = editorClass;
     }
@@ -758,20 +764,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     public FigTextEditor startTextEditor(InputEvent ie) {
-        //System.out.println("[FigText] startTextEditor");
-        FigTextEditor te;
-        try {
-            Object editor = _textEditorClass.newInstance();
-            if(!(editor instanceof FigTextEditor))
-                te = new FigTextEditor();
-            else
-                te = (FigTextEditor)editor;
-        }
-        catch(Exception e) {
-            te = new FigTextEditor();
-        }
+        FigTextEditor te = FigTextEditor.getInstance();
         te.init(this, ie);
-        //System.out.println("[FigText] TextEditor started");
         _editMode = true;
         return te;
     }
@@ -790,7 +784,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             return;
         }
         if (_fm == null) {
-            _fm = Toolkit.getDefaultToolkit().getFontMetrics(_font);
+            _fm = FigTextEditor.getInstance().getFontMetrics(_font);
         }
         int overallW = 0;
         int numLines = 1;

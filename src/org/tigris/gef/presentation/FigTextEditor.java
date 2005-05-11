@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -21,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: FigTextEditor.java
-// Classes: FigTextEditor
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.tigris.gef.presentation;
 
 import org.apache.commons.logging.Log;
@@ -35,14 +29,24 @@ import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
@@ -51,8 +55,10 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-// needs-more-work: could this be a singleton?
-
+/**
+ * A text pane for on screen editing of a FigText.
+ * @author jrobbins
+ */
 public class FigTextEditor extends JTextPane implements PropertyChangeListener, DocumentListener, KeyListener, FocusListener {
 
     FigText _target;
@@ -65,10 +71,14 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     private static Color _backgroundColor = null;
 
     private static Log LOG = LogFactory.getLog(FigTextEditor.class);
+
+    private static final FigTextEditor INSTANCE = new FigTextEditor();
     
-    /** Needs-more-work: does not open if I use tab to select the
-     *  FigText. */
-    public FigTextEditor() {
+    public static FigTextEditor getInstance() {
+        return INSTANCE;
+    }
+    
+    private FigTextEditor() {
     }
 
     public static void configure(int extraSpace, Border border, boolean makeBrighter, Color backgroundColor) {

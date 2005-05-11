@@ -37,9 +37,14 @@ package org.tigris.gef.base;
  *  box or use property sheet.  */
 public class CmdAdjustGrid extends Cmd {
 
-  public CmdAdjustGrid() {
-	  super("AdjustGrid");
-  }
+    /**
+     * Comment for <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = 3761403097309984825L;
+
+    public CmdAdjustGrid() {
+	    super("AdjustGrid");
+    }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

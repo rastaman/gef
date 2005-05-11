@@ -366,7 +366,7 @@ public class SVGWriter extends Graphics {
     }
 
     public FontMetrics getFontMetrics(Font font) {
-        return Toolkit.getDefaultToolkit().getFontMetrics(font);
+        return FontUtility.getFontMetrics(font);
     }
 
     /**

@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.awt.*;
 import java.awt.image.*;
 
+
 public class PostscriptWriter extends Graphics2D {
 
     private PrintWriter p;
@@ -200,7 +201,7 @@ public class PostscriptWriter extends Graphics2D {
     }
 
     public FontMetrics getFontMetrics(Font font) {
-        return Toolkit.getDefaultToolkit().getFontMetrics(font);
+        return FontUtility.getFontMetrics(font);
     }
 
     public java.awt.Rectangle getClipBounds() {
