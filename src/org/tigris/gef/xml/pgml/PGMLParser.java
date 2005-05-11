@@ -77,7 +77,6 @@ public class PGMLParser extends DefaultHandler {
      * Model elements indexed by a UUID.
      */
     protected Map _ownerRegistry = null;
-    protected boolean _detectedFailure = false;
     protected String systemId = "";
 
     ////////////////////////////////////////////////////////////////
@@ -191,7 +190,7 @@ public class PGMLParser extends DefaultHandler {
             case DEFAULT_STATE:
                 if("group".equals(elementName)) {
                     Fig groupFig = handleGroup(atts);
-                    if(groupFig != null && !_detectedFailure) {
+                    if(groupFig != null) {
                         _diagram.add(groupFig);
                     }
                 }
@@ -304,10 +303,7 @@ public class PGMLParser extends DefaultHandler {
             case TEXT_NODE_STATE:
                 //System.out.println("[PGMLParser]: endElement TEXT_NODE_STATE: " + _textBuf.toString());
                 if(elementName.equals("text")) {
-                    if(!_detectedFailure) {
-                        _currentText.setText(_textBuf.toString());
-                    }
-
+                    _currentText.setText(_textBuf.toString());
                     _elementState = NODE_STATE;
                     _currentText = null;
                     _textBuf = null;
@@ -318,10 +314,7 @@ public class PGMLParser extends DefaultHandler {
             case TEXT_EDGE_STATE:
                 //System.out.println("[PGMLParser]: endElement TEXT_EDGE_STATE: " + _textBuf.toString());
                 if(elementName.equals("text")) {
-                    if(!_detectedFailure) {
-                        _currentText.setText(_textBuf.toString());
-                    }
-
+                    _currentText.setText(_textBuf.toString());
                     _elementState = EDGE_STATE;
                     _currentText = null;
                     _textBuf = null;
@@ -333,13 +326,10 @@ public class PGMLParser extends DefaultHandler {
                 //System.out.println("[PGMLParser]: endElement TEXT_ANNOTATION_STATE: " + _textBuf.toString());
                 if(elementName.equals("text")) {
                     //System.out.println("[GEF.PGMLParser] text annotation: "+_currentText.getBounds());
-                    if(!_detectedFailure) {
-                        _currentText.setJustification(FigText.JUSTIFY_LEFT);
-                        _currentText.setText(_textBuf.toString());
-                        _currentEdge.addAnnotation(_currentText, "text", _currentText.getContext());
-                        _currentText.setJustification(FigText.JUSTIFY_CENTER);
-                    }
-
+                    _currentText.setJustification(FigText.JUSTIFY_LEFT);
+                    _currentText.setText(_textBuf.toString());
+                    _currentEdge.addAnnotation(_currentText, "text", _currentText.getContext());
+                    _currentText.setJustification(FigText.JUSTIFY_CENTER);
                     _elementState = ANNOTATION_STATE;
                     _currentText = null;
                     _textBuf = null;
@@ -366,18 +356,11 @@ public class PGMLParser extends DefaultHandler {
             case NODE_STATE:
                 //System.out.println("[PGMLParser]: endElement NODE_STATE");
                 //detect failure here
-                if(!_detectedFailure) {
-                    _currentNode.updateVisState();
-                    if(_currentNode != null && _currentEncloser != null) {
-                        _currentNode.setEnclosingFig(_currentEncloser);
-                    }
+                _currentNode.updateVisState();
+                if(_currentNode != null && _currentEncloser != null) {
+                    _currentNode.setEnclosingFig(_currentEncloser);
                 }
-                else {
-                    rollbackAdd(_currentNode);
-                }
-
                 _elementState = DEFAULT_STATE;
-                setDetectedFailure(false);
                 _currentNode = null;
                 _currentEncloser = null;
                 _textBuf = null;
@@ -387,15 +370,8 @@ public class PGMLParser extends DefaultHandler {
                 //System.out.println("[PGMLParser]: endElement EDGE_STATE");
                 _elementState = DEFAULT_STATE;
                 //detect failure here
-                if(!_detectedFailure) {
-                    _currentEdge.computeRoute();
-                    _currentEdge.updateAnnotationPositions();
-                }
-                else {
-                    rollbackAdd(_currentEdge);
-                }
-
-                setDetectedFailure(false);
+                _currentEdge.computeRoute();
+                _currentEdge.updateAnnotationPositions();
                 _currentEdge = null;
                 _currentPoly = null;
                 _textBuf = null;
@@ -415,20 +391,14 @@ public class PGMLParser extends DefaultHandler {
 
             case PRIVATE_NODE_STATE:
                 //System.out.println("[PGMLParser]: endElement PRIVATE_NODE_STATE");
-                if(!_detectedFailure) {
-                    privateStateEndElement(elementName);
-                }
-
+                privateStateEndElement(elementName);
                 _textBuf = null;
                 _elementState = NODE_STATE;
                 break;
 
             case PRIVATE_EDGE_STATE:
                 //System.out.println("[PGMLParser]: endElement PRIVATE_EDGE_STATE");
-                if(!_detectedFailure) {
-                    privateStateEndElement(elementName);
-                }
-
+                privateStateEndElement(elementName);
                 _textBuf = null;
                 _elementState = EDGE_STATE;
                 break;
@@ -680,9 +650,9 @@ public class PGMLParser extends DefaultHandler {
 
     protected Fig _currentEncloser = null;
 
-    protected void privateStateEndElement(String tagName) {
-        if(_currentNode != null) {
-            if(_currentEdge != null) {
+    protected void privateStateEndElement(String tagName) throws SAXException {
+        if (_currentNode != null) {
+            if (_currentEdge != null) {
                 _currentEdge = null;
             }
 
@@ -728,14 +698,13 @@ public class PGMLParser extends DefaultHandler {
                 }
             }
 
-            if(spf == null || dpf == null || sfn == null || dfn == null) {
-                setDetectedFailure(true);
-            }
-            else {
+            try {
                 _currentEdge.setSourcePortFig(spf);
                 _currentEdge.setDestPortFig(dpf);
                 _currentEdge.setSourceFigNode(sfn);
                 _currentEdge.setDestFigNode(dfn);
+            } catch (IllegalArgumentException e) {
+                throw new SAXException(e);
             }
         }
     }
@@ -745,19 +714,14 @@ public class PGMLParser extends DefaultHandler {
         if(tagName.equals("private")) {
             _textBuf = new StringBuffer();
             _elementState = PRIVATE_NODE_STATE;
-        }
-        else if(tagName.equals("text")) {
+        } else if (tagName.equals("text")) {
             _textBuf = new StringBuffer();
             _elementState = TEXT_NODE_STATE;
-            Fig p;
-            if(!_detectedFailure) {
-                p = handleText(attrList);
-            }
+            Fig p = handleText(attrList);
             //needs-more-work: FigText should be set at distinct position within surrounding
             // Fig, but this is not supported by Fig framework yet!
             //_currentNode.addFig(handleText(attrList));
-        }
-        else {
+        } else {
             _textBuf = new StringBuffer();
             _elementState = DEFAULT_NODE_STATE;
         }
@@ -769,43 +733,29 @@ public class PGMLParser extends DefaultHandler {
             String tagName, 
             Attributes attrList) throws SAXException {
         if(tagName.equals("path")) {
-            if(!_detectedFailure) {
-                Fig p = handlePath(attrList);
-                _elementState = POLY_EDGE_STATE;
-                _currentEdge.setFig(p);
-                ((FigPoly)p)._isComplete = true;
-                _currentEdge.calcBounds();
-                //System.out.println("[PGMLParser]: edgeStateStartElement: cur= " + _currentEdge.getNumPoints());
-                if(_currentEdge instanceof FigEdgePoly) {
-                    ((FigEdgePoly)_currentEdge).setInitiallyLaidOut(true);
-                }
+            Fig p = handlePath(attrList);
+            _elementState = POLY_EDGE_STATE;
+            _currentEdge.setFig(p);
+            ((FigPoly)p)._isComplete = true;
+            _currentEdge.calcBounds();
+            //System.out.println("[PGMLParser]: edgeStateStartElement: cur= " + _currentEdge.getNumPoints());
+            if(_currentEdge instanceof FigEdgePoly) {
+                ((FigEdgePoly)_currentEdge).setInitiallyLaidOut(true);
+            }
 
-                _currentEdge.updateAnnotationPositions();
-            }
-            else {
-                _elementState = POLY_EDGE_STATE;
-            }
-        }
-        else if(tagName.equals("private")) {
+            _currentEdge.updateAnnotationPositions();
+        } else if(tagName.equals("private")) {
             _elementState = PRIVATE_EDGE_STATE;
             _textBuf = new StringBuffer();
-        }
-        else if(tagName.equals("annotations") || tagName.equals("anotations")) {
+        } else if(tagName.equals("annotations") || tagName.equals("anotations")) {
             _elementState = ANNOTATION_STATE;
             _textBuf = new StringBuffer();
-            if(!_detectedFailure) {
-                _currentEdge.initAnnotations();
-            }
-        }
-        else if(tagName.equals("text")) {
+            _currentEdge.initAnnotations();
+        } else if(tagName.equals("text")) {
             _elementState = TEXT_EDGE_STATE;
             _textBuf = new StringBuffer();
-            Fig p;
-            if(!_detectedFailure) {
-                p = handleText(attrList);
-            }
-        }
-        else {
+            Fig p = handleText(attrList);
+        } else {
             _textBuf = new StringBuffer();
             _elementState = DEFAULT_EDGE_STATE;
         }
@@ -1027,10 +977,5 @@ public class PGMLParser extends DefaultHandler {
 
     protected void rollbackAdd(Fig currentFig) {
         currentFig.setOwner(null);
-    }
-
-    protected void setDetectedFailure(boolean newValue) {
-        //System.out.println("set detected failure to " + newValue);
-        _detectedFailure = newValue;
     }
 }    /* end class PGMLParser */
