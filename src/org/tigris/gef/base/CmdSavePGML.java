@@ -88,7 +88,7 @@ public class CmdSavePGML extends Cmd implements FilenameFilter {
          	    FileDialog(ce.findFrame(), "Save Diagram in PGML format", FileDialog.SAVE);
             fd.setFilenameFilter(this);
             fd.setDirectory(Globals.getLastDirectory());
-            fd.show();
+            fd.setVisible(true);
             String filename = fd.getFile(); // blocking
             String path = fd.getDirectory(); // blocking
             Globals.setLastDirectory(path);

@@ -194,7 +194,7 @@ public class Progress extends Frame implements ActionListener {
   /** A main() to test out and demostrate the progress bar code */
   public static void main(String argv[]) {
     Progress _p = new Progress("Test", 100);
-    _p.show();
+    _p.setVisible(true);
     for (int i = 0; i < 100; i++) {
       System.out.println(i);
       if (_p.canceled()) break;

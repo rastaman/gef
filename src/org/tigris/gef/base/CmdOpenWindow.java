@@ -59,7 +59,7 @@ public class CmdOpenWindow extends Cmd {
       try { window = (Frame) clazz.newInstance(); }
       catch (java.lang.IllegalAccessException ignore) { return; }
       catch (java.lang.InstantiationException ignore) { return; }
-      window.show();
+      window.setVisible(true);
       return;
     }
     System.out.println("invalid window name");

@@ -69,7 +69,7 @@ public class CmdOpenSVG extends Cmd implements FilenameFilter {
 	new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
 	  fd.setFilenameFilter(this);
 	  fd.setDirectory(Globals.getLastDirectory());
-	  fd.show();
+	  fd.setVisible(true);
 	  String filename = fd.getFile(); // blocking
 	  String path = fd.getDirectory(); // blocking
 	  Globals.setLastDirectory(path);

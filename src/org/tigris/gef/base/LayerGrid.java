@@ -151,7 +151,7 @@ public class LayerGrid extends Layer {
 	// requirement: that only frames can make Image instances
 	System.out.println("no editor");
 	Frame frame = new Frame();
-	frame.show();
+	frame.setVisible(true);
 	_stamp = frame.createImage(_stampWidth, _stampHeight);
 	frame.dispose();
       }

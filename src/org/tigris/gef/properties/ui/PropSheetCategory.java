@@ -341,17 +341,20 @@ public class PropSheetCategory extends PropSheet {
     return item != null && super.canEdit(item);
   }
 
-  public void updateComponents() {
-    //System.out.println("updateComponents");
-    super.updateComponents();
-    updateKeysComps();
-    Enumeration keysEnum = _keysComps.keys();
-    while (keysEnum.hasMoreElements()) {
-      PropertyDescriptor pd = (PropertyDescriptor) keysEnum.nextElement();
-      if (_inUse.containsKey(pd)) show(pd); else hide(pd);
+    public void updateComponents() {
+        super.updateComponents();
+        updateKeysComps();
+        Enumeration keysEnum = _keysComps.keys();
+        while (keysEnum.hasMoreElements()) {
+            PropertyDescriptor pd = (PropertyDescriptor) keysEnum.nextElement();
+            if (_inUse.containsKey(pd)) {
+                show(pd);
+            } else {
+                hide(pd);
+            }
+        }
+        validate();
     }
-    validate();
-  }
 
   public void updateComponent(PropertyDescriptor pd) {
     //System.out.println("updateComponent");
