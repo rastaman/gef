@@ -173,7 +173,7 @@ rgb(
         <ocl>self.firstPoint.x.intValue</ocl>,
 		<ocl>self.firstPoint.y.intValue</ocl>
        L 
-	    <ocl>self.pointsVectorNotFirst</ocl>
+	    <ocl>self.points[1,*]</ocl>
 	  '
 />
 ]]>
@@ -190,7 +190,7 @@ rgb(
 		 <ocl>self.firstPoint.x.intValue</ocl> 
 		 <ocl>self.firstPoint.y.intValue</ocl>
 	   C 
-		 <ocl>self.pointsVector</ocl>
+		 <ocl>self.points</ocl>
 	  '
 />
 ]]>
@@ -211,7 +211,7 @@ rgb(
   d="M <ocl>self.firstPoint.x.intValue</ocl>,
        <ocl>self.firstPoint.y.intValue</ocl>
      L 
-       <ocl>self.pointsVectorNotFirst</ocl>
+       <ocl>self.points[1,*]</ocl>
     " 
 />
 ]]>
