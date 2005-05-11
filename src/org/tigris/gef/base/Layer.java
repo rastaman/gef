@@ -120,7 +120,7 @@ public abstract class Layer implements java.io.Serializable {
      * @deprecated in 0.11.1 will lose visibility in a future release
      * use addEditor(), removeEditor() and getEditors().
      */
-    public transient List _editors = new ArrayList();
+    private transient List _editors = new ArrayList();
 
     ////////////////////////////////////////////////////////////////
     // constructors
