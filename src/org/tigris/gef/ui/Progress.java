@@ -31,8 +31,18 @@
 
 package org.tigris.gef.ui;
 
-import java.util.*;
-import java.awt.*;
+import java.awt.Button;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Label;
+import java.awt.Panel;
+import java.awt.TextField;
 import java.awt.event.*;
 
 /** A general purpose progress bar dialog box that shows percentage
@@ -41,7 +51,10 @@ import java.awt.event.*;
  *  a header and an integer for the total amount of work that will be
  *  done. Then do their own processing, calling advance() every so
  *  often. Eventually, the number of advance() calls should equal the
- *  total amount of work specified in the constructor call. */
+ *  total amount of work specified in the constructor call.
+ *  @deprecated in 0.11.1 this class is not used in GEF. Applications would do
+ *  better to use the standard swing JProgressBar
+ */
 
 public class Progress extends Frame implements ActionListener {
 
