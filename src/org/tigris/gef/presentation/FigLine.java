@@ -56,12 +56,22 @@ public class FigLine extends Fig {
     calcBounds();
   }
 
-  /** Construct a new FigLine with the given coordinates and attributes. */
-  public FigLine(int x1, int y1, int x2, int y2) {
-    super();
-    setX1(x1); setY1(y1); setX2(x2); setY2(y2);
-    calcBounds();
-  }
+    /** Construct a new FigLine with the given coordinates and attributes. */
+    public FigLine(int x1, int y1, int x2, int y2) {
+        super();
+        setX1(x1); setY1(y1); setX2(x2); setY2(y2);
+        calcBounds();
+    }
+
+    /**
+     * A convenient constructor for PGMLStackParser to create FigLines by
+     * reflection. Do not consider this part of the normal API.
+     */
+    public FigLine() {
+        super();
+        setX1(0); setY1(0); setX2(0); setY2(10);
+        calcBounds();
+    }
 
   ////////////////////////////////////////////////////////////////
   // accessors
