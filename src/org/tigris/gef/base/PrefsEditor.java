@@ -41,7 +41,7 @@ import java.awt.*;
  *  behaviors... Needs-More-Work: This code could be deleted if I used
  *  a PropSheet to edit preferences instead.
  *
- * @see RedrawManager */
+ */
 
 public class PrefsEditor extends Frame {
 
@@ -52,12 +52,14 @@ public class PrefsEditor extends Frame {
   private Checkbox _printGridCB;
   private Checkbox _printBackgroundCB;
 
-  /** The "More Repaints" button.
-   * @see RedrawManager#moreRepairs */
+  /**
+   * The "More Repaints" button.
+   */
   private Button _moreRepaints;
 
-  /** The "Fewer Repaints" button.
-   * @see RedrawManager#fewerRepairs*/
+  /**
+   * The "Fewer Repaints" button.
+   */
   private Button _fewerRepaints;
 
   /** The close button */

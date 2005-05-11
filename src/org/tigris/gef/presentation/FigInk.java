@@ -37,7 +37,7 @@ package org.tigris.gef.presentation;
  *  FigPoly is in the way that they are created.
  *
  * @see FigPoly
- * @see ModeCreateFigInk */
+ */
 
 public class FigInk extends FigPoly {
 

@@ -38,8 +38,8 @@ import org.tigris.gef.ui.*;
 
 /** A class to define a custom palette for use in some demos.
  *
- * @see uci.gef.demo.FlexibleApplet
- * @see uci.gef.demo.BasicApplication
+ * @see org.tigris.gef.demo.FlexibleApplet
+ * @see org.tigris.gef.demo.BasicApplication
  */
 
 public class SamplePalette extends PaletteFig {

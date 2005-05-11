@@ -37,10 +37,6 @@ import java.util.Map;
  *
  *  This interface goes beyond GraphModel in that it allows
  *  modifications to the graph, instead of just access.
- *
- * @see DefaultGraphModel
- * @see AdjacencyListGraphModel
- * @see uci.graph.demo.WordTransforms
  */
 
 public interface MutableGraphModel extends GraphModel {

@@ -43,8 +43,7 @@ import org.tigris.gef.presentation.Fig;
  *  version of MutableGraphModel. This class basically includes the
  *  code for event notifications, so that you don't have to write
  *  that.  It also provides a few utility methods.
- *
- * @see AdjacencyListGraphModel */
+ */
 
 public abstract class MutableGraphSupport
         implements MutableGraphModel, java.io.Serializable {

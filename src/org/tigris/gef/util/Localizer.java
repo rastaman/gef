@@ -273,7 +273,7 @@ public class Localizer {
      * Check if a resource contains a specific key (for the current default locale) 
      * @param binding
      * @param key
-     * @return
+     * @return true if the key is contained.
      */
     public static boolean containsKey(String binding, String key) {
         return containsKey(binding, key, defaultLocale, defaultResources);

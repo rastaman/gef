@@ -35,7 +35,9 @@ import java.util.*;
 
 import org.tigris.gef.presentation.*;
 
-/** An Cmd to align 2 or more objects relative to each other. */
+/**
+ * A Cmd to align 2 or more objects relative to each other.
+ */
 
 public class CmdDistribute extends Cmd {
 
@@ -62,7 +64,7 @@ public class CmdDistribute extends Cmd {
 
   /** Construct a new CmdDistribute.
    *
-   * @param dir The desired alignment direction, one of the constants
+   * @param r The desired alignment direction, one of the constants
    * listed above. */
   public CmdDistribute(int r) {
     super("Distribute" + wordFor(r));

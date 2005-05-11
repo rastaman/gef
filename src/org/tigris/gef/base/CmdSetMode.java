@@ -39,7 +39,7 @@ import javax.swing.ImageIcon;
  *  example, in PaletteFig the Line button sets the next global mode to
  *  ModeCreateFigLine.
  *
- * @see PaletteFig */
+ */
 
 public class CmdSetMode extends Cmd {
   /** Arguments to pass to the new mode instance after creation. */

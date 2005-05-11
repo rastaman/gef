@@ -65,7 +65,7 @@ public class ColorUtility {
     /**
      * A flyweight factory method for reusing the same Color
      * value multiple times.
-     * @param rgb A string of RGB values seperated by space
+     * @param colorDescr A string of RGB values seperated by space
      * or a color name recognised by PGML (later to include SVG)
      * @param defaultColor a color to return if the color description can't be
      * interpretted.
@@ -84,7 +84,7 @@ public class ColorUtility {
     /**
      * A flyweight factory method for reusing the same Color
      * value multiple times.
-     * @param rgb A string of RGB values seperated by space
+     * @param colorDescr A string of RGB values seperated by space
      * or a color name recognised by PGML (later to include SVG)
      * @return the equivilent Color
      */
@@ -102,7 +102,7 @@ public class ColorUtility {
             color = Color.blue;
         } else if (colorDescr.indexOf(' ') > 0) {
             // If there any spaces we assume this is a space
-            // seperate string of RGB values
+            // seperated string of RGB values
             color = getColorByRgb(colorDescr);
         } else {
             // Otherwise we assume its a single integer value
@@ -182,7 +182,7 @@ public class ColorUtility {
     /**
      * Convert an integer representing a color scale to 2 hex digits.
      * @param integer
-     * @return
+     * @return A string of exactly 2 hexadecimal digits.
      */
     private static String colorToHex(int integer) {
         if (integer > 255) {
@@ -233,7 +233,6 @@ public class ColorUtility {
     
     /**
      * Cache a Color the indexes will be deduced.
-     * @param stringIndex
      * @param color
      */
     private static void cacheColor(Color color) {

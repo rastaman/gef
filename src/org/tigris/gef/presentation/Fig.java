@@ -757,7 +757,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 
     /**
      * Does this Fig support the concept of "fill color" in principle
-     * @return
+     * @return true if the Fig can be filled
      */
     public boolean hasFillColor() {
         return true;
@@ -777,7 +777,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
 
     /**
      * Does this Fig support the concept of "line color" in principle
-     * @return
+     * @return true if the Fig can have a line color
      */
     public boolean hasLineColor() {
         return true;
@@ -810,9 +810,10 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     }
 
     /**
-     * USED BY PGML.tee
-     * @return
+     * TODO must determine the purpose of this.
+     * @return the context of the Fig.
      */
+    // USED BY PGML.tee
     public String getContext() {
         return _context;
     }
@@ -925,12 +926,14 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return popUpActions;
     }
 
-    /** Returns the prefered size of the Fig. This will be useful for
-     *  automated layout. By default just uses the current
-     *  size. Subclasses must override to return something useful. */
-	public Dimension getPreferredSize() {
-		return new Dimension(_w, _h);
-	}
+    /**
+     * Returns the prefered size of the Fig. This will be useful for
+     * automated layout. By default just uses the current
+     * size. Subclasses must override to return something useful.
+     */
+    public Dimension getPreferredSize() {
+    	return new Dimension(_w, _h);
+    }
 
     /**
      * TODO document
@@ -1495,18 +1498,18 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     
     /**
      * Set whether this Fig can be resized
-     * @param true to make this Fig resizable
+     * @param resizable true to make this Fig resizable
      */
-    public void setResizable(boolean b) {
-        resizable = b;
+    public void setResizable(boolean resizable) {
+        this.resizable = resizable;
     }
 
     /**
      * Set whether this Fig can be moved
-     * @param true to make this Fig resizable
+     * @param movable true to make this Fig movable
      */
-    public void setMovable(boolean b) {
-        movable = b;
+    public void setMovable(boolean movable) {
+        this.movable = movable;
     }
 
 }    /* end class Fig */

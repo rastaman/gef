@@ -37,8 +37,6 @@ import org.tigris.gef.presentation.FigNode;
 
 /** An interface for FigNode factories. Similiar in concept to the
  *  Swing class TreeCellRenderer.
- *
- * @see DefaultGraphNodeRenderer
  */
 
 public interface GraphNodeRenderer extends java.io.Serializable {
@@ -50,7 +48,7 @@ public interface GraphNodeRenderer extends java.io.Serializable {
      * @param attributeMap an optional map of attributes to style the fig.
      * return the new FigNode
      */
-    FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map attributesMap);
+    FigNode getFigNodeFor(GraphModel graphmodel, Layer layer, Object node, Map attributeMap);
     
     /** 
      * Factory for a FigNode that can be used to represent the given node
@@ -58,5 +56,5 @@ public interface GraphNodeRenderer extends java.io.Serializable {
      * @param attributeMap an optional map of attributes to style the fig.
      * return the new FigNode
      */
-    FigNode getFigNodeFor(Object node, Map attributesMap);
+    FigNode getFigNodeFor(Object node, Map attributeMap);
 } /* end interface GraphNodeRenderer */

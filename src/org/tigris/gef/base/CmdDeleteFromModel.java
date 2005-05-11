@@ -36,9 +36,7 @@ import org.apache.commons.logging.LogFactory;
 /** 
  * Cmd to delete the Figs selected in the current editor, and dispose
  * any underlying Net stuctures. This will also remove from all other views.
- * This replace CmdDispose
- * 
- * @see CmdDelete */
+ */
 
 public class CmdDeleteFromModel extends Cmd {
 

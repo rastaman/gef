@@ -242,7 +242,7 @@ public abstract class Layer implements java.io.Serializable {
      *              if a new collection should be created
      * @return the figs
      */
-    public abstract Collection getContents(Collection c);
+    public abstract Collection getContents(Collection edges);
 
     /**
      * Get the figs that make up this layer.

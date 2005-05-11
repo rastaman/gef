@@ -325,7 +325,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
         }
     }
     /**
-     * @return
+     * @return the FigNode at the source of the edge draw
      */
     protected FigNode getSourceFigNode() {
         return sourceFigNode;
@@ -339,7 +339,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
     }
 
     /**
-     * @return
+     * @return the port at the source of the edge draw
      */
     protected Object getStartPort() {
         return startPort;

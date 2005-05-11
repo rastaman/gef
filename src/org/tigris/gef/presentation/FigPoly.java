@@ -45,8 +45,6 @@ import java.util.List;
  *  unless the last point equals the first point. Thus, FigPolys can
  *  be used to represent polylines such as FigEdgeRectilinear.
  *
- * @see CmdRemovePoint
- * @see CmdInsertPoint
  * @see FigEdgeRectiline */
 public class FigPoly extends Fig {
 

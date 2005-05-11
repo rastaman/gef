@@ -37,8 +37,7 @@ import org.tigris.gef.presentation.FigEdge;
 
 /** An interface for FigEdge factories. Similiar in concept to the
  *  Swing class TreeCellRenderer.
- *
- * @see DefaultGraphEdgeRenderer */
+ */
 
 public interface GraphEdgeRenderer extends java.io.Serializable {
     /** 
@@ -49,7 +48,7 @@ public interface GraphEdgeRenderer extends java.io.Serializable {
      * @param attributeMap an optional map of attributes to style the fig.
      * return the new FigEdge
      */
-    FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, Map attributesMap);
+    FigEdge getFigEdgeFor(GraphModel graphmodel, Layer layer, Object edge, Map attributeMap);
     
     /** 
      * Factory for a FigEdge that can be used to represent the given edge
@@ -57,5 +56,5 @@ public interface GraphEdgeRenderer extends java.io.Serializable {
      * @param attributeMap an optional map of attributes to style the fig.
      * return the new FigEdge
      */
-    FigEdge getFigEdgeFor(Object edge, Map attributesMap);
+    FigEdge getFigEdgeFor(Object edge, Map attributeMap);
 } /* end interface GraphEdgeRenderer */

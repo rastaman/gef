@@ -31,7 +31,6 @@
 
 package org.tigris.gef.demo;
 
-import java.awt.*;
 import java.util.*;
 
 import org.tigris.gef.base.*;
@@ -39,7 +38,7 @@ import org.tigris.gef.base.*;
 /** A class to define the left hand column of buttons in the Example
  *  application. Right now it just has one kind of node.
  *
- * @see uci.gef.demo.FlexibleApplet */
+ * @see org.tigris.gef.demo.FlexibleApplet */
 
 public class EquipmentPalette extends org.tigris.gef.ui.ToolBar {
 

@@ -50,11 +50,6 @@ import java.util.*;
  * interface allows the use of any application object as a node, port,
  * or edge.  This makes it much easier to add a visualization to an
  * existing application.
- *
- * @see DefaultGraphModel
- * @see AdjacencyListGraphModel
- * TODO create a GraphModel2 to supercede this which
- * returns collections.
  */
 
 public interface GraphModel extends BaseGraphModel {

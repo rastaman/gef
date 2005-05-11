@@ -46,7 +46,7 @@ import org.tigris.gef.util.*;
  *  into electrical power and attached to a printer. The Computer has
  *  attributes that can be set via the property sheet.
  *
- * @see Example */
+ */
 
 public class NodeCPU extends NetNode implements Serializable {
 

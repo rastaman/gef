@@ -313,7 +313,6 @@ public class ModeSelect extends FigModifyingModeImpl {
      * On a Mac this is by Command-Click.
      * On a non-mac this is by Ctrl-Click.
      * There seems to be no platform independant way of determining this.
-     * @author Bob Tarling
      */
     private boolean isMultiSelectTrigger(MouseEvent me) {
         // If the control key is down and this is not a popup trigger then

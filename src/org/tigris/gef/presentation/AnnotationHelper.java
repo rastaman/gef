@@ -47,9 +47,9 @@ public class AnnotationHelper{
      *
      * It's final so that no one can damage the implementation (and for speed).
      *
-     * @from The point that sits in space.
-     * @begin The start point of the edge.
-     * @end The end point of the edge.
+     * @param from The point that sits in space.
+     * @param begin The start point of the edge.
+     * @param end The end point of the edge.
      * @return A double: if 0, then the point 'from' sits on the perpendicular
      *  through the point 'begin', if 1, it is on the perpendicular through
      *  'end'. You figure out the rest.

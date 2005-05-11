@@ -181,9 +181,6 @@ public abstract class Cmd extends AbstractAction
      *  should override this to do whatever is intended. When the Cmd
      *  executes, it should store enough information to undo itself later
      *  if needed.
-     *  @param e  The event that caused this Cmd to be
-     *  performed. Generally it is a bad idea to depend on the
-     *  contents of this event too much.
      */
     public abstract void doIt();
 

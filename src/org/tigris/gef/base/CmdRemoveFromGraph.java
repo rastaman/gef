@@ -35,7 +35,6 @@ package org.tigris.gef.base;
  * graphical objects.  Normally CmdDeleteFromModel is the command users will want to execute.
  * This replaces CmdDelete
  *
- * @see Fig
  * @see CmdDeleteFromModel
  * @see Editor
  * @see LayerDiagram */

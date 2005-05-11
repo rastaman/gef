@@ -33,8 +33,8 @@ package org.tigris.gef.demo;
 
 import java.applet.*;
 import java.awt.*;
-import java.util.*;
-import javax.swing.*;
+
+import javax.swing.JFrame;
 
 import org.tigris.gef.ui.*;
 import org.tigris.gef.base.*;
@@ -64,9 +64,7 @@ import org.tigris.gef.graph.presentation.*;
  * @see Cmd
  * @see Mode
  * @see Layer
- * @see DiagramElement
  * @see NetPrimitive
- * @see jargo.softarch.klax.Main
  */
 
 public class FlexibleApplet extends Applet {
@@ -140,7 +138,7 @@ public class FlexibleApplet extends Applet {
        f.getContentPane().add(palette, BorderLayout.NORTH);
        f.getContentPane().add(jg, BorderLayout.CENTER);
        f.setSize(drawAreaSize);
-       f.show();
+       f.setVisible(true);
      }
      else {
        add("North", palette);

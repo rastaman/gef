@@ -48,9 +48,6 @@ package org.tigris.gef.graph;
  * interface allows the use of any application object as a node, port,
  * or edge.  This makes it much easier to add a visualization to an
  * existing application.
- *
- * @see DefaultGraphModel
- * @see AdjacencyListGraphModel
  */
 
 public interface BaseGraphModel extends java.io.Serializable {

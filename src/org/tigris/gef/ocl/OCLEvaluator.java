@@ -146,7 +146,7 @@ public class OCLEvaluator {
      * object.
      * @param target
      * @param property
-     * @return
+     * @return the property value.
      */
     private Object evaluateProperty(Object target, String property) throws ExpansionException {
         if(target == null) {
@@ -334,7 +334,7 @@ public class OCLEvaluator {
      * the number of items in the given list.
      * @param range a numberic value or *
      * @param list the List from which the range refers.
-     * @return
+     * @return the range value
      */
     private static final int getValue(String range, List list) {
         if (range.trim().equals("*")) {

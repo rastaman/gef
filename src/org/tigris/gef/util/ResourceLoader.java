@@ -42,16 +42,6 @@ public class ResourceLoader {
 	private static List _resourceLocations = new ArrayList();
 	private static List _resourceExtensions = new ArrayList();
 
-	/**
-	 * This method tries to find an ImageIcon for the given name
-	 * in all known locations. The file extension of the used image
-	 * file can be any of the known extensions.
-	 *
-	 * @param resource Name of the image to be looked after.
-	 * @param desc A description for the ImageIcon.
-	 * @param loader The class loader that should be used for loading the resource.
-	 * @return ImageIcon for the given name, null if no image could be found.
-	 */
 	public static ImageIcon lookupIconResource(String resource) {
 		return lookupIconResource(resource, resource);
 	}
@@ -64,43 +54,58 @@ public class ResourceLoader {
 		return lookupIconResource(resource, resource, loader);
 	}
 
-	public static ImageIcon lookupIconResource(String resource, String desc, ClassLoader loader) {
-		String strippedName = Util.stripJunk(resource);
-		if(isInCache(strippedName))
-			return (ImageIcon) _resourceCache.get(strippedName);
-
-		ImageIcon res = null;
-		java.net.URL imgURL = null;
-		try {
-			for(Iterator extensions = _resourceExtensions.iterator(); extensions.hasNext();) {
-				String tmpExt = (String) extensions.next();
-				for(Iterator locations = _resourceLocations.iterator(); locations.hasNext();) {
-					String imageName = (String) locations.next() + "/" + strippedName + "." + tmpExt;
-					//System.out.println("[ResourceLoader] try loading " + imageName);
-					if(loader == null)
-						imgURL = ResourceLoader.class.getResource(imageName);
-					else
-						imgURL = loader.getResource(imageName);
-					if(imgURL != null)
-						break;
-				}
-				if(imgURL != null)
-					break;
-			}
-			if(imgURL == null)
-				return null;
-			res = new ImageIcon(imgURL, desc);
-			synchronized(_resourceCache) {
-				_resourceCache.put(strippedName, res);
-			}
-			return res;
-		}
-		catch(Exception ex) {
-			System.err.println("Exception in looking up IconResource");
-			ex.printStackTrace();
-			return new ImageIcon(strippedName);
-		}
-	}
+    /**
+     * This method tries to find an ImageIcon for the given name
+     * in all known locations. The file extension of the used image
+     * file can be any of the known extensions.
+     *
+     * @param resource Name of the image to be looked after.
+     * @param desc A description for the ImageIcon.
+     * @param loader The class loader that should be used for loading the resource.
+     * @return ImageIcon for the given name, null if no image could be found.
+     */
+    public static ImageIcon lookupIconResource(String resource, String desc, ClassLoader loader) {
+    	String strippedName = Util.stripJunk(resource);
+    	if(isInCache(strippedName)) {
+            return (ImageIcon) _resourceCache.get(strippedName);
+        }
+    
+    	ImageIcon res = null;
+    	java.net.URL imgURL = null;
+    	try {
+            for(Iterator extensions = _resourceExtensions.iterator(); extensions.hasNext();) {
+            	String tmpExt = (String) extensions.next();
+            	for(Iterator locations = _resourceLocations.iterator(); locations.hasNext();) {
+                    String imageName = (String) locations.next() + "/" + strippedName + "." + tmpExt;
+                    //System.out.println("[ResourceLoader] try loading " + imageName);
+                    if(loader == null) {
+                    	imgURL = ResourceLoader.class.getResource(imageName);
+                    } else {
+                    	imgURL = loader.getResource(imageName);
+                    }
+                    if(imgURL != null) {
+                    	break;
+                    }
+            	}
+            	if (imgURL != null) {
+                    break;
+                }
+            }
+            if (imgURL == null) {
+            	return null;
+            }
+            res = new ImageIcon(imgURL, desc);
+            synchronized(_resourceCache) {
+            	_resourceCache.put(strippedName, res);
+            }
+            return res;
+    	}
+    	catch(Exception ex) {
+            System.err.println("Exception in looking up IconResource");
+            ex.printStackTrace();
+            return new ImageIcon(strippedName);
+    	}
+    }
 
 	/**
 	 * This method adds a new location to the list of known locations.
@@ -115,7 +120,7 @@ public class ResourceLoader {
 	/**
 	 * This method adds a new extension to the list of known extensions.
 	 *
-	 * @param ext String representation of the new extension.
+	 * @param extension String representation of the new extension.
 	 */
 	public static void addResourceExtension(String extension) {
 		if(!containsExtension(extension))
@@ -140,7 +145,7 @@ public class ResourceLoader {
 	/**
 	 * This method removes a extension from the list of known extensions.
 	 *
-	 * @param ext String representation of the extension to be removed.
+	 * @param extension String representation of the extension to be removed.
 	 */
 	public static void removeResourceExtension(String extension) {
 		for(Iterator iter = _resourceExtensions.iterator(); iter.hasNext();) {

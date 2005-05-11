@@ -243,7 +243,7 @@ public class FigNode extends FigGroup implements
     }
 
     /** When a FigNode is disposed, all of its edges are disposed.
-     * @depreacted 0.10.7 use deleteFromModel()
+     * @deprecated 0.11 use deleteFromModel()
      */
     public void dispose() {
         deleteFromModel();
@@ -326,9 +326,9 @@ public class FigNode extends FigGroup implements
         return null;
     }
 
-    /** Get all the figs that have some port as their owner
-     * @param figs a collection to which to add the figs or null
-     * @return the collection of figs
+    /**
+     * Get all the figs that have some port as their owner
+     * @return the List of figs
      */
     public List getPortFigs() {
         ArrayList portFigs = new ArrayList();

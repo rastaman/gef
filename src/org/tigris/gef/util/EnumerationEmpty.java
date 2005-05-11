@@ -39,8 +39,7 @@ import java.util.*;
  *
  *  This is useful when you must pass or return an enumeration, but you
  *  do not have any elements.
- *
- * @see uci.gef.DiagramElement#keysIn */
+ */
 
 public class EnumerationEmpty
 implements Enumeration, Iterator, java.io.Serializable {
