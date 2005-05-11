@@ -236,9 +236,7 @@ public class ColorUtility {
      * @param color
      */
     private static void cacheColor(Color color) {
-        cacheColor(new Integer(color.getRGB()), color);
-        // TODO when JRE1.3 dropped.
-        //cacheColor(Integer.valueOf(color.getRGB()), color);
+        cacheColor(colorToInteger(color), color);
     }
     
     /**
@@ -247,7 +245,17 @@ public class ColorUtility {
      * @param color
      */
     private static void cacheColor(String stringIndex, Color color) {
-        cacheColor(stringIndex, Integer.valueOf(color.getRGB()), color);
+        cacheColor(stringIndex, colorToInteger(color), color);
+    }
+    
+    /**
+     * Convert a Color to an single Integer value.
+     * @param color The color
+     * @return the single integer value representing the Color
+     */
+    private static Integer colorToInteger(Color color) {
+        return new Integer(color.getRGB());
+        //Integer.valueOf(color.getRGB()); - TODO when JRE1.4 support dropped
     }
     
     /**
