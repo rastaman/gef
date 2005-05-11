@@ -23,30 +23,28 @@
 
 package org.tigris.gef.ocl;
 
-
-
-import java.awt.*;
-import java.io.*;
-import java.lang.*;
-
 public class TemplateRecord {
-  Class key;
-  String guard;
-  String body;
-  private StringBuffer _buf = null;
+    private Class key;
+    private String guard;
+    String body;
+    private StringBuffer _buf = null;
 
-  TemplateRecord(Class k, String g, String b) {
-    key = k;
-    guard = g;
-    body = b;
-  }
-
-  public String getBody() {
-    if(_buf != null) {
-        body = _buf.toString();
+    TemplateRecord(Class k, String g, String b) {
+        key = k;
+        guard = g;
+        body = b;
     }
-    return body;
-  }
+
+    public String getBody() {
+        if(_buf != null) {
+            body = _buf.toString();
+        }
+        return body;
+    }
+
+    public String getGuard() {
+        return guard;
+    }
 
   public void setBody(String b) {
     body = b;
