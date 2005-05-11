@@ -28,6 +28,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import java.util.*;
 
@@ -86,26 +87,26 @@ public class OCLExpander {
         if(target == null) {
             return;
         }
-
+        
         List exprs = findTemplatesFor(target);
         String expr = null;
         int numExpr = (exprs == null) ? 0 : exprs.size();
-        for(int i = 0; i < numExpr && expr == null; i++) {
+        for (int i = 0; i < numExpr && expr == null; i++) {
             TemplateRecord tr = (TemplateRecord)exprs.get(i);
-            if(tr.guard == null || tr.guard.equals("")) {
+            if (tr.getGuard() == null || tr.getGuard().equals("")) {
                 expr = tr.body;
                 break;
             }
 
             _bindings.put("self", target);
-            List results = evaluate(_bindings, tr.guard);
-            if(results.size() > 0 && !Boolean.FALSE.equals(results.get(0))) {
+            List results = evaluate(_bindings, tr.getGuard());
+            if (results.size() > 0 && !Boolean.FALSE.equals(results.get(0))) {
                 expr = tr.body;
                 break;
             }
         }
 
-        if(expr == null) {
+        if (expr == null) {
             printWriter.print(prefix);
             
             String s = target.toString();
@@ -158,6 +159,7 @@ public class OCLExpander {
 
         if (line.indexOf(OCL_START, endPos) >= 0) {
             while (startPos >= 0) {
+                // There are multiple embedded expressions on a line.
                 String before = line.substring(0, startPos);
                 String expr = line.substring(startPos + OCL_START.length(), endPos);
                 String after = line.substring(endPos + OCL_END.length());
@@ -165,8 +167,11 @@ public class OCLExpander {
                 List results = evaluate(_bindings, expr);
                 Iterator iter = results.iterator();
                 StringWriter sw = new StringWriter();
-                while(iter.hasNext()) {
+                if (iter.hasNext()) {
                     expand(sw, iter.next(), before, after);
+                }
+                if (iter.hasNext()) {
+                    throw new IllegalStateException("A repeating expression cannot be on the same line as any other expression.");
                 }
                 line = sw.toString();
                 while (line.endsWith("\n") || line.endsWith("\r")) {
@@ -250,7 +255,106 @@ public class OCLExpander {
         return s;
     }
 
-    protected List evaluate(Map bindings, String expr) throws ExpansionException {
-        return evaluator.eval(bindings, expr);
+    
+    /**
+     * Evaluate an expression. The expression can be in the form -
+     * 
+     * <p><b>Style 1</b> <i>expressionpart{.expressionpart}</i>
+     * <p>Note - {} indicates an optional repeating expression part
+     * <p>The first <i>expressionpart</i> should be the keyword "self" which
+     * refers to the first bound object in the bindings map.
+     * Any further <i>expressionparts</i> are either attributes, methods or
+     * properties of the preceding part.
+     * 
+     * <p>For example
+     * <ul>
+     * <li>Given a Point <code>self.x</code> would return the x instance
+     * variable from Point</li>
+     * <li>Given a List <code>self.size</code> would return the result of the
+     * size() method on that List</li>
+     * <li>Given a Color <code>self.red</code> would return the red property of
+     * that Color (by calling the getRed() method)</li>
+     * </ul>
+     * 
+     * <p>For example, given a Component, the expression
+     * <code>self.minimumSize.width</code> will get the minimum width of that
+     * Component by first calling getMinimumSize() and then retrieving the
+     * width attribute from the result of that call.
+     * 
+     * <p>If an <i>expressionpart</i> returns a collection or an array then the
+     * range of the items returned can be restricted by specifying a required
+     * range as a comma seperated start and end values.
+     * These values can be integer numbers with 0 representing the first item.
+     * An last item can be represented by *.
+     * 
+     * <p>For example, given a Container, the expression
+     * <code>self.getComponents[1,*] will return all components except the
+     * first.
+     * 
+     * <p><b>Style 2</b> <i>package.Class.staticMethod(style1expression)</i>
+     * 
+     * <p>The second form of an expression allows a value evaluated from the
+     * first form to be passed to some static method.
+     * 
+     * For example, given a Color, the expression
+     * <code>org.tigris.gef.util.PgmlUtility.getPgmlColor(self)</code> will
+     * pass the Color as an argument to the getPgmlColor method of PgmlUtility
+     * in order to format the Color according to PGML style.
+     * 
+     * @param bindings A map of expression part to object bindings. This is
+     * expected to be prepopulated with "self" bound to the main target object.
+     * @param expr The expression to evaluate.
+     * @return A list of resulting items that satisy the expression.
+     * 
+     * @throws ExpansionException on any error.
+     */
+    private List evaluate(Map bindings, String expr) throws ExpansionException {
+        if ("self".equals(expr) || expr.startsWith("self.")) {
+            // If the expression refers to self then evaluate and
+            // return the resulting attributes
+            List values = evaluator.eval(bindings, expr);
+            return values;
+        } else {
+            // If the expression does not refer to self then the assumption is
+            // that it is an expression wrapped in a static method call.
+            int bracketPosn = expr.indexOf('(');
+            String classAndMethod = expr.substring(0, bracketPosn);
+            int lastBracketPosn = expr.lastIndexOf(')');
+            expr = expr.substring(bracketPosn+1, lastBracketPosn);
+            List values = evaluator.eval(bindings, expr);
+            ArrayList newValues = new ArrayList(values.size());
+            int methodSeperator = classAndMethod.lastIndexOf('.');
+            String className = classAndMethod.substring(0, methodSeperator);
+            String methodName = classAndMethod.substring(methodSeperator + 1);
+            
+            try {
+                
+                Class clazz = Class.forName(className);
+                
+                for (Iterator it = values.iterator(); it.hasNext();) {
+                    
+                    Object o = it.next();
+                    
+                    Class[] parameters = new Class[1];
+                    parameters[0] = o.getClass();
+                    Method m = clazz.getMethod(methodName, parameters);
+                    
+                    Object[] args = new Object[1];
+                    args[0] = o;
+                    m.invoke(null, args);
+                    newValues.add(o);
+                }
+            } catch (ClassNotFoundException e) {
+                throw new ExpansionException(e);
+            } catch (IllegalAccessException e) {
+                throw new ExpansionException(e);
+            } catch (InvocationTargetException e) {
+                throw new ExpansionException(e);
+            } catch (NoSuchMethodException e) {
+                throw new ExpansionException(e);
+            }
+            
+            return values;
+        }
     }
 }
