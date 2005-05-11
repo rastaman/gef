@@ -25,7 +25,11 @@ package org.tigris.gef.xml.svg;
 
 import java.util.*;
 import java.awt.*;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StreamTokenizer;
+import java.io.StringReader;
 import java.net.URL;
 
 import org.tigris.gef.base.*;
@@ -33,13 +37,13 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.presentation.*;
 import org.tigris.gef.graph.*;
 
-import org.tigris.gef.xml.*;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 import org.xml.sax.*;
+import org.xml.sax.helpers.DefaultHandler;
 
 
-public class SVGParser extends HandlerBase {
+public class SVGParser extends DefaultHandler {
 
   ////////////////////////////////////////////////////////////////
   // static variables
@@ -114,7 +118,7 @@ public class SVGParser extends HandlerBase {
 	}
 	return defaultColor;
   }
-	private void edgeStateStartElement(String tagName,AttributeList attrList)
+	private void edgeStateStartElement(String tagName, Attributes attrList)
 	{
 		if (tagName.equals("desc")) {
 		}
@@ -254,7 +258,8 @@ public class SVGParser extends HandlerBase {
 	 System.out.println("should be: "+desc);
 	return new DefaultGraphModel();
   }
-  protected FigCircle handleEllipse(AttributeList attrList) {
+  
+  protected FigCircle handleEllipse(Attributes attrList) {
 	FigCircle f = new FigCircle(0, 0, 50, 50);
 	setAttrs(f, attrList);
 
@@ -277,7 +282,7 @@ public class SVGParser extends HandlerBase {
   }
   /* Returns Fig rather than FigGroups because this is also
 	 used for FigEdges. */
-  protected Fig handleGroup(AttributeList attrList) {
+  protected Fig handleGroup(Attributes attrList) {
 	Fig f = null;
 
 	String 			clsNameBounds = attrList.getValue("class");
@@ -329,7 +334,7 @@ public class SVGParser extends HandlerBase {
 
 	return f;
   }
-  protected FigLine handleLine(AttributeList attrList) {
+  protected FigLine handleLine(Attributes attrList) {
 	_currentLine = new FigLine(0, 0, 100, 100);
 	setAttrs(_currentLine, attrList);
 	_x1Int = 0;
@@ -337,7 +342,7 @@ public class SVGParser extends HandlerBase {
 	_elementState = LINE_STATE;
 	return _currentLine;
   }
-  protected FigPoly handlePath(AttributeList attrList) {
+  protected FigPoly handlePath(Attributes attrList) {
 	String type = attrList.getValue("class");
 
 	FigPoly f = null;
@@ -405,7 +410,7 @@ public class SVGParser extends HandlerBase {
 	return f;
 
   }
-  protected Fig handlePolyLine(AttributeList attrList) {
+  protected Fig handlePolyLine(Attributes attrList) {
 	String clsName = translateClassName(attrList.getValue("description"));
 	if (clsName != null && clsName.indexOf("FigLine") != -1) {
 	  return handleLine(attrList);
@@ -414,7 +419,7 @@ public class SVGParser extends HandlerBase {
 	  return handlePath(attrList);
 	}
   }
-  protected FigRect handleRect(AttributeList attrList) {
+  protected FigRect handleRect(Attributes attrList) {
 	FigRect f;
 	String cornerRadius = attrList.getValue("rx");
 	if (cornerRadius == null || cornerRadius.equals("")) {
@@ -428,7 +433,7 @@ public class SVGParser extends HandlerBase {
 	setAttrs(f, attrList);
 	return f;
   }
-  protected void handleSVG(AttributeList attrList) {
+  protected void handleSVG(Attributes attrList) {
 	String name = attrList.getValue("id");
 	String clsName = attrList.getValue("class");
 	try {
@@ -439,7 +444,7 @@ public class SVGParser extends HandlerBase {
 		System.out.println("Exception in handleSVG");
 	}
   }
-  protected FigText handleText(AttributeList attrList) {
+  protected FigText handleText(Attributes attrList) {
 	FigText f = new FigText(100, 100, 90, 45);
 	setAttrs(f, attrList);
 
@@ -489,13 +494,14 @@ public class SVGParser extends HandlerBase {
 	  ex.printStackTrace();
 	  }
   }
-  protected void lineStateStartElement(String tagName,AttributeList attrList) {
-	  if(_currentLine != null) {
+  
+    protected void lineStateStartElement(String tagName, Attributes attrList) {
+	    if (_currentLine != null) {
 			if (tagName.equals("desc")) {
 			}
 			else if (tagName.equals("title")) {
 			}
-		  if(tagName.equals("moveto")) {
+		    if(tagName.equals("moveto")) {
 			  String x1 = attrList.getValue("x");
 			  String y1 = attrList.getValue("y");
 			  _x1Int = (x1 == null || x1.equals("")) ? 0 : Integer.parseInt(x1);
@@ -513,7 +519,7 @@ public class SVGParser extends HandlerBase {
 		  }
 	  }
   }
-	private void nodeStateStartElement(String tagName,AttributeList attrList) {
+	private void nodeStateStartElement(String tagName, Attributes attrList) {
 		if (tagName.equals("desc")) {
 		}
 		else if (tagName.equals("title")) {
@@ -578,32 +584,34 @@ public class SVGParser extends HandlerBase {
 	}
 	return defaultColor;
   }
-/**
- * This method parses the 'style' attribute for a particular field
- * @return java.lang.String
- * @param field java.lang.String
- * @param style java.lang.String
- */
-protected String parseStyle(String field, String style) {
-	field += ":";
-	int start = style.indexOf(field,0);
-	if ( start != -1 )
-	{
-		int end = style.indexOf(";",start);
-		if ( end != -1 )
-		{
-			return style.substring( start+field.length(), end ).trim();
-		}
-		else
-		{
-			return style.substring( start+field.length(), style.length()-1 ).trim();
-		}
-	}
+  
+    /**
+     * This method parses the 'style' attribute for a particular field
+     * @return java.lang.String
+     * @param field java.lang.String
+     * @param style java.lang.String
+     */
+    protected String parseStyle(String field, String style) {
+    	field += ":";
+    	int start = style.indexOf(field,0);
+    	if ( start != -1 )
+    	{
+    		int end = style.indexOf(";",start);
+    		if ( end != -1 )
+    		{
+    			return style.substring( start+field.length(), end ).trim();
+    		}
+    		else
+    		{
+    			return style.substring( start+field.length(), style.length()-1 ).trim();
+    		}
+    	}
+    
+    	return null;
+    }
 
-	return null;
-}
-  private void polyStateStartElement(String tagName,AttributeList attrList) {
-	  if(_currentPoly != null) {
+    private void polyStateStartElement(String tagName, Attributes attrList) {
+        if (_currentPoly != null) {
 			if (tagName.equals("desc")) {
 			}
 			else if (tagName.equals("title")) {
@@ -733,10 +741,10 @@ protected String parseStyle(String field, String style) {
 					i++;	// go past '/' if there, otherwise advance to 0
 					String[] entityPaths = getEntityPaths();
 					InputStream is = null;
-					for(int pathIndex = 0; pathIndex < entityPaths.length && is == null; pathIndex++) {
+					for (int pathIndex = 0; pathIndex < entityPaths.length && is == null; pathIndex++) {
 						String DTD_DIR = entityPaths[pathIndex];
 						is = getClass().getResourceAsStream(DTD_DIR + systemId.substring(i));
-						if(is == null) {
+						if (is == null) {
 							try {
 								is = new FileInputStream(DTD_DIR.substring(1) + systemId.substring(i));
 							}
@@ -766,9 +774,11 @@ protected String parseStyle(String field, String style) {
   ////////////////////////////////////////////////////////////////
   // internal parsing methods
 
-  protected void setAttrs(Fig f, AttributeList attrList) {
+  protected void setAttrs(Fig f, Attributes attrList) {
 	String name = attrList.getValue("id");
-	if (name != null && !name.equals("")) _figRegistry.put(name, f);
+	if (name != null && !name.equals("")) {
+        _figRegistry.put(name, f);
+    }
 	String x = attrList.getValue("x");
 	if (x != null && !x.equals("")) {
 	  String y = attrList.getValue("y");
@@ -819,7 +829,7 @@ protected String parseStyle(String field, String style) {
 	setOwnerAttr(f,attrList);
   }
 
-    protected void setOwnerAttr(Fig f, AttributeList attrList) {
+    protected void setOwnerAttr(Fig f, Attributes attrList) {
 	try {
 	    String owner = attrList.getValue("href");
 	    if (owner != null && !owner.equals("")) f.setOwner(findOwner(owner));
@@ -835,7 +845,7 @@ protected String parseStyle(String field, String style) {
   public void setOwnerRegistry(Map owners) {
 	_ownerRegistry = owners;
   }
-  public void startElement(String elementName,AttributeList attrList) {
+  public void startElement(String elementName,Attributes attrList) {
 	switch(_elementState) {
 		case DEFAULT_STATE:
 			if ("g".equals(elementName)) {
