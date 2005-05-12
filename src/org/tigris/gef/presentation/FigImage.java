@@ -61,17 +61,16 @@ public class FigImage extends Fig implements ImageObserver {
     /** Construct a new FigImage w/ the given position and image. */
     public FigImage(int x, int y, Image i) {
         this(x, y, 0, 0, i);
-        setWidth(i.getWidth(this));
-        setHeight(i.getHeight(this));
+        setSize(i.getWidth(this), i.getHeight(this));
     }
+    
     /** Construct a new FigImage w/ the given position and URL. */
     public FigImage(int x, int y, URL imageUrl) {
         super(x, y, 0, 0);
         _url = imageUrl;
         _image = Globals.getImage(_url);
         Globals.waitForImages();
-        setWidth(_image.getWidth(this));
-        setHeight(_image.getHeight(this));
+        setSize(_image.getWidth(this), _image.getHeight(this));
     }
     ////////////////////////////////////////////////////////////////
     // Editor API

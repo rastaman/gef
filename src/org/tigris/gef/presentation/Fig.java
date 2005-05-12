@@ -1253,10 +1253,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         _context = context;
     }
 
-    public void setHeight(int h) {
-        setBounds(_x, _y, _w, h);
-    }
-
     ////////////////////////////////////////////////////////////////
     // accessors
 
@@ -1419,7 +1415,10 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         setBounds(_x, _y, w, _h);
     }
 
-    // needs-more-work: property change events?
+    public void setHeight(int h) {
+        setBounds(_x, _y, _w, h);
+    }
+
     public void setX(int x) {
         setBounds(x, _y, _w, _h);
     }

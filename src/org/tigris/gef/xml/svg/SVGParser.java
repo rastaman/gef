@@ -273,10 +273,7 @@ public class SVGParser extends DefaultHandler {
 	int rxInt = (rx == null || rx.equals("")) ? 10 : Integer.parseInt(rx);
 	int ryInt = (ry == null || ry.equals("")) ? 10 : Integer.parseInt(ry);
 
-	f.setX( cxInt - rxInt );
-	f.setY( cyInt - ryInt );
-	f.setWidth(rxInt * 2);
-	f.setHeight(ryInt * 2);
+	f.setBounds( cxInt - rxInt, cyInt - ryInt, rxInt * 2, ryInt * 2);
 
 	return f;
   }
