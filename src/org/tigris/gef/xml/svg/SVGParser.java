@@ -42,7 +42,9 @@ import javax.xml.parsers.SAXParser;
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
-
+/**
+ * @deprecated use org.tigris.gef.persistence.svg.SvgParser
+ */
 public class SVGParser extends DefaultHandler {
 
   ////////////////////////////////////////////////////////////////

@@ -37,7 +37,7 @@ import java.util.StringTokenizer;
  * @author Bob Tarling
  * @stereotype utility
  */
-public class ColorUtility {
+public class ColorFactory {
 
     /**
      * A map of previously created colors mapped by an
@@ -59,7 +59,7 @@ public class ColorUtility {
     /**
      * A utility
      */
-    private ColorUtility() {
+    private ColorFactory() {
     }
     
     /**
@@ -109,91 +109,6 @@ public class ColorUtility {
             color = getColorByRgb(Integer.valueOf(colorDescr));
         }
         return color;
-    }
-
-    /**
-     * Get a color name for a color or null if this is some custom color.
-     * @param color
-     * @return the color name or null.
-     */
-    public static String getColorName(Color color) {
-        
-        String colorName = null;
-        
-        if (color.equals(Color.white)) {
-            colorName = "white";
-        } else if(color.equals(Color.black)) {
-            colorName = "black";
-        } else if(color.equals(Color.red)) {
-            colorName = "red";
-        } else if(color.equals(Color.green)) {
-            colorName = "green";
-        } else if(color.equals(Color.blue)) {
-            colorName = "blue";
-        }
-        
-        return colorName;
-    }
-
-    /**
-     * Get the PGML description of a color. If possible this is a text
-     * description otherwise it is in red green blue integer format seperated
-     * by spaces.
-     * 
-     * @param color The color to convert to PGML style
-     * @return a string representing the color in pgml format
-     */
-    public static String getPgmlColor(Color color) {
-        String colorDescr = getColorName(color);
-        if (colorDescr != null) {
-            return colorDescr;
-        }
-        return color.getRed() + " " + color.getGreen() + " " + color.getBlue();
-    }
-
-    /**
-     * Get the SVG description of a color. If possible this is a text
-     * description otherwise it is in hexadecimal red green blue format of
-     * either #rrggbb or #rgb.
-     * 
-     * @param color The color to convert to SVG style
-     * @return a string representing the color in SVG format
-     */
-    public static String getSvgColor(Color color) {
-        String colorDescr = getColorName(color);
-        if (colorDescr != null) {
-            return colorDescr;
-        }
-        
-        int red = color.getRed();
-        int green = color.getGreen();
-        int blue = color.getBlue();
-
-        if (red < 15 && green < 15 && blue < 15) {
-            return "#" + Integer.toHexString(color.getRed())
-                 + " " + Integer.toHexString(color.getGreen())
-                 + " " + Integer.toHexString(color.getBlue());
-        }
-        return "#" + colorToHex(color.getRed())
-             + " " + colorToHex(color.getGreen())
-             + " " + colorToHex(color.getBlue());
-    }
-
-    /**
-     * Convert an integer representing a color scale to 2 hex digits.
-     * @param integer
-     * @return A string of exactly 2 hexadecimal digits.
-     */
-    private static String colorToHex(int integer) {
-        if (integer > 255) {
-            throw new IllegalArgumentException(
-                    "Color value cannot be great than 255");
-        }
-        if (integer > 15) {
-            return Integer.toHexString(integer);
-        }
-        
-        return "0" + Integer.toHexString(integer);
     }
 
     /**

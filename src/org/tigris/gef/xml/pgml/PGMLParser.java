@@ -56,13 +56,16 @@ import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-import org.tigris.gef.util.ColorUtility;
+import org.tigris.gef.util.ColorFactory;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * @deprecated use org.tigris.gef.persistence.pgml.PgmlParser
+ */
 public class PGMLParser extends DefaultHandler {
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -805,7 +808,7 @@ public class PGMLParser extends DefaultHandler {
 
         String strokecolor = attrList.getValue("strokecolor");
         if(strokecolor != null && !strokecolor.equals("")) {
-            f.setLineColor(ColorUtility.getColor(strokecolor, Color.blue));
+            f.setLineColor(ColorFactory.getColor(strokecolor, Color.blue));
         }
 
         String fill = attrList.getValue("fill");
@@ -815,7 +818,7 @@ public class PGMLParser extends DefaultHandler {
 
         String fillcolor = attrList.getValue("fillcolor");
         if(fillcolor != null && !fillcolor.equals("")) {
-            f.setFillColor(ColorUtility.getColor(fillcolor, Color.white));
+            f.setFillColor(ColorFactory.getColor(fillcolor, Color.white));
         }
 
         String dasharray = attrList.getValue("dasharray");
