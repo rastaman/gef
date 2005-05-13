@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE TemplateSet [
   <!ELEMENT TemplateSet (macro | template)* >
   <!ELEMENT macro (#PCDATA)>
@@ -23,7 +23,7 @@ strokecolor="<ocl>self.lineColor</ocl>"
 
 <template class="org.tigris.gef.base.Diagram">
 <![CDATA[
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE pgml SYSTEM "pgml.dtd">
 <pgml description="<ocl>self.classAndModelID</ocl>"
       name="<ocl>self.name</ocl>"
@@ -175,11 +175,11 @@ height="<ocl>self.height.intValue</ocl>"
 <group name="<ocl>self.id</ocl>"
      description="<ocl>self.classNameAndBounds</ocl>"
      href="<ocl>self.owner.id</ocl>"
-     shown="<ocl>self.visState</ocl>"
+     shown="<ocl>org.tigris.gef.persistence.PgmlUtility.getVisibility(self)</ocl>"
      FILL_AND_STROKE
 >
   <private>
-    enclosingFig="<ocl>self.enclosingFig.id</ocl>"
+    enclosingFig="<ocl ignoreNull>self.enclosingFig.id</ocl>"
   </private>
 
   <ocl>self.figs</ocl>
