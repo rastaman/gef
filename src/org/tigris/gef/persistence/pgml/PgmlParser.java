@@ -841,7 +841,7 @@ public class PgmlParser extends DefaultHandler {
         if(visState != null && !visState.equals("")) {
             int visStateInt = Integer.parseInt(visState);
             //System.out.println("[PGMLParser]: setAttrs: " + visStateInt);
-            f.setVisState(visStateInt);
+            f.setVisible(visStateInt != 0);
         }
 
         String single = attrList.getValue("single");
