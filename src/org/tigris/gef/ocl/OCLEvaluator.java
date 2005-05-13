@@ -75,9 +75,9 @@ public class OCLEvaluator {
     }
 
     protected List eval(Map bindings, String expr) throws ExpansionException {
+        
         int firstPos = expr.indexOf(".");
         if (firstPos < 0) {
-            
             firstPos = expr.length();
         }
         Object target = bindings.get(expr.substring(0, firstPos));
@@ -95,7 +95,8 @@ public class OCLEvaluator {
         }
         
         String prop = expr.substring(firstPos);
-        return eval(bindings, prop, targets);
+        List items = eval(bindings, prop, targets);
+        return items;
     } // end of eval()
     
     private List eval(Map bindings, String expr, List targets) throws ExpansionException {

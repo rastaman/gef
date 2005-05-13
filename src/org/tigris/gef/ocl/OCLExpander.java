@@ -35,7 +35,7 @@ import java.util.*;
 public class OCLExpander {
     ////////////////////////////////////////////////////////////////
     // constants
-    public static String OCL_START = "<ocl>";
+    public static String OCL_START = "<ocl";
     public static String OCL_END = "</ocl>";
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -84,7 +84,8 @@ public class OCLExpander {
     }
 
     private void expandContent(PrintWriter printWriter, Object target, String prefix, String suffix) throws ExpansionException {
-        if(target == null) {
+        
+        if (target == null) {
             return;
         }
         
@@ -141,34 +142,49 @@ public class OCLExpander {
         }
 
         StringTokenizer st = new StringTokenizer(expr, "\n\r");
+        int lineNo = 0;
         while(st.hasMoreTokens()) {
             String line = st.nextToken();
-            expandLine(printWriter, line, target, prefix, suffix);
+            expandLine(printWriter, line, target, prefix, suffix, ++lineNo);
         }
     }    // end of expand
 
-    private void expandLine(PrintWriter pw, String line, Object target, String prefix, String suffix) throws ExpansionException {
+    private void expandLine(
+            PrintWriter pw,
+            String line,
+            Object target,
+            String prefix,
+            String suffix,
+            int lineNo) throws ExpansionException {
         // if no embedded expression then output line else
         // then loop over all values of expr and call recursively for each resul
-        int startPos = line.indexOf(OCL_START, 0);
-        int endPos = line.indexOf(OCL_END, 0);
-        if(startPos == -1 || endPos == -1) {    // no embedded expr's
+        int startTagPos = line.indexOf(OCL_START, 0);
+        int endTagPos = line.indexOf(OCL_END, 0);
+        if(startTagPos == -1 || endTagPos == -1) {    // no embedded expr's
             pw.println(prefix + line + suffix);
             return;
         }
 
-        if (line.indexOf(OCL_START, endPos) >= 0) {
-            while (startPos >= 0) {
+        
+        if (line.indexOf(OCL_START, endTagPos) >= 0) {
+            while (startTagPos >= 0) {
                 // There are multiple embedded expressions on a line.
-                String before = line.substring(0, startPos);
-                String expr = line.substring(startPos + OCL_START.length(), endPos);
-                String after = line.substring(endPos + OCL_END.length());
+                int expressionPos = line.indexOf('>', startTagPos) + 1;
+                boolean ignoreNull = isIgnoreNull(line.substring(startTagPos + 4, expressionPos));
+                String before = line.substring(0, startTagPos);
+                String expr = line.substring(expressionPos, endTagPos);
+                String after = line.substring(endTagPos + OCL_END.length());
                 _bindings.put("self", target);
                 List results = evaluate(_bindings, expr);
                 Iterator iter = results.iterator();
                 StringWriter sw = new StringWriter();
                 if (iter.hasNext()) {
-                    expand(sw, iter.next(), before, after);
+                    Object o = iter.next();
+                    if (o == null && !ignoreNull) {
+                        throw new ExpansionException("Evaluated the expression '"
+                                + expr + "' to null at line " + lineNo);
+                    }
+                    expand(sw, o, before, after);
                 }
                 if (iter.hasNext()) {
                     throw new IllegalStateException("A repeating expression cannot be on the same line as any other expression.");
@@ -178,22 +194,34 @@ public class OCLExpander {
                     line = line.substring(0, line.length()-1);
                 }
               
-                startPos = line.indexOf(OCL_START, 0);
-                endPos = line.indexOf(OCL_END, 0);
+                startTagPos = line.indexOf(OCL_START, 0);
+                endTagPos = line.indexOf(OCL_END, 0);
             }
             pw.println(prefix + line + suffix);
         } else {
             // assume one embedded expression on line
-            prefix = prefix + line.substring(0, startPos);
-            String expr = line.substring(startPos + OCL_START.length(), endPos);
-            suffix = line.substring(endPos + OCL_END.length()) + suffix;
+            int expressionPos = line.indexOf('>', startTagPos) + 1;
+            boolean ignoreNull = isIgnoreNull(line.substring(startTagPos + 4, expressionPos));
+            prefix = prefix + line.substring(0, startTagPos);
+            String expr = line.substring(expressionPos, endTagPos);
+            suffix = line.substring(endTagPos + OCL_END.length()) + suffix;
             _bindings.put("self", target);
             List results = evaluate(_bindings, expr);
             Iterator iter = results.iterator();
             while(iter.hasNext()) {
-                expand(pw, iter.next(), prefix, suffix);
+                Object o = iter.next();
+                if (o == null && !ignoreNull) {
+                    throw new ExpansionException("Evaluated the expression '"
+                            + expr + "' to null at line " + lineNo);
+                }
+                expand(pw, o, prefix, suffix);
             }
         }
+    }
+    
+    private boolean isIgnoreNull(String attributes) {
+        boolean ignoreNull = (attributes.startsWith(" ignoreNull>"));
+        return ignoreNull;
     }
 
     /** Find the List of templates that could apply to this target
