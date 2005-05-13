@@ -26,6 +26,7 @@ package org.tigris.gef.persistence.pgml;
 
 import java.awt.Color;
 
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.ColorFactory;
 
 /**
@@ -75,5 +76,53 @@ public class PgmlUtility {
         }
         
         return colorName;
+    }
+    
+    /**
+     * Translate the visibility flag of a Fig to the PGML "shown" attribute
+     * value.
+     * 
+     * @param f The Fig
+     * @return 0=hidden, 1=shown
+     */
+    public static int getVisibility(Fig f) {
+        return (f.isVisible()) ?  1 : 0;
+    }
+    
+    /**
+     * Translate the dashed flag of a Fig to the PGML "dashed" attribute
+     * value.
+     * 
+     * @param f The Fig
+     * @return 0=not dashed, 1=dashed
+     */
+    public static int getDashed(Fig f) {
+        return (f.getDashed()) ?  1 : 0;
+    }
+    
+    /**
+     * Translate the filled flag of a Fig to the PGML "filled" attribute
+     * value.
+     * 
+     * @param f The Fig
+     * @return 0=not filled, 1=filled
+     */
+    public static int getFilled(Fig f) {
+        return (f.getFilled()) ?  1 : 0;
+    }
+    
+    /**
+     * Output the class name and bounds of a Fig.
+     * An empty bounds indicates an invisible Fig.
+     * 
+     * @param f The Fig
+     * @return the class name and bounds.
+     */
+    public static String classNameAndBounds(Fig f) {
+        if (f.isVisible()) {
+            return f.getClass().getName() + "[" + f.getX() + ", " + f.getY() + ", " + f.getWidth() + ", " + f.getHeight() + "]";
+        } else {
+            return f.getClass().getName() + "[]";
+        }
     }
 }
