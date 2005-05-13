@@ -1,4 +1,26 @@
-// %1030438053652:org.tigris.gef.presentation%
+// $Id$
+// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.tigris.gef.presentation;
 
 import java.awt.BasicStroke;
@@ -35,14 +57,12 @@ import org.tigris.gef.ui.PopupGenerator;
 import org.tigris.gef.util.Localizer;
 
 /**
- *  This class is the base class for basic drawing objects such as rectangles,
- *  lines, text, circles, etc. Also, class FigGroup implements a composite
- *  figure. Fig's are Diagram elements that can be placed in any LayerDiagram.
- *  Fig's are also used to define the look of FigNodes on NetNodes.
+ * This class is the base class for basic drawing objects such as rectangles,
+ * lines, text, circles, etc. Also, class FigGroup implements a composite
+ * figure. Fig's are Diagram elements that can be placed in any LayerDiagram.
+ * Fig's are also used to define the look of FigNodes on NetNodes.
  */
-public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerator {
-    ////////////////////////////////////////////////////////////////
-    // constants
+public abstract class Fig implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerator {
     
     /** The smallest size that the user can drag this Fig. */
     public final int MIN_SIZE = 4;
@@ -51,9 +71,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     private static final String[] DASHED_CHOICES = {"Solid", "Dashed",     "LongDashed",  "Dotted",      "DotDash"};
     private static final float[][] DASH_ARRAYS   = {null,    {5.0f, 5.0f}, {15.0f, 5.0f}, {3.0f, 10.0f}, {3.0f, 6.0f, 10.0f, 6.0f}};  // opaque, transparent, [opaque, transparent]
     private static final int[]     DASH_PERIOD   = {0,        10,           20,            13,            25,                     };  // the sum of each subarray
-
-    ////////////////////////////////////////////////////////
-    // instance variables
 
     /**
      * Indicates whether this fig can be moved
@@ -110,7 +127,8 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      */
     protected int _h;
 
-    /** Name of the resource being basis to this figs localization.
+    /**
+     * Name of the resource being basis to this figs localization.
      */
     private String _resource = "";
 
@@ -148,11 +166,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      * TODO: rename to "visible"
      */
     private boolean _displayed = true;
-    
-    /** 
-     * TODO how does this differ from displayed?
-     */
-    private int _shown = 0;
     
     protected boolean _allowsSaving = true;
     
@@ -228,12 +241,18 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         //annotation related
     }
 
-    //------------------------
-    // localization related
+    /**
+     * @deprecated Feature removed. It is unrealistic that different Figs will
+     * have different locales.
+     */
     public void setResource(String resource) {
         _resource = resource;
     }
 
+    /**
+     * @deprecated Feature removed. It is unrealistic that different Figs will
+     * have different locales.
+     */
     public String getResource() {
         return _resource;
     }
@@ -247,7 +266,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     // specifies the AnnotationOwner
     public void setAnnotationOwner(Fig f) {
         annotationOwner = f;
-        setAnnotationStatus(true);
+        setAnnotationStatus(annotationOwner != null);
     }
 
     // fig is not an annotation any longer
@@ -267,17 +286,22 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return an;
     }
 
-    //** Set the AnnotationStrategy for this fig */
-    //** using this method will discard the previous AnnotationStrategy */
+    /**
+     * Set the AnnotationStrategy for this Fig.
+     * using this method will discard the previous AnnotationStrategy
+     */
     public void setAnnotationStrategy(AnnotationStrategy a) {
         an = a;
     }
 
-    // returns true if this fig is an annotation of any other fig
+    /**
+     * returns true if this fig is an annotation of any other fig
+     */
     public boolean isAnnotation() {
         return annotationStatus;
     }
 
+    // TODO Do we ever want to call this, or just override isAnnotation?
     public void setAnnotationStatus(boolean newValue) {
         annotationStatus = newValue;
     }
@@ -301,7 +325,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     /**
      * Fig has been moved: Adjust the annotation positions
      * Extracted from endTrans() so that annotation positions can be updated without redrawing everything. 
-     */ 
+     */
+    // TODO This is only required by SelectionManager. Should this be package private
+    // an move SelectionManager into this package?
     public void translateAnnotations() {
         // If this Fig is an annotaion itself, simply store the position at the owner.
         if(this.isAnnotation()) {
@@ -321,13 +347,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      * Updates the positions of the connected annotations.
      */
     public void updateAnnotationPositions() {
-        //System.out.println("[Fig] updateAnnotationPositions");
         Enumeration annotations = getAnnotationStrategy().getAllAnnotations();
-        //System.out.println("[Fig] numOfAnnotations = " + getAnnotationStrategy().numOfAnnotations());
         while(annotations.hasMoreElements()) {
             Fig annotation = (Fig)annotations.nextElement();
-            //Rectangle annotRect = annotation.getBounds();
-            //System.out.println("[Fig] updateAnnotationPositions: "+annotRect.x+" "+annotRect.y+" "+annotRect.width+" "+annotRect.height);
             getAnnotationStrategy().storeAnnotationPosition(annotation);
             annotation.endTrans();
         }
@@ -341,29 +363,41 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     // end annotation related
     //-----------------------------------
     // TODO We really need some javadoc for this. How is this supposed to be
-    // used. WHy isn't this extended by FigEdgePoly?
+    // used. Why isn't this extended by FigEdgePoly?
     public void addPoint(int x, int y) {
     }
 
-    ////////////////////////////////////////////////////////////////
-    // updates
-
-    /** The specified PropertyChangeListeners <b>propertyChange</b>
-     *  method will be called each time the value of any bound property
-     *  is changed.  Note: the JavaBeans specification does not require
-     *  PropertyChangeListeners to run in any particular order. <p>
+    /**
+     * The specified PropertyChangeListeners <b>propertyChange</b>
+     * method will be called each time the value of any bound property
+     * is changed.  Note: the JavaBeans specification does not require
+     * PropertyChangeListeners to run in any particular order. <p>
      *
-     *  Since most Fig's will never have any listeners, and I want Figs
-     *  to be fairly light-weight objects, listeners are kept in a
-     *  global Hashtable, keyed by Fig.  NOTE: It is important that all
-     *  listeners eventually remove themselves, otherwise this will
-     *  prevent garbage collection. */
+     * Since most Fig's will never have any listeners, and I want Figs
+     * to be fairly light-weight objects, listeners are kept in a
+     * global Hashtable, keyed by Fig.  NOTE: It is important that all
+     * listeners eventually remove themselves, otherwise this will
+     * prevent garbage collection.
+     */
     public void addPropertyChangeListener(PropertyChangeListener l) {
         Globals.addPropertyChangeListener(this, l);
     }
+    
+    /**
+     *  Remove this PropertyChangeListener from the JavaBeans internal list. If
+     *  the PropertyChangeListener isn't on the list, silently do nothing.
+     */
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        Globals.removePropertyChangeListener(this, l);
+    }
 
-    /** Align this Fig with the given rectangle. Some subclasses may
-     *  need to know the editor that initiated this action.  */
+    /**
+     * Align this Fig with the given rectangle. Some subclasses may
+     * need to know the editor that initiated this action.
+     * @param r the rectangle to align to.
+     * @param direction
+     * @param ed the editor that initiated this action.
+     */
     public void align(Rectangle r, int direction, Editor ed) {
         Rectangle bbox = getBounds();
         int dx = 0;
@@ -411,8 +445,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         translate(dx, dy);
     }
 
-    /** Update the bounds of this Fig.  By default it is assumed that
-     *  the bounds have already been updated, so this does nothing.
+    /**
+     * Update the bounds of this Fig.  By default it is assumed that
+     * the bounds have already been updated, so this does nothing.
      *
      * @see FigText#calcBounds */
     public void calcBounds() {
@@ -421,19 +456,21 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     // note: computing non-intersection is faster on average.  Maybe I
     // should structure the API to allow clients to take advantage of that?
 
-    /** Return the center of the given Fig. By default the center is the
-     *  center of its bounding box. Subclasses may want to define
-     *  something else. 
-     * USED BY PGML.tee
+    /**
+     * Return the center of the given Fig. By default the center is the
+     * center of its bounding box. Subclasses may want to define
+     * something else. 
      */
+    // USED BY PGML.tee
     public Point center() {
         Rectangle bbox = getBounds();
         return new Point(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
     }
 
     /**
-     * USED BY PGML.tee
+     * @deprecated in 0.11.1 use org.tigris.gef.persistence.pgml.PgmlUtility.getClassNameAndBounds(Fig)
      */
+    // USED BY PGML.tee
     public String classNameAndBounds() {
         if (isVisible()) {
             return getClass().getName() + "[" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + "]";
@@ -467,9 +504,10 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return true;
     }
 
-    /** Return a point that should be used for arcs that to toward the
-     *  given point. By default, this makes arcs end on the edge that is
-     *  nearest the given point.
+    /**
+     * Return a point that should be used for arcs that go toward the
+     * given point. By default, this makes arcs end on the edge that is
+     * nearest the given point.
      *
      * needs-more-work: define gravity points, berths
      */
@@ -498,31 +536,36 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return getClosestPoint(anotherPt);
     }
 
-    /** Reply true if the given point is inside the given Fig. By
-     *  default reply true if the point is in my bounding
-     *  box. Subclasses like FigCircle and FigEdge do more specific
-     *  checks.
-     *
-     * @see FigCircle
-     * @see FigEdge */
+    /**
+     * Reply true if the given point is inside the given Fig. By
+     * default reply true if the point is in my bounding
+     * box. Subclasses like FigCircle and FigEdge do more specific
+     * checks.
+     */
     public boolean contains(int x, int y) {
         return (_x <= x) && (x <= _x + _w) && (_y <= y) && (y <= _y + _h);
     }
 
-    /** Reply true if the given point is inside this Fig by
-     *  calling contains(int x, int y). */
+    /**
+     * Reply true if the given point is inside this Fig by
+     * calling contains(int x, int y).
+     */
     public final boolean contains(Point p) {
         return contains(p.x, p.y);
     }
 
-    /** Reply true if the all four corners of the given rectangle are
-     *  inside this Fig, as determined by contains(int x, int y). */
+    /**
+     * Reply true if the all four corners of the given rectangle are
+     * inside this Fig, as determined by contains(int x, int y).
+     */
     public boolean contains(Rectangle r) {
         return countCornersContained(r.x, r.y, r.width, r.height) == 4;
     }
 
-    /** Reply the number of corners of the given rectangle that are
-     *  inside this Fig, as determined by contains(int x, int y). */
+    /**
+     * Reply the number of corners of the given rectangle that are
+     * inside this Fig, as determined by contains(int x, int y).
+     */
     protected int countCornersContained(int x, int y, int w, int h) {
         int cornersHit = 0;
         if(contains(x, y)) {
@@ -544,10 +587,11 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return cornersHit;
     }
 
-    /** Resize the object for drag on creation. It bypasses the things
-     *  done in resize so that the position of the object can be kept as
-     *  the anchor point. Needs-More-Work: do I really need this
-     *  function?
+    /**
+     * Resize the object for drag on creation. It bypasses the things
+     * done in resize so that the position of the object can be kept as
+     * the anchor point. Needs-More-Work: do I really need this
+     * function?
      *
      * @see FigLine#createDrag */
     public void createDrag(int anchorX, int anchorY, int x, int y, int snapX, int snapY) {
@@ -558,23 +602,28 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         setBounds(newX, newY, newW, newH);
     }
 
-    /** This is called after an Cmd modifies a Fig and the Fig needs to
-     * be redrawn in its new position. */
+    /**
+     * This is called after an Cmd modifies a Fig and the Fig needs to
+     * be redrawn in its new position.
+     */
     public void endTrans() {
         translateAnnotations();
         damage();
     }
 
-    /** This Fig has changed in some way, tell its Layer to record my
-     *  bounding box as a damageAll region so that I will eventualy be
-     *  redrawn. */
+    /**
+     * This Fig has changed in some way, tell its Layer to record my
+     * bounding box as a damageAll region so that I will eventualy be
+     * redrawn.
+     */
     public void damage() {
         if(_layer != null) {
             _layer.damageAll();
         }
     }
 
-    /** Get the rectangle on whose corners the dragging handles are to be drawn.
+    /**
+     * Get the rectangle on whose corners the dragging handles are to be drawn.
      * Should be overwritten by Figures with Bounds larger than the HandleBox.
      * Normally these should be identical.
      */
@@ -588,7 +637,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      * Overide this method if HandleBox and bounds differ
      */
     public void setHandleBox(int x, int y, int w, int h) {
-        if (LOG.isDebugEnabled()) LOG.debug("Height = " + h);
         setBounds(x, y, w, h);
     }
 
@@ -621,14 +669,15 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         setOwner(null);
     }
 
-    /** Delete whatever application object this Fig is representing, the
-     *  Fig itself should automatically be deleted as a side-effect. Simple
-     *  Figs have no underlying model, so they are just deleted. Figs
-     *  that graphically present some part of an underlying model should
-     *  NOT delete themselves, instead they should ask the model to
-     *  dispose, and IF it does then the figs will be notified. */
+    /**
+     * Delete whatever application object this Fig is representing, the
+     * Fig itself should automatically be deleted as a side-effect. Simple
+     * Figs have no underlying model, so they are just deleted. Figs
+     * that graphically present some part of an underlying model should
+     * NOT delete themselves, instead they should ask the model to
+     * dispose, and IF it does then the figs will be notified.
+     */
     public void deleteFromModel() {
-        LOG.debug("Deleting Fig from model");
         Object own = getOwner();
         if(own instanceof GraphNodeHooks) {
             ((GraphNodeHooks)own).deleteFromModel();
@@ -697,11 +746,12 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         firePropChange(propName, new Boolean(oldV), new Boolean(newV));
     }
 
-    /** Return a Rectangle that completely encloses this Fig.
+    /**
+     * Return a Rectangle that completely encloses this Fig.
      * Subclasses may override getBounds(Rectangle).
-     * USED BY PGML.tee
      */
-    public Rectangle getBounds() {
+    // USED BY PGML.tee
+    public final Rectangle getBounds() {
         return getBounds(null);
     }
 
@@ -736,6 +786,10 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return (_dashes != null);
     }
 
+    /**
+     * @deprecated in 0.11.1 us org.tigris.gef.persistence.pgml.PgmlUtility.getDashed(Fig)
+     */
+    // USED by PGML.tee
     public int getDashed01() {
         return getDashed() ? 1 : 0;
     }
@@ -771,6 +825,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         return _filled;
     }
 
+    /**
+     * @deprecated in 0.11.1 us org.tigris.gef.persistence.pgml.PgmlUtility.getDashed(Fig)
+     */
     public int getFilled01() {
         return _filled ? 1 : 0;
     }
@@ -830,13 +887,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
      */
     public int getHalfWidth() {
         return _w / 2;
-    }
-
-    /**
-     * USED BY PGML.tee
-     */
-    public int getHeight() {
-        return _h;
     }
 
     /*
@@ -936,14 +986,17 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     }
 
     /**
-     * TODO document
-     * Used in SVG.TEE
+     * @deprecated in 0.11.1 this should not form part of the API
      */
+    // Used in SVG.TEE
     public String getPrivateData() {
         return "";
     }
 
-    /** Returns the single flag of the Fig */
+    /**
+     * Returns the single flag of the Fig
+     * @deprecated 0.11.1 I can find no use for this.
+     */
     public boolean getSingle() {
         return false;
     }
@@ -966,35 +1019,48 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     }
 
     /**
-     * USED BY PGML.tee
+     * @deprecated use PgmlUtility.visibilityToString(Fig f)
      */
+    // USED BY PGML.tee
     public int getVisState() {
-        return _shown;
+        if (isVisible()) return 1;
+        return 0;
     }
 
     /**
-     * USED BY PGML.tee
+     * Get the current width of the Fig.
      */
+    // USED BY PGML.tee
     public int getWidth() {
         return _w;
     }
 
     /**
-     * USED BY PGML.tee
+     * Get the current height of the Fig.
      */
+    // USED BY PGML.tee
+    public int getHeight() {
+        return _h;
+    }
+
+    /**
+     * Get the x position of the Fig.
+     */
+    // USED BY PGML.tee
     public int getX() {
         return _x;
     }
 
-    public int[] getXs() {
-        return new int[0];
-    }
-
     /**
-     * USED BY PGML.tee
+     * Get the y position of the Fig.
      */
+    // USED BY PGML.tee
     public int getY() {
         return _y;
+    }
+
+    public int[] getXs() {
+        return new int[0];
     }
 
     public int[] getYs() {
@@ -1025,37 +1091,45 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     public void insertPoint(int i, int x, int y) {
     }
 
-    /** Reply true if the object intersects the given rectangle. Used
-     *  for selective redrawing and by ModeSelect to select all Figs
-     *  that are partly within the selection rectangle.
-     *  Note: comparisons are strict (e.g. '<' instead of '<='), so that
-     *  figs with zero height or width are handled correctly.
+    /**
+     * Reply true if the object intersects the given rectangle. Used
+     * for selective redrawing and by ModeSelect to select all Figs
+     * that are partly within the selection rectangle.
+     * <p>Note: comparisons are strict (e.g. '<' instead of '<='), so that
+     * figs with zero height or width are handled correctly.
      */
     public boolean intersects(Rectangle r) {
         return !((r.x + r.width < _x) || (r.y + r.height < _y) || (r.x > _x + _w) || (r.y > _y + _h));
     }
 
-    /** Reply true if the object's perimeter intersects the given rectangle. Used
-     *  for selective redrawing and by ModeSelect to select all Figs
-     *  that are partly within the selection rectangle.
-     *  Note: comparisons are strict (e.g. '<' instead of '<='), so that
-     *  figs with zero height or width are handled correctly.
+    /**
+     * Reply true if the object's perimeter intersects the given rectangle. Used
+     * for selective redrawing and by ModeSelect to select all Figs
+     * that are partly within the selection rectangle.
+     * <p>Note: comparisons are strict (e.g. '<' instead of '<='), so that
+     * figs with zero height or width are handled correctly.
      */
     public boolean intersectsPerimeter(Rectangle r) {
         return (r.intersectsLine(_x, _y, _x, _y + _h) && r.intersectsLine(_x, _y + _h, _x + _w, _y + _h) && r.intersectsLine(_x + _w, _y + _h, _x + _w, _y) && r.intersectsLine(_x + _w, _y, _x, _y));
     }
 
-    /** Returns true if this Fig can be resized by the user. */
+    /**
+     * Returns true if this Fig can be resized by the user.
+     */
     public boolean isLowerRightResizable() {
         return false;
     }
 
-    /** Returns true if this Fig can be moved around by the user. */
+    /**
+     * Returns true if this Fig can be moved around by the user.
+     */
     public boolean isMovable() {
         return movable;
     }
 
-    /** Returns true if this Fig can be reshaped by the user. */
+    /**
+     * Returns true if this Fig can be reshaped by the user.
+     */
     public boolean isReshapable() {
         return false;
     }
@@ -1169,15 +1243,6 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     public void removePoint(int i) {
     }
 
-
-    /**
-     *  Remove this PropertyChangeListener from the JellyBeans internal list. If
-     *  the PropertyChangeListener isn't on the list, silently do nothing.
-     *
-     */
-    public void removePropertyChangeListener(PropertyChangeListener l) {
-        Globals.removePropertyChangeListener(this, l);
-    }
 
 
     /**
@@ -1383,7 +1448,8 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     }
 
     /**
-     *  Derived classes should implement this method
+     * Derived classes should implement this method
+     * @deprecated in 0.11.1 this should not form part of the API
      */
     public void setPrivateData(String data) {
     }
@@ -1404,21 +1470,45 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
         setSize(d.width, d.height);
     }
 
-    /**
-     * USED BY PGML.tee
-     */
-    public void setVisState(int visState) {
-        _shown = visState;
-    }
+//    public void setVisState(int visState) {
+//        _shown = visState;
+//    }
 
+    /**
+     * Set the width of the Fig.
+     * <p>Use this method only if the width property is the only bounds property of
+     * the Fig you wish to amend. If you intend to also change the height
+     * use setSize(int width, int height). If you also intend to amend the
+     * location use setBounds(int x, int y, int width, int height).
+     * Calling a single method will be far more efficient in changing bounds.
+     * @param width The new width.
+     */
     public void setWidth(int w) {
         setBounds(_x, _y, w, _h);
     }
 
+    /**
+     * Set the height of the Fig.
+     * <p>Use this method only if the height property is the only bounds property of
+     * the Fig you wish to amend. If you intend to also change the width
+     * use setSize(int width, int height). If you also intend to amend the
+     * location use setBounds(int x, int y, int width, int height).
+     * Calling a single method will be far more efficient in changing bounds.
+     * @param height The new height.
+     */
     public void setHeight(int h) {
         setBounds(_x, _y, _w, h);
     }
 
+    /**
+     * Set the X co-ordinate of the Fig.
+     * <p>Use this method only if the X property is the only bounds property of
+     * the Fig you wish to amend. If you intend to also change the Y co
+     * ordinate use setLocation(int x, int y). If you also intend to amend the
+     * width and/or height use setBounds(int x, int y, int width, int height).
+     * Calling a single method will be far more efficient in changing bounds.
+     * @param x The new x co-ordinate
+     */
     public void setX(int x) {
         setBounds(x, _y, _w, _h);
     }
@@ -1426,6 +1516,15 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     public void setXs(int[] xs) {
     }
 
+    /**
+     * Set the Y co-ordinate of the Fig.
+     * <p>Use this method only if the Y property is the only bounds property of
+     * the Fig you wish to amend. If you intend to also change the X co
+     * ordinate use setLocation(int x, int y). If you also intend to amend the
+     * width and/or height use setBounds(int x, int y, int width, int height).
+     * Calling a single method will be far more efficient in changing bounds.
+     * @param y The new y co-ordinate
+     */
     public void setY(int y) {
         setBounds(_x, y, _w, _h);
     }
@@ -1433,7 +1532,9 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     public void setYs(int[] ys) {
     }
 
-    /** Reshape the given rectangle to be my bounding box. */
+    /**
+     * Reshape the given rectangle to be my bounding box.
+     */
     public void stuffBounds(Rectangle r) {
         r.setBounds(_x, _y, _w, _h);
     }
