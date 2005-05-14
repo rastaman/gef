@@ -27,7 +27,6 @@ package org.tigris.gef.persistence.pgml;
 import java.awt.Color;
 
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.util.ColorFactory;
 
 /**
  * Utility methods referred to by PGML.tee
@@ -46,7 +45,7 @@ public class PgmlUtility {
      * @param color The color to convert to PGML style
      * @return a string representing the color in pgml format
      */
-    public static String toString(Color color) {
+    public static String getColor(Color color) {
         String colorDescr = getColorName(color);
         if (colorDescr != null) {
             return colorDescr;
@@ -109,20 +108,5 @@ public class PgmlUtility {
      */
     public static int getFilled(Fig f) {
         return (f.getFilled()) ?  1 : 0;
-    }
-    
-    /**
-     * Output the class name and bounds of a Fig.
-     * An empty bounds indicates an invisible Fig.
-     * 
-     * @param f The Fig
-     * @return the class name and bounds.
-     */
-    public static String classNameAndBounds(Fig f) {
-        if (f.isVisible()) {
-            return f.getClass().getName() + "[" + f.getX() + ", " + f.getY() + ", " + f.getWidth() + ", " + f.getHeight() + "]";
-        } else {
-            return f.getClass().getName() + "[]";
-        }
     }
 }

@@ -56,7 +56,7 @@ height="<ocl>self.height.intValue</ocl>"
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="java.awt.Color">
 <![CDATA[
-<ocl>org.tigris.gef.persistence.pgml.PgmlUtility.toString(self)</ocl>
+<ocl>org.tigris.gef.persistence.pgml.PgmlUtility.getColor(self)</ocl>
 ]]>
 </template>
 
@@ -212,4 +212,35 @@ height="<ocl>self.height.intValue</ocl>"
 ]]>
 </template>
 
+<template class="org.tigris.gef.presentation.FigCube">
+
+<![CDATA[
+
+<rectangle name="<ocl>self.id</ocl>"
+
+  <ocl>self.bounds</ocl>
+
+  FILL_AND_STROKE
+
+/>
+
+]]>
+
+</template>
+
+<template class="org.tigris.gef.presentation.FigDiamond">
+
+<![CDATA[
+
+<rectangle name="<ocl>self.id</ocl>"
+
+  <ocl>self.bounds</ocl>
+
+  FILL_AND_STROKE
+
+/>
+
+]]>
+
+</template>
 </TemplateSet>

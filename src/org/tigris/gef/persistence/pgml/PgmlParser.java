@@ -356,7 +356,6 @@ public class PgmlParser extends DefaultHandler {
             case NODE_STATE:
                 //System.out.println("[PGMLParser]: endElement NODE_STATE");
                 //detect failure here
-                _currentNode.updateVisState();
                 if(_currentNode != null && _currentEncloser != null) {
                     _currentNode.setEnclosingFig(_currentEncloser);
                 }
@@ -821,14 +820,6 @@ public class PgmlParser extends DefaultHandler {
         String dasharray = attrList.getValue("dasharray");
         if(dasharray != null && !dasharray.equals("") && !dasharray.equals("solid")) {
             f.setDashed(true);
-        }
-
-        String dynobjs = attrList.getValue("dynobjects");
-        if(dynobjs != null && dynobjs.length() != 0) {
-            if(f instanceof FigGroup) {
-                FigGroup fg = (FigGroup)f;
-                fg.parseDynObjects(dynobjs);
-            }
         }
 
         String context = attrList.getValue("context");
