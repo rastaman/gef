@@ -163,64 +163,57 @@ public class OCLEvaluator {
             collectionRange = property.substring(rangePos);
             property = property.substring(0,rangePos);
         }
+
+        // Don't think this is used any more
+//        if (property.endsWith("()")) {
+//            // Lastly try and find a method in the form property(Writer)
+//            property = property.substring(0,property.length()-2);
+//            try {
+//                Class params[] = new Class[2];
+//                params[0] = Writer.class;
+//                params[1] = Integer.class;
+//                m = target.getClass().getMethod(property, params);
+//                MethodInfo info = new MethodInfo(target, m);
+//                return info;
+//            } catch(NoSuchMethodException e) {
+//                throw new ExpansionException(e);
+//            }
+//        }
         
-        if (property.endsWith("()")) {
-            // Lastly try and find a method in the form property(Writer)
-            property = property.substring(0,property.length()-2);
+        // First try and find a getter method in the form getProperty()
+        Object o = null;
+        
+        m = getMethod(target.getClass(), "get" + toTitleCase(property));
+
+        if (m != null) {
             try {
-                Class params[] = new Class[2];
-                params[0] = Writer.class;
-                params[1] = Integer.class;
-                m = target.getClass().getMethod(property, params);
-                MethodInfo info = new MethodInfo(target, m);
-                return info;
-            } catch(NoSuchMethodException e) {
+                o = m.invoke(target, null);    // getter methods take no args =>  null
+                //System.out.println("[OCLEvaluator] Trying to get method get" + toTitleCase(property) + " = " + o);
+                return convertCollection(o, collectionRange);
+            } catch (Exception e) {
+                throw new ExpansionException(e);
+            }
+        }
+
+        // Then try and find a method in the form property()
+        m = getMethod(target.getClass(), property);
+        if (m != null) {
+            try {
+                o = m.invoke(target, null);
+                return convertCollection(o, collectionRange);
+            } catch (Exception e) {
                 throw new ExpansionException(e);
             }
         }
         
-        // First try and find a getter method in the form getProperty()
-        Object o = null;
-        try {
-            m = target.getClass().getMethod("get" + toTitleCase(property), null);
-            o = m.invoke(target, null);    // getter methods take no args =>  null
-            //System.out.println("[OCLEvaluator] Trying to get method get" + toTitleCase(property) + " = " + o);
-            return convertCollection(o, collectionRange);
-        } catch(NoSuchMethodException e) {
-        } catch(InvocationTargetException e) {
-            if(m != null) {
-                LOG.error("Failed to invoke method get" + toTitleCase(property) + " on " + target.getClass().getName(), e.getTargetException());
-                return null;
-            }
-        } catch(IllegalAccessException e) {
-        }
-
-        // Then try and find a method in the form property()
-        try {
-            m = target.getClass().getMethod(property, null);
-            o = m.invoke(target, null);
-            return convertCollection(o, collectionRange);
-        } catch(NoSuchMethodException e) {
-        } catch(InvocationTargetException e) {
-            if(m != null) {
-                LOG.error("Failed to invoke method " + property + " on " + target.getClass().getName(), e.getTargetException());
-                return null;
-            }
-        } catch(IllegalAccessException e) {
-        }
-
-        
         // Next try and find a method in the form Property()
-        try {
-            m = target.getClass().getMethod(toTitleCase(property), null);
-            o = m.invoke(target, null);
-            return convertCollection(o, collectionRange);
-        } catch(NoSuchMethodException e) {
-        } catch(IllegalAccessException e) {
-        } catch(InvocationTargetException e) {
-            if(m != null) {
-                LOG.error("Failed to invoke method " + toTitleCase(property) + " on " + target.getClass().getName(), e.getTargetException());
-                return null;
+        m = getMethod(target.getClass(), toTitleCase(property));
+        if (m != null) {
+            try {
+                o = m.invoke(target, null);
+                return convertCollection(o, collectionRange);
+            } catch (Exception e) {
+                throw new ExpansionException(e);
             }
         }
         
@@ -344,4 +337,27 @@ public class OCLEvaluator {
             return Integer.parseInt(range);
         }
     }
+    
+    
+    /**
+     * Get the Method object from a class which has the given name.
+     * @param targetClass
+     * @param methodName
+     * @return the Method
+     * @throws ExpansionException if no such method exists
+     */
+    private Method getMethod(Class targetClass, String methodName) {
+        
+        Method m[] = targetClass.getMethods();
+        
+        for (int i=0; i < m.length; ++i) {
+            if (m[i].getName().equals(methodName) &&
+                    m[i].getParameterTypes().length == 0) {
+                return m[i];
+            }
+        }
+        
+        return null;
+    }
+    
 }
