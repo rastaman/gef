@@ -232,25 +232,26 @@ public class ModeSelect extends FigModifyingModeImpl {
         Vector selectList = new Vector();
         Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
         Enumeration figs = editor.figs();
-        while(figs.hasMoreElements()) {
+        while (figs.hasMoreElements()) {
             Fig f = (Fig)figs.nextElement();
-            if ((!toggleSelection && selectRect.isEmpty() && f.hit(hitRect))
-                    || (!selectRect.isEmpty() && f.within(selectRect))) {
+            if (f.isSelectable() &&
+                    ((!toggleSelection && selectRect.isEmpty() && f.hit(hitRect))
+                       || (!selectRect.isEmpty() && f.within(selectRect)))) {
                 selectList.addElement(f);
             }
         }
 
-        if(!selectRect.isEmpty() && selectList.isEmpty()) {
+        if (!selectRect.isEmpty() && selectList.isEmpty()) {
             figs = editor.figs();
             while(figs.hasMoreElements()) {
                 Fig f = (Fig)figs.nextElement();
-                if(f.intersects(selectRect)) {
+                if (f.isSelectable() && f.intersects(selectRect)) {
                     selectList.addElement(f);
                 }
             }
         }
 
-        if(toggleSelection) {
+        if (toggleSelection) {
             editor.getSelectionManager().toggle(selectList);
         }
         else {

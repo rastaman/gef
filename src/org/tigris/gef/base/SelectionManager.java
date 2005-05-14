@@ -81,7 +81,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     protected void addFig(Fig f) {
-        _selections.addElement(makeSelectionFor(f));
+        if (f.isSelectable()) {
+            _selections.addElement(makeSelectionFor(f));
+        }
     }
 
     protected void addAllFigs(Collection c) {

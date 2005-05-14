@@ -68,11 +68,16 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  /** Construct a new selection. Empty, subclases can override */
-  public Selection(Fig f) {
-    if (null == f) throw new java.lang.NullPointerException();
-    _content = f;
-  }
+    /** Construct a new selection. Empty, subclases can override */
+    public Selection(Fig f) {
+        if (null == f) {
+            throw new IllegalArgumentException("Cannot place a null Fig inside a Selection");
+        }
+        if (!f.isSelectable()) {
+            throw new IllegalArgumentException("The given Fig cannot be selected");
+        }
+        _content = f;
+    }
 
   ////////////////////////////////////////////////////////////////
   // accessors

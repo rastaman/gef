@@ -97,7 +97,8 @@ public class FigGroup extends Fig {
      * elements dynamically has to overwrite this method
      * for loading this figure.
      * TODO this needs further explanation. It has some
-     * connection with PGMLParser and SVGParser
+     * connection with PGMLParser and SVGParser.
+     * @deprecated in 0.11.1 This is no longer required.
      */
     public void parseDynObjects(String dynStr) {
     }

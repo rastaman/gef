@@ -305,8 +305,8 @@ public class ModeModify extends FigModifyingModeImpl {
                 }
 
                 selectedFig.setEnclosingFig(encloser);
-            }
-            else if(selectedFig instanceof FigEdge) {
+                
+            } else if(selectedFig instanceof FigEdge) {
                 ((FigEdge)selectedFig).computeRoute();
                 selectedFig.endTrans();
             }

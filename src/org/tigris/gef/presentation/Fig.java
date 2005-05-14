@@ -897,9 +897,10 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
             String gID = getGroup().getId();
             if(getGroup() instanceof FigGroup) {
                 return gID + "." + ((List)((FigGroup)getGroup()).getFigs()).indexOf(this);
-            }
-            else {
-                return gID + ".1";
+            } else if (getGroup() instanceof FigEdge) {
+                return gID + "." + (((List)((FigEdge)getGroup()).getPathItemFigs()).indexOf(this)+1);
+            } else {
+                return gID + ".0";
             }
         }
 
@@ -1078,7 +1079,7 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
      * @return true if the hit rectangle strikes this fig
      */
     public boolean hit(Rectangle r) {
-    	if (!isVisible()) return false;
+    	if (!isVisible() || !isSelectable()) return false;
         int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
         if(_filled) {
             return cornersHit > 0;
@@ -1140,6 +1141,14 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
      */
     public boolean isResizable() {
         return resizable;
+    }
+
+    /**
+     * Determine if this Fig can be selected 
+     * @return true if this Fig can be selected by the user.
+     */
+    public boolean isSelectable() {
+        return true;
     }
 
     /** Returns true if this Fig can be rotated by the user. */
