@@ -58,35 +58,31 @@ public class TemplateReader extends DefaultHandler {
         return INSTANCE;
     }
 
-    public Hashtable read(String filename) throws FileNotFoundException {
+    public Hashtable read(String filename) throws ExpansionException {
         this.filename = filename;
         InputStream in = null;
         try {
-            in = TemplateReader.class.getResourceAsStream(filename);
-        } catch (Exception ex) {
-        }
-        if (in == null) {
-            String relativePath = filename;
-            if(relativePath.startsWith("/")) {
-                relativePath = relativePath.substring(1);
+            try {
+                in = TemplateReader.class.getResourceAsStream(filename);
+            } catch (Exception ex) {
+                String relativePath = filename;
+                if(relativePath.startsWith("/")) {
+                    relativePath = relativePath.substring(1);
+                }
+                in = new FileInputStream(relativePath);
             }
-            in = new FileInputStream(relativePath);
-        }
-        if (in == null) return null;
-
-        _templates = new Hashtable();
-        _macros = new Vector();
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        factory.setNamespaceAware(false);
-        factory.setValidating(false);
-        try {
+    
+            _templates = new Hashtable();
+            _macros = new Vector();
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setNamespaceAware(false);
+            factory.setValidating(false);
             SAXParser pc = factory.newSAXParser();
             InputSource source = new InputSource(in);
             source.setSystemId(new java.net.URL("file",null,filename).toString());
             pc.parse(source,this);
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            throw new ExpansionException(ex);
         }
         return _templates;
     }
