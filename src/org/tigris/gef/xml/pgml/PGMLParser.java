@@ -359,7 +359,6 @@ public class PGMLParser extends DefaultHandler {
             case NODE_STATE:
                 //System.out.println("[PGMLParser]: endElement NODE_STATE");
                 //detect failure here
-                _currentNode.updateVisState();
                 if(_currentNode != null && _currentEncloser != null) {
                     _currentNode.setEnclosingFig(_currentEncloser);
                 }
