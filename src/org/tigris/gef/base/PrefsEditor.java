@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: PrefsEditor.java
 // Classes: PrefsEditor
 // Original Author: jrobbins@ics.uci.edu
@@ -31,8 +28,14 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
+import java.awt.AWTEvent;
+import java.awt.Button;
+import java.awt.Checkbox;
+import java.awt.Color;
+import java.awt.Event;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Panel;
 
 /** A dialog box to let the user edit various preferences that effect
  *  the application.  Needs-More-Work: right now the only preferences
@@ -98,18 +101,17 @@ public class PrefsEditor extends Frame {
   /** Close the PrefEditor window */
   public void close() { dispose(); }
 
-  /** If the user wants to close the window, do it. */
-  public boolean handleEvent(Event e) {
-    switch(e.id) {
-    case Event.WINDOW_DESTROY:
-      if (e.target == this) {
-	close();
-	return true;
-      }
-      break;
+    /** If the user wants to close the window, do it. */
+    public void processEvent(AWTEvent e) {
+        switch(e.getID()) {
+            case Event.WINDOW_DESTROY:
+                if (e.getSource() == this) {
+	                close();
+                }
+                break;
+        }
+        super.processEvent(e);
     }
-    return super.handleEvent(e);
-  }
 
   /** If the use pushes one of the buttons, update
    *  Globals.prefs(). Needs-More-Work: It would be nice to have a more
