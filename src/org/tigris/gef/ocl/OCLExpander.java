@@ -32,6 +32,9 @@ import java.lang.reflect.Method;
 
 import java.util.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class OCLExpander {
     ////////////////////////////////////////////////////////////////
     // constants
@@ -44,6 +47,8 @@ public class OCLExpander {
     public boolean _useXMLEscapes = true;
     
     protected OCLEvaluator evaluator;
+    
+    private static final Log LOG = LogFactory.getLog(OCLExpander.class);
     
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -203,7 +208,9 @@ public class OCLExpander {
             int expressionPos = line.indexOf('>', startTagPos) + 1;
             boolean ignoreNull = isIgnoreNull(line.substring(startTagPos + 4, expressionPos));
             prefix = prefix + line.substring(0, startTagPos);
+            
             String expr = line.substring(expressionPos, endTagPos);
+            
             suffix = line.substring(endTagPos + OCL_END.length()) + suffix;
             _bindings.put("self", target);
             List results = evaluate(_bindings, expr);
@@ -363,9 +370,7 @@ public class OCLExpander {
                     
                     Object o = it.next();
                     
-                    Class[] parameters = new Class[1];
-                    parameters[0] = o.getClass();
-                    Method m = clazz.getMethod(methodName, parameters);
+                    Method m = getMethod(clazz, o.getClass(), methodName);
                     
                     Object[] args = new Object[1];
                     args[0] = o;
@@ -378,11 +383,45 @@ public class OCLExpander {
                 throw new ExpansionException(e);
             } catch (InvocationTargetException e) {
                 throw new ExpansionException(e);
-            } catch (NoSuchMethodException e) {
-                throw new ExpansionException(e);
             }
             
             return values;
         }
     }
+    
+    /**
+     * Get the Method object from a class which has the given name and a parameter
+     * closest to matching the parameter class.
+     * @param targetClass
+     * @param parameterClass
+     * @param methodName
+     * @return the Method
+     * @throws ExpansionException if no such method exists
+     */
+    private Method getMethod(
+            Class targetClass, 
+            Class parameterClass, 
+            String methodName) throws ExpansionException{
+        
+        Class parameter = parameterClass;
+        
+        Method m[] = targetClass.getMethods();
+        Method method = null;
+        
+        do {
+            for (int i=0; i < m.length; ++i) {
+                if (m[i].getName().equals(methodName) &&
+                        m[i].getParameterTypes().length == 1 &&
+                        m[i].getParameterTypes()[0].equals(parameter)) {
+                    return m[i];
+                }
+            }
+            parameter = parameter.getSuperclass();
+        } while (parameter != null);
+        
+        throw new ExpansionException("Can't find a method " + methodName +
+                " on " + targetClass.getName() + " that takes an object compatible with " + 
+                parameterClass.getName() + " as the only argument");
+    }
+    
 }
