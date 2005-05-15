@@ -162,10 +162,9 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     protected String _context = "";
 
     /**
-     * True if the Fig is shown
-     * TODO: rename to "visible"
+     * True if the Fig is visible
      */
-    private boolean _displayed = true;
+    private boolean visible = true;
     
     protected boolean _allowsSaving = true;
     
@@ -459,14 +458,25 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     /**
      * Return the center of the given Fig. By default the center is the
      * center of its bounding box. Subclasses may want to define
-     * something else. 
+     * something else.
+     * @deprecated in 0.11.1 Use getCenter();
      */
     // USED BY PGML.tee
     public Point center() {
+        return getCenter();
+    }
+    
+    /**
+     * Return the center of the given Fig. By default the center is the
+     * center of its bounding box. Subclasses may want to define
+     * something else.
+     */
+    // USED BY PGML.tee
+    public Point getCenter() {
         Rectangle bbox = getBounds();
         return new Point(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
     }
-
+    
     /**
      * @deprecated in 0.11.1 use org.tigris.gef.persistence.pgml.PgmlUtility.getClassNameAndBounds(Fig)
      */
@@ -647,7 +657,7 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
      * Remove this Fig from the Layer it belongs to.
      */
     public void removeFromDiagram() {
-        _displayed = false;
+        visible = false;
         
         // delete all annotations first
         java.util.Enumeration iter = getAnnotationStrategy().getAllAnnotations();
@@ -875,6 +885,10 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
         return _context;
     }
 
+    /**
+     * @deprecated in 0.11.1 Call getHeight() and half it.
+     * @return
+     */
     /*
      * USED BY PGML.tee
      */
@@ -882,6 +896,10 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
         return _h / 2;
     }
 
+    /**
+     * @deprecated in 0.11.1 Call getHeight() and half it.
+     * @return
+     */
     /*
      * USED BY PGML.tee
      */
@@ -1190,7 +1208,7 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     /** Method to paint this Fig.  By default it paints an "empty"
      *  space, subclasses should override this method. */
     public void paint(Graphics g) {
-        if(_displayed) {
+        if(visible) {
             g.setColor(Color.pink);
             g.fillRect(_x, _y, _w, _h);
             g.setColor(Color.black);
@@ -1275,11 +1293,16 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     }
 
 
+    /**
+     * @deprecated in 0.11.1 This method is not used.
+     */
     public boolean savingAllowed() {
         return _allowsSaving;
     }
 
-
+    /**
+     * @deprecated in 0.11.1 This method is not used.
+     */
     public void setSavingAllowed(boolean newValue) {
         _allowsSaving = newValue;
     }
@@ -1583,6 +1606,9 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
         firePropChange("bounds", oldBounds, getBounds());
     }
 
+    /**
+     * @deprecated 0.11.1 this is not used.
+     */
     public void updateVisState() {
     }
 
@@ -1595,14 +1621,14 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
 
     /** Returns true if the fig is visible */
     public boolean isVisible() {
-        return _displayed;
+        return visible;
     }
 
     /** 
      * Set the visible status of the fig
      */
     public void setVisible(boolean isDisplayed) {
-        _displayed = isDisplayed;
+        visible = isDisplayed;
     }
     
     /**
