@@ -660,8 +660,6 @@ public class SvgParser extends DefaultHandler {
 
 		if (_currentEdge != null)
 		{
-			_currentEdge.setPrivateData( _textBuf.toString() );
-
 			Fig 	spf = null;
 			Fig 	dpf = null;
 			FigNode sfn = null;
@@ -816,13 +814,6 @@ public class SvgParser extends DefaultHandler {
           }
 	}
 
-	String dynobjs = attrList.getValue("dynobjects");
-	if (dynobjs != null && dynobjs.length() != 0) {
-	  if (f instanceof FigGroup) {
-		FigGroup fg = (FigGroup) f;
-		fg.parseDynObjects(dynobjs);
-	  }
-	}
 	setOwnerAttr(f,attrList);
   }
 
