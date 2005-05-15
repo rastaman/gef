@@ -8,6 +8,8 @@ package org.tigris.gef.base;
 import java.util.*;
 import java.awt.*;
 
+import org.tigris.gef.util.Localizer;
+
 /** Cmd zoom the view.  Needs-More-Work: */
 
 public class CmdZoom extends Cmd
@@ -42,11 +44,13 @@ public class CmdZoom extends Cmd
     /** Convert the zoom magnitude to an English description. */
     protected static String wordFor(double magnitude)
     {
-        if (magnitude < 0) throw new IllegalArgumentException("Zoom magnitude cannot be less than 0");
-        else if (magnitude == 0.0) return "Zoom Reset";
-        else if (magnitude > 1.0) return "Zoom In";
-        else if (magnitude < 1.0) return "Zoom Out";
-        else return "Do Nothing";       // Not a very useful option
+        if (magnitude < 0) {
+            throw new IllegalArgumentException("Zoom magnitude cannot be less than 0");
+        }
+        else if (magnitude == 0.0) return Localizer.localize("GefBase","ZoomReset");
+        else if (magnitude > 1.0) return Localizer.localize("GefBase","ZoomIn");
+        else if (magnitude < 1.0) return Localizer.localize("GefBase","ZoomOut");
+        else return Localizer.localize("GefBase","DoNothing");       // Not a very useful option
     }
 
     /** Adjust the scale factor of the current editor. */
