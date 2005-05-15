@@ -267,12 +267,9 @@ public abstract class Layer implements java.io.Serializable {
         Vector v = new Vector(size);
         for(int i = 0; i < size; i++) {
             Object o = contents.get(i);
-            if(o instanceof Fig) {
-                if(!((Fig)o).savingAllowed())
-                    continue;
-            }
-            if(!(o instanceof FigEdge))
+            if (!(o instanceof FigEdge)) {
                 v.add(o);
+            }
         }
         return v;
     }
@@ -283,17 +280,14 @@ public abstract class Layer implements java.io.Serializable {
     public List getContentsEdgesOnly() {
         List contents = getContents();
         int size = contents.size();
-        Vector v = new Vector(size);
+        ArrayList list = new ArrayList(size);
         for(int i = 0; i < size; i++) {
             Object o = contents.get(i);
-            if(o instanceof Fig) {
-                if(!((Fig)o).savingAllowed())
-                    continue;
+            if (o instanceof FigEdge) {
+                list.add(o);
             }
-            if(o instanceof FigEdge)
-                v.add(o);
         }
-        return v;
+        return list;
     }
 
     /** Return the list of Editors that are showing this Layer. */
