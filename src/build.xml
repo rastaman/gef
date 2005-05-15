@@ -198,33 +198,18 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <!-- <target name="compile" depends="prepare"> -->
 
-  <!--  a handful of classes are forced to override a
-           deprecated API.  Classes compiled here will
-           not have warnings for deprecated APIS  -->
-  <target name="depcompile" depends="prepare">
-    <!-- create directories -->
-    <mkdir dir="${build.dest}"/>
-    <javac srcdir="${build.src}"
-           destdir="${build.dest}"
-           debug="${debug}"
-           deprecation="off"
-           optimize="${optimize}"
-           classpath="${gef.classpath}:${java.class.path}"
-           includes="**/FigText.java,**/PrefsEditor.java,**/SVGWriter.java,**/PostscriptWriter.java,**/TemplateReader.java,**/SVGParser.java,**/PGMLParser.java"/>
-    <echo message="The previous files were known to use deprecated APIs"/>
-  </target>
-
-  <target name="compile" depends="depcompile">
+  <target name="compile" depends="prepare">
     <echo message="Compiling the sources using ${build.compiler}"/>
     <!-- create directories -->
     <mkdir dir="${build.dest}"/>
-    <javac srcdir="${build.src}"
+    <javac target="1.3"
+    	   source="1.3"
+    	   srcdir="${build.src}"
            destdir="${build.dest}"
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}"
-           classpath="${gef.classpath}:${java.class.path}"
-           excludes="**/FigText.java,**/PrefsEditor.java,**/SVGWriter.java,**/PostscriptWriter.java,**/TemplateReader.java,**/SVGParser.java,**/PGMLParser.java"/>
+           classpath="${gef.classpath}:${java.class.path}"/>
   </target>
 
   <!-- =================================================================== -->
