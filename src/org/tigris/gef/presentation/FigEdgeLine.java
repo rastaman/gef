@@ -49,8 +49,8 @@ public class FigEdgeLine extends FigEdge {
     public void computeRoute() {
         Fig sourcePortFig = getSourcePortFig();
   	    Fig destPortFig = getDestPortFig();
-        Point srcPt = sourcePortFig.center();
-        Point dstPt = destPortFig.center();
+        Point srcPt = sourcePortFig.getCenter();
+        Point dstPt = destPortFig.getCenter();
 
         if (_useNearest) {
             //? two iterations of refinement, maybe should be a for-loop

@@ -91,8 +91,8 @@ public class FigEdgeRectiline extends FigEdge {
       dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints()-2));
     }
     else {
-      srcPt = sourcePortFig.center();
-      dstPt = destPortFig.center();
+      srcPt = sourcePortFig.getCenter();
+      dstPt = destPortFig.getCenter();
     }
     
     p.setEndPoints(srcPt, dstPt);
@@ -109,8 +109,8 @@ public class FigEdgeRectiline extends FigEdge {
     Fig sourcePortFig = getSourcePortFig();
     Fig destPortFig = getDestPortFig();
     
-    Point srcPt = sourcePortFig.center();
-    Point dstPt = destPortFig.center();
+    Point srcPt = sourcePortFig.getCenter();
+    Point dstPt = destPortFig.getCenter();
 
     if (_useNearest) {
       srcPt = sourcePortFig.connectionPoint(dstPt);

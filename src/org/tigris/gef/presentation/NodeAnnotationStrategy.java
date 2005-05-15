@@ -19,8 +19,8 @@ public class NodeAnnotationStrategy extends AnnotationStrategy{
 			AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
 			delta_x = prop.getOffset();
 			delta_y = prop.getRatio();
-			int own_x = (int) owner.center().x;
-			int own_y = (int) owner.center().y;
+			int own_x = (int) owner.getCenter().x;
+			int own_y = (int) owner.getCenter().y;
 			int newX = (int) (own_x + delta_x);
 			int newY = (int) (own_y + delta_y);
 			// neue Position der Annotation einstellen
@@ -34,8 +34,8 @@ public class NodeAnnotationStrategy extends AnnotationStrategy{
 		Fig owner = annotation.getAnnotationOwner();
 		// in this case: owner is a node
 		if (! ( (owner instanceof FigEdge) || (owner instanceof FigLine) )){
-			Point anPos 	= annotation.center();
-			Point ownerPos 	= owner.center();
+			Point anPos 	= annotation.getCenter();
+			Point ownerPos 	= owner.getCenter();
 			delta_x = anPos.x-ownerPos.x;
 			delta_y = anPos.y-ownerPos.y;
 			// store values
@@ -53,7 +53,7 @@ public class NodeAnnotationStrategy extends AnnotationStrategy{
     	Fig owner = annotation.getAnnotationOwner();
     	AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
         FigLine line = prop.getConnectingLine();
-    	line.setShape(annotation.center(), owner.center());
+    	line.setShape(annotation.getCenter(), owner.getCenter());
     	line.setLineColor(Color.red);
     	line.setFillColor(Color.red);
     	line.setDashed(true);

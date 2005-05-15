@@ -32,8 +32,8 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
 		ende = edge.getLastPoint();
 	    } catch (ArrayIndexOutOfBoundsException e){
 		try{
-		    start= edge.getSourcePortFig().center();
-		    ende = edge.getDestPortFig().center();
+		    start= edge.getSourcePortFig().getCenter();
+		    ende = edge.getDestPortFig().getCenter();
 		}
 		catch(NullPointerException ne){
 		    start = new Point(10,10);
@@ -66,7 +66,7 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
 	// case: owner ist eine Kante
 	if (owner instanceof FigEdge){
 	    FigEdge edge = (FigEdge)owner;
-	    Point anPos 	= annotation.center();
+	    Point anPos 	= annotation.getCenter();
 	    //Point start= edge.getSourcePortFig().center();	
 	    //Point ende = edge.getDestPortFig().center();
 	    Point start; 	
@@ -75,8 +75,8 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
 		start = edge.getFirstPoint();
 		ende = edge.getLastPoint();
 	    } catch (ArrayIndexOutOfBoundsException e){
-		start= edge.getSourcePortFig().center();	
-		ende = edge.getDestPortFig().center();
+		start= edge.getSourcePortFig().getCenter();	
+		ende = edge.getDestPortFig().getCenter();
 	    }
 
 	    if ((start.x == ende.x) && (start.y == ende.y)) return;
@@ -99,24 +99,24 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
 	AnnotationProperties prop = getAnnotationProperties(annotation);
 	FigLine line = prop.getConnectingLine();
 
-	if (  ((FigEdge)owner).getSourcePortFig().center() == null || ((FigEdge)owner).getDestPortFig().center() == null ) 
+	if (  ((FigEdge)owner).getSourcePortFig().getCenter() == null || ((FigEdge)owner).getDestPortFig().getCenter() == null ) 
 	    return;
 	//line from annotation to closest point on owning edge
 	try{
 	    if (owner instanceof FigEdgePoly){
-		line.setShape(annotation.center(), 
-			      AnnotationHelper.getClosestPoint(annotation.center(), (FigEdgePoly)owner));
+		line.setShape(annotation.getCenter(), 
+			      AnnotationHelper.getClosestPoint(annotation.getCenter(), (FigEdgePoly)owner));
 	    }else{
-		line.setShape(annotation.center(), 
-			      AnnotationHelper.getClosestPointOnEdge(annotation.center(), 
+		line.setShape(annotation.getCenter(), 
+			      AnnotationHelper.getClosestPointOnEdge(annotation.getCenter(), 
 								     ((FigEdge)owner).getFirstPoint(), 
 								     ((FigEdge)owner).getLastPoint()));
 	    }
 	} catch (ArrayIndexOutOfBoundsException e){
-	    line.setShape(annotation.center(), 
-			  AnnotationHelper.getClosestPointOnEdge(annotation.center(), 
-						       ((FigEdge)owner).getSourcePortFig().center(), 
-						       ((FigEdge)owner).getDestPortFig().center() ));
+	    line.setShape(annotation.getCenter(), 
+			  AnnotationHelper.getClosestPointOnEdge(annotation.getCenter(), 
+						       ((FigEdge)owner).getSourcePortFig().getCenter(), 
+						       ((FigEdge)owner).getDestPortFig().getCenter() ));
 	}
 	line.setLineColor(getAnnotationProperties(annotation).getLineColor());
 	line.setFillColor(getAnnotationProperties(annotation).getLineColor());

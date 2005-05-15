@@ -94,8 +94,8 @@ public class FigEdgePoly extends FigEdge {
         Fig sourcePortFig = getSourcePortFig();
         Fig destPortFig = getDestPortFig();
         
-        Point srcPt = sourcePortFig.center();
-        Point dstPt = destPortFig.center();
+        Point srcPt = sourcePortFig.getCenter();
+        Point dstPt = destPortFig.getCenter();
 
         if (_useNearest) {
             if (p.getNumPoints() == 2) {
@@ -129,8 +129,8 @@ public class FigEdgePoly extends FigEdge {
         if (sourcePortFig == null || destPortFig == null) {
             throw new IllegalStateException("Both the source port and dest port fig must be defined on a " + this.getClass().getName() + " before the edge can be layed out");
         }
-        Point srcPt = sourcePortFig.center();
-        Point dstPt = destPortFig.center();
+        Point srcPt = sourcePortFig.getCenter();
+        Point dstPt = destPortFig.getCenter();
 
         if (_useNearest) {
             int xdiff = (srcPt.x - dstPt.x);
@@ -359,8 +359,8 @@ public class FigEdgePoly extends FigEdge {
                     Fig sourcePortFig = getSourcePortFig();
                     Fig destPortFig = getDestPortFig();
                     
-                    Point srcPt = sourcePortFig.center();
-                    Point dstPt = destPortFig.center();
+                    Point srcPt = sourcePortFig.getCenter();
+                    Point dstPt = destPortFig.getCenter();
                     
                     if (i == 1 && np == 3) {
                         srcPt = sourcePortFig.connectionPoint(handlePoint);

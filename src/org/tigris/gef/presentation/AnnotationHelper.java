@@ -86,8 +86,8 @@ public class AnnotationHelper{
         
         // workaround when the fig has no points
         if (points.size()<2){
-            points.add(to.getSourcePortFig().center());
-            points.add(to.getDestPortFig().center());
+            points.add(to.getSourcePortFig().getCenter());
+            points.add(to.getDestPortFig().getCenter());
         }
         
         // the point for the first part
