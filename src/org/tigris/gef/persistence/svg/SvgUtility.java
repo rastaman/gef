@@ -26,8 +26,6 @@ package org.tigris.gef.persistence.svg;
 
 import java.awt.Color;
 
-import org.tigris.gef.util.ColorFactory;
-
 /**
  * Utility methods referred to by SVG.tee
  * 
@@ -45,7 +43,7 @@ public class SvgUtility {
      * @param color The color to convert to SVG style
      * @return a string representing the color in SVG format
      */
-    public static String toString(Color color) {
+    public static String getColor(Color color) {
         String colorDescr = getColorName(color);
         if (colorDescr != null) {
             return colorDescr;
