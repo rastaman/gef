@@ -32,7 +32,6 @@
 package org.tigris.gef.base;
 
 import java.util.*;
-import java.awt.*;
 
 /** Cmd to execute a sequence of Cmd's.  Needs-More-Work: Not done
  *  yet. This could be part of a user macro recording feature.  Or an

@@ -88,8 +88,9 @@ public class SVGParser extends DefaultHandler {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  protected SVGParser() {
+  public SVGParser() {
   }
+  
   public void characters(char[] ch,
 					   int start,
 					   int length) {

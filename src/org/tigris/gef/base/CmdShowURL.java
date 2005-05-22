@@ -31,7 +31,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.Event;
 import java.net.URL;
 
 /** Cmd to display the contents of the given URL in the browser.

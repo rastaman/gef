@@ -33,7 +33,6 @@ package org.tigris.gef.base;
 
 import org.tigris.gef.presentation.Fig;
 
-import java.util.Collection;
 import java.util.List;
 
 /** Cmd to select the next (or previous) Fig in the

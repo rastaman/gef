@@ -33,8 +33,8 @@ import java.awt.*;
 import java.net.*;
 
 import org.tigris.gef.graph.presentation.*;
-import org.tigris.gef.util.*;
-import org.tigris.gef.xml.svg.*;
+import org.tigris.gef.persistence.svg.SvgParser;
+import org.tigris.gef.util.Util;
 
 /** Cmd to Load a previously saved document document. The loaded
  *  editor is displayed in a new JGraphFrame.
@@ -78,11 +78,8 @@ public class CmdOpenSVG extends Cmd implements FilenameFilter {
 	try {
 	  Globals.showStatus("Reading " + path + filename + "...");
 	  URL url = Util.fileToURL(new File(path + filename));
-	  Diagram diag = SVGParser.SINGLETON.readDiagram(url);
+	  Diagram diag = SvgParser.SINGLETON.readDiagram(url);
 	  Editor ed = new Editor(diag);
-	  //System.out.println("load done, showing editor");
-	  //System.out.println(ed.toString());
-	  //System.out.println(ed.getLayerManager().toString());
 	  Globals.showStatus("Read " + path + filename);
 	  JGraphFrame jgf = new JGraphFrame(path + filename, ed);
 	  Object d = getArg("dimension");

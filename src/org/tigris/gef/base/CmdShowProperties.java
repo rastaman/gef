@@ -31,9 +31,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.util.*;
-
 /** Cmd to open a user interface dialog window. Given the name of a
  *  subclass of Frame, this Cmd makes a new instance and calls
  *  show().  For example, used to open a list of some availible

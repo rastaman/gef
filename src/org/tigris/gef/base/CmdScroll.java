@@ -31,9 +31,6 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
-
 /** Cmd scroll the view.  Needs-More-Work: not implemented yet.  */
 
 public class CmdScroll extends Cmd {

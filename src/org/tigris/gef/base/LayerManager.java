@@ -39,7 +39,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Vector;
 
 /** This class implements a kind of Layer that contains other
  *  Layers. Layer's can be nested in an is-part-of tree. That tree can

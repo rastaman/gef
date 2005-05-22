@@ -33,8 +33,8 @@ import java.awt.*;
 import java.net.*;
 
 import org.tigris.gef.graph.presentation.*;
-import org.tigris.gef.util.*;
-import org.tigris.gef.xml.pgml.*;
+import org.tigris.gef.persistence.pgml.PGMLStackParser;
+import org.tigris.gef.util.Util;
 import org.xml.sax.SAXException;
 
 /** Cmd to Load a previously saved document document. The loaded
@@ -64,12 +64,9 @@ public class CmdOpenPGML extends Cmd implements FilenameFilter {
             try {
                 Globals.showStatus("Reading " + path + filename + "...");
                 URL url = Util.fileToURL(new File(path + filename));
-                PGMLParser parser = new PGMLParser(null);
-                Diagram diag = parser.readDiagram(url);
+                PGMLStackParser parser = new PGMLStackParser(null);
+                Diagram diag = parser.readDiagram(url.openStream(), false);
                 Editor ed = new Editor(diag);
-                //System.out.println("load done, showing editor");
-                //System.out.println(ed.toString());
-                //System.out.println(ed.getLayerManager().toString());
                 Globals.showStatus("Read " + path + filename);
                 JGraphFrame jgf = new JGraphFrame(path + filename, ed);
                 Object d = getArg("dimension");
