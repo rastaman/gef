@@ -94,44 +94,44 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
     /** Draws a dotted line between this annotation and its owner.
      */
     public void drawConnectingLine(Fig annotation) throws NullPointerException{
-	if (!(getAnnotationProperties(annotation).lineIsVisible(annotation))) return;
-	Fig owner = annotation.getAnnotationOwner();
-	AnnotationProperties prop = getAnnotationProperties(annotation);
-	FigLine line = prop.getConnectingLine();
-
-	if (  ((FigEdge)owner).getSourcePortFig().getCenter() == null || ((FigEdge)owner).getDestPortFig().getCenter() == null ) 
-	    return;
-	//line from annotation to closest point on owning edge
-	try{
-	    if (owner instanceof FigEdgePoly){
-		line.setShape(annotation.getCenter(), 
-			      AnnotationHelper.getClosestPoint(annotation.getCenter(), (FigEdgePoly)owner));
-	    }else{
-		line.setShape(annotation.getCenter(), 
-			      AnnotationHelper.getClosestPointOnEdge(annotation.getCenter(), 
-								     ((FigEdge)owner).getFirstPoint(), 
-								     ((FigEdge)owner).getLastPoint()));
-	    }
-	} catch (ArrayIndexOutOfBoundsException e){
-	    line.setShape(annotation.getCenter(), 
-			  AnnotationHelper.getClosestPointOnEdge(annotation.getCenter(), 
-						       ((FigEdge)owner).getSourcePortFig().getCenter(), 
-						       ((FigEdge)owner).getDestPortFig().getCenter() ));
-	}
-	line.setLineColor(getAnnotationProperties(annotation).getLineColor());
-	line.setFillColor(getAnnotationProperties(annotation).getLineColor());
-	line.setDashed(true);
-	// draw the line
-	if (!(Globals.curEditor().getLayerManager().getContents(null).contains(line))) {
-            Globals.curEditor().add(line);
+        if (!(getAnnotationProperties(annotation).lineIsVisible(annotation))) return;
+        Fig owner = annotation.getAnnotationOwner();
+        AnnotationProperties prop = getAnnotationProperties(annotation);
+        FigLine line = prop.getConnectingLine();
+        
+        if (  ((FigEdge)owner).getSourcePortFig().getCenter() == null || ((FigEdge)owner).getDestPortFig().getCenter() == null ) 
+            return;
+        //line from annotation to closest point on owning edge
+        try{
+            if (owner instanceof FigEdge && ((FigEdge)owner).isPolyRoutingStrategy()) {
+        	line.setShape(annotation.getCenter(), 
+        		      AnnotationHelper.getClosestPoint(annotation.getCenter(), (FigEdge)owner));
+            }else{
+        	line.setShape(annotation.getCenter(), 
+        		      AnnotationHelper.getClosestPointOnEdge(annotation.getCenter(), 
+        							     ((FigEdge)owner).getFirstPoint(), 
+        							     ((FigEdge)owner).getLastPoint()));
+            }
+        } catch (ArrayIndexOutOfBoundsException e){
+            line.setShape(annotation.getCenter(), 
+        		  AnnotationHelper.getClosestPointOnEdge(annotation.getCenter(), 
+        					       ((FigEdge)owner).getSourcePortFig().getCenter(), 
+        					       ((FigEdge)owner).getDestPortFig().getCenter() ));
         }
-	Globals.curEditor().getLayerManager().bringToFront(annotation);
-	//
-	line.damage();
-	annotation.damage();
-
-	// remove line automatically
-	AnnotationLineRemover.instance().removeLineIn( getAnnotationProperties(annotation).getLineVisibilityDuration(),annotation );
+        line.setLineColor(getAnnotationProperties(annotation).getLineColor());
+        line.setFillColor(getAnnotationProperties(annotation).getLineColor());
+        line.setDashed(true);
+        // draw the line
+        if (!(Globals.curEditor().getLayerManager().getContents(null).contains(line))) {
+                Globals.curEditor().add(line);
+            }
+        Globals.curEditor().getLayerManager().bringToFront(annotation);
+        //
+        line.damage();
+        annotation.damage();
+        
+        // remove line automatically
+        AnnotationLineRemover.instance().removeLineIn( getAnnotationProperties(annotation).getLineVisibilityDuration(),annotation );
     }
 
     /** move annotations.

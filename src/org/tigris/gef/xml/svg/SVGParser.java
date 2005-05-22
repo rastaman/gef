@@ -32,8 +32,8 @@ import java.io.StreamTokenizer;
 import java.io.StringReader;
 import java.net.URL;
 
-import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.presentation.*;
 import org.tigris.gef.graph.*;
 
@@ -55,10 +55,10 @@ public class SVGParser extends DefaultHandler {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  protected Diagram   _diagram = null;
-  protected int       _nestedGroups = 0;
-  protected HashMap _figRegistry = null;
-  protected Map _ownerRegistry = new HashMap();
+    protected Diagram   _diagram = null;
+    protected int       _nestedGroups = 0;
+    protected HashMap _figRegistry = null;
+    protected Map _ownerRegistry = new HashMap();
 
   ////////////////////////////////////////////////////////////////
   // XML element handlers
@@ -132,8 +132,8 @@ public class SVGParser extends DefaultHandler {
 			_currentEdge.setFig(p);
 			((FigPoly)p)._isComplete = true;
 			_currentEdge.calcBounds();
-			if (_currentEdge instanceof FigEdgePoly) {
-				((FigEdgePoly)_currentEdge).setInitiallyLaidOut(true);
+			if (_currentEdge instanceof FigEdge && ((FigEdge)_currentEdge).isPolyRoutingStrategy()) {
+				((FigEdge)_currentEdge).setInitiallyLaidOut(true);
 			}
 		}
 		else if (tagName.equals("switch")) {

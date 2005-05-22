@@ -30,7 +30,6 @@ package org.tigris.gef.base;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.MutableGraphModel;
@@ -59,34 +58,33 @@ public class SelectionReshape extends Selection
   /** Construct a new SelectionReshape for the given Fig */
   public SelectionReshape(Fig f) { super(f); }
 
-  /** Return a handle ID for the handle under the mouse, or -1 if none. 
-   */
-  public void hitHandle(Rectangle r, Handle h) {
-    int npoints = _content.getNumPoints();
-    int[] xs = _content.getXs();
-    int[] ys = _content.getYs();
-    for (int i = 0; i < npoints; ++i)
-      if (r.contains(xs[i], ys[i])) {
-	_selectedHandle = i;
-	h.index = i;
-	h.instructions = "Move point";
-	return;
-      }
-    if (_content instanceof FigEdgePoly) {
-      for (int i = 0; i < npoints-1; ++i) {
-	if(Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
-	  FigEdgePoly p = ((FigEdgePoly)_content);
-	  //System.out.println("hit segment");
-	  h.index = p.getNumPoints();
-	  h.instructions = "Add a point";
-	  return;
-	}
-      }
+    /** Return a handle ID for the handle under the mouse, or -1 if none. 
+     */
+    public void hitHandle(Rectangle r, Handle h) {
+        int npoints = _content.getNumPoints();
+        int[] xs = _content.getXs();
+        int[] ys = _content.getYs();
+        for (int i = 0; i < npoints; ++i) {
+            if (r.contains(xs[i], ys[i])) {
+                _selectedHandle = i;
+                h.index = i;
+                h.instructions = "Move point";
+                return;
+            }
+        }
+        if (_content instanceof FigEdge && ((FigEdge)_content).isPolyRoutingStrategy()) {
+            for (int i = 0; i < npoints-1; ++i) {
+                if (Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
+                    h.index = _content.getNumPoints();
+                    h.instructions = "Add a point";
+                    return;
+                }
+            }
+        }
+        _selectedHandle = -1;
+        h.index = -1;
+        h.instructions = "Move object(s)";
     }
-    _selectedHandle = -1;
-    h.index = -1;
-    h.instructions = "Move object(s)";
-  }
 
   /** Paint the handles at the four corners and midway along each edge
    * of the bounding box.  */
@@ -109,23 +107,24 @@ public class SelectionReshape extends Selection
    *  handles.  */
   public void dragHandle(int mX, int mY, int anX, int anY, Handle h) {
       // check assertions
-      if ( _content instanceof FigEdgePoly) {
-          FigEdgePoly p = ((FigEdgePoly)_content);
+      if (_content instanceof FigEdge && ((FigEdge)_content).isPolyRoutingStrategy()) {
+          FigEdge p = ((FigEdge)_content);
           int npoints = _content.getNumPoints();
           int[] xs = _content.getXs();
           int[] ys = _content.getYs();
-          Rectangle r = new Rectangle(anX-4,anY-4,8,8);
-          if(h.index == p.getNumPoints()) {
+          Rectangle r = new Rectangle(anX-4, anY-4, 8, 8);
+          if (h.index == p.getNumPoints()) {
               for (int i = 0; i < npoints-1; ++i) {
-                  if(Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
+                  if (Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
                       p.insertPoint(i,r.x,r.y);
                       h.index = i+1;
                       break;
                   }
               }
           }
-          if (h.index < 0 || h.index >= p.getNumPoints())
+          if (h.index < 0 || h.index >= p.getNumPoints()) {
               System.out.println("mistake " + h.index);
+          }
           if ((h.index == 0)||(h.index == p.getNumPoints()-1)) {
               updateEdgeEnds(p,h,mX,mY);
           } // end if
@@ -133,7 +132,7 @@ public class SelectionReshape extends Selection
       _content.setPoint(h, mX, mY);
   }
 
-  public void updateEdgeEnds(FigEdgePoly poly, Handle handle, int x, int y ) {
+  public void updateEdgeEnds(FigEdge poly, Handle handle, int x, int y ) {
   }
 
   ////////////////////////////////////////////////////////////////

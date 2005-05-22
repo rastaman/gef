@@ -51,14 +51,17 @@ public class FigEdgePoly extends FigEdge {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** True if the edge has been laid out automatically once. It will
-     *  not be done automatically again since the user may have edited the
-     *  edge and I dont want to undo that work.
-     */
-    private boolean _initiallyLaidOut = false;
-
     ////////////////////////////////////////////////////////////////
     // FigEdge API
+    
+    /**
+     * @deprecated This method has been introduced temporarily while FigEdgePoly and RoutingStrategyPoly
+     * exist at the same time. It will be removed in future and should be considereed deprecated.
+     */
+    public boolean isPolyRoutingStrategy() {
+        return true;
+    }
+
 
     /** Instantiate a FigPoly with its rectilinear flag set. By default
      *  the FigPoly is black and the FigEdge has no ArrowHeads. */
@@ -72,10 +75,6 @@ public class FigEdgePoly extends FigEdge {
 
     ////////////////////////////////////////////////////////////////
     // accessors
-
-    public void setInitiallyLaidOut(boolean b) {
-        _initiallyLaidOut = b;
-    }
 
     ////////////////////////////////////////////////////////////////
     // routing methods

@@ -73,7 +73,7 @@ public class AnnotationHelper{
      * It's final so that no one can damage the implementation (and for speed).
      *
      */
-    public static final Point getClosestPoint(Point from, FigEdgePoly to) {
+    public static final Point getClosestPoint(Point from, FigEdge to) {
         
         // get a new Vector with the points - very memory consuming :-(
         // to improve this, the class FigPoly must provide better accessors
