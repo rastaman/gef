@@ -72,7 +72,7 @@ public class SelectionReshape extends Selection
                 return;
             }
         }
-        if (_content instanceof FigEdge && ((FigEdge)_content).isPolyRoutingStrategy()) {
+        if (_content instanceof FigEdgePoly) {
             for (int i = 0; i < npoints-1; ++i) {
                 if (Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
                     h.index = _content.getNumPoints();
@@ -103,11 +103,13 @@ public class SelectionReshape extends Selection
     super.paint(g);
   }
 
-  /** Change some attribute of the selected Fig when the user drags one of its
-   *  handles.  */
+  /**
+   * Change some attribute of the selected Fig when the user drags one of its
+   * handles.
+   */
   public void dragHandle(int mX, int mY, int anX, int anY, Handle h) {
       // check assertions
-      if (_content instanceof FigEdge && ((FigEdge)_content).isPolyRoutingStrategy()) {
+      if (_content instanceof FigEdgePoly) {
           FigEdge p = ((FigEdge)_content);
           int npoints = _content.getNumPoints();
           int[] xs = _content.getXs();

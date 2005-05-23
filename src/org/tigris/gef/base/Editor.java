@@ -28,8 +28,8 @@
 
 package org.tigris.gef.base;
 
-import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.event.GraphSelectionListener;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.GraphEdgeRenderer;

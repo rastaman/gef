@@ -54,15 +54,12 @@ public class FigEdgePoly extends FigEdge {
     ////////////////////////////////////////////////////////////////
     // FigEdge API
     
-    /**
-     * @deprecated This method has been introduced temporarily while FigEdgePoly and RoutingStrategyPoly
-     * exist at the same time. It will be removed in future and should be considereed deprecated.
+    /** True if the edge has been laid out automatically once. It will
+     *  not be done automatically again since the user may have edited the
+     *  edge and I dont want to undo that work.
      */
-    public boolean isPolyRoutingStrategy() {
-        return true;
-    }
-
-
+    protected boolean _initiallyLaidOut;
+    
     /** Instantiate a FigPoly with its rectilinear flag set. By default
      *  the FigPoly is black and the FigEdge has no ArrowHeads. */
     protected Fig makeEdgeFig() {
@@ -430,5 +427,9 @@ public class FigEdgePoly extends FigEdge {
                 paintHighlightLine(g, xs[i - 1], ys[i - 1], xs[i], ys[i]);
             }
         }
+    }
+    
+    public void setInitiallyLaidOut(boolean laidOut) {
+        _initiallyLaidOut = laidOut;
     }
 } /* end class FigEdgePoly */

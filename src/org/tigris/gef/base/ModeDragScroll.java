@@ -26,16 +26,22 @@
 // Original Author: Sean Chen, schen@webex.net
 package org.tigris.gef.base;
 
-import javax.swing.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
-
-import java.awt.*;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Event;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JComponent;
+import javax.swing.JViewport;
 
 /** A Mode that allows the user to scroll the Editor by clicking and dragging
  * with the middle mouse button.

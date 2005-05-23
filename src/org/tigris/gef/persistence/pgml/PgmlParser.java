@@ -48,6 +48,7 @@ import org.tigris.gef.graph.presentation.DefaultGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigEdgePoly;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigNode;
@@ -734,8 +735,8 @@ public class PgmlParser extends DefaultHandler {
             ((FigPoly)p)._isComplete = true;
             _currentEdge.calcBounds();
             //System.out.println("[PGMLParser]: edgeStateStartElement: cur= " + _currentEdge.getNumPoints());
-            if (_currentEdge instanceof FigEdge && ((FigEdge)_currentEdge).isPolyRoutingStrategy()) {
-                ((FigEdge)_currentEdge).setInitiallyLaidOut(true);
+            if (_currentEdge instanceof FigEdgePoly) {
+                ((FigEdgePoly)_currentEdge).setInitiallyLaidOut(true);
             }
 
             _currentEdge.updateAnnotationPositions();

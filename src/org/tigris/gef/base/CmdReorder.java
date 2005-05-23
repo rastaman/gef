@@ -31,9 +31,6 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
-
 /** Cmd to change the back-to-front ordering of Fig's.
  *
  * @see LayerDiagram#reorder */

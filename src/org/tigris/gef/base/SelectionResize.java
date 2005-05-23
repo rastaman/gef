@@ -28,11 +28,14 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
-import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
-import org.tigris.gef.presentation.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.Handle;
 
 /** A Selection class to represent selections on Figs that present
  *  resize handles. The selected Fig can be moved or resized. Figrect,

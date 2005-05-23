@@ -132,8 +132,8 @@ public class SVGParser extends DefaultHandler {
 			_currentEdge.setFig(p);
 			((FigPoly)p)._isComplete = true;
 			_currentEdge.calcBounds();
-			if (_currentEdge instanceof FigEdge && ((FigEdge)_currentEdge).isPolyRoutingStrategy()) {
-				((FigEdge)_currentEdge).setInitiallyLaidOut(true);
+			if (_currentEdge instanceof FigEdgePoly) {
+				((FigEdgePoly)_currentEdge).setInitiallyLaidOut(true);
 			}
 		}
 		else if (tagName.equals("switch")) {

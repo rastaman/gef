@@ -31,9 +31,7 @@
 
 package org.tigris.gef.base;
 
-import java.awt.Event;
-
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
 
 /** Cmd to remove the selected (last manipulated) point from a FigPoly.
  *

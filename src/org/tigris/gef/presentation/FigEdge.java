@@ -55,12 +55,6 @@ public abstract class FigEdge extends Fig implements Connecter {
     /** The items that are accumulated along the path, a vector. */
     protected Vector _pathItems = new Vector();
 
-    /** True if the edge has been laid out automatically once. It will
-     *  not be done automatically again since the user may have edited the
-     *  edge and I dont want to undo that work.
-     */
-    protected boolean _initiallyLaidOut;
-    
     ////////////////////////////////////////////////////////////////
     // inner classes
     private class PathItem implements java.io.Serializable {
@@ -103,10 +97,6 @@ public abstract class FigEdge extends Fig implements Connecter {
         _fig.setLayer(getLayer());
     }
     
-    public void setInitiallyLaidOut(boolean b) {
-        _initiallyLaidOut = b;
-    }
-
     /** Add a new path item to this FigEdge. newPath indicates both the
      *  location and the Fig (usually FigText) that should be drawn. */
     public void addPathItem(Fig newFig, PathConv newPath) {
@@ -446,14 +436,6 @@ public abstract class FigEdge extends Fig implements Connecter {
 
     public boolean isRotatable() {
         return _fig.isRotatable();
-    }
-
-    /**
-     * @deprecated This method has been introduced temporarily while FigEdgePoly and RoutingStrategyPoly
-     * exist at the same time. It will be removed in future and should be considereed deprecated.
-     */
-    public boolean isPolyRoutingStrategy() {
-        return false;
     }
 
     /** Abstract method to make the Fig that will be drawn for this

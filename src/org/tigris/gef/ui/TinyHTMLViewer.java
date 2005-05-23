@@ -26,8 +26,12 @@ package org.tigris.gef.ui;
 import java.awt.*;
 import java.net.*;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import javax.swing.*;
+
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 import javax.swing.text.*;
 import javax.swing.event.*;
 
@@ -114,10 +118,10 @@ class HtmlPane extends JScrollPane implements HyperlinkListener {
      * @param u the URL to follow
      */
     protected void linkActivated(URL u) {
-	Cursor c = html.getCursor();
-	Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
-	html.setCursor(waitCursor);
-	SwingUtilities.invokeLater(new PageLoader(u, c));
+        Cursor c = html.getCursor();
+        Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+        html.setCursor(waitCursor);
+        SwingUtilities.invokeLater(new PageLoader(u, c));
     }
 
     /**

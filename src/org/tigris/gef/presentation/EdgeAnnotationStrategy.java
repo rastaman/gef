@@ -62,55 +62,61 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
      * method is called when the annotation is moved without its owner
      */
     public void storeAnnotationPosition(Fig annotation){
-	Fig owner = annotation.getAnnotationOwner();
-	// case: owner ist eine Kante
-	if (owner instanceof FigEdge){
-	    FigEdge edge = (FigEdge)owner;
-	    Point anPos 	= annotation.getCenter();
-	    //Point start= edge.getSourcePortFig().center();	
-	    //Point ende = edge.getDestPortFig().center();
-	    Point start; 	
-	    Point ende;
-	    try{
-		start = edge.getFirstPoint();
-		ende = edge.getLastPoint();
-	    } catch (ArrayIndexOutOfBoundsException e){
-		start= edge.getSourcePortFig().getCenter();	
-		ende = edge.getDestPortFig().getCenter();
-	    }
-
-	    if ((start.x == ende.x) && (start.y == ende.y)) return;
-
-	    int d = AnnotationHelper.getNormOffset(anPos, start, ende);
-	    float ratio = AnnotationHelper.getRatio(anPos, start, ende);
-	    // store values
-	    AnnotationProperties prop = getAnnotationProperties(annotation);
-	    prop.setRatio(ratio,prop.hasFixedRatio());
-	    prop.setOffset(d ,prop.hasFixedOffset());
-	}
-	drawConnectingLine(annotation);
+        Fig owner = annotation.getAnnotationOwner();
+        // case: owner ist eine Kante
+        if (owner instanceof FigEdge){
+            FigEdge edge = (FigEdge)owner;
+            Point anPos 	= annotation.getCenter();
+            //Point start= edge.getSourcePortFig().center();	
+            //Point ende = edge.getDestPortFig().center();
+            Point start; 	
+            Point ende;
+            try{
+                start = edge.getFirstPoint();
+                ende = edge.getLastPoint();
+            } catch (ArrayIndexOutOfBoundsException e){
+                start= edge.getSourcePortFig().getCenter();	
+                ende = edge.getDestPortFig().getCenter();
+            }
+        
+            if ((start.x == ende.x) && (start.y == ende.y)) {
+                return;
+            }
+        
+            int d = AnnotationHelper.getNormOffset(anPos, start, ende);
+            float ratio = AnnotationHelper.getRatio(anPos, start, ende);
+            // store values
+            AnnotationProperties prop = getAnnotationProperties(annotation);
+            prop.setRatio(ratio,prop.hasFixedRatio());
+            prop.setOffset(d ,prop.hasFixedOffset());
+        }
+        drawConnectingLine(annotation);
     }
 
-    /** Draws a dotted line between this annotation and its owner.
+    /**
+     * Draws a dotted line between this annotation and its owner.
      */
     public void drawConnectingLine(Fig annotation) throws NullPointerException{
-        if (!(getAnnotationProperties(annotation).lineIsVisible(annotation))) return;
+        if (!(getAnnotationProperties(annotation).lineIsVisible(annotation))) {
+            return;
+        }
         Fig owner = annotation.getAnnotationOwner();
         AnnotationProperties prop = getAnnotationProperties(annotation);
         FigLine line = prop.getConnectingLine();
         
-        if (  ((FigEdge)owner).getSourcePortFig().getCenter() == null || ((FigEdge)owner).getDestPortFig().getCenter() == null ) 
+        if (  ((FigEdge)owner).getSourcePortFig().getCenter() == null || ((FigEdge)owner).getDestPortFig().getCenter() == null ) {
             return;
+        }
         //line from annotation to closest point on owning edge
-        try{
-            if (owner instanceof FigEdge && ((FigEdge)owner).isPolyRoutingStrategy()) {
-        	line.setShape(annotation.getCenter(), 
-        		      AnnotationHelper.getClosestPoint(annotation.getCenter(), (FigEdge)owner));
-            }else{
-        	line.setShape(annotation.getCenter(), 
-        		      AnnotationHelper.getClosestPointOnEdge(annotation.getCenter(), 
-        							     ((FigEdge)owner).getFirstPoint(), 
-        							     ((FigEdge)owner).getLastPoint()));
+        try {
+            if (owner instanceof FigEdgePoly) {
+                line.setShape(annotation.getCenter(), 
+                	      AnnotationHelper.getClosestPoint(annotation.getCenter(), (FigEdgePoly)owner));
+            } else {
+                line.setShape(annotation.getCenter(), 
+                	      AnnotationHelper.getClosestPointOnEdge(annotation.getCenter(), 
+                						     ((FigEdge)owner).getFirstPoint(), 
+                						     ((FigEdge)owner).getLastPoint()));
             }
         } catch (ArrayIndexOutOfBoundsException e){
             line.setShape(annotation.getCenter(), 

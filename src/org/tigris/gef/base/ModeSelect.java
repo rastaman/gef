@@ -26,15 +26,18 @@
 // $Id$
 package org.tigris.gef.base;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 
 import java.util.Enumeration;
 import java.util.Vector;
 
-import org.apache.commons.logging.*;
-import org.apache.commons.logging.impl.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.Handle;
