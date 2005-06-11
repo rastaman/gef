@@ -152,7 +152,7 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
         Object newNode;
         Object nodeType = getArg("className", DEFAULT_NODE_CLASS);
         if (nodeType instanceof Action) {
-            Action a=null;
+            Action a = null;
             a.actionPerformed(null);
             newNode = a.getValue("node");
         } else {
@@ -182,5 +182,5 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
     public Object getActiveGraphModel() {
         return getArg("graphModel");
     }
-
+    
 } /* end class CmdCreateNode */

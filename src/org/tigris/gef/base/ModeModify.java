@@ -31,8 +31,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.*;
 import org.tigris.gef.graph.GraphModel;
@@ -129,6 +131,9 @@ public class ModeModify extends FigModifyingModeImpl {
 
         if (!_dragInProcess) {
             _dragInProcess = true;
+            Fig f = (Fig)editor.getSelectionManager().getFigs().get(0);
+            ModeModifyMemento memento = new ModeModifyMemento();
+            UndoManager.getInstance().addMemento(memento);
             GraphModel gm = editor.getGraphModel();
             if (gm instanceof MutableGraphSupport) {
                 ((MutableGraphSupport)gm).fireGraphChanged();
@@ -259,6 +264,7 @@ public class ModeModify extends FigModifyingModeImpl {
         selectionManager.hitHandle(new Rectangle(x - 4, y - 4, 8, 8), _curHandle);
         Globals.showStatus(_curHandle.instructions);
         selectionManager.endTrans();
+        
     }
 
     /** On mouse up the modification interaction is done. */
@@ -432,6 +438,37 @@ public class ModeModify extends FigModifyingModeImpl {
             return (((MutableGraphSupport)gm)
                     .isEnclosable(((FigNode) selectedFig).getOwner(),
                                     ((FigNode) encloser).getOwner()));
+        }
+    }
+    
+    
+    private class ModeModifyMemento implements Memento {
+        
+        private Map figMap = new HashMap();
+        
+        ModeModifyMemento() {
+            // Get the bounds of all figs selected
+            SelectionManager sm = Globals.curEditor().getSelectionManager();
+            Iterator it = sm.getFigs().iterator();
+            while (it.hasNext()) {
+                Fig f = (Fig)it.next();
+                Rectangle rect = f.getBounds();
+                figMap.put(f, rect);
+            }
+        }
+        
+        public void undo() {
+            Iterator it = figMap.keySet().iterator();
+            while (it.hasNext()) {
+                Fig f = (Fig)it.next();
+                f.damage();
+                f.setBounds((Rectangle)figMap.get(f));
+                f.calcBounds();
+                f.damage();
+            }
+        }
+        public void redo() {
+            
         }
     }
 }

@@ -28,6 +28,8 @@ package org.tigris.gef.base;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
 
 import java.awt.Container;
 import java.awt.Cursor;
@@ -39,6 +41,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JViewport;
@@ -309,4 +314,5 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
          MouseEvent me = new MouseEvent(getEditor().getJComponent(), Event.MOUSE_DRAG, 0, InputEvent.BUTTON1_MASK, recentX, recentY, 0, false);
          getEditor().mouseDragged(me);
      }
+     
 }
