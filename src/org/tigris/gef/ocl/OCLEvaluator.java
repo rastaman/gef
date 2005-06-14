@@ -164,22 +164,6 @@ public class OCLEvaluator {
             property = property.substring(0,rangePos);
         }
 
-        // Don't think this is used any more
-//        if (property.endsWith("()")) {
-//            // Lastly try and find a method in the form property(Writer)
-//            property = property.substring(0,property.length()-2);
-//            try {
-//                Class params[] = new Class[2];
-//                params[0] = Writer.class;
-//                params[1] = Integer.class;
-//                m = target.getClass().getMethod(property, params);
-//                MethodInfo info = new MethodInfo(target, m);
-//                return info;
-//            } catch(NoSuchMethodException e) {
-//                throw new ExpansionException(e);
-//            }
-//        }
-        
         // First try and find a getter method in the form getProperty()
         Object o = null;
         

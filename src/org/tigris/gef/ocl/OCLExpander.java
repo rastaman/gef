@@ -374,7 +374,7 @@ public class OCLExpander {
                     
                     Object[] args = new Object[1];
                     args[0] = o;
-                    m.invoke(null, args);
+                    o = m.invoke(null, args);
                     newValues.add(o);
                 }
             } catch (ClassNotFoundException e) {
@@ -385,7 +385,7 @@ public class OCLExpander {
                 throw new ExpansionException(e);
             }
             
-            return values;
+            return newValues;
         }
     }
     
