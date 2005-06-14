@@ -36,7 +36,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.*;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
@@ -84,8 +83,6 @@ public class ModeModify extends FigModifyingModeImpl {
     private int _deltaMouseX;
     private int _deltaMouseY;
     
-    private static Log LOG = LogFactory.getLog(ModeModify.class);
-
     /** Construct a new ModeModify with the given parent, and set the
      *  Anchor point to a default location (the _anchor's proper position
      *  will be determioned on mouse down). */
@@ -113,7 +110,6 @@ public class ModeModify extends FigModifyingModeImpl {
      */
     public void mouseDragged(MouseEvent mouseEvent) {
         if (mouseEvent.isConsumed()) {
-            if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected but with wrong button condition for scrolling");
             return;
         }
 
@@ -125,7 +121,6 @@ public class ModeModify extends FigModifyingModeImpl {
         _deltaMouseX = mouseX - dragStartMousePosition.x;
         _deltaMouseY = mouseY - dragStartMousePosition.y;
         if(!_dragInProcess && Math.abs(_deltaMouseX) < MIN_DELTA && Math.abs(_deltaMouseY) < MIN_DELTA) {
-            if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected but not enough to notice");
             return;
         }
 
@@ -142,7 +137,6 @@ public class ModeModify extends FigModifyingModeImpl {
 
         boolean restrict45 = mouseEvent.isControlDown();
         handleMouseDragged(restrict45);
-        if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected");
     }
 
     /**
@@ -172,7 +166,6 @@ public class ModeModify extends FigModifyingModeImpl {
      * control is pressed or released during the drag.
      */
     private void handleMouseDragged(boolean restrict45) {
-        if (LOG.isDebugEnabled()) LOG.debug("Original position was " + dragStartMousePosition);
         int deltaMouseX = _deltaMouseX;
         int deltaMouseY = _deltaMouseY;
         if(restrict45 && deltaMouseY != 0) {
@@ -183,7 +176,6 @@ public class ModeModify extends FigModifyingModeImpl {
             deltaMouseY = (int)(r * Math.sin(degrees));
         }
 
-        if (LOG.isDebugEnabled()) LOG.debug("deltaMouseX = " + deltaMouseX);
         SelectionManager selectionManager = getEditor().getSelectionManager();
         if(selectionManager.getLocked()) {
             Globals.showStatus("Cannot Modify Locked Objects");
@@ -208,25 +200,21 @@ public class ModeModify extends FigModifyingModeImpl {
 
         Point selectionNewPosition = new Point(dragStartSelectionPosition);
         selectionNewPosition.translate(deltaMouseX, deltaMouseY);
-        if (LOG.isDebugEnabled()) LOG.debug("selectionNewPosition = " + selectionNewPosition);
         getEditor().snap(selectionNewPosition);
         selectionNewPosition.x = Math.max(0, selectionNewPosition.x);
         selectionNewPosition.y = Math.max(0, selectionNewPosition.y);
 
         int deltaSelectionX = selectionNewPosition.x - selectionCurrentPosition.x;
         int deltaSelectionY = selectionNewPosition.y - selectionCurrentPosition.y;
-        if(deltaSelectionX != 0 || deltaSelectionY != 0) {
-            if (LOG.isDebugEnabled()) LOG.debug("handle index = " + _curHandle.index);
-            if(_curHandle.index == -1) {
+        if (deltaSelectionX != 0 || deltaSelectionY != 0) {
+            if (_curHandle.index == -1) {
                 setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
                 if(legal(deltaSelectionX, deltaSelectionY, selectionManager)) {
                     selectionManager.drag(deltaSelectionX, deltaSelectionY);
                 }
-            }
-            else {
+            } else {
                 if(_curHandle.index >= 0) {
                     setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                    if (LOG.isDebugEnabled()) LOG.debug("selectionNewPosition = " + selectionNewPosition);
                     selectionManager.dragHandle(newMousePosition.x, newMousePosition.y, dragStartMousePosition.x, dragStartMousePosition.y, _curHandle);
                     selectionManager.endTrans();
                 }
@@ -240,7 +228,6 @@ public class ModeModify extends FigModifyingModeImpl {
      *  was clicked on.  This event is passed from ModeSelect. */
     public void mousePressed(MouseEvent me) {
         if (me.isConsumed()) {
-            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but already consumed");
             return;
         }
 
@@ -259,7 +246,6 @@ public class ModeModify extends FigModifyingModeImpl {
         }
 
         dragStartMousePosition = me.getPoint();
-        if (LOG.isDebugEnabled()) LOG.debug("MousePressed at " + dragStartMousePosition);
         dragStartSelectionPosition = null;
         selectionManager.hitHandle(new Rectangle(x - 4, y - 4, 8, 8), _curHandle);
         Globals.showStatus(_curHandle.instructions);
