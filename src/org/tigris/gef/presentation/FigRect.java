@@ -30,6 +30,7 @@ package org.tigris.gef.presentation;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.io.Serializable;
 
 /** Primitive Fig to paint rectangles on a LayerDiagram. */
@@ -68,21 +69,78 @@ public class FigRect extends Fig implements Serializable {
 
     /** Paint this FigRect */
     public void paint(Graphics g) {
+        int xx = _x;
+        int yy = _y;
+        int ww = _w;
+        int hh = _h;
         if (_filled && _fillColor != null) {
+            if (_lineColor != null) {
+                if (_lineWidth > 1 && !getDashed()) {
+                    int lineWidth2 = _lineWidth*2;
+                    g.setColor(_lineColor);
+                    g.fillRect(xx, yy, ww, hh);
+                    xx += _lineWidth;
+                    yy += _lineWidth;
+                    ww -= lineWidth2;
+                    hh -= lineWidth2;
+                }
+            }
             g.setColor(_fillColor);
-            g.fillRect(_x, _y, _w, _h);
+            g.fillRect(xx, yy, ww, hh);
+            if (_lineColor != null) {
+                if (_lineWidth == 1 || getDashed()) {
+                    paintRectLine(g, xx, yy, ww, hh, _lineWidth);
+                }
+            }
+        } else {
+            paintRectLine(g, xx, yy, ww, hh, _lineWidth);
         }
-        if (_lineWidth > 0 && _lineColor != null) {
+    }
+
+    /**
+     * Paint the line of a rectangle without any fill.
+     * Manages line width and dashed lines.
+     * @param g The Graphics object
+     * @param x The x co-ordinate of the rectangle
+     * @param y The y co-ordinate of the rectangle
+     * @param w The width of the rectangle
+     * @param h The height of the rectangle
+     * @param lwidth The linewidth of the rectangle
+     */
+    private void paintRectLine(Graphics g, int x, int y, int w, int h, int lWidth) {
+        if (lWidth > 0 && _lineColor != null) {
             g.setColor(_lineColor);
-            if (!getDashed())
-                g.drawRect(_x, _y, _w - _lineWidth, _h - _lineWidth);
-            else {
-                int phase = 0;
-                phase = drawDashedLine(g, phase, _x, _y, _x + _w, _y);
-                phase = drawDashedLine(g, phase, _x + _w, _y, _x + _w, _y + _h);
-                phase = drawDashedLine(g, phase, _x + _w, _y + _h, _x, _y + _h);
-                phase = drawDashedLine(g, phase, _x, _y + _h, _x, _y);
+            if (lWidth == 1) {
+                paintRectLine(g, x, y, w, h);
+            } else {
+                int xx = x;
+                int yy = y;
+                int hh = h;
+                int ww = w;
+                
+                for (int i=0; i < lWidth; ++i) {
+                    paintRectLine(g, xx++, yy++, ww, hh);
+                    ww -= 2;
+                    hh -= 2;
+                }
             }
         }
     }
+    
+    private void paintRectLine(Graphics g, int x, int y, int w, int h) {
+        if (!getDashed())
+            g.drawRect(x, y, w, h);
+        else {
+            drawDashedRectangle(g, 0, x, y, w, h);
+        }
+    }
+    
+    protected void drawDashedRectangle(Graphics g, int phase, int x, int y, int w, int h) {
+        phase = drawDashedLine(g, phase, _x, _y, _x + _w, _y);
+        phase = drawDashedLine(g, phase, _x + _w, _y, _x + _w, _y + _h);
+        phase = drawDashedLine(g, phase, _x + _w, _y + _h, _x, _y + _h);
+        phase = drawDashedLine(g, phase, _x, _y + _h, _x, _y);
+    }
+
+    
 } /* end class FigRect */

@@ -80,17 +80,99 @@ public class FigRRect extends FigRect {
   ////////////////////////////////////////////////////////////////
   /// painting methods
 
-  /** Paint this FigRRect */
-  public void paint(Graphics g) {
-    if (_filled && _fillColor != null) {
-      g.setColor(_fillColor);
-      g.fillRoundRect(_x, _y, _w, _h, _radius, _radius);
+    /**
+     * Paint this FigRRect.
+     * Dashed lines aren't currently handled.
+     */
+    public void paint(Graphics g) {
+        if (_filled && _fillColor != null) {
+            if (_lineColor != null && _lineWidth > 1) {
+                paintFilledWithWideLine(g);
+            } else {
+                paintFilled(g);
+            }
+        } else if (_lineColor != null && _lineWidth > 0) {
+            paintEmptyWithWideLine(g);
+        } else {
+            paintEmpty(g);
+        }
     }
-    if (_lineWidth > 0  && _lineColor != null) {
-      g.setColor(_lineColor);
-      g.drawRoundRect(_x, _y, _w - _lineWidth, _h - _lineWidth,
-		      _radius, _radius);
-    }
-  }
-} /* end class FigRRect */
 
+    /**
+     * Paint a filled rounded rectangle (with a narrow line or no line)
+     * @param g
+     */
+    private void paintFilled(Graphics g) {
+        //assert _lineWidth == 0 || _lineWidth == 1 || _lineColor == null
+        //assert filled && filledColor != null
+        // Do the actual fill color
+        g.setColor(_fillColor);
+        g.fillRoundRect(_x, _y, _w, _h, _radius, _radius);
+        
+        if (_lineColor != null && _lineWidth == 1) {
+            // If we're filled with a narrow border then draw
+            // the border over the already filled area.
+            g.setColor(_lineColor);
+            g.drawRoundRect(_x, _y, _w, _h, _radius, _radius);
+        }
+    }
+
+    /**
+     * Paint a filled rounded rectangle with a wide line
+     * @param g
+     */
+    private void paintFilledWithWideLine(Graphics g) {
+        //assert _lineWidth > 1 && _lineColor != null
+        //assert filled && filledColor != null
+        // If we're filled with a wide border then fill
+        // the entire rectangle with the border color and then
+        // recalculate area for the actual fill.
+        int lineWidth2 = _lineWidth*2;
+        g.setColor(_lineColor);
+        g.fillRoundRect(_x, _y, _w, _h, _radius, _radius);
+        
+        // Do the actual fill color
+        g.setColor(_fillColor);
+        g.fillRoundRect(
+                _x + _lineWidth,
+                _y + _lineWidth,
+                _w - lineWidth2,
+                _h - lineWidth2,
+                _radius,
+                _radius);
+    }
+    
+    /**
+     * Paint an unfilled rounded rectangle (with a narrow line or no line)
+     * @param g
+     */
+    private void paintEmpty(Graphics g) {
+        // If there's no fill but a narrow line then just
+        // draw that line.
+        if (_lineColor != null && _lineWidth == 1) {
+            g.setColor(_lineColor);
+            g.drawRoundRect(_x, _y, _w, _h, _radius, _radius);
+        }
+    }
+
+    /**
+     * Paint an unfilled rounded rectangle with a wide line
+     * @param g
+     */
+    private void paintEmptyWithWideLine(Graphics g) {
+        // If there's no fill but a wide line then draw repeated
+        // rounded rectangles in ever decreasing size.
+        if (_lineColor != null && _lineWidth > 1) {
+            int xx = _x;
+            int yy = _y;
+            int ww = _w;
+            int hh = _h;
+            g.setColor(_lineColor);
+            for (int i=0; i < _lineWidth; ++i) {
+                g.drawRoundRect(xx++, yy++, ww, hh, _radius, _radius);
+                ww -= 2;
+                hh -= 2;
+            }
+        }
+    }
+} /* end class FigRRect */
