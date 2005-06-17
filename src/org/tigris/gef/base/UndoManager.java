@@ -3,6 +3,8 @@ package org.tigris.gef.base;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * A place to register the UndoStack to be used by the application.
@@ -10,7 +12,7 @@ import java.util.ArrayList;
  */
 public class UndoManager {
 
-    private PropertyChangeListener listener;
+    private Collection listeners = new ArrayList();
     
     /**
      * Default to the standard undo manager but applications can set this
@@ -57,12 +59,17 @@ public class UndoManager {
     }
     
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        this.listener = listener;
+        this.listeners.add(listener);
     }
     
     private void fire() {
-        if (listener != null) {
-            listener.propertyChange(new PropertyChangeEvent(this, "size", "", Integer.toString(undoStack.size())));
+        Iterator i = listeners.iterator();
+        while (i.hasNext()) {
+            PropertyChangeListener listener = (PropertyChangeListener) i.next();
+            listener.propertyChange(new PropertyChangeEvent(this, "size", "", 
+                    Integer.toString(undoStack.size()) 
+                    + ";"
+                    + Integer.toString(redoStack.size())));
         }
     }
 }

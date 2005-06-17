@@ -182,7 +182,9 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	_menubar.add(edit);
 
     JMenuItem undoItem = edit.add(new UndoAction("Undo"));
-    undoItem.setMnemonic('Z');
+        undoItem.setMnemonic('U');
+        JMenuItem redoItem = edit.add(new RedoAction("Redo"));
+        redoItem.setMnemonic('R');
     
 	JMenu select = new JMenu(Localizer.localize("GefBase","Select"));
 	edit.add(select);
@@ -275,10 +277,11 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	sUpArrow = KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.SHIFT_MASK);
 	sDownArrow = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.SHIFT_MASK);
 
-	KeyStroke delKey, ctrlZ, ctrlX, ctrlC, ctrlV, ctrlG, ctrlU, ctrlB,
+	KeyStroke delKey, ctrlZ, ctrlX, ctrlY, ctrlC, ctrlV, ctrlG, ctrlU, ctrlB,
 	  ctrlF, sCtrlB, sCtrlF;
 	delKey = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
 	ctrlZ = KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK);
+        ctrlY = KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_MASK);
 	ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK);
 	ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK);
 	ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK);
@@ -299,7 +302,8 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	exitItem.setAccelerator(altF4);
 
 	deleteItem.setAccelerator(delKey);
-	//undoItem.setAccelerator(ctrlZ);
+	undoItem.setAccelerator(ctrlZ);
+        redoItem.setAccelerator(ctrlY);
 	//cutItem.setAccelerator(ctrlX);
 	copyItem.setAccelerator(ctrlC);
 	pasteItem.setAccelerator(ctrlV);

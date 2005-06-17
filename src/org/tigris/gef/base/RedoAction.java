@@ -32,38 +32,38 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
 /**
- * An action to undo from the undo stack.
+ * An action to redo from the undo stack.
  * 
- * @author Bob Tarling
+ * @author mvw@tigris.org
  */
-public class UndoAction extends AbstractAction implements PropertyChangeListener {
+public class RedoAction extends AbstractAction implements PropertyChangeListener {
     
     /**
-     * Construct the undo action with a display name
+     * Construct the redo action with a display name
      * @param name
      */
-    public UndoAction(String name) {
+    public RedoAction(String name) {
         super(name);
         UndoManager.getInstance().addPropertyChangeListener(this);
         setEnabled(false);
     }
     
     /**
-     * Construct the undo action with a display name and icon.
+     * Construct the redo action with a display name and icon.
      * @param name
      * @param icon
      */
-    public UndoAction(String name, Icon icon) {
+    public RedoAction(String name, Icon icon) {
         super(name, icon);
         UndoManager.getInstance().addPropertyChangeListener(this);
         setEnabled(false);
     }
 
     /**
-     * Perform the undo action.
+     * Perform the redo action.
      */
     public void actionPerformed(ActionEvent e) {
-        UndoManager.getInstance().undo();
+        UndoManager.getInstance().redo();
     }
     
     /**
@@ -72,7 +72,7 @@ public class UndoAction extends AbstractAction implements PropertyChangeListener
     public void propertyChange(PropertyChangeEvent event) {
         if ("size".equals(event.getPropertyName())) {
             String value = (String) event.getNewValue();
-            value = value.split(";")[0];
+            value = value.split(";")[1];
             setEnabled (!"0".equals(value));
         }
     }
