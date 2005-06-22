@@ -100,10 +100,16 @@ public class Globals {
     
     public static boolean pastable = false;
     
-    /** The directory most recently used in an open or save dialog */
-    public static String LastDirectory = System.getProperty("user.home");
+    /*
+     * The directory most recently used in an open or save dialog
+     * @deprecated - will lose public visibility. Use getLastDirectory()
+     */
+    public static String LastDirectory = null;
 
     public static String getLastDirectory() {
+        if (LastDirectory == null) {
+            LastDirectory = System.getProperty("user.home");
+        }
         return LastDirectory;
     }
 
