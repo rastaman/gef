@@ -33,7 +33,10 @@ import java.util.*;
 
 import org.tigris.gef.presentation.*;
 
-/** An Cmd to align 2 or more objects relative to each other. */
+/**
+ * An Cmd to align 2 or more objects relative to each other.
+ * @deprecated use the undoable AlignAction
+ */
 
 public class CmdAlign extends Cmd {
 
