@@ -27,9 +27,23 @@
 
 package org.tigris.gef.util;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
+import java.awt.Toolkit;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import javax.swing.KeyStroke;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *  This class manages the resource bundle files needed to localize the
@@ -47,6 +61,8 @@ public class Localizer {
     static {
         resourcesByLocale.put(defaultLocale, defaultResources);
     }
+
+    private static Log log = LogFactory.getLog(Localizer.class);
 
     /**
      * This method tests, if a resource with the given name is registered.
@@ -183,8 +199,9 @@ public class Localizer {
      * @param locale Locale to be removed.
      */
     public static void removeLocale(Locale locale) {
-        if(defaultLocale.equals(locale))
+        if (defaultLocale.equals(locale)) {
             switchCurrentLocale(Locale.getDefault());
+        }
 
         resourcesByLocale.remove(locale);
     }
@@ -220,15 +237,11 @@ public class Localizer {
     }
 
     public static String localize(String binding, String key, Locale locale, Map resources) {
-        if(locale == null || resources == null || !containsLocale(locale)) {
-            if(System.getProperty("showLocalizeErrors", "false").equals("true")) {
-                System.out.println("[Localizer] localization failed for key " + key + " (binding: " + binding + ")");
-                try {
-                    throw new Exception();
-                }
-                catch(Exception e) {
-                    e.printStackTrace();
-                }
+        if (locale == null || resources == null || !containsLocale(locale)) {
+            try {
+                throw new Exception();
+            } catch(Exception e) {
+                log.warn("Localization failed for key " + key + " (binding: " + binding + ")", e);
             }
             return key;
         }
@@ -236,32 +249,24 @@ public class Localizer {
         String localized = null;
 
         ResourceBundle resource = (ResourceBundle)resources.get(binding);
-        if(resource == null) {
-            if(System.getProperty("showLocalizeErrors", "false").equals("true")) {
-                System.out.println("[Localizer] localization failed for key " + key + " (binding: " + binding + ")");
-                try {
-                    throw new Exception();
-                }
-                catch(Exception e) {
-                    e.printStackTrace();
-                }
+        if (resource == null) {
+            try {
+                throw new Exception();
+            } catch(Exception e) {
+                log.warn("Localization failed for key " + key + " (binding: " + binding + ")", e);
             }
             return key;
         }
+        
         try {
             localized = resource.getString(key);
-        }
-        catch(MissingResourceException e) {
+        } catch(MissingResourceException e) {
         }
         if(localized == null) {
-            if(System.getProperty("showLocalizeErrors", "false").equals("true")) {
-                System.out.println("[Localizer] localization failed for key " + key + " (binding: " + binding + ")");
-                try {
-                    throw new Exception();
-                }
-                catch(Exception e) {
-                    e.printStackTrace();
-                }
+            try {
+                throw new Exception();
+            } catch(Exception e) {
+                log.warn("Localization failed for key " + key + " (binding: " + binding + ")", e);
             }
             localized = key;
         }
