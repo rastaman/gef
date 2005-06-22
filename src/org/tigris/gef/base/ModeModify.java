@@ -314,8 +314,6 @@ public class ModeModify extends FigModifyingModeImpl {
             selectedFig.endTrans();
 
             if (modifyCommand != null) {
-                DragEvent de = 
-                    new DragEvent(graphModel, _deltaMouseX, _deltaMouseY);
                 modifyCommand.execute();
             }
         }
