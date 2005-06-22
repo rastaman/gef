@@ -12,6 +12,8 @@ import java.util.Iterator;
  */
 public class UndoManager {
 
+    private int undoMax = 100;
+    
     private Collection listeners = new ArrayList();
     
     /**
@@ -37,8 +39,15 @@ public class UndoManager {
 
     public void addMemento(Memento memento) {
         undoStack.add(memento);
+        if (undoStack.size() > undoMax) {
+            undoStack.remove(0);
+        }
         redoStack.clear();
         fire();
+    }
+    
+    public void setUndoMax(int max) {
+        undoMax = max;
     }
     
     public void undo() {
@@ -52,6 +61,17 @@ public class UndoManager {
         Memento memento = pop(redoStack);
         memento.redo();
         undoStack.add(memento);
+    }
+
+    public void emptyUndo() {
+        undoStack.clear();
+        fire();
+    }
+    
+    public void empty() {
+        redoStack.clear();
+        undoStack.clear();
+        fire();
     }
     
     private Memento pop(ArrayList stack) {

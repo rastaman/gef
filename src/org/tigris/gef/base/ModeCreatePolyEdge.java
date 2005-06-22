@@ -46,7 +46,7 @@ import org.tigris.gef.presentation.*;
  *  responsible for acutally making an edge in the underlying model
  *  and connecting it to other model elements. */
 
-public class ModeCreatePolyEdge extends ModeCreate {
+public class ModeCreatePolyEdge extends ModeCreateEdge {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -246,6 +246,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
                     if (destFigNode != null) {
                         destFigNode.updateEdges();
                     }
+                    
                     endAttached();
                 }
                 done();
@@ -267,6 +268,9 @@ public class ModeCreatePolyEdge extends ModeCreate {
     }
 
     protected void endAttached() {
+        Layer lay = editor.getLayerManager().getActiveLayer();
+        FigEdge fe = (FigEdge) lay.presentationFor(newEdge);
+        createMemento(fe);
     }
     
     public void mouseMoved(MouseEvent me) {

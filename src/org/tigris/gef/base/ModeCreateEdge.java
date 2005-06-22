@@ -202,6 +202,7 @@ public class ModeCreateEdge extends ModeCreate {
                     if (fe != null)
                         ce.getSelectionManager().select(fe);
                     done();
+                    createMemento(fe);
                     me.consume();
                     if (LOG.isDebugEnabled()) LOG.debug("MouseReleased Edge created and event consumed");
                     return;
@@ -220,7 +221,42 @@ public class ModeCreateEdge extends ModeCreate {
      * Get the NetPort where the arc is painted from
      * @return Returns the startPort.
      */
-    public Object getStartPort() {
+    protected Object getStartPort() {
         return startPort;
     }
+    
+    protected void createMemento(FigEdge fe) {
+        new CreateEdgeCommand(fe).execute();
+    }
 } /* end class ModeCreateEdge */
+
+
+class CreateEdgeCommand implements Command {
+    
+    private FigEdge edgeCreated;
+    
+    CreateEdgeCommand(FigEdge edge) {
+        edgeCreated = edge;
+    }
+    
+    public void execute() {
+        CreateEdgeMemento memento = new CreateEdgeMemento();
+        UndoManager.getInstance().addMemento(memento);
+    }
+    
+    private class CreateEdgeMemento implements Memento {
+        
+        CreateEdgeMemento() {}
+        
+        public void undo() {
+            SelectionManager sm = Globals.curEditor().getSelectionManager();
+            if (sm.containsFig(edgeCreated)) {
+                sm.removeFig(edgeCreated);
+            }
+            edgeCreated.deleteFromModel();
+        }
+        public void redo() {
+            
+        }
+    }
+}

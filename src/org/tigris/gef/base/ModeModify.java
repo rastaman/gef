@@ -26,7 +26,11 @@
 // $Id$
 package org.tigris.gef.base;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -83,6 +87,10 @@ public class ModeModify extends FigModifyingModeImpl {
     private int _deltaMouseX;
     private int _deltaMouseY;
     
+    private GraphModel graphModel;
+    
+    private ModifyCommand modifyCommand;
+    
     /** Construct a new ModeModify with the given parent, and set the
      *  Anchor point to a default location (the _anchor's proper position
      *  will be determioned on mouse down). */
@@ -127,11 +135,11 @@ public class ModeModify extends FigModifyingModeImpl {
         if (!_dragInProcess) {
             _dragInProcess = true;
             Fig f = (Fig)editor.getSelectionManager().getFigs().get(0);
-            ModeModifyMemento memento = new ModeModifyMemento();
-            UndoManager.getInstance().addMemento(memento);
-            GraphModel gm = editor.getGraphModel();
-            if (gm instanceof MutableGraphSupport) {
-                ((MutableGraphSupport)gm).fireGraphChanged();
+            modifyCommand = 
+                new ModifyCommand(editor.getSelectionManager().getFigs());
+            graphModel = editor.getGraphModel();
+            if (graphModel instanceof MutableGraphSupport) {
+                ((MutableGraphSupport)graphModel).fireGraphChanged();
             }
         }
 
@@ -175,7 +183,7 @@ public class ModeModify extends FigModifyingModeImpl {
             deltaMouseX = (int)(r * Math.cos(degrees));
             deltaMouseY = (int)(r * Math.sin(degrees));
         }
-
+        
         SelectionManager selectionManager = getEditor().getSelectionManager();
         if(selectionManager.getLocked()) {
             Globals.showStatus("Cannot Modify Locked Objects");
@@ -276,17 +284,17 @@ public class ModeModify extends FigModifyingModeImpl {
                 Iterator it = otherFigs.iterator();
                 while(it.hasNext()) {
                     Fig otherFig = (Fig)it.next();
-                    if(!(otherFig instanceof FigNode)) {
+                    if (!(otherFig instanceof FigNode)) {
                         continue;
                     }
 
-                    if(!(otherFig.getUseTrapRect())) {
+                    if (!(otherFig.getUseTrapRect())) {
                         continue;
                     }
 
                     //if (figs.contains(otherFig)) continue;
                     Rectangle trap = otherFig.getTrapRect();
-                    if(trap == null) {
+                    if (trap == null) {
                         continue;
                     }
 
@@ -304,6 +312,12 @@ public class ModeModify extends FigModifyingModeImpl {
             }
 
             selectedFig.endTrans();
+
+            if (modifyCommand != null) {
+                DragEvent de = 
+                    new DragEvent(graphModel, _deltaMouseX, _deltaMouseY);
+                modifyCommand.execute();
+            }
         }
     }
 
@@ -413,42 +427,56 @@ public class ModeModify extends FigModifyingModeImpl {
             return true;
         }
         
-        GraphModel gm = editor.getGraphModel();
         if (draggedOntoCanvas) {
             //If it isn't dragged into any fig but into diagram canvas (null encloser).
-            return (((MutableGraphSupport)gm)
+            return (((MutableGraphSupport)graphModel)
                     .isEnclosable(((FigNode) selectedFig).getOwner(),
                                     null));
         } else {
             //If it is dragged into any fig.
-            return (((MutableGraphSupport)gm)
+            return (((MutableGraphSupport)graphModel)
                     .isEnclosable(((FigNode) selectedFig).getOwner(),
                                     ((FigNode) encloser).getOwner()));
         }
     }
+}
+
+/**
+ * This only exists to wrap the DragMemento.
+ * The command is created when a drag start and executed when the drag ends.
+ * @author Bob Tarling
+ */
+class ModifyCommand implements Command {
     
+    private Map boundsByFigs = new HashMap();
+    private int xOffset;
+    private int yOffset;
     
-    private class ModeModifyMemento implements Memento {
+    ModifyCommand(List figs) {
+        Iterator it = figs.iterator();
+        while (it.hasNext()) {
+            Fig f = (Fig)it.next();
+            boundsByFigs.put(f, f.getBounds());
+        }
+    }
+
+    public void execute() {
+        ModifyMemento memento = new ModifyMemento();
+        UndoManager.getInstance().addMemento(memento);
+    }
+
+    private class ModifyMemento implements Memento {
         
-        private Map figMap = new HashMap();
-        
-        ModeModifyMemento() {
-            // Get the bounds of all figs selected
-            SelectionManager sm = Globals.curEditor().getSelectionManager();
-            Iterator it = sm.getFigs().iterator();
-            while (it.hasNext()) {
-                Fig f = (Fig)it.next();
-                Rectangle rect = f.getBounds();
-                figMap.put(f, rect);
-            }
+        ModifyMemento() {
         }
         
         public void undo() {
-            Iterator it = figMap.keySet().iterator();
+            Iterator it = boundsByFigs.keySet().iterator();
             while (it.hasNext()) {
                 Fig f = (Fig)it.next();
                 f.damage();
-                f.setBounds((Rectangle)figMap.get(f));
+                Rectangle rect = (Rectangle)boundsByFigs.get(f);
+                f.setBounds(rect);
                 f.calcBounds();
                 f.damage();
             }

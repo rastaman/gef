@@ -216,8 +216,8 @@ public class ModePlace extends FigModifyingModeImpl {
             
             editor.getSelectionManager().select(_pers);
             
-            ModePlaceMemento memento = new ModePlaceMemento(_pers);
-            UndoManager.getInstance().addMemento(memento);
+            PlaceCommand cmd = new PlaceCommand(_pers);
+            cmd.execute();
         }
         done();
         me.consume();
@@ -241,14 +241,22 @@ public class ModePlace extends FigModifyingModeImpl {
         if(_pers != null)
             _pers.paint(g);
     }
+} /* end class ModePlace */
+
+class PlaceCommand implements Command {
     
-    private class ModePlaceMemento implements Memento {
-        
-        private FigNode nodePlaced;
-        
-        ModePlaceMemento(FigNode node) {
-            nodePlaced = node;
-        }
+    private FigNode nodePlaced;
+    
+    PlaceCommand(FigNode node) {
+        nodePlaced = node;
+    }
+    
+    public void execute() {
+        PlaceMemento memento = new PlaceMemento();
+        UndoManager.getInstance().addMemento(memento);
+    }
+    
+    class PlaceMemento implements Memento {
         
         public void undo() {
             SelectionManager sm = Globals.curEditor().getSelectionManager();
@@ -261,4 +269,4 @@ public class ModePlace extends FigModifyingModeImpl {
             
         }
     }
-} /* end class ModePlace */
+}
