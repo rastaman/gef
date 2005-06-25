@@ -241,10 +241,11 @@ class CreateEdgeCommand implements Command {
     
     public void execute() {
         CreateEdgeMemento memento = new CreateEdgeMemento();
+        UndoManager.getInstance().startChain();
         UndoManager.getInstance().addMemento(memento);
     }
     
-    private class CreateEdgeMemento implements Memento {
+    private class CreateEdgeMemento extends Memento {
         
         CreateEdgeMemento() {}
         
@@ -256,7 +257,8 @@ class CreateEdgeCommand implements Command {
             edgeCreated.deleteFromModel();
         }
         public void redo() {
-            
+        }
+        public void dispose() {
         }
     }
 }

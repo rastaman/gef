@@ -157,7 +157,7 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     /**
      * The parent Fig of which this Fig is a child
      */
-    private Fig _group = null;
+    private Fig group = null;
     
     protected String _context = "";
 
@@ -746,9 +746,9 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
      *  propertyChanged() method. */
     public void firePropChange(String propName, Object oldV, Object newV) {
         Globals.firePropChange(this, propName, oldV, newV);
-        if(_group != null) {
+        if(group != null) {
             PropertyChangeEvent pce = new PropertyChangeEvent(this, propName, oldV, newV);
-            _group.propertyChange(pce);
+            group.propertyChange(pce);
         }
     }
 
@@ -873,7 +873,7 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     }
 
     public Fig getGroup() {
-        return _group;
+        return group;
     }
 
     /**
@@ -1253,8 +1253,8 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     /** By default just pass it up to enclosing groups.  Subclasses of
      *  FigNode may want to override this method. */
     public void propertyChange(PropertyChangeEvent pce) {
-        if(_group != null) {
-            _group.propertyChange(pce);
+        if(group != null) {
+            group.propertyChange(pce);
         }
     }
 
@@ -1307,9 +1307,38 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
         _allowsSaving = newValue;
     }
 
+    /**
+     * Set the bounds of this Fig. Fires PropertyChangeEvent "bounds".
+     * This method can be undone by performing UndoAction.
+     */
+    public final void setBounds(
+            final int newX,
+            final int newY,
+            final int newWidth,
+            final int newHeight) {
+        
+        if (group == null) {
+            Memento memento = new Memento() {
+                int oldX = _x;
+                int oldY = _y;
+                int oldWidth = _w;
+                int oldHeight = _h;
+                
+                public void undo() {
+                    setBoundsInternal(oldX, oldY, oldWidth, oldHeight);
+                }
+                public void redo() {
+                    setBoundsInternal(newX, newY, newWidth, newHeight);
+                }
+                public void dispose() {}
+            };
+            UndoManager.getInstance().addMemento(memento);
+        }
+        setBoundsInternal(newX, newY, newWidth, newHeight);
+    }
 
     /** Set the bounds of this Fig. Fires PropertyChangeEvent "bounds". */
-    public void setBounds(int x, int y, int w, int h) {
+    protected void setBoundsInternal(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
         _x = x;
         _y = y;
@@ -1343,7 +1372,7 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     /** Sets the enclosing FigGroup of this Fig.  The enclosing group is
      * always notified of property changes, without need to add a listener. */
     public void setGroup(Fig f) {
-        _group = f;
+        group = f;
     }
 
     public void setContext(String context) {
@@ -1594,18 +1623,61 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
         }
     }
 
+    /**
+     * Change the position of the object from were it is to were it is
+     * plus dx and dy. Often called when an object is dragged. This
+     * could be very useful if local-coordinate systems are used
+     * because deltas need less transforming... maybe. Fires property
+     * "bounds".
+     * The method is undoable by performing the UndoAction.
+     * @param dx the x offset
+     * @param dy the y offset
+     */
+    public void translate(final int dx, final int dy) {
+        if (group == null) {
+            
+            class TranslateMemento extends Memento {
+                
+                int oldX;
+                int oldY;
+                int oldWidth;
+                int oldHeight;
+                
+                TranslateMemento(
+                        int currentX,
+                        int currentY,
+                        int currentWidth,
+                        int currentHeight) {
+                    oldX = currentX;
+                    oldY = currentY;
+                    oldWidth = currentWidth;
+                    oldHeight = currentHeight;
+                }
+                public void undo() {
+                    setBoundsInternal(oldX, oldY, oldWidth, oldHeight);
+                }
+                public void redo() {
+                    translateInternal(dx, dy);
+                }
+            }
+            UndoManager.getInstance().addMemento(new TranslateMemento(_x, _y, _w, _h));
+        }
+        translateInternal(dx, dy);
+    }
+
     /** Change the position of the object from were it is to were it is
      *  plus dx and dy. Often called when an object is dragged. This
      *  could be very useful if local-coordinate systems are used
      *  because deltas need less transforming... maybe. Fires property
      *  "bounds". */
-    public void translate(int dx, int dy) {
+    protected void translateInternal(int dx, int dy) {
         Rectangle oldBounds = getBounds();
         _x += dx;
         _y += dy;
         firePropChange("bounds", oldBounds, getBounds());
     }
 
+    
     /**
      * @deprecated 0.11.1 this is not used.
      */

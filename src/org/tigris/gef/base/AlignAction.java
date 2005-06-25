@@ -42,7 +42,7 @@ import org.tigris.gef.util.Localizer;
 
 /** An Cmd to align 2 or more objects relative to each other. */
 
-public class AlignAction extends AbstractAction implements Command {
+public class AlignAction extends UndoableAction {
 
     /** Constants specifying the type of alignment requested. */
     public static final int ALIGN_TOPS = 0;
@@ -90,10 +90,9 @@ public class AlignAction extends AbstractAction implements Command {
     }
 
     public void actionPerformed(ActionEvent e) {
-        execute();
-    }
-    
-    public void execute() {
+
+        super.actionPerformed(e);
+        
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
         if (sm.getLocked()) {
@@ -115,28 +114,5 @@ public class AlignAction extends AbstractAction implements Command {
             f.align(bbox, direction, ce);
             f.endTrans();
         }
-        AlignMemento memento = new AlignMemento();
-        UndoManager.getInstance().addMemento(memento);
     }
-
-    private class AlignMemento implements Memento {
-        
-        AlignMemento() {
-        }
-        
-        public void undo() {
-            Iterator it = boundsByFig.keySet().iterator();
-            while (it.hasNext()) {
-                Fig f = (Fig)it.next();
-                f.damage();
-                Rectangle rect = (Rectangle)boundsByFig.get(f);
-                f.setBounds(rect);
-                f.calcBounds();
-                f.damage();
-            }
-        }
-        
-        public void redo() {
-        }
-    }
-} /* end class CmdAlign */
+} /* end class AlignAction */

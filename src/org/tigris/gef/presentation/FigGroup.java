@@ -426,7 +426,7 @@ public class FigGroup extends Fig {
      * @param w new width for fig
      * @param h new height for fig
      */
-    public void setBounds(int x, int y, int w, int h) {
+    protected void setBoundsInternal(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
         int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
@@ -436,7 +436,7 @@ public class FigGroup extends Fig {
                 int newH = (_h == 0) ? 0 : (f.getHeight() * h) / _h;
                 int newX = (_w == 0) ? x : x + ((f.getX() - _x) * w) / _w;
                 int newY = (_h == 0) ? y : y + ((f.getY() - _y) * h) / _h;
-                f.setBounds(newX, newY, newW, newH);
+                f.setBoundsInternal(newX, newY, newW, newH);
             }
         }
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
@@ -595,7 +595,7 @@ public class FigGroup extends Fig {
     }
 
     /** Translate all the Fig in the list by the given offset. */
-    public void translate(int dx, int dy) {
+    protected void translateInternal(int dx, int dy) {
         Rectangle oldBounds = getBounds();
         int figCount = this.figs.size();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {

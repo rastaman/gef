@@ -252,11 +252,13 @@ class PlaceCommand implements Command {
     }
     
     public void execute() {
+        
         PlaceMemento memento = new PlaceMemento();
+        UndoManager.getInstance().startChain();
         UndoManager.getInstance().addMemento(memento);
     }
     
-    class PlaceMemento implements Memento {
+    class PlaceMemento extends Memento {
         
         public void undo() {
             SelectionManager sm = Globals.curEditor().getSelectionManager();
@@ -266,7 +268,8 @@ class PlaceCommand implements Command {
             nodePlaced.deleteFromModel();
         }
         public void redo() {
-            
+        }
+        public void dispose() {
         }
     }
 }

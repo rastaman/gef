@@ -267,8 +267,9 @@ public class FigSpline extends FigPoly {
 	  }
 	}
   }  
-  public void translate(int dx, int dy) {
-	super.translate(dx, dy);
-	setSpline();
-  }  
+  
+    public void translateInternal(int dx, int dy) {
+    	super.translateInternal(dx, dy);
+    	setSpline();
+    }
 } /* end class FigSpline */

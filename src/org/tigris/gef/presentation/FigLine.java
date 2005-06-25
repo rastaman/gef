@@ -194,30 +194,38 @@ public class FigLine extends Fig {
     res.y = _y1 + ((_y2 - _y1) * dist) / len;
   }
 
-  /** Sets the bounds of the line.  The line is scaled to fit within
-   *  the new bounding box. Fires PropertyChange with "bounds". */
-  public void setBounds(int x, int y, int w, int h) {
-    _x1 = (_w == 0) ? x : x + ((_x1 - _x) * w) / _w;
-    _y1 = (_h == 0) ? y : y + ((_y1 - _y) * h) / _h;
-    _x2 = (_w == 0) ? x : x + ((_x2 - _x) * w) / _w;
-    _y2 = (_h == 0) ? y : y + ((_y2 - _y) * h) / _h;
-    calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-    firePropChange("bounds", null, null);
-  }
+    /**
+     * Sets the bounds of the line.  The line is scaled to fit within
+     * the new bounding box. Fires PropertyChange with "bounds".
+     */
+    protected void setBoundsInternal(int x, int y, int w, int h) {
+        _x1 = (_w == 0) ? x : x + ((_x1 - _x) * w) / _w;
+        _y1 = (_h == 0) ? y : y + ((_y1 - _y) * h) / _h;
+        _x2 = (_w == 0) ? x : x + ((_x2 - _x) * w) / _w;
+        _y2 = (_h == 0) ? y : y + ((_y2 - _y) * h) / _h;
+        calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+        firePropChange("bounds", null, null);
+    }
 
-  /** Replys the point that other connected Figs should attach
-   *  to. Currently replys the point on the this line that is closest
-   *  to the given point. */
-  public Point connectionPoint(Point anotherPt) {
-    return Geometry.ptClosestTo(_x1, _y1, _x2, _y2, anotherPt);
-  }
+    /**
+     * Replys the point that other connected Figs should attach
+     * to. Currently replys the point on the this line that is closest
+     * to the given point.
+     */
+    public Point connectionPoint(Point anotherPt) {
+        return Geometry.ptClosestTo(_x1, _y1, _x2, _y2, anotherPt);
+    }
 
-  /** Translate (move) this Fig. Fires PropertyChange with "bounds". */
-  public void translate(int dx, int dy) {
-    _x1 += dx; _y1 += dy; _x2 += dx; _y2 += dy;
-    _x += dx; _y += dy; // dont calcBounds because _w and _h are unchanged
-    firePropChange("bounds", null, null);
-  }
+    /**
+     * Translate this Fig. Fires PropertyChange with "bounds".
+     * @param dx the x offset
+     * @param dy the y offset
+     */
+    protected void translateInternal(int dx, int dy) {
+        _x1 += dx; _y1 += dy; _x2 += dx; _y2 += dy;
+        _x += dx; _y += dy; // dont calcBounds because _w and _h are unchanged
+        firePropChange("bounds", null, null);
+    }
 
   /** Update the bounding box so that it encloses (_x1, _y1)--(_x2, _y2). */
   public void calcBounds() {

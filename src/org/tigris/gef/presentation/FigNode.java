@@ -509,8 +509,8 @@ public class FigNode extends FigGroup implements
     }
 
 
-    public void translate(int dx, int dy) {
-        super.translate(dx, dy);
+    protected void translateInternal(int dx, int dy) {
+        super.translateInternal(dx, dy);
         updateEdges();
     }
 
@@ -518,8 +518,8 @@ public class FigNode extends FigGroup implements
         super.translate(dx, dy);
     }
 
-    public void setBounds(int x, int y, int w, int h) {
-        super.setBounds(x, y, w, h);
+    protected void setBoundsInternal(int x, int y, int w, int h) {
+        super.setBoundsInternal(x, y, w, h);
         updateEdges();
     }
 

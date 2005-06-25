@@ -209,7 +209,7 @@ public class FigPoly extends Fig {
      *  could be very useful if local-coordinate systems are used
      *  because deltas need less transforming... maybe. Fires
      *  PropertyChange with "bounds".  */
-    public void translate(int dx, int dy) {
+    protected void translateInternal(int dx, int dy) {
         Rectangle oldBounds = getBounds();
 
         for(int i = 0; i < _npoints; ++i) {
@@ -574,7 +574,7 @@ public class FigPoly extends Fig {
     /** Sets the FigPoly's bounding box to the given coordinates. Scales
      *  all points into the new bounding box. Fires PropertyChange with
      *  "bounds". */
-    public void setBounds(int x, int y, int w, int h) {
+    protected void setBoundsInternal(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
 
         if(w > 0 && h > 0) {

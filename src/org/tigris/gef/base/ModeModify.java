@@ -89,8 +89,8 @@ public class ModeModify extends FigModifyingModeImpl {
     
     private GraphModel graphModel;
     
-    private ModifyCommand modifyCommand;
-    
+//    private ModifyCommand modifyCommand;
+//    
     /** Construct a new ModeModify with the given parent, and set the
      *  Anchor point to a default location (the _anchor's proper position
      *  will be determioned on mouse down). */
@@ -135,8 +135,9 @@ public class ModeModify extends FigModifyingModeImpl {
         if (!_dragInProcess) {
             _dragInProcess = true;
             Fig f = (Fig)editor.getSelectionManager().getFigs().get(0);
-            modifyCommand = 
-                new ModifyCommand(editor.getSelectionManager().getFigs());
+//            modifyCommand = 
+//                new ModifyCommand(editor.getSelectionManager().getFigs());
+            UndoManager.getInstance().startChain();
             graphModel = editor.getGraphModel();
             if (graphModel instanceof MutableGraphSupport) {
                 ((MutableGraphSupport)graphModel).fireGraphChanged();
@@ -313,9 +314,9 @@ public class ModeModify extends FigModifyingModeImpl {
 
             selectedFig.endTrans();
 
-            if (modifyCommand != null) {
-                modifyCommand.execute();
-            }
+//            if (modifyCommand != null) {
+//                modifyCommand.execute();
+//            }
         }
     }
 
@@ -439,48 +440,50 @@ public class ModeModify extends FigModifyingModeImpl {
     }
 }
 
-/**
- * This only exists to wrap the DragMemento.
- * The command is created when a drag start and executed when the drag ends.
- * @author Bob Tarling
- */
-class ModifyCommand implements Command {
-    
-    private Map boundsByFigs = new HashMap();
-    private int xOffset;
-    private int yOffset;
-    
-    ModifyCommand(List figs) {
-        Iterator it = figs.iterator();
-        while (it.hasNext()) {
-            Fig f = (Fig)it.next();
-            boundsByFigs.put(f, f.getBounds());
-        }
-    }
-
-    public void execute() {
-        ModifyMemento memento = new ModifyMemento();
-        UndoManager.getInstance().addMemento(memento);
-    }
-
-    private class ModifyMemento implements Memento {
-        
-        ModifyMemento() {
-        }
-        
-        public void undo() {
-            Iterator it = boundsByFigs.keySet().iterator();
-            while (it.hasNext()) {
-                Fig f = (Fig)it.next();
-                f.damage();
-                Rectangle rect = (Rectangle)boundsByFigs.get(f);
-                f.setBounds(rect);
-                f.calcBounds();
-                f.damage();
-            }
-        }
-        public void redo() {
-            
-        }
-    }
-}
+///**
+// * This only exists to wrap the DragMemento.
+// * The command is created when a drag start and executed when the drag ends.
+// * @author Bob Tarling
+// */
+//class ModifyCommand implements Command {
+//    
+//    private Map boundsByFigs = new HashMap();
+//    private int xOffset;
+//    private int yOffset;
+//    
+//    ModifyCommand(List figs) {
+//        Iterator it = figs.iterator();
+//        while (it.hasNext()) {
+//            Fig f = (Fig)it.next();
+//            boundsByFigs.put(f, f.getBounds());
+//        }
+//    }
+//
+//    public void execute() {
+//        ModifyMemento memento = new ModifyMemento();
+//        UndoManager.getInstance().startChain();
+//        UndoManager.getInstance().addMemento(memento);
+//    }
+//
+//    private class ModifyMemento extends Memento {
+//        
+//        ModifyMemento() {
+//        }
+//        
+//        public void undo() {
+//            Iterator it = boundsByFigs.keySet().iterator();
+//            while (it.hasNext()) {
+//                Fig f = (Fig)it.next();
+//                f.damage();
+//                Rectangle rect = (Rectangle)boundsByFigs.get(f);
+//                f.setBounds(rect);
+//                f.calcBounds();
+//                f.damage();
+//            }
+//        }
+//        public void redo() {
+//        }
+//        public void dispose() {
+//        }
+//    }
+//}

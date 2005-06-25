@@ -381,7 +381,7 @@ public class LayerDiagram extends Layer {
                 break;
         }
     }
-
+    
     public void preSave() {
         for(int i = 0; i < _contents.size(); i++) {
             ((Fig)_contents.get(i)).preSave();

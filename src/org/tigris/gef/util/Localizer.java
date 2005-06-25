@@ -237,11 +237,15 @@ public class Localizer {
     }
 
     public static String localize(String binding, String key, Locale locale, Map resources) {
+        boolean showErrors = false;
+        
         if (locale == null || resources == null || !containsLocale(locale)) {
-            try {
-                throw new Exception();
-            } catch(Exception e) {
-                log.warn("Localization failed for key " + key + " (binding: " + binding + ")", e);
+            if (showErrors) {
+                try {
+                    throw new Exception();
+                } catch(Exception e) {
+                    log.warn("Localization failed for key " + key + " (binding: " + binding + ")", e);
+                }
             }
             return key;
         }
@@ -250,10 +254,12 @@ public class Localizer {
 
         ResourceBundle resource = (ResourceBundle)resources.get(binding);
         if (resource == null) {
-            try {
-                throw new Exception();
-            } catch(Exception e) {
-                log.warn("Localization failed for key " + key + " (binding: " + binding + ")", e);
+            if (showErrors) {
+                try {
+                    throw new Exception();
+                } catch(Exception e) {
+                    log.warn("Localization failed for key " + key + " (binding: " + binding + ")", e);
+                }
             }
             return key;
         }
@@ -263,10 +269,12 @@ public class Localizer {
         } catch(MissingResourceException e) {
         }
         if(localized == null) {
-            try {
-                throw new Exception();
-            } catch(Exception e) {
-                log.warn("Localization failed for key " + key + " (binding: " + binding + ")", e);
+            if (showErrors) {
+                try {
+                    throw new Exception();
+                } catch(Exception e) {
+                    log.warn("Localization failed for key " + key + " (binding: " + binding + ")", e);
+                }
             }
             localized = key;
         }
