@@ -71,7 +71,6 @@ public class UndoAction extends AbstractAction implements PropertyChangeListener
      */
     public void propertyChange(PropertyChangeEvent event) {
         if ("canUndo".equals(event.getPropertyName())) {
-            System.out.println("canUndo received = " + event.getNewValue());
             setEnabled ("true".equals(event.getNewValue()));
         }
     }
