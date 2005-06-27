@@ -70,10 +70,9 @@ public class UndoAction extends AbstractAction implements PropertyChangeListener
      * When the undo stack is down to zero we are disabled.
      */
     public void propertyChange(PropertyChangeEvent event) {
-        if ("size".equals(event.getPropertyName())) {
-            String value = (String) event.getNewValue();
-            value = value.split(";")[0];
-            setEnabled (!"0".equals(value));
+        if ("canUndo".equals(event.getPropertyName())) {
+            System.out.println("canUndo received = " + event.getNewValue());
+            setEnabled ("true".equals(event.getNewValue()));
         }
     }
 }

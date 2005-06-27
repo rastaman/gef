@@ -8,11 +8,14 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A place to register the UndoStack to be used by the application.
+ * Manages stacks of Mementos to undo and redo.
  * @author Bob Tarling
  */
 public class UndoManager {
 
+    private final static String TRUE = Boolean.TRUE.toString();
+    private final static String FALSE = Boolean.FALSE.toString();
+    
     private int undoMax = 100;
     private int undoChainCount = 0;
     private int redoChainCount = 0;
@@ -21,6 +24,11 @@ public class UndoManager {
     
     private boolean newChain = true;
     
+    // TODO: A MementoChainStack may produce some reasuable code for
+    // the undoStack and the redoStack/
+    protected ArrayList undoStack = new ArrayList();
+    protected ArrayList redoStack = new ArrayList();
+
     /**
      * Default to the standard undo manager but applications can set this
      * themseleves by calling setInstance with some extension of UndoManager.
@@ -39,9 +47,6 @@ public class UndoManager {
         return instance;
     }
     
-    protected ArrayList undoStack = new ArrayList();
-    protected ArrayList redoStack = new ArrayList();
-
     /**
      * Adds a new memento to the undo stack.
      * @param memento the memento.
@@ -51,15 +56,17 @@ public class UndoManager {
         memento.startChain = newChain;
         if (newChain) {
             // If the memento is the first then consider that
-            // there is a new chain received and clear the redos
-            redoStack.clear();
-            if (++undoChainCount > undoMax) {
-                // dispose of the oldest chain.
-            }
+            // there is a new chain being received and clear
+            // the redos
+            emptyRedo();
+            incrementUndoChainCount();
             newChain = false;
+            if (undoChainCount > undoMax) {
+                // TODO The undo stack is full, dispose
+                // of the oldest chain.
+            }
         }
         undoStack.add(memento);
-        fire();
     }
     
     public void setUndoMax(int max) {
@@ -76,7 +83,8 @@ public class UndoManager {
             memento.undo();
             redoStack.add(memento);
         } while (!memento.startChain);
-        fire();
+        decrementUndoChainCount();
+        incrementRedoChainCount();
     }
     
     /**
@@ -89,23 +97,38 @@ public class UndoManager {
             undoStack.add(memento);
         } while(redoStack.size() > 0 &&
                 !((Memento)redoStack.get(redoStack.size()-1)).startChain);
+        incrementUndoChainCount();
+        decrementRedoChainCount();
     }
 
     /**
      * Empty all undoable items from the UndoManager
      */
     public void emptyUndo() {
-        emptyStack(undoStack);
-        fire();
+        if (undoChainCount > 0) {
+            emptyStack(undoStack);
+            undoChainCount = 0;
+            fireCanUndo();
+        }
+    }
+    
+    /**
+     * Empty all redoable items from the UndoManager
+     */
+    private void emptyRedo() {
+        if (redoChainCount > 0) {
+            emptyStack(redoStack);
+            redoChainCount = 0;
+            fireCanRedo();
+        }
     }
     
     /**
      * Empty all undoable and redoable items from the UndoManager
      */
     public void empty() {
-        emptyStack(redoStack);
         emptyUndo();
-        fire();
+        emptyRedo();
     }
     
     /**
@@ -136,14 +159,63 @@ public class UndoManager {
         this.listeners.add(listener);
     }
     
-    private void fire() {
+    private void fireCanUndo() {
         Iterator i = listeners.iterator();
         while (i.hasNext()) {
             PropertyChangeListener listener = (PropertyChangeListener) i.next();
-            listener.propertyChange(new PropertyChangeEvent(this, "size", "", 
-                    Integer.toString(undoChainCount) 
-                    + ";"
-                    + Integer.toString(redoChainCount)));
+            listener.propertyChange(
+                    new PropertyChangeEvent(
+                            this,
+                            "canUndo",
+                            "",
+                            getBoolString(undoChainCount > 0)));
         }
+    }
+    
+    private void fireCanRedo() {
+        Iterator i = listeners.iterator();
+        while (i.hasNext()) {
+            PropertyChangeListener listener = (PropertyChangeListener) i.next();
+            listener.propertyChange(
+                    new PropertyChangeEvent(
+                            this,
+                            "canRedo",
+                            "",
+                            getBoolString(redoChainCount > 0)));
+        }
+    }
+    
+    private void incrementUndoChainCount() {
+        if (++undoChainCount == 1) {
+            fireCanUndo();
+        }
+    }
+    
+    private void decrementUndoChainCount() {
+        if (--undoChainCount == 0) {
+            fireCanUndo();
+        }
+    }
+    
+    private void incrementRedoChainCount() {
+        if (++redoChainCount == 1) {
+            fireCanRedo();
+        }
+    }
+    
+    private void decrementRedoChainCount() {
+        if (--redoChainCount == 0) {
+            fireCanRedo();
+        }
+    }
+    
+    /**
+     * Convert a boolean value to a String. This method can be dropped
+     * when we move to JRE1.4
+     * @param b a boolean
+     * @return "true" or "false"
+     */
+    private String getBoolString(boolean b) {
+        return b ? TRUE : FALSE;
     }
 }
