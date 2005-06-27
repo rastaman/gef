@@ -24,10 +24,18 @@
 
 package org.tigris.gef.presentation;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.Rectangle;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -42,18 +50,11 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Font;
-import java.awt.Rectangle;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.UndoManager;
 
 /**
  * A text pane for on screen editing of a FigText.
@@ -93,6 +94,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         Editor ce = Globals.curEditor();
         
         _drawingPanel = (JPanel)ce.getJComponent();
+        UndoManager.getInstance().startChain(); 
         _target.firePropChange("editing", false, true);
         _target.addPropertyChangeListener(this);
         // walk up and add to glass pane
