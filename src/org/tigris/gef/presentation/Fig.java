@@ -1326,9 +1326,11 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
                 
                 public void undo() {
                     setBoundsInternal(oldX, oldY, oldWidth, oldHeight);
+                    damage();
                 }
                 public void redo() {
                     setBoundsInternal(newX, newY, newWidth, newHeight);
+                    damage();
                 }
                 public void dispose() {}
             };
@@ -1655,9 +1657,11 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
                 }
                 public void undo() {
                     setBoundsInternal(oldX, oldY, oldWidth, oldHeight);
+                    damage();
                 }
                 public void redo() {
                     translateInternal(dx, dy);
+                    damage();
                 }
             }
             UndoManager.getInstance().addMemento(new TranslateMemento(_x, _y, _w, _h));

@@ -135,8 +135,6 @@ public class ModeModify extends FigModifyingModeImpl {
         if (!_dragInProcess) {
             _dragInProcess = true;
             Fig f = (Fig)editor.getSelectionManager().getFigs().get(0);
-//            modifyCommand = 
-//                new ModifyCommand(editor.getSelectionManager().getFigs());
             UndoManager.getInstance().startChain();
             graphModel = editor.getGraphModel();
             if (graphModel instanceof MutableGraphSupport) {
