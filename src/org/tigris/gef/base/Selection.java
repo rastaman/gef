@@ -49,24 +49,17 @@ import org.tigris.gef.presentation.*;
 public abstract class Selection
 implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    /** The size of the little handle boxes. */
+    public static final int HAND_SIZE = 6;
 
+    /** The margin between the contents bbox and the frame */
+    public static final int BORDER_WIDTH = 4;
 
-  /** The size of the little handle boxes. */
-  public static final int HAND_SIZE = 6;
-
-  /** The margin between the contents bbox and the frame */
-  public static final int BORDER_WIDTH = 4;
-
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-
-  /** _content refers to the Fig that is selected. */ 
-  protected Fig _content;
-
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    /**
+     * The Fig that is selected.
+     * @deprecated use getContent()
+     */ 
+    protected Fig _content;
 
     /** Construct a new selection. Empty, subclases can override */
     public Selection(Fig f) {
