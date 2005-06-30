@@ -518,10 +518,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      */
 
     public void paint(Graphics g) {
-        if(!(isVisible()))
+        if (!(isVisible())) {
             return;
-        //System.out.println("FigText.paint: x/y = " + _x + "/" + _y);
-        //System.out.println("FigText.paint: top-/bottomMargin = " + _topMargin + "/" + _botMargin);
+        }
+        
         int chunkX = _x + _leftMargin;
         int chunkY = _y + _topMargin;
         StringTokenizer lines;
@@ -532,7 +532,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             g.setColor(getFillColor());
             g.fillRect(_x, _y, _w, _h);
         }
-        if(lineWidth > 0) {
+        if (lineWidth > 0) {
             g.setColor(getLineColor());
             // test linewidth
             if(lineWidth == 1) {
@@ -584,7 +584,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         g.setColor(_textColor);
         chunkX = _x + _leftMargin;
         chunkY = _y + _topMargin + chunkH;
-        //System.out.println("FigText.paint: chunkY = " + chunkY);
+        // TODO: We need a word wrapping version here.
         lines = new StringTokenizer(_curText, "\n\r", true);
         while(lines.hasMoreTokens()) {
             String curLine = lines.nextToken();
@@ -799,16 +799,20 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      *  now text objects can get larger when you type more, but they
      *  do not get smaller when you backspace.  */
     public void calcBounds() {
+        Rectangle bounds = getBounds();
+        if(_font == null) {
+            return;
+        }
+        if (_fm == null) {
+            _fm = FigTextEditor.getInstance().getFontMetrics(_font);
+        }
+        
+        _lineHeight = _fm.getHeight();
+        int maxDescent = _fm.getMaxDescent();
+        
         if (wordWrap) {
-            // TODO Alter height only
+            // TODO Alter height only. No change in x.
         } else {
-            Rectangle bounds = getBounds();
-            if(_font == null) {
-                return;
-            }
-            if (_fm == null) {
-                _fm = FigTextEditor.getInstance().getFontMetrics(_font);
-            }
             int overallW = 0;
             int numLines = 1;
             StringTokenizer lines = new StringTokenizer(_curText, "\n\r", true);
@@ -820,8 +824,6 @@ public class FigText extends Fig implements KeyListener, MouseListener {
                 else
                     overallW = Math.max(chunkW, overallW);
             }
-            _lineHeight = _fm.getHeight();
-            int maxDescent = _fm.getMaxDescent();
             int overallH = (_lineHeight + _lineSpacing) * numLines + _topMargin + _botMargin + maxDescent;
             overallW = Math.max(MIN_TEXT_WIDTH, overallW + _leftMargin + _rightMargin);
             if(_editMode) {
