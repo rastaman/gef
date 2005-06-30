@@ -86,6 +86,12 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      *  characters will be ignored. True by default. */
     private boolean _multiLine = true;
 
+    /**
+     * True if word wrap is to take place when editing multiline text.
+     * False by default (for backwards compatability)
+     */
+    private boolean wordWrap = false;
+
     private boolean _allowsTab = true;
 
     /** Extra spacing between lines. Default is 0 pixels. */
@@ -401,8 +407,22 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         _multiLine = b;
     }
 
+    public void setWordWrap(boolean b) {
+        System.out.println("Setting wordWrap to " + b);
+        wordWrap = b;
+    }
+
     public boolean getMultiLine() {
         return _multiLine;
+    }
+
+    public boolean isMultiLine() {
+        return _multiLine;
+    }
+
+    public boolean isWordWrap() {
+        System.out.println("returning wordWrap as " + wordWrap);
+        return wordWrap;
     }
 
     public void setAllowsTab(boolean b) {
@@ -779,46 +799,50 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      *  now text objects can get larger when you type more, but they
      *  do not get smaller when you backspace.  */
     public void calcBounds() {
-        Rectangle bounds = getBounds();
-        if(_font == null) {
-            return;
-        }
-        if (_fm == null) {
-            _fm = FigTextEditor.getInstance().getFontMetrics(_font);
-        }
-        int overallW = 0;
-        int numLines = 1;
-        StringTokenizer lines = new StringTokenizer(_curText, "\n\r", true);
-        while(lines.hasMoreTokens()) {
-            String curLine = lines.nextToken();
-            int chunkW = _fm.stringWidth(curLine);
-            if(curLine.equals("\n") || curLine.equals("\r"))
-                numLines++;
-            else
-                overallW = Math.max(chunkW, overallW);
-        }
-        _lineHeight = _fm.getHeight();
-        int maxDescent = _fm.getMaxDescent();
-        int overallH = (_lineHeight + _lineSpacing) * numLines + _topMargin + _botMargin + maxDescent;
-        overallW = Math.max(MIN_TEXT_WIDTH, overallW + _leftMargin + _rightMargin);
-        if(_editMode) {
-            switch(_justification) {
-                case JUSTIFY_LEFT:
-                    break;
-
-                case JUSTIFY_CENTER:
-                    if(_w < overallW)
-                        _x -= (overallW - _w) / 2;
-                    break;
-
-                case JUSTIFY_RIGHT:
-                    if(_w < overallW)
-                        _x -= (overallW - _w);
-                    break;
+        if (wordWrap) {
+            // TODO Alter height only
+        } else {
+            Rectangle bounds = getBounds();
+            if(_font == null) {
+                return;
             }
+            if (_fm == null) {
+                _fm = FigTextEditor.getInstance().getFontMetrics(_font);
+            }
+            int overallW = 0;
+            int numLines = 1;
+            StringTokenizer lines = new StringTokenizer(_curText, "\n\r", true);
+            while(lines.hasMoreTokens()) {
+                String curLine = lines.nextToken();
+                int chunkW = _fm.stringWidth(curLine);
+                if(curLine.equals("\n") || curLine.equals("\r"))
+                    numLines++;
+                else
+                    overallW = Math.max(chunkW, overallW);
+            }
+            _lineHeight = _fm.getHeight();
+            int maxDescent = _fm.getMaxDescent();
+            int overallH = (_lineHeight + _lineSpacing) * numLines + _topMargin + _botMargin + maxDescent;
+            overallW = Math.max(MIN_TEXT_WIDTH, overallW + _leftMargin + _rightMargin);
+            if(_editMode) {
+                switch(_justification) {
+                    case JUSTIFY_LEFT:
+                        break;
+
+                    case JUSTIFY_CENTER:
+                        if(_w < overallW)
+                            _x -= (overallW - _w) / 2;
+                        break;
+
+                    case JUSTIFY_RIGHT:
+                        if(_w < overallW)
+                            _x -= (overallW - _w);
+                        break;
+                }
+            }
+            _w = _expandOnly ? Math.max(_w, overallW) : overallW;
+            _h = _expandOnly ? Math.max(_h, overallH) : overallH;
         }
-        _w = _expandOnly ? Math.max(_w, overallW) : overallW;
-        _h = _expandOnly ? Math.max(_h, overallH) : overallH;
     }
 
 } /* end class FigText */

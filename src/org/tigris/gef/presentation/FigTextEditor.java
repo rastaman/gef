@@ -62,8 +62,11 @@ import org.tigris.gef.base.UndoManager;
  */
 public class FigTextEditor extends JTextPane implements PropertyChangeListener, DocumentListener, KeyListener, FocusListener {
 
+    /** @deprecated will become private */
     FigText _target;
+    /** @deprecated will become private */
     JPanel _drawingPanel;
+    /** @deprecated will become private */
     JLayeredPane _layeredPane;
 
     private static int _extraSpace = 2;
@@ -82,9 +85,9 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     private FigTextEditor() {
     }
 
-    public static void configure(int extraSpace, Border border, boolean makeBrighter, Color backgroundColor) {
+    public static void configure(int extraSpace, Border b, boolean makeBrighter, Color backgroundColor) {
         _extraSpace = extraSpace;
-        _border = border;
+        _border = b;
         _makeBrighter = makeBrighter;
         _backgroundColor = backgroundColor;
     }
@@ -270,8 +273,13 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     protected void updateFigText() {
         if(_target == null)
             return;
+        
         String text = getText();
         _target.setText(text, getGraphics());
+
+        if (_target.isMultiLine() && _target.isWordWrap()) {
+            return;
+        };
 
         Rectangle bbox = _target.getBounds();
         Editor ce = Globals.curEditor();
@@ -285,6 +293,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         }
 
         bbox = SwingUtilities.convertRectangle(_drawingPanel, bbox, _layeredPane);
+        
         setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width + _extraSpace * 2, bbox.height + _extraSpace * 2);
         setFont(_target.getFont());
     }
