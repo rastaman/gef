@@ -31,11 +31,8 @@ package org.tigris.gef.base;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.AbstractAction;
 
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.undo.UndoableAction;
