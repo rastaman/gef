@@ -871,14 +871,14 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         if (wordWrap) {
             delims = " \n\r";
         } else {
-            delims = " \n\r";
+            delims = "\n\r";
         }
         
         String lastToken = null;
         StringBuffer buffer = new StringBuffer(_curText.length());
         boolean justWrapped = false;
         
-        StringTokenizer st = new StringTokenizer(_curText, " \n\r", true);
+        StringTokenizer st = new StringTokenizer(_curText, delims, true);
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
             tokenWidth = fm.stringWidth(token);
