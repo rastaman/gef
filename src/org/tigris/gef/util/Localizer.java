@@ -236,6 +236,18 @@ public class Localizer {
         return localize(binding, key, defaultLocale, defaultResources);
     }
 
+    public static String localize(String binding, String key, boolean localize) {
+        return localize(binding, key, defaultLocale, defaultResources, localize);
+    }
+
+    public static String localize(String binding, String key, Locale locale, Map resources, boolean localize) {
+        if (localize) {
+            return localize(binding, key, locale, resources);
+        } else {
+            return key;
+        }
+    }
+    
     public static String localize(String binding, String key, Locale locale, Map resources) {
         boolean showErrors = false;
         
