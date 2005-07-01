@@ -33,6 +33,8 @@ import java.awt.event.*;
 import org.apache.commons.logging.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
 
 /** A Mode to interpret user input while creating an edge.  Basically
  *  mouse down starts creating an edge from a source port Fig, mouse

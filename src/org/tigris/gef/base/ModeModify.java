@@ -46,6 +46,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
+import org.tigris.gef.undo.UndoManager;
 
 /** A Mode to process events from the Editor when the user is
  *  modifying a Fig.  Right now users can drag one or more

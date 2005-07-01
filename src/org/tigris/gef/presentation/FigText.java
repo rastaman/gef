@@ -402,13 +402,12 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         int style = (b ? Font.BOLD : 0) + (getItalic() ? Font.ITALIC : 0);
         setFont(new Font(_font.getFamily(), style, _font.getSize()));
     }
-
+    
     public void setMultiLine(boolean b) {
         _multiLine = b;
     }
 
     public void setWordWrap(boolean b) {
-        System.out.println("Setting wordWrap to " + b);
         wordWrap = b;
     }
 
@@ -421,7 +420,6 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     public boolean isWordWrap() {
-        System.out.println("returning wordWrap as " + wordWrap);
         return wordWrap;
     }
 
@@ -784,6 +782,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     public FigTextEditor startTextEditor(InputEvent ie) {
+        setFillColor(Color.blue);
         FigTextEditor te = FigTextEditor.getInstance();
         te.init(this, ie);
         _editMode = true;

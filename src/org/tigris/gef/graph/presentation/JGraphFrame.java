@@ -30,6 +30,8 @@ import javax.swing.border.*;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.ui.*;
+import org.tigris.gef.undo.RedoAction;
+import org.tigris.gef.undo.UndoAction;
 import org.tigris.gef.event.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.util.*;

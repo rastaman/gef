@@ -53,6 +53,8 @@ import org.tigris.gef.graph.GraphPortHooks;
 import org.tigris.gef.properties.PropCategoryManager;
 
 import org.tigris.gef.ui.PopupGenerator;
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
 
 import org.tigris.gef.util.Localizer;
 
@@ -1325,22 +1327,22 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
                 int oldHeight = _h;
                 
                 public void undo() {
-                    setBoundsInternal(oldX, oldY, oldWidth, oldHeight);
+                    setBoundsImpl(oldX, oldY, oldWidth, oldHeight);
                     damage();
                 }
                 public void redo() {
-                    setBoundsInternal(newX, newY, newWidth, newHeight);
+                    setBoundsImpl(newX, newY, newWidth, newHeight);
                     damage();
                 }
                 public void dispose() {}
             };
             UndoManager.getInstance().addMemento(memento);
         }
-        setBoundsInternal(newX, newY, newWidth, newHeight);
+        setBoundsImpl(newX, newY, newWidth, newHeight);
     }
 
     /** Set the bounds of this Fig. Fires PropertyChangeEvent "bounds". */
-    protected void setBoundsInternal(int x, int y, int w, int h) {
+    protected void setBoundsImpl(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
         _x = x;
         _y = y;
@@ -1656,17 +1658,17 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
                     oldHeight = currentHeight;
                 }
                 public void undo() {
-                    setBoundsInternal(oldX, oldY, oldWidth, oldHeight);
+                    setBoundsImpl(oldX, oldY, oldWidth, oldHeight);
                     damage();
                 }
                 public void redo() {
-                    translateInternal(dx, dy);
+                    translateImpl(dx, dy);
                     damage();
                 }
             }
             UndoManager.getInstance().addMemento(new TranslateMemento(_x, _y, _w, _h));
         }
-        translateInternal(dx, dy);
+        translateImpl(dx, dy);
     }
 
     /** Change the position of the object from were it is to were it is
@@ -1674,7 +1676,7 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
      *  could be very useful if local-coordinate systems are used
      *  because deltas need less transforming... maybe. Fires property
      *  "bounds". */
-    protected void translateInternal(int dx, int dy) {
+    protected void translateImpl(int dx, int dy) {
         Rectangle oldBounds = getBounds();
         _x += dx;
         _y += dy;

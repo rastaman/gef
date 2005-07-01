@@ -54,7 +54,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.UndoManager;
+import org.tigris.gef.undo.UndoManager;
 
 /**
  * A text pane for on screen editing of a FigText.

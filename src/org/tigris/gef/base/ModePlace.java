@@ -32,6 +32,8 @@ import org.apache.commons.logging.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

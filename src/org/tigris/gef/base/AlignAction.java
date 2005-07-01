@@ -38,6 +38,7 @@ import java.util.Map;
 import javax.swing.AbstractAction;
 
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.undo.UndoableAction;
 import org.tigris.gef.util.Localizer;
 
 /** An Cmd to align 2 or more objects relative to each other. */

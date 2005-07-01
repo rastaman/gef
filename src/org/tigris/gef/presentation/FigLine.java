@@ -198,7 +198,7 @@ public class FigLine extends Fig {
      * Sets the bounds of the line.  The line is scaled to fit within
      * the new bounding box. Fires PropertyChange with "bounds".
      */
-    protected void setBoundsInternal(int x, int y, int w, int h) {
+    protected void setBoundsImpl(int x, int y, int w, int h) {
         _x1 = (_w == 0) ? x : x + ((_x1 - _x) * w) / _w;
         _y1 = (_h == 0) ? y : y + ((_y1 - _y) * h) / _h;
         _x2 = (_w == 0) ? x : x + ((_x2 - _x) * w) / _w;
@@ -221,7 +221,7 @@ public class FigLine extends Fig {
      * @param dx the x offset
      * @param dy the y offset
      */
-    protected void translateInternal(int dx, int dy) {
+    protected void translateImpl(int dx, int dy) {
         _x1 += dx; _y1 += dy; _x2 += dx; _y2 += dy;
         _x += dx; _y += dy; // dont calcBounds because _w and _h are unchanged
         firePropChange("bounds", null, null);
