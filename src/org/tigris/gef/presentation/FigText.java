@@ -31,6 +31,7 @@
 package org.tigris.gef.presentation;
 
 import org.apache.commons.logging.*;
+import org.tigris.gef.persistence.export.FontUtility;
 import org.tigris.gef.properties.PropCategoryManager;
 
 import java.awt.*;
@@ -98,10 +99,14 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     private int _lineSpacing = 0;
 
     /** Internal margins between the text and the edge of the rectangle. */
-    private int _topMargin = 1;
-    private int _botMargin = 1;
-    private int _leftMargin = 1;
-    private int _rightMargin = 1;
+//    private int _topMargin = 1;
+//    private int _botMargin = 1;
+//    private int _leftMargin = 1;
+//    private int _rightMargin = 1;
+    private int _topMargin = 0;
+    private int _botMargin = 0;
+    private int _leftMargin = 0;
+    private int _rightMargin = 0;
 
     /** True if the FigText can only grow in size, never shrink. */
     private boolean _expandOnly = false;
@@ -548,19 +553,26 @@ public class FigText extends Fig implements KeyListener, MouseListener {
                 }
             }
         }
-        if(_font != null)
+        if (_font != null) {
             g.setFont(_font);
+        }
+        
+        String displayText = makeDisplayString();
+        
         _fm = g.getFontMetrics(_font);
         //System.out.println("FigText.paint: font height = " + _fm.getHeight());
         int chunkH = _fm.getHeight() + _lineSpacing;
         //System.out.println("FigText.paint: chunkH = " + chunkH);
         chunkY = _y + _topMargin + chunkH;
+        
+        // TODO: StringTokenizer is not very efficient and we are possibly
+        // iterating through the same infomation twice.
+        // Can we improve this?
         if(_textFilled) {
             g.setColor(_textFillColor);
-            lines = new StringTokenizer(_curText, "\n\r", true);
+            lines = new StringTokenizer(displayText, "\n", true);
             while(lines.hasMoreTokens()) {
                 String curLine = lines.nextToken();
-                //if (curLine.equals("\r")) continue;
                 int chunkW = _fm.stringWidth(curLine);
                 switch(_justification) {
                     case JUSTIFY_LEFT:
@@ -582,11 +594,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         g.setColor(_textColor);
         chunkX = _x + _leftMargin;
         chunkY = _y + _topMargin + chunkH;
-        // TODO: We need a word wrapping version here.
-        lines = new StringTokenizer(_curText, "\n\r", true);
+        lines = new StringTokenizer(displayText, "\n", true);
         while(lines.hasMoreTokens()) {
             String curLine = lines.nextToken();
-            //if (curLine.equals("\r")) continue;
             int chunkW = _fm.stringWidth(curLine);
             switch(_justification) {
                 case JUSTIFY_LEFT:
@@ -601,8 +611,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             if(curLine.equals("\n") || curLine.equals("\r"))
                 chunkY += chunkH;
             else {
-                if(_underline)
+                if (_underline) {
                     g.drawLine(chunkX, chunkY + 1, chunkX + chunkW, chunkY + 1);
+                }
                 drawString(g, curLine, chunkX, chunkY);
             }
         }
@@ -782,7 +793,6 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     public FigTextEditor startTextEditor(InputEvent ie) {
-        setFillColor(Color.blue);
         FigTextEditor te = FigTextEditor.getInstance();
         te.init(this, ie);
         _editMode = true;
@@ -809,41 +819,95 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         _lineHeight = _fm.getHeight();
         int maxDescent = _fm.getMaxDescent();
         
-        if (wordWrap) {
-            // TODO Alter height only. No change in x.
-        } else {
-            int overallW = 0;
-            int numLines = 1;
-            StringTokenizer lines = new StringTokenizer(_curText, "\n\r", true);
-            while(lines.hasMoreTokens()) {
-                String curLine = lines.nextToken();
-                int chunkW = _fm.stringWidth(curLine);
-                if(curLine.equals("\n") || curLine.equals("\r"))
-                    numLines++;
-                else
-                    overallW = Math.max(chunkW, overallW);
-            }
-            int overallH = (_lineHeight + _lineSpacing) * numLines + _topMargin + _botMargin + maxDescent;
-            overallW = Math.max(MIN_TEXT_WIDTH, overallW + _leftMargin + _rightMargin);
-            if(_editMode) {
-                switch(_justification) {
-                    case JUSTIFY_LEFT:
-                        break;
-
-                    case JUSTIFY_CENTER:
-                        if(_w < overallW)
-                            _x -= (overallW - _w) / 2;
-                        break;
-
-                    case JUSTIFY_RIGHT:
-                        if(_w < overallW)
-                            _x -= (overallW - _w);
-                        break;
-                }
-            }
-            _w = _expandOnly ? Math.max(_w, overallW) : overallW;
-            _h = _expandOnly ? Math.max(_h, overallH) : overallH;
+        String text = makeDisplayString();
+        
+        int overallW = 0;
+        int numLines = 1;
+        StringTokenizer lines = new StringTokenizer(text, "\n\r", true);
+        while(lines.hasMoreTokens()) {
+            String curLine = lines.nextToken();
+            int chunkW = _fm.stringWidth(curLine);
+            if(curLine.equals("\n") || curLine.equals("\r"))
+                numLines++;
+            else
+                overallW = Math.max(chunkW, overallW);
         }
+        int overallH = (_lineHeight + _lineSpacing) * numLines + _topMargin + _botMargin + maxDescent;
+        overallW = Math.max(MIN_TEXT_WIDTH, overallW + _leftMargin + _rightMargin);
+        if(_editMode) {
+            switch(_justification) {
+                case JUSTIFY_LEFT:
+                    break;
+
+                case JUSTIFY_CENTER:
+                    if(_w < overallW)
+                        _x -= (overallW - _w) / 2;
+                    break;
+
+                case JUSTIFY_RIGHT:
+                    if(_w < overallW)
+                        _x -= (overallW - _w);
+                    break;
+            }
+        }
+        _w = _expandOnly ? Math.max(_w, overallW) : overallW;
+        _h = _expandOnly ? Math.max(_h, overallH) : overallH;
+    }
+    
+    /**
+     * Returns the text formatted for display. This includes converting any
+     * Carriage return/Linefeed cominations "\n\r" or "\r\n" to a single "\n".
+     * It also involves inserting "\n" at any word wrap position.
+     * @return the text formatted for display.
+     */
+    private String makeDisplayString() {
+        
+        FontMetrics fm = FontUtility.getFontMetrics(_font);
+        
+        int x = 0;
+        int tokenWidth;
+
+        String delims;
+        if (wordWrap) {
+            delims = " \n\r";
+        } else {
+            delims = " \n\r";
+        }
+        
+        String lastToken = null;
+        StringBuffer buffer = new StringBuffer(_curText.length());
+        boolean justWrapped = false;
+        
+        StringTokenizer st = new StringTokenizer(_curText, " \n\r", true);
+        while (st.hasMoreTokens()) {
+            String token = st.nextToken();
+            tokenWidth = fm.stringWidth(token);
+
+            // Ignore a '\r' following a '\n' or a '\n' following a '\r'
+            if (token.equals("\n") && "\r".equals(lastToken)) continue;
+            if (token.equals("\r") && "\n".equals(lastToken)) continue;
+            
+            if (token.equals("\n") || token.equals("\r")) {
+                buffer.append('\n');
+                x = 0;
+                justWrapped = false;
+            } else if (wordWrap && x + tokenWidth > getWidth() && !token.equals(" ")) {
+                buffer.append('\n').append(token);
+                x = tokenWidth;
+                justWrapped = true;
+            } else if (justWrapped && token.equals(" ")) {
+                // Don't append any spaces after a word wrap
+                justWrapped = false;
+            } else {
+                buffer.append(token);
+                x += tokenWidth;
+                justWrapped = false;
+            }
+            
+            lastToken = token;
+        }
+        
+        return buffer.toString();
     }
 
 } /* end class FigText */
