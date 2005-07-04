@@ -55,8 +55,14 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     /** Minimum size of a FigText object. */
     public static final int MIN_TEXT_WIDTH = 30;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    /**
+     * The internal representation of a return character.
+     */
+    private static final char HARD_RETURN = '\n';
+    /**
+     * The internal representation of a return due to word wrap.
+     */
+    private static final char SOFT_RETURN = '\r';
 
     /** Font info. */
     private Font _font = new Font("TimesRoman", Font.PLAIN, 10);
@@ -116,9 +122,16 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     /** Text justification can be JUSTIFY_LEFT, JUSTIFY_RIGHT, or JUSTIFY_CENTER. */
     private int _justification = JUSTIFY_LEFT;
 
-    /** The current string to display. */
+    /**
+     * The current string to display. This is in an encoded format and so
+     * should never be directly available to the client code.
+     * Client code can use the accessor methods to view and amend this value
+     * with no knowledge of the encoding.
+     */
     private String _curText;
 
+    private String lineSeparator;
+    
     ////////////////////////////////////////////////////////////////
     // static initializer
 
@@ -159,6 +172,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         _justification = JUSTIFY_CENTER;
         _curText = "";
         _expandOnly = expandOnly;
+        lineSeparator = System.getProperty("line.separator");
     }
 
     public FigText(int x, int y, int w, int h, Color textColor, String familyName, int fontSize) {
@@ -179,6 +193,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         _justification = JUSTIFY_CENTER;
         _curText = "";
         _expandOnly = false;
+        lineSeparator = System.getProperty("line.separator");
     }
 
     /** Construct a new FigText with the given position, size, and attributes. */
@@ -191,7 +206,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         _justification = JUSTIFY_CENTER;
         _curText = "";
         _expandOnly = expandOnly;
+        lineSeparator = System.getProperty("line.separator");
     }
+    
     ////////////////////////////////////////////////////////////////
     // invariant
 
@@ -412,6 +429,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         _multiLine = b;
     }
 
+    public void setLineSeparator(String sep) {
+        lineSeparator = sep;
+    }
+    
     public void setWordWrap(boolean b) {
         wordWrap = b;
     }
@@ -471,8 +492,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * @param graphics Graphics context for the operation.
      */
     public void setText(String str, Graphics graphics) {
-        if(graphics != null)
+        if (graphics != null) {
             _fm = graphics.getFontMetrics(_font);
+        }
 
         setText(str);
     }
@@ -483,7 +505,33 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * @param s
      */
     public void setText(String s) {
-        _curText = s;
+        _curText = encode(s, lineSeparator);
+        calcBounds();
+        _editMode = false;
+    }
+
+    /**
+     * Set the give string to be the current string of this fig.
+     * Update the current font and font metrics first.
+     *
+     * @param str String to be set at this object.
+     * @param graphics Graphics context for the operation.
+     */
+    void setTextFriend(String str, Graphics graphics) {
+        if (graphics != null) {
+            _fm = graphics.getFontMetrics(_font);
+        }
+
+        setTextFriend(str);
+    }
+
+    /**
+     * Sets the given string to the current string of this fig.
+     *
+     * @param s
+     */
+    void setTextFriend(String s) {
+        _curText = encode(s, System.getProperty("line.separator"));
         calcBounds();
         _editMode = false;
     }
@@ -493,9 +541,18 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * USED BY PGML.tee
      */
     public String getText() {
-        return _curText;
+        String text = decode(_curText, lineSeparator);
+        return text;
     }
 
+    /** Get the String held by this FigText. Multi-line text is
+     *  represented by newline characters embedded in the String.
+     */
+    public String getTextFriend() {
+        return decode(_curText, System.getProperty("line.separator"));
+    }
+
+    
     /**
      * @deprecated in 0.11.1 it appears that the editor must always be FigTextEditor
      */
@@ -557,8 +614,6 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             g.setFont(_font);
         }
         
-        String displayText = makeDisplayString();
-        
         _fm = g.getFontMetrics(_font);
         //System.out.println("FigText.paint: font height = " + _fm.getHeight());
         int chunkH = _fm.getHeight() + _lineSpacing;
@@ -570,7 +625,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         // Can we improve this?
         if(_textFilled) {
             g.setColor(_textFillColor);
-            lines = new StringTokenizer(displayText, "\n", true);
+            lines = new StringTokenizer(_curText, "" + HARD_RETURN + SOFT_RETURN, true);
             while(lines.hasMoreTokens()) {
                 String curLine = lines.nextToken();
                 int chunkW = _fm.stringWidth(curLine);
@@ -584,7 +639,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
                         chunkX = _x + _w - chunkW - _rightMargin;
                         break;
                 }
-                if(curLine.equals("\n") || curLine.equals("\r"))
+                if (curLine.charAt(0) == HARD_RETURN || curLine.charAt(0) == SOFT_RETURN)
                     chunkY += chunkH;
                 else
                     g.fillRect(chunkX, chunkY - chunkH, chunkW, chunkH);
@@ -594,7 +649,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         g.setColor(_textColor);
         chunkX = _x + _leftMargin;
         chunkY = _y + _topMargin + chunkH;
-        lines = new StringTokenizer(displayText, "\n", true);
+        lines = new StringTokenizer(_curText, "" + HARD_RETURN + SOFT_RETURN, true);
         while(lines.hasMoreTokens()) {
             String curLine = lines.nextToken();
             int chunkW = _fm.stringWidth(curLine);
@@ -608,9 +663,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
                     chunkX = _x + _w - chunkW;
                     break;
             }
-            if(curLine.equals("\n") || curLine.equals("\r"))
+            if (isHardReturn(curLine) || isSoftReturn(curLine)) {
                 chunkY += chunkH;
-            else {
+            } else {
                 if (_underline) {
                     g.drawLine(chunkX, chunkY + 1, chunkX + chunkW, chunkY + 1);
                 }
@@ -666,27 +721,28 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     public void stuffMinimumSize(Dimension d) {
-        if(_font == null)
+        if (_font == null) {
             return;
-        // usage of getFontMetrics() is deprecated
-        //if (_fm == null) _fm = Toolkit.getDefaultToolkit().getFontMetrics(_font);
+        }
         int overallW = 0;
         int numLines = 1;
-        StringTokenizer lines = new StringTokenizer(_curText, "\n\r", true);
+        StringTokenizer lines = new StringTokenizer(_curText, "" + HARD_RETURN + SOFT_RETURN, true);
         while(lines.hasMoreTokens()) {
             String curLine = lines.nextToken();
             int chunkW = _fm.stringWidth(curLine);
-            if(curLine.equals("\n") || curLine.equals("\r"))
+            if (curLine.charAt(0) == HARD_RETURN || curLine.charAt(0) == SOFT_RETURN) {
                 numLines++;
-            else
+            } else {
                 overallW = Math.max(chunkW, overallW);
+            }
         }
         //_lineHeight = _fm.getHeight();
         //int maxDescent = _fm.getMaxDescent();
-        if(_fm == null)
+        if(_fm == null) {
             _lineHeight = _font.getSize();
-        else
+        } else {
             _lineHeight = _fm.getHeight();
+        }
         int maxDescent = 0;
         int overallH = (_lineHeight + _lineSpacing) * numLines + _topMargin + _botMargin + maxDescent;
         overallH = Math.max(overallH, getMinimumHeight());
@@ -819,15 +875,13 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         _lineHeight = _fm.getHeight();
         int maxDescent = _fm.getMaxDescent();
         
-        String text = makeDisplayString();
-        
         int overallW = 0;
         int numLines = 1;
-        StringTokenizer lines = new StringTokenizer(text, "\n\r", true);
+        StringTokenizer lines = new StringTokenizer(_curText, "" + HARD_RETURN + SOFT_RETURN, true);
         while(lines.hasMoreTokens()) {
             String curLine = lines.nextToken();
             int chunkW = _fm.stringWidth(curLine);
-            if(curLine.equals("\n") || curLine.equals("\r"))
+            if (isHardReturn(curLine) || isSoftReturn(curLine))
                 numLines++;
             else
                 overallW = Math.max(chunkW, overallW);
@@ -854,61 +908,111 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         _h = _expandOnly ? Math.max(_h, overallH) : overallH;
     }
     
+    
     /**
-     * Returns the text formatted for display. This includes converting any
-     * Carriage return/Linefeed cominations "\n\r" or "\r\n" to a single "\n".
-     * It also involves inserting "\n" at any word wrap position.
-     * @return the text formatted for display.
+     * Creates an internal representation of the text from that provided
+     * by setText(String). This involves converting the platform specific line
+     * separator to always be a single '\n' character.
+     * It also involves inserting '\r' characters where ever word wrap occurs.
+     * The client code should never see this internal representation.
+     * @param the text containing platform specific line ends an no word wrap.
+     * @return the text containing GEF specific line ends and word wrap.
      */
-    private String makeDisplayString() {
+    private String encode(String text, String lineTerminator) {
+
+        StringBuffer buffer = new StringBuffer(text.length());
+        
+        int pos = 0;
+        int lastPos = 0;
+        while ((pos = text.indexOf(lineTerminator, lastPos)) >= 0) {
+            buffer.append(text.substring(lastPos, pos)).append(HARD_RETURN);
+            lastPos = pos + lineTerminator.length();
+        }
+        buffer.append(text.substring(lastPos));
+
+        if (wordWrap) {
+            return wordWrap(buffer.toString());
+        } else {
+            return buffer.toString();
+        }
+    }
+
+    /**
+     * Position '\r' as soft return points to indicate word wrap positions.
+     * @param text the string to wrap
+     * @return the text with soft returns wrapping in the correct position.
+     */
+    private String wordWrap(String text) {
         
         FontMetrics fm = FontUtility.getFontMetrics(_font);
-        
-        int x = 0;
         int tokenWidth;
-
-        String delims;
-        if (wordWrap) {
-            delims = " \n\r";
-        } else {
-            delims = "\n\r";
-        }
         
-        String lastToken = null;
-        StringBuffer buffer = new StringBuffer(_curText.length());
-        boolean justWrapped = false;
+        StringBuffer buffer = new StringBuffer(text.length());
         
-        StringTokenizer st = new StringTokenizer(_curText, delims, true);
+        int x=0;
+        
+        StringTokenizer st = new StringTokenizer(text, " " + HARD_RETURN + SOFT_RETURN, true);
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
             tokenWidth = fm.stringWidth(token);
 
-            // Ignore a '\r' following a '\n' or a '\n' following a '\r'
-            if (token.equals("\n") && "\r".equals(lastToken)) continue;
-            if (token.equals("\r") && "\n".equals(lastToken)) continue;
-            
-            if (token.equals("\n") || token.equals("\r")) {
-                buffer.append('\n');
+            if (isSoftReturn(token)) {
+                // If we're recalculating a string that already been wrapped then ignore
+                // the old wrap points.
+            } else if (isHardReturn(token)) {
+                buffer.append(HARD_RETURN);
                 x = 0;
-                justWrapped = false;
-            } else if (wordWrap && x + tokenWidth > getWidth() && !token.equals(" ")) {
-                buffer.append('\n').append(token);
+            } else if (x + tokenWidth > getWidth() && !token.equals(" ")) {
+                buffer.append(SOFT_RETURN).append(token);
                 x = tokenWidth;
-                justWrapped = true;
-            } else if (justWrapped && token.equals(" ")) {
-                // Don't append any spaces after a word wrap
-                justWrapped = false;
             } else {
                 buffer.append(token);
                 x += tokenWidth;
-                justWrapped = false;
             }
-            
-            lastToken = token;
         }
         
         return buffer.toString();
     }
 
+    /**
+     * Creates an internal representation of the text from that provided
+     * by setText(String). This involves converting the platform specific line
+     * separator to always be a single '\n' character.
+     * It also involves inserting '\r' characters where ever word wrap occurs.
+     * The client code should never see this internal representation.
+     * @param the text containing platform specific line ends an no word wrap.
+     * @return the text containing GEF specific line ends and word wrap.
+     */
+    private String decode(String text, String lineSeparator) {
+
+        StringBuffer buffer = new StringBuffer(text.length());
+        
+        String convertedText = "";
+        
+        StringTokenizer st = new StringTokenizer(text, "" + HARD_RETURN + SOFT_RETURN, true);
+        while (st.hasMoreTokens()) {
+            String token = st.nextToken();
+
+            if (isSoftReturn(token)) {
+                // Ignore wrap points.
+            } else if (isHardReturn(token)) {
+                buffer.append(lineSeparator);
+            } else {
+                buffer.append(token);
+            }
+        }
+        
+        return buffer.toString();
+    }
+    
+    private boolean isSoftReturn(String text) {
+        return (text.length() == 1 && text.charAt(0) == SOFT_RETURN); 
+    }
+    
+    private boolean isHardReturn(String text) {
+        return (text.length() == 1 && text.charAt(0) == HARD_RETURN); 
+    }
+    
+    
 } /* end class FigText */
 

@@ -144,7 +144,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         // bounds will be overwritten later in updateFigText anyway...
         setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width + _extraSpace * 2, bbox.height + _extraSpace * 2);
         _layeredPane.add(this, JLayeredPane.POPUP_LAYER, 0);
-        String text = ft.getText();
+        String text = ft.getTextFriend();
         
         remove();
         _activeTextEditor = this;
@@ -275,7 +275,8 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
             return;
         
         String text = getText();
-        _target.setText(text, getGraphics());
+        
+        _target.setTextFriend(text, getGraphics());
 
         if (_target.isMultiLine() && _target.isWordWrap()) {
             return;
