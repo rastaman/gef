@@ -278,7 +278,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         
         _target.setTextFriend(text, getGraphics());
 
-        if (_target.isMultiLine() && _target.isWordWrap()) {
+        if (_target.getReturnAction() == FigText.INSERT && _target.isWordWrap()) {
             return;
         };
 

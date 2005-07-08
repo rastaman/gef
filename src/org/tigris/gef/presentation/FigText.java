@@ -44,9 +44,14 @@ import java.util.StringTokenizer;
 
 public class FigText extends Fig implements KeyListener, MouseListener {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
+    
+    public static final int IGNORE = 0;
+    public static final int INSERT = 1;
+    public static final int END_EDITING = 2;
 
+    private int returnAction = IGNORE;
+    private int tabAction = IGNORE;
+    
     /** Constants to specify text justification. */
     public static final int JUSTIFY_LEFT = 0;
     public static final int JUSTIFY_RIGHT = 1;
@@ -89,26 +94,16 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     /** True if the text should be underlined. needs-more-work. */
     private boolean _underline = false;
 
-    /** True if more than one line of text is allow. If false, newline
-     *  characters will be ignored. True by default. */
-    private boolean _multiLine = true;
-
     /**
      * True if word wrap is to take place when editing multiline text.
      * False by default (for backwards compatability)
      */
     private boolean wordWrap = false;
 
-    private boolean _allowsTab = true;
-
     /** Extra spacing between lines. Default is 0 pixels. */
     private int _lineSpacing = 0;
 
     /** Internal margins between the text and the edge of the rectangle. */
-//    private int _topMargin = 1;
-//    private int _botMargin = 1;
-//    private int _leftMargin = 1;
-//    private int _rightMargin = 1;
     private int _topMargin = 0;
     private int _botMargin = 0;
     private int _leftMargin = 0;
@@ -426,61 +421,90 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     /**
-     * @deprecated use configureMultiLine(...)
+     * @deprecated see setReturnAction and setLineSeparator
      * @param b
      */
     public void setMultiLine(boolean b) {
-        _multiLine = b;
+        if (b) {
+            returnAction = INSERT;
+        } else {
+            returnAction = END_EDITING;
+        }
     }
 
     /**
-     * Configure the FigText to display multiple lines of text.
-     * @param wordWrap if true lines of text will be wrapped at word breaks at
-     * the width of the fig.
+     * Configure the characters interpret as line separators
      * @param lineSeparator the characters to treat as a return press. This can
      * be System.getProperty("lineSeparator") or some specific string if the
      * application requires this value to work across different platforms.
      * The only valid values are "\r\n", "\r" or "\n".
      */
-    public void configureMultiLine(boolean wordWrap, String lineSeparator) {
-        _multiLine = true;
-        this.wordWrap = wordWrap;
+    public void setLineSeparator(String lineSeparator) {
         this.lineSeparator = lineSeparator;
     }
     
     /**
-     * Configure the FigText to display just one single line of text.
-     */
-    public void configureSingleLine() {
-        _multiLine = false;
-        wordWrap = false;
-    }
-    
-    /**
-     * @deprecated use isMultiLine()
+     * @deprecated use getReturnAction()
      * @return true if multiple lines of text can be entered.
      */
     public boolean getMultiLine() {
-        return _multiLine;
-    }
-
-    /**
-     * @return true if multiple lines of text can be entered.
-     */
-    public boolean isMultiLine() {
-        return _multiLine;
+        return returnAction == INSERT;
     }
 
     public boolean isWordWrap() {
         return wordWrap;
     }
 
-    public void setAllowsTab(boolean b) {
-        _allowsTab = b;
+    /**
+     * Specifies what action the control should take on return press.
+     * @param action values are IGNORE, INSERT or END_EDITING
+     */
+    public void setReturnAction(int action) {
+        returnAction = action;
+    }
+    
+    /**
+     * Specifies what action the control should take on tab press.
+     * @param action values are IGNORE, INSERT or END_EDITING
+     */
+    public void setTabAction(int action) {
+        tabAction = action;
+    }
+    
+    /**
+     * Discover what action the control will take on return press.
+     * @return IGNORE, INSERT or END_EDITING
+     */
+    public int getReturnAction() {
+        return returnAction;
     }
 
+    /**
+     * Allow tab presses to be inserted into text during edit
+     * @param b true if return presses are insertable
+     * @deprecated use setTabAction(...)
+     */
+    public void setAllowsTab(boolean b) {
+        if (b) {
+            tabAction = INSERT;
+        } else {
+            tabAction = END_EDITING;
+        }
+    }
+
+    /**
+     * Turn on/off word wrapping of text.
+     * @param b true if word wrap is to take place
+     */
+    public void setWordWrap(boolean b) {
+        wordWrap = b;
+    }
+
+    /**
+     * @deprecated use getTabAction()
+     */
     public boolean getAllowsTab() {
-        return _allowsTab;
+        return tabAction == INSERT;
     }
 
     /** Remove the last char from the current string line and return the
@@ -711,10 +735,12 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         graphics.drawString(curLine, xPos, yPos);
     }
 
-    /** Muse clicks are handled differentlty that the defi]ault Fig
-     *  behavior so that it is easier to select text that is not
-     *  filled.  Needs-More-Work: should actually check the individual
-     *  text rectangles. */
+    /** 
+     * Mouse clicks are handled differently that the default Fig
+     * behavior so that it is easier to select text that is not
+     * filled.  Needs-More-Work: should actually check the individual
+     * text rectangles.
+     */
     public boolean hit(Rectangle r) {
         int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
         return cornersHit > 0;

@@ -1200,8 +1200,12 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     ////////////////////////////////////////////////////////////////
     // invariant
 
-    /** Check class invariants to make sure the Fig is in a valid state.
-     *  This is useful for debugging. needs-more-work. */
+    /**
+     * Check class invariants to make sure the Fig is in a valid state.
+     * This is useful for debugging. needs-more-work.
+     * @deprecated - This will be deleted - debug code should not be public
+     * and released. When we get to JRE1.4 we can use asserts.
+     */
     public boolean OK() {
         // super.OK() /
         return _lineWidth >= 0 && _lineColor != null && _fillColor != null;
@@ -1210,7 +1214,7 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     /** Method to paint this Fig.  By default it paints an "empty"
      *  space, subclasses should override this method. */
     public void paint(Graphics g) {
-        if(visible) {
+        if (visible) {
             g.setColor(Color.pink);
             g.fillRect(_x, _y, _w, _h);
             g.setColor(Color.black);
@@ -1236,24 +1240,17 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     public void preSave() {
     }
 
-    //   public void assignShadowColor(Color c) { _shadowColor = c; } //?
-    //   public void setShadowColor(Color c) { _shadowColor = c; }
-    //   public Color getShadowColor() { return _shadowColor; }
-    //   public void assignShadowOffset(Point p) { _shadowOffset = p; } //?
-    //   public void setShadowOffset(Point p) { _shadowOffset = p; }
-    //   public Point getShadowOffset() { return _shadowOffset; }
-
-    /** Draw the Fig on a PrintGraphics. This just calls paint. */
+    /**
+     * Draw the Fig on a PrintGraphics. This just calls paint.
+     */
     public void print(Graphics g) {
         paint(g);
     }
 
-
-    ////////////////////////////////////////////////////////////////
-    // property change handling
-
-    /** By default just pass it up to enclosing groups.  Subclasses of
-     *  FigNode may want to override this method. */
+    /**
+     * By default just pass it up to enclosing groups.  Subclasses of
+     * FigNode may want to override this method.
+     */
     public void propertyChange(PropertyChangeEvent pce) {
         if(group != null) {
             group.propertyChange(pce);
@@ -1261,7 +1258,9 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     }
 
 
-    /**  Force recalculating of bounds and redraw of fig. */
+    /**
+     * Force recalculating of bounds and redraw of fig.
+     */
     public void redraw() {
         Rectangle rect = getBounds();
         setBounds(rect.x, rect.y, rect.width, rect.height);
