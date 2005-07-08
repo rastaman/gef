@@ -424,23 +424,49 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         int style = (b ? Font.BOLD : 0) + (getItalic() ? Font.ITALIC : 0);
         setFont(new Font(_font.getFamily(), style, _font.getSize()));
     }
-    
+
+    /**
+     * @deprecated use configureMultiLine(...)
+     * @param b
+     */
     public void setMultiLine(boolean b) {
         _multiLine = b;
     }
 
-    public void setLineSeparator(String sep) {
-        lineSeparator = sep;
+    /**
+     * Configure the FigText to display multiple lines of text.
+     * @param wordWrap if true lines of text will be wrapped at word breaks at
+     * the width of the fig.
+     * @param lineSeparator the characters to treat as a return press. This can
+     * be System.getProperty("lineSeparator") or some specific string if the
+     * application requires this value to work across different platforms.
+     * The only valid values are "\r\n", "\r" or "\n".
+     */
+    public void configureMultiLine(boolean wordWrap, String lineSeparator) {
+        _multiLine = true;
+        this.wordWrap = wordWrap;
+        this.lineSeparator = lineSeparator;
     }
     
-    public void setWordWrap(boolean b) {
-        wordWrap = b;
+    /**
+     * Configure the FigText to display just one single line of text.
+     */
+    public void configureSingleLine() {
+        _multiLine = false;
+        wordWrap = false;
     }
-
+    
+    /**
+     * @deprecated use isMultiLine()
+     * @return true if multiple lines of text can be entered.
+     */
     public boolean getMultiLine() {
         return _multiLine;
     }
 
+    /**
+     * @return true if multiple lines of text can be entered.
+     */
     public boolean isMultiLine() {
         return _multiLine;
     }
@@ -567,16 +593,13 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         _textEditorClass = editorClass;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // painting methods
-
-    /** Paint the FigText.
-     *  Distingusih between linewidth=1 and >1
-     *  If <linewidth> is equal 1, then paint a single rectangle
-     *  Otherwise paint <linewidth> nested rectangles, whereas
-     *  every rectangle is painted of 4 connecting lines.
+    /** 
+     * Paint the FigText.
+     * Distingusih between linewidth=1 and >1
+     * If <linewidth> is equal 1, then paint a single rectangle
+     * Otherwise paint <linewidth> nested rectangles, whereas
+     * every rectangle is painted of 4 connecting lines.
      */
-
     public void paint(Graphics g) {
         if (!(isVisible())) {
             return;
@@ -615,9 +638,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         }
         
         _fm = g.getFontMetrics(_font);
-        //System.out.println("FigText.paint: font height = " + _fm.getHeight());
         int chunkH = _fm.getHeight() + _lineSpacing;
-        //System.out.println("FigText.paint: chunkH = " + chunkH);
         chunkY = _y + _topMargin + chunkH;
         
         // TODO: StringTokenizer is not very efficient and we are possibly
@@ -626,7 +647,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         if(_textFilled) {
             g.setColor(_textFillColor);
             lines = new StringTokenizer(_curText, "" + HARD_RETURN + SOFT_RETURN, true);
-            while(lines.hasMoreTokens()) {
+            while(lines.hasMoreTokens()
+                    && chunkY <= getHeight() + getY() + _topMargin - _botMargin) {
                 String curLine = lines.nextToken();
                 int chunkW = _fm.stringWidth(curLine);
                 switch(_justification) {
@@ -650,7 +672,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         chunkX = _x + _leftMargin;
         chunkY = _y + _topMargin + chunkH;
         lines = new StringTokenizer(_curText, "" + HARD_RETURN + SOFT_RETURN, true);
-        while(lines.hasMoreTokens()) {
+        while(lines.hasMoreTokens()
+                && chunkY <= getHeight() + getY() + _topMargin - _botMargin) {
             String curLine = lines.nextToken();
             int chunkW = _fm.stringWidth(curLine);
             switch(_justification) {
@@ -962,16 +985,64 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             } else if (isHardReturn(token)) {
                 buffer.append(HARD_RETURN);
                 x = 0;
-            } else if (x + tokenWidth > getWidth() && !token.equals(" ")) {
-                buffer.append(SOFT_RETURN).append(token);
-                x = tokenWidth;
-            } else {
+            } else if (isSpace(token)) {
                 buffer.append(token);
                 x += tokenWidth;
+            } else {
+                if (x > 0 && x + tokenWidth > getWidth()) {
+                    buffer.append(SOFT_RETURN);
+                    x = 0;
+                }
+                x = appendToken(buffer, token ,tokenWidth, fm, x);
             }
         }
         
         return buffer.toString();
+    }
+    
+    private int appendToken(
+            StringBuffer sb, 
+            String token, 
+            int tokenWidth, 
+            FontMetrics fm,
+            int x) {
+        if (x + tokenWidth <= getWidth()) {
+            sb.append(token);
+            x += tokenWidth;
+        } else {
+            String part = "";
+            int lastPartWidth;
+            int partWidth = 0;
+            for (int i=0; i<token.length(); ++i) {
+                part += token.charAt(i);
+                lastPartWidth = partWidth;
+                partWidth = fm.stringWidth(part);
+                if (partWidth > getWidth()) {
+                    String nextPart = "";
+                    int nextPartWidth = 0;
+                    if (part.length() > 1) {
+                        nextPart = part.substring(part.length() - 1);
+                        nextPartWidth = fm.stringWidth(nextPart);
+                        part = part.substring(0, part.length() - 1);
+                        partWidth = lastPartWidth;
+                    }
+                    sb.append(part);
+                    part = nextPart;
+                    partWidth = nextPartWidth;
+                    if (i < token.length() - 1) {
+                        sb.append(SOFT_RETURN);
+                        x = 0;
+                    } else {
+                        x += partWidth;
+                    }
+                }
+            }
+            if (partWidth > 0) {
+                sb.append(part);
+                x += partWidth;
+            }
+        }
+        return x;
     }
 
     /**
@@ -1011,6 +1082,19 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     
     private boolean isHardReturn(String text) {
         return (text.length() == 1 && text.charAt(0) == HARD_RETURN); 
+    }
+
+    private boolean isSpace(String text) {
+        return (text.length() == 1 && text.charAt(0) == ' '); 
+    }
+
+    protected void setBoundsImpl(int x, int y, int w, int h) {
+        if (_w != w) {
+            super.setBoundsImpl(x, y, w, h);
+            _curText = wordWrap(_curText);
+        } else {
+            super.setBoundsImpl(x, y, w, h);
+        }
     }
     
     
