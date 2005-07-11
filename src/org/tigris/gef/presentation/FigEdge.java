@@ -438,12 +438,16 @@ public abstract class FigEdge extends Fig implements Connecter {
         return _fig.isRotatable();
     }
 
-    /** Abstract method to make the Fig that will be drawn for this
-     *  FigEdge. In FigEdgeLine this method constructs a FigLine. In
-     *  FigEdgeRectiline, this method constructs a FigPoly. */
+    /** 
+     * Abstract method to make the Fig that will be drawn for this
+     * FigEdge. In FigEdgeLine this method constructs a FigLine. In
+     * FigEdgeRectiline, this method constructs a FigPoly.
+     */
     protected abstract Fig makeEdgeFig();
 
-    /** Paint this FigEdge.  Needs-more-work: take Highlight into account */
+    /**
+     * Paint this FigEdge.  TODO: take Highlight into account
+     */
     public void paint(Graphics g) {
         //computeRoute();
         _fig.paint(g);
@@ -454,9 +458,11 @@ public abstract class FigEdge extends Fig implements Connecter {
     ////////////////////////////////////////////////////////////////
     // display methods
 
-    /** Paint ArrowHeads on this FigEdge. Called from paint().
-     *  Determines placement and orientation by using
-     *  pointAlongPerimeter(). */
+    /**
+     * Paint ArrowHeads on this FigEdge. Called from paint().
+     * Determines placement and orientation by using
+     * pointAlongPerimeter().
+     */
     protected void paintArrowHeads(Graphics g) {
         _arrowHeadStart.paintAtHead(g, _fig);
         _arrowHeadEnd.paintAtTail(g, _fig);

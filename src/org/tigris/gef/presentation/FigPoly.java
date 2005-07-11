@@ -592,8 +592,10 @@ public class FigPoly extends Fig {
         }
     }
 
-    /** Returns the length of the perimeter of the polygon, which is the
-     *  sum of all the lengths of its segments. */
+    /**
+     * Returns the length of the perimeter of the polygon, which is the
+     * sum of all the lengths of its segments.
+     */
     public int getPerimeterLength() {
 
         // needs-more-work: should I cache this value?

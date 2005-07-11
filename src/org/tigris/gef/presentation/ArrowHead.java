@@ -39,37 +39,16 @@ import java.awt.Stroke;
  * Abstract class to draw arrow heads on the ends of FigEdges.
  */
 
-public abstract class ArrowHead implements java.io.Serializable {
-    protected int arrow_width = 7;
-    protected int arrow_height = 12;
-    protected Color arrowLineColor = Color.black;
-    protected Color arrowFillColor = Color.black;
-
+public abstract class ArrowHead extends Decoration {
+    
     public ArrowHead() {
+        super();
     }
 
     public ArrowHead(Color line, Color fill) {
-        setLineColor(line);
-        setFillColor(fill);
+        super(line, fill);
     }
 
-    public Color getLineColor() {
-        return arrowLineColor;
-    }
-
-    public void setLineColor(Color newColor) {
-        arrowLineColor = newColor;
-    }
-
-    public Color getFillColor() {
-        return arrowFillColor;
-    }
-
-    public void setFillColor(Color newColor) {
-        arrowFillColor = newColor;
-    }
-
-    public abstract void paint(Graphics g, Point start, Point end);
     
     public void paintAtHead(Graphics g, Fig path) {
 		if (g instanceof Graphics2D) {
@@ -103,37 +82,5 @@ public abstract class ArrowHead implements java.io.Serializable {
 			int[] ys = path.getYs();
             paint(g, new Point(xs[pointCount-2], ys[pointCount-2]), new Point(xs[pointCount-1], ys[pointCount-1]));
         }
-    }
-    
-    /** return the approximate arc length of the path in pixel units */
-    public int getLineLength(Point one, Point two) {
-        int dxdx = (two.x - one.x) * (two.x - one.x);
-        int dydy = (two.y - one.y) * (two.y - one.y);
-        return (int) Math.sqrt(dxdx + dydy);
-    }
-
-    /** return a point that is dist pixels along the path */
-    public Point pointAlongLine(Point one, Point two, int dist) {
-        int len = getLineLength(one, two);
-        int p = dist;
-        if (len == 0) {
-            return one;
-        }
-        //System.out.println(" ! pall dist, len = " + dist + " , " + len);
-        return new Point(
-            one.x + ((two.x - one.x) * p) / len,
-            one.y + ((two.y - one.y) * p) / len);
-    }
-
-    public double dist(int x0, int y0, int x1, int y1) {
-        double dx;
-        double dy;
-        dx = (double) (x0 - x1);
-        dy = (double) (y0 - y1);
-        return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    public double dist(double dx, double dy) {
-        return Math.sqrt(dx * dx + dy * dy);
     }
 } /* end class ArrowHead */
