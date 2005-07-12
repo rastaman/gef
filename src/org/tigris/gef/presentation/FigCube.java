@@ -31,14 +31,16 @@
 
 package org.tigris.gef.presentation;
 
-import java.awt.*;
-import java.io.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.io.Serializable;
 
 /**
  * This class is needed to paint cubes (the only 3dim Element in UML)
  **/
 public class FigCube extends Fig implements Serializable {
-
+    private int D = 20;
+    
     public FigCube(int x, int y, int w, int h, Color lColor, Color fColor){
         super(x, y, w, h , lColor, fColor);
     }
@@ -61,16 +63,33 @@ public class FigCube extends Fig implements Serializable {
         g.drawRect(x, y, w, h);
 
  	g.setColor(fColor);
-	g.fillPolygon(new int[]{x, x+20, x+w+20, x+w}, new int[]{y, y-20, y-20, y}, 4);
+	g.fillPolygon(new int[]{x, x+D, x+w+D, x+w}, 
+                      new int[]{y, y-D, y-D, y}, 4);
 	g.setColor(lColor);
-        g.drawPolygon(new int[]{x, x+20, x+w+20, x+w}, new int[]{y, y-20, y-20, y}, 4);
+        g.drawPolygon(new int[]{x, x+D, x+w+D, x+w}, 
+                      new int[]{y, y-D, y-D, y}, 4);
 
 	g.setColor(fColor);
-	g.fillPolygon(new int[]{x+w+20, x+w+20, x+w, x+w}, new int[]{y-20, y+h-20, y+h, y}, 4);
+	g.fillPolygon(new int[]{x+w+D, x+w+D, x+w, x+w}, 
+                      new int[]{y-D, y+h-D, y+h, y}, 4);
 	g.setColor(lColor);
-        g.drawPolygon(new int[]{x+w+20, x+w+20, x+w, x+w}, new int[]{y-20, y+h-20, y+h, y}, 4);
+        g.drawPolygon(new int[]{x+w+D, x+w+D, x+w, x+w}, 
+                      new int[]{y-D, y+h-D, y+h, y}, 4);
     }
 
+    /**
+     * @return the depth (the 3rd dimension) of the cube
+     */
+    public int getDepth() {
+        return D;
+    }
+
+    /**
+     * @param d the depth (the 3rd dimension) of the cube
+     */
+    public void setDepth(int depth) {
+        D = depth;
+    }
 
 }
 
