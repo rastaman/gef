@@ -125,14 +125,15 @@ public class Geometry {
         double a = Math.atan(m);
         if(dx > 0)
             return a;
-        else
-            return -a;
+        return -a;
     }
 
-    /** Given the coordinates of the endpoints of a line segment, and a
-     *  point, set res to be the closest point on the segement to the
-     *  given point. */
-    public static void ptClosestTo(int x1, int y1, int x2, int y2, Point p, Point res) {
+    /** 
+     * Given the coordinates of the endpoints of a line segment, and a
+     * point, set res to be the closest point on the segement to the
+     * given point. */
+    public static void ptClosestTo(int x1, int y1, int x2, int y2, 
+            Point p, Point res) {
         // segment is a point
         if(y1 == y2 && x1 == x2) {
             res.x = x1;
@@ -153,9 +154,27 @@ public class Geometry {
         }
         int dx = x2 - x1;
         int dy = y2 - y1;
-        res.x = dy * (dy * x1 - dx * (y1 + p.y)) + dx * p.x;
+        res.x = dy * (dy * x1 - dx * (y1 - p.y)) + dx * dx * p.x;
         res.x = res.x / (dx * dx + dy * dy);
         res.y = (dx * (p.x - res.x)) / dy + p.y;
+
+        if (x2 > x1) {
+            if (res.x > x2) {
+                res.x = x2;
+                res.y = y2;
+            } else if (res.x < x1) {
+                res.x = x1;
+                res.y = y1;
+            }
+        } else {
+            if (res.x < x2) {
+                res.x = x2;
+                res.y = y2;
+            } else if (res.x > x1) {
+                res.x = x1;
+                res.y = y1;
+            }
+        }
     }
 
     /** Given three ints, return the one with the middle value. I.e., it
@@ -169,14 +188,12 @@ public class Geometry {
             else
                 return c;
         }
-        else {
-            if(b >= c)
-                return b;
-            else if(c >= a)
-                return a;
-            else
-                return c;
-        }
+        if(b >= c)
+            return b;
+        else if(c >= a)
+            return a;
+        else
+            return c;
     }
 
     /** Given the coordinates of the endpoints of a line segment, and a
@@ -201,7 +218,6 @@ public class Geometry {
      *  the perimiter of the polygon that is closest to to the given
      *  point. */
     public static synchronized void ptClosestTo(int xs[], int ys[], int n, Point p, Point res) {
-        System.out.println("a");
         res.x = xs[0];
         res.y = ys[0];
         int bestDist = (res.x - p.x) * (res.x - p.x) + (res.y - p.y) * (res.y - p.y);
@@ -211,7 +227,6 @@ public class Geometry {
         for(int i = 0; i < n - 1; ++i) {
             ptClosestTo(xs[i], ys[i], xs[i + 1], ys[i + 1], p, tempPoint);
             tDist = (tempPoint.x - p.x) * (tempPoint.x - p.x) + (tempPoint.y - p.y) * (tempPoint.y - p.y);
-            System.out.println("b:" + tDist);
             if(bestDist > tDist) {
                 bestDist = tDist;
                 res.x = tempPoint.x;
