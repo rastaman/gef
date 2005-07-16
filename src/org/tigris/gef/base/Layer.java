@@ -117,8 +117,7 @@ public abstract class Layer implements java.io.Serializable {
 
     /**
      * A list of the Editors that are displaying this Layer.
-     * @deprecated in 0.11.1 will lose visibility in a future release
-     * use addEditor(), removeEditor() and getEditors().
+     * Use addEditor(), removeEditor() and getEditors() to access this.
      */
     private transient List _editors = new ArrayList();
 
@@ -184,8 +183,7 @@ public abstract class Layer implements java.io.Serializable {
     public String getName() {
         if(_name == null)
             return "";
-        else
-            return _name;
+        return _name;
     }
 
     public void setName(String n) {
