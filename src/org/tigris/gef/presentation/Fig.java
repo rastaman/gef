@@ -782,13 +782,17 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
         if(r == null) {
             return new Rectangle(_x, _y, _w, _h);
         }
-        else {
-            r.setBounds(_x, _y, _w, _h);
-        }
-
+        r.setBounds(_x, _y, _w, _h);
         return r;
     }
 
+    /**
+     * Overrule this if you have a non-rectangular shape, and want the edge to
+     * be able to attach to locations on line-segments.
+     * 
+     * @param anotherPt the point (usually outside the fig) to connet to
+     * @return a point on the border of this
+     */
     public Point getClosestPoint(Point anotherPt) {
         return Geometry.ptClosestTo(getBounds(), anotherPt);
     }
@@ -870,6 +874,14 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
         return new Point();
     }
 
+    /**
+     * Overrule this if you want to connect to a limited number of points, 
+     * and to points only. <p>
+     * Instead, if you want to connect to any point on one or more line-segments,
+     * then you should overrule getClosestPoint().
+     * 
+     * @return the lisy of gravity points.
+     */
     public List getGravityPoints() {
         return null;
     }

@@ -79,7 +79,10 @@ public class FigEdgePoly extends FigEdge {
     /** Find the route that the edge should follow.  Basically case
      *  analysis to route around source and destination nodes.
      *  Needs-More-Work: A better algorithm would really be useful.
-     *  Needs-More-Work: Sometimes the edge can get non-rectilinear. */
+     *  Needs-More-Work: Sometimes the edge can get non-rectilinear. <p>
+     *   
+     *  TODO: MVW: This functions is called too many times! 
+     *  I count 6x or 7x while creating an edge.*/
     public void computeRoute() {
         if (!_initiallyLaidOut) {
             layoutEdge();
@@ -87,22 +90,24 @@ public class FigEdgePoly extends FigEdge {
         }
         FigPoly p = ((FigPoly) _fig);
         
-        Fig sourcePortFig = getSourcePortFig();
-        Fig destPortFig = getDestPortFig();
+        /* Here we have to use the getSourceFigNode, and not getSourcePortFig, 
+         * since otherwise we are routing to a rectangle. */
+        Fig sourcePort = getSourceFigNode();
+        Fig destPort = getDestFigNode();
         
-        Point srcPt = sourcePortFig.getCenter();
-        Point dstPt = destPortFig.getCenter();
+        Point srcPt = sourcePort.getCenter();
+        Point dstPt = destPort.getCenter();
 
         if (_useNearest) {
             if (p.getNumPoints() == 2) {
                 //? two iterations of refinement, maybe should be a for-loop
-                srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
-                dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints() - 2));
-                srcPt = sourcePortFig.connectionPoint(dstPt);
-                dstPt = destPortFig.connectionPoint(srcPt);
+                srcPt = sourcePort.connectionPoint(p.getPoint(1));
+                dstPt = destPort.connectionPoint(p.getPoint(p.getNumPoints() - 2));
+                srcPt = sourcePort.connectionPoint(dstPt);
+                dstPt = destPort.connectionPoint(srcPt);
             } else {
-                srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
-                dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints() - 2));
+                srcPt = sourcePort.connectionPoint(p.getPoint(1));
+                dstPt = destPort.connectionPoint(p.getPoint(p.getNumPoints() - 2));
             }
         }
 
