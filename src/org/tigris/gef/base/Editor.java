@@ -341,8 +341,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         Layer active = _layerManager.getActiveLayer();
         if(active instanceof LayerPerspective)
             return ((LayerPerspective)active).getGraphModel();
-        else
-            return null;
+        return null;
     }
 
     public void setGraphModel(GraphModel gm) {
@@ -356,8 +355,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         Layer active = _layerManager.getActiveLayer();
         if(active instanceof LayerPerspective)
             return ((LayerPerspective)active).getGraphNodeRenderer();
-        else
-            return null;
+        return null;
     }
 
     public void setGraphNodeRenderer(GraphNodeRenderer rend) {
@@ -371,8 +369,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         Layer active = _layerManager.getActiveLayer();
         if(active instanceof LayerPerspective)
             return ((LayerPerspective)active).getGraphEdgeRenderer();
-        else
-            return null;
+        return null;
     }
 
     public void setGraphEdgeRenderer(GraphEdgeRenderer rend) {
@@ -631,7 +628,11 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     }
 
     /** Create an Image (an off-screen bit-map) to be used to reduce
-     *  flicker in redrawing. */
+     *  flicker in redrawing. <p>
+     *  
+     *  The image is also useable for other purposes, 
+     *  e.g. to put a bitmap of a diagram 
+     *  on the system clipboard. */
     public Image createImage(int w, int h) {
         if(_jComponent == null)
             return null;
