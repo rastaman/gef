@@ -81,9 +81,8 @@ public class FigEdgePoly extends FigEdge {
      *  Needs-More-Work: A better algorithm would really be useful.
      *  Needs-More-Work: Sometimes the edge can get non-rectilinear. <p>
      *   
-     *  TODO: MVW: This functions is called too many times! 
+     *  TODO: MVW: This functions is called too many times (within ArgoUML)! 
      *  I count 6x or 7x while creating an edge.
-     *  Bob: Is this with ArgoUML or any GEF app?
      */
     public void computeRoute() {
         if (!_initiallyLaidOut) {
