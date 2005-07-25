@@ -992,7 +992,12 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * @return the text with soft returns wrapping in the correct position.
      */
     private String wordWrap(String text) {
-        
+
+        if (!wordWrap) {
+            // TODO Make this an assert when we are JDK1.4.
+            throw new IllegalArgumentException("Attempted to wordwrap while wordwrap off");
+        }
+
         FontMetrics fm = FontUtility.getFontMetrics(_font);
         int tokenWidth;
         
@@ -1115,7 +1120,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     protected void setBoundsImpl(int x, int y, int w, int h) {
-        if (_w != w) {
+        if (_w != w && wordWrap) {
             super.setBoundsImpl(x, y, w, h);
             _curText = wordWrap(_curText);
         } else {
