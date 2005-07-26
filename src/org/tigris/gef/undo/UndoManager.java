@@ -52,6 +52,9 @@ public class UndoManager {
      * @param memento the memento.
      */
     public void addMemento(Memento memento) {
+        if (undoMax == 0) {
+            return ;
+        }
         // Flag the memento as to whether it is first in a chain
         memento.startChain = newChain;
         if (newChain) {
