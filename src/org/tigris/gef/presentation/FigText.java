@@ -38,9 +38,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.StringTokenizer;
 
-/** This class handles painting and editing text Fig's in a
- *  LayerDiagram. Needs-More-Work: should eventually allow styled text
- *  editing, ... someday... */
+/**
+ * This class handles painting and editing text Fig's in a
+ * LayerDiagram.
+ */
 
 public class FigText extends Fig implements KeyListener, MouseListener {
 

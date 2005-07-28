@@ -93,6 +93,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     }
 
     public void init(FigText ft, InputEvent ie) {
+        setVisible(true);
         _target = ft;
         Editor ce = Globals.curEditor();
         
@@ -190,6 +191,8 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         _target.firePropChange("editing", true, false);
         removeKeyListener(this);
         _layeredPane.remove(this);
+        _drawingPanel.requestFocus();
+        _activeTextEditor = null;
     }
     
     private static FigTextEditor _activeTextEditor;
