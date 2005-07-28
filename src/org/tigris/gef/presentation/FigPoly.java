@@ -69,7 +69,10 @@ public class FigPoly extends Fig {
     /** Flag to control how the polygon is drawn */
     protected boolean _rectilinear = false;
 
-    /** Flag to indicate when the polygon is completed */
+    /**
+     * Flag to indicate when the polygon is completed
+     * @deprecated visibility will change
+     */
     public boolean _isComplete = false;
 
     /** Flag to indicate when the polygon is used as a self-loop for a node */
@@ -672,7 +675,15 @@ public class FigPoly extends Fig {
         else
             return (_xpoints[0] == _xpoints[_xpoints.length - 1]) && (_ypoints[0] == _ypoints[_ypoints.length - 1]);
     }
+    
+    public boolean isComplete() {
+        return _isComplete;
+    }
 
+    public void setComplete(boolean complete) {
+        this._isComplete = complete;
+    }
+    
     ////////////////////////////////////////////////////////////////
     // internal utility functions
 
