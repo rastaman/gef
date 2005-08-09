@@ -101,6 +101,11 @@ public abstract class CmdSaveGraphics extends Cmd {
         Rectangle drawingArea =
             ce.getLayerManager().getActiveLayer().calcDrawingArea();
         if (LOG.isDebugEnabled()) LOG.debug("Bounding box: " + drawingArea);
+        
+        if (drawingArea.width <= 0 || drawingArea.height <= 0) {
+            if (LOG.isDebugEnabled()) LOG.debug("Graphics generation aborted.");
+            return;
+        }
 
         //	Tell the editor to hide the grid before exporting:
 
