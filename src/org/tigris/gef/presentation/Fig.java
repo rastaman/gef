@@ -405,36 +405,36 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
         int dy = 0;
         switch(direction) {
 
-            case CmdAlign.ALIGN_TOPS:
+            case AlignAction.ALIGN_TOPS:
                 dy = r.y - bbox.y;
                 break;
 
-            case CmdAlign.ALIGN_BOTTOMS:
+            case AlignAction.ALIGN_BOTTOMS:
                 dy = r.y + r.height - (bbox.y + bbox.height);
                 break;
 
-            case CmdAlign.ALIGN_LEFTS:
+            case AlignAction.ALIGN_LEFTS:
                 dx = r.x - bbox.x;
                 break;
 
-            case CmdAlign.ALIGN_RIGHTS:
+            case AlignAction.ALIGN_RIGHTS:
                 dx = r.x + r.width - (bbox.x + bbox.width);
                 break;
 
-            case CmdAlign.ALIGN_CENTERS:
+            case AlignAction.ALIGN_CENTERS:
                 dx = r.x + r.width / 2 - (bbox.x + bbox.width / 2);
                 dy = r.y + r.height / 2 - (bbox.y + bbox.height / 2);
                 break;
 
-            case CmdAlign.ALIGN_H_CENTERS:
+            case AlignAction.ALIGN_H_CENTERS:
                 dx = r.x + r.width / 2 - (bbox.x + bbox.width / 2);
                 break;
 
-            case CmdAlign.ALIGN_V_CENTERS:
+            case AlignAction.ALIGN_V_CENTERS:
                 dy = r.y + r.height / 2 - (bbox.y + bbox.height / 2);
                 break;
 
-            case CmdAlign.ALIGN_TO_GRID:
+            case AlignAction.ALIGN_TO_GRID:
                 Point loc = getLocation();
                 Point snapPt = new Point(loc.x, loc.y);
                 ed.snap(snapPt);
