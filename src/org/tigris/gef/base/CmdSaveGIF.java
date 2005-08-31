@@ -64,10 +64,13 @@ public class CmdSaveGIF extends CmdSaveGraphics {
         
         //	Create an offscreen image and render the diagram into it.
         
-        Image i = ce.createImage( drawingArea.width, drawingArea.height );
+        Image i = ce.createImage( drawingArea.width * scale, drawingArea.height * scale );
         Graphics g = i.getGraphics();
+        if (g instanceof Graphics2D) {
+            ((Graphics2D) g).scale(scale, scale);
+        }
         g.setColor( new Color(TRANSPARENT_BG_COLOR) );
-        g.fillRect( 0, 0, drawingArea.width, drawingArea.height );
+        g.fillRect( 0, 0, drawingArea.width * scale, drawingArea.height * scale );
         // a little extra won't hurt
         g.translate( -drawingArea.x, -drawingArea.y );
         ce.print( g );

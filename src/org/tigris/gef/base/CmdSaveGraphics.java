@@ -40,6 +40,7 @@ import org.apache.commons.logging.*;
 public abstract class CmdSaveGraphics extends Cmd {
 
     private static Log LOG = LogFactory.getLog(LayerDiagram.class);
+    protected int scale = 1;
     
     protected abstract void saveGraphics(
         OutputStream s,
@@ -58,6 +59,16 @@ public abstract class CmdSaveGraphics extends Cmd {
 
     public void setStream(OutputStream s) {
         setArg("outputStream", s);
+    }
+    
+    /**
+     * Increasing this number effectively improves the resolution 
+     * of the result in case it is pixel-based.
+     * 
+     * @param s the scale (default = 1)
+     */
+    public void setScale(int s) {
+        scale = s;
     }
 
     /** Write the diagram contained by the current editor into an OutputStream

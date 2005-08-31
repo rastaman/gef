@@ -65,13 +65,15 @@ public class CmdSavePNG extends CmdSaveGraphics {
             throws IOException {
 
         // Create an offscreen image and render the diagram into it.
-        Image i = new BufferedImage(drawingArea.width, drawingArea.height,
+        Image i = new BufferedImage(drawingArea.width * scale, 
+                drawingArea.height * scale,
                 BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = (Graphics2D) i.getGraphics();
+        g.scale(scale, scale);
         g.setColor(new Color(TRANSPARENT_BG_COLOR, true));
         Composite c = g.getComposite();
         g.setComposite(AlphaComposite.Src);
-        g.fillRect(0, 0, drawingArea.width, drawingArea.height);
+        g.fillRect(0, 0, drawingArea.width * scale, drawingArea.height * scale);
         g.setComposite(c);
         // a little extra won't hurt
         g.translate(-drawingArea.x, -drawingArea.y);
