@@ -53,8 +53,8 @@ font-size:<ocl>self.fontSize</ocl>
 	  height='11in'
 	  width='8in'
 >
-  <ocl>self.layer.contentsNoEdges</ocl>
-  <ocl>self.layer.contentsEdgesOnly</ocl>
+  <ocl>org.tigris.gef.persistence.pgml.PgmlUtility.getContentsNoEdges(self.layer)</ocl>
+  <ocl>org.tigris.gef.persistence.pgml.PgmlUtility.getContentsEdgesOnly(self.layer)</ocl>
 </svg>
 ]]>
 </template>

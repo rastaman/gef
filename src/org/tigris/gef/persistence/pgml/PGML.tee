@@ -28,8 +28,8 @@ strokecolor="<ocl>self.lineColor</ocl>"
 <pgml description="<ocl>self.classAndModelID</ocl>"
       name="<ocl>self.name</ocl>"
 >
-  <ocl>self.layer.contentsNoEdges</ocl>
-  <ocl>self.layer.contentsEdgesOnly</ocl>
+  <ocl>org.tigris.gef.persistence.pgml.PgmlUtility.getContentsNoEdges(self.layer)</ocl>
+  <ocl>org.tigris.gef.persistence.pgml.PgmlUtility.getContentsEdgesOnly(self.layer)</ocl>
 </pgml>
 ]]>
 </template>

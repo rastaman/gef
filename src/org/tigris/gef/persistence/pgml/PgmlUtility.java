@@ -25,8 +25,12 @@
 package org.tigris.gef.persistence.pgml;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
 
 /**
  * Utility methods referred to by PGML.tee
@@ -108,5 +112,38 @@ public class PgmlUtility {
      */
     public static int getFilled(Fig f) {
         return (f.getFilled()) ?  1 : 0;
+    }
+    
+    /**
+     * Get all contents of a layer other than the
+     * edges.
+     */
+    public static List getContentsNoEdges(Layer lay) {
+        List contents = lay.getContents();
+        int size = contents.size();
+        ArrayList list = new ArrayList(size);
+        for(int i = 0; i < size; i++) {
+            Object o = contents.get(i);
+            if (!(o instanceof FigEdge)) {
+                list.add(o);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * Get all edges in a layer.
+     */
+    public List getContentsEdgesOnly(Layer lay) {
+        List contents = lay.getContents();
+        int size = contents.size();
+        ArrayList list = new ArrayList(size);
+        for(int i = 0; i < size; i++) {
+            Object o = contents.get(i);
+            if (o instanceof FigEdge) {
+                list.add(o);
+            }
+        }
+        return list;
     }
 }
