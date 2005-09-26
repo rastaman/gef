@@ -37,7 +37,7 @@ public abstract class FigEdge extends Fig implements Connecter {
     protected FigNode _destFigNode;
 
     /** Fig that presents the edge. */
-    protected Fig _fig;
+    private Fig _fig;
 
     /** True if the FigEdge should be drawn from the nearest point of
      *  each port Fig. */
@@ -77,7 +77,7 @@ public abstract class FigEdge extends Fig implements Connecter {
 
     /** Contruct a new FigEdge without any underlying edge. */
     public FigEdge() {
-        _fig = makeEdgeFig();
+        setFig(makeEdgeFig());
     }
 
     ////////////////////////////////////////////////////////////////
@@ -92,7 +92,7 @@ public abstract class FigEdge extends Fig implements Connecter {
         setSourceFigNode(sfn);
         setDestFigNode(dfn);
         setOwner(edge);
-        _fig = makeEdgeFig();
+        setFig(makeEdgeFig());
         _fig.setGroup(this);
         _fig.setLayer(getLayer());
     }
@@ -227,7 +227,8 @@ public abstract class FigEdge extends Fig implements Connecter {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /** Return the Fig that will be drawn.
+    /**
+     * Return the Fig that will be drawn.
      * USED BY PGML.tee
      */
     public Fig getFig() {

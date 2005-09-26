@@ -1397,12 +1397,11 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /** Sets the Layer that this Fig belongs to. Fires PropertyChangeEvent
-     *  "layer". */
+    /**
+     * Sets the Layer that this Fig belongs to. Fires PropertyChangeEvent
+     * "layer".
+     */
     public void setLayer(Layer lay) {
-        if (lay == null) {
-            throw new IllegalArgumentException("Layer should not be null");
-        }
         firePropChange("layer", _layer, lay);
         _layer = lay;
     }

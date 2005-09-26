@@ -79,7 +79,7 @@ public class AnnotationHelper{
         // to improve this, the class FigPoly must provide better accessors
         List points;
         try{
-            points = ((FigPoly)to._fig).getPointsList();
+            points = ((FigPoly)to.getFig()).getPointsList();
         }catch(Exception e) { // NullPtr or ClassCast
             points = new ArrayList();
         }

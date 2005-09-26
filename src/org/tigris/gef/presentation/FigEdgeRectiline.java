@@ -79,7 +79,7 @@ public class FigEdgeRectiline extends FigEdge {
       layoutEdge();
       _initiallyLaidOut = true;
     }
-    FigPoly p = ((FigPoly) _fig);
+    FigPoly p = ((FigPoly) getFig());
 
     Point srcPt, dstPt;
     
@@ -145,7 +145,7 @@ public class FigEdgeRectiline extends FigEdge {
     //   if (dstSector == 1 || dstSector == -1) {
     // xpoints[npoints] = dstPt.x; ypoints[npoints++] = dstPt.y; }
     Polygon routePoly = new Polygon(xpoints, ypoints, npoints);
-    ((FigPoly)_fig).setPolygon(routePoly);
+    ((FigPoly)getFig()).setPolygon(routePoly);
   }
 
   /** Reply a point on the given routing rect that is "straight out"

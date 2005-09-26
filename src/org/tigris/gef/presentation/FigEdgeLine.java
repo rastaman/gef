@@ -60,7 +60,7 @@ public class FigEdgeLine extends FigEdge {
             dstPt = destPortFig.connectionPoint(srcPt);
         }
 
-        ((FigLine) _fig).setShape(srcPt, dstPt);
+        ((FigLine) getFig()).setShape(srcPt, dstPt);
         calcBounds();
     }
 

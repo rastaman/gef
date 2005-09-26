@@ -89,7 +89,7 @@ public class FigEdgePoly extends FigEdge {
             layoutEdge();
             _initiallyLaidOut = true;
         }
-        FigPoly p = ((FigPoly) _fig);
+        FigPoly p = ((FigPoly) getFig());
         
         Fig sourcePortFig = getSourcePortFig();
         Fig destPortFig = getDestPortFig();
@@ -151,7 +151,7 @@ public class FigEdgePoly extends FigEdge {
         ypoints[npoints++] = dstPt.y;
 
         Polygon routePoly = new Polygon(xpoints, ypoints, npoints);
-        ((FigPoly) _fig).setPolygon(routePoly);
+        ((FigPoly) getFig()).setPolygon(routePoly);
     }
 
     /** Reply a point on the given routing rect that is "straight out"
@@ -335,8 +335,8 @@ public class FigEdgePoly extends FigEdge {
 
     public void moveVertex(Handle h, int x, int y, boolean ov) {
         int i = h.index;
-        int np = _fig.getNumPoints();
-        FigPoly p = ((FigPoly) _fig);
+        int np = getFig().getNumPoints();
+        FigPoly p = ((FigPoly) getFig());
         if (!p.getRectilinear()) {
             if (p._isComplete) {
                 if (i == 0) {
@@ -400,7 +400,7 @@ public class FigEdgePoly extends FigEdge {
 
     /** Add a point to this polygon. Fires PropertyChange with "bounds". */
     public void insertPoint(int i, int x, int y) {
-        FigPoly p = ((FigPoly) _fig);
+        FigPoly p = ((FigPoly) getFig());
         p.insertPoint(i, x, y);
     }
 
@@ -409,7 +409,7 @@ public class FigEdgePoly extends FigEdge {
     /** Set the end points of this polygon, regardless of the number of
      *  fixed handles. This is used when nodes move. */
     public void setEndPoints(Point start, Point end) {
-        FigPoly p = ((FigPoly) _fig);
+        FigPoly p = ((FigPoly) getFig());
         while (p._npoints < 2)
             p.addPoint(start);
         synchronized (_TempHandle) {
