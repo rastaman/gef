@@ -174,22 +174,19 @@ public class LayerDiagram extends Layer {
         f.setLayer(null);
     }
 
-    /** Reply the contents of this layer. Do I really want to do this?
-     * If a collection is supplied then that collection is reused and
-     * added to.
-     * If no collection is supplied then I new collection object is
-     * created and returned.
+    /**
+     * Test if the given Fig is in this layer.
+     * @param f
+     * @return
      */
-    public Collection getContents(Collection c) {
-        if (c == null) return _contents; 
-        c.addAll(_contents);
-        return c;
+    public boolean contains(Fig f) {
+        return _contents.contains(f);
     }
 
     /** Reply the contents of this layer. Do I really want to do this? 
      */
     public List getContents() {
-        return new Vector(_contents);
+        return Collections.unmodifiableList(_contents);
     }
 
     /** Reply the 'top' Fig under the given (mouse)
@@ -383,8 +380,29 @@ public class LayerDiagram extends Layer {
     }
     
     public void preSave() {
+        validate();
         for(int i = 0; i < _contents.size(); i++) {
-            ((Fig)_contents.get(i)).preSave();
+            Fig f = (Fig)_contents.get(i);
+            f.preSave();
+        }
+    }
+
+    /**
+     * Scan the contents of the layer before a save takes place to
+     * validate its state is legal.
+     */
+    private void validate() {
+        for(int i = _contents.size() - 1; i >= 0; --i) {
+            Fig f = (Fig)_contents.get(i);
+            if (f.isRemoveStarted()) {
+                //TODO: Once JRE1.4 is minimum support we should use assertions
+                LOG.error("A fig has been found that should have been removed " + f.toString());
+                _contents.remove(i);
+            } else if (f.getLayer() != this) {
+                //TODO: Once JRE1.4 is minimum support we should use assertions
+                LOG.error("A fig has been found that doesn't refer back to the correct layer " + f.toString() + " - " + f.getLayer());
+                f.setLayer(this);
+            }
         }
     }
 
