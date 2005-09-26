@@ -240,21 +240,9 @@ public abstract class Layer implements java.io.Serializable {
 
     /**
      * Get the figs that make up this layer.
-     * @param edges the collection in which to place the edges or null
-     *              if a new collection should be created
      * @return the figs
      */
-    public abstract Collection getContents(Collection edges);
-
-    /**
-     * Get the figs that make up this layer.
-     * @return the figs
-     */
-    public List getContents() {
-        Vector v = new Vector();
-        v.addAll(getContents(null));
-        return v;
-    }
+    abstract public List getContents();
     
     /**
      * USED BY SVG.tee && PGML.tee

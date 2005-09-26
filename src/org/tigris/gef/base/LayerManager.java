@@ -168,8 +168,16 @@ public class LayerManager implements java.io.Serializable {
      *  Figs that are contained in this layer, reply the
      *  contents of my active layer. Maybe this should really reply _all_
      *  the contents of all layers. */
-    public Collection getContents(Collection c) {
-        return (_activeLayer == null) ?  null : _activeLayer.getContents(c);
+    public List getContents() {
+        return (_activeLayer == null) ?  null : _activeLayer.getContents();
+    }
+
+    /** When an editor or some tool wants to look at all the
+     *  Figs that are contained in this layer, reply the
+     *  contents of my active layer. Maybe this should really reply _all_
+     *  the contents of all layers. */
+    public List getContents(List oldList) {
+        return (_activeLayer == null) ?  null : _activeLayer.getContents();
     }
 
     ////////////////////////////////////////////////////////////////

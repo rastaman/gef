@@ -279,7 +279,7 @@ public class ModeModify extends FigModifyingModeImpl {
             if((selectedFig instanceof FigNode)) {
                 Rectangle bbox = selectedFig.getBounds();
                 Layer lay = selectedFig.getLayer();
-                Collection otherFigs = lay.getContents(null);
+                List otherFigs = lay.getContents();
                 Fig encloser = null;
                 Iterator it = otherFigs.iterator();
                 while(it.hasNext()) {
@@ -372,7 +372,7 @@ public class ModeModify extends FigModifyingModeImpl {
             figBounds.x += dx;
             figBounds.y += dy;
             Layer lay = selectedFig.getLayer();
-            Collection otherFigs = lay.getContents(null);
+            List otherFigs = lay.getContents();
             Iterator it = otherFigs.iterator();
             while(it.hasNext()) {
                 Fig otherFig = (Fig)it.next();

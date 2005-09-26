@@ -35,11 +35,15 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
-import java.awt.*;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Mode to place new a FigNode on a node in a diagram.
@@ -190,7 +194,7 @@ public class ModePlace extends FigModifyingModeImpl {
             Fig encloser = null;
             Rectangle bbox = _pers.getBounds();
             Layer lay = editor.getLayerManager().getActiveLayer();
-            Collection otherFigs = lay.getContents(null);
+            List otherFigs = lay.getContents();
             Iterator it = otherFigs.iterator();
             while(it.hasNext()) {
                 Fig otherFig = (Fig)it.next();

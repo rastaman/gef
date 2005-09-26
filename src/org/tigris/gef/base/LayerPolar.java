@@ -30,15 +30,20 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.List;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
 
-/** This class is an example of the power of the Layer-based
- *  approach.  This is a kind of background drawing guide (like
- *  LayerGrid) that emphasizes polar coordinates (instead of
- *  rectangular coordinates). */
+/**
+ * This class is an example of the power of the Layer-based
+ * approach.  This is a kind of background drawing guide (like
+ * LayerGrid) that emphasizes polar coordinates (instead of
+ * rectangular coordinates).
+ */
 
 public class LayerPolar extends Layer {
 
@@ -93,14 +98,14 @@ public class LayerPolar extends Layer {
     return (int)Math.round(Math.sqrt(sqrd));
   }
 
-  // needs-more-work: get/set naming convention
-  public void lineColor(Color c) { _lineColor = c; }
-  public Color lineColor() { return _lineColor; }
-  public void bgColor(Color c) { _bgColor = c; }
-  public Color bgColor() { return _bgColor; }
+    // needs-more-work: get/set naming convention
+    public void lineColor(Color c) { _lineColor = c; }
+    public Color lineColor() { return _lineColor; }
+    public void bgColor(Color c) { _bgColor = c; }
+    public Color bgColor() { return _bgColor; }
 
-    public Collection getContents(Collection c) {
-        return c;
+    public List getContents() {
+        return null;
     }
     
   public Fig presentationFor(Object obj) { return null; }
@@ -111,9 +116,9 @@ public class LayerPolar extends Layer {
   /** Paint concentric circles around the origin with each circle a
    *  certain spacing from the previous one */
   public void paintContents(Graphics g) {
-    Rectangle clip = g.getClipBounds();
-    int clipBot = clip.y + clip.height;
-    int clipRight = clip.x + clip.width;
+      Rectangle clip = g.getClipBounds();
+      int clipBot = clip.y + clip.height;
+      int clipRight = clip.x + clip.width;
 
     if (_bgColor != null) {
       g.setColor(_bgColor);
@@ -164,8 +169,8 @@ public class LayerPolar extends Layer {
       setHidden(false);
       Editor ce = Globals.curEditor();
       if (ce != null) {
-	Dimension d = ce.getJComponent().getSize();
-	origin(d.width / 2, d.height / 2);
+            Dimension d = ce.getJComponent().getSize();
+            origin(d.width / 2, d.height / 2);
       }
       else origin(100,100);
       spacing(16);

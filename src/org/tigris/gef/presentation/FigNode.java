@@ -291,9 +291,9 @@ public class FigNode extends FigGroup implements
      *  allows users to drag edges to or from ports that are hidden by
      *  other Figs. */
     public Object deepHitPort(int x, int y) {
-        int figCount = figs.size();
+        int figCount = getFigCount();
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)figs.get(figIndex);
+            Fig f = getFigAt(figIndex);
             Object own = f.getOwner();
             // assumes ports are always filled
             if (f.contains(x, y) && own != null) {
@@ -303,7 +303,7 @@ public class FigNode extends FigGroup implements
 
         Rectangle r = new Rectangle(x - 16, y - 16, 32, 32);
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)figs.get(figIndex);
+            Fig f = getFigAt(figIndex);
             Object own = f.getOwner();
             // assumes ports are always filled
             if (f.hit(r) && own != null) {
@@ -317,9 +317,9 @@ public class FigNode extends FigGroup implements
 
     /** Reply the Fig that displays the given NetPort. */
     public Fig getPortFig(Object np) {
-        int figCount = figs.size();
+        int figCount = getFigCount();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)figs.get(figIndex);
+            Fig f = getFigAt(figIndex);
             if(f.getOwner() == np)
                 return f;
         }
@@ -332,9 +332,9 @@ public class FigNode extends FigGroup implements
      */
     public List getPortFigs() {
         ArrayList portFigs = new ArrayList();
-		int figCount = figs.size();
+		int figCount = getFigCount();
 		for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-			Fig f = (Fig)figs.get(figIndex);
+			Fig f = getFigAt(figIndex);
 			if(isPortFig(f)) {
                 portFigs.add(f);
 			}
@@ -455,9 +455,9 @@ public class FigNode extends FigGroup implements
 
     /** Make the port Figs visible. Used when blinkingPorts is true. */
     public void showPorts() {
-        int figCount = this.figs.size();
+        int figCount = getFigCount();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)this.figs.get(figIndex);
+            Fig f = getFigAt(figIndex);
             if(f.getOwner() != null) {
                 f.setLineWidth(1);
                 f.setFilled(true);
@@ -468,9 +468,9 @@ public class FigNode extends FigGroup implements
 
     /** Make the port Figs invisible. Used when blinkingPorts is true. */
     public void hidePorts() {
-        int figCount = this.figs.size();
+        int figCount = getFigCount();
         for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig f = (Fig)this.figs.get(figIndex);
+            Fig f = getFigAt(figIndex);
             if(f.getOwner() != null) {
                 f.setLineWidth(0);
                 f.setFilled(false);

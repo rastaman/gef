@@ -79,7 +79,7 @@ public class CmdSelectNext extends Cmd {
             offset = -1;
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
-        List diagramContents = (List)ce.getLayerManager().getContents(null);
+        List diagramContents = ce.getLayerManager().getContents();
         int diagramSize = diagramContents.size();
         int newIndex = diagramSize + 1;
 

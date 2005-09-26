@@ -57,7 +57,7 @@ public class NodeAnnotationStrategy extends AnnotationStrategy{
     	line.setLineColor(Color.red);
     	line.setFillColor(Color.red);
     	line.setDashed(true);
-    	if (!(Globals.curEditor().getLayerManager().getContents(null).contains(line))) {
+    	if (!(Globals.curEditor().getLayerManager().getContents().contains(line))) {
             Globals.curEditor().add(line);
         } 
     	Globals.curEditor().getLayerManager().bringToFront(annotation);

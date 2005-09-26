@@ -106,7 +106,7 @@ public abstract class AnnotationStrategy {
             if (Globals
                 .curEditor()
                 .getLayerManager()
-                .getContents(null)
+                .getContents()
                 .contains(line)) {
                 Globals.curEditor().remove(line);
             }

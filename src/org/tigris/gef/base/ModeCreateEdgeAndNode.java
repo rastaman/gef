@@ -33,6 +33,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.tigris.gef.base.Editor;
@@ -279,7 +280,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                 mgm.addNode(newNode);
                 Fig encloser = null;
                 Rectangle bbox = fn.getBounds();
-                Collection otherFigs = lay.getContents(null);
+                List otherFigs = lay.getContents();
                 Iterator others = otherFigs.iterator();
                 while (others.hasNext()) {
                     Fig otherFig = (Fig) others.next();

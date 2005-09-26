@@ -152,7 +152,7 @@ public class JGraph extends JPanel implements Cloneable {
 
         validate();
 
-        Collection layerManagerContent = ed.getLayerManager().getContents(null);
+        Collection layerManagerContent = ed.getLayerManager().getContents();
         if (layerManagerContent != null) {
             updateDrawingSizeToIncludeAllFigs(Collections
                     .enumeration(layerManagerContent));

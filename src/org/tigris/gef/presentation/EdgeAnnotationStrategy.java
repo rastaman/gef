@@ -128,7 +128,7 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy{
         line.setFillColor(getAnnotationProperties(annotation).getLineColor());
         line.setDashed(true);
         // draw the line
-        if (!(Globals.curEditor().getLayerManager().getContents(null).contains(line))) {
+        if (!(Globals.curEditor().getLayerManager().getContents().contains(line))) {
                 Globals.curEditor().add(line);
             }
         Globals.curEditor().getLayerManager().bringToFront(annotation);

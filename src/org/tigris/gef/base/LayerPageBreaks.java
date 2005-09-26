@@ -31,8 +31,12 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.PrintGraphics;
+import java.awt.Rectangle;
+import java.util.List;
 
 import org.tigris.gef.presentation.*;
 
@@ -74,7 +78,7 @@ public class LayerPageBreaks extends Layer {
     /** Set the size of the page in pixels. */
     public void setPageSize(Dimension d) { _pageSize = d; }
 
-    public Collection getContents(Collection c) {
+    public List getContents() {
         return null;
     }
     

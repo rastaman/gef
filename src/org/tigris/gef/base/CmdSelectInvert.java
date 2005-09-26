@@ -50,7 +50,7 @@ public class CmdSelectInvert extends Cmd {
     public void doIt() {
         Editor ce = Globals.curEditor();
         List selected = ce.getSelectionManager().getFigs();
-        Collection diagramContents = ce.getLayerManager().getContents(null);
+        List diagramContents = ce.getLayerManager().getContents();
         List inverse = new ArrayList(diagramContents.size());
 
         Iterator it = diagramContents.iterator();

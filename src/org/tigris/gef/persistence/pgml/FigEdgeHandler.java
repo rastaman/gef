@@ -144,7 +144,9 @@ public class FigEdgeHandler extends BaseHandler implements Container {
 
             if (spf == null || dpf == null || sfn == null || dfn == null) {
                 throw new SAXException("Can't find nodes for FigEdge: "
-                        + (String) o + ":" + edge.toString());
+                        + (String) o
+                        + ":" + edge.getId() + ":"
+                        + edge.toString());
             } else {
                 edge.setSourcePortFig(spf);
                 edge.setDestPortFig(dpf);

@@ -82,9 +82,10 @@ public class LayerPerspectiveMutable extends LayerPerspective {
         Object owner = fig.getOwner();
         // prevents duplicate nodes. 
         // To allow multiple views in one diagram, remove the following two lines.
-        if (fig instanceof FigNode &&
-                getContents(null).contains(fig) &&  
-                mutableGraphModel.containsNode(owner)) {
+        if (fig instanceof FigNode && 
+                contains(fig) &&  
+                mutableGraphModel.containsNode(owner) &&
+                fig.getLayer() == this) {
             // When a new node is created (using
             // GraphModelEvents), the node is first
             // added to the MutableGraphModel, then

@@ -172,6 +172,13 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     
     private transient boolean _selected = false;
 
+    /**
+     * This flag is set at the start of the removal process.
+     * It is later used for testing to confirm that all
+     * removed figs have actually gone from all layers.
+     */
+    private boolean removeStarted;
+    
     ////////////////////////////////////////////////////////////////
     // static initializer
     static {
@@ -659,6 +666,7 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
      * Remove this Fig from the Layer it belongs to.
      */
     public void removeFromDiagram() {
+        removeStarted = true;
         visible = false;
         
         // delete all annotations first
@@ -690,6 +698,7 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
      * dispose, and IF it does then the figs will be notified.
      */
     public void deleteFromModel() {
+        removeStarted = true;
         Object own = getOwner();
         if(own instanceof GraphNodeHooks) {
             ((GraphNodeHooks)own).deleteFromModel();
@@ -941,7 +950,7 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
             return "LAYER_NULL";
         }
 
-        List c = (List)layer.getContents(null);
+        List c = (List)layer.getContents();
         int index = c.indexOf(this);
         return "Fig" + index;
     }
@@ -1736,6 +1745,10 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
      */
     public void setMovable(boolean movable) {
         this.movable = movable;
+    }
+
+    public boolean isRemoveStarted() {
+        return removeStarted;
     }
 
 }    /* end class Fig */

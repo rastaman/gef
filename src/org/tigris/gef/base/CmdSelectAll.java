@@ -41,7 +41,7 @@ public class CmdSelectAll extends Cmd {
 
   public void doIt() {
     Editor ce = Globals.curEditor();
-    Collection diagramContents = ce.getLayerManager().getContents(null);
+    Collection diagramContents = ce.getLayerManager().getContents();
     ce.getSelectionManager().select(diagramContents);
   }
 

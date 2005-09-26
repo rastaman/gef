@@ -213,7 +213,7 @@ public class Diagram implements Serializable, GraphListener {
             }
         }
 
-        Collection figs = getLayer().getContents(null);
+        List figs = getLayer().getContents();
 
         Iterator it = figs.iterator();
         while(it.hasNext()) {
@@ -240,7 +240,7 @@ public class Diagram implements Serializable, GraphListener {
         if (nodes == null) {
             nodes = new ArrayList();
         }
-        Collection figs = getLayer().getContents(null);
+        List figs = getLayer().getContents();
         Iterator it = figs.iterator();
         while (it.hasNext()) {
             Object fig = it.next();
@@ -264,7 +264,7 @@ public class Diagram implements Serializable, GraphListener {
         if (edges == null) {
             edges = new ArrayList();
         }
-        Collection figs = getLayer().getContents(null);
+        List figs = getLayer().getContents();
 
         Iterator it = figs.iterator();
         while (it.hasNext()) {

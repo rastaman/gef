@@ -156,7 +156,7 @@ public class BroomStudy {
     public void reset() {
         Editor ce = Globals.curEditor();
         ce.getSelectionManager().deselectAll();
-        Collection diagramContents = ce.getLayerManager().getContents(null);
+        Collection diagramContents = ce.getLayerManager().getContents();
 
         diagramContents = new ArrayList(diagramContents);
         Iterator it = diagramContents.iterator();
