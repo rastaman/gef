@@ -51,7 +51,7 @@ public class FigGroup extends Fig {
     /** 
      * The Fig's contained in this FigGroup  
      */
-    ArrayList figs;
+    private ArrayList figs;
     
     private int _extraFrameSpace = 0;
     
@@ -234,29 +234,32 @@ public class FigGroup extends Fig {
      * @param i position of fig within this group
      */
     public Fig getFigAt(int i) {
-        return (Fig)this.figs.get(i);
+        return (Fig) figs.get(i);
     }
 
-    /** Get the figs that make up this group
+    /**
+     * Get the number of child Figs contained in this group
+     */
+    public int getFigCount() {
+        return figs.size();
+    }
+
+    /**
+     * Return the position of a Fig inside this group.
+     */
+    public int getFigPosn(Fig f) {
+        return figs.indexOf(f);
+    }
+
+    /**
+     * Get the child figs that make up this group.
      * @return the figs of this group
      * USED BY PGML.tee
      */
     public List getFigs() {
-        return (List)this.figs.clone();
+        return Collections.unmodifiableList(this.figs);
     }
 
-//    public Color getFillColor() {
-//        if(this.figs.size() == 0)
-//            return super.getFillColor();
-//        return ((Fig)this.figs.get(this.figs.size() - 1)).getFillColor();
-//    }
-//
-//    public boolean getFilled() {
-//        if(this.figs.size() == 0)
-//            return super.getFilled();
-//        return ((Fig)this.figs.get(this.figs.size() - 1)).getFilled();
-//    }
-//
     public Font getFont() {
         int size = this.figs.size();
         for(int i = 0; i < size; i++) {
