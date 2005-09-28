@@ -300,6 +300,9 @@ public class OCLEvaluator {
             StringTokenizer st = new StringTokenizer(range, "[,]");
             int start = getValue(st.nextToken(), list);
             int end = getValue(st.nextToken(), list);
+            if (end <= start) {
+                return Collections.EMPTY_LIST;
+            }
             list = list.subList(start, end);
         }
         
