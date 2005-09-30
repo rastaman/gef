@@ -714,7 +714,54 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
         }
     }
 
-    protected int drawDashedLine(Graphics g, int phase, int x1, int y1, int x2, int y2) {             // float phase?
+    protected int drawDashedLine(Graphics g, int phase, int x1, int y1, int x2, int y2) {
+        if (g instanceof Graphics2D) {
+            return drawDashedLineG2D((Graphics2D)g, phase, x1, y1, x2, y2);
+        }
+        // Fall back on the old inefficient method of drawing dashed
+        // lines. This is required until SVGWriter is converted to
+        // extend Graphics2D
+        int segStartX;
+        int segStartY;
+        int segEndX;
+        int segEndY;
+        int dxdx = (x2 - x1) * (x2 - x1);
+        int dydy = (y2 - y1) * (y2 - y1);
+        int length = (int)Math.sqrt(dxdx + dydy);
+        int numDashes = _dashes.length;
+        int d;
+        int dashesDist = 0;
+        for(d = 0; d < numDashes; d++) {
+            dashesDist += _dashes[d];
+            // find first partial dash?
+        }
+
+        d = 0;
+        int i = 0;
+        while(i < length) {
+            segStartX = x1 + ((x2 - x1) * i) / length;
+            segStartY = y1 + ((y2 - y1) * i) / length;
+            i += _dashes[d];
+            d = (d + 1) % numDashes;
+            if(i >= length) {
+                segEndX = x2;
+                segEndY = y2;
+            }
+            else {
+                segEndX = x1 + ((x2 - x1) * i) / length;
+                segEndY = y1 + ((y2 - y1) * i) / length;
+            }
+
+            g.drawLine(segStartX, segStartY, segEndX, segEndY);
+            i += _dashes[d];
+            d = (d + 1) % numDashes;
+        }
+
+        // needs-more-work: phase not taken into account
+        return (length + phase) % dashesDist;
+    }
+    
+    private int drawDashedLineG2D(Graphics2D g, int phase, int x1, int y1, int x2, int y2) {             // float phase?
         int dxdx = (x2 - x1) * (x2 - x1);
         int dydy = (y2 - y1) * (y2 - y1);
         int length = (int)(Math.sqrt(dxdx + dydy) + 0.5);       // This causes a smaller rounding error of 0.5pixels max. . Seems acceptable.
