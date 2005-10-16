@@ -151,6 +151,17 @@ public class FigLine extends Fig {
     calcBounds();
     firePropChange("bounds", null, null);
   }
+  
+  /** Move point i to location (x, y). Argument i must be 0 or 1.
+   *  Fires PropertyChange with "bounds". */
+  public void setPoint(int i, int x, int y) {
+    if (i == 0) { _x1 = x; _y1 = y; }
+    else if (i == 1) { _x2 = x; _y2 = y; }
+    else throw new IndexOutOfBoundsException("FigLine has exactly 2 points");
+    calcBounds();
+    firePropChange("bounds", null, null);
+  }
+
 
   /** returns the ith point. Argument i must be 0 or 1. */
   public Point getPoint(int i) {
