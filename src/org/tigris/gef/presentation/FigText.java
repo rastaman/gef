@@ -247,6 +247,13 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
     ////////////////////////////////////////////////////////////////
     // accessors and modifiers
+    
+    /**
+     * Get the font metrics.
+     */
+    protected FontMetrics getFontMetrics() {
+        return _fm;
+    }
 
     public Color getTextColor() {
         return _textColor;
