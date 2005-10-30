@@ -24,6 +24,7 @@
 
 package org.tigris.gef.presentation;
 
+import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
 
 import org.tigris.gef.ui.Highlightable;
@@ -33,5 +34,6 @@ import org.tigris.gef.ui.Highlightable;
  */
 public interface Connecter extends PropertyChangeListener, Highlightable {
 
+    public String getId();
+    public Rectangle routingRect();
 }
-

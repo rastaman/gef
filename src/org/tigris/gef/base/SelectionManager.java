@@ -40,6 +40,7 @@ import javax.swing.event.EventListenerList;
 import org.tigris.gef.event.GraphSelectionEvent;
 import org.tigris.gef.event.GraphSelectionListener;
 
+import org.tigris.gef.presentation.Connecter;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
@@ -525,8 +526,8 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     private void checkDragEdge(FigEdge figEdge, List draggingFigs) {
-        Fig dest = figEdge.getDestFigNode();
-        Fig source = figEdge.getSourceFigNode();
+        Connecter dest = figEdge.getDestFigNode();
+        Connecter source = figEdge.getSourceFigNode();
         if(draggingFigs.contains(dest) && draggingFigs.contains(source)) {
             if(!_draggingMovingEdges.contains(figEdge)) {
                 _draggingMovingEdges.add(figEdge);

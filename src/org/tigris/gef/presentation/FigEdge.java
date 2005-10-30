@@ -31,10 +31,10 @@ public abstract class FigEdge extends Fig implements Connecter {
     private Fig _destPortFig;
 
     /** FigNode presenting the edge's from-port's parent node. */
-    protected FigNode _sourceFigNode;
+    protected Connecter _sourceFigNode;
 
     /** FigNode presenting the edge's to-port's parent node. */
-    protected FigNode _destFigNode;
+    protected Connecter _destFigNode;
 
     /** Fig that presents the edge. */
     private Fig _fig;
@@ -164,12 +164,12 @@ public abstract class FigEdge extends Fig implements Connecter {
     }
 
     public void removeFromDiagram() {
-        if(_sourceFigNode != null) {
-            _sourceFigNode.removeFigEdge(this);
+        if(_sourceFigNode instanceof FigNode) {
+            ((FigNode)_sourceFigNode).removeFigEdge(this);
         }
 
-        if(_destFigNode != null) {
-            _destFigNode.removeFigEdge(this);
+        if(_destFigNode instanceof FigNode) {
+            ((FigNode)_destFigNode).removeFigEdge(this);
         }
 
         super.removeFromDiagram();
@@ -213,7 +213,7 @@ public abstract class FigEdge extends Fig implements Connecter {
     /**
      * USED BY PGML.tee
      */
-    public Fig getDestFigNode() {
+    public Connecter getDestFigNode() {
         return _destFigNode;
     }
 
@@ -324,8 +324,8 @@ public abstract class FigEdge extends Fig implements Connecter {
     public String getPrivateData() {
         Fig spf = getSourcePortFig();
         Fig dpf = getDestPortFig();
-        Fig sfn = getSourceFigNode();
-        Fig dfn = getDestFigNode();
+        Connecter sfn = getSourceFigNode();
+        Connecter dfn = getDestFigNode();
         String data = "";
         if(spf != null) {
             data += "sourcePortFig=\"" + spf.getId() + "\" ";
@@ -354,7 +354,7 @@ public abstract class FigEdge extends Fig implements Connecter {
     /**
      * USED BY PGML.tee
      */
-    public Fig getSourceFigNode() {
+    public Connecter getSourceFigNode() {
         return _sourceFigNode;
     }
 
@@ -563,8 +563,8 @@ public abstract class FigEdge extends Fig implements Connecter {
     public void setDestFigNode(FigNode fn) {
         // assert fn != null
         try {
-            if(_destFigNode != null) {
-                _destFigNode.removeFigEdge(this);
+            if(_destFigNode instanceof FigNode) {
+                ((FigNode)_destFigNode).removeFigEdge(this);
             }
 
             _destFigNode = fn;
@@ -665,8 +665,8 @@ public abstract class FigEdge extends Fig implements Connecter {
     public void setSourceFigNode(FigNode fn) {
         // assert fn != null
         try {
-            if(_sourceFigNode != null) {
-                _sourceFigNode.removeFigEdge(this);
+            if(_sourceFigNode instanceof FigNode) {
+                ((FigNode)_sourceFigNode).removeFigEdge(this);
             }
 
             _sourceFigNode = fn;
