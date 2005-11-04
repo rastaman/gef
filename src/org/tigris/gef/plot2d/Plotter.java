@@ -1,5 +1,4 @@
-// $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,11 +20,24 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+package org.tigris.gef.plot2d;
 
-package org.tigris.gef.presentation;
+import java.awt.Color;
 
 /**
- * An interface to be implemented by connectable figs.
+ * @author Bob
  */
-public interface Connecter {
+public interface Plotter {
+    /** Paint this line object. */
+    public abstract void drawLine(Object graphicsContext, int lineWidth,
+            Color lineColor, int x1, int y1, int x2, int y2,
+            boolean dashed, float[] dashes,
+            int dashPeriod);
+
+    public abstract int drawDashedLine(
+            Object graphicsContext, 
+            int lineWidth, 
+            int x1, int y1, int x2, int y2, 
+            int phase,
+            float[] dashes, int dashPeriod);
 }

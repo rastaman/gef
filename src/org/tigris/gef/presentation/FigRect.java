@@ -30,7 +30,6 @@ package org.tigris.gef.presentation;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.io.Serializable;
 
 /** Primitive Fig to paint rectangles on a LayerDiagram. */

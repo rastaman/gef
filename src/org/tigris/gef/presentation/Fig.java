@@ -23,14 +23,11 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.tigris.gef.presentation;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 
 import java.beans.PropertyChangeEvent;
@@ -50,6 +47,8 @@ import org.tigris.gef.graph.GraphEdgeHooks;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
 
+import org.tigris.gef.plot2d.Java2d;
+import org.tigris.gef.plot2d.Plotter;
 import org.tigris.gef.properties.PropCategoryManager;
 
 import org.tigris.gef.ui.PopupGenerator;
@@ -65,6 +64,8 @@ import org.tigris.gef.util.Localizer;
  * Fig's are also used to define the look of FigNodes on NetNodes.
  */
 public abstract class Fig implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerator {
+
+    protected static Plotter plotter = new Java2d();
     
     /** The smallest size that the user can drag this Fig. */
     public final int MIN_SIZE = 4;
@@ -715,67 +716,12 @@ public abstract class Fig implements Cloneable, java.io.Serializable, PropertyCh
     }
 
     protected int drawDashedLine(Graphics g, int phase, int x1, int y1, int x2, int y2) {
-        if (g instanceof Graphics2D) {
-            return drawDashedLineG2D((Graphics2D)g, phase, x1, y1, x2, y2);
-        }
-        // Fall back on the old inefficient method of drawing dashed
-        // lines. This is required until SVGWriter is converted to
-        // extend Graphics2D
-        int segStartX;
-        int segStartY;
-        int segEndX;
-        int segEndY;
-        int dxdx = (x2 - x1) * (x2 - x1);
-        int dydy = (y2 - y1) * (y2 - y1);
-        int length = (int)Math.sqrt(dxdx + dydy);
-        int numDashes = _dashes.length;
-        int d;
-        int dashesDist = 0;
-        for(d = 0; d < numDashes; d++) {
-            dashesDist += _dashes[d];
-            // find first partial dash?
-        }
-
-        d = 0;
-        int i = 0;
-        while(i < length) {
-            segStartX = x1 + ((x2 - x1) * i) / length;
-            segStartY = y1 + ((y2 - y1) * i) / length;
-            i += _dashes[d];
-            d = (d + 1) % numDashes;
-            if(i >= length) {
-                segEndX = x2;
-                segEndY = y2;
-            }
-            else {
-                segEndX = x1 + ((x2 - x1) * i) / length;
-                segEndY = y1 + ((y2 - y1) * i) / length;
-            }
-
-            g.drawLine(segStartX, segStartY, segEndX, segEndY);
-            i += _dashes[d];
-            d = (d + 1) % numDashes;
-        }
-
-        // needs-more-work: phase not taken into account
-        return (length + phase) % dashesDist;
-    }
-    
-    private int drawDashedLineG2D(Graphics2D g, int phase, int x1, int y1, int x2, int y2) {             // float phase?
-        int dxdx = (x2 - x1) * (x2 - x1);
-        int dydy = (y2 - y1) * (y2 - y1);
-        int length = (int)(Math.sqrt(dxdx + dydy) + 0.5);       // This causes a smaller rounding error of 0.5pixels max. . Seems acceptable.
-        float lineWidth = _lineWidth;
-        Graphics2D g2D = (Graphics2D)g;
-        Stroke  OriginalStroke = g2D.getStroke();               // we need this to restore the original stroke afterwards
-
-        BasicStroke  DashedStroke   = new BasicStroke(lineWidth,   BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f,            _dashes,    (float)phase);
-        //                                           (float width, int cap,                int join,               float miterlimit, float[] dash, float dash_phase)
-        g2D.setStroke(DashedStroke);
-        g2D.drawLine(x1, y1, x2, y2);
-        g2D.setStroke(OriginalStroke);   // undo the manipulation of g
-
-        return (length + phase) % _dashPeriod ;
+        return plotter.drawDashedLine(
+                g, 
+                getLineWidth(), 
+                x1, y1, x2, y2, 
+                phase, 
+                _dashes, _dashPeriod);
     }
     
     protected void drawDashedPerimeter(Graphics g) {

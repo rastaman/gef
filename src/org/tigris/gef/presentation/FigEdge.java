@@ -20,7 +20,7 @@ import org.tigris.gef.ui.Highlightable;
  *  @see FigEdgeLine
  *  @see FigEdgeRectiline
  */
-public abstract class FigEdge extends Fig implements Connecter {
+public abstract class FigEdge extends Fig implements GraphElement {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -31,10 +31,10 @@ public abstract class FigEdge extends Fig implements Connecter {
     private Fig _destPortFig;
 
     /** FigNode presenting the edge's from-port's parent node. */
-    protected Connecter _sourceFigNode;
+    protected FigNode _sourceFigNode;
 
     /** FigNode presenting the edge's to-port's parent node. */
-    protected Connecter _destFigNode;
+    protected FigNode _destFigNode;
 
     /** Fig that presents the edge. */
     private Fig _fig;
@@ -213,7 +213,7 @@ public abstract class FigEdge extends Fig implements Connecter {
     /**
      * USED BY PGML.tee
      */
-    public Connecter getDestFigNode() {
+    public FigNode getDestFigNode() {
         return _destFigNode;
     }
 
@@ -324,8 +324,8 @@ public abstract class FigEdge extends Fig implements Connecter {
     public String getPrivateData() {
         Fig spf = getSourcePortFig();
         Fig dpf = getDestPortFig();
-        Connecter sfn = getSourceFigNode();
-        Connecter dfn = getDestFigNode();
+        GraphElement sfn = getSourceFigNode();
+        GraphElement dfn = getDestFigNode();
         String data = "";
         if(spf != null) {
             data += "sourcePortFig=\"" + spf.getId() + "\" ";
@@ -354,7 +354,7 @@ public abstract class FigEdge extends Fig implements Connecter {
     /**
      * USED BY PGML.tee
      */
-    public Connecter getSourceFigNode() {
+    public FigNode getSourceFigNode() {
         return _sourceFigNode;
     }
 

@@ -24,8 +24,16 @@
 
 package org.tigris.gef.presentation;
 
+import java.awt.Rectangle;
+import java.beans.PropertyChangeListener;
+
+import org.tigris.gef.ui.Highlightable;
+
 /**
  * An interface to be implemented by connectable figs.
  */
-public interface Connecter {
+public interface GraphElement extends Connecter, PropertyChangeListener, Highlightable {
+
+    public String getId();
+    public Rectangle routingRect();
 }

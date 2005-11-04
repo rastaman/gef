@@ -28,9 +28,12 @@
 
 package org.tigris.gef.presentation;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 
-import org.tigris.gef.base.*;
+import org.tigris.gef.base.Geometry;
 
 /** Class to display lines in diagrams. */
 
@@ -46,15 +49,18 @@ public class FigLine extends Fig {
 
 
   ////////////////////////////////////////////////////////////////
-  // constructors
+    // constructors
 
-  /** Construct a new FigLine with the given coordinates and color. */
-  public FigLine(int x1, int y1, int x2, int y2, Color lineColor) {
-    super();
-    setX1(x1); setY1(y1); setX2(x2); setY2(y2);
-    setLineColor(lineColor);
-    calcBounds();
-  }
+    /** Construct a new FigLine with the given coordinates and color. */
+    public FigLine(int x1, int y1, int x2, int y2, Color lineColor) {
+        super();
+        setX1(x1); 
+        setY1(y1); 
+        setX2(x2); 
+        setY2(y2);
+        setLineColor(lineColor);
+        calcBounds();
+    }
 
     /** Construct a new FigLine with the given coordinates and attributes. */
     public FigLine(int x1, int y1, int x2, int y2) {
@@ -73,13 +79,13 @@ public class FigLine extends Fig {
         calcBounds();
     }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  /** Set both end points. Fires PropertyChange with "bounds". */
-  public final void setShape(Point p1, Point p2) {
-    setShape(p1.x, p1.y, p2.x, p2.y);
-  }
+    /** Set both end points. Fires PropertyChange with "bounds". */
+    public final void setShape(Point p1, Point p2) {
+        setShape(p1.x, p1.y, p2.x, p2.y);
+    }
 
   /** Set both end points. Fires PropertyChange with "bounds". */
   public void setShape(int x1, int y1, int x2, int y2) {
@@ -238,26 +244,30 @@ public class FigLine extends Fig {
         firePropChange("bounds", null, null);
     }
 
-  /** Update the bounding box so that it encloses (_x1, _y1)--(_x2, _y2). */
-  public void calcBounds() {
-    if (_x1 < _x2) { _x = _x1; _w = _x2 - _x1; }
-    else  { _x = _x2; _w = _x1 - _x2; }
-    if (_y1 < _y2) { _y = _y1; _h = _y2 - _y1; }
-    else  { _y = _y2; _h = _y1 - _y2; }
-  }
+    /** Update the bounding box so that it encloses (_x1, _y1)--(_x2, _y2). */
+    public void calcBounds() {
+        if (_x1 < _x2) {
+            _x = _x1; _w = _x2 - _x1;
+        } else {
+            _x = _x2; _w = _x1 - _x2;
+        }
+        
+        if (_y1 < _y2) {
+            _y = _y1; _h = _y2 - _y1;
+        } else {
+            _y = _y2; _h = _y1 - _y2;
+        }
+    }
 
     /** Paint this line object. */
     public void paint(Graphics g) {
-        if (getLineWidth() > 0) {
-            if (getDashed()) {
-                g.setColor(getLineColor());
-                drawDashedLine(g, 0, _x1, _y1, _x2, _y2);
-            }
-            else {
-                g.setColor(getLineColor());
-                g.drawLine(_x1, _y1, _x2, _y2);
-            }
-        }
+        plotter.drawLine(
+                g,
+                getLineWidth(),
+                getLineColor(),
+                _x1, _y1, _x2, _y2,
+                getDashed(),
+                _dashes, _dashPeriod);
     }
 
 /*

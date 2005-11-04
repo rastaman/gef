@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: FigNode.java
 // Classes: FigNode
 // Original Author: ics125 spring 1996
@@ -50,7 +48,7 @@ import java.util.List;
 /** Class to present a node (such as a NetNode) in a diagram. */
 
 public class FigNode extends FigGroup implements
-        Connecter,
+        GraphElement,
         MouseListener {
     ////////////////////////////////////////////////////////////////
     // constants

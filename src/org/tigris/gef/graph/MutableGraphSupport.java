@@ -36,7 +36,7 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.tigris.gef.presentation.Connecter;
+import org.tigris.gef.presentation.GraphElement;
 import org.tigris.gef.presentation.Fig;
 
 /** An abstract class that makes it easier to implement your own
@@ -382,7 +382,7 @@ public abstract class MutableGraphSupport
 
     /** Remove the given edge from the graph. */
     public void removeFig(Fig fig) {
-        if (fig instanceof Connecter) {
+        if (fig instanceof GraphElement) {
             throw new IllegalArgumentException("Use removeEdge or removeNode to remove a complex Fig");
         }
         fig.removeFromDiagram();
