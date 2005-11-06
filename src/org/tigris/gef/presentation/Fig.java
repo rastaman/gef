@@ -63,7 +63,7 @@ import org.tigris.gef.util.Localizer;
  * figure. Fig's are Diagram elements that can be placed in any LayerDiagram.
  * Fig's are also used to define the look of FigNodes on NetNodes.
  */
-public abstract class Fig implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerator {
+public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerator {
 
     protected static Plotter plotter = new Java2d();
     

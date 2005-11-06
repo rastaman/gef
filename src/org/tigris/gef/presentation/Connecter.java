@@ -26,6 +26,7 @@ package org.tigris.gef.presentation;
 
 /**
  * An interface to be implemented by connectable figs.
+ * @deprecated use GraphElement
  */
-public interface Connecter {
+public interface Connecter extends GraphicElement {
 }
