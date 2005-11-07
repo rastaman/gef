@@ -40,4 +40,30 @@ public interface Plotter {
             int x1, int y1, int x2, int y2, 
             int phase,
             float[] dashes, int dashPeriod);
+    
+    public abstract void drawOval(
+            Object graphicsContext,
+            boolean filled,
+            Color fillColor,
+            Color lineColor,
+            int lineWidth,
+            boolean dashed,
+            int x,
+            int y,
+            int w,
+            int h);
+    
+    public abstract void drawRect(
+            Object graphicsContext, 
+            boolean filled, 
+            Color fillColor, 
+            int lineWidth, 
+            Color lineColor, 
+            int x, 
+            int y, 
+            int w, 
+            int h, 
+            boolean dashed, 
+            float dashes[], 
+            int dashPeriod);
 }

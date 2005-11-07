@@ -139,4 +139,122 @@ public class Java2d implements Plotter {
 
         return (length + phase) % dashPeriod ;
     }
+    
+    // Taken from FigCircle
+    
+    
+    public void drawOval(Object graphicsContext, boolean filled, Color fillColor, Color lineColor, int lineWidth, boolean dashed, int x, int y, int w, int h) {
+        if(dashed && (graphicsContext instanceof Graphics2D)) {
+            Graphics2D g2d = (Graphics2D)graphicsContext;
+            Stroke oldStroke = g2d.getStroke();
+            float[] dash = {10.0f, 10.0f};
+            Stroke stroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, dash, 0.0f);
+            g2d.setStroke(stroke);
+            if(filled && fillColor != null) {
+                g2d.setColor(fillColor);
+                g2d.fillOval(x, y, w, h);
+            }
+
+            if(lineWidth > 0 && lineColor != null) {
+                g2d.setColor(lineColor);
+                g2d.drawOval(x, y, w - lineWidth, h - lineWidth);
+            }
+
+            g2d.setStroke(oldStroke);
+        } else if (filled && fillColor != null) {
+            Graphics g = (Graphics)graphicsContext;
+            if(lineWidth > 0 && lineColor != null) {
+                g.setColor(lineColor);
+                g.fillOval(x, y, w, h);
+            }
+
+            if (!fillColor.equals(lineColor)) {
+                g.setColor(fillColor);
+                g.fillOval(x + lineWidth, y + lineWidth, w - (lineWidth*2), h - (lineWidth*2));
+            }
+        } else if(lineWidth > 0 && lineColor != null) {
+            Graphics g = (Graphics)graphicsContext;
+            g.setColor(lineColor);
+            g.drawOval(x, y, w, h);
+        }
+    }
+    
+    // Taken from FigRect
+
+    public void drawRect(Object graphicsContext, boolean filled, Color fillColor, int lineWidth, Color lineColor, int x, int y, int w, int h, boolean dashed, float dashes[], int dashPeriod) {
+        Graphics g = (Graphics)graphicsContext;
+        int xx = x;
+        int yy = y;
+        int ww = w;
+        int hh = h;
+        if (filled && fillColor != null) {
+            if (lineColor != null) {
+                if (lineWidth > 1 && !dashed) {
+                    int lineWidth2 = lineWidth*2;
+                    g.setColor(lineColor);
+                    g.fillRect(xx, yy, ww, hh);
+                    xx += lineWidth;
+                    yy += lineWidth;
+                    ww -= lineWidth2;
+                    hh -= lineWidth2;
+                }
+            }
+            g.setColor(fillColor);
+            g.fillRect(xx, yy, ww, hh);
+            if (lineColor != null) {
+                if (lineWidth == 1 || dashed) {
+                    paintRectLine(g, xx, yy, ww, hh, lineWidth, lineColor, dashed, dashes, dashPeriod);
+                }
+            }
+        } else {
+            paintRectLine(g, xx, yy, ww, hh, lineWidth, lineColor, dashed, dashes, dashPeriod);
+        }
+    }
+    
+    /**
+     * Paint the line of a rectangle without any fill.
+     * Manages line width and dashed lines.
+     * @param g The Graphics object
+     * @param x The x co-ordinate of the rectangle
+     * @param y The y co-ordinate of the rectangle
+     * @param w The width of the rectangle
+     * @param h The height of the rectangle
+     * @param lwidth The linewidth of the rectangle
+     */
+    private void paintRectLine(Graphics g, int x, int y, int w, int h, int lineWidth, Color lineColor, boolean dashed, float dashes[], int dashPeriod) {
+        if (lineWidth > 0 && lineColor != null) {
+            g.setColor(lineColor);
+            if (lineWidth == 1) {
+                paintRectLine(g, x, y, w, h, dashed, lineWidth, dashes, dashPeriod);
+            } else {
+                int xx = x;
+                int yy = y;
+                int hh = h;
+                int ww = w;
+                
+                for (int i=0; i < lineWidth; ++i) {
+                    paintRectLine(g, xx++, yy++, ww, hh, dashed, lineWidth, dashes, dashPeriod);
+                    ww -= 2;
+                    hh -= 2;
+                }
+            }
+        }
+    }
+    
+    private void paintRectLine(Graphics g, int x, int y, int w, int h, boolean dashed, int lineWidth, float dashes[], int dashPeriod) {
+        if (!dashed)
+            g.drawRect(x, y, w, h);
+        else {
+            drawDashedRectangle(g, 0, x, y, w, h, lineWidth, dashes, dashPeriod);
+        }
+    }
+    
+    private void drawDashedRectangle(Graphics g, int phase, int x, int y, int w, int h, int lineWidth, float dashes[], int dashPeriod) {
+        
+        phase = drawDashedLine(g, lineWidth, x, y, x + w, y, phase, dashes, dashPeriod);
+        phase = drawDashedLine(g, lineWidth, x + w, y, x + w, y + h, phase, dashes, dashPeriod);
+        phase = drawDashedLine(g, lineWidth, x + w, y + h, x, y + h, phase, dashes, dashPeriod);
+        phase = drawDashedLine(g, lineWidth, x, y + h, x, y, phase, dashes, dashPeriod);
+    }
+    
 }
