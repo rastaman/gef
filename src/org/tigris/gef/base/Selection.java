@@ -31,9 +31,14 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.Serializable;
 
 import org.tigris.gef.presentation.*;
@@ -88,20 +93,20 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   // display methods
 
-  /** Do nothing. Selections shoudl not appear in print outs. */
-  public void print(Graphics g) { }
+    /** Do nothing. Selections shoudl not appear in print outs. */
+    public void print(Graphics g) { }
 
-  /** Abstract method to display the selection handleds. */
-  public void paint(Graphics g) { }
+    /** Abstract method to display the selection handleds. */
+    public void paint(Graphics g) { }
 
-  /** Tell the content to end a transaction that causes damage */
-  public void endTrans() { getContent().endTrans(); }
+    /** Tell the content to end a transaction that causes damage */
+    public void endTrans() { getContent().endTrans(); }
 
-  /** Reply the position of the Selection. That is defined to be the
-   *  upper left corner of my bounding box. */
-  public Point getLocation() {
-    return _content.getLocation();
-  }
+    /** Reply the position of the Selection. That is defined to be the
+     *  upper left corner of my bounding box. */
+    public Point getLocation() {
+        return _content.getLocation();
+    }
 
   /** This selection object needs to be redrawn, register its damaged
    *  area within the given Editor */
@@ -117,13 +122,13 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     return (h.index != -1);
   }
 
-  /** Reply true if the given Rectangle is inside or overlapps me */
-  public boolean hit(Rectangle r) {
-    if (_content.hit(r)) return true;
-    Handle h = new Handle(-1);
-    hitHandle(r, h);
-    return (h.index != -1);
-  }
+    /** Reply true if the given Rectangle is inside or overlapps me */
+    public boolean hit(Rectangle r) {
+        if (_content.hit(r)) return true;
+        Handle h = new Handle(-1);
+        hitHandle(r, h);
+        return (h.index != -1);
+    }
 
   /** Find which handle the user clicked on, or return -1 if none. */
   //public abstract int hitHandle(Rectangle r);
@@ -182,58 +187,67 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  /** Pass any events along to the selected Fig.
-   * Subclasses of Selection may reimplement this to add
-   * functionality.
-   */
-  public void keyTyped(KeyEvent ke) {
-    if (_content instanceof KeyListener)
-      ((KeyListener)_content).keyTyped(ke);
-  }
+    /** Pass any events along to the selected Fig.
+     * Subclasses of Selection may reimplement this to add
+     * functionality.
+     */
+    public void keyTyped(KeyEvent ke) {
+        if (_content instanceof KeyListener) {
+            ((KeyListener)_content).keyTyped(ke);
+        }
+    }
 
-  public void keyPressed(KeyEvent ke) {
-	  if (_content instanceof KeyListener)
-		  ((KeyListener)_content).keyPressed(ke);
-  }
+    public void keyPressed(KeyEvent ke) {
+	    if (_content instanceof KeyListener) {
+		    ((KeyListener)_content).keyPressed(ke);
+        }
+    }
 
-  public void keyReleased(KeyEvent ke) {
-    if (_content instanceof KeyListener)
-      ((KeyListener)_content).keyReleased(ke);
-  }
+    public void keyReleased(KeyEvent ke) {
+        if (_content instanceof KeyListener) {
+            ((KeyListener)_content).keyReleased(ke);
+        }
+    }
 
+    public void mouseMoved(MouseEvent me) {
+        if (_content instanceof MouseMotionListener) {
+            ((MouseMotionListener)_content).mouseMoved(me);
+        }
+    }
 
-  public void mouseMoved(MouseEvent me) {
-    if (_content instanceof MouseMotionListener)
-      ((MouseMotionListener)_content).mouseMoved(me);
-  }
+    public void mouseDragged(MouseEvent me) {
+        if (_content instanceof MouseMotionListener) {
+            ((MouseMotionListener)_content).mouseDragged(me);
+        }
+    }
 
-  public void mouseDragged(MouseEvent me) {
-    if (_content instanceof MouseMotionListener)
-      ((MouseMotionListener)_content).mouseDragged(me);
-  }
+    public void mousePressed(MouseEvent me) {
+        if (_content instanceof MouseListener) {
+            ((MouseListener)_content).mousePressed(me);
+        }
+    }
 
-  public void mousePressed(MouseEvent me) {
-    if (_content instanceof MouseListener)
-      ((MouseListener)_content).mousePressed(me);
-  }
+    public void mouseReleased(MouseEvent me) {
+        if (_content instanceof MouseListener) {
+            ((MouseListener)_content).mouseReleased(me);
+        }
+    }
 
-  public void mouseReleased(MouseEvent me) {
-    if (_content instanceof MouseListener)
-      ((MouseListener)_content).mouseReleased(me);
-  }
+    public void mouseClicked(MouseEvent me) {
+        if (_content instanceof MouseListener) {
+            ((MouseListener)_content).mouseClicked(me);
+        }
+    }
 
-  public void mouseClicked(MouseEvent me) {
-    if (_content instanceof MouseListener)
-      ((MouseListener)_content).mouseClicked(me);
-  }
+    public void mouseEntered(MouseEvent me) {
+        if (_content instanceof MouseListener) {
+            ((MouseListener)_content).mouseEntered(me);
+        }
+    }
 
-  public void mouseEntered(MouseEvent me) {
-    if (_content instanceof MouseListener)
-      ((MouseListener)_content).mouseEntered(me);
-  }
-
-  public void mouseExited(MouseEvent me) {
-    if (_content instanceof MouseListener)
-      ((MouseListener)_content).mouseExited(me);
-  }
+    public void mouseExited(MouseEvent me) {
+        if (_content instanceof MouseListener) {
+            ((MouseListener)_content).mouseExited(me);
+        }
+    }
 } /* end class Selection */

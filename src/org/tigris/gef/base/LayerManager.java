@@ -34,11 +34,11 @@ package org.tigris.gef.base;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPainter;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collection;
 
 /** This class implements a kind of Layer that contains other
  *  Layers. Layer's can be nested in an is-part-of tree. That tree can

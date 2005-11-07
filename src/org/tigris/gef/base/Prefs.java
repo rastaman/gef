@@ -31,10 +31,9 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
+import java.awt.Color;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
 
 /** This class contains preferences that control the behavior of the
  *  editor to make it the way that the user likes it. Needs-More-Work:
@@ -46,23 +45,26 @@ import org.tigris.gef.presentation.*;
 public class Prefs {
 
 
-  /** Construct a new Prefs instance */
-  public Prefs() {
+    /** Construct a new Prefs instance */
+    public Prefs() {
 
-  }
+    }
 
-  /** Reply the color that should be used for rubberband lines. */
-  public Color getRubberbandColor() { return new Color(0x33, 0x33, 0x99); }
+    /** Reply the color that should be used for rubberband lines. */
+    public Color getRubberbandColor() { return new Color(0x33, 0x33, 0x99); }
 
-  /** The color of the handles used to manipulate Fig's */
-  private Color _handleColor = new Color(0x55, 0x55, 0xaa);
-  /** The color of the handles used to indicate locked Fig's */
-  private Color _lockedHandleColor = new Color(0x55, 0x55, 0x55);
-  /** The color of the handles used to manipulate Fig's */
-  public Color handleColorFor(Fig f) {
-    if (f.getLocked()) return _lockedHandleColor;
-    else return _handleColor;
-  }
+    /** The color of the handles used to manipulate Fig's */
+    private Color _handleColor = new Color(0x55, 0x55, 0xaa);
+    
+    /** The color of the handles used to indicate locked Fig's */
+    private Color _lockedHandleColor = new Color(0x55, 0x55, 0x55);
+    
+    /** The color of the handles used to manipulate Fig's */
+    public Color handleColorFor(Fig f) {
+        if (f.getLocked()) return _lockedHandleColor;
+        else return _handleColor;
+    }
+    
   /** The color of the handles used to manipulate Fig's */
   public void setHandleColor(Color c) { _handleColor = c; }
   public Color getHandleColor() { return _handleColor; }

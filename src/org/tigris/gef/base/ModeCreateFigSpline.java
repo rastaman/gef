@@ -30,10 +30,10 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigSpline;
 
 /** A Mode to interpert user input while creating a FigSpline. All of
  *  the actual event handling is inherited from ModeCreate. This class

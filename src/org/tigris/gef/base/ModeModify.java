@@ -34,11 +34,8 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphSupport;

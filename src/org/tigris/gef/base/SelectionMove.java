@@ -31,49 +31,52 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.Handle;
 
 /** Selection object that allows the user to move the selected Fig,
  *  but not to resize it. */
 
 public class SelectionMove extends Selection {
 
-  /** Construct a new SelectionMove around the given DiagramElement */
-  public SelectionMove(Fig f) { super(f); }
+    /** Construct a new SelectionMove around the given DiagramElement */
+    public SelectionMove(Fig f) {
+        super(f);
+    }
 
-  /** Paint the selection. */
-  public void paint(Graphics g) {
-    int x = _content.getX();
-    int y = _content.getY();
-    int w = _content.getWidth();
-    int h = _content.getHeight();
-    g.setColor(Globals.getPrefs().handleColorFor(_content));
-    g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH,
-	       w + BORDER_WIDTH * 2 - 1, h + BORDER_WIDTH * 2 - 1);
-    g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1,
-	       w + BORDER_WIDTH * 2 + 2 - 1, h + BORDER_WIDTH * 2 + 2 - 1);
-    g.fillRect(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
-    g.fillRect(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
-    g.fillRect(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
-    g.fillRect(x + w, y + h, HAND_SIZE, HAND_SIZE);
-    super.paint(g);
-  }
+    /** Paint the selection. */
+    public void paint(Graphics g) {
+        int x = _content.getX();
+        int y = _content.getY();
+        int w = _content.getWidth();
+        int h = _content.getHeight();
+        g.setColor(Globals.getPrefs().handleColorFor(_content));
+        g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH,
+               w + BORDER_WIDTH * 2 - 1, h + BORDER_WIDTH * 2 - 1);
+        g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1,
+               w + BORDER_WIDTH * 2 + 2 - 1, h + BORDER_WIDTH * 2 + 2 - 1);
+        g.fillRect(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
+        g.fillRect(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
+        g.fillRect(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
+        g.fillRect(x + w, y + h, HAND_SIZE, HAND_SIZE);
+        super.paint(g);
+    }
 
-  /** SelectionMove is used when there are no handles, so dragHandle
-   * does nothing. Actually, hitHandle always returns -1 , so this
-   * method should never even get called. */
-  public void dragHandle(int mx, int my, int an_x,int an_y, Handle h) {
-    /* do nothing */
-  }
+    /** SelectionMove is used when there are no handles, so dragHandle
+     * does nothing. Actually, hitHandle always returns -1 , so this
+     * method should never even get called. */
+    public void dragHandle(int mx, int my, int an_x,int an_y, Handle h) {
+        /* do nothing */
+    }
 
-  /** Return -1 as a special code to indicate that the user clicked in
-   *  the body of the Fig and wants to drag it around. */
-  public void hitHandle(Rectangle r, Handle h) {
-    h.index = -1;
-    h.instructions = "Move Object(s)";
-  }
+    /** Return -1 as a special code to indicate that the user clicked in
+     *  the body of the Fig and wants to drag it around. */
+    public void hitHandle(Rectangle r, Handle h) {
+        h.index = -1;
+        h.instructions = "Move Object(s)";
+    }
 } /* end class SelectionMove */
 

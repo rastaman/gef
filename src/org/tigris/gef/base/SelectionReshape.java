@@ -28,12 +28,15 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.MutableGraphModel;
-import org.tigris.gef.graph.GraphController;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigEdgePoly;
+import org.tigris.gef.presentation.Handle;
 
 /** A Selection that allows the user to reshape the selected Fig.
  *  This is used with FigPoly, FigLine, and FigInk.  One handle is
@@ -44,8 +47,7 @@ import org.tigris.gef.graph.GraphController;
  * @see FigInk
  */
 
-public class SelectionReshape extends Selection
-  implements KeyListener {
+public class SelectionReshape extends Selection implements KeyListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -55,8 +57,10 @@ public class SelectionReshape extends Selection
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  /** Construct a new SelectionReshape for the given Fig */
-  public SelectionReshape(Fig f) { super(f); }
+    /** Construct a new SelectionReshape for the given Fig */
+    public SelectionReshape(Fig f) {
+        super(f);
+    }
 
     /** Return a handle ID for the handle under the mouse, or -1 if none. 
      */
@@ -86,22 +90,28 @@ public class SelectionReshape extends Selection
         h.instructions = "Move object(s)";
     }
 
-  /** Paint the handles at the four corners and midway along each edge
-   * of the bounding box.  */
-  public void paint(Graphics g) {
-    int npoints = _content.getNumPoints();
-    int[] xs = _content.getXs();
-    int[] ys = _content.getYs();
-    g.setColor(Globals.getPrefs().handleColorFor(_content));
-    for (int i = 0; i < npoints; ++i)
-      g.fillRect(xs[i] - HAND_SIZE/2, ys[i] - HAND_SIZE/2,
-		 HAND_SIZE, HAND_SIZE);
-    if (_selectedHandle != -1)
-      g.drawRect(xs[_selectedHandle] - HAND_SIZE/2 - 2,
-		 ys[_selectedHandle] - HAND_SIZE/2 - 2,
-		 HAND_SIZE + 3, HAND_SIZE + 3);
-    super.paint(g);
-  }
+    /**
+     * Paint the handles at the four corners and midway along each edge
+     * of the bounding box.
+     */
+    public void paint(Graphics g) {
+        int npoints = _content.getNumPoints();
+        int[] xs = _content.getXs();
+        int[] ys = _content.getYs();
+        g.setColor(Globals.getPrefs().handleColorFor(_content));
+        for (int i = 0; i < npoints; ++i) {
+            g.fillRect(
+                    xs[i] - HAND_SIZE/2, ys[i] - HAND_SIZE/2,
+                    HAND_SIZE, HAND_SIZE);
+        }
+        if (_selectedHandle != -1) {
+            g.drawRect(
+                    xs[_selectedHandle] - HAND_SIZE/2 - 2,
+                    ys[_selectedHandle] - HAND_SIZE/2 - 2,
+                    HAND_SIZE + 3, HAND_SIZE + 3);
+        }
+        super.paint(g);
+    }
 
   /**
    * Change some attribute of the selected Fig when the user drags one of its
@@ -137,14 +147,15 @@ public class SelectionReshape extends Selection
   public void updateEdgeEnds(FigEdge poly, Handle handle, int x, int y ) {
   }
 
-  ////////////////////////////////////////////////////////////////
-  // event handlers
+    ////////////////////////////////////////////////////////////////
+    // event handlers
 
-  public void keyPressed(KeyEvent ke) {
-    if (ke.isConsumed()) return;
-    if (_content instanceof KeyListener)
-      ((KeyListener)_content).keyPressed(ke);
-  }
+    public void keyPressed(KeyEvent ke) {
+        if (ke.isConsumed()) return;
+        if (_content instanceof KeyListener) {
+            ((KeyListener)_content).keyPressed(ke);
+        }
+    }
 
   public void keyReleased(KeyEvent ke) {
     if (ke.isConsumed()) return;

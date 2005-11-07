@@ -510,32 +510,12 @@ public class FigPoly extends Fig {
 
     /** Paint the FigPoly on the given Graphics */
     public void paint(Graphics g) {
-
-        Color fillColor = getFillColor();
-        Color lineColor = getLineColor();
-        
-        if(_filled && fillColor != null) {
-            g.setColor(fillColor);
-            g.fillPolygon(_xpoints, _ypoints, _npoints);
-        }
-
-        if(getLineWidth() > 0 && lineColor != null) {
-            g.setColor(lineColor);
-
-            if(!getDashed())
-                g.drawPolyline(_xpoints, _ypoints, _npoints);
-            else
-                drawDashedPerimeter(g);
-        }
-    }
-
-    /** A faster implementation of drawDashedPerimeter for polygons. */
-    protected void drawDashedPerimeter(Graphics g) {
-        int phase = 0;
-
-        for(int i = 1; i < _npoints; i++) {
-            phase = drawDashedLine(g, phase, _xpoints[i - 1], _ypoints[i - 1], _xpoints[i], _ypoints[i]);
-        }
+        plotter.drawPoly(
+                g, 
+                _filled, getFillColor(), 
+                _lineWidth, getLineColor(), 
+                _npoints, _xpoints, _ypoints, 
+                getDashed(), _dashes, _dashPeriod);
     }
 
     ////////////////////////////////////////////////////////////////

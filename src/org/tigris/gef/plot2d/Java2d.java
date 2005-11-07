@@ -27,7 +27,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Stroke;
 
 /**
@@ -307,6 +306,38 @@ public class Java2d implements Plotter {
         if (lineWidth > 0 && lineColor != null) {
             g.setColor(lineColor);
             g.drawPolygon(xs, ys, 4);
+        }
+    }
+    
+    public void drawPoly(Object graphicsContext, boolean filled, Color fillColor, int lineWidth, Color lineColor, int pointCount, int xPoints[], int yPoints[], boolean dashed, float dashes[], int dashPeriod) {
+
+        Graphics g = (Graphics)graphicsContext;
+
+        if(filled && fillColor != null) {
+            g.setColor(fillColor);
+            g.fillPolygon(xPoints, yPoints, pointCount);
+        }
+
+        if(lineWidth > 0 && lineColor != null) {
+            g.setColor(lineColor);
+
+            if(dashed)
+                drawDashedPerimeter(g, lineWidth, pointCount, xPoints, yPoints, dashes, dashPeriod);
+            else
+                g.drawPolyline(xPoints, yPoints, pointCount);
+        }
+    }
+    
+    private void drawDashedPerimeter(Graphics g, int lineWidth, int pointCount, int xPoints[], int yPoints[], float dashes[], int dashPeriod) {
+        int phase = 0;
+
+        for(int i = 1; i < pointCount; i++) {
+            phase = drawDashedLine(
+                    g, 
+                    lineWidth, 
+                    xPoints[i - 1], yPoints[i - 1], 
+                    xPoints[i], yPoints[i],
+                    phase, dashes, dashPeriod);
         }
     }
 }

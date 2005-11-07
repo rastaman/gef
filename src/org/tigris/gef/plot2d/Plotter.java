@@ -76,4 +76,11 @@ public interface Plotter {
             int w, 
             int h, 
             int d);
+    
+    public abstract void drawPoly(
+            Object graphicsContext, 
+            boolean filled, Color fillColor, 
+            int lineWidth, Color lineColor, 
+            int pointCount, int xPoints[], int yPoints[], 
+            boolean dashed, float dashes[], int dashPeriod);
 }

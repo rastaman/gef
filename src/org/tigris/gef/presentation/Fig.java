@@ -724,24 +724,24 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
                 _dashes, _dashPeriod);
     }
     
-    protected void drawDashedPerimeter(Graphics g) {
-        Point segStart = new Point();
-        Point segEnd = new Point();
-        int numDashes = _dashes.length;
-        int length = getPerimeterLength();
-        int i = 0;
-        int d = 0;
-        while(i < length) {
-            stuffPointAlongPerimeter(i, segStart);
-            i += _dashes[d];
-            d = (d + 1) % numDashes;
-            stuffPointAlongPerimeter(i, segEnd);
-            g.drawLine(segStart.x, segStart.y, segEnd.x, segEnd.y);
-            i += _dashes[d];
-            d = (d + 1) % numDashes;
-        }
-    }
-
+//    protected void drawDashedPerimeter(Graphics g) {
+//        Point segStart = new Point();
+//        Point segEnd = new Point();
+//        int numDashes = _dashes.length;
+//        int length = getPerimeterLength();
+//        int i = 0;
+//        int d = 0;
+//        while(i < length) {
+//            stuffPointAlongPerimeter(i, segStart);
+//            i += _dashes[d];
+//            d = (d + 1) % numDashes;
+//            stuffPointAlongPerimeter(i, segEnd);
+//            g.drawLine(segStart.x, segStart.y, segEnd.x, segEnd.y);
+//            i += _dashes[d];
+//            d = (d + 1) % numDashes;
+//        }
+//    }
+//
     public void firePropChange(String propName, int oldV, int newV) {
         firePropChange(propName, new Integer(oldV), new Integer(newV));
     }
