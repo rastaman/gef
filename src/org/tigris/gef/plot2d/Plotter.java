@@ -66,4 +66,14 @@ public interface Plotter {
             boolean dashed, 
             float dashes[], 
             int dashPeriod);
+    
+    public abstract void drawCube(
+            Object graphicContext, 
+            Color lineColor, 
+            Color fillColor, 
+            int x, 
+            int y, 
+            int w, 
+            int h, 
+            int d);
 }

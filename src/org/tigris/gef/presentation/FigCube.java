@@ -50,31 +50,15 @@ public class FigCube extends Fig implements Serializable {
     }
 
     public void paint(Graphics g){
-        int x = getX();
-        int y = getY();
-        int w = getWidth();
-        int h = getHeight();
-        Color lColor = getLineColor();
-        Color fColor = getFillColor();
-
-	g.setColor(fColor);
-	g.fillRect(x, y, w, h);
-        g.setColor(lColor);
-        g.drawRect(x, y, w, h);
-
- 	g.setColor(fColor);
-	g.fillPolygon(new int[]{x, x+D, x+w+D, x+w}, 
-                      new int[]{y, y-D, y-D, y}, 4);
-	g.setColor(lColor);
-        g.drawPolygon(new int[]{x, x+D, x+w+D, x+w}, 
-                      new int[]{y, y-D, y-D, y}, 4);
-
-	g.setColor(fColor);
-	g.fillPolygon(new int[]{x+w+D, x+w+D, x+w, x+w}, 
-                      new int[]{y-D, y+h-D, y+h, y}, 4);
-	g.setColor(lColor);
-        g.drawPolygon(new int[]{x+w+D, x+w+D, x+w, x+w}, 
-                      new int[]{y-D, y+h-D, y+h, y}, 4);
+        plotter.drawCube(
+                g, 
+                getLineColor(), 
+                getFillColor(), 
+                getX(), 
+                getY(), 
+                getWidth(), 
+                getHeight(), 
+                D);
     }
 
     /**

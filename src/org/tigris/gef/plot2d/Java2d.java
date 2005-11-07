@@ -27,6 +27,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Stroke;
 
 /**
@@ -183,11 +184,11 @@ public class Java2d implements Plotter {
 
     public void drawRect(Object graphicsContext, boolean filled, Color fillColor, int lineWidth, Color lineColor, int x, int y, int w, int h, boolean dashed, float dashes[], int dashPeriod) {
         Graphics g = (Graphics)graphicsContext;
-        int xx = x;
-        int yy = y;
-        int ww = w;
-        int hh = h;
         if (filled && fillColor != null) {
+            int xx = x;
+            int yy = y;
+            int ww = w;
+            int hh = h;
             if (lineColor != null) {
                 if (lineWidth > 1 && !dashed) {
                     int lineWidth2 = lineWidth*2;
@@ -207,7 +208,7 @@ public class Java2d implements Plotter {
                 }
             }
         } else {
-            paintRectLine(g, xx, yy, ww, hh, lineWidth, lineColor, dashed, dashes, dashPeriod);
+            paintRectLine(g, x, y, w, h, lineWidth, lineColor, dashed, dashes, dashPeriod);
         }
     }
     
@@ -257,4 +258,55 @@ public class Java2d implements Plotter {
         phase = drawDashedLine(g, lineWidth, x, y + h, x, y, phase, dashes, dashPeriod);
     }
     
+    // From FigCube
+    
+    public void drawCube(Object graphicContext, Color lineColor, Color fillColor, int x, int y, int w, int h, int d){
+        Graphics g = (Graphics)graphicContext;
+
+        g.setColor(fillColor);
+        g.fillRect(x, y, w, h);
+        g.setColor(lineColor);
+        g.drawRect(x, y, w, h);
+
+        g.setColor(fillColor);
+        g.fillPolygon(new int[]{x, x+d, x+w+d, x+w}, 
+                      new int[]{y, y-d, y-d, y}, 4);
+        g.setColor(lineColor);
+        g.drawPolygon(new int[]{x, x+d, x+w+d, x+w}, 
+                      new int[]{y, y-d, y-d, y}, 4);
+
+        g.setColor(fillColor);
+        g.fillPolygon(new int[]{x+w+d, x+w+d, x+w, x+w}, 
+                          new int[]{y-d, y+h-d, y+h, y}, 4);
+        g.setColor(lineColor);
+        g.drawPolygon(new int[]{x+w+d, x+w+d, x+w, x+w}, 
+                      new int[]{y-d, y+h-d, y+h, y}, 4);
+    }
+
+    /** Paint this FigDiamond */
+    public void drawDiamond(
+            Object graphicContext, 
+            boolean filled, Color fillColor, 
+            int lineWidth, Color lineColor, 
+            int x, int y, int w, int h) {
+        Graphics g = (Graphics)graphicContext;
+        int xs[] = new int[4];
+        int ys[] = new int[4];
+        xs[0] = x + w/2;
+        ys[0] = y;
+        xs[1] = x + w;
+        ys[1] = y + h/2;
+        xs[2] = x + w/2;
+        ys[2] = y + h;
+        xs[3] = x;
+        ys[3] = y + h/2;
+        if (filled && fillColor != null) {
+            g.setColor(fillColor);
+            g.fillPolygon(xs, ys, 4);
+        }
+        if (lineWidth > 0 && lineColor != null) {
+            g.setColor(lineColor);
+            g.drawPolygon(xs, ys, 4);
+        }
+    }
 }

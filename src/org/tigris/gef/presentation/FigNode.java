@@ -35,6 +35,7 @@ import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
 import org.tigris.gef.ui.Highlightable;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -414,10 +415,13 @@ public class FigNode extends FigGroup implements
         super.paint(g);
         //System.out.println("[FigNode] paint: owner = " + getOwner());
         if(_highlight) {
-            g.setColor(Globals.getPrefs().getHighlightColor()); /* needs-more-work */
-            g.drawRect(_x - 5, _y - 5, _w + 9, _h + 8);
-            g.drawRect(_x - 4, _y - 4, _w + 7, _h + 6);
-            g.drawRect(_x - 3, _y - 3, _w + 5, _h + 4);
+            Color lineColor = Globals.getPrefs().getHighlightColor();
+            plotter.drawRect(
+                    g, 
+                    false, null, 
+                    3, lineColor, 
+                    _x-5, _y-5, _w+9, _h+8, 
+                    false, _dashes, _dashPeriod);
         }
     }
 
