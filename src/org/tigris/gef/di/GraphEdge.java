@@ -22,13 +22,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.tigris.gef.presentation;
+package org.tigris.gef.di;
 
-import org.tigris.gef.di.GraphicElement;
+import org.tigris.gef.presentation.Connecter;
 
 /**
- * An interface to be implemented by connectable figs.
- * @deprecated use GraphElement
- */
-public interface Connecter extends GraphicElement {
+* An interface to be implemented by edge connectable figs.
+*/
+public interface GraphEdge extends Connecter {
 }

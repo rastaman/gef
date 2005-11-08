@@ -36,7 +36,7 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.tigris.gef.presentation.GraphElement;
+import org.tigris.gef.di.GraphElement;
 import org.tigris.gef.presentation.Fig;
 
 /** An abstract class that makes it easier to implement your own

@@ -42,6 +42,7 @@ import javax.swing.JMenu;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.*;
+import org.tigris.gef.di.GraphicElement;
 
 import org.tigris.gef.graph.GraphEdgeHooks;
 import org.tigris.gef.graph.GraphNodeHooks;

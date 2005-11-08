@@ -1,18 +1,19 @@
 // %1035290364839:org.tigris.gef.presentation%
 package org.tigris.gef.presentation;
 
-import java.awt.*;
-
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
-
 import java.util.Enumeration;
 import java.util.Vector;
 
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConv;
-
+import org.tigris.gef.di.GraphEdge;
+import org.tigris.gef.di.GraphElement;
 import org.tigris.gef.graph.GraphEdgeHooks;
-
 import org.tigris.gef.ui.Highlightable;
 
 /** Abastract Fig class for representing edges between ports.
@@ -20,7 +21,7 @@ import org.tigris.gef.ui.Highlightable;
  *  @see FigEdgeLine
  *  @see FigEdgeRectiline
  */
-public abstract class FigEdge extends Fig implements GraphElement {
+public abstract class FigEdge extends Fig implements GraphEdge {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -324,8 +325,8 @@ public abstract class FigEdge extends Fig implements GraphElement {
     public String getPrivateData() {
         Fig spf = getSourcePortFig();
         Fig dpf = getDestPortFig();
-        GraphElement sfn = getSourceFigNode();
-        GraphElement dfn = getDestFigNode();
+        FigNode sfn = getSourceFigNode();
+        FigNode dfn = getDestFigNode();
         String data = "";
         if(spf != null) {
             data += "sourcePortFig=\"" + spf.getId() + "\" ";

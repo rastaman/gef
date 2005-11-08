@@ -22,13 +22,16 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.tigris.gef.presentation;
+package org.tigris.gef.di;
 
-import org.tigris.gef.di.GraphicElement;
+import java.awt.Rectangle;
 
 /**
  * An interface to be implemented by connectable figs.
- * @deprecated use GraphElement
  */
-public interface Connecter extends GraphicElement {
+public interface GraphicElement {
+
+    public String getId();
+    public Rectangle routingRect();
+    public Object getOwner();
 }

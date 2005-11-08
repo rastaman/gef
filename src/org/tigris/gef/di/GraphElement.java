@@ -22,9 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.tigris.gef.presentation;
+package org.tigris.gef.di;
 
 import java.beans.PropertyChangeListener;
+
+import org.tigris.gef.presentation.Connecter;
 import org.tigris.gef.ui.Highlightable;
 
 /**

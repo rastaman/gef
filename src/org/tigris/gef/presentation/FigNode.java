@@ -31,6 +31,7 @@ package org.tigris.gef.presentation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.di.GraphNode;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
 import org.tigris.gef.ui.Highlightable;
@@ -49,7 +50,7 @@ import java.util.List;
 /** Class to present a node (such as a NetNode) in a diagram. */
 
 public class FigNode extends FigGroup implements
-        GraphElement,
+        GraphNode,
         MouseListener {
     ////////////////////////////////////////////////////////////////
     // constants
