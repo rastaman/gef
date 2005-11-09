@@ -29,6 +29,7 @@
 package org.tigris.gef.base;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -36,6 +37,7 @@ import java.awt.event.KeyListener;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigEdgePoly;
+import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
 
 /** A Selection that allows the user to reshape the selected Fig.
@@ -113,47 +115,58 @@ public class SelectionReshape extends Selection implements KeyListener {
         super.paint(g);
     }
 
-  /**
-   * Change some attribute of the selected Fig when the user drags one of its
-   * handles.
-   */
-  public void dragHandle(int mX, int mY, int anX, int anY, Handle h) {
-      // check assertions
-      if (_content instanceof FigEdgePoly) {
-          FigEdge p = ((FigEdge)_content);
-          int npoints = _content.getNumPoints();
-          int[] xs = _content.getXs();
-          int[] ys = _content.getYs();
-          Rectangle r = new Rectangle(anX-4, anY-4, 8, 8);
-          if (h.index == p.getNumPoints()) {
-              for (int i = 0; i < npoints-1; ++i) {
-                  if (Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
-                      p.insertPoint(i,r.x,r.y);
-                      h.index = i+1;
-                      break;
-                  }
-              }
-          }
-          if (h.index < 0 || h.index >= p.getNumPoints()) {
-              System.out.println("mistake " + h.index);
-          }
-          if ((h.index == 0)||(h.index == p.getNumPoints()-1)) {
-              updateEdgeEnds(p,h,mX,mY);
-          } // end if
-      }
-      _content.setPoint(h, mX, mY);
-  }
+    /**
+     * Change some attribute of the selected Fig when the user drags one of its
+     * handles.
+     */
+    public void dragHandle(int mX, int mY, int anX, int anY, Handle h) {
+        Fig selectedFig = getContent();
+        // check assertions
+        if (selectedFig instanceof FigEdgePoly) {
+            FigEdge p = ((FigEdge)selectedFig);
+            int npoints = selectedFig.getNumPoints();
+            int[] xs = selectedFig.getXs();
+            int[] ys = selectedFig.getYs();
+            Rectangle r = new Rectangle(anX-4, anY-4, 8, 8);
+            if (h.index == p.getNumPoints()) {
+                for (int i = 0; i < npoints-1; ++i) {
+                    if (Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
+                        p.insertPoint(i,r.x,r.y);
+                        h.index = i+1;
+                        break;
+                    }
+                }
+            }
+            if (h.index < 0 || h.index >= p.getNumPoints()) {
+                System.out.println("mistake " + h.index);
+            }
+            if ((h.index == 0)||(h.index == p.getNumPoints()-1)) {
+                updateEdgeEnds(p,h,mX,mY);
+            } // end if
+        }
+        if (selectedFig instanceof FigPoly) {
+            FigPoly poly = (FigPoly)selectedFig;
+            if (h.index == 0 || h.index == (poly.getNumPoints() - 1)) {
+                Point moveTo = new Point(mX, mY);
+                poly.setEndPoints(moveTo, moveTo);
+            } else {
+                poly.moveVertex(h, mX, mY, false);
+            }
+        } else {
+            selectedFig.setPoint(h, mX, mY);
+        }
+    }
 
-  public void updateEdgeEnds(FigEdge poly, Handle handle, int x, int y ) {
-  }
+    public void updateEdgeEnds(FigEdge poly, Handle handle, int x, int y ) {
+    }
 
     ////////////////////////////////////////////////////////////////
     // event handlers
 
     public void keyPressed(KeyEvent ke) {
         if (ke.isConsumed()) return;
-        if (_content instanceof KeyListener) {
-            ((KeyListener)_content).keyPressed(ke);
+        if (getContent() instanceof KeyListener) {
+            ((KeyListener)getContent()).keyPressed(ke);
         }
     }
 
