@@ -32,6 +32,9 @@
 package org.tigris.gef.base;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
+
+import javax.sound.sampled.Line;
 
 /** A library of functions that do geometric opeations.  These are all
  *  static methods, so you never need to make an instance of this
@@ -109,23 +112,43 @@ public class Geometry {
         return res;
     }
 
-    /** Return the angle of the given line segment. */
+    /**
+     * Return the angle of a line drawn from P1 to P2 as if P1 was the origin of this graph
+     * <pre>
+     * 
+     *            90
+     *            |
+     *            |
+     *            | 
+     *            |
+     * 180 -------p1------- 0
+     *            |
+     *            |
+     *            |
+     *            |
+     *           270
+     * </pre>
+     */
+    
     public static double segmentAngle(Point p1, Point p2) {
-        if(p2.x == p1.x && p2.y <= p1.y)
-            return 90;
-        if(p2.x == p1.x && p2.y > p1.y)
-            return 270;
-        if(p2.y == p1.y && p2.x > p1.x)
-            return 0;
-        if(p2.y == p1.y)
-            return 180;
+//        if(p2.x == p1.x && p2.y < p1.y)
+//            return 90;
+//        if(p2.x == p1.x && p2.y > p1.y)
+//            return 270;
+//        if(p2.y == p1.y && p2.x > p1.x)
+//            return 0;
+//        if(p2.y == p1.y)
+//            return 180;
         double dx = p2.x - p1.x;
         double dy = p2.y - p1.y;
         double m = dy / dx;
-        double a = Math.atan(m);
-        if(dx > 0)
-            return a;
-        return -a;
+        double a = Math.atan(m) * 180 / Math.PI;
+        if (dx < 0) {
+            a = 180 + a;
+        } else if (dy < 0) {
+            a = 360 + a;
+        }
+        return a;
     }
 
     /** 
