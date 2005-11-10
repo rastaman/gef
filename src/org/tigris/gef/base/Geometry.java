@@ -131,14 +131,19 @@ public class Geometry {
      */
     
     public static double segmentAngle(Point p1, Point p2) {
-//        if(p2.x == p1.x && p2.y < p1.y)
-//            return 90;
-//        if(p2.x == p1.x && p2.y > p1.y)
-//            return 270;
-//        if(p2.y == p1.y && p2.x > p1.x)
-//            return 0;
-//        if(p2.y == p1.y)
-//            return 180;
+        if(p2.x == p1.x) {
+            if (p2.y > p1.y) {
+                return 90;
+            } else {
+                return 270;
+            }
+        } else if (p2.y == p1.y) {
+            if (p2.x > p1.x) {
+                return 0;
+            } else {
+                return 180;
+            }
+        } 
         double dx = p2.x - p1.x;
         double dy = p2.y - p1.y;
         double m = dy / dx;
@@ -149,6 +154,19 @@ public class Geometry {
             a = 360 + a;
         }
         return a;
+    }
+
+    /**
+     * Given two angle values as calculated using segmentAngle calculate the
+     * angle gap between the two.
+     * @param angle1
+     * @param angle2
+     * @return the angle difference.
+     */
+    public static double diffAngle(double angle1, double angle2) {
+        double diff = Math.abs(angle1 - angle2);
+        if (diff > 180) diff = 360 - diff;
+        return diff;
     }
 
     /** 

@@ -51,8 +51,8 @@ public class FigPoly extends Fig {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    /** The radian angle at which a point can be deleted. */
-    protected static final double FUDGEFACTOR = .11;
+    /** The angle difference at which a point can be deleted. */
+    private static final double FUDGEFACTOR = 7;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -486,7 +486,7 @@ public class FigPoly extends Fig {
 
             double startToMiddleAngle = Geometry.segmentAngle(start, middle);
             double middleToEndAngle = Geometry.segmentAngle(middle, end);
-            double difference = Math.abs(startToMiddleAngle - middleToEndAngle);
+            double difference = Geometry.diffAngle(startToMiddleAngle, middleToEndAngle);
 
             if(difference < FUDGEFACTOR)
                 removePoint(handleNumber);
