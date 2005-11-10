@@ -113,6 +113,24 @@ public class GeometryTest extends TestCase {
         assertEquals("Wrong value Y", 200, res.y);
     }
 
+    public void testSegmentAngle() {
 
-
+        Point pointCentre = new Point(0, 0);
+        Point point0 = new Point(10, 0);
+        Point point45 = new Point(10, 10);
+        Point point90 = new Point(0, 10);
+        Point point135 = new Point(-10, 10);
+        Point point180 = new Point(-10, 0);
+        Point point225 = new Point(-10, -10);
+        Point point270 = new Point(0, -10);
+        Point point315 = new Point(10, -10);
+        assertEquals(0.0D, Geometry.segmentAngle(pointCentre, point0), 0.001);
+        assertEquals(45.0D, Geometry.segmentAngle(pointCentre, point45), 0.001);
+        assertEquals(90.0D, Geometry.segmentAngle(pointCentre, point90), 0.001);
+        assertEquals(135.0D, Geometry.segmentAngle(pointCentre, point135), 0.001);
+        assertEquals(180.0D, Geometry.segmentAngle(pointCentre, point180), 0.001);
+        assertEquals(225.0D, Geometry.segmentAngle(pointCentre, point225), 0.001);
+        assertEquals(270.0D, Geometry.segmentAngle(pointCentre, point270), 0.001);
+        assertEquals(315.0D, Geometry.segmentAngle(pointCentre, point315), 0.001);
+    }
 }
