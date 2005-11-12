@@ -23,6 +23,8 @@
 package org.tigris.gef.plot2d;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Polygon;
 
 /**
  * @author Bob
@@ -83,4 +85,7 @@ public interface Plotter {
             int lineWidth, Color lineColor, 
             int pointCount, int xPoints[], int yPoints[], 
             boolean dashed, float dashes[], int dashPeriod);
+    
+    public abstract void drawCurve(Object g, Polygon curve, boolean filled, Color fillColor, Color lineColor, int npoints, int xKnots[], int yKnots[]);
+    public abstract void drawStraight(Object g, Color lineColor, int xKnots[], int yKnots[]) ;  
 }

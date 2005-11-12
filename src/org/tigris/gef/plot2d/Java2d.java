@@ -27,6 +27,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Stroke;
 
 /**
@@ -338,6 +339,164 @@ public class Java2d implements Plotter {
                     xPoints[i - 1], yPoints[i - 1], 
                     xPoints[i], yPoints[i],
                     phase, dashes, dashPeriod);
+        }
+    }
+    
+    // From FigSpline
+    
+    private static int SPLINE_THRESH = 2;
+
+    // Draw a three-point spline using DeCasteljau algorithm
+    private void drawBezier(Graphics g, boolean filled, Color fillColor, Polygon curve,
+                int x1, int y1,
+                int x2, int y2,
+                int x3, int y3) {
+        int xa, ya, xb, yb, xc, yc, xp, yp;
+        xa = ( x1 + x2 ) / 2;
+        ya = ( y1 + y2 ) / 2;
+        xc = ( x2 + x3 ) / 2;
+        yc = ( y2 + y3 ) / 2;
+        xb = ( xa + xc ) / 2;
+        yb = ( ya + yc ) / 2;
+        
+        xp = ( x1 + xb ) / 2;
+        yp = ( y1 + yb ) / 2;
+        if ( Math.abs( xa - xp ) + Math.abs( ya - yp ) > SPLINE_THRESH ) {
+            drawBezier( g, filled, fillColor, curve, x1, y1, xa, ya, xb, yb );
+        } else {
+            g.drawLine( x1, y1, xb, yb );
+            curve.addPoint(xb, yb);
+        }
+        xp = ( x3 + xb ) / 2;
+        yp = ( y3 + yb ) / 2;
+        if ( Math.abs( xc - xp ) + Math.abs( yc - yp ) > SPLINE_THRESH ) {
+            drawBezier( g, filled, fillColor, curve, xb, yb, xc, yc, x3, y3 );
+        } else {
+            g.drawLine( xb, yb, x3, y3 );
+            curve.addPoint(x3, y3);
+        }
+    }  
+    public void drawCurve(Object graphicContext, Polygon curve, boolean filled, Color fillColor, Color lineColor, int npoints, int xKnots[], int yKnots[]) {
+        Graphics g = (Graphics) graphicContext;
+        int nSegments = npoints-2;
+        curve = new Polygon();
+        g.setColor(lineColor);
+        for (int i=0; i<=nSegments-1; i++)  {
+            drawBezier(g, filled, fillColor, curve, xKnots[2*i],   yKnots[2*i],
+                    xKnots[2*i+1], yKnots[2*i+1],
+                    xKnots[2*i+2], yKnots[2*i+2]);
+        }
+        if (filled) {
+            g.setColor(fillColor);
+            g.fillPolygon(curve);       // here the curve gets partially destroyed
+            g.setColor(lineColor);
+            g.drawPolyline(curve.xpoints, curve.ypoints, curve.npoints);
+        }
+    }  
+    
+    public void drawStraight(Object graphicContext, Color lineColor, int xKnots[], int yKnots[]) {
+        Graphics g = (Graphics) graphicContext;
+        g.setColor(lineColor);
+        g.drawLine(xKnots[0], yKnots[0], 
+               xKnots[1], yKnots[1]);
+    }
+    
+    // From FigRRect
+    
+    /**
+     * Paint this FigRRect.
+     * Dashed lines aren't currently handled.
+     */
+    public void drawRRect(Object graphicsContext, boolean filled, Color fillColor, int lineWidth, Color lineColor, int x, int y, int w, int h, int radius) {
+        Graphics g = (Graphics)graphicsContext;
+        if (filled && fillColor != null) {
+            if (lineColor != null && lineWidth > 1) {
+                drawFilledRRectWithWideLine(g, fillColor, lineWidth, lineColor, x, y, w, h, radius);
+            } else {
+                drawFilledRRect(g, fillColor, lineWidth, lineColor, x, y, w, h, radius);
+            }
+        } else if (lineColor != null && lineWidth > 0) {
+            drawEmptyRRectWithWideLine(g, lineWidth, lineColor, x, y, w, h, radius);
+        } else {
+            drawEmptyRRect(g, lineWidth, lineColor, x, y, w, h, radius);
+        }
+    }
+
+    /**
+     * Paint a filled rounded rectangle (with a narrow line or no line)
+     * @param g
+     */
+    private void drawFilledRRect(Graphics g, Color fillColor, int lineWidth, Color lineColor, int x, int y, int w, int h, int radius) {
+        //assert _lineWidth == 0 || _lineWidth == 1 || _lineColor == null
+        //assert filled && filledColor != null
+        // Do the actual fill color
+        g.setColor(fillColor);
+        g.fillRoundRect(x, y, w, h, radius, radius);
+        
+        if (lineColor != null && lineWidth == 1) {
+            // If we're filled with a narrow border then draw
+            // the border over the already filled area.
+            g.setColor(lineColor);
+            g.drawRoundRect(x, y, w, h, radius, radius);
+        }
+    }
+
+    /**
+     * Paint a filled rounded rectangle with a wide line
+     * @param g
+     */
+    private void drawFilledRRectWithWideLine(Graphics g, Color fillColor, int lineWidth, Color lineColor, int x, int y, int w, int h, int radius) {
+        //assert _lineWidth > 1 && _lineColor != null
+        //assert filled && filledColor != null
+        // If we're filled with a wide border then fill
+        // the entire rectangle with the border color and then
+        // recalculate area for the actual fill.
+        int lineWidth2 = lineWidth*2;
+        g.setColor(lineColor);
+        g.fillRoundRect(x, y, w, h, radius, radius);
+        
+        // Do the actual fill color
+        g.setColor(fillColor);
+        g.fillRoundRect(
+                x + lineWidth,
+                y + lineWidth,
+                w - lineWidth2,
+                h - lineWidth2,
+                radius,
+                radius);
+    }
+    
+    /**
+     * Paint an unfilled rounded rectangle (with a narrow line or no line)
+     * @param g
+     */
+    private void drawEmptyRRect(Graphics g, int lineWidth, Color lineColor, int x, int y, int w, int h, int radius) {
+        // If there's no fill but a narrow line then just
+        // draw that line.
+        if (lineColor != null && lineWidth == 1) {
+            g.setColor(lineColor);
+            g.drawRoundRect(x, y, w, h, radius, radius);
+        }
+    }
+
+    /**
+     * Paint an unfilled rounded rectangle with a wide line
+     * @param g
+     */
+    private void drawEmptyRRectWithWideLine(Graphics g, int lineWidth, Color lineColor, int x, int y, int w, int h, int radius) {
+        // If there's no fill but a wide line then draw repeated
+        // rounded rectangles in ever decreasing size.
+        if (lineColor != null && lineWidth > 1) {
+            int xx = x;
+            int yy = y;
+            int ww = w;
+            int hh = h;
+            g.setColor(lineColor);
+            for (int i=0; i < lineWidth; ++i) {
+                g.drawRoundRect(xx++, yy++, ww, hh, radius, radius);
+                ww -= 2;
+                hh -= 2;
+            }
         }
     }
 }

@@ -87,14 +87,14 @@ public class FigRRect extends FigRect {
     public void paint(Graphics g) {
         if (_filled && _fillColor != null) {
             if (_lineColor != null && _lineWidth > 1) {
-                paintFilledWithWideLine(g);
+                drawFilledRRectWithWideLine(g);
             } else {
-                paintFilled(g);
+                drawFilledRRect(g);
             }
         } else if (_lineColor != null && _lineWidth > 0) {
-            paintEmptyWithWideLine(g);
+            drawEmptyRRectWithWideLine(g);
         } else {
-            paintEmpty(g);
+            drawEmptyRRect(g);
         }
     }
 
@@ -102,7 +102,7 @@ public class FigRRect extends FigRect {
      * Paint a filled rounded rectangle (with a narrow line or no line)
      * @param g
      */
-    private void paintFilled(Graphics g) {
+    private void drawFilledRRect(Graphics g) {
         //assert _lineWidth == 0 || _lineWidth == 1 || _lineColor == null
         //assert filled && filledColor != null
         // Do the actual fill color
@@ -121,7 +121,7 @@ public class FigRRect extends FigRect {
      * Paint a filled rounded rectangle with a wide line
      * @param g
      */
-    private void paintFilledWithWideLine(Graphics g) {
+    private void drawFilledRRectWithWideLine(Graphics g) {
         //assert _lineWidth > 1 && _lineColor != null
         //assert filled && filledColor != null
         // If we're filled with a wide border then fill
@@ -146,7 +146,7 @@ public class FigRRect extends FigRect {
      * Paint an unfilled rounded rectangle (with a narrow line or no line)
      * @param g
      */
-    private void paintEmpty(Graphics g) {
+    private void drawEmptyRRect(Graphics g) {
         // If there's no fill but a narrow line then just
         // draw that line.
         if (_lineColor != null && _lineWidth == 1) {
@@ -159,7 +159,7 @@ public class FigRRect extends FigRect {
      * Paint an unfilled rounded rectangle with a wide line
      * @param g
      */
-    private void paintEmptyWithWideLine(Graphics g) {
+    private void drawEmptyRRectWithWideLine(Graphics g) {
         // If there's no fill but a wide line then draw repeated
         // rounded rectangles in ever decreasing size.
         if (_lineColor != null && _lineWidth > 1) {
