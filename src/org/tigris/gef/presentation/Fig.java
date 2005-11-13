@@ -319,13 +319,16 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /**
      * Adds a new Annotation of type "text" to fig.
      */
-    public void addAnnotation(Fig annotation, String type, String context) {
+    // Only used by PGMLParser
+    final public void addAnnotation(Fig annotation, String type, String context) {
     }
+    
+//  Unused method
+//
+//    final public void removeAnnotation(String context) {
+//    }
 
-    public void removeAnnotation(String context) {
-    }
-
-    public void removeAnnotation(Fig annotationFig) {
+    final public void removeAnnotation(Fig annotationFig) {
         if(annotationFig.isAnnotation() && (this == annotationFig.getAnnotationOwner())) {
             Globals.curEditor().remove(annotationFig);
             getAnnotationStrategy().removeAnnotation(annotationFig);
@@ -338,7 +341,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      */
     // TODO This is only required by SelectionManager. Should this be package private
     // an move SelectionManager into this package?
-    public void translateAnnotations() {
+    final public void translateAnnotations() {
         // If this Fig is an annotaion itself, simply store the position at the owner.
         if(this.isAnnotation()) {
             SelectionManager selectionManager = Globals.curEditor().getSelectionManager();
@@ -356,7 +359,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /**
      * Updates the positions of the connected annotations.
      */
-    public void updateAnnotationPositions() {
+    final public void updateAnnotationPositions() {
         Enumeration annotations = getAnnotationStrategy().getAllAnnotations();
         while(annotations.hasMoreElements()) {
             Fig annotation = (Fig)annotations.nextElement();
@@ -367,15 +370,18 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         endTrans();
     }
 
-    public void initAnnotations() {
+    // Only used by PGMLParser
+    final public void initAnnotations() {
     }
 
     // end annotation related
     //-----------------------------------
-    // TODO We really need some javadoc for this. How is this supposed to be
-    // used. Why isn't this extended by FigEdgePoly?
-    public void addPoint(int x, int y) {
-    }
+    /**
+     * Add a point to this fig. sub classes should implement.
+     * TODO: Why isn't this extended by FigEdgePoly?
+     */
+    public void addPoint(int x, int y)
+    {}
 
     /**
      * The specified PropertyChangeListeners <b>propertyChange</b>
@@ -389,7 +395,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * listeners eventually remove themselves, otherwise this will
      * prevent garbage collection.
      */
-    public void addPropertyChangeListener(PropertyChangeListener l) {
+    final public void addPropertyChangeListener(PropertyChangeListener l) {
         Globals.addPropertyChangeListener(this, l);
     }
     
@@ -397,7 +403,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      *  Remove this PropertyChangeListener from the JavaBeans internal list. If
      *  the PropertyChangeListener isn't on the list, silently do nothing.
      */
-    public void removePropertyChangeListener(PropertyChangeListener l) {
+    final public void removePropertyChangeListener(PropertyChangeListener l) {
         Globals.removePropertyChangeListener(this, l);
     }
 
@@ -408,7 +414,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * @param direction
      * @param ed the editor that initiated this action.
      */
-    public void align(Rectangle r, int direction, Editor ed) {
+    final public void align(Rectangle r, int direction, Editor ed) {
         Rectangle bbox = getBounds();
         int dx = 0;
         int dy = 0;
@@ -473,7 +479,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * @deprecated in 0.11.1 Use getCenter();
      */
     // USED BY PGML.tee
-    public Point center() {
+    final public Point center() {
         return getCenter();
     }
     
@@ -571,7 +577,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Reply true if the given point is inside this Fig by
      * calling contains(int x, int y).
      */
-    public final boolean contains(Point p) {
+    final public boolean contains(Point p) {
         return contains(p.x, p.y);
     }
 
@@ -579,7 +585,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Reply true if the all four corners of the given rectangle are
      * inside this Fig, as determined by contains(int x, int y).
      */
-    public boolean contains(Rectangle r) {
+    final public boolean contains(Rectangle r) {
         return countCornersContained(r.x, r.y, r.width, r.height) == 4;
     }
 
@@ -716,7 +722,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         }
     }
 
-    protected int drawDashedLine(Graphics g, int phase, int x1, int y1, int x2, int y2) {
+    final private int drawDashedLine(Graphics g, int phase, int x1, int y1, int x2, int y2) {
         return plotter.drawDashedLine(
                 g, 
                 getLineWidth(), 
@@ -743,13 +749,13 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
 //        }
 //    }
 //
-    public void firePropChange(String propName, int oldV, int newV) {
+    final public void firePropChange(String propName, int oldV, int newV) {
         firePropChange(propName, new Integer(oldV), new Integer(newV));
     }
 
     /** Creates a PropertyChangeEvent and calls all registered listeners
      *  propertyChanged() method. */
-    public void firePropChange(String propName, Object oldV, Object newV) {
+    final public void firePropChange(String propName, Object oldV, Object newV) {
         Globals.firePropChange(this, propName, oldV, newV);
         if(group != null) {
             PropertyChangeEvent pce = new PropertyChangeEvent(this, propName, oldV, newV);
@@ -757,7 +763,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         }
     }
 
-    public void firePropChange(String propName, boolean oldV, boolean newV) {
+    final public void firePropChange(String propName, boolean oldV, boolean newV) {
         firePropChange(propName, new Boolean(oldV), new Boolean(newV));
     }
 
@@ -809,11 +815,11 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * @deprecated in 0.11.1 us org.tigris.gef.persistence.pgml.PgmlUtility.getDashed(Fig)
      */
     // USED by PGML.tee
-    public int getDashed01() {
+    final public int getDashed01() {
         return getDashed() ? 1 : 0;
     }
 
-    public String getDashedString() {
+    final public String getDashedString() {
         return (_dashes == null) ? DASHED_CHOICES[0] : DASHED_CHOICES[1];
     }
 
@@ -847,7 +853,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /**
      * @deprecated in 0.11.1 us org.tigris.gef.persistence.pgml.PgmlUtility.getDashed(Fig)
      */
-    public int getFilled01() {
+    final public int getFilled01() {
         return _filled ? 1 : 0;
     }
 
@@ -873,6 +879,9 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         return _lineWidth;
     }
 
+    /**
+     * TODO: Should be abstract. Is this needed on Fig or FigEdge
+     */
     public Point getFirstPoint() {
         return new Point();
     }
@@ -883,13 +892,13 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Instead, if you want to connect to any point on one or more line-segments,
      * then you should overrule getClosestPoint().
      * 
-     * @return the lisy of gravity points.
+     * @return the list of gravity points.
      */
     public List getGravityPoints() {
         return null;
     }
 
-    public Fig getGroup() {
+    final public Fig getGroup() {
         return group;
     }
 
@@ -898,7 +907,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * @return the context of the Fig.
      */
     // USED BY PGML.tee
-    public String getContext() {
+    final public String getContext() {
         return _context;
     }
 
@@ -909,7 +918,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /*
      * USED BY PGML.tee
      */
-    public int getHalfHeight() {
+    final public int getHalfHeight() {
         return _h / 2;
     }
 
@@ -920,7 +929,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /*
      * USED BY PGML.tee
      */
-    public int getHalfWidth() {
+    final public int getHalfWidth() {
         return _w / 2;
     }
 
@@ -949,27 +958,36 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         return "Fig" + index;
     }
 
+    /**
+     * TODO: Should be abstract. Is this needed on Fig or FigEdge
+     */
     public Point getLastPoint() {
         return new Point();
     }
 
-    public Layer getLayer() {
+    final public Layer getLayer() {
         return _layer;
     }
 
-    /** Returns a point that is the upper left corner of the Fig's
-     *  bounding box. */
-    public Point getLocation() {
+    /**
+     * Returns a point that is the upper left corner of the Fig's
+     * bounding box. Implementation creates a new Point instance,
+     * consider getX() and getY() for performance.
+     */
+    final public Point getLocation() {
         return new Point(_x, _y);
     }
 
-    public boolean getLocked() {
+    final public boolean getLocked() {
         return _locked;
     }
 
-    /** Returns the minimum size of the Fig.  This is the smallest size
-     *  that the user can make this Fig by dragging. You can ignore this
-     *  and make Figs smaller programmitically if you must. */
+    /**
+     * Returns the minimum size of the Fig.  This is the smallest size
+     * that the user can make this Fig by dragging. You can ignore this
+     * and make Figs smaller programmitically if you must.
+     * TODO: return a single instance of an immutable Dimension
+     */
     public Dimension getMinimumSize() {
         return new Dimension(MIN_SIZE, MIN_SIZE);
     }
@@ -979,6 +997,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     }
 
     /**
+     * Return the model element that this Fig represents.
      * USED BY PGML.tee
      */
     public Object getOwner() {
@@ -1017,7 +1036,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * automated layout. By default just uses the current
      * size. Subclasses must override to return something useful.
      */
-    public Dimension getPreferredSize() {
+    final public Dimension getPreferredSize() {
     	return new Dimension(_w, _h);
     }
 
@@ -1033,7 +1052,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Returns the single flag of the Fig
      * @deprecated 0.11.1 I can find no use for this.
      */
-    public boolean getSingle() {
+    final public boolean getSingle() {
         return false;
     }
 
@@ -1043,10 +1062,11 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     }
 
     public String getTipString(MouseEvent me) {
-        return toString();
+        if (_owner == null) return toString();
+        return _owner.toString();
     }
 
-    public Rectangle getTrapRect() {
+    final public Rectangle getTrapRect() {
         return getBounds();
     }
 
@@ -1058,7 +1078,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * @deprecated use PgmlUtility.visibilityToString(Fig f)
      */
     // USED BY PGML.tee
-    public int getVisState() {
+    final public int getVisState() {
         if (isVisible()) return 1;
         return 0;
     }
@@ -1067,7 +1087,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Get the current width of the Fig.
      */
     // USED BY PGML.tee
-    public int getWidth() {
+    final public int getWidth() {
         return _w;
     }
 
@@ -1075,7 +1095,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Get the current height of the Fig.
      */
     // USED BY PGML.tee
-    public int getHeight() {
+    final public int getHeight() {
         return _h;
     }
 
@@ -1083,7 +1103,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Get the x position of the Fig.
      */
     // USED BY PGML.tee
-    public int getX() {
+    final public int getX() {
         return _x;
     }
 
@@ -1091,7 +1111,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Get the y position of the Fig.
      */
     // USED BY PGML.tee
-    public int getY() {
+    final public int getY() {
         return _y;
     }
 
@@ -1152,14 +1172,14 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /**
      * Returns true if this Fig can be resized by the user.
      */
-    public boolean isLowerRightResizable() {
+    final public boolean isLowerRightResizable() {
         return false;
     }
 
     /**
      * Returns true if this Fig can be moved around by the user.
      */
-    public boolean isMovable() {
+    final public boolean isMovable() {
         return movable;
     }
 
@@ -1196,7 +1216,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      *
      * @return True, if the item is currently selected, otherwise false.
      */
-    public boolean isSelected() {
+    final public boolean isSelected() {
         return _selected;
     }
 
@@ -1226,6 +1246,10 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         return _lineWidth >= 0 && _lineColor != null && _fillColor != null;
     }
 
+    /**
+     * @depreacted use paint(Object) and make this final
+     * @param g
+     */
     public void paint(Graphics g) {
         paint((Object)g);
     }
@@ -1245,7 +1269,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /** Return a point at the given distance along the path around this
      *  Fig. By default, uses perimeter of the Fig's bounding
      *  box. Subclasses like FigPoly have more specific logic. */
-    public Point pointAlongPerimeter(int dist) {
+    final public Point pointAlongPerimeter(int dist) {
         Point res = new Point();
         stuffPointAlongPerimeter(dist, res);
         return res;
@@ -1263,7 +1287,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /**
      * Draw the Fig on a PrintGraphics. This just calls paint.
      */
-    public void print(Graphics g) {
+    final public void print(Graphics g) {
         paint(g);
     }
 
@@ -1281,13 +1305,14 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /**
      * Force recalculating of bounds and redraw of fig.
      */
-    public void redraw() {
+    final public void redraw() {
         Rectangle rect = getBounds();
         setBounds(rect.x, rect.y, rect.width, rect.height);
         damage();
     }
 
 
+    // TODO: Make sure this is extended in FigEdgePoly and FigPoly
     public void removePoint(int i) {
     }
 
@@ -1300,7 +1325,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * @see LayerDiagram#reorder
      * @see          CmdReorder
      */
-    public void reorder(int func, Layer lay) {
+    final public void reorder(int func, Layer lay) {
         lay.reorder(this, func);
     }
 
@@ -1309,7 +1334,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      *  Reply a rectangle that arcs should not route through. Basically this is
      *  the bounding box plus some margin around all egdes.
      */
-    public Rectangle routingRect() {
+    final public Rectangle routingRect() {
         return new Rectangle(_x - BORDER, _y - BORDER, _w + BORDER * 2, _h + BORDER * 2);
     }
 
@@ -1317,14 +1342,14 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /**
      * @deprecated in 0.11.1 This method is not used.
      */
-    public boolean savingAllowed() {
+    final public boolean savingAllowed() {
         return _allowsSaving;
     }
 
     /**
      * @deprecated in 0.11.1 This method is not used.
      */
-    public void setSavingAllowed(boolean newValue) {
+    final public void setSavingAllowed(boolean newValue) {
         _allowsSaving = newValue;
     }
 
@@ -1332,7 +1357,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Set the bounds of this Fig. Fires PropertyChangeEvent "bounds".
      * This method can be undone by performing UndoAction.
      */
-    public final void setBounds(
+    final public void setBounds(
             final int newX,
             final int newY,
             final int newWidth,
@@ -1394,11 +1419,11 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
 
     /** Sets the enclosing FigGroup of this Fig.  The enclosing group is
      * always notified of property changes, without need to add a listener. */
-    public void setGroup(Fig f) {
+    final public void setGroup(Fig f) {
         group = f;
     }
 
-    public void setContext(String context) {
+    final public void setContext(String context) {
         _context = context;
     }
 
@@ -1481,7 +1506,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /** Move the Fig to the given position. By default translates the
      *  Fig so that the upper left corner of its bounding box is at the
      *  location. Fires property "bounds".*/
-    public void setLocation(int x, int y) {
+    final public void setLocation(int x, int y) {
         translate(x - _x, y - _y);
     }
 
@@ -1496,7 +1521,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      *  if Figs are locked and will not request modifications to locked
      *  Figs. Fires PropertyChangeEvent
      *  "locked". */
-    public void setLocked(boolean b) {
+    final public void setLocked(boolean b) {
         firePropChange("locked", _locked, b);
         _locked = b;
     }
@@ -1521,7 +1546,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     public void setPoint(int i, int x, int y) {
     }
 
-    public final void setPoint(int i, Point p) {
+    final public void setPoint(int i, Point p) {
         setPoint(i, p.x, p.y);
     }
 
@@ -1529,7 +1554,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         setPoint(h.index, x, y);
     }
 
-    public final void setPoint(Handle h, Point p) {
+    final public void setPoint(Handle h, Point p) {
         setPoint(h, p.x, p.y);
     }
 
@@ -1543,22 +1568,18 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /** Sets the single flag of the Fig. Has to be overwritten in
      * subclasses interested in this flag.
      */
-    public void setSingle(String single) {
+    final public void setSingle(String single) {
     }
 
     /** Sets the size of the Fig. Fires property "bounds". */
-    public void setSize(int w, int h) {
+    final public void setSize(int w, int h) {
         setBounds(_x, _y, w, h);
     }
 
     /** Sets the size of the Fig. Fires property "bounds". */
-    public final void setSize(Dimension d) {
+    final public void setSize(Dimension d) {
         setSize(d.width, d.height);
     }
-
-//    public void setVisState(int visState) {
-//        _shown = visState;
-//    }
 
     /**
      * Set the width of the Fig.
@@ -1569,7 +1590,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Calling a single method will be far more efficient in changing bounds.
      * @param width The new width.
      */
-    public void setWidth(int w) {
+    final public void setWidth(int w) {
         setBounds(_x, _y, w, _h);
     }
 
@@ -1582,7 +1603,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Calling a single method will be far more efficient in changing bounds.
      * @param height The new height.
      */
-    public void setHeight(int h) {
+    final public void setHeight(int h) {
         setBounds(_x, _y, _w, h);
     }
 
@@ -1595,7 +1616,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Calling a single method will be far more efficient in changing bounds.
      * @param x The new x co-ordinate
      */
-    public void setX(int x) {
+    final public void setX(int x) {
         setBounds(x, _y, _w, _h);
     }
 
@@ -1611,7 +1632,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Calling a single method will be far more efficient in changing bounds.
      * @param y The new y co-ordinate
      */
-    public void setY(int y) {
+    final public void setY(int y) {
         setBounds(_x, y, _w, _h);
     }
 
@@ -1620,8 +1641,9 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
 
     /**
      * Reshape the given rectangle to be my bounding box.
+     * @deprecated use getBounds(Rectangle r)
      */
-    public void stuffBounds(Rectangle r) {
+    final public void stuffBounds(Rectangle r) {
         r.setBounds(_x, _y, _w, _h);
     }
 
@@ -1654,6 +1676,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * could be very useful if local-coordinate systems are used
      * because deltas need less transforming... maybe. Fires property
      * "bounds".
+     * TODO: make final and subclasses should extend translateImpl
      * The method is undoable by performing the UndoAction.
      * @param dx the x offset
      * @param dy the y offset
@@ -1708,26 +1731,26 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /**
      * @deprecated 0.11.1 this is not used.
      */
-    public void updateVisState() {
+    final public void updateVisState() {
     }
 
     /** Reply true if the entire Fig is contained within the given
      *  Rectangle. This can be used by ModeSelect to select Figs that
      *  are totally within the selection rectangle. */
-    public boolean within(Rectangle r) {
+    final public boolean within(Rectangle r) {
         return r.contains(_x, _y) && r.contains(_x + _w, _y + _h);
     }
 
     /** Returns true if the fig is visible */
-    public boolean isVisible() {
+    final public boolean isVisible() {
         return visible;
     }
 
     /** 
      * Set the visible status of the fig
      */
-    public void setVisible(boolean isDisplayed) {
-        visible = isDisplayed;
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
     
     /**
@@ -1746,7 +1769,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         this.movable = movable;
     }
 
-    public boolean isRemoveStarted() {
+    final public boolean isRemoveStarted() {
         return removeStarted;
     }
 

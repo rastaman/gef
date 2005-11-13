@@ -618,14 +618,6 @@ public class FigGroup extends Fig {
         return this;
     }
 
-    /**
-     * Returns the size of the group containing all entries.
-     * @return Dimension representing the size of the group.
-     */
-    public Dimension getSize() {
-        return new Dimension(_w, _h);
-    }
-    
     private FigGroup getTopGroup() {
         FigGroup topGroup = this;
         while (topGroup.getGroup() != null) {
