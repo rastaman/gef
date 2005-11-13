@@ -12,9 +12,10 @@ import java.util.Vector;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConv;
 import org.tigris.gef.di.GraphEdge;
-import org.tigris.gef.di.GraphElement;
 import org.tigris.gef.graph.GraphEdgeHooks;
 import org.tigris.gef.ui.Highlightable;
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
 
 /** Abastract Fig class for representing edges between ports.
  *
@@ -59,19 +60,19 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     ////////////////////////////////////////////////////////////////
     // inner classes
     private class PathItem implements java.io.Serializable {
-        Fig _fig;
-        PathConv _path;
+        final Fig _fig;
+        final PathConv _path;
 
-        PathItem(Fig f, PathConv pc) {
+        PathItem(final Fig f, final PathConv pc) {
             _fig = f;
             _path = pc;
         }
 
-        public PathConv getPath() {
+        final public PathConv getPath() {
             return _path;
         }
 
-        public Fig getFig() {
+        final public Fig getFig() {
             return _fig;
         }
     }
@@ -132,7 +133,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         _y = res.y;
         _w = res.width;
         _h = res.height;
-        //System.out.println("Bound calculated x="+_x+" y="+_y+" w="+_w+" h="+_h);
+        System.out.println("Bound calculated x="+_x+" y="+_y+" w="+_w+" h="+_h);
     }
 
     public void cleanUp() {
@@ -145,9 +146,8 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /** Method to compute the route a FigEdge should follow.  By defualt
      *  this does nothing. Sublcasses, like FigEdgeRectiline override
      *  this method. */
-    public void computeRoute() {
-    }
-
+    abstract public void computeRoute();
+    
     public boolean contains(int x, int y) {
         if(_fig.contains(x, y)) {
             return true;
@@ -701,7 +701,23 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         _fig.stuffPointAlongPerimeter(dist, res);
     }
 
-    public void translateEdge(int dx, int dy) {
+    final public void translateEdge(final int dx, final int dy) {
+        
+        class TranslateEdgeMemento extends Memento {
+            
+            TranslateEdgeMemento(int dx, int dy) {
+            }
+            public void undo() {
+                _fig.translate(-dx, -dy);
+                calcBounds();
+            }
+            public void redo() {
+                _fig.translate(dx, dy);
+                calcBounds();
+            }
+        }
+        UndoManager.getInstance().addMemento(new TranslateEdgeMemento(dx, dy));
+        
         _fig.translate(dx, dy);
         calcBounds();
     }

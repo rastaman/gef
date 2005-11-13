@@ -35,6 +35,7 @@ import org.tigris.gef.di.GraphNode;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
 import org.tigris.gef.ui.Highlightable;
+import org.tigris.gef.undo.UndoManager;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -46,8 +47,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/** Class to present a node (such as a NetNode) in a diagram. */
-
+/**
+ * Class to present a node (such as a NetNode) in a diagram.
+ */
 public class FigNode extends FigGroup implements
         GraphNode,
         MouseListener {
@@ -165,16 +167,16 @@ public class FigNode extends FigGroup implements
      */
     public void setOwner(Object node) {
         Object oldOwner = getOwner();
-        if(oldOwner instanceof GraphNodeHooks)
+        if (oldOwner instanceof GraphNodeHooks) {
             ((GraphNodeHooks)oldOwner).removePropertyChangeListener(this);
-        else if(oldOwner instanceof Highlightable)
+        } else if (oldOwner instanceof Highlightable) {
             ((Highlightable)oldOwner).removePropertyChangeListener(this);
-
-        if(node instanceof GraphNodeHooks)
+        }
+        if (node instanceof GraphNodeHooks) {
             ((GraphNodeHooks)node).addPropertyChangeListener(this);
-        else if(node instanceof Highlightable)
+        } else if (node instanceof Highlightable) {
             ((Highlightable)node).addPropertyChangeListener(this);
-
+        }
         super.setOwner(node);
     }
 
@@ -525,12 +527,17 @@ public class FigNode extends FigGroup implements
         updateEdges();
     }
 
+    /**
+     * Update the position of edges according to the position of the node.
+     * Does nothing if undo in progress.
+     */
     public void updateEdges() {
-        int edgeCount = figEdges.size();
-        for(int edgeIndex = 0; edgeIndex < edgeCount; ++edgeIndex) {
-            FigEdge fe = (FigEdge)figEdges.get(edgeIndex);
-            //System.out.println("[FigNode] update edge " + fe.toString());
-            fe.computeRoute();
+        if (!UndoManager.getInstance().isUndoInProgress()) {
+            int edgeCount = figEdges.size();
+            for(int edgeIndex = 0; edgeIndex < edgeCount; ++edgeIndex) {
+                FigEdge fe = (FigEdge)figEdges.get(edgeIndex);
+                fe.computeRoute();
+            }
         }
     }
 

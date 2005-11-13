@@ -24,6 +24,8 @@ public class UndoManager {
     
     private boolean newChain = true;
     
+    private boolean undoInProgress = false;
+    
     // TODO: A MementoChainStack may produce some reasuable code for
     // the undoStack and the redoStack/
     protected ArrayList undoStack = new ArrayList();
@@ -80,6 +82,7 @@ public class UndoManager {
      * Undo the most recent chain of mementos received by the undo stack
      */
     public void undo() {
+        undoInProgress = true;
         Memento memento;
         do {
             memento = pop(undoStack);
@@ -88,6 +91,7 @@ public class UndoManager {
         } while (!memento.startChain);
         decrementUndoChainCount();
         incrementRedoChainCount();
+        undoInProgress = false;
     }
     
     /**
@@ -220,5 +224,9 @@ public class UndoManager {
      */
     private String getBoolString(boolean b) {
         return b ? TRUE : FALSE;
+    }
+
+    public boolean isUndoInProgress() {
+        return undoInProgress;
     }
 }
