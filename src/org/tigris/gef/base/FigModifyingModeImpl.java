@@ -124,12 +124,12 @@ implements FigModifyingMode
      *  example, ModePlace paints the object being placed. Mode's are
      *  drawn on top of (after) the Editor's current view and on top of
      *  any selections. */
-    final public void paint(Graphics g) {
+    public void paint(Graphics g) {
         paint((Object)g);
     }
 
     /** Just calls paint(g) bt default. */
-    final public void print(Graphics g) {
+    public void print(Graphics g) {
         print((Object)g);
     }
 
@@ -137,10 +137,10 @@ implements FigModifyingMode
      *  example, ModePlace paints the object being placed. Mode's are
      *  drawn on top of (after) the Editor's current view and on top of
      *  any selections. */
-    public void paint(Object graphicsContext) { }
+    final public void paint(Object graphicsContext) { }
 
     /** Just calls paint(g) bt default. */
-    public void print(Object graphicsContext) {
+    final public void print(Object graphicsContext) {
         paint(graphicsContext);
     }
 

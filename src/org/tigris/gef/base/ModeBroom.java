@@ -545,12 +545,12 @@ public class ModeBroom extends FigModifyingModeImpl {
     // painting methods
 
     /** Paint this mode by painting the selection rectangle if appropriate. */
-    public void paint(Object graphicsContext) {
+    public void paint(Graphics g) {
         if (!_draw) {
             return;
         }
 
-        Graphics g = (Graphics)graphicsContext;
+//        Graphics g = (Graphics)graphicsContext;
         Color selectRectColor = Globals.getPrefs().getRubberbandColor();
         if(_magnetic) {
             g.setColor(Color.red);

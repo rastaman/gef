@@ -286,10 +286,10 @@ public class ModeSelect extends FigModifyingModeImpl {
     // painting methods
 
     /** Paint this mode by painting the selection rectangle if appropriate. */
-    public void paint(Object graphicsContext) {
+    public void paint(Graphics g) {
         if(showSelectRect) {
             Color selectRectColor = Globals.getPrefs().getRubberbandColor();
-            Graphics g = (Graphics)graphicsContext;
+//            Graphics g = (Graphics)graphicsContext;
             g.setColor(selectRectColor);
             g.drawRect(selectRect.x, selectRect.y, selectRect.width, selectRect.height);
         }

@@ -326,10 +326,10 @@ public class ModeModify extends FigModifyingModeImpl {
         }
     }
 
-    public void paint(Object graphicsContext) {
-        super.paint(graphicsContext);
+    public void paint(Graphics g) {
+        super.paint(g);
         if(_highlightTrap != null) {
-            Graphics g = (Graphics)graphicsContext;
+//            Graphics g = (Graphics)graphicsContext;
             Color selectRectColor = Globals.getPrefs().getRubberbandColor();
             g.setColor(selectRectColor);
             g.drawRect(_highlightTrap.x - 1, _highlightTrap.y - 1, _highlightTrap.width + 1, _highlightTrap.height + 1);

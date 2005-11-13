@@ -242,9 +242,9 @@ public class ModePlace extends FigModifyingModeImpl {
     }
 
     /** Paint the FigNode being dragged around. */
-    public void paint(Object graphicsContext) {
+    public void paint(Graphics g) {
         if(_pers != null) {
-            _pers.paint(graphicsContext);
+            _pers.paint((Object)g);
         }
     }
 } /* end class ModePlace */
