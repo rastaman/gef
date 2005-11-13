@@ -420,13 +420,14 @@ public class FigEdgePoly extends FigEdge {
         }
     }
 
-    public void paint(Graphics g) {
-        super.paint(g);
+    public void paint(Object graphicContext) {
+        super.paint(graphicContext);
         if (_highlight) {
             FigPoly f = (FigPoly) getFig();
             int nPoints = f.getNumPoints();
             int xs[] = f.getXs();
             int ys[] = f.getYs();
+            Graphics g = (Graphics) graphicContext;
             for (int i = 1; i < nPoints; i++) {
                 paintHighlightLine(g, xs[i - 1], ys[i - 1], xs[i], ys[i]);
             }

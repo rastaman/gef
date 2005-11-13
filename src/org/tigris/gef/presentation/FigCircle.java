@@ -75,7 +75,7 @@ public class FigCircle extends Fig {
     // display methods
 
     /** Draw this FigCircle. */
-    public void paint(Graphics g) {
+    public void paint(Object g) {
         plotter.drawOval(
                 g,
                 _filled,

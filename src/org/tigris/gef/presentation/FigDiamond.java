@@ -84,7 +84,7 @@ public class FigDiamond extends Fig {
     // painting methods
 
     /** Paint this FigRect */
-    public void paint(Graphics g) {
+    public void paint(Object graphicContext) {
         int xs[] = new int[4];
         int ys[] = new int[4];
         xs[0] = _x + _w/2;
@@ -95,6 +95,7 @@ public class FigDiamond extends Fig {
         ys[2] = _y + _h;
         xs[3] = _x;
         ys[3] = _y + _h/2;
+        Graphics g = (Graphics)graphicContext;
         if (_filled && getFillColor() != null) {
             g.setColor(getFillColor());
             g.fillPolygon(xs, ys, 4);

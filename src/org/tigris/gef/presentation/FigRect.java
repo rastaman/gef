@@ -29,7 +29,6 @@
 package org.tigris.gef.presentation;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.io.Serializable;
 
 /** Primitive Fig to paint rectangles on a LayerDiagram. */
@@ -67,7 +66,7 @@ public class FigRect extends Fig implements Serializable {
     // painting methods
 
     /** Paint this FigRect */
-    public void paint(Graphics g) {
+    public void paint(Object g) {
         plotter.drawRect(
                 g,
                 _filled, _fillColor,

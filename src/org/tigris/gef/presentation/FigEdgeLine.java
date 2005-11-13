@@ -64,13 +64,13 @@ public class FigEdgeLine extends FigEdge {
         calcBounds();
     }
 
-
-  public void paint(Graphics g) {
-    super.paint(g);
-    if (_highlight) {
-      FigLine f = (FigLine) getFig();
-      paintHighlightLine(g, f.getX1(), f.getY1(), f.getX2(), f.getY2());
+    public void paint(Object graphicContext) {
+        super.paint(graphicContext);
+        Graphics g = (Graphics)graphicContext;
+        if (_highlight) {
+            FigLine f = (FigLine) getFig();
+            paintHighlightLine(g, f.getX1(), f.getY1(), f.getX2(), f.getY2());
+        }
     }
-  }
 } /* end class FigEdgeLine */
 

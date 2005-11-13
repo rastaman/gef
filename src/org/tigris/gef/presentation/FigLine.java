@@ -29,7 +29,6 @@
 package org.tigris.gef.presentation;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -260,7 +259,7 @@ public class FigLine extends Fig {
     }
 
     /** Paint this line object. */
-    public void paint(Graphics g) {
+    public void paint(Object g) {
         plotter.drawLine(
                 g,
                 getLineWidth(),

@@ -30,7 +30,6 @@ package org.tigris.gef.presentation;
 import org.tigris.gef.base.Geometry;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -509,7 +508,7 @@ public class FigPoly extends Fig {
     // painting methods
 
     /** Paint the FigPoly on the given Graphics */
-    public void paint(Graphics g) {
+    public void paint(Object g) {
         plotter.drawPoly(
                 g, 
                 _filled, getFillColor(), 

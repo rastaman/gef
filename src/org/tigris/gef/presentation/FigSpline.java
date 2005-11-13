@@ -24,7 +24,6 @@
 package org.tigris.gef.presentation;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Polygon;
 import java.util.BitSet;
 
@@ -161,7 +160,7 @@ public class FigSpline extends FigPoly {
 	super.moveVertex(h, x, y, ov);
 	setSpline();
   }  
-    public void paint(Graphics g) {
+    public void paint(Object g) {
 	    if (_npoints == 2) {
             plotter.drawStraight(g, _lineColor, _xknots, _yknots);
         } else {

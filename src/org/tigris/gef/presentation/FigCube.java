@@ -32,7 +32,6 @@
 package org.tigris.gef.presentation;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.io.Serializable;
 
 /**
@@ -49,7 +48,7 @@ public class FigCube extends Fig implements Serializable {
       super(x, y, w, h);
     }
 
-    public void paint(Graphics g){
+    public void paint(Object g){
         plotter.drawCube(
                 g, 
                 getLineColor(), 

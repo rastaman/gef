@@ -37,7 +37,6 @@ import org.tigris.gef.graph.GraphPortHooks;
 import org.tigris.gef.ui.Highlightable;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -412,7 +411,7 @@ public class FigNode extends FigGroup implements
      *  paint all the Figs contained in the FigNode. Also can draw a
      *  highlighting rectangle around the FigNode. Needs-more-work:
      *  maybe I should implement LayerHighlight instead. */
-    public void paint(Graphics g) {
+    public void paint(Object g) {
         super.paint(g);
         //System.out.println("[FigNode] paint: owner = " + getOwner());
         if(_highlight) {

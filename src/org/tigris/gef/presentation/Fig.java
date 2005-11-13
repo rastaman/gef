@@ -1226,16 +1226,21 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         return _lineWidth >= 0 && _lineColor != null && _fillColor != null;
     }
 
+    public void paint(Graphics g) {
+        paint((Object)g);
+    }
+    
     /** Method to paint this Fig.  By default it paints an "empty"
      *  space, subclasses should override this method. */
-    public void paint(Graphics g) {
-        if (visible) {
-            g.setColor(Color.pink);
-            g.fillRect(_x, _y, _w, _h);
-            g.setColor(Color.black);
-            g.drawString("(undefined)", _x + _w / 2, _y + _h / 2);
-        }
-    }
+    abstract public void paint(Object g);
+//    {
+//        if (visible) {
+//            g.setColor(Color.pink);
+//            g.fillRect(_x, _y, _w, _h);
+//            g.setColor(Color.black);
+//            g.drawString("(undefined)", _x + _w / 2, _y + _h / 2);
+//        }
+//    }
 
     /** Return a point at the given distance along the path around this
      *  Fig. By default, uses perimeter of the Fig's bounding

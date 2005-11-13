@@ -113,7 +113,7 @@ public class FigImage extends Fig implements ImageObserver {
     // painting methods
 
     /** Paint this FigImage on the given Graphics. */
-    public void paint(Graphics g) {
+    public void paint(Object graphicContext) {
         if (_image == null) {
             if (LOG.isDebugEnabled()) LOG.debug("reloading image");
             if (_url != null) {
@@ -122,6 +122,7 @@ public class FigImage extends Fig implements ImageObserver {
             }
         }
 
+        Graphics g = (Graphics) graphicContext;
         if (_image != null)
             g.drawImage(_image, getX(), getY(), getWidth(), getHeight(), this);
         else {

@@ -207,9 +207,11 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
     /** Paint this mode by painting the new item. This is the only
      *  feedback that the user will get since the new item is not
      *  officially added to the Editor's document yet. */
-    public void paint(Graphics g) {
-        if(null != _newItem)
+    public void paint(Object graphicsContext) {
+        if (null != _newItem) {
+            Graphics g = (Graphics)graphicsContext;
             _newItem.paint(g);
+        }
     }
 
     ////////////////////////////////////////////////////////////////
