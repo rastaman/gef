@@ -49,11 +49,12 @@ public class SelectionMove extends Selection {
 
     /** Paint the selection. */
     public void paint(Graphics g) {
-        int x = _content.getX();
-        int y = _content.getY();
-        int w = _content.getWidth();
-        int h = _content.getHeight();
-        g.setColor(Globals.getPrefs().handleColorFor(_content));
+        Fig fig = getContent();
+        int x = fig.getX();
+        int y = fig.getY();
+        int w = fig.getWidth();
+        int h = fig.getHeight();
+        g.setColor(Globals.getPrefs().handleColorFor(fig));
         g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH,
                w + BORDER_WIDTH * 2 - 1, h + BORDER_WIDTH * 2 - 1);
         g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1,
