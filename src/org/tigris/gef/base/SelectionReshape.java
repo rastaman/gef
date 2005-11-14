@@ -30,6 +30,7 @@ package org.tigris.gef.base;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -39,6 +40,8 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigEdgePoly;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
 
 /** A Selection that allows the user to reshape the selected Fig.
  *  This is used with FigPoly, FigLine, and FigInk.  One handle is
@@ -51,43 +54,41 @@ import org.tigris.gef.presentation.Handle;
 
 public class SelectionReshape extends Selection implements KeyListener {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    private int selectedHandle = -1;
 
-  protected int _selectedHandle = -1; //@
-
-  ////////////////////////////////////////////////////////////////
-  // constructors
-
-    /** Construct a new SelectionReshape for the given Fig */
+    /**
+     * Construct a new SelectionReshape for the given Fig
+     */
     public SelectionReshape(Fig f) {
         super(f);
     }
 
-    /** Return a handle ID for the handle under the mouse, or -1 if none. 
+    /**
+     * Return a handle ID for the handle under the mouse, or -1 if none. 
      */
     public void hitHandle(Rectangle r, Handle h) {
-        int npoints = _content.getNumPoints();
-        int[] xs = _content.getXs();
-        int[] ys = _content.getYs();
+        Fig fig = getContent();
+        int npoints = fig.getNumPoints();
+        int[] xs = fig.getXs();
+        int[] ys = fig.getYs();
         for (int i = 0; i < npoints; ++i) {
             if (r.contains(xs[i], ys[i])) {
-                _selectedHandle = i;
+                selectedHandle = i;
                 h.index = i;
                 h.instructions = "Move point";
                 return;
             }
         }
-        if (_content instanceof FigEdgePoly) {
+        if (fig instanceof FigEdgePoly) {
             for (int i = 0; i < npoints-1; ++i) {
                 if (Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
-                    h.index = _content.getNumPoints();
+                    h.index = fig.getNumPoints();
                     h.instructions = "Add a point";
                     return;
                 }
             }
         }
-        _selectedHandle = -1;
+        selectedHandle = -1;
         h.index = -1;
         h.instructions = "Move object(s)";
     }
@@ -97,19 +98,20 @@ public class SelectionReshape extends Selection implements KeyListener {
      * of the bounding box.
      */
     public void paint(Graphics g) {
-        int npoints = _content.getNumPoints();
-        int[] xs = _content.getXs();
-        int[] ys = _content.getYs();
-        g.setColor(Globals.getPrefs().handleColorFor(_content));
+        Fig fig = getContent();
+        int npoints = fig.getNumPoints();
+        int[] xs = fig.getXs();
+        int[] ys = fig.getYs();
+        g.setColor(Globals.getPrefs().handleColorFor(fig));
         for (int i = 0; i < npoints; ++i) {
             g.fillRect(
                     xs[i] - HAND_SIZE/2, ys[i] - HAND_SIZE/2,
                     HAND_SIZE, HAND_SIZE);
         }
-        if (_selectedHandle != -1) {
+        if (selectedHandle != -1) {
             g.drawRect(
-                    xs[_selectedHandle] - HAND_SIZE/2 - 2,
-                    ys[_selectedHandle] - HAND_SIZE/2 - 2,
+                    xs[selectedHandle] - HAND_SIZE/2 - 2,
+                    ys[selectedHandle] - HAND_SIZE/2 - 2,
                     HAND_SIZE + 3, HAND_SIZE + 3);
         }
         super.paint(g);
@@ -120,30 +122,56 @@ public class SelectionReshape extends Selection implements KeyListener {
      * handles.
      */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle h) {
-        Fig selectedFig = getContent();
+        final Fig selectedFig = getContent();
+        
+        
         // check assertions
         if (selectedFig instanceof FigEdgePoly) {
-            FigEdge p = ((FigEdge)selectedFig);
+            final FigEdgePoly figEdgePoly = ((FigEdgePoly)selectedFig);
+            
+            class ReshapeMemento extends Memento {
+
+                final Polygon oldPolygon;
+                
+                ReshapeMemento(final Polygon poly) {
+                    oldPolygon = poly;
+                }
+                public void undo() {
+                    figEdgePoly.setPolygon(oldPolygon);
+                }
+                public void redo() {
+//                    _fig.translate(dx, dy);
+//                    calcBounds();
+                }
+            }
+            UndoManager.getInstance().addMemento(new ReshapeMemento(figEdgePoly.getPolygon()));
+            
             int npoints = selectedFig.getNumPoints();
             int[] xs = selectedFig.getXs();
             int[] ys = selectedFig.getYs();
             Rectangle r = new Rectangle(anX-4, anY-4, 8, 8);
-            if (h.index == p.getNumPoints()) {
+            if (h.index == figEdgePoly.getNumPoints()) {
+                // If we're dragging the perimeter of a FigEdgePoly then
+                // create a handle at that point.
                 for (int i = 0; i < npoints-1; ++i) {
                     if (Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
-                        p.insertPoint(i,r.x,r.y);
+                        figEdgePoly.insertPoint(i,r.x,r.y);
                         h.index = i+1;
                         break;
                     }
                 }
             }
-            if (h.index < 0 || h.index >= p.getNumPoints()) {
+            // We should now be guaranteed to have a handle
+            if (h.index < 0 || h.index >= figEdgePoly.getNumPoints()) {
                 System.out.println("mistake " + h.index);
             }
-            if ((h.index == 0)||(h.index == p.getNumPoints()-1)) {
-                updateEdgeEnds(p,h,mX,mY);
+            // If we're dragging the first or last end then maybe we need
+            // to do something special in some sub class.
+            if ((h.index == 0)||(h.index == figEdgePoly.getNumPoints()-1)) {
+                updateEdgeEnds(figEdgePoly,h,mX,mY);
             } // end if
         }
+        
         if (selectedFig instanceof FigPoly) {
             FigPoly poly = (FigPoly)selectedFig;
             if (h.index == 0 || h.index == (poly.getNumPoints() - 1)) {
@@ -170,55 +198,13 @@ public class SelectionReshape extends Selection implements KeyListener {
         }
     }
 
-  public void keyReleased(KeyEvent ke) {
-    if (ke.isConsumed()) return;
-    if (_content instanceof KeyListener)
-      ((KeyListener)_content).keyReleased(ke);
-  }
-
-  /** If the user presses delete or backaspace while a handle is
-   *  selected, remove that point from the polygon. The 'n' and 'p'
-   *  keys select the next and previous points. The 'i' key inserts a
-   *  new point. */
-  public void keyTyped(KeyEvent ke) {
-    Editor ce = Globals.curEditor();
-    char key = ke.getKeyChar();
-    int npoints = _content.getNumPoints();
-    if (ke.isConsumed()) return;
-    if (_content instanceof KeyListener)
-      ((KeyListener)_content).keyTyped(ke);
-    if (ke.isConsumed()) return;
-
-    if (_selectedHandle != -1 && (key == 127 || key == 8)) {
-      ce.executeCmd(new CmdRemovePoint(_selectedHandle), ke);
-      ke.consume();
-      return;
+    public void keyReleased(KeyEvent ke) {
+        if (ke.isConsumed()) {
+            return;
+        }
+        if (getContent() instanceof KeyListener) {
+            ((KeyListener)getContent()).keyReleased(ke);
+        }
     }
-    if (key == 'i') {
-      if (_selectedHandle == -1) _selectedHandle = 0;
-      ce.executeCmd(new CmdInsertPoint(_selectedHandle), ke);
-      ke.consume();
-      return;
-    }
-    if (key == 'n') {
-      // Needs-More-Work: the following should be in an Cmd.
-      // ce.executeCmd(new CmdSelectNextPoint(), e);
-      if (_selectedHandle == -1) _selectedHandle = 0;
-      else _selectedHandle = (_selectedHandle + 1) % npoints;
-      endTrans();
-      ke.consume();
-      return;
-    }
-    if (key == 'p') {
-      // Needs-More-Work: the following should be in an Cmd.
-      // ce.executeCmd(new CmdSelectPrevPoint(), e);
-      if (_selectedHandle == -1) _selectedHandle = npoints - 1;
-      else _selectedHandle = (_selectedHandle + npoints - 1) % npoints;
-      endTrans();
-      ke.consume();
-      return;
-    }
-    //super.keyTyped(ke);
-  }
 } /* end class SelectionReshape */
 

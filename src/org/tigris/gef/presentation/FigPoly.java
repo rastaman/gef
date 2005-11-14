@@ -348,6 +348,8 @@ public class FigPoly extends Fig {
     public void removePoint(int i) {
 
         // needs-more-work: this assertion has been violated, track it down
+        // TODO: It is violated by selecting a point of a triangle FigPoly
+        // and pressing backspace.
         if (i < 0 || i >= _npoints) {
             throw new IllegalArgumentException("Point not found in LayerDiagram");
         }

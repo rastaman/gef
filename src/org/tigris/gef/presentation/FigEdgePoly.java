@@ -398,6 +398,17 @@ public class FigEdgePoly extends FigEdge {
         calcBounds();
     }
 
+    /** Set the current vector of points. */
+    public void setPolygon(Polygon p) {
+        ((FigPoly)getFig()).setPolygon(p);
+        calcBounds();
+    }
+
+    public Polygon getPolygon() {
+        return ((FigPoly)getFig()).getPolygon();
+    }
+
+    
     /** Add a point to this polygon. Fires PropertyChange with "bounds". */
     public void insertPoint(int i, int x, int y) {
         FigPoly p = ((FigPoly) getFig());

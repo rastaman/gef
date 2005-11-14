@@ -73,7 +73,7 @@ public class SelectionResize extends Selection {
      * </pre>
      */
     public void hitHandle(Rectangle r, Handle h) {
-        if (_content.isResizable()) {
+        if (getContent().isResizable()) {
 
             updateHandleBox();
             Rectangle testRect = new Rectangle(0, 0, 0, 0);
@@ -130,7 +130,7 @@ public class SelectionResize extends Selection {
     /** Update the private variables cx etc. that represent the rectangle on
     	  whose corners handles are to be drawn.*/
     private void updateHandleBox() {
-        Rectangle cRect = _content.getHandleBox();
+        final Rectangle cRect = getContent().getHandleBox();
         cx = cRect.x;
         cy = cRect.y;
         cw = cRect.width;
@@ -140,10 +140,11 @@ public class SelectionResize extends Selection {
     /** Paint the handles at the four corners and midway along each edge
      * of the bounding box.  */
     public void paint(Graphics g) {
-        if (_content.isResizable()) {
+        final Fig fig = getContent();
+        if (getContent().isResizable()) {
 
             updateHandleBox();
-            g.setColor(Globals.getPrefs().handleColorFor(_content));
+            g.setColor(Globals.getPrefs().handleColorFor(fig));
             g.fillRect(
                 cx - HAND_SIZE / 2,
                 cy - HAND_SIZE / 2,
@@ -165,11 +166,11 @@ public class SelectionResize extends Selection {
                 HAND_SIZE,
                 HAND_SIZE);
         } else {
-            int x = _content.getX();
-            int y = _content.getY();
-            int w = _content.getWidth();
-            int h = _content.getHeight();
-            g.setColor(Globals.getPrefs().handleColorFor(_content));
+            final int x = fig.getX();
+            final int y = fig.getY();
+            final int w = fig.getWidth();
+            final int h = fig.getHeight();
+            g.setColor(Globals.getPrefs().handleColorFor(fig));
             g.drawRect(
                 x - BORDER_WIDTH,
                 y - BORDER_WIDTH,
@@ -193,23 +194,24 @@ public class SelectionResize extends Selection {
      *  handles. Needs-More-Work: someday I might implement resizing that
      *  maintains the aspect ratio. */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-        if (!_content.isResizable()) {
+        final Fig fig = getContent();
+        if (!fig.isResizable()) {
             if (log.isDebugEnabled()) log.debug("Handle " + hand + " dragged but no action as fig is not resizable");
             return;
         }
 
         updateHandleBox();
 
-        int x = cx;
-        int y = cy;
-        int w = cw;
-        int h = ch;
+        final int x = cx;
+        final int y = cy;
+        final int w = cw;
+        final int h = ch;
         int newX = x, newY = y, newWidth = w, newHeight = h;
-        Dimension minSize = _content.getMinimumSize();
+        Dimension minSize = fig.getMinimumSize();
         int minWidth = minSize.width, minHeight = minSize.height;
         switch (hand.index) {
             case -1 :
-                _content.translate(anX - mX, anY - mY);
+                fig.translate(anX - mX, anY - mY);
                 return;
             case Handle.NORTHWEST :
                 newWidth = x + w - mX;
@@ -218,14 +220,14 @@ public class SelectionResize extends Selection {
                 newHeight = (newHeight < minHeight) ? minHeight : newHeight;
                 newX = x + w - newWidth;
                 newY = y + h - newHeight;
-                _content.setHandleBox(newX, newY, newWidth, newHeight);
+                fig.setHandleBox(newX, newY, newWidth, newHeight);
                 if ((newX + newWidth) != (x + w)) {
                     newX += (newX + newWidth) - (x + w);
                 }
                 if ((newY + newHeight) != (y + h)) {
                     newY += (newY + newHeight) - (y + h);
                 }
-                _content.setHandleBox(newX, newY, newWidth, newHeight);
+                fig.setHandleBox(newX, newY, newWidth, newHeight);
                 return;
             case Handle.NORTH :
                 break;
@@ -235,11 +237,11 @@ public class SelectionResize extends Selection {
                 newHeight = y + h - mY;
                 newHeight = (newHeight < minHeight) ? minHeight : newHeight;
                 newY = y + h - newHeight;
-                _content.setHandleBox(newX, newY, newWidth, newHeight);
+                fig.setHandleBox(newX, newY, newWidth, newHeight);
                 if ((newY + newHeight) != (y + h)) {
                     newY += (newY + newHeight) - (y + h);
                 }
-                _content.setHandleBox(newX, newY, newWidth, newHeight);
+                fig.setHandleBox(newX, newY, newWidth, newHeight);
                 break;
             case Handle.WEST :
                 break;
@@ -251,11 +253,11 @@ public class SelectionResize extends Selection {
                 newHeight = mY - y;
                 newHeight = (newHeight < minHeight) ? minHeight : newHeight;
                 newX = x + w - newWidth;
-                _content.setHandleBox(newX, newY, newWidth, newHeight);
+                fig.setHandleBox(newX, newY, newWidth, newHeight);
                 if ((newX + newWidth) != (x + w)) {
                     newX += (newX + newWidth) - (x + w);
                 }
-                _content.setHandleBox(newX, newY, newWidth, newHeight);
+                fig.setHandleBox(newX, newY, newWidth, newHeight);
                 break;
             case Handle.SOUTH :
                 break;
@@ -264,7 +266,7 @@ public class SelectionResize extends Selection {
                 newWidth = (newWidth < minWidth) ? minWidth : newWidth;
                 newHeight = mY - y;
                 newHeight = (newHeight < minHeight) ? minHeight : newHeight;
-                _content.setHandleBox(newX, newY, newWidth, newHeight);
+                fig.setHandleBox(newX, newY, newWidth, newHeight);
                 break;
             default :
                 log.error("invalid handle number for resizing fig");
