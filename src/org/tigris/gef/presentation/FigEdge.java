@@ -133,7 +133,6 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         _y = res.y;
         _w = res.width;
         _h = res.height;
-        System.out.println("Bound calculated x="+_x+" y="+_y+" w="+_w+" h="+_h);
     }
 
     final public void cleanUp() {
