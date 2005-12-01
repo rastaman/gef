@@ -375,6 +375,9 @@ public class OCLExpander {
                     Object[] args = new Object[1];
                     args[0] = o;
                     o = m.invoke(null, args);
+                    if (o instanceof List) {
+                        return (List)o;
+                    }
                     newValues.add(o);
                 }
             } catch (ClassNotFoundException e) {
