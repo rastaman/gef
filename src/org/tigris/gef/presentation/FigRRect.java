@@ -92,7 +92,7 @@ public class FigRRect extends FigRect {
             } else {
                 drawFilledRRect(g);
             }
-        } else if (_lineColor != null && _lineWidth > 0) {
+        } else if (_lineColor != null && _lineWidth > 1) {
             drawEmptyRRectWithWideLine(g);
         } else {
             drawEmptyRRect(g);
