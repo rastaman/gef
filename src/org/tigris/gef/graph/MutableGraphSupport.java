@@ -361,6 +361,12 @@ public abstract class MutableGraphSupport
         saveAction = action;
     }
     
+    public static void setSaveEnabled(boolean enabled) {
+        if (saveAction != null) {
+            saveAction.setEnabled(enabled);
+        }
+    }
+    
     public void removeNode(Object node) {
         fireNodeRemoved(node);
     }

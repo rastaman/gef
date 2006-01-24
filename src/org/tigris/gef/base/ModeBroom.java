@@ -36,6 +36,8 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
@@ -299,10 +301,7 @@ public class ModeBroom extends FigModifyingModeImpl {
                         break;
                 }
 
-                if(!(f instanceof FigNode)) {
-                    f.translate(dx, dy);
-                }
-                else {
+                if (f instanceof FigNode) {
                     FigNode fn = (FigNode)f;
                     fn.superTranslate(dx, dy);
                     Collection figEdges = fn.getFigEdges(null);
@@ -317,6 +316,12 @@ public class ModeBroom extends FigModifyingModeImpl {
                             nonMovingEdges.addElement(fe);
                         }
                     }
+                } else {
+                    f.translate(dx, dy);
+                }
+                
+                if ((dx > 0 || dy > 0) && !(f instanceof FigEdge)) {
+                    MutableGraphSupport.setSaveEnabled(true);
                 }
 
                 f.endTrans();
