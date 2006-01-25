@@ -182,6 +182,9 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         removeFocusListener(this);
         updateFigText();
         setVisible(false);
+        if (_target == null) {
+            return;
+        }
         _target.endTrans();
         Container parent = getParent();
         if(parent != null) {

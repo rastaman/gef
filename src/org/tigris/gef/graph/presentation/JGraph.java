@@ -30,6 +30,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -74,7 +76,7 @@ import org.tigris.gef.presentation.FigTextEditor;
  * class Editor, and other classes which do the real work.
  */
 
-public class JGraph extends JPanel implements Cloneable {
+public class JGraph extends JPanel implements Cloneable, AdjustmentListener {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -147,6 +149,8 @@ public class JGraph extends JPanel implements Cloneable {
         addMouseListener(editor);
         addMouseMotionListener(editor);
         addKeyListener(editor);
+        scrollPane.getHorizontalScrollBar().addAdjustmentListener(this);
+        scrollPane.getVerticalScrollBar().addAdjustmentListener(this);
 
         initKeys();
 
@@ -567,6 +571,10 @@ public class JGraph extends JPanel implements Cloneable {
      */
     protected String getCurrentDiagramId() {
         return _currentDiagramId;
+    }
+
+    public void adjustmentValueChanged(AdjustmentEvent e) {
+        FigTextEditor.getInstance().endEditing();
     }
 } /* end class JGraph */
 
