@@ -31,6 +31,8 @@
 
 package org.tigris.gef.base;
 
+import org.tigris.gef.graph.MutableGraphSupport;
+
 /** Cmd to Nudge Figs by a small distance.  This is useful when you
  *  want to get diagrams to look just right and you are not to steady
  *  with the mouse.  Also allows user to keep hands on keyboard.
@@ -108,6 +110,7 @@ public class CmdNudge extends Cmd {
         }
         // Should I move it so that it aligns with the next grid?
         sm.translate(dx, dy);
+        MutableGraphSupport.setSaveEnabled(true);
         sm.endTrans();
     }
 
