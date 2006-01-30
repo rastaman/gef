@@ -138,6 +138,7 @@ public class SelectionReshape extends Selection implements KeyListener {
                 }
                 public void undo() {
                     figEdgePoly.setPolygon(oldPolygon);
+                    figEdgePoly.damage();
                 }
                 public void redo() {
 //                    _fig.translate(dx, dy);
