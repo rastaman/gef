@@ -37,7 +37,6 @@ import java.util.List;
 
 import javax.swing.event.EventListenerList;
 
-import org.tigris.gef.di.GraphElement;
 import org.tigris.gef.event.GraphSelectionEvent;
 import org.tigris.gef.event.GraphSelectionListener;
 
@@ -46,6 +45,8 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
 
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
 import org.tigris.gef.util.VetoableChangeEventSource;
 
 /** This class handles Manager selections. It is basically a
@@ -586,9 +587,29 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             figEdge.translateAnnotations();
         }
 
+        class EdgeStretchMemento extends Memento {
+
+            final Point[] points;
+            final FigEdge figEdge;
+            
+            EdgeStretchMemento(FigEdge figEdge) {
+                this.figEdge = figEdge;
+                points = figEdge.getPoints();
+            }
+            public void undo() {
+                figEdge.setPoints(points);
+                figEdge.damage();
+            }
+            public void redo() {
+//                _fig.translate(dx, dy);
+//                calcBounds();
+            }
+        }
+        
         int nonMovingEdgeCount = _draggingNonMovingEdges.size();
         for(int i = 0; i < nonMovingEdgeCount; i++) {
             FigEdge figEdge = (FigEdge)_draggingNonMovingEdges.get(i);
+            UndoManager.getInstance().addMemento(new EdgeStretchMemento(figEdge));
             figEdge.getBounds(figBounds);
             dirtyRegion.add(figBounds);
             figEdge.computeRoute();
@@ -597,15 +618,6 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             figEdge.translateAnnotations();
         }
 
-        // GEF is so stinking, absolutly rotten, ...
-        // There used to be the whole diagram repainted.
-        // Now here's a hack that repaints only the affected region:
-        // First I assume that all selected figs are in the same layer, get the editors for this layer
-        // rescale the region according to the editor scale, and repaint only the result.
-        // first add some extra pixels for the selection handles and arrow heads (which are not included in getBounds())                
-        // TODO All figs should be contained within their bounds
-        // I need to check use of setHandleBox.
-        // Use ArgoUML deployment diagram as test.
         int extraDirt = 24;
         dirtyRegion.x -= extraDirt;
         dirtyRegion.y -= extraDirt;
@@ -619,7 +631,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             }
         }
 
-        if(layer != null) {
+        if (layer != null) {
             List editors = layer.getEditors();
             int editorCount = editors.size();
             Rectangle dirtyRegionScaled = new Rectangle();
@@ -632,17 +644,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
                 dirtyRegionScaled.height = (int)Math.floor(dirtyRegion.height * editorScale) + 1;
                 editor.damaged(dirtyRegionScaled);
             }
-        }
-        else {
+        } else {
             System.out.println("Selection manager: layer is null");
         }
-        // JJones - the above hack does not work. Some figs draw outside
-        // of their bounds (FigCube for example), and the "extraDirt"
-        // may or may not take care of that extra drawing (for FigCube it
-        // does not).
-        // Therefore I'm reverting back to drawing the whole diagram.
-        // (see Issue #49)
-        //_editor.damageAll();
     }
 
     public void stopDrag() {
