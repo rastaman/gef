@@ -70,9 +70,8 @@ public class FigPoly extends Fig {
 
     /**
      * Flag to indicate when the polygon is completed
-     * @deprecated visibility will change
      */
-    public boolean _isComplete = false;
+    private boolean complete = false;
 
     /** Flag to indicate when the polygon is used as a self-loop for a node */
     protected boolean _isSelfLoop = false;
@@ -123,7 +122,10 @@ public class FigPoly extends Fig {
     // invariant
 
     /** Class invarient to make sure this object is in a valid
-     *  state. Useful for debugging. */
+     *  state. Useful for debugging.
+     * @deprecated - This will be deleted - debug code should not be public
+     * and released. When we get to JRE1.4 we can use asserts.
+     */
     public boolean OK() {
         return super.OK() && _npoints > 0 && _xpoints != null && _ypoints != null;
 
@@ -466,9 +468,21 @@ public class FigPoly extends Fig {
     }
 
     /** When the user drags the handles, move individual points */
-    public void setPoints(Handle h, int mX, int mY) {
+    public void setPoint(Handle h, int mX, int mY) {
         moveVertex(h, mX, mY, false);
     }
+    
+    public void setPoints(Point[] points) {
+        _npoints = points.length;
+        _xpoints = new int[_npoints];
+        _ypoints = new int[_npoints];
+        for (int i=0; i < _npoints; ++i) {
+            _xpoints[i] = points[i].x;
+            _ypoints[i] = points[i].y;
+        }
+        calcBounds();
+    }
+    
 
     public void cleanUp() {
         double first = 0;
@@ -658,11 +672,11 @@ public class FigPoly extends Fig {
     }
     
     public boolean isComplete() {
-        return _isComplete;
+        return complete;
     }
 
     public void setComplete(boolean complete) {
-        this._isComplete = complete;
+        this.complete = complete;
     }
     
     ////////////////////////////////////////////////////////////////
