@@ -416,7 +416,7 @@ public abstract class SelectionButtons extends SelectionResize {
         fe.setBetweenNearestPoints(true);
         edgeShape.setLineColor(Color.black);
         edgeShape.setFilled(false);
-        edgeShape._isComplete = true;
+        edgeShape.setComplete(true);
         fe.setFig(edgeShape);
         newFC.damage();
 

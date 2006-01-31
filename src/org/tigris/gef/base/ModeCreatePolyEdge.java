@@ -202,7 +202,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
                 //_npoints = 0;
                 editor.damageAll();
                 //editor.getSelectionManager().select(p);
-                p._isComplete = true;
+                p.setComplete(true);
 
                 Class edgeClass = (Class) getArg("edgeClass");
                 if (edgeClass != null)

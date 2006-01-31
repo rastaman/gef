@@ -97,7 +97,7 @@ public class FigEdgeHandler extends BaseHandler implements Container {
         if (o instanceof FigLine || o instanceof FigPoly) {
             edge.setFig((Fig) o);
             if (o instanceof FigPoly) {
-                ((FigPoly) o)._isComplete = true;
+                ((FigPoly) o).setComplete(true);
             }
             edge.calcBounds();
             if (edge instanceof FigEdgePoly) {

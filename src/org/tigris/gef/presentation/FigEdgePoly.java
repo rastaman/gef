@@ -338,19 +338,23 @@ public class FigEdgePoly extends FigEdge {
         int np = getFig().getNumPoints();
         FigPoly p = ((FigPoly) getFig());
         if (!p.getRectilinear()) {
-            if (p._isComplete) {
+            if (p.isComplete()) {
                 if (i == 0) {
-                    if (p._xpoints[i + 1] == x && p._ypoints[i + 1] == y)
+                    if (p._xpoints[i + 1] == x && p._ypoints[i + 1] == y) {
                         if (p._isSelfLoop && p._npoints <= 4) {
                             ;
-                        } else
+                        } else {
                             p.removePoint(i + 1);
+                        }
+                    }
                 } else if (i == (np - 1)) {
-                    if (p._xpoints[i - 1] == x && p._ypoints[i - 1] == y)
+                    if (p._xpoints[i - 1] == x && p._ypoints[i - 1] == y) {
                         if (p._isSelfLoop && p._npoints <= 4) {
                             ;
-                        } else
+                        } else {
                             p.removePoint(i - 1);
+                        }
+                    }
                 }
                 if (np > 2) {
                     //Point handlePoint = new Point(p._xpoints[i],p._ypoints[i]);

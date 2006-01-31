@@ -130,7 +130,7 @@ public class SVGParser extends DefaultHandler {
 		else if (tagName.equals("path")) {
 			Fig p = handlePath(attrList);
 			_currentEdge.setFig(p);
-			((FigPoly)p)._isComplete = true;
+			((FigPoly)p).setComplete(true);
 			_currentEdge.calcBounds();
 			if (_currentEdge instanceof FigEdgePoly) {
 				((FigEdgePoly)_currentEdge).setInitiallyLaidOut(true);

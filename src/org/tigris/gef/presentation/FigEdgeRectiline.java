@@ -99,54 +99,57 @@ public class FigEdgeRectiline extends FigEdge {
     calcBounds();
   } /* end computeRoute */
 
-  /** Internal function to actually compute the layout of the line if
-   *  it has never been done on that line before. */
-  protected void layoutEdge() {
-    int npoints = 0;
-    int xpoints[] = new int[16];
-    int ypoints[] = new int[16];
-    
-    Fig sourcePortFig = getSourcePortFig();
-    Fig destPortFig = getDestPortFig();
-    
-    Point srcPt = sourcePortFig.getCenter();
-    Point dstPt = destPortFig.getCenter();
-
-    if (_useNearest) {
-      srcPt = sourcePortFig.connectionPoint(dstPt);
-      dstPt = destPortFig.connectionPoint(srcPt);
-      srcPt = sourcePortFig.connectionPoint(dstPt);
-      dstPt = destPortFig.connectionPoint(srcPt);
+    /**
+     * Internal function to actually compute the layout of the line if
+     * it has never been done on that line before.
+     */
+    protected void layoutEdge() {
+        int npoints = 0;
+        int xpoints[] = new int[16];
+        int ypoints[] = new int[16];
+        
+        Fig sourcePortFig = getSourcePortFig();
+        Fig destPortFig = getDestPortFig();
+        
+        Point srcPt = sourcePortFig.getCenter();
+        Point dstPt = destPortFig.getCenter();
+        
+        if (_useNearest) {
+            srcPt = sourcePortFig.connectionPoint(dstPt);
+            dstPt = destPortFig.connectionPoint(srcPt);
+            srcPt = sourcePortFig.connectionPoint(dstPt);
+            dstPt = destPortFig.connectionPoint(srcPt);
+        }
+        
+        Rectangle srcRR = _sourceFigNode.routingRect();
+        Rectangle dstRR = _destFigNode.routingRect();
+        
+        Object srcPort = sourcePortFig.getOwner();
+        Object dstPort = destPortFig.getOwner();
+        int srcSector = ((FigNode)_sourceFigNode).getPortSector(sourcePortFig);
+        int dstSector = ((FigNode)_destFigNode).getPortSector(destPortFig);
+        
+        // first decide what layout case we have
+        Point srcRRPt = routingRectPoint(srcPt, srcRR, srcSector);
+        Point dstRRPt = routingRectPoint(dstPt, dstRR, dstSector);
+        
+        if (srcSector == 1 || srcSector == -1) {
+            xpoints[npoints] = srcPt.x; ypoints[npoints++] = srcPt.y;
+        }
+        xpoints[npoints] = srcPt.x; ypoints[npoints++] = srcPt.y;
+        xpoints[npoints] = srcRRPt.x; ypoints[npoints++] = srcRRPt.y;
+        
+        npoints = npoints + tryRoute(dstRRPt.x, dstRRPt.y, npoints,
+        			 xpoints, ypoints,
+        			 srcRR, dstRR, srcSector, dstSector);
+        
+        xpoints[npoints] = dstRRPt.x; ypoints[npoints++] = dstRRPt.y;
+        xpoints[npoints] = dstPt.x; ypoints[npoints++] = dstPt.y;
+        //   if (dstSector == 1 || dstSector == -1) {
+        // xpoints[npoints] = dstPt.x; ypoints[npoints++] = dstPt.y; }
+        Polygon routePoly = new Polygon(xpoints, ypoints, npoints);
+        ((FigPoly)getFig()).setPolygon(routePoly);
     }
-    
-    Rectangle srcRR = _sourceFigNode.routingRect();
-    Rectangle dstRR = _destFigNode.routingRect();
-
-    Object srcPort = sourcePortFig.getOwner();
-    Object dstPort = destPortFig.getOwner();
-    int srcSector = ((FigNode)_sourceFigNode).getPortSector(sourcePortFig);
-    int dstSector = ((FigNode)_destFigNode).getPortSector(destPortFig);
-
-    // first decide what layout case we have
-    Point srcRRPt = routingRectPoint(srcPt, srcRR, srcSector);
-    Point dstRRPt = routingRectPoint(dstPt, dstRR, dstSector);
-
-    if (srcSector == 1 || srcSector == -1) {
-      xpoints[npoints] = srcPt.x; ypoints[npoints++] = srcPt.y; }
-    xpoints[npoints] = srcPt.x; ypoints[npoints++] = srcPt.y;
-    xpoints[npoints] = srcRRPt.x; ypoints[npoints++] = srcRRPt.y;
-
-    npoints = npoints + tryRoute(dstRRPt.x, dstRRPt.y, npoints,
-				 xpoints, ypoints,
-				 srcRR, dstRR, srcSector, dstSector);
-
-    xpoints[npoints] = dstRRPt.x; ypoints[npoints++] = dstRRPt.y;
-    xpoints[npoints] = dstPt.x; ypoints[npoints++] = dstPt.y;
-    //   if (dstSector == 1 || dstSector == -1) {
-    // xpoints[npoints] = dstPt.x; ypoints[npoints++] = dstPt.y; }
-    Polygon routePoly = new Polygon(xpoints, ypoints, npoints);
-    ((FigPoly)getFig()).setPolygon(routePoly);
-  }
 
   /** Reply a point on the given routing rect that is "straight out"
    *  from the connection point in the proper direction. */

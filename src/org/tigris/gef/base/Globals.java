@@ -218,8 +218,9 @@ public class Globals {
      *  case of an applet, not all windows are closed. */
     public static void quit() {
         showStatus("Quiting"); // Needs-More-Work: put up "are you sure?" dialog
-        if(_applet.getAppletContext() != null)
+        if (_applet.getAppletContext() != null) {
             _applet.destroy();
+        }
         // Needs-More-Work: now it is up to the Applet to close all windows.
         System.exit(0);     // in any case, try to exit
     }

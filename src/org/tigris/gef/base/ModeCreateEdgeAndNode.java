@@ -321,7 +321,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             }
             FigPoly p = (FigPoly) _newItem;
             editor.damaged(p);
-            p._isComplete = true;
+            p.setComplete(true);
             if (foundPort != null && foundPort != startPort) {
                 Fig destPortFig = destFigNode.getPortFig(foundPort);
                 Object edgeType = getArg("edgeClass");

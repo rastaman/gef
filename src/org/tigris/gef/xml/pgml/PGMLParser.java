@@ -735,7 +735,7 @@ public class PGMLParser extends DefaultHandler {
             Fig p = handlePath(attrList);
             _elementState = POLY_EDGE_STATE;
             _currentEdge.setFig(p);
-            ((FigPoly)p)._isComplete = true;
+            ((FigPoly)p).setComplete(true);
             _currentEdge.calcBounds();
             //System.out.println("[PGMLParser]: edgeStateStartElement: cur= " + _currentEdge.getNumPoints());
             if (_currentEdge instanceof FigEdgePoly) {

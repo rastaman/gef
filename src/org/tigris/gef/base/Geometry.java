@@ -31,10 +31,8 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.awt.geom.Line2D;
-
-import javax.sound.sampled.Line;
+import java.awt.Point;
+import java.awt.Rectangle;
 
 /** A library of functions that do geometric opeations.  These are all
  *  static methods, so you never need to make an instance of this
@@ -51,19 +49,22 @@ public class Geometry {
         int x2 = Math.max(r.x, r.x + r.width);
         int y2 = Math.max(r.y, r.y + r.height);
         int c = 0;
-        if(p.x < x1)
+        if (p.x < x1) {
             c = 0;
-        else if(p.x > x2)
+        } else if(p.x > x2) {
             c = 2;
-        else
+        } else {
             c = 1;
-        if(p.y < y1)
+        }
+        
+        if (p.y < y1) {
             c += 0;
-        else if(p.y > y2)
+        } else if(p.y > y2) {
             c += 6;
-        else
+        } else {
             c += 3;
-        //System.out.println("Case " + c);
+        }
+        
         switch(c) {
             case 0:
                 res.x = x1;
@@ -129,9 +130,8 @@ public class Geometry {
      *           270
      * </pre>
      */
-    
     public static double segmentAngle(Point p1, Point p2) {
-        if(p2.x == p1.x) {
+        if (p2.x == p1.x) {
             if (p2.y > p1.y) {
                 return 90;
             } else {
