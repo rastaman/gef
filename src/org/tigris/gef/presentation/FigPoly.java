@@ -70,8 +70,9 @@ public class FigPoly extends Fig {
 
     /**
      * Flag to indicate when the polygon is completed
+     * @deprecated visibility will change - use getter/setter
      */
-    private boolean complete = false;
+    public boolean _isComplete = false;
 
     /** Flag to indicate when the polygon is used as a self-loop for a node */
     protected boolean _isSelfLoop = false;
@@ -672,11 +673,11 @@ public class FigPoly extends Fig {
     }
     
     public boolean isComplete() {
-        return complete;
+        return _isComplete;
     }
 
     public void setComplete(boolean complete) {
-        this.complete = complete;
+        this._isComplete = complete;
     }
     
     ////////////////////////////////////////////////////////////////
