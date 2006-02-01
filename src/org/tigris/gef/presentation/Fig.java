@@ -1709,8 +1709,12 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
                     translateImpl(dx, dy);
                     damage();
                 }
+                
+                public String toString() {
+                    return "TranslateMemento " + oldX + oldY;
+                }
             }
-            UndoManager.getInstance().addMemento(new TranslateMemento(_x, _y, _w, _h));
+            //UndoManager.getInstance().addMemento(new TranslateMemento(_x, _y, _w, _h));
         }
         translateImpl(dx, dy);
     }

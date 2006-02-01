@@ -49,16 +49,18 @@ import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 import org.tigris.gef.util.VetoableChangeEventSource;
 
-/** This class handles Manager selections. It is basically a
- *  collection of Selection instances. Most of its operations
- *  just dispatch the same operation to each of the Selection
- *  instances in turn.<p>
+/**
+ * This class handles Manager selections. It is basically a
+ * collection of Selection instances. Most of its operations
+ * just dispatch the same operation to each of the Selection
+ * instances in turn.<p>
  *
- *  The SelectionManager is also responsible for sending out
- *  GraphSelectionEvents to any GraphSelectionListeners that are
- *  registered.
+ * The SelectionManager is also responsible for sending out
+ * GraphSelectionEvents to any GraphSelectionListeners that are
+ * registered.
  *
- * @see Selection */
+ * @see Selection
+ */
 public class SelectionManager implements Serializable, KeyListener, MouseListener, MouseMotionListener {
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -67,6 +69,30 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     protected Vector _selections = new Vector();
     protected Editor _editor;
     protected EventListenerList _listeners = new EventListenerList();
+    private DragMemento dragMemento;
+    
+    private Fig _dragTopMostFig;
+    private Fig _dragLeftMostFig;
+    
+    /**
+     * All of the nodes being dragged
+     */
+    private List _draggingNodes;
+    /**
+     * All the edges that have both ends attached to nodes that are
+     * being dragged (they will also be dragged).
+     */
+    private List _draggingMovingEdges;
+    /**
+     * Edges that only have one end attached to an edge being dragged
+     * (they will be reshaped)
+     */
+    private List _draggingNonMovingEdges;
+    /**
+     * Other Figs that are being dragged (ie primitives)
+     */
+    private List _draggingOthers;
+
 
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -495,19 +521,17 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             Fig fig = (Fig)draggingFigs.get(figIndex);
             if(fig instanceof FigEdge) {
                 FigEdge figEdge = (FigEdge)fig;
-                checkDragEdge(figEdge, draggingFigs);
-            }
-            else if(!(fig instanceof FigNode)) {
+                checkDragEdge(figEdge, draggingFigs, _draggingNonMovingEdges);
+            } else if(!(fig instanceof FigNode)) {
                 _draggingOthers.add(fig);
-            }
-            else {
+            } else {
                 FigNode figNode = (FigNode)fig;
                 _draggingNodes.add(figNode);
                 Collection figEdges = figNode.getFigEdges(null);
                 Iterator it = figEdges.iterator();
                 while(it.hasNext()) {
                     FigEdge figEdge = (FigEdge)it.next();
-                    checkDragEdge(figEdge, draggingFigs);
+                    checkDragEdge(figEdge, draggingFigs, _draggingNonMovingEdges);
                 }
             }
         }
@@ -524,9 +548,15 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
                 _dragTopMostFig = fig;
             }
         }
+        
+        dragMemento = new DragMemento(
+                _draggingNodes, 
+                _draggingOthers, 
+                _draggingMovingEdges, 
+                _draggingNonMovingEdges);
     }
 
-    private void checkDragEdge(FigEdge figEdge, List draggingFigs) {
+    private void checkDragEdge(FigEdge figEdge, List draggingFigs, List draggingNonMovingEdges) {
         FigNode dest = figEdge.getDestFigNode();
         FigNode source = figEdge.getSourceFigNode();
         if(draggingFigs.contains(dest) && draggingFigs.contains(source)) {
@@ -535,8 +565,8 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             }
         }
         else {
-            if(!_draggingNonMovingEdges.contains(figEdge)) {
-                _draggingNonMovingEdges.add(figEdge);
+            if(!draggingNonMovingEdges.contains(figEdge)) {
+                draggingNonMovingEdges.add(figEdge);
             }
         }
     }
@@ -587,29 +617,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             figEdge.translateAnnotations();
         }
 
-        class EdgeStretchMemento extends Memento {
-
-            final Point[] points;
-            final FigEdge figEdge;
-            
-            EdgeStretchMemento(FigEdge figEdge) {
-                this.figEdge = figEdge;
-                points = figEdge.getPoints();
-            }
-            public void undo() {
-                figEdge.setPoints(points);
-                figEdge.damage();
-            }
-            public void redo() {
-//                _fig.translate(dx, dy);
-//                calcBounds();
-            }
-        }
-        
         int nonMovingEdgeCount = _draggingNonMovingEdges.size();
         for(int i = 0; i < nonMovingEdgeCount; i++) {
             FigEdge figEdge = (FigEdge)_draggingNonMovingEdges.get(i);
-            UndoManager.getInstance().addMemento(new EdgeStretchMemento(figEdge));
             figEdge.getBounds(figBounds);
             dirtyRegion.add(figBounds);
             figEdge.computeRoute();
@@ -656,6 +666,10 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         _draggingMovingEdges = null;
         _draggingNonMovingEdges = null;
         _draggingOthers = null;
+        if (dragMemento != null) {
+            UndoManager.getInstance().addMemento(dragMemento);
+        }
+        dragMemento = null;
     }
 
     // The top-left corner of the rectangle enclosing all figs that will move when translated
@@ -663,13 +677,6 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     public Point getDragLocation() {
         return new Point(_dragLeftMostFig.getX(), _dragTopMostFig.getY());
     }
-
-    private Fig _dragTopMostFig;
-    private Fig _dragLeftMostFig;
-    private List _draggingNodes;
-    private List _draggingMovingEdges;
-    private List _draggingNonMovingEdges;
-    private List _draggingOthers;
 
     /** If only one thing is selected, then it is possible to mouse on
      * one of its handles, but if Manager things are selected, users
@@ -972,4 +979,107 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             return new SelectionNoop(f);
         }
     }
+    
+    class DragMemento extends Memento {
+
+        List draggingNodes;
+        List draggingOthers;
+        List bounds;
+        
+        List movingEdges;
+        List nonMovingEdges;
+        List points;
+        
+        public DragMemento(
+                List draggingNodes,
+                List draggingOthers,
+                List movingEdges,
+                List nonMovingEdges) {
+            bounds = new ArrayList(draggingNodes.size() + draggingOthers.size());
+            
+            this.draggingNodes = draggingNodes;
+            Iterator nodeIt = draggingNodes.iterator();
+            while (nodeIt.hasNext()) {
+                FigNode node = (FigNode)nodeIt.next();
+                Rectangle rect = node.getBounds();
+                bounds.add(rect);
+            }
+
+            this.draggingOthers = draggingOthers;
+            Iterator otherIt = draggingOthers.iterator();
+            while (otherIt.hasNext()) {
+                Fig fig = (FigNode)otherIt.next();
+                Rectangle rect = fig.getBounds();
+                bounds.add(rect);
+            }
+            
+            points = new ArrayList(nonMovingEdges.size() + movingEdges.size());
+            
+            this.movingEdges = movingEdges;
+            Iterator movEdgeIt = movingEdges.iterator();
+            while (movEdgeIt.hasNext()) {
+                FigEdge edge = (FigEdge)movEdgeIt.next();
+                Point[] pts = edge.getPoints();
+                points.add(pts);
+            }
+            
+            this.nonMovingEdges = nonMovingEdges;
+            Iterator it = nonMovingEdges.iterator();
+            while (it.hasNext()) {
+                FigEdge edge = (FigEdge)it.next();
+                Point[] pts = edge.getPoints();
+                points.add(pts);
+            }
+        }
+        public void undo() {
+            Iterator boundsIt = bounds.iterator();
+            
+            Iterator nodeIt = draggingNodes.iterator();
+            while (nodeIt.hasNext()) {
+                System.out.println("Undoing node");
+                FigNode figNode = (FigNode)nodeIt.next();
+                Rectangle rect = (Rectangle)boundsIt.next();
+                figNode.setBounds(rect);
+                figNode.damage();
+            }
+            
+            Iterator otherIt = draggingOthers.iterator();
+            while (nodeIt.hasNext()) {
+                System.out.println("Undoing other");
+                Fig fig = (Fig)nodeIt.next();
+                Rectangle rect = (Rectangle)boundsIt.next();
+                fig.setBounds(rect);
+                fig.damage();
+            }
+            
+            Iterator pointsIt = points.iterator();
+            
+            Iterator edgeIt = movingEdges.iterator();
+            while (edgeIt.hasNext()) {
+                System.out.println("Undoing edge move");
+                FigEdge figEdge = (FigEdge)edgeIt.next();
+                Point[] pts = (Point[])pointsIt.next();
+                figEdge.setPoints(pts);
+                figEdge.damage();
+            }
+            
+            Iterator nMedgeIt = nonMovingEdges.iterator();
+            while (nMedgeIt.hasNext()) {
+                System.out.println("Undoing edge stretch");
+                FigEdge figEdge = (FigEdge)nMedgeIt.next();
+                Point[] pts = (Point[])pointsIt.next();
+                figEdge.setPoints(pts);
+                figEdge.damage();
+            }
+        }
+        public void redo() {
+//            _fig.translate(dx, dy);
+//            calcBounds();
+        }
+        
+        public String toString() {
+            return "DragMemento ";
+        }
+    }
+    
 }    /* end class SelectionManager */

@@ -702,20 +702,20 @@ public abstract class FigEdge extends Fig implements GraphEdge {
 
     final public void translateEdge(final int dx, final int dy) {
         
-        class TranslateEdgeMemento extends Memento {
-            
-            TranslateEdgeMemento(int dx, int dy) {
-            }
-            public void undo() {
-                _fig.translate(-dx, -dy);
-                calcBounds();
-            }
-            public void redo() {
-                _fig.translate(dx, dy);
-                calcBounds();
-            }
-        }
-        UndoManager.getInstance().addMemento(new TranslateEdgeMemento(dx, dy));
+//        class TranslateEdgeMemento extends Memento {
+//            
+//            TranslateEdgeMemento(int dx, int dy) {
+//            }
+//            public void undo() {
+//                _fig.translate(-dx, -dy);
+//                calcBounds();
+//            }
+//            public void redo() {
+//                _fig.translate(dx, dy);
+//                calcBounds();
+//            }
+//        }
+//        UndoManager.getInstance().addMemento(new TranslateEdgeMemento(dx, dy));
         
         _fig.translate(dx, dy);
         calcBounds();
