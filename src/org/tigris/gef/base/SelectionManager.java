@@ -1036,7 +1036,6 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             
             Iterator nodeIt = draggingNodes.iterator();
             while (nodeIt.hasNext()) {
-                System.out.println("Undoing node");
                 FigNode figNode = (FigNode)nodeIt.next();
                 Rectangle rect = (Rectangle)boundsIt.next();
                 figNode.setBounds(rect);
@@ -1045,7 +1044,6 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             
             Iterator otherIt = draggingOthers.iterator();
             while (nodeIt.hasNext()) {
-                System.out.println("Undoing other");
                 Fig fig = (Fig)nodeIt.next();
                 Rectangle rect = (Rectangle)boundsIt.next();
                 fig.setBounds(rect);
@@ -1056,7 +1054,6 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             
             Iterator edgeIt = movingEdges.iterator();
             while (edgeIt.hasNext()) {
-                System.out.println("Undoing edge move");
                 FigEdge figEdge = (FigEdge)edgeIt.next();
                 Point[] pts = (Point[])pointsIt.next();
                 figEdge.setPoints(pts);
@@ -1065,7 +1062,6 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             
             Iterator nMedgeIt = nonMovingEdges.iterator();
             while (nMedgeIt.hasNext()) {
-                System.out.println("Undoing edge stretch");
                 FigEdge figEdge = (FigEdge)nMedgeIt.next();
                 Point[] pts = (Point[])pointsIt.next();
                 figEdge.setPoints(pts);

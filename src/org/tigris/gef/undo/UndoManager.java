@@ -86,7 +86,6 @@ public class UndoManager {
         Memento memento;
         do {
             memento = pop(undoStack);
-            System.out.println("Undoing " + memento);
             memento.undo();
             redoStack.add(memento);
         } while (!memento.startChain);
