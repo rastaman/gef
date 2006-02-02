@@ -50,6 +50,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     public static final int INSERT = 1;
     public static final int END_EDITING = 2;
 
+    private static Boolean forceFirstCharInsert;
+    
     private int returnAction = IGNORE;
     private int tabAction = IGNORE;
     
@@ -833,12 +835,33 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 //     }
     }
 
-    /** This method handles backspace and enter. */
+    /**
+     * Unfortunately there is some inconsistency here between different
+     * implementations of the JVM.
+     * JRE1.3 would always insert the first character pressed.
+     * JRE1.4 introduced a bug where the first keypress was ignored.
+     * This method attempts to compensate for this problem.
+     * This cannot be guaranteed to work as further JVM's are issued with
+     * further inconsistent functionality.
+     * @see #setForceFirstCharInsert(Boolean)
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
     public void keyPressed(KeyEvent ke) {
         if(isStartEditingKey(ke) && editable) {
             FigTextEditor te = startTextEditor(ke);
-            if (!isJdk13()) {
-                te.setText(te.getText() + ke.getKeyChar());
+            if (forceFirstCharInsert == null) {
+                // The application hasn't chosen any particular override
+                // so try to work it out ourselves. The only known rule
+                // is JDK1.4 and above.
+                // There is also a fault on some Macs -
+                //       exactly what do I need to test for these?
+                if (!isJdk13()) {
+                    te.setText(te.getText() + ke.getKeyChar());
+                }
+            } else {
+                if (forceFirstCharInsert.booleanValue()) {
+                    te.setText(te.getText() + ke.getKeyChar());
+                }
             }
             ke.consume();
         }
@@ -846,6 +869,24 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     
     private boolean isJdk13() {
         return (System.getProperty("java.version").startsWith("1.3"));
+    }
+
+    /**
+     * The method attempt to provide some future proofing from the JVM
+     * incompatabilities described in keyPressed.
+     * The keyPressed method will always be updated with the best known rules
+     * for working round JVM inconsistencies. However a new JVM may be released
+     * that is not managed by these rules.
+     * This method allows an application to provide an override of Boolean.TRUE
+     * or Boolean.FALSE. A null value will leave keyPressed to use its own
+     * logic.
+     * It is recommended that applications check for some system property they
+     * define themselves. If such a property exists its value should be passed
+     * to this method.
+     * @param forceFirstCharInsert TRUE, FALSE or null to default to built in rules
+     */
+    public static void setForceFirstCharInsert(Boolean forceFirstCharInsert) {
+        FigText.forceFirstCharInsert = forceFirstCharInsert;
     }
 
     /** Not used, does nothing. */
