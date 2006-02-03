@@ -1008,7 +1008,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             this.draggingOthers = draggingOthers;
             Iterator otherIt = draggingOthers.iterator();
             while (otherIt.hasNext()) {
-                Fig fig = (FigNode)otherIt.next();
+                Fig fig = (Fig)otherIt.next();
                 Rectangle rect = fig.getBounds();
                 bounds.add(rect);
             }
@@ -1043,8 +1043,8 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             }
             
             Iterator otherIt = draggingOthers.iterator();
-            while (nodeIt.hasNext()) {
-                Fig fig = (Fig)nodeIt.next();
+            while (otherIt.hasNext()) {
+                Fig fig = (Fig)otherIt.next();
                 Rectangle rect = (Rectangle)boundsIt.next();
                 fig.setBounds(rect);
                 fig.damage();
