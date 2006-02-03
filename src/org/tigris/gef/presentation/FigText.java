@@ -132,6 +132,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     
     ////////////////////////////////////////////////////////////////
     // static initializer
+    
+    private static final Log LOG = LogFactory.getLog(FigText.class);
 
     /** This puts the text properties on the "Text" and "Style" pages of
      * the org.tigris.gef.ui.TabPropFrame. */
@@ -149,9 +151,15 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         PropCategoryManager.categorizeProperty("Style", "textFilled");
         PropCategoryManager.categorizeProperty("Style", "textFillColor");
         PropCategoryManager.categorizeProperty("Style", "textColor");
+        
+        String ffciProperty = System.getProperty("gef.figText.forceFirstCharInsert");
+        if (ffciProperty != null) {
+            FigText.forceFirstCharInsert = Boolean.valueOf(ffciProperty);
+        }
+        LOG.info("gef.figText.forceFirstCharInsert: "
+            + String.valueOf(FigText.forceFirstCharInsert));
     }
 
-    private static final Log LOG = LogFactory.getLog(FigText.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -210,8 +218,11 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     ////////////////////////////////////////////////////////////////
     // invariant
 
-    /** Check the class invariant to make sure that this FigText is in a
-     *  valid state.  Useful for debugging. */
+    /**
+     * Check the class invariant to make sure that this FigText is in a
+     * valid state.  Useful for debugging.
+     * @deprecated we will use asserts when we drop JRE1.3
+     */
     public boolean OK() {
         if(!super.OK())
             return false;
