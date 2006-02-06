@@ -493,6 +493,14 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
     
     /**
+     * Discover what action the control will take on tab press.
+     * @return IGNORE, INSERT or END_EDITING
+     */
+    public int getTabAction() {
+        return tabAction;
+    }
+
+    /**
      * Discover what action the control will take on return press.
      * @return IGNORE, INSERT or END_EDITING
      */
@@ -846,32 +854,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     protected boolean isStartEditingKey(KeyEvent ke) {
-        if (ke.isActionKey()) {
-            return false;
-        }
-        
-        int keyCode = ke.getKeyCode();
-        switch(keyCode) {
-            case KeyEvent.VK_TAB:
-            case KeyEvent.VK_CANCEL:
-            case KeyEvent.VK_CLEAR:
-            case KeyEvent.VK_SHIFT:
-            case KeyEvent.VK_CONTROL:
-            case KeyEvent.VK_ALT:
-            case KeyEvent.VK_META:
-            case KeyEvent.VK_HELP:
-            case KeyEvent.VK_PAUSE:
-            case KeyEvent.VK_DELETE:
-            case KeyEvent.VK_ESCAPE:
-                return false;
-        }
-        if(ke.isControlDown())
-            return false;
-        if(ke.isAltDown())
-            return false;
-        if(ke.isMetaDown())
-            return false;
-        return true;
+        return (ke.getKeyChar() >= 32);
     }
     ////////////////////////////////////////////////////////////////
     // event handlers: KeyListener implemtation
