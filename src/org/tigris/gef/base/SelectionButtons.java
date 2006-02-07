@@ -282,7 +282,7 @@ public abstract class SelectionButtons extends SelectionResize {
 
         g.translate(x - 2, y - 2);
 
-        Color handleColor = Globals.getPrefs().handleColorFor(_content);
+        Color handleColor = Globals.getPrefs().handleColorFor(getContent());
         g.setColor(handleColor.darker());
         g.drawRect(0, 0, w - 2, h - 2);
 
@@ -302,11 +302,12 @@ public abstract class SelectionButtons extends SelectionResize {
      * @see org.tigris.gef.base.Selection#getBounds()
      */
     public Rectangle getBounds() {
+        Fig content = getContent();
         return new Rectangle(
-			     _content.getX() - IMAGE_SIZE * 2,
-			     _content.getY() - IMAGE_SIZE * 2,
-			     _content.getWidth() + IMAGE_SIZE * 4,
-			     _content.getHeight() + IMAGE_SIZE * 4);
+                 content.getX() - IMAGE_SIZE * 2,
+                 content.getY() - IMAGE_SIZE * 2,
+                 content.getWidth() + IMAGE_SIZE * 4,
+			     content.getHeight() + IMAGE_SIZE * 4);
     }
 
     /** Dont show buttons while the user is moving the Class.  Called
@@ -319,11 +320,12 @@ public abstract class SelectionButtons extends SelectionResize {
      * @param buttonCode the button identifier
      */
     public void buttonClicked(int buttonCode) {
+        Fig content = getContent();
         if (buttonCode >= 10)
             numButtonClicks++;
         // get a new node (modelelement) that should be added
         Object newNode = getNewNode(buttonCode);
-        Object owner = _content.getOwner();
+        Object owner = content.getOwner();
 
         // get the graphmodel
         Editor ce = Globals.curEditor();
@@ -344,10 +346,10 @@ public abstract class SelectionButtons extends SelectionResize {
         // calculate the position of the newly created fig.
         Rectangle outputRect =
             new Rectangle(
-			  Math.max(0, _content.getX() - 200),
-			  Math.max(0, _content.getY() - 200),
-			  _content.getWidth() + 400,
-			  _content.getHeight() + 400);
+			  Math.max(0, content.getX() - 200),
+			  Math.max(0, content.getY() - 200),
+			  content.getWidth() + 400,
+			  content.getHeight() + 400);
 
         // handle the case that it is not a self association
         if (buttonCode >= 10 && buttonCode <= 13) {
@@ -355,18 +357,17 @@ public abstract class SelectionButtons extends SelectionResize {
             int y = 0;
             if (buttonCode == 10) {
                 // superclass
-                x = _content.getX();
-                y = Math.max(0, _content.getY() - 200);
+                x = content.getX();
+                y = Math.max(0, content.getY() - 200);
             } else if (buttonCode == 11) {
-                x = _content.getX();
-                y = _content.getY() + _content.getHeight() + 100;
+                x = content.getX();
+                y = content.getY() + content.getHeight() + 100;
             } else if (buttonCode == 12) {
-                x = _content.getX() + _content.getWidth() + 100;
-                y = _content.getY();
+                x = content.getX() + content.getWidth() + 100;
+                y = content.getY();
             } else if (buttonCode == 13) {
-                x = Math.max(0, _content.getX() - 200);
-                y = _content.getY();
-
+                x = Math.max(0, content.getX() - 200);
+                y = content.getY();
             }
             // place the fig if it is not a selfassociation
             if (!placeFig(newFC, lay, x, y, outputRect))
@@ -381,20 +382,20 @@ public abstract class SelectionButtons extends SelectionResize {
         }
         FigPoly edgeShape = new FigPoly();
         if (buttonCode != 14) {
-            Point fcCenter = _content.center();
+            Point fcCenter = content.getCenter();
             edgeShape.addPoint(fcCenter.x, fcCenter.y);
-            Point newFCCenter = newFC.center();
+            Point newFCCenter = newFC.getCenter();
             edgeShape.addPoint(newFCCenter.x, newFCCenter.y);
         } else {
-            newFC = _content;
-            Point fcCenter = _content.center();
+            newFC = content;
+            Point fcCenter = content.getCenter();
             Point centerRight =
                 new Point(
 			  (int) (fcCenter.x
-				 + _content.getSize().getWidth() / 2),
+				 + content.getSize().getWidth() / 2),
 			  fcCenter.y);
 
-            int yoffset = (int) ((_content.getSize().getHeight() / 2));
+            int yoffset = (int) ((content.getSize().getHeight() / 2));
             edgeShape.addPoint(fcCenter.x, fcCenter.y);
             edgeShape.addPoint(centerRight.x, centerRight.y);
             edgeShape.addPoint(centerRight.x + 30, centerRight.y);
@@ -421,7 +422,7 @@ public abstract class SelectionButtons extends SelectionResize {
         newFC.damage();
 
         ce.getSelectionManager().select(fe);
-        ce.getSelectionManager().select(_content);
+        ce.getSelectionManager().select(content);
 
     }
 
@@ -506,23 +507,19 @@ public abstract class SelectionButtons extends SelectionResize {
         placeCounter++;
         figToPlace.setLocation(x, y);
         layerToPlaceOn.bumpOffOtherNodesIn(figToPlace, bumpRect, false, false);
+        Fig content = getContent();
         if (figToPlace.getX() < 0) {
             return placeFig(
 			    figToPlace,
 			    layerToPlaceOn,
-			    ((Fig) _content).getX()
-			    + ((Fig) _content).getWidth()
-			    + figToPlace.getWidth()
-			    + 100,
+			    content.getX() + content.getWidth() + figToPlace.getWidth() + 100,
 			    figToPlace.getY(),
 			    bumpRect);
         } else if (figToPlace.getX() + figToPlace.getWidth() >= 6000) {
             return placeFig(
 			    figToPlace,
 			    layerToPlaceOn,
-			    (((Fig) _content).getX()
-			     - figToPlace.getWidth()
-			     - 100),
+			    (content.getX() - figToPlace.getWidth() - 100),
 			    figToPlace.getY(),
 			    bumpRect);
         } else if (figToPlace.getY() + figToPlace.getHeight() >= 6000) {
@@ -530,19 +527,14 @@ public abstract class SelectionButtons extends SelectionResize {
 			    figToPlace,
 			    layerToPlaceOn,
 			    figToPlace.getX(),
-			    (((Fig) _content).getY()
-			     - figToPlace.getHeight()
-			     - 100),
+			    (content.getY() - figToPlace.getHeight() - 100),
 			    bumpRect);
         } else if (figToPlace.getY() < 0) {
             return placeFig(
 			    figToPlace,
 			    layerToPlaceOn,
 			    figToPlace.getX(),
-			    ((Fig) _content).getY()
-			    + ((Fig) _content).getHeight()
-			    + figToPlace.getHeight()
-			    + 100,
+			    content.getY() + content.getHeight() + figToPlace.getHeight() + 100,
 			    bumpRect);
         }
         return true;
