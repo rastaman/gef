@@ -501,8 +501,9 @@ public abstract class SelectionButtons extends SelectionResize {
 			       int x,
 			       int y,
 			       Rectangle bumpRect) {
-        if (placeCounter > MAX_PLACINGS)
+        if (placeCounter > MAX_PLACINGS) {
             return false;
+        }
         // to prevent outofmemory errors and stackoverflow errors
         placeCounter++;
         figToPlace.setLocation(x, y);

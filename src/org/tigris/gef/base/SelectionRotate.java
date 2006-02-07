@@ -31,26 +31,30 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import org.tigris.gef.presentation.*;
 
-/** Selection object that allows the user to rotate the selected Fig.
- * Needs-more-work: not implemented yet. */
+/**
+ * Selection object that allows the user to rotate the selected Fig.
+ * Needs-more-work: not implemented yet.
+ */
 
 public class SelectionRotate extends Selection {
 
-  /** Construct a new SelectionRotate around the given DiagramElement */
-  public SelectionRotate(Fig f) { super(f); }
+    /** Construct a new SelectionRotate around the given DiagramElement */
+    public SelectionRotate(Fig f) {
+        super(f);
+    }
 
   /** Paint the selection. */
   public void paint(Graphics g) {
-    int x = _content.getX();
-    int y = _content.getY();
-    int w = _content.getWidth();
-    int h = _content.getHeight();
-    g.setColor(Globals.getPrefs().handleColorFor(_content));
+    int x = getContent().getX();
+    int y = getContent().getY();
+    int w = getContent().getWidth();
+    int h = getContent().getHeight();
+    g.setColor(Globals.getPrefs().handleColorFor(getContent()));
     g.fillOval(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
     g.fillOval(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
     g.fillOval(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
@@ -63,11 +67,13 @@ public class SelectionRotate extends Selection {
     /* do nothing */
   }
 
-  /** Returns -2 to indicate that the user did not click on a handle
-   *  or the body of the Fig. Needs-more-work. */
-  public void hitHandle(Rectangle r, Handle h) {
-    h.index = -2;
-    h.instructions = "Object cannot be rotated";
-  }
+    /**
+     * Returns -2 to indicate that the user did not click on a handle
+     * or the body of the Fig. Needs-more-work.
+     */
+    public void hitHandle(Rectangle r, Handle h) {
+        h.index = -2;
+        h.instructions = "Object cannot be rotated";
+    }
 } /* end class SelectionRotate */
 

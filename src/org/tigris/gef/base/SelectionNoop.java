@@ -49,11 +49,11 @@ public class SelectionNoop extends Selection {
 
     /** Paint the selection. */
     public void paint(Graphics g) {
-        int x = _content.getX();
-        int y = _content.getY();
-        int w = _content.getWidth();
-        int h = _content.getHeight();
-        g.setColor(Globals.getPrefs().handleColorFor(_content));
+        int x = getContent().getX();
+        int y = getContent().getY();
+        int w = getContent().getWidth();
+        int h = getContent().getHeight();
+        g.setColor(Globals.getPrefs().handleColorFor(getContent()));
         g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH,
                w + BORDER_WIDTH * 2 - 1, h + BORDER_WIDTH * 2 - 1);
         g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1,
