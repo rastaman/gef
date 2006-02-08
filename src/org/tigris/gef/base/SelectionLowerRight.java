@@ -50,44 +50,45 @@ public class SelectionLowerRight extends Selection {
   /** Construct a new SelectionLowerRight for the given Fig */
   public SelectionLowerRight(Fig f) { super(f); }
 
-  /** Return a handle ID for the handle under the mouse, or -1 if
-   *  none. Needs-More-Work: in the future, return a Handle instance or
-   *  null. <p>
-   *  <pre>
-   *   0-------1-------2
-   *   |               |
-   *   3               4
-   *   |               |
-   *   5-------6-------7
-   * </pre>
-   */
-  public void hitHandle(Rectangle r, Handle h) {
-    int cx = getContent().getX();
-    int cy = getContent().getY();
-    int cw = getContent().getWidth();
-    int ch = getContent().getHeight();
-    Rectangle testRect = new Rectangle(cx+cw, cy+ch, HAND_SIZE, HAND_SIZE);
-    if (r.intersects(testRect)) {
-      h.index = 7; h.instructions = "Resize object";
+    /** Return a handle ID for the handle under the mouse, or -1 if
+     *  none. Needs-More-Work: in the future, return a Handle instance or
+     *  null. <p>
+     *  <pre>
+     *   0-------1-------2
+     *   |               |
+     *   3               4
+     *   |               |
+     *   5-------6-------7
+     * </pre>
+     */
+    public void hitHandle(Rectangle r, Handle h) {
+        int cx = getContent().getX();
+        int cy = getContent().getY();
+        int cw = getContent().getWidth();
+        int ch = getContent().getHeight();
+        Rectangle testRect = new Rectangle(cx+cw, cy+ch, HAND_SIZE, HAND_SIZE);
+        if (r.intersects(testRect)) {
+            h.index = 7; h.instructions = "Resize object";
+        } else {
+            h.index = -1; 
+        }
     }
-    else { h.index = -1; }
-  }
 
-  /** Paint the handles at the four corners and midway along each edge
-   * of the bounding box.  */
-  public void paint(Graphics g) {
-    int cx = getContent().getX();
-    int cy = getContent().getY();
-    int cw = getContent().getWidth();
-    int ch = getContent().getHeight();
-    g.setColor(Globals.getPrefs().handleColorFor(getContent()));
+    /** Paint the handles at the four corners and midway along each edge
+     * of the bounding box.  */
+    public void paint(Graphics g) {
+        int cx = getContent().getX();
+        int cy = getContent().getY();
+        int cw = getContent().getWidth();
+        int ch = getContent().getHeight();
+        g.setColor(Globals.getPrefs().handleColorFor(getContent()));
 
-    //dashed
-    g.drawRect(cx - HAND_SIZE/2, cy - HAND_SIZE/2,
-	       cw + HAND_SIZE-1, ch + HAND_SIZE-1);
-    g.fillRect(cx + cw, cy + ch, HAND_SIZE, HAND_SIZE);
-    super.paint(g);
-  }
+        //dashed
+        g.drawRect(
+                cx - HAND_SIZE/2, cy - HAND_SIZE/2,
+	            cw + HAND_SIZE-1, ch + HAND_SIZE-1);
+        g.fillRect(cx + cw, cy + ch, HAND_SIZE, HAND_SIZE);
+    }
 
     /** Change some attribute of the selected Fig when the user drags one of its
      *  handles. Needs-More-Work: someday I might implement resizing that

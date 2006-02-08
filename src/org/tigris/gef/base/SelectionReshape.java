@@ -114,7 +114,6 @@ public class SelectionReshape extends Selection implements KeyListener {
                     ys[selectedHandle] - HAND_SIZE/2 - 2,
                     HAND_SIZE + 3, HAND_SIZE + 3);
         }
-        super.paint(g);
     }
 
     /**

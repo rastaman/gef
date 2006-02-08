@@ -37,14 +37,15 @@ import java.io.Serializable;
 
 import org.tigris.gef.presentation.*;
 
-/** This class represents the "selection" object that is used when you
- *  select one or more Figs in the drawing window. Selections handle
- *  the display of handles or whatever graphics indicate that
- *  something is selected, and they process events to manipulate the
- *  selected Fig. 
+/**
+ * This class represents the "selection" object that is used when you
+ * select one or more Figs in the drawing window. Selections handle
+ * the display of handles or whatever graphics indicate that
+ * something is selected, and they process events to manipulate the
+ * selected Fig. 
  *
  * @see Fig
-// @author jrobbins
+ * @author jrobbins
  */
 
 public abstract class Selection
@@ -104,17 +105,30 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   // display methods
 
-    /** Do nothing. Selections shoudl not appear in print outs. */
+    /**
+     * Do nothing. Selections shoudl not appear in print outs.
+     */
     public void print(Graphics g) { }
 
-    /** Abstract method to display the selection handleds. */
-    public void paint(Graphics g) { }
+    /**
+     * Abstract method to display the selection handles.
+     * TODO: make this method abstract
+     */
+    public void paint(Graphics g) {
+        
+    }
 
-    /** Tell the content to end a transaction that causes damage */
-    public void endTrans() { getContent().endTrans(); }
+    /**
+     * Tell the content to end a transaction that causes damage
+     */
+    public void endTrans() {
+        getContent().endTrans();
+    }
 
-    /** Reply the position of the Selection. That is defined to be the
-     *  upper left corner of my bounding box. */
+    /**
+     * Reply the position of the Selection. That is defined to be the
+     * upper left corner of my bounding box.
+     */
     public Point getLocation() {
         return content.getLocation();
     }
@@ -125,8 +139,10 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
         content.damage();
     }
 
-  /** Reply true if the given point is inside this selection */
-  public final boolean contains(Point pnt) { return contains(pnt.x, pnt.y); }
+    /**
+     * Reply true if the given point is inside this selection
+     */
+    public final boolean contains(Point pnt) { return contains(pnt.x, pnt.y); }
 
   public boolean contains(int x, int y) {
     if (content.contains(x, y)) return true;

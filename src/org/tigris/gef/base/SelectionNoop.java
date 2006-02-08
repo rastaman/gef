@@ -62,7 +62,6 @@ public class SelectionNoop extends Selection {
         g.fillOval(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
         g.fillOval(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
         g.fillOval(x + w, y + h, HAND_SIZE, HAND_SIZE);
-        super.paint(g);
     }
 
     /**
