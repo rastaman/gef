@@ -168,6 +168,7 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
         me.consume();
     }
 
+    // TODO: Review - should be keyTyped()??? - Bob
     public void keyPressed(KeyEvent ke) {
         if(ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
             LOG.debug("ESC pressed");

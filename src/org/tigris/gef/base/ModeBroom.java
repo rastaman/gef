@@ -398,6 +398,7 @@ public class ModeBroom extends FigModifyingModeImpl {
         }
     }
 
+    // TODO: Review - should be keyTyped()??? - Bob
     public void keyPressed(KeyEvent ke) {
         super.keyPressed(ke);
         if(ke.isConsumed()) {
