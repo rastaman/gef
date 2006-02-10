@@ -65,14 +65,18 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** The collection of Selection instances */
-    protected Vector _selections = new Vector();
-    protected Editor _editor;
-    protected EventListenerList _listeners = new EventListenerList();
+    /**
+     * The collection of Selection instances
+     */
+    private Vector _selections = new Vector();
+    private Editor _editor;
+    private EventListenerList _listeners = new EventListenerList();
     private DragMemento dragMemento;
     
     private Fig _dragTopMostFig;
     private Fig _dragLeftMostFig;
+    
+    private boolean wasGenerateMementos;
     
     /**
      * All of the nodes being dragged
@@ -505,11 +509,18 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void startDrag() {
+        // While we're dragging we want to create DragMementos instead of
+        // any other mementos that the framework would normally create for
+        // us. So make sure generate mementos is turned off during drag.
+        wasGenerateMementos = UndoManager.getInstance().isGenerateMementos();
+        UndoManager.getInstance().setGenerateMementos(false);
+        
         List draggingFigs = new ArrayList();
         _draggingNodes = new ArrayList();
         _draggingMovingEdges = new ArrayList();
         _draggingNonMovingEdges = new ArrayList();
         _draggingOthers = new ArrayList();
+        
         int selectionCount = _selections.size();
         for(int selectionIndex = 0; selectionIndex < selectionCount; ++selectionIndex) {
             Selection selection = (Selection)_selections.get(selectionIndex);
@@ -548,12 +559,14 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
                 _dragTopMostFig = fig;
             }
         }
-        
-        dragMemento = new DragMemento(
-                _draggingNodes, 
-                _draggingOthers, 
-                _draggingMovingEdges, 
-                _draggingNonMovingEdges);
+
+        if (wasGenerateMementos) {
+            dragMemento = new DragMemento(
+                    _draggingNodes, 
+                    _draggingOthers, 
+                    _draggingMovingEdges, 
+                    _draggingNonMovingEdges);
+        }
     }
 
     private void checkDragEdge(FigEdge figEdge, List draggingFigs, List draggingNonMovingEdges) {
@@ -660,16 +673,26 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void stopDrag() {
+        // Set the generate memento mode back to whatever it was before we
+        // started dragging
+        UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
+        
+        if (dragMemento != null) {
+            UndoManager.getInstance().startChain();
+            UndoManager.getInstance().addMemento(dragMemento);
+        }
+        dragMemento = null;
+        
+        cleanup();
+    }
+    
+    private void cleanup() {
         _dragTopMostFig = null;
         _dragLeftMostFig = null;
         _draggingNodes = null;
         _draggingMovingEdges = null;
         _draggingNonMovingEdges = null;
         _draggingOthers = null;
-        if (dragMemento != null) {
-            UndoManager.getInstance().addMemento(dragMemento);
-        }
-        dragMemento = null;
     }
 
     // The top-left corner of the rectangle enclosing all figs that will move when translated
@@ -852,7 +875,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     protected void fireSelectionChanged() {
-        stopDrag();    // just to be paranoid
+        cleanup();    // just to be paranoid
         Object[] listeners = _listeners.getListenerList();
         GraphSelectionEvent e = null;
         for(int i = listeners.length - 2; i >= 0; i -= 2) {
@@ -1032,6 +1055,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             }
         }
         public void undo() {
+            boolean wasGenerateMementos = UndoManager.getInstance().isGenerateMementos();
+            UndoManager.getInstance().setGenerateMementos(false);
+            
             Iterator boundsIt = bounds.iterator();
             
             Iterator nodeIt = draggingNodes.iterator();
@@ -1067,6 +1093,8 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
                 figEdge.setPoints(pts);
                 figEdge.damage();
             }
+            
+            UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
         }
         public void redo() {
 //            _fig.translate(dx, dy);
@@ -1077,5 +1105,4 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             return "DragMemento ";
         }
     }
-    
 }    /* end class SelectionManager */

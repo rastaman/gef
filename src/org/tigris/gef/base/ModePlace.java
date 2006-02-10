@@ -259,10 +259,11 @@ class PlaceCommand implements Command {
     }
     
     public void execute() {
-        
-        PlaceMemento memento = new PlaceMemento();
-        UndoManager.getInstance().startChain();
-        UndoManager.getInstance().addMemento(memento);
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            PlaceMemento memento = new PlaceMemento();
+            UndoManager.getInstance().startChain();
+            UndoManager.getInstance().addMemento(memento);
+        }
     }
     
     class PlaceMemento extends Memento {

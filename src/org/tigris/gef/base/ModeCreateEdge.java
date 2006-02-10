@@ -242,9 +242,11 @@ class CreateEdgeCommand implements Command {
     }
     
     public void execute() {
-        CreateEdgeMemento memento = new CreateEdgeMemento();
-        UndoManager.getInstance().startChain();
-        UndoManager.getInstance().addMemento(memento);
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            CreateEdgeMemento memento = new CreateEdgeMemento();
+            UndoManager.getInstance().startChain();
+            UndoManager.getInstance().addMemento(memento);
+        }
     }
     
     private class CreateEdgeMemento extends Memento {

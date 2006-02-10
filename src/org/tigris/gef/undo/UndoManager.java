@@ -20,6 +20,8 @@ public class UndoManager {
     private int undoChainCount = 0;
     private int redoChainCount = 0;
     
+    private boolean generateMementos = true;
+    
     private Collection listeners = new ArrayList();
     
     private boolean newChain = true;
@@ -228,5 +230,22 @@ public class UndoManager {
 
     public boolean isUndoInProgress() {
         return undoInProgress;
+    }
+
+    /**
+     * Determine if mementos are generated.
+     * @return true is mementos are generated.
+     */
+    public boolean isGenerateMementos() {
+        return generateMementos;
+    }
+
+    /**
+     * Turn on and off automatic generation of Mementos by the GEF
+     * framework.
+     * @param generateMementos true to turn on memento generation
+     */
+    public void setGenerateMementos(boolean generateMementos) {
+        this.generateMementos = generateMementos;
     }
 }

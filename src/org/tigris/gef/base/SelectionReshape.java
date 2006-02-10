@@ -144,7 +144,12 @@ public class SelectionReshape extends Selection implements KeyListener {
 //                    calcBounds();
                 }
             }
-            UndoManager.getInstance().addMemento(new ReshapeMemento(figEdgePoly.getPolygon()));
+            
+            if (UndoManager.getInstance().isGenerateMementos()) {
+                Memento memento = new ReshapeMemento(figEdgePoly.getPolygon());
+                UndoManager.getInstance().startChain();
+                UndoManager.getInstance().addMemento(memento);
+            }
             
             int npoints = selectedFig.getNumPoints();
             int[] xs = selectedFig.getXs();

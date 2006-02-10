@@ -41,7 +41,14 @@ import javax.swing.JMenu;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.tigris.gef.base.*;
+import org.tigris.gef.base.AlignAction;
+import org.tigris.gef.base.CmdReorder;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Geometry;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.di.GraphicElement;
 
 import org.tigris.gef.graph.GraphEdgeHooks;
@@ -595,19 +602,19 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      */
     protected int countCornersContained(int x, int y, int w, int h) {
         int cornersHit = 0;
-        if(contains(x, y)) {
+        if (contains(x, y)) {
             cornersHit++;
         }
 
-        if(contains(x + w, y)) {
+        if (contains(x + w, y)) {
             cornersHit++;
         }
 
-        if(contains(x, y + h)) {
+        if (contains(x, y + h)) {
             cornersHit++;
         }
 
-        if(contains(x + w, y + h)) {
+        if (contains(x + w, y + h)) {
             cornersHit++;
         }
 
@@ -1364,23 +1371,25 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
             final int newHeight) {
         
         if (group == null) {
-            Memento memento = new Memento() {
-                int oldX = _x;
-                int oldY = _y;
-                int oldWidth = _w;
-                int oldHeight = _h;
-                
-                public void undo() {
-                    setBoundsImpl(oldX, oldY, oldWidth, oldHeight);
-                    damage();
-                }
-                public void redo() {
-                    setBoundsImpl(newX, newY, newWidth, newHeight);
-                    damage();
-                }
-                public void dispose() {}
-            };
-            UndoManager.getInstance().addMemento(memento);
+            if (UndoManager.getInstance().isGenerateMementos()) {
+                Memento memento = new Memento() {
+                    int oldX = _x;
+                    int oldY = _y;
+                    int oldWidth = _w;
+                    int oldHeight = _h;
+                    
+                    public void undo() {
+                        setBoundsImpl(oldX, oldY, oldWidth, oldHeight);
+                        damage();
+                    }
+                    public void redo() {
+                        setBoundsImpl(newX, newY, newWidth, newHeight);
+                        damage();
+                    }
+                    public void dispose() {}
+                };
+                UndoManager.getInstance().addMemento(memento);
+            }
         }
         setBoundsImpl(newX, newY, newWidth, newHeight);
     }
@@ -1714,7 +1723,9 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
                     return "TranslateMemento " + oldX + oldY;
                 }
             }
-            //UndoManager.getInstance().addMemento(new TranslateMemento(_x, _y, _w, _h));
+            if (UndoManager.getInstance().isGenerateMementos()) {
+                UndoManager.getInstance().addMemento(new TranslateMemento(_x, _y, _w, _h));
+            }
         }
         translateImpl(dx, dy);
     }
