@@ -39,11 +39,12 @@ public class UndoManager {
      */
     private static UndoManager instance = new UndoManager();
     
-    private UndoManager() {
+    protected UndoManager() {
         super();
     }
     
     public static void setInstance(UndoManager manager) {
+        manager.listeners = instance.listeners;
         instance = manager;
     }
     
@@ -86,14 +87,24 @@ public class UndoManager {
     public void undo() {
         undoInProgress = true;
         Memento memento;
+        boolean startChain = false;
         do {
             memento = pop(undoStack);
-            memento.undo();
-            redoStack.add(memento);
-        } while (!memento.startChain);
+            startChain = memento.isStartChain();
+            undo(memento);
+        } while (!startChain);
         decrementUndoChainCount();
         incrementRedoChainCount();
         undoInProgress = false;
+    }
+    
+    /**
+     * Undo a single memento
+     * @param memento
+     */
+    protected void undo(Memento memento) {
+        memento.undo();
+        redoStack.add(memento);
     }
     
     /**
@@ -102,14 +113,22 @@ public class UndoManager {
     public void redo() {
         do {
             Memento memento = pop(redoStack);
-            memento.redo();
-            undoStack.add(memento);
+            redo(memento);
         } while(redoStack.size() > 0 &&
                 !((Memento)redoStack.get(redoStack.size()-1)).startChain);
         incrementUndoChainCount();
         decrementRedoChainCount();
     }
-
+    
+    /**
+     * Undo a single memento
+     * @param memento
+     */
+    protected void redo(Memento memento) {
+        memento.redo();
+        undoStack.add(memento);
+    }
+    
     /**
      * Empty all undoable items from the UndoManager
      */
@@ -166,6 +185,10 @@ public class UndoManager {
     
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.listeners.add(listener);
+    }
+    
+    private Collection getPropertyChangeListeners() {
+        return listeners;
     }
     
     private void fireCanUndo() {

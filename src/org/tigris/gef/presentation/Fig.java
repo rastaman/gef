@@ -1387,6 +1387,10 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
                         damage();
                     }
                     public void dispose() {}
+                    
+                    public String toString() {
+                        return (isStartChain() ? "*" : " ") + "BoundsMemento " + oldX + ", " + oldY + ", " + oldWidth + ", " + oldHeight;
+                    }
                 };
                 UndoManager.getInstance().addMemento(memento);
             }
@@ -1720,7 +1724,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
                 }
                 
                 public String toString() {
-                    return "TranslateMemento " + oldX + oldY;
+                    return (isStartChain() ? "*" : " ") + "TranslateMemento " + oldX + ", " + oldY;
                 }
             }
             if (UndoManager.getInstance().isGenerateMementos()) {

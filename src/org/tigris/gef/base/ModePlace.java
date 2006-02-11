@@ -228,9 +228,8 @@ public class ModePlace extends FigModifyingModeImpl {
         me.consume();
     }
 
-    // TODO: Review - should be keyTyped()??? - Bob
-    public void keyPressed(KeyEvent ke) {
-        if(ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+    public void keyTyped(KeyEvent ke) {
+        if(ke.getKeyChar() == KeyEvent.VK_ESCAPE) {
             LOG.debug("ESC pressed");
             leave();
         }
@@ -278,6 +277,10 @@ class PlaceCommand implements Command {
         public void redo() {
         }
         public void dispose() {
+        }
+        
+        public String toString() {
+            return (isStartChain() ? "*" : " ") + "PlaceMemento " + nodePlaced;
         }
     }
 }

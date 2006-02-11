@@ -143,6 +143,10 @@ public class SelectionReshape extends Selection implements KeyListener {
 //                    _fig.translate(dx, dy);
 //                    calcBounds();
                 }
+                
+                public String toString() {
+                    return (isStartChain() ? "*" : " ") + "ReshapeMemento " + oldPolygon;
+                }
             }
             
             if (UndoManager.getInstance().isGenerateMementos()) {

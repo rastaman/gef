@@ -264,5 +264,9 @@ class CreateEdgeCommand implements Command {
         }
         public void dispose() {
         }
+        
+        public String toString() {
+            return (isStartChain() ? "*" : " ") + "CreateEdgeMemento " + edgeCreated;
+        }
     }
 }

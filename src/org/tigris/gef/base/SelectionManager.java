@@ -1102,7 +1102,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         }
         
         public String toString() {
-            return "DragMemento ";
+            return (isStartChain() ? "*" : " ") + "DragMemento";
         }
     }
 }    /* end class SelectionManager */

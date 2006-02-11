@@ -30,6 +30,7 @@ package org.tigris.gef.base;
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,8 @@ public class AlignAction extends UndoableAction {
     public static final int ALIGN_V_CENTERS = 6;
 
     public static final int ALIGN_TO_GRID = 7;
+    
+    private List figs;
 
     /**
      * Specification of the type of alignment requested
@@ -69,6 +72,12 @@ public class AlignAction extends UndoableAction {
     public AlignAction(int dir) {
         super(Localizer.localize("GefBase", "Align" + wordFor(dir))); //needs-more-work: direction
         direction = dir;
+    }
+
+    public AlignAction(int dir, List figs) {
+        super(Localizer.localize("GefBase", "Align" + wordFor(dir))); //needs-more-work: direction
+        direction = dir;
+        this.figs = figs;
     }
 
     private static String wordFor(int d) {
@@ -92,12 +101,14 @@ public class AlignAction extends UndoableAction {
         super.actionPerformed(e);
         
         Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-        if (sm.getLocked()) {
-            Globals.showStatus("Cannot Modify Locked Objects");
-            return;
-        }
-        List figs = sm.getFigs();
+        if (figs == null) {
+            SelectionManager sm = ce.getSelectionManager();
+            if (sm.getLocked()) {
+                Globals.showStatus("Cannot Modify Locked Objects");
+                return;
+            }
+            figs = sm.getFigs();
+          }
         int size = figs.size();
         if (size == 0) return;
         Rectangle bbox = ((Fig) figs.get(0)).getBounds();

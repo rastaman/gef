@@ -398,22 +398,24 @@ public class ModeBroom extends FigModifyingModeImpl {
         }
     }
 
-    // TODO: Review - should be keyTyped()??? - Bob
-    public void keyPressed(KeyEvent ke) {
-        super.keyPressed(ke);
-        if(ke.isConsumed()) {
+    /**
+     * TODO: Determine and document the prupose of these modifier keys
+     * How does enter, tab and space (shifted or not) change behaviour
+     * of the broom?
+     */
+    public void keyTyped(KeyEvent ke) {
+        super.keyTyped(ke);
+        if (ke.isConsumed()) {
             return;
         }
 
-        if(KeyEvent.VK_ENTER == ke.getKeyCode() || KeyEvent.VK_TAB == ke.getKeyCode()) {
+        if (KeyEvent.VK_ENTER == ke.getKeyChar() || KeyEvent.VK_TAB == ke.getKeyChar()) {
             _magnetic = !_magnetic;
-        }
-        else if(KeyEvent.VK_SPACE == ke.getKeyCode()) {
+        } else if(KeyEvent.VK_SPACE == ke.getKeyChar()) {
             doDistibute(false, ke.isShiftDown());
             ke.consume();
-        }
-        else {
-            //System.out.println("key code is " + ke.getKeyCode());
+        } else {
+            //System.out.println("key char is " + ke.getKeyChar());
             return;
         }
 
@@ -475,20 +477,18 @@ public class ModeBroom extends FigModifyingModeImpl {
 
             d.doIt();
             if(doCentering) {
-                int centerRequest = CmdAlign.ALIGN_H_CENTERS;
+                int centerRequest = AlignAction.ALIGN_H_CENTERS;
                 if(_dir == DIRECTION_UPWARD || _dir == DIRECTION_DOWNWARD) {
-                    centerRequest = CmdAlign.ALIGN_V_CENTERS;
+                    centerRequest = AlignAction.ALIGN_V_CENTERS;
                 }
 
-                CmdAlign a = new CmdAlign(centerRequest);
-                a.setArg("figs", figs);
-                a.doIt();
+                AlignAction a = new AlignAction(centerRequest, figs);
+                a.actionPerformed(null);
             }
 
             if(alignToGrid) {
-                CmdAlign a = new CmdAlign(CmdAlign.ALIGN_TO_GRID);
-                a.setArg("figs", figs);
-                a.doIt();
+                AlignAction a = new AlignAction(AlignAction.ALIGN_TO_GRID, figs);
+                a.actionPerformed(null);
             }
 
             if(_distributeMode == DISTRIBUTE_EVEN_SPACE && _origBBox == null) {

@@ -12,6 +12,15 @@ public abstract class Memento {
      * @param b true if this memento is the start of a chain.
      */
     boolean startChain;
+    
+    /**
+     * Determine if this is the start of a chain of mementos
+     * @return true if this is the start of a memento chain
+     */
+    protected boolean isStartChain() {
+        return startChain;
+    }
+    
     /**
      * To be implemented on the concrete memento to undo an instruction
      */
