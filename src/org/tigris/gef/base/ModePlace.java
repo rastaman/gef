@@ -71,6 +71,8 @@ public class ModePlace extends FigModifyingModeImpl {
 
     protected String _instructions; 
 
+    private boolean wasGenerateMementos;
+    
     private static Log LOG = LogFactory.getLog(ModePlace.class);
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -118,6 +120,8 @@ public class ModePlace extends FigModifyingModeImpl {
         if(me.isConsumed()) {
             return;
         }
+        wasGenerateMementos = UndoManager.getInstance().isGenerateMementos();
+        UndoManager.getInstance().setGenerateMementos(false);
         _node = _factory.makeNode();
         start();
         editor = Globals.curEditor();
@@ -221,9 +225,13 @@ public class ModePlace extends FigModifyingModeImpl {
             
             editor.getSelectionManager().select(_pers);
             
-            PlaceCommand cmd = new PlaceCommand(_pers);
-            cmd.execute();
+            
+            if (wasGenerateMementos) {
+                PlaceMemento memento = new PlaceMemento(_pers);
+                UndoManager.getInstance().addMemento(memento);
+            }
         }
+        UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
         done();
         me.consume();
     }
@@ -249,38 +257,26 @@ public class ModePlace extends FigModifyingModeImpl {
     }
 } /* end class ModePlace */
 
-class PlaceCommand implements Command {
+class PlaceMemento extends Memento {
     
     private FigNode nodePlaced;
     
-    PlaceCommand(FigNode node) {
-        nodePlaced = node;
+    PlaceMemento (FigNode nodePlaced) {
+        this.nodePlaced = nodePlaced;
+    }
+    public void undo() {
+        SelectionManager sm = Globals.curEditor().getSelectionManager();
+        if (sm.containsFig(nodePlaced)) {
+            sm.removeFig(nodePlaced);
+        }
+        nodePlaced.deleteFromModel();
+    }
+    public void redo() {
+    }
+    public void dispose() {
     }
     
-    public void execute() {
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            PlaceMemento memento = new PlaceMemento();
-            UndoManager.getInstance().startChain();
-            UndoManager.getInstance().addMemento(memento);
-        }
-    }
-    
-    class PlaceMemento extends Memento {
-        
-        public void undo() {
-            SelectionManager sm = Globals.curEditor().getSelectionManager();
-            if (sm.containsFig(nodePlaced)) {
-                sm.removeFig(nodePlaced);
-            }
-            nodePlaced.deleteFromModel();
-        }
-        public void redo() {
-        }
-        public void dispose() {
-        }
-        
-        public String toString() {
-            return (isStartChain() ? "*" : " ") + "PlaceMemento " + nodePlaced;
-        }
+    public String toString() {
+        return (isStartChain() ? "*" : " ") + "PlaceMemento " + nodePlaced.getBounds();
     }
 }
