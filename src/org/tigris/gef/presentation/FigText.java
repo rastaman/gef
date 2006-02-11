@@ -50,8 +50,6 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     public static final int INSERT = 1;
     public static final int END_EDITING = 2;
 
-    private static Boolean forceFirstCharInsert;
-    
     private int returnAction = IGNORE;
     private int tabAction = IGNORE;
     
@@ -151,13 +149,6 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         PropCategoryManager.categorizeProperty("Style", "textFilled");
         PropCategoryManager.categorizeProperty("Style", "textFillColor");
         PropCategoryManager.categorizeProperty("Style", "textColor");
-        
-        String ffciProperty = System.getProperty("gef.figText.forceFirstCharInsert");
-        if (ffciProperty != null) {
-            FigText.forceFirstCharInsert = Boolean.valueOf(ffciProperty);
-        }
-        LOG.info("gef.figText.forceFirstCharInsert: "
-            + String.valueOf(FigText.forceFirstCharInsert));
     }
 
 
