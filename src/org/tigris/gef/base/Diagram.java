@@ -229,10 +229,11 @@ public class Diagram implements Serializable, GraphListener {
     }
 
     /**
-     * Get all the figs that are a node.
+     * Get all the model elements that are represented as a node.
      * @param nodes the collection in which to place the nodes or null
      *              if a new collection should be created
      * @return the nodes
+     * @deprecated use getNodes() returning a List (order is important)
      */
     public Collection getNodes(Collection nodes) {
         // needs-more-work: should just do getGraphModel().getNodes()
@@ -253,10 +254,31 @@ public class Diagram implements Serializable, GraphListener {
     }
 
     /**
-     * Get all the figs that are edges.
+     * Get all the model elements that are represented as a node.
+     * @return the nodes
+     */
+    public List getNodes() {
+        // needs-more-work: should just do getGraphModel().getNodes()
+        // but that is not updated when the diagram is loaded
+        List nodes = new ArrayList();
+        List figs = getLayer().getContents();
+        Iterator it = figs.iterator();
+        while (it.hasNext()) {
+            Object fig = it.next();
+            if (fig instanceof FigNode) {
+                nodes.add(((FigNode)fig).getOwner());
+            }
+        }
+
+        return nodes;
+    }
+
+    /**
+     * Get all the model element that are represented bi FigEdges.
      * @param edges the collection in which to place the edges or null
      *              if a new collection should be created
      * @return the edges
+     * @deprecated use getEdges() returning a List (order is important)
      */
     public Collection getEdges(Collection edges) {
         // needs-more-work: should just do getGraphModel().getEdges()
@@ -264,6 +286,26 @@ public class Diagram implements Serializable, GraphListener {
         if (edges == null) {
             edges = new ArrayList();
         }
+        List figs = getLayer().getContents();
+
+        Iterator it = figs.iterator();
+        while (it.hasNext()) {
+            Object fig = it.next();
+            if((fig instanceof FigEdge) && (null != ((FigEdge)fig).getOwner()))    // Some figs might not have a owner?
+                edges.add(((FigEdge)fig).getOwner());
+        }
+        
+        return edges;
+    }
+
+    /**
+     * Get all the model element that are represented bi FigEdges.
+     * @return the edges
+     */
+    public List getEdges() {
+        // needs-more-work: should just do getGraphModel().getEdges()
+        // but that is not updated when the diagram is loaded
+        List edges = new ArrayList();
         List figs = getLayer().getContents();
 
         Iterator it = figs.iterator();
