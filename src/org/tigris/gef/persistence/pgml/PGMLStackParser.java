@@ -573,7 +573,11 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
 
         String owner = attrList.getValue("href");
         if (owner != null && !owner.equals("")) {
-            f.setOwner(findOwner(owner));
+            Object modelElement = findOwner(owner);
+            if (modelElement == null) {
+                throw new SAXException("Found href of " + owner + " with no matching element in model");
+            }
+            f.setOwner(modelElement);
         }
     }
 
