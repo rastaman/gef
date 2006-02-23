@@ -54,6 +54,7 @@ import org.tigris.gef.di.GraphicElement;
 import org.tigris.gef.graph.GraphEdgeHooks;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
+import org.tigris.gef.graph.MutableGraphSupport;
 
 import org.tigris.gef.plot2d.Java2d;
 import org.tigris.gef.plot2d.Plotter;
@@ -1769,6 +1770,8 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Set the visible status of the fig
      */
     public void setVisible(boolean visible) {
+        if (this.visible == visible) return;
+        MutableGraphSupport.setSaveEnabled(true);
         this.visible = visible;
     }
     
