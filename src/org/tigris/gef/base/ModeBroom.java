@@ -320,7 +320,7 @@ public class ModeBroom extends FigModifyingModeImpl {
                 }
                 
                 if ((dx > 0 || dy > 0) && !(f instanceof FigEdge)) {
-                    MutableGraphSupport.setSaveEnabled(true);
+                    MutableGraphSupport.enableSaveAction();
                 }
 
                 f.endTrans();

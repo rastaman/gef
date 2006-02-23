@@ -111,9 +111,6 @@ public abstract class MutableGraphSupport
 
     /** Create a new node based on the given one and add it to the graph.*/
     public void dragNode(Object node) {
-        if (saveAction != null && !saveAction.isEnabled()) {
-            saveAction.setEnabled(true);
-        }
     }
 
     /** Return true if the connection to the old node can be rerouted to
@@ -361,9 +358,9 @@ public abstract class MutableGraphSupport
         saveAction = action;
     }
     
-    public static void setSaveEnabled(boolean enabled) {
+    public static void enableSaveAction() {
         if (saveAction != null) {
-            saveAction.setEnabled(enabled);
+            saveAction.setEnabled(true);
         }
     }
     

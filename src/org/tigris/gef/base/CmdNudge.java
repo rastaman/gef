@@ -110,7 +110,7 @@ public class CmdNudge extends Cmd {
         }
         // Should I move it so that it aligns with the next grid?
         sm.translate(dx, dy);
-        MutableGraphSupport.setSaveEnabled(true);
+        MutableGraphSupport.enableSaveAction();
         sm.endTrans();
     }
 

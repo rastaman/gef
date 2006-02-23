@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -1371,7 +1371,9 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
             final int newWidth,
             final int newHeight) {
         
+        if (newX == _x && newY == _y && newWidth == _w && newHeight == _h) return;
         if (group == null) {
+            MutableGraphSupport.enableSaveAction();
             if (UndoManager.getInstance().isGenerateMementos()) {
                 Memento memento = new Memento() {
                     int oldX = _x;
@@ -1457,6 +1459,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      *  is null, turns off filling. Fires PropertyChangeEvent
      *  "fillColor", or "filled".*/
     public void setFillColor(Color col) {
+        if (col.equals(_fillColor)) return;
         if(col != null) {
             firePropChange("fillColor", _fillColor, col);
             _fillColor = col;
@@ -1465,6 +1468,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
             firePropChange("filled", _filled, false);
             _filled = false;
         }
+        MutableGraphSupport.enableSaveAction();
     }
 
     /** Sets a flag to either fill the Fig with its fillColor or
@@ -1478,6 +1482,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      *  null, sets the lineWidth to 0.  Fires PropertyChangeEvent
      *  "lineColor", or "lineWidth".*/
     public void setLineColor(Color col) {
+        if (col.equals(_lineColor)) return;
         if(col != null) {
             firePropChange("lineColor", _lineColor, col);
             _lineColor = col;
@@ -1486,6 +1491,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
             firePropChange("lineWidth", _lineWidth, 0);
             _lineWidth = 0;
         }
+        MutableGraphSupport.enableSaveAction();
     }
 
     /**
@@ -1771,7 +1777,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      */
     public void setVisible(boolean visible) {
         if (this.visible == visible) return;
-        MutableGraphSupport.setSaveEnabled(true);
+        MutableGraphSupport.enableSaveAction();
         this.visible = visible;
     }
     
