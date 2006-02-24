@@ -1455,11 +1455,17 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         _layer = lay;
     }
 
-    /** Sets the color that will be used if the Fig is filled.  If col
-     *  is null, turns off filling. Fires PropertyChangeEvent
-     *  "fillColor", or "filled".*/
+    /**
+     * Sets the color that will be used if the Fig is filled.  If col
+     * is null, turns off filling. Fires PropertyChangeEvent
+     * "fillColor", or "filled".
+     */
     public void setFillColor(Color col) {
-        if (col.equals(_fillColor)) return;
+        if (col == null) {
+            if (_fillColor == null) return;
+        } else {
+            if (col.equals(_fillColor)) return;
+        }
         if(col != null) {
             firePropChange("fillColor", _fillColor, col);
             _fillColor = col;
@@ -1482,7 +1488,11 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      *  null, sets the lineWidth to 0.  Fires PropertyChangeEvent
      *  "lineColor", or "lineWidth".*/
     public void setLineColor(Color col) {
-        if (col.equals(_lineColor)) return;
+        if (col == null) {
+            if (_lineColor == null) return;
+        } else {
+            if (col.equals(_lineColor)) return;
+        }
         if(col != null) {
             firePropChange("lineColor", _lineColor, col);
             _lineColor = col;
