@@ -133,18 +133,4 @@ public class GeometryTest extends TestCase {
         assertEquals(270.0D, Geometry.segmentAngle(pointCentre, point270), 0.001);
         assertEquals(315.0D, Geometry.segmentAngle(pointCentre, point315), 0.001);
     }
-    
-    
-    public void testDiffAngle() {
-        assertEquals(10.0D, Geometry.diffAngle(5, 355), 0.001D);
-        assertEquals(10.0D, Geometry.diffAngle(355, 5), 0.001D);
-        assertEquals(90.0D, Geometry.diffAngle(45, 135), 0.001D);
-        assertEquals(90.0D, Geometry.diffAngle(135, 45), 0.001D);
-        assertEquals(90.0D, Geometry.diffAngle(225, 135), 0.001D);
-        assertEquals(90.0D, Geometry.diffAngle(135, 225), 0.001D);
-        assertEquals(90.0D, Geometry.diffAngle(225, 315), 0.001D);
-        assertEquals(90.0D, Geometry.diffAngle(315, 225), 0.001D);
-    }
-    
-    
 }
