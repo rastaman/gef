@@ -1371,8 +1371,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
             final int newWidth,
             final int newHeight) {
         
-        if (newX == _x && newY == _y && newWidth == _w && newHeight == _h) return;
-        if (group == null) {
+        if (group == null && (newX != _x || newY != _y || newWidth != _w || newHeight != _h)) {
             MutableGraphSupport.enableSaveAction();
             if (UndoManager.getInstance().isGenerateMementos()) {
                 Memento memento = new Memento() {
