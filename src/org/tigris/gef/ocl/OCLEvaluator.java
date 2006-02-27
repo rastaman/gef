@@ -22,17 +22,23 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.tigris.gef.ocl;
 
-import java.io.Writer;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
-import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-// stereotype <<utility>>
 public class OCLEvaluator {
     ////////////////////////////////////////////////////////////////
     // constants
@@ -153,6 +159,10 @@ public class OCLEvaluator {
         if(target == null) {
             return null;
         }
+        
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Looking for property '" + property + "' on " + target.getClass().getName());
+        }
 
         Method m = null;
         
@@ -165,43 +175,21 @@ public class OCLEvaluator {
         }
 
         // First try and find a getter method in the form getProperty()
-        Object o = null;
-        
-        m = getMethod(target.getClass(), "get" + toTitleCase(property));
-
-        if (m != null) {
-            try {
-                o = m.invoke(target, null);    // getter methods take no args =>  null
-                //System.out.println("[OCLEvaluator] Trying to get method get" + toTitleCase(property) + " = " + o);
-                return convertCollection(o, collectionRange);
-            } catch (Exception e) {
-                throw new ExpansionException(e);
-            }
-        }
+        Object o = invokeMethod(target, "get" + toTitleCase(property), collectionRange);
+        if (o != null) return o;
 
         // Then try and find a method in the form property()
-        m = getMethod(target.getClass(), property);
-        if (m != null) {
-            try {
-                o = m.invoke(target, null);
-                return convertCollection(o, collectionRange);
-            } catch (Exception e) {
-                throw new ExpansionException(e);
-            }
-        }
+        o = invokeMethod(target, property, collectionRange);
+        if (o != null) return o;
         
-        // Next try and find a method in the form Property()
-        m = getMethod(target.getClass(), toTitleCase(property));
-        if (m != null) {
-            try {
-                o = m.invoke(target, null);
-                return convertCollection(o, collectionRange);
-            } catch (Exception e) {
-                throw new ExpansionException(e);
-            }
-        }
+        // Then try and find a method in the form Property()
+        o = invokeMethod(target, toTitleCase(property), collectionRange);
+        if (o != null) return o;
         
         // We have tried all method forms so lets now try just getting the property
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Looking for variable '" + property + "'");
+        }
         Field f = null;
         try {
             f = target.getClass().getField(property);
@@ -225,6 +213,25 @@ public class OCLEvaluator {
 
         return null;
     }    // end of evaluateProperty
+    
+    private Object invokeMethod(Object target, String methodName, String collectionRange) throws ExpansionException {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Looking for method '" + methodName + "'");
+        }
+
+        Method method = getMethod(target.getClass(), methodName);
+
+        if (method != null) {
+            try {
+                Object o = method.invoke(target, null); // getter methods take no args =>  null
+                return convertCollection(o, collectionRange);
+            } catch (Exception e) {
+                throw new ExpansionException(e);
+            }
+        }
+        
+        return null;
+    }
 
     /**
      * Copy every item from the given list to a new list.
