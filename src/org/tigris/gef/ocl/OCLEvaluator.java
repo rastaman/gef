@@ -140,13 +140,23 @@ public class OCLEvaluator {
      * @return the converted string
      */
     private String toTitleCase(String s) {
-        if(s.length() > 1) {
-            return s.substring(0, 1).toUpperCase() + s.substring(1, s.length());
+        if(s.length() > 0) {
+            return toUpperCase(s.charAt(0)) + s.substring(1, s.length());
         } else {
-            return s.toUpperCase();
+            return s;
         }
     }    // end of toTitleCase
 
+    /**
+     * Convert a character to upper case
+     * @param c
+     * @return the upper case equivilent of the input or the input
+     */
+    private char toUpperCase(char c) {
+        final int pos = "abcdefghijklmnopqrstuvwxyz".indexOf(c);
+        if (pos == -1) return c;
+        return ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(pos));
+    }
 
     /**
      * Attempt to retrieve a named property from a target
@@ -164,8 +174,6 @@ public class OCLEvaluator {
             LOG.debug("Looking for property '" + property + "' on " + target.getClass().getName());
         }
 
-        Method m = null;
-        
         String collectionRange = null;
         
         int rangePos = property.indexOf('[');
@@ -182,9 +190,12 @@ public class OCLEvaluator {
         o = invokeMethod(target, property, collectionRange);
         if (o != null) return o;
         
-        // Then try and find a method in the form Property()
+        // Then try and find a method in the form Property() TODO: Not good. This allows bad coding style
         o = invokeMethod(target, toTitleCase(property), collectionRange);
-        if (o != null) return o;
+        if (o != null) {
+            LOG.warn("Reference to a method with bad naming convention - " + toTitleCase(property));
+            return o;
+        }
         
         // We have tried all method forms so lets now try just getting the property
         if (LOG.isDebugEnabled()) {
@@ -195,23 +206,10 @@ public class OCLEvaluator {
             f = target.getClass().getField(property);
             o = f.get(target);    // access the field f or object targe
             return convertCollection(o, collectionRange);
-        } catch(NoSuchFieldException e) {
-            o = getExternalProperty(target, property);
-            if(o != null) {
-                return convertCollection(o, collectionRange);
-            }
-            else {
-                LOG.error("Failed to get external property " + property + " on " + target.getClass().getName(), e);
-                return null;
-            }
-        } catch(IllegalAccessException e) {
-            if(f != null) {
-                LOG.error("Failed to get external property " + property + " on " + target.getClass().getName(), e);
-                return null;
-            }
+        } catch(Exception e) {
+            LOG.error("Failed to get field " + property + " on " + target.getClass().getName(), e);
+            return null;
         }
-
-        return null;
     }    // end of evaluateProperty
     
     private Object invokeMethod(Object target, String methodName, String collectionRange) throws ExpansionException {
@@ -263,18 +261,6 @@ public class OCLEvaluator {
                 flattenInto(p, accum);
             }
         }
-    }
-
-    /**
-     * Returns the value of a property that is not a field of the target.
-     * This method should be overwritten in a derived class.
-     *
-     * @param target The object to be examined.
-     * @param property The property to look after.
-     * @return null
-     */
-    protected Object getExternalProperty(Object target, String property) {
-        return null;
     }
 
     /** 
