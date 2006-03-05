@@ -436,15 +436,15 @@ public class ModeBroom extends FigModifyingModeImpl {
         int request = 0;
         int size = figs.size();
         if(_distributeMode == DISTRIBUTE_EVEN_SPACE || _distributeMode == DISTRIBUTE_SPREAD) {
-            request = CmdDistribute.V_SPACING;
+            request = DistributeAction.V_SPACING;
             if(_dir == DIRECTION_UPWARD || _dir == DIRECTION_DOWNWARD) {
-                request = CmdDistribute.H_SPACING;
+                request = DistributeAction.H_SPACING;
             }
         }
         else if(_distributeMode == DISTRIBUTE_PACK) {
-            request = CmdDistribute.V_PACK;
+            request = DistributeAction.V_PACK;
             if(_dir == DIRECTION_UPWARD || _dir == DIRECTION_DOWNWARD) {
-                request = CmdDistribute.H_PACK;
+                request = DistributeAction.H_PACK;
             }
         }
 
@@ -466,16 +466,15 @@ public class ModeBroom extends FigModifyingModeImpl {
             }
         }
         else {
-            CmdDistribute d = new CmdDistribute(request);
-            d.setArg("figs", figs);
+            DistributeAction d = new DistributeAction(request, figs);
             if(_distributeMode == DISTRIBUTE_SPREAD) {
-                d.setArg("bbox", _selectRect);
+                d.setBoundingBox(_selectRect);
             }
             else if(_distributeMode == DISTRIBUTE_EVEN_SPACE && _origBBox != null) {
-                d.setArg("bbox", _origBBox);
+                d.setBoundingBox(_origBBox);
             }
 
-            d.doIt();
+            d.actionPerformed(null);
             if(doCentering) {
                 int centerRequest = AlignAction.ALIGN_H_CENTERS;
                 if(_dir == DIRECTION_UPWARD || _dir == DIRECTION_DOWNWARD) {
@@ -492,7 +491,7 @@ public class ModeBroom extends FigModifyingModeImpl {
             }
 
             if(_distributeMode == DISTRIBUTE_EVEN_SPACE && _origBBox == null) {
-                _origBBox = d.getLastBBox();
+                _origBBox = d.getBoundingBox();
             }
         }
 

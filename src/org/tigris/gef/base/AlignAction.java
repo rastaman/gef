@@ -30,7 +30,6 @@ package org.tigris.gef.base;
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

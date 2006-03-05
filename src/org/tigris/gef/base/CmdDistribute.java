@@ -37,6 +37,7 @@ import org.tigris.gef.presentation.*;
 
 /**
  * A Cmd to align 2 or more objects relative to each other.
+ * @deprecated use DistributeAction
  */
 
 public class CmdDistribute extends Cmd {

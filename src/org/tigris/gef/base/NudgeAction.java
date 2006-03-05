@@ -31,16 +31,19 @@
 
 package org.tigris.gef.base;
 
+import java.awt.event.ActionEvent;
+
 import org.tigris.gef.graph.MutableGraphSupport;
+import org.tigris.gef.undo.UndoableAction;
+import org.tigris.gef.util.Localizer;
 
 /** Cmd to Nudge Figs by a small distance.  This is useful when you
  *  want to get diagrams to look just right and you are not to steady
  *  with the mouse.  Also allows user to keep hands on keyboard.
  *
- * @deprecated use NudgeAction
- */
+ * @see org.tigris.gef.presentation.Fig */
 
-public class CmdNudge extends Cmd {
+public class NudgeAction extends UndoableAction {
     ////////////////////////////////////////////////////////////////
     // constants
     public static final int LEFT = 1;
@@ -56,12 +59,12 @@ public class CmdNudge extends Cmd {
     ////////////////////////////////////////////////////////////////
     // constructor
 
-    public CmdNudge(int dir) {
+    public NudgeAction(int dir) {
         this(dir, 1);
     }
 
-    public CmdNudge(int dir, int mag) {
-        super("Nudge" + wordFor(dir)); //needs-more-work: direction
+    public NudgeAction(int dir, int mag) {
+        super(Localizer.localize("GefBase", "Nudge" + wordFor(dir))); //needs-more-work: direction
         _direction = dir;
         _magnitude = mag;
     }
@@ -80,13 +83,13 @@ public class CmdNudge extends Cmd {
         return "";
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Cmd API
-
     /** Move the selected items a few pixels in the given
      *  direction. Note that the sign convention is the opposite of
      *  CmdScroll. */
-    public void doIt() {
+    public void actionPerformed(ActionEvent e) {
+
+        super.actionPerformed(e);
+        
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
         if(sm.getLocked()) {

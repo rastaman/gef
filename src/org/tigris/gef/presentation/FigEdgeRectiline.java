@@ -70,34 +70,34 @@ public class FigEdgeRectiline extends FigEdge {
   ////////////////////////////////////////////////////////////////
   // routing methods
 
-  /** Find the route that the edge should follow.  Basically case
-   *  analysis to route around source and destination nodes.
-   *  Needs-More-Work: A better algorithm would really be useful.
-   *  Needs-More-Work: Sometimes the edge can get non-rectilinear. */
-  public void computeRoute() {
-    if (!_initiallyLaidOut) {
-      layoutEdge();
-      _initiallyLaidOut = true;
-    }
-    FigPoly p = ((FigPoly) getFig());
-
-    Point srcPt, dstPt;
+    /** Find the route that the edge should follow.  Basically case
+     *  analysis to route around source and destination nodes.
+     *  Needs-More-Work: A better algorithm would really be useful.
+     *  Needs-More-Work: Sometimes the edge can get non-rectilinear. */
+    public void computeRouteImpl() {
+        if (!_initiallyLaidOut) {
+            layoutEdge();
+            _initiallyLaidOut = true;
+        }
+        FigPoly p = ((FigPoly) getFig());
     
-    Fig sourcePortFig = getSourcePortFig();
-    Fig destPortFig = getDestPortFig();
-    
-    if (_useNearest) {
-      srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
-      dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints()-2));
-    }
-    else {
-      srcPt = sourcePortFig.getCenter();
-      dstPt = destPortFig.getCenter();
-    }
-    
-    p.setEndPoints(srcPt, dstPt);
-    calcBounds();
-  } /* end computeRoute */
+        Point srcPt, dstPt;
+        
+        Fig sourcePortFig = getSourcePortFig();
+        Fig destPortFig = getDestPortFig();
+        
+        if (_useNearest) {
+            srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
+            dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints()-2));
+        }
+        else {
+            srcPt = sourcePortFig.getCenter();
+            dstPt = destPortFig.getCenter();
+        }
+        
+        p.setEndPoints(srcPt, dstPt);
+        calcBounds();
+    } /* end computeRoute */
 
     /**
      * Internal function to actually compute the layout of the line if

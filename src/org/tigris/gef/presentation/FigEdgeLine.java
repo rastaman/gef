@@ -46,7 +46,7 @@ public class FigEdgeLine extends FigEdge {
   protected Fig makeEdgeFig() { return new FigLine(0, 0, 0, 0, Color.black); }
 
     /** Compute the shape of the line that presents an Edge. */
-    public void computeRoute() {
+    public void computeRouteImpl() {
         Fig sourcePortFig = getSourcePortFig();
   	    Fig destPortFig = getDestPortFig();
         Point srcPt = sourcePortFig.getCenter();

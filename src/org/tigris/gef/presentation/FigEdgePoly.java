@@ -84,7 +84,7 @@ public class FigEdgePoly extends FigEdge {
      *  TODO: MVW: This functions is called too many times (within ArgoUML)! 
      *  I count 6x or 7x while creating an edge.
      */
-    public void computeRoute() {
+    public void computeRouteImpl() {
         if (!_initiallyLaidOut) {
             layoutEdge();
             _initiallyLaidOut = true;

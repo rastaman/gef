@@ -232,20 +232,20 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 
 	JMenu align = new JMenu(Localizer.localize("GefBase","Align"));
 	arrange.add(align);
-	align.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
-	align.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
-	align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS));
-	align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS));
-	align.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
-	align.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
-	align.add(new CmdAlign(CmdAlign.ALIGN_TO_GRID));
+	align.add(new AlignAction(AlignAction.ALIGN_TOPS));
+	align.add(new AlignAction(AlignAction.ALIGN_BOTTOMS));
+	align.add(new AlignAction(AlignAction.ALIGN_LEFTS));
+	align.add(new AlignAction(AlignAction.ALIGN_RIGHTS));
+	align.add(new AlignAction(AlignAction.ALIGN_H_CENTERS));
+	align.add(new AlignAction(AlignAction.ALIGN_V_CENTERS));
+	align.add(new AlignAction(AlignAction.ALIGN_TO_GRID));
 
 	JMenu distribute = new JMenu(Localizer.localize("GefBase","Distribute"));
 	arrange.add(distribute);
-	distribute.add(new CmdDistribute(CmdDistribute.H_SPACING));
-	distribute.add(new CmdDistribute(CmdDistribute.H_CENTERS));
-	distribute.add(new CmdDistribute(CmdDistribute.V_SPACING));
-	distribute.add(new CmdDistribute(CmdDistribute.V_CENTERS));
+	distribute.add(new DistributeAction(DistributeAction.H_SPACING));
+	distribute.add(new DistributeAction(DistributeAction.H_CENTERS));
+	distribute.add(new DistributeAction(DistributeAction.V_SPACING));
+	distribute.add(new DistributeAction(DistributeAction.V_CENTERS));
 
 	JMenu reorder = new JMenu(Localizer.localize("GefBase","Reorder"));
 	arrange.add(reorder);
@@ -256,10 +256,10 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 
 	JMenu nudge = new JMenu(Localizer.localize("GefBase","Nudge"));
 	arrange.add(nudge);
-	nudgeLeftItem = nudge.add(new CmdNudge(CmdNudge.LEFT));
-	nudgeRightItem = nudge.add(new CmdNudge(CmdNudge.RIGHT));
-	nudgeUpItem = nudge.add(new CmdNudge(CmdNudge.UP));
-	nudgeDownItem = nudge.add(new CmdNudge(CmdNudge.DOWN));
+	nudgeLeftItem = nudge.add(new NudgeAction(NudgeAction.LEFT));
+	nudgeRightItem = nudge.add(new NudgeAction(NudgeAction.RIGHT));
+	nudgeUpItem = nudge.add(new NudgeAction(NudgeAction.UP));
+	nudgeDownItem = nudge.add(new NudgeAction(NudgeAction.DOWN));
 
 	KeyStroke ctrlN = KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK);
 	KeyStroke ctrlO = KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK);

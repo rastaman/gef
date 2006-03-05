@@ -51,7 +51,7 @@ import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 
 import org.tigris.gef.base.CmdGroup;
-import org.tigris.gef.base.CmdNudge;
+import org.tigris.gef.base.NudgeAction;
 import org.tigris.gef.base.CmdReorder;
 import org.tigris.gef.base.CmdSelectNear;
 import org.tigris.gef.base.CmdSelectNext;
@@ -250,20 +250,20 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener {
         bindKey(new CmdReorder(CmdReorder.BRING_TO_FRONT), KeyEvent.VK_F,
                 ctrlShift);
 
-        bindKey(new CmdNudge(CmdNudge.LEFT), KeyEvent.VK_LEFT, 0);
-        bindKey(new CmdNudge(CmdNudge.RIGHT), KeyEvent.VK_RIGHT, 0);
-        bindKey(new CmdNudge(CmdNudge.UP), KeyEvent.VK_UP, 0);
-        bindKey(new CmdNudge(CmdNudge.DOWN), KeyEvent.VK_DOWN, 0);
+        bindKey(new NudgeAction(NudgeAction.LEFT), KeyEvent.VK_LEFT, 0);
+        bindKey(new NudgeAction(NudgeAction.RIGHT), KeyEvent.VK_RIGHT, 0);
+        bindKey(new NudgeAction(NudgeAction.UP), KeyEvent.VK_UP, 0);
+        bindKey(new NudgeAction(NudgeAction.DOWN), KeyEvent.VK_DOWN, 0);
 
-        bindKey(new CmdNudge(CmdNudge.LEFT, 8), KeyEvent.VK_LEFT, shift);
-        bindKey(new CmdNudge(CmdNudge.RIGHT, 8), KeyEvent.VK_RIGHT, shift);
-        bindKey(new CmdNudge(CmdNudge.UP, 8), KeyEvent.VK_UP, shift);
-        bindKey(new CmdNudge(CmdNudge.DOWN, 8), KeyEvent.VK_DOWN, shift);
+        bindKey(new NudgeAction(NudgeAction.LEFT, 8), KeyEvent.VK_LEFT, shift);
+        bindKey(new NudgeAction(NudgeAction.RIGHT, 8), KeyEvent.VK_RIGHT, shift);
+        bindKey(new NudgeAction(NudgeAction.UP, 8), KeyEvent.VK_UP, shift);
+        bindKey(new NudgeAction(NudgeAction.DOWN, 8), KeyEvent.VK_DOWN, shift);
 
-        bindKey(new CmdNudge(CmdNudge.LEFT, 18), KeyEvent.VK_LEFT, alt);
-        bindKey(new CmdNudge(CmdNudge.RIGHT, 18), KeyEvent.VK_RIGHT, alt);
-        bindKey(new CmdNudge(CmdNudge.UP, 18), KeyEvent.VK_UP, alt);
-        bindKey(new CmdNudge(CmdNudge.DOWN, 18), KeyEvent.VK_DOWN, alt);
+        bindKey(new NudgeAction(NudgeAction.LEFT, 18), KeyEvent.VK_LEFT, alt);
+        bindKey(new NudgeAction(NudgeAction.RIGHT, 18), KeyEvent.VK_RIGHT, alt);
+        bindKey(new NudgeAction(NudgeAction.UP, 18), KeyEvent.VK_UP, alt);
+        bindKey(new NudgeAction(NudgeAction.DOWN, 18), KeyEvent.VK_DOWN, alt);
 
         bindKey(new CmdSelectNear(CmdSelectNear.LEFT), KeyEvent.VK_LEFT, meta);
         bindKey(new CmdSelectNear(CmdSelectNear.RIGHT), KeyEvent.VK_RIGHT, meta);

@@ -23,18 +23,41 @@
 
 package org.tigris.gef.demo;
 
-import org.tigris.gef.base.*;
+import org.tigris.gef.base.AlignAction;
+import org.tigris.gef.base.Cmd;
+import org.tigris.gef.base.CmdSetMode;
+import org.tigris.gef.base.DistributeAction;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.ModeBroom;
+import org.tigris.gef.base.ModeSelect;
 import org.tigris.gef.graph.presentation.JGraph;
 import org.tigris.gef.graph.presentation.JGraphFrame;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.ui.ToolBar;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 public class BroomStudy {
 
@@ -95,28 +118,28 @@ public class BroomStudy {
 //     buttons.addElement(b);
 //     _tools.addSeparator();
 
-        b = _tools.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
+        b = _tools.add(new AlignAction(AlignAction.ALIGN_TOPS));
         buttons.addElement(b);
-        b = _tools.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
+        b = _tools.add(new AlignAction(AlignAction.ALIGN_V_CENTERS));
         buttons.addElement(b);
-        b = _tools.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
+        b = _tools.add(new AlignAction(AlignAction.ALIGN_BOTTOMS));
         buttons.addElement(b);
         _tools.addSeparator();
 
-        b = _tools.add(new CmdAlign(CmdAlign.ALIGN_LEFTS));
+        b = _tools.add(new AlignAction(AlignAction.ALIGN_LEFTS));
         buttons.addElement(b);
-        b = _tools.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
+        b = _tools.add(new AlignAction(AlignAction.ALIGN_H_CENTERS));
         buttons.addElement(b);
-        b = _tools.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS));
+        b = _tools.add(new AlignAction(AlignAction.ALIGN_RIGHTS));
         buttons.addElement(b);
 //     b = _tools.add(new CmdAlign(CmdAlign.ALIGN_TO_GRID));
 //     buttons.addElement(b);
         _tools.addSeparator();
-        b = _tools.add(new CmdDistribute(CmdDistribute.H_SPACING));
+        b = _tools.add(new DistributeAction(DistributeAction.H_SPACING));
         buttons.addElement(b);
 //     b = _tools.add(new CmdDistribute(CmdDistribute.H_CENTERS));
 //     buttons.addElement(b);
-        b = _tools.add(new CmdDistribute(CmdDistribute.V_SPACING));
+        b = _tools.add(new DistributeAction(DistributeAction.V_SPACING));
         buttons.addElement(b);
 //     b = _tools.add(new CmdDistribute(CmdDistribute.V_CENTERS));
 //     buttons.addElement(b);

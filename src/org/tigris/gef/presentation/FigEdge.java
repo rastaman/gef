@@ -145,7 +145,31 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /** Method to compute the route a FigEdge should follow.  By defualt
      *  this does nothing. Sublcasses, like FigEdgeRectiline override
      *  this method. */
-    abstract public void computeRoute();
+    final public void computeRoute() {
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            Memento memento = new Memento() {
+                Point[] points = getPoints();
+                
+                public void undo() {
+                    setPoints(points);
+                    damage();
+                }
+                public void redo() {
+                    computeRouteImpl();
+                    damage();
+                }
+                public void dispose() {}
+                
+                public String toString() {
+                    return (isStartChain() ? "*" : " ") + "ComputeRouteMemento " + points;
+                }
+            };
+            UndoManager.getInstance().addMemento(memento);
+        }
+        computeRouteImpl();
+    }
+    
+    abstract public void computeRouteImpl();
     
     final public boolean contains(int x, int y) {
         if(_fig.contains(x, y)) {
@@ -701,22 +725,6 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     }
 
     final public void translateEdge(final int dx, final int dy) {
-        
-//        class TranslateEdgeMemento extends Memento {
-//            
-//            TranslateEdgeMemento(int dx, int dy) {
-//            }
-//            public void undo() {
-//                _fig.translate(-dx, -dy);
-//                calcBounds();
-//            }
-//            public void redo() {
-//                _fig.translate(dx, dy);
-//                calcBounds();
-//            }
-//        }
-//        UndoManager.getInstance().addMemento(new TranslateEdgeMemento(dx, dy));
-        
         _fig.translate(dx, dy);
         calcBounds();
     }
