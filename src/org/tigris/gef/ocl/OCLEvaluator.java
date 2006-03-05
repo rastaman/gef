@@ -183,18 +183,22 @@ public class OCLEvaluator {
         }
 
         // First try and find a getter method in the form getProperty()
-        Object o = invokeMethod(target, "get" + toTitleCase(property), collectionRange);
-        if (o != null) return o;
+        Method method = getMethod(target.getClass(), "get" + toTitleCase(property));
+        if (method != null) {
+            return invokeMethod(method, target, collectionRange);
+        }
 
         // Then try and find a method in the form property()
-        o = invokeMethod(target, property, collectionRange);
-        if (o != null) return o;
+        method = getMethod(target.getClass(), property);
+        if (method != null) {
+            return invokeMethod(method, target, collectionRange);
+        }
         
         // Then try and find a method in the form Property() TODO: Not good. This allows bad coding style
-        o = invokeMethod(target, toTitleCase(property), collectionRange);
-        if (o != null) {
+        method = getMethod(target.getClass(), toTitleCase(property));
+        if (method != null) {
             LOG.warn("Reference to a method with bad naming convention - " + toTitleCase(property));
-            return o;
+            return invokeMethod(method, target, collectionRange);
         }
         
         // We have tried all method forms so lets now try just getting the property
@@ -204,20 +208,14 @@ public class OCLEvaluator {
         Field f = null;
         try {
             f = target.getClass().getField(property);
-            o = f.get(target);    // access the field f or object targe
-            return convertCollection(o, collectionRange);
+            return convertCollection(f.get(target), collectionRange);
         } catch(Exception e) {
             LOG.error("Failed to get field " + property + " on " + target.getClass().getName(), e);
             return null;
         }
     }    // end of evaluateProperty
     
-    private Object invokeMethod(Object target, String methodName, String collectionRange) throws ExpansionException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Looking for method '" + methodName + "'");
-        }
-
-        Method method = getMethod(target.getClass(), methodName);
+    private Object invokeMethod(Method method, Object target, String collectionRange) throws ExpansionException {
 
         if (method != null) {
             try {
@@ -331,9 +329,11 @@ public class OCLEvaluator {
         Method m[] = targetClass.getMethods();
         
         for (int i=0; i < m.length; ++i) {
-            if (m[i].getName().equals(methodName) &&
-                    m[i].getParameterTypes().length == 0) {
-                return m[i];
+            if (m[i].getParameterTypes().length == 0) {
+                if (m[i].getName().equals(methodName)) {
+                    return m[i];
+                } else {
+                }
             }
         }
         
