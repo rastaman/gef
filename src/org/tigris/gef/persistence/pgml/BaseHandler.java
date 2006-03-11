@@ -79,8 +79,6 @@ public abstract class BaseHandler extends DefaultHandler {
     public void gotElement(String contents) throws SAXException {
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    // Internal but overridable
     /**
      * Called to obtain a handler for a sub-element.  The
      * default implementation is to call getElementHandler.
@@ -101,14 +99,19 @@ public abstract class BaseHandler extends DefaultHandler {
      * @return DefaultHandler implementation appropriate for the element.
      * @throws SAXException
      */
-    protected DefaultHandler getElementOrUnknownHandler(HandlerStack stack,
-        Object container, String uri, String localname, String qname,
-        Attributes attributes)
-        throws SAXException {
+    protected DefaultHandler getElementOrUnknownHandler(
+            HandlerStack stack,
+            Object container, 
+            String uri, 
+            String localname, 
+            String qname,
+            Attributes attributes) throws SAXException {
+        
         DefaultHandler result =
             getElementHandler(stack, container, uri,
                     localname, qname,
                     attributes);
+        
         if (result == null) {
             result = new UnknownHandler(getPGMLStackParser());
         }

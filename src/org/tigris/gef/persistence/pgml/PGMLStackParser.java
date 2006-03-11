@@ -72,7 +72,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
     private static HashMap usedColors = new HashMap();
 
     private Stack handlerStack;
-    private XMLReader xmiReader;
+    private XMLReader xmlReader;
     private Map ownerRegistry;
     private Diagram diagram;
     private HashMap figRegistry;
@@ -133,7 +133,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * @return The read diagram.
      * @throws SAXException if something goes wrong.
      */
-    public synchronized Diagram readDiagram(InputStream is, boolean closeStream,
+    private synchronized Diagram readDiagram(InputStream is, boolean closeStream,
                                             DefaultHandler initialHandler)
         throws SAXException {
         handlerStack = new Stack();
@@ -143,10 +143,10 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
             factory.setValidating(false);
             figRegistry = new HashMap();
             diagram = null;
-            SAXParser pc = factory.newSAXParser();
+            SAXParser parser = factory.newSAXParser();
             InputSource source = new InputSource(is);
-            xmiReader = pc.getXMLReader();
-            pc.parse(source, initialHandler);
+            xmlReader = parser.getXMLReader();
+            parser.parse(source, initialHandler);
             // source = null;
             if (closeStream) {
                 // System.out.println(
@@ -212,9 +212,9 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      */
     public void pushHandlerStack(DefaultHandler handler) {
         handlerStack.push(handler);
-        if (xmiReader != null) {
-            xmiReader.setContentHandler(handler);
-            xmiReader.setErrorHandler(handler);
+        if (xmlReader != null) {
+            xmlReader.setContentHandler(handler);
+            xmlReader.setErrorHandler(handler);
         }
     }
 
@@ -223,10 +223,10 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      */
     public void popHandlerStack() {
         handlerStack.pop();
-        if (xmiReader != null && handlerStack.size() > 0) {
+        if (xmlReader != null && handlerStack.size() > 0) {
             DefaultHandler handler = (DefaultHandler) handlerStack.peek();
-            xmiReader.setContentHandler(handler);
-            xmiReader.setErrorHandler(handler);
+            xmlReader.setContentHandler(handler);
+            xmlReader.setErrorHandler(handler);
         }
     }
 
@@ -291,11 +291,11 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      *         java.lang.String, java.lang.String, java.lang.String,
      *         org.xml.sax.Attributes)
      */
-    public DefaultHandler getHandler(HandlerStack stack,
-                                      Object container,
-        String uri, String localname, String qname,
-        Attributes attributes)
-    	throws SAXException {
+    public DefaultHandler getHandler(
+            HandlerStack stack,
+            Object container,
+            String uri, String localname, String qname,
+            Attributes attributes) throws SAXException {
         String clsNameBounds = attributes.getValue("description");
         Object elementInstance = null;
         if (clsNameBounds != null) {
@@ -563,7 +563,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * @param attrList
      * @throws SAXException if something goes wrong.
      */
-    public void setAttrs(Fig f, Attributes attrList) throws SAXException {
+    protected void setAttrs(Fig f, Attributes attrList) throws SAXException {
         String name = attrList.getValue("name");
         if (name != null && !name.equals("")) {
             figRegistry.put(name, f);

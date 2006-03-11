@@ -24,7 +24,7 @@
 
 package org.tigris.gef.persistence.pgml;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.tigris.gef.presentation.Fig;
@@ -76,7 +76,7 @@ public class FigGroupHandler
         throws SAXException {
         if (group instanceof FigNode) {
             Object owner = group.getOwner();
-            Collection nodes = getPGMLStackParser().getDiagram().getNodes(null);
+            List nodes = getPGMLStackParser().getDiagram().getNodes();
             if (!nodes.contains(owner)) {
                 nodes.add(owner);
             }

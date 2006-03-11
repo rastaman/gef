@@ -212,27 +212,35 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     ////////////////////////////////////////////////////////////////
     // event handlers for KeyListener implementaion
     public void keyTyped(KeyEvent ke) {
-        if(ke.getKeyChar() == KeyEvent.VK_ENTER) {
-            if (figText.getReturnAction() == FigText.END_EDITING) {
-                endEditing();
-                ke.consume();
-            }
-        } else if(ke.getKeyChar() == KeyEvent.VK_TAB) {
-            if (figText.getTabAction() == FigText.END_EDITING) {
-                endEditing();
-                ke.consume();
-            }
-        } else if(ke.getKeyChar() == KeyEvent.VK_ESCAPE) {
-            // needs-more-work: should revert to orig text, or simply don't commit
-            endEditing();
-            ke.consume();
-        }
     }
 
     public void keyReleased(KeyEvent ke) {
     }
 
+    /**
+     * End editing on enter or tab if configured. Also ends on escape or F2.
+     * This is coded on keypressed rather than keyTyped as keyTyped may already
+     * have applied the key to the underlying document.
+     */
     public void keyPressed(KeyEvent ke) {
+        if(ke.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (figText.getReturnAction() == FigText.END_EDITING) {
+                endEditing();
+                ke.consume();
+            }
+        } else if(ke.getKeyCode() == KeyEvent.VK_TAB) {
+            if (figText.getTabAction() == FigText.END_EDITING) {
+                endEditing();
+                ke.consume();
+            }
+        } else if(ke.getKeyCode() == KeyEvent.VK_F2) {
+            endEditing();
+            ke.consume();
+        } else if(ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            // needs-more-work: should revert to orig text.
+            endEditing();
+            ke.consume();
+        }
     }
 
 

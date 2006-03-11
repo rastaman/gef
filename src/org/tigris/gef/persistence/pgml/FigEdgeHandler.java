@@ -24,7 +24,7 @@
 
 package org.tigris.gef.persistence.pgml;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.xml.sax.SAXException;
@@ -75,7 +75,7 @@ public class FigEdgeHandler extends BaseHandler implements Container {
     public void endElement(String uri, String localname, String qname)
             throws SAXException {
         Object owner = edge.getOwner();
-        Collection edges = getPGMLStackParser().getDiagram().getEdges(null);
+        List edges = getPGMLStackParser().getDiagram().getEdges();
         if (!edges.contains(owner)) {
             edges.add(owner);
         }

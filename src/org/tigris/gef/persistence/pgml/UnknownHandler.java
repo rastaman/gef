@@ -61,7 +61,9 @@ public class UnknownHandler extends DefaultHandler {
      */
     public void startElement(String uri, String localname, String qname,
         Attributes attributes) {
-        LOG.info("Ignoring unexpected element: " + qname);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Ignoring unexpected element: " + qname);
+        }
         depthCount++;
     }
 

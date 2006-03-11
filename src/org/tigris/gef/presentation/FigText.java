@@ -825,16 +825,22 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     ////////////////////////////////////////////////////////////////
     // event handlers: KeyListener implemtation
 
-    /** When the user presses a key when a FigText is selected, that key
-     *  should be added to the current string, or if the key was
-     *  backspace, the last character is removed.  Needs-More-Work: Should
-     *  also catch arrow keys and mouse clicks for full text
-     *  editing... someday... */
+    /**
+     * When the user presses a key when a FigText is selected, that key
+     * should be added to the current string and we start editing.
+     */
     public void keyTyped(KeyEvent ke) {
+        // This code must be in keyTyped rather than keyPressed.
+        // If in keyPressed some platforms will automatically add the pressed
+        // key to the editor when it opens others do not.
+        // Using keyTyped it is not automatically added and we do so ourselves
+        // if it is not some control character.
         if (isStartEditingKey(ke) && editable) {
             ke.consume();
             FigTextEditor te = startTextEditor(ke);
-            te.setText(te.getText() + ke.getKeyChar());
+            if (!Character.isISOControl(ke.getKeyChar())) {
+                te.setText(te.getText() + ke.getKeyChar());
+            }
         }
     }
 
@@ -845,7 +851,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     protected boolean isStartEditingKey(KeyEvent ke) {
-        return (ke.getKeyChar() >= 32);
+        return (!Character.isISOControl(ke.getKeyChar()));
     }
     ////////////////////////////////////////////////////////////////
     // event handlers: KeyListener implemtation
