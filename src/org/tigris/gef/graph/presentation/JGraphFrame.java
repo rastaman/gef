@@ -183,10 +183,10 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	edit.setMnemonic('E');
 	_menubar.add(edit);
 
-    JMenuItem undoItem = edit.add(new UndoAction("Undo"));
-        undoItem.setMnemonic('U');
-        JMenuItem redoItem = edit.add(new RedoAction("Redo"));
-        redoItem.setMnemonic('R');
+    JMenuItem undoItem = edit.add(new UndoAction(Localizer.localize("GefBase","Undo")));
+        undoItem.setMnemonic(Localizer.localize("GefBase","UndoMnemonic").charAt(0));
+        JMenuItem redoItem = edit.add(new RedoAction(Localizer.localize("GefBase","Redo")));
+        redoItem.setMnemonic(Localizer.localize("GefBase","RedoMnemonic").charAt(0));
     
 	JMenu select = new JMenu(Localizer.localize("GefBase","Select"));
 	edit.add(select);

@@ -23,6 +23,8 @@
 
 package org.tigris.gef.base;
 
+import org.tigris.gef.util.Localizer;
+
 /**
  * Cmd to setup a page for printing.
  *
@@ -34,7 +36,7 @@ public class CmdPrintPageSetup extends Cmd {
   CmdPrint cmdPrint;
 
   public CmdPrintPageSetup(CmdPrint cmdPrint) { 
-      super("Page Setup..."); 
+      super("PageSetup"); 
       this.cmdPrint = cmdPrint;
   }
 
