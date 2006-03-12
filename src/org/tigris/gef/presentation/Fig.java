@@ -1560,8 +1560,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
 
     /** Sets the owner object of this Fig. Fires PropertyChangeEvent
      *  "owner"
-     *
-     * USED BY PGML.tee
+     * @deprecated - set the owner in the constructor of the Fig
      */
     public void setOwner(Object own) {
         firePropChange("owner", _owner, own);

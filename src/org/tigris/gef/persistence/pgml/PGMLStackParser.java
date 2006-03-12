@@ -27,6 +27,8 @@ package org.tigris.gef.persistence.pgml;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -64,9 +66,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Michael A. MacDonald
  */
 public class PGMLStackParser implements HandlerStack, HandlerFactory {
-    /**
-     * Logger.
-     */
+    
     private static final Logger LOG = Logger.getLogger(PGMLStackParser.class);
 
     private static HashMap usedColors = new HashMap();
@@ -296,32 +296,16 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
             Object container,
             String uri, String localname, String qname,
             Attributes attributes) throws SAXException {
+        
+        String href = attributes.getValue("href");
+        
         String clsNameBounds = attributes.getValue("description");
         Object elementInstance = null;
         if (clsNameBounds != null) {
+            
             StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
             String clsName = translateType(st.nextToken());
-            try {
-                // Special case here; FigLine appears in the description, but
-                // there is no zero argoument constructor
-                if (clsName.equals(FigLine.class.getName())) {
-                    // TODO: Remove this when
-                    // http://gef.tigris.org/issues/show_bug.cgi?id=219 is
-                    // fixed and relevant version of GEF jar is in argouml CVS.
-                    elementInstance = new FigLine(0, 0, 10, 10);
-                } else {
-                    elementInstance = Class.forName(clsName).newInstance();
-                }
-            } catch (ClassNotFoundException cnfe) {
-                //TODO: Class not found! Why is this not considered an error?
-                // shouldn't we throw an exception here.
-                LOG.error("description:" + clsNameBounds
-                          + " does not specify an available class.");
-            } catch (IllegalAccessException iae) {
-                throw new SAXException(iae);
-            } catch (InstantiationException ie) {
-                throw new SAXException(ie);
-            }
+            elementInstance = constructFig(clsName, href);
             if (elementInstance instanceof HandlerFactory) {
                 return ((HandlerFactory) elementInstance).getHandler(
                     stack, container, uri, localname, qname, attributes);
@@ -458,7 +442,36 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         }
         return null;
     }
-
+    
+    private Fig constructFig(String className, String href) throws SAXException {
+        try {
+            Class figClass = Class.forName(className);
+            
+            if (href != null) {
+                // Look for a constructor that takes a single Object
+                Constructor[] constructors = figClass.getConstructors();
+                for (int i=0; i < constructors.length; ++i) {
+                    if (constructors[i].getParameterTypes().length == 1 &&
+                            constructors[i].getParameterTypes()[0].equals(Object.class)) {
+                        Object parameters[] = new Object[1];
+                        parameters[0] = findOwner(href);
+                        return (Fig) constructors[i].newInstance(parameters);
+                    }
+                }
+            }
+            
+            return (Fig) figClass.newInstance();
+        } catch (ClassNotFoundException e) {
+            throw new SAXException(e);
+        } catch (IllegalAccessException e) {
+            throw new SAXException(e);
+        } catch (InstantiationException e) {
+            throw new SAXException(e);
+        } catch (InvocationTargetException e) {
+            throw new SAXException(e);
+        }
+    }
+    
     /**
      * Associate a string with a Fig object, so the Fig object can be referenced
      * by the string later in the PGML file.  Default attribute processing
@@ -577,7 +590,11 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
             if (modelElement == null) {
                 throw new SAXException("Found href of " + owner + " with no matching element in model");
             }
-            f.setOwner(modelElement);
+            if (f.getOwner() != modelElement) {
+                f.setOwner(modelElement);
+            } else {
+                LOG.info("Ignoring href on " + f.getClass().getName() + " as it's already set");
+            }
         }
     }
 
