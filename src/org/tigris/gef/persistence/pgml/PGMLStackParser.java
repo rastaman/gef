@@ -25,6 +25,7 @@
 package org.tigris.gef.persistence.pgml;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -305,7 +306,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
             
             StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
             String clsName = translateType(st.nextToken());
-            elementInstance = constructFig(clsName, href);
+            elementInstance = constructFig(clsName, href, getBounds(clsNameBounds));
             if (elementInstance instanceof HandlerFactory) {
                 return ((HandlerFactory) elementInstance).getHandler(
                     stack, container, uri, localname, qname, attributes);
@@ -443,13 +444,58 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         return null;
     }
     
-    private Fig constructFig(String className, String href) throws SAXException {
+    /**
+     * Find the most useful constructor to build a Fig. Constructors
+     * are looked for in this order<ul>
+     * <li>ConcreteFig(Object element, int x, int y, int w, int h)</li>
+     * <li>ConcreteFig(Object element, int x, int y)</li>
+     * <li>ConcreteFig(Object element)</li>
+     * <li>ConcreteFig()</li></ul>
+     * @param className
+     * @param href
+     * @param bounds
+     * @return The Fig
+     * @throws SAXException
+     */
+    private Fig constructFig(String className, String href, Rectangle bounds) throws SAXException {
         try {
             Class figClass = Class.forName(className);
             
             if (href != null) {
-                // Look for a constructor that takes a single Object
                 Constructor[] constructors = figClass.getConstructors();
+                // LOG.info("Look for a constructor that takes Object, int, int, int, int");
+                for (int i=0; i < constructors.length; ++i) {
+                    if (constructors[i].getParameterTypes().length == 5 &&
+                            constructors[i].getParameterTypes()[0].equals(Object.class) &&
+                            constructors[i].getParameterTypes()[1].equals(Integer.TYPE) &&
+                            constructors[i].getParameterTypes()[2].equals(Integer.TYPE) &&
+                            constructors[i].getParameterTypes()[3].equals(Integer.TYPE) &&
+                            constructors[i].getParameterTypes()[4].equals(Integer.TYPE)) {
+                        Object parameters[] = new Object[5];
+                        parameters[0] = findOwner(href);
+                        parameters[1] = new Integer(bounds.x);
+                        parameters[2] = new Integer(bounds.y);
+                        parameters[3] = new Integer(bounds.width);
+                        parameters[4] = new Integer(bounds.height);
+                        return (Fig) constructors[i].newInstance(parameters);
+                    }
+                }
+                
+                // LOG.info("Look for a constructor that takes Object, int, int");
+                for (int i=0; i < constructors.length; ++i) {
+                    if (constructors[i].getParameterTypes().length == 3 &&
+                            constructors[i].getParameterTypes()[0].equals(Object.class) &&
+                            constructors[i].getParameterTypes()[1].equals(Integer.class) &&
+                            constructors[i].getParameterTypes()[2].equals(Integer.class)) {
+                        Object parameters[] = new Object[3];
+                        parameters[0] = findOwner(href);
+                        parameters[1] = new Integer(bounds.x);
+                        parameters[2] = new Integer(bounds.y);
+                        return (Fig) constructors[i].newInstance(parameters);
+                    }
+                }
+                
+                // LOG.info("Look for a constructor that takes a single Object");
                 for (int i=0; i < constructors.length; ++i) {
                     if (constructors[i].getParameterTypes().length == 1 &&
                             constructors[i].getParameterTypes()[0].equals(Object.class)) {
@@ -460,6 +506,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
                 }
             }
             
+            // Give up - return the default constructor
             return (Fig) figClass.newInstance();
         } catch (ClassNotFoundException e) {
             throw new SAXException(e);
@@ -638,6 +685,42 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
             group.setBounds(x, y, w, h);
         }
         return new FigGroupHandler(this, group);
+    }
+    
+    /**
+     * Retrieve a bounds Rectangle from its description where the
+     * description is in the form "anything[x,y,w,h]anything"
+     * @param boundsDescription
+     * @return a bounds Rectangle or null is invalid
+     */
+    Rectangle getBounds(String boundsDescription) {
+        try {
+            int bracketPosn = boundsDescription.indexOf('[');
+            if (bracketPosn < 0 ) return null;
+            boundsDescription = boundsDescription.substring(bracketPosn + 1);
+            StringTokenizer st =
+                new StringTokenizer(boundsDescription, ", ]");
+            String xStr = null;
+            String yStr = null;
+            String wStr = null;
+            String hStr = null;
+            if (st.hasMoreElements()) {
+                xStr = st.nextToken();
+                yStr = st.nextToken();
+                wStr = st.nextToken();
+                hStr = st.nextToken();
+            }
+            if (xStr != null && !xStr.equals("")) {
+                int x = Integer.parseInt(xStr);
+                int y = Integer.parseInt(yStr);
+                int w = Integer.parseInt(wStr);
+                int h = Integer.parseInt(hStr);
+                return new Rectangle(x, y, w, h);
+            }
+        } catch (Exception e) {
+            LOG.warn("Exception extracting bounds from description", e);
+        }
+        return null;
     }
 }
 
