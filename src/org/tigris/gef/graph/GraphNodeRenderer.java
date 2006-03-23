@@ -56,5 +56,5 @@ public interface GraphNodeRenderer extends java.io.Serializable {
      * @param attributeMap an optional map of attributes to style the fig.
      * return the new FigNode
      */
-    FigNode getFigNodeFor(Object node, Map attributeMap);
+    FigNode getFigNodeFor(Object node, int x, int y, Map attributeMap);
 } /* end interface GraphNodeRenderer */

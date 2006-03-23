@@ -457,7 +457,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * @return The Fig
      * @throws SAXException
      */
-    private Fig constructFig(String className, String href, Rectangle bounds) throws SAXException {
+    protected Fig constructFig(String className, String href, Rectangle bounds) throws SAXException {
         try {
             Class figClass = Class.forName(className);
             
@@ -485,8 +485,8 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
                 for (int i=0; i < constructors.length; ++i) {
                     if (constructors[i].getParameterTypes().length == 3 &&
                             constructors[i].getParameterTypes()[0].equals(Object.class) &&
-                            constructors[i].getParameterTypes()[1].equals(Integer.class) &&
-                            constructors[i].getParameterTypes()[2].equals(Integer.class)) {
+                            constructors[i].getParameterTypes()[1].equals(Integer.TYPE) &&
+                            constructors[i].getParameterTypes()[2].equals(Integer.TYPE)) {
                         Object parameters[] = new Object[3];
                         parameters[0] = findOwner(href);
                         parameters[1] = new Integer(bounds.x);

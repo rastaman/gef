@@ -52,9 +52,12 @@ public class DefaultGraphNodeRenderer
         return null;
     }
     /** Return a Fig that can be used to represent the given node */
-    public FigNode getFigNodeFor(Object node, Map styleAttributes) {
-        if (node instanceof NetNode)
-            return ((NetNode)node).presentationFor(null);
+    public FigNode getFigNodeFor(Object node, int x, int y, Map styleAttributes) {
+        FigNode figNode = null;
+        if (node instanceof NetNode) {
+            figNode = ((NetNode)node).presentationFor(null);
+            figNode.setLocation(x, y);
+        }
         return null;
     }
 } /* end class DefaultGraphNodeRenderer */
