@@ -35,11 +35,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.LayerManager;
-import org.tigris.gef.base.ModeCreate;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphNodeRenderer;
@@ -126,7 +121,10 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     }
 
     /**
-     * The constructor.
+     * The constructor. <p>
+     * 
+     * Preferrably use the constructor below, since it allows a better
+     * mechanism to create the node. 
      *
      * @param ed the parent editor of this mode. Each Mode instance belongs to
      *           exactly one Editor instance.
@@ -147,6 +145,29 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         LOG.debug("postprocessing: " + postProcessEdge);
     }
 
+    /**
+     * The constructor.
+     *
+     * @param ed the parent editor of this mode. Each Mode instance belongs to
+     *           exactly one Editor instance.
+     * @param edgeType the class of the edge
+     * @param nodeCreator the SelectionButtons that knows 
+     *                               how to create the node
+     * @param post if true, then the edge is postprocessed.
+     *             See postProcessEdge().
+     */
+    public ModeCreateEdgeAndNode(
+                                 Editor ed,
+                                 Object edgeType,
+                                 boolean post,
+                                 SelectionButtons nodeCreator) {
+        super(ed);
+        setArg("edgeClass", edgeType);
+        setArg("nodeCreator", nodeCreator);
+        postProcessEdge = post;
+        LOG.debug("postprocessing: " + postProcessEdge);
+    }
+    
     ////////////////////////////////////////////////////////////////
     // accessors
 
@@ -258,15 +279,20 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             LOG.debug("make new node");
             dragsToNew++;
             Object newNode = null;
-            Class nodeClass = (Class) getArg("nodeClass");
-            try {
-                newNode = nodeClass.newInstance();
-            } catch (java.lang.IllegalAccessException ignore) {
-                LOG.error(ignore);
-                return;
-            } catch (java.lang.InstantiationException ignore) {
-                LOG.error(ignore);
-                return;
+            SelectionButtons sb = (SelectionButtons) getArg("nodeCreator");
+            if (sb != null) {
+                newNode = sb.getNewNode(0);
+            } else {
+                Class nodeClass = (Class) getArg("nodeClass");
+                try {
+                    newNode = nodeClass.newInstance();
+                } catch (java.lang.IllegalAccessException ignore) {
+                    LOG.error(ignore);
+                    return;
+                } catch (java.lang.InstantiationException ignore) {
+                    LOG.error(ignore);
+                    return;
+                }
             }
             if (newNode instanceof GraphNodeHooks) {
                 ((GraphNodeHooks) newNode).initialize(_args);
