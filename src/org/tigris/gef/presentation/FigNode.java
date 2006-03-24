@@ -223,8 +223,8 @@ public class FigNode extends FigGroup implements
         // remove the edges in reverse order because to make sure
         // that other edges in figEdge don't have their position
         // altered as a side effect.
-        for(int i = figEdges.size()-1; i >= 0; --i) {
-            FigEdge f = (FigEdge)figEdges.get(i);
+        while(figEdges.size() > 0) {
+            FigEdge f = (FigEdge)figEdges.get(figEdges.size() - 1);
             f.removeFromDiagram();
         }
         super.removeFromDiagram();
