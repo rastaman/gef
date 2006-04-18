@@ -104,7 +104,7 @@ public class Globals {
      * The directory most recently used in an open or save dialog
      * @deprecated - will lose public visibility. Use getLastDirectory()
      */
-    public static String LastDirectory = null;
+    private static String LastDirectory = null;
 
     public static String getLastDirectory() {
         if (LastDirectory == null) {
