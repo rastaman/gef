@@ -146,4 +146,12 @@ public class PgmlUtility {
         }
         return list;
     }
+    
+    public String getClassNameAndBounds(Fig fig) {
+        if (fig.isVisible()) {
+            return fig.getClass().getName() + "[" + fig.getX() + ", " + fig.getY() + ", " + fig.getWidth() + ", " + fig.getHeight() + "]";
+        } else {
+            return fig.getClass().getName() + "[]";
+        }
+    }
 }
