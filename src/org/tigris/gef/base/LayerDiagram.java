@@ -233,7 +233,7 @@ public class LayerDiagram extends Layer {
         return null;
     }
 
-    /** Find the Fig that visualized the given NetNode in
+    /** Find the Fig that visualise the given model element in
      * this layer, or null if there is none. */
     public Fig presentationFor(Object obj) {
         int figCount = _contents.size();
@@ -245,6 +245,21 @@ public class LayerDiagram extends Layer {
         }
 
         return null;
+    }
+
+    /** Find the all Figs that visualise the given model element in
+     * this layer, or null if there is none. */
+    public List presentationsFor(Object obj) {
+        ArrayList presentations = new ArrayList();
+        int figCount = _contents.size();
+        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+            Fig fig = (Fig)_contents.get(figIndex);
+            if(fig.getOwner() == obj) {
+                presentations.add(fig);
+            }
+        }
+
+        return presentations;
     }
 
     public int presentationCountFor(Object obj) {

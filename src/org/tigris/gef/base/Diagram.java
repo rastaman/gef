@@ -300,6 +300,10 @@ public class Diagram implements Serializable, GraphListener {
         return _layer.presentationFor(obj);
     }
 
+    public List presentationsFor(Object obj) {
+        return _layer.presentationsFor(obj);
+    }
+
     public void sendToBack(Fig f) {
         _layer.sendToBack(f);
     }
