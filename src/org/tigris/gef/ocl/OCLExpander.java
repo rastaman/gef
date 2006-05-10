@@ -29,6 +29,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 import java.util.*;
 
@@ -371,6 +372,9 @@ public class OCLExpander {
                     Object o = it.next();
                     
                     Method m = getMethod(clazz, o.getClass(), methodName);
+                    if (!Modifier.isStatic(m.getModifiers())) {
+                        throw new ExpansionException("The method " + m.toString() + " was expected to be static");
+                    }
                     
                     Object[] args = new Object[1];
                     args[0] = o;
