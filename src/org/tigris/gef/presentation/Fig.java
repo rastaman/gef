@@ -507,11 +507,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      */
     // USED BY PGML.tee
     public String classNameAndBounds() {
-        if (isVisible()) {
-            return getClass().getName() + "[" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + "]";
-        } else {
-            return getClass().getName() + "[]";
-        }
+        return getClass().getName() + "[" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + "]";
     }
 
     public void cleanUp() {
