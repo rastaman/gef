@@ -17,6 +17,7 @@ fill="<ocl>self.filled01</ocl>"
 fillcolor="<ocl>self.fillColor</ocl>"
 stroke="<ocl>self.lineWidth</ocl>"
 strokecolor="<ocl>self.lineColor</ocl>"
+visibility="<ocl>org.tigris.gef.persistence.PgmlUtility.getVisibility(self)</ocl>"
 ]]>
 </macro>
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -175,7 +176,6 @@ height="<ocl>self.height.intValue</ocl>"
 <group name="<ocl>self.id</ocl>"
      description="<ocl>self.classNameAndBounds</ocl>"
      href="<ocl>self.owner.id</ocl>"
-     shown="<ocl>org.tigris.gef.persistence.PgmlUtility.getVisibility(self)</ocl>"
      FILL_AND_STROKE
 >
   <private>

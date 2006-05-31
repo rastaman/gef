@@ -82,14 +82,18 @@ public class PgmlUtility {
     }
     
     /**
-     * Translate the visibility flag of a Fig to the PGML "shown" attribute
+     * Translate the visibility flag of a Fig to the PGML "visibility" attribute
      * value.
+     * The PGML values are 0=hidden and 1=shown.
+     * If not specified then 1 is the default so we return null for this to
+     * prevent redundent data being written to PGML.
      * 
      * @param f The Fig
-     * @return 0=hidden, 1=shown
+     * @return "0"=hidden, null=shown
      */
-    public static int getVisibility(Fig f) {
-        return (f.isVisible()) ?  1 : 0;
+    public static String getVisibility(Fig f) {
+        if (f.isVisible()) return null;
+        return "0";
     }
     
     /**
