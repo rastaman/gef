@@ -218,7 +218,9 @@ public class FigNode extends FigGroup implements
         super.endTrans();
     }
 
-    /** When a FigNode is removed, all of its edges are removed. */
+    /**
+     * When a FigNode is removed, all of its edges are removed first.
+     */
     public void removeFromDiagram() {
         // remove the edges in reverse order because to make sure
         // that other edges in figEdge don't have their position
