@@ -207,20 +207,6 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
     
     ////////////////////////////////////////////////////////////////
-    // invariant
-
-    /**
-     * Check the class invariant to make sure that this FigText is in a
-     * valid state.  Useful for debugging.
-     * @deprecated we will use asserts when we drop JRE1.3
-     */
-    public boolean OK() {
-        if(!super.OK())
-            return false;
-        return _font != null && _lineSpacing > -20 && _topMargin >= 0 && _botMargin >= 0 && _leftMargin >= 0 && _rightMargin >= 0 && (_justification == JUSTIFY_LEFT || _justification == JUSTIFY_CENTER || _justification == JUSTIFY_RIGHT) && _textColor != null && _textFillColor != null;
-    }
-
-    ////////////////////////////////////////////////////////////////
     // accessors
 
     /** Reply a string that indicates how the text is justified: Left,

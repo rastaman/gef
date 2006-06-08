@@ -838,19 +838,12 @@ public class PGMLParser extends DefaultHandler {
             f.setContext(context);
         }
 
-        String visState = attrList.getValue("shown");
+        String visState = attrList.getValue("visible");
         //System.out.println("[PGMLParser]: setAttrs: " + visState);
         if(visState != null && !visState.equals("")) {
             int visStateInt = Integer.parseInt(visState);
             //System.out.println("[PGMLParser]: setAttrs: " + visStateInt);
             f.setVisible(visStateInt != 0);
-        }
-
-        String single = attrList.getValue("single");
-        //System.out.println("[PGMLParser]: setAttrs: " + visState);
-        if(single != null && !single.equals("")) {
-            //System.out.println("[PGMLParser]: setAttrs: " + visStateInt);
-            f.setSingle(single);
         }
 
         setOwnerAttr(f, attrList);

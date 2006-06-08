@@ -120,20 +120,6 @@ public class FigPoly extends Fig {
     }
 
     ////////////////////////////////////////////////////////////////
-    // invariant
-
-    /** Class invarient to make sure this object is in a valid
-     *  state. Useful for debugging.
-     * @deprecated - This will be deleted - debug code should not be public
-     * and released. When we get to JRE1.4 we can use asserts.
-     */
-    public boolean OK() {
-        return super.OK() && _npoints > 0 && _xpoints != null && _ypoints != null;
-
-        // and bounds are up to date
-    }
-
-    ////////////////////////////////////////////////////////////////
     // accessors
 
     /** Get the current vector of points as a java.awt.Polygon. */
