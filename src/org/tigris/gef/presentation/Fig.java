@@ -698,7 +698,6 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
 
         // ak: remove this figure from the enclosed figures of the encloser
         setEnclosingFig(null);
-        setOwner(null);
     }
 
     /**
@@ -1236,20 +1235,6 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         return null;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // invariant
-
-    /**
-     * Check class invariants to make sure the Fig is in a valid state.
-     * This is useful for debugging. needs-more-work.
-     * @deprecated - This will be deleted - debug code should not be public
-     * and released. When we get to JRE1.4 we can use asserts.
-     */
-    public boolean OK() {
-        // super.OK() /
-        return _lineWidth >= 0 && _lineColor != null && _fillColor != null;
-    }
-
     /**
      * @depreacted use paint(Object) and make this final
      * @param g
@@ -1261,14 +1246,6 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /** Method to paint this Fig.  By default it paints an "empty"
      *  space, subclasses should override this method. */
     abstract public void paint(Object g);
-//    {
-//        if (visible) {
-//            g.setColor(Color.pink);
-//            g.fillRect(_x, _y, _w, _h);
-//            g.setColor(Color.black);
-//            g.drawString("(undefined)", _x + _w / 2, _y + _h / 2);
-//        }
-//    }
 
     /** Return a point at the given distance along the path around this
      *  Fig. By default, uses perimeter of the Fig's bounding
@@ -1461,6 +1438,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         } else {
             if (col.equals(_fillColor)) return;
         }
+        
         if(col != null) {
             firePropChange("fillColor", _fillColor, col);
             _fillColor = col;
@@ -1469,6 +1447,8 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
             firePropChange("filled", _filled, false);
             _filled = false;
         }
+        
+        
         MutableGraphSupport.enableSaveAction();
     }
 
@@ -1540,8 +1520,6 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         setLocation(p.x, p.y);
     }
 
-    //public void assignLocked(boolean b) { _locked = b; } //?
-
     /** Sets whether this Fig is locked or not.  Most Cmds check to see
      *  if Figs are locked and will not request modifications to locked
      *  Figs. Fires PropertyChangeEvent
@@ -1587,12 +1565,6 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * @deprecated in 0.11.1 this should not form part of the API
      */
     public void setPrivateData(String data) {
-    }
-
-    /** Sets the single flag of the Fig. Has to be overwritten in
-     * subclasses interested in this flag.
-     */
-    final public void setSingle(String single) {
     }
 
     /** Sets the size of the Fig. Fires property "bounds". */
@@ -1675,20 +1647,16 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         if(dist < _w && dist >= 0) {
             res.x = _x + (dist);
             res.y = _y;
-        }
-        else if(dist < _w + _h) {
+        } else if(dist < _w + _h) {
             res.x = _x + _w;
             res.y = _y + (dist - _w);
-        }
-        else if(dist < _w + _h + _w) {
+        } else if(dist < _w + _h + _w) {
             res.x = _x + _w - (dist - _w - _h);
             res.y = _y + _h;
-        }
-        else if(dist < _w + _h + _w + _h) {
+        } else if(dist < _w + _h + _w + _h) {
             res.x = _x;
             res.y = _y + (_w + _h + _w + _h - dist);
-        }
-        else {
+        } else {
             res.x = _x;
             res.y = _y;
         }
@@ -1758,12 +1726,6 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     }
 
     
-    /**
-     * @deprecated 0.11.1 this is not used.
-     */
-    final public void updateVisState() {
-    }
-
     /** Reply true if the entire Fig is contained within the given
      *  Rectangle. This can be used by ModeSelect to select Figs that
      *  are totally within the selection rectangle. */
