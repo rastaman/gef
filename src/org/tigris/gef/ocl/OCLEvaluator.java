@@ -106,31 +106,36 @@ public class OCLEvaluator {
     } // end of eval()
     
     private List eval(Map bindings, String expr, List targets) throws ExpansionException {
-        int firstPos;
-        int secPos;
-        int numElements;
-        String property;
-        while(expr.length() > 0) {
-            List v = new ArrayList();
-            firstPos = expr.indexOf(".");
-            secPos = expr.indexOf(".", firstPos + 1);
-            if(secPos == -1) {    // <expr>::= ".<property>"
-                property = expr.substring(firstPos + 1);
-                expr = "";
-            } else {    // <expr>::= ".<property>.<expr>"
-                property = expr.substring(firstPos + 1, secPos);
-                expr = expr.substring(secPos);    //+1
+        try {
+            int firstPos;
+            int secPos;
+            int numElements;
+            String property;
+            while(expr.length() > 0) {
+                List v = new ArrayList();
+                firstPos = expr.indexOf(".");
+                secPos = expr.indexOf(".", firstPos + 1);
+                if(secPos == -1) {    // <expr>::= ".<property>"
+                    property = expr.substring(firstPos + 1);
+                    expr = "";
+                } else {    // <expr>::= ".<property>.<expr>"
+                    property = expr.substring(firstPos + 1, secPos);
+                    expr = expr.substring(secPos);    //+1
+                }
+    
+                numElements = targets.size();
+                for(int i = 0; i < numElements; i++) {
+                    v.add(evaluateProperty(targets.get(i), property));
+                }
+    
+                targets = new Vector(flatten(v));
+                // the results of evaluating a property may result in a List
             }
-
-            numElements = targets.size();
-            for(int i = 0; i < numElements; i++) {
-                v.add(evaluateProperty(targets.get(i), property));
-            }
-
-            targets = new Vector(flatten(v));
-            // the results of evaluating a property may result in a List
+        } catch (Exception e) {
+            throw new ExpansionException(
+                    "Exception while expanding the expression " + expr, e);
         }
-
+    
         return targets;
     }    // end of eval()
 
@@ -248,16 +253,15 @@ public class OCLEvaluator {
      * non-lists.
      */
     private void flattenInto(Object o, List accum) {
-        if(!(o instanceof List)) {
-            accum.add(o);
-        }
-        else {
+        if(o instanceof List) {
             List oList = (List)o;
             int count = oList.size();
             for(int i = 0; i < count; ++i) {
                 Object p = oList.get(i);
                 flattenInto(p, accum);
             }
+        } else {
+            accum.add(o);
         }
     }
 
