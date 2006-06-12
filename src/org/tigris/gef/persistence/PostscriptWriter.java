@@ -385,6 +385,8 @@ public class PostscriptWriter extends Graphics2D {
 
     private void writeRoundRectPath(int x, int y, int w, int h, int arcw,
             int arch) {
+        arcw = arcw / 2;
+        arch = arch / 2;
         String curve = (Math.min(arcw, arch)) + " arcto 4 {pop} repeat";
         writeSetDash();
         p.println("newpath");
@@ -393,12 +395,18 @@ public class PostscriptWriter extends Graphics2D {
         writeCoords(x, y);
         writeCoords(x + arcw, y);
         p.println(curve);
+        writeCoords(w - arcw - arcw, 0);
+        p.println("rlineto");
         writeCoords(x + w, y);
         writeCoords(x + w, y + arch);
         p.println(curve);
+        writeCoords(0, h - arch - arch);
+        p.println("rlineto");
         writeCoords(x + w, y + h);
         writeCoords(x + w - arcw, y + h);
         p.println(curve);
+        writeCoords(arcw + arcw - w, 0);
+        p.println("rlineto");
         writeCoords(x, y + h);
         writeCoords(x, y + h - arch);
         p.println(curve);
