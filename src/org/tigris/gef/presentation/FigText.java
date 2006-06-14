@@ -562,10 +562,11 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      */
     public void setText(String s) {
         FigTextEditor editor = FigTextEditor.getInstance();
-        if (editor.isVisible() && editor.getFigText() == this) {
+        String newText = encode(s, lineSeparator);
+        if (editor.isVisible() && editor.getFigText() == this && !_curText.equals(newText)) {
             editor.cancelEditing();
         }
-        _curText = encode(s, lineSeparator);
+        _curText = newText;
         calcBounds();
         _editMode = false;
     }

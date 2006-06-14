@@ -193,7 +193,6 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         layeredPane.remove(this);
         drawingPanel.requestFocus();
         _activeTextEditor = null;
-        figText = null;
     }
     
     public void cancelEditing() {
@@ -212,7 +211,6 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         layeredPane.remove(this);
         drawingPanel.requestFocus();
         _activeTextEditor = null;
-        figText = null;
     }
     
     private static FigTextEditor _activeTextEditor;
