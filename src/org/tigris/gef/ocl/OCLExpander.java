@@ -181,14 +181,22 @@ public class OCLExpander {
                 String expr = line.substring(expressionPos, endTagPos);
                 String after = line.substring(endTagPos + OCL_END.length());
                 _bindings.put("self", target);
+                if (target == null) {
+                    throw new ExpansionException(
+                            "Target is null when evaluating the expression '"
+                            + expr + "' at line " + lineNo);
+                }
                 List results = evaluate(_bindings, expr);
                 Iterator iter = results.iterator();
                 StringWriter sw = new StringWriter();
                 if (iter.hasNext()) {
                     Object o = iter.next();
                     if (o == null && !ignoreNull) {
-                        throw new ExpansionException("Evaluated the expression '"
-                                + expr + "' to null at line " + lineNo);
+                        throw new ExpansionException(
+                                "Evaluated the expression '"
+                                + expr + "' to null on object of class "
+                                + target.getClass().getName()
+                                + " at line " + lineNo);
                     }
                     expand(sw, o, before, after);
                 }
@@ -214,13 +222,21 @@ public class OCLExpander {
             
             suffix = line.substring(endTagPos + OCL_END.length()) + suffix;
             _bindings.put("self", target);
+            if (target == null) {
+                throw new ExpansionException(
+                        "Target is null when evaluating the expression '"
+                        + expr + "' at line " + lineNo);
+            }
             List results = evaluate(_bindings, expr);
             Iterator iter = results.iterator();
             while(iter.hasNext()) {
                 Object o = iter.next();
                 if (o == null && !ignoreNull) {
-                    throw new ExpansionException("Evaluated the expression '"
-                            + expr + "' to null at line " + lineNo);
+                    throw new ExpansionException(
+                            "Evaluated the expression '"
+                            + expr + "' to null on object of class "
+                            + target.getClass().getName()
+                            + " at line " + lineNo);
                 }
                 expand(pw, o, prefix, suffix);
             }
