@@ -2,6 +2,8 @@ package org.tigris.gef.presentation;
 
 import java.util.*;
 import java.awt.Point;
+import java.io.Serializable;
+
 import org.tigris.gef.base.*;
 
 /**
@@ -10,7 +12,7 @@ import org.tigris.gef.base.*;
  * (e.g. move in parallel).
  */
 
-public abstract class AnnotationStrategy {
+public abstract class AnnotationStrategy implements Serializable {
     // hashtable of all annotations
     Hashtable annotations = new Hashtable();
     // annotation | AnnotationProperties
