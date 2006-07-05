@@ -31,6 +31,7 @@ import java.util.List;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigGroup;
 
 /**
  * Utility methods referred to by PGML.tee
@@ -136,26 +137,37 @@ public class PgmlUtility {
     }
 
     /**
-     * Get all edges in a layer.
+     * Generate an identifier for this Fig which is unique within the 
+     * diagram.
+     * @param f the Fig to generate the id for
+     * @return a unique string
      */
-    public List getContentsEdgesOnly(Layer lay) {
-        List contents = lay.getContents();
-        int size = contents.size();
-        ArrayList list = new ArrayList(size);
-        for(int i = 0; i < size; i++) {
-            Object o = contents.get(i);
-            if (o instanceof FigEdge) {
-                list.add(o);
+    public static String getId(Fig f) {
+        if (f == null) {
+            throw new IllegalArgumentException("A fig must be supplied");
+        }
+        if(f.getGroup() != null) {
+            String groupId = f.getGroup().getId();
+            if(f.getGroup() instanceof FigGroup) {
+                FigGroup group = (FigGroup) f.getGroup();
+                return groupId + "." + ((List) group.getFigs()).indexOf(f);
+            } else if (f.getGroup() instanceof FigEdge) {
+                FigEdge edge = (FigEdge) f.getGroup();
+                return groupId + "." +
+                    (((List) edge.getPathItemFigs()).indexOf(f) + 1);
+            } else {
+                return groupId + ".0";
             }
         }
-        return list;
-    }
-    
-    public String getClassNameAndBounds(Fig fig) {
-        if (fig.isVisible()) {
-            return fig.getClass().getName() + "[" + fig.getX() + ", " + fig.getY() + ", " + fig.getWidth() + ", " + fig.getHeight() + "]";
-        } else {
-            return fig.getClass().getName() + "[]";
+
+        Layer layer = f.getLayer();
+        if(layer == null) {
+            return "LAYER_NULL";
         }
+
+        List c = (List) layer.getContents();
+        int index = c.indexOf(f);
+        return "Fig" + index;
     }
+
 }
