@@ -40,8 +40,11 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
+import java.util.Iterator;
+import java.util.List;
 
 import org.tigris.gef.graph.presentation.*;
+import org.tigris.gef.presentation.Fig;
 
 /** Cmd to Load a previously saved document document. The loaded
  *  editor is displayed in a new JGraphFrame.
@@ -58,43 +61,47 @@ public class CmdOpen extends Cmd implements FilenameFilter {
         setArg("filterPattern", filterPattern);
     }
 
-  public void doIt() {
-    try {
-      Editor ce = Globals.curEditor();
-      FileDialog fd =
-	new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
-      fd.setFilenameFilter(this);
-      fd.setDirectory(Globals.getLastDirectory());
-      fd.setVisible(true);
-      String filename = fd.getFile(); // blocking
-      String path = fd.getDirectory(); // blocking
-      Globals.setLastDirectory(path);
+    public void doIt() {
+        try {
+            Editor ce = Globals.curEditor();
+            FileDialog fd =
+	            new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
+            fd.setFilenameFilter(this);
+            fd.setDirectory(Globals.getLastDirectory());
+            fd.setVisible(true);
+            String filename = fd.getFile(); // blocking
+            String path = fd.getDirectory(); // blocking
+            Globals.setLastDirectory(path);
       
-      if (filename != null) {
-    	Globals.showStatus("Reading " + path + filename + "...");
-    	FileInputStream fis = new FileInputStream(path + filename);
-    	ObjectInput s = new ObjectInputStream(fis);
-    	Editor ed = (Editor) s.readObject();
-	ed.postLoad();
-	if (fis != null) fis.close();   
-    	Globals.showStatus("Read " + path + filename);
-	JGraphFrame jgf = new JGraphFrame(path + filename, ed);
-	Object d = getArg("dimension");
-	if (d instanceof Dimension) jgf.setSize((Dimension)d);
-	jgf.setVisible(true);
-     }
-    }
-    catch (FileNotFoundException ignore) {
-      System.out.println("got an FileNotFoundException");
-     }
-    catch (java.lang.ClassNotFoundException ignore) {
-      System.out.println("got an ClassNotFoundException");
-     }
-    catch (IOException ignore) {
-      System.out.println("got an IOException");
-    }
+            if (filename != null) {
+    	        Globals.showStatus("Reading " + path + filename + "...");
+                FileInputStream fis = new FileInputStream(path + filename);
+    	        ObjectInput s = new ObjectInputStream(fis);
+                List figs = (List) s.readObject();
+                if (fis != null) {
+                    fis.close();
+                }
+            	Globals.showStatus("Read " + path + filename);
+                JGraphFrame jgf = new JGraphFrame(path + filename);
+                Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
+                for (Iterator it = figs.iterator(); it.hasNext(); ) {
+                    lay.add((Fig) it.next());
+                }
+                Object d = getArg("dimension");
+                if (d instanceof Dimension) {
+                    jgf.setSize((Dimension)d);
+                }
+                jgf.setVisible(true);
+            }
+        } catch (FileNotFoundException ignore) {
+            System.out.println("got an FileNotFoundException");
+        } catch (java.lang.ClassNotFoundException ignore) {
+            System.out.println("got an ClassNotFoundException");
+        } catch (IOException ignore) {
+            System.out.println("got an IOException");
+        }
    
-  }
+    }
 
   /** Only let the user select files that match the filter. This does
    * not seem to be called under JDK 1.0.2 on solaris. I have not

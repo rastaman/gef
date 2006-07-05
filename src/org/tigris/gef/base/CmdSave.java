@@ -97,7 +97,7 @@ public class CmdSave extends Cmd implements FilenameFilter {
                 FileOutputStream f = new FileOutputStream(path + filename);
                 ObjectOutput s = new ObjectOutputStream(f);
                 ce.preSave();
-                s.writeObject(ce);
+                s.writeObject(ce.getLayerManager().getContents());
                 ce.postSave();
                 Globals.showStatus("Wrote " + path + filename);
                 f.close();
