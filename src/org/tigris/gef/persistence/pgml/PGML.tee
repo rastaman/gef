@@ -29,8 +29,7 @@ visibility="<ocl>org.tigris.gef.persistence.PgmlUtility.getVisibility(self)</ocl
 <pgml description="<ocl>self.classAndModelID</ocl>"
       name="<ocl>self.name</ocl>"
 >
-  <ocl>org.tigris.gef.persistence.pgml.PgmlUtility.getContentsNoEdges(self.layer)</ocl>
-  <ocl>org.tigris.gef.persistence.pgml.PgmlUtility.getContentsEdgesOnly(self.layer)</ocl>
+  <ocl>self.layer.contents</ocl>
 </pgml>
 ]]>
 </template>
@@ -64,7 +63,7 @@ height="<ocl>self.height.intValue</ocl>"
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="org.tigris.gef.presentation.FigRect">
 <![CDATA[
-<rectangle name="<ocl>self.id</ocl>"
+<rectangle name="<ocl>org.tigris.gef.persistence.PgmlUtility.getId(self)</ocl>"
   <ocl>self.bounds</ocl>
   FILL_AND_STROKE
 />
@@ -74,7 +73,7 @@ height="<ocl>self.height.intValue</ocl>"
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="org.tigris.gef.presentation.FigRRect">
 <![CDATA[
-<rectangle name="<ocl>self.id</ocl>"
+<rectangle name="<ocl>org.tigris.gef.persistence.PgmlUtility.getId(self)</ocl>"
   <ocl>self.bounds</ocl>
   FILL_AND_STROKE
   rounding="<ocl>self.cornerRadius</ocl>"
@@ -85,7 +84,7 @@ height="<ocl>self.height.intValue</ocl>"
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="org.tigris.gef.presentation.FigCircle">
 <![CDATA[
-<ellipse name="<ocl>self.id</ocl>"
+<ellipse name="<ocl>org.tigris.gef.persistence.PgmlUtility.getId(self)</ocl>"
   x="<ocl>self.center.x.intValue</ocl>"
   y="<ocl>self.center.y.intValue</ocl>"
   rx="<ocl>self.halfWidth.intValue</ocl>"
@@ -98,7 +97,7 @@ height="<ocl>self.height.intValue</ocl>"
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="org.tigris.gef.presentation.FigText">
 <![CDATA[
-<text name="<ocl>self.id</ocl>"
+<text name="<ocl>org.tigris.gef.persistence.PgmlUtility.getId(self)</ocl>"
   context="<ocl>self.context</ocl>"
   x="<ocl>self.x.intValue</ocl>"
   y="<ocl>self.y.intValue</ocl>"
@@ -113,7 +112,7 @@ height="<ocl>self.height.intValue</ocl>"
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="org.tigris.gef.presentation.FigLine">
 <![CDATA[
-<path name="<ocl>self.id</ocl>"
+<path name="<ocl>org.tigris.gef.persistence.PgmlUtility.getId(self)</ocl>"
   description="<ocl>self.class.name</ocl>"
   FILL_AND_STROKE
 >
@@ -128,7 +127,7 @@ height="<ocl>self.height.intValue</ocl>"
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="org.tigris.gef.presentation.FigPoly">
 <![CDATA[
-<path name="<ocl>self.id</ocl>"
+<path name="<ocl>org.tigris.gef.persistence.PgmlUtility.getId(self)</ocl>"
   description="<ocl>self.class.name</ocl>"
   FILL_AND_STROKE
 >
@@ -142,7 +141,7 @@ height="<ocl>self.height.intValue</ocl>"
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="org.tigris.gef.presentation.FigSpline">
 <![CDATA[
-<path name="<ocl>self.id</ocl>"
+<path name="<ocl>org.tigris.gef.persistence.PgmlUtility.getId(self)</ocl>"
   description="<ocl>self.class.name</ocl>"
   FILL_AND_STROKE
 >
@@ -156,7 +155,7 @@ height="<ocl>self.height.intValue</ocl>"
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="org.tigris.gef.presentation.FigInk">
 <![CDATA[
-<path name="<ocl>self.id</ocl>"
+<path name="<ocl>org.tigris.gef.persistence.PgmlUtility.getId(self)</ocl>"
   description="<ocl>self.class.name</ocl>"
   FILL_AND_STROKE
 >
@@ -173,7 +172,7 @@ height="<ocl>self.height.intValue</ocl>"
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="org.tigris.gef.presentation.FigGroup">
 <![CDATA[
-<group name="<ocl>self.id</ocl>"
+<group name="<ocl>org.tigris.gef.persistence.PgmlUtility.getId(self)</ocl>"
      description="<ocl>self.classNameAndBounds</ocl>"
      href="<ocl>self.owner.id</ocl>"
      FILL_AND_STROKE
@@ -190,7 +189,7 @@ height="<ocl>self.height.intValue</ocl>"
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="org.tigris.gef.presentation.FigEdge">
 <![CDATA[
-<group name="<ocl>self.id</ocl>"
+<group name="<ocl>org.tigris.gef.persistence.PgmlUtility.getId(self)</ocl>"
      description="<ocl>self.class.name</ocl>"
      href="<ocl>self.owner.id</ocl>"
      stroke="<ocl>self.lineWidth</ocl>"
@@ -216,7 +215,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<rectangle name="<ocl>self.id</ocl>"
+<rectangle name="<ocl>org.tigris.gef.persistence.PgmlUtility.getId(self)</ocl>"
 
   <ocl>self.bounds</ocl>
 
@@ -232,7 +231,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<rectangle name="<ocl>self.id</ocl>"
+<rectangle name="<ocl>org.tigris.gef.persistence.PgmlUtility.getId(self)</ocl>"
 
   <ocl>self.bounds</ocl>
 
