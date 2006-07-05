@@ -106,26 +106,28 @@ public class OCLEvaluator {
     } // end of eval()
     
     private List eval(Map bindings, String expr, List targets) throws ExpansionException {
+        String partExpr = expr;
         try {
-            int firstPos;
-            int secPos;
-            int numElements;
-            String property;
-            while(expr.length() > 0) {
+            while(partExpr.length() > 0) {
                 List v = new ArrayList();
-                firstPos = expr.indexOf(".");
-                secPos = expr.indexOf(".", firstPos + 1);
+                int firstPos = partExpr.indexOf(".");
+                int secPos = partExpr.indexOf(".", firstPos + 1);
+                String property;
                 if(secPos == -1) {    // <expr>::= ".<property>"
-                    property = expr.substring(firstPos + 1);
-                    expr = "";
+                    property = partExpr.substring(firstPos + 1);
+                    partExpr = "";
                 } else {    // <expr>::= ".<property>.<expr>"
-                    property = expr.substring(firstPos + 1, secPos);
-                    expr = expr.substring(secPos);    //+1
+                    property = partExpr.substring(firstPos + 1, secPos);
+                    partExpr = partExpr.substring(secPos);    //+1
                 }
     
-                numElements = targets.size();
+                int numElements = targets.size();
                 for(int i = 0; i < numElements; i++) {
                     v.add(evaluateProperty(targets.get(i), property));
+                }
+                
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("Flattening to get targets for " + expr + "(" + partExpr + ")");
                 }
     
                 targets = new Vector(flatten(v));
@@ -133,7 +135,7 @@ public class OCLEvaluator {
             }
         } catch (Exception e) {
             throw new ExpansionException(
-                    "Exception while expanding the expression " + expr, e);
+                    "Exception while expanding the expression " + expr + " (" + partExpr + ")" , e);
         }
     
         return targets;
@@ -253,11 +255,11 @@ public class OCLEvaluator {
      * non-lists.
      */
     private void flattenInto(Object o, List accum) {
+        
         if(o instanceof List) {
             List oList = (List)o;
-            int count = oList.size();
-            for(int i = 0; i < count; ++i) {
-                Object p = oList.get(i);
+            for (Iterator it = oList.iterator(); it.hasNext(); ) {
+                Object p = it.next();
                 flattenInto(p, accum);
             }
         } else {
