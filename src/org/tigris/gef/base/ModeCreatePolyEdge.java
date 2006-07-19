@@ -322,7 +322,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
     // key events
 
     public void keyTyped(KeyEvent ke) {
-        if (ke.getKeyChar() == KeyEvent.VK_ESCAPE) { // escape
+        if (ke.getKeyChar() == KeyEvent.VK_ESCAPE) {
             LOG.debug("Esc pressed");
             done();
             ke.consume();

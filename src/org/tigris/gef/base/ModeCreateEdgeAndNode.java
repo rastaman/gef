@@ -459,7 +459,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent ke) {
-        if (ke.getKeyChar() == '') { // escape
+        if (ke.getKeyChar() == KeyEvent.VK_ESCAPE) {
             done();
             ke.consume();
         }
