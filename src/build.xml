@@ -107,7 +107,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <tstamp/>
     <property name="Name" value="GEF"/>
     <property name="name" value="gef"/>
-    <property name="version" value="0.11.3M10"/>
+    <property name="version" value="0.11.3M11"/>
     <property name="year" value="2006"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
@@ -157,7 +157,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <echo message="   dist      --> generates the GEF distribution as .tar.gz and .zip"/>
     <echo message="   dist-src  --> generates the GEF source distribution as .tar.gz and .zip"/>
     <echo message="   clean     --> cleans up the directory"/>
-    <echo message="   run       --> run sample BasicApplication"/>
+    <echo message="   run       --> run instuction on where to find demos"/>
     <echo message="   usage     --> show this message (default)"/>
     <echo message=""/>
     <echo message=" See the comments inside the build.xml file for more details."/>
@@ -298,11 +298,11 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   </target>
 
   <!-- =================================================================== -->
-  <!-- Run GEF sample BasicApplication from compiled sources                                   -->
+  <!-- Run GEF Notify from compiled sources                                   -->
   <!-- =================================================================== -->
   <target name="run" depends="package">
-    <echo message="--- Executing GEF sample BasicApplication ---"/>
-    <java classname="org.tigris.gef.demo.BasicApplication" fork="yes">
+    <echo message="--- Executing Notify ---"/>
+    <java classname="org.tigris.gef.demo.Notify" fork="yes">
           <classpath>
                 <pathelement path="${build.dest};${gef.classpath};${classpath}"/>
           </classpath>
