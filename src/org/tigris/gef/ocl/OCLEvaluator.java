@@ -126,10 +126,6 @@ public class OCLEvaluator {
                     v.add(evaluateProperty(targets.get(i), property));
                 }
                 
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Flattening to get targets for " + expr + "(" + partExpr + ")");
-                }
-    
                 targets = new Vector(flatten(v));
                 // the results of evaluating a property may result in a List
             }
