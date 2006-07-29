@@ -33,6 +33,8 @@ package org.tigris.gef.presentation;
 import org.apache.commons.logging.*;
 import org.tigris.gef.persistence.export.FontUtility;
 import org.tigris.gef.properties.PropCategoryManager;
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -592,11 +594,43 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * @param s
      */
     void setTextFriend(String s) {
+        if ( UndoManager.getInstance().isGenerateMementos() && getOwner(this) == null) {
+            Memento memento = new Memento() {
+                String oldText = _curText;
+                public void undo() {
+                    _curText = oldText;
+                    redraw();
+                }
+                public void redo() {
+                    _curText = oldText;
+                    redraw();
+                }
+                public void dispose() {}
+            };
+            UndoManager.getInstance().addMemento(memento);
+        }
         _curText = encode(s, System.getProperty("line.separator"));
         calcBounds();
         _editMode = false;
     }
-
+    
+    /**
+     * Determine the owner of the given Fig by recursing up through groups
+     * until an owner is found
+     */
+    private Object getOwner(Fig fig) {
+        Object owner = fig.getOwner();
+        if (owner != null) {
+            return owner;
+        }
+        Fig group = getGroup();
+        if (group == null) {
+            return null;
+        } else {
+            return getOwner(group);
+        }
+    }
+    
     /** Get the String held by this FigText. Multi-line text is
      *  represented by newline characters embedded in the String.
      * USED BY PGML.tee
