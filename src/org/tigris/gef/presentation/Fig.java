@@ -1663,7 +1663,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     }
 
     /**
-     * Change the position of the object from were it is to were it is
+     * Change the position of the object from where it is to where it is
      * plus dx and dy. Often called when an object is dragged. This
      * could be very useful if local-coordinate systems are used
      * because deltas need less transforming... maybe. Fires property

@@ -23,9 +23,7 @@ import org.tigris.gef.undo.UndoManager;
  *  @see FigEdgeRectiline
  */
 public abstract class FigEdge extends Fig implements GraphEdge {
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
+    
     /** Fig presenting the edge's from-port . */
     private Fig _sourcePortFig;
 
@@ -725,6 +723,11 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     }
 
     final public void translateEdge(final int dx, final int dy) {
+        _fig.translate(dx, dy);
+        calcBounds();
+    }
+
+    public void translateImpl(final int dx, final int dy) {
         _fig.translate(dx, dy);
         calcBounds();
     }
