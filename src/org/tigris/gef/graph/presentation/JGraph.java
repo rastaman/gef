@@ -391,12 +391,14 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener {
     /**
      * When the JGraph is hidden, hide its internal pane
      */
-    public void setVisible(boolean b) {
-        super.setVisible(b);
-        drawingPane.setVisible(b);
-        FigTextEditor.remove();
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        drawingPane.setVisible(visible);
+        if (!visible) {
+            FigTextEditor.remove();
+        }
     }
-
+    
     /**
      * Tell Swing/AWT that JGraph handles tab-order itself.
      */
