@@ -50,6 +50,7 @@ import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.undo.UndoManager;
 import org.tigris.gef.util.ColorFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -116,7 +117,16 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      */
     public Diagram readDiagram(InputStream is, boolean closeStream)
     	throws SAXException {
-        return readDiagram(is, closeStream, new InitialHandler(this));
+        boolean wasGenerateMementos = UndoManager.getInstance().isGenerateMementos();
+        
+        if (wasGenerateMementos) {
+            UndoManager.getInstance().setGenerateMementos(false);
+        }
+        try {
+            return readDiagram(is, closeStream, new InitialHandler(this));
+        } finally {
+            UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
+        }
     }
 
     /**
