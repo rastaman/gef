@@ -109,6 +109,7 @@ public class PGMLHandler extends BaseHandler implements Container {
                     getPGMLStackParser().findOwner(initStr));
             }
         } catch (Exception ex) {
+            LOG.error("Exception caught", ex);
             throw new SAXException(ex);
         }
     }
