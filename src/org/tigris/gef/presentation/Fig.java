@@ -212,8 +212,6 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     /** Margin between this Fig and automatically routed arcs. */
     public final int BORDER = 8;
 
-    private static final Log LOG = LogFactory.getLog(Fig.class);
-
     /**
      * Most subclasses will not use this constructor, it is only useful
      * for subclasses that redefine most of the infrastructure provided
@@ -1549,9 +1547,9 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     public void setNumPoints(int npoints) {
     }
 
-    /** Sets the owner object of this Fig. Fires PropertyChangeEvent
-     *  "owner"
-     * @deprecated - set the owner in the constructor of the Fig
+    /**
+     * Sets the owner object of this Fig. Fires PropertyChangeEvent
+     * "owner"
      */
     public void setOwner(Object own) {
         firePropChange("owner", _owner, own);
