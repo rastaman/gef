@@ -74,4 +74,10 @@ public class FigRect extends Fig implements Serializable {
                 _x, _y, _w, _h,
                 getDashed(), _dashes, _dashPeriod);
     }
+    
+    public void appendSvg(StringBuffer sb) {
+        sb.append("<rect id='").append(getId()).append("' x='").append(getX()).append("' y='").append(getY()).append("' width='").append(getWidth()).append("' height='").append(getHeight()).append("'");
+        appendSvgStyle(sb);
+        sb.append(" />");
+    }
 } /* end class FigRect */

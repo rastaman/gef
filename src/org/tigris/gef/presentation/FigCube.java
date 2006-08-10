@@ -74,5 +74,10 @@ public class FigCube extends Fig implements Serializable {
         D = depth;
     }
 
+    public void appendSvg(StringBuffer sb) {
+        sb.append("<rect id='").append(getId()).append("' x='").append(getX()).append("' y='").append(getY()).append("' width='").append(getWidth()).append("' height='").append(getHeight()).append("'");
+        appendSvgStyle(sb);
+        sb.append(" />");
+    }
 }
 

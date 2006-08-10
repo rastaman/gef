@@ -376,6 +376,17 @@ public class FigGroup extends Fig {
 			}
     	}
     }
+    
+    public void appendSvg(StringBuffer sb) {
+        sb.append("<g id='").append(getId()).append("' class='").append(getClass().getName()).append("'");
+        appendSvgStyle(sb);
+        for (Iterator it = getFigs().iterator(); it.hasNext(); ) {
+            Fig fig = (Fig) it.next();
+            fig.appendSvg(sb);
+        }
+        sb.append("</g>");
+    }
+
 
     /** Delete all Fig's from the group. Fires PropertyChange with "bounds".*/
     public void removeAll() {

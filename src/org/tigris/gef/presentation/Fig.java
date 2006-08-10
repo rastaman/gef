@@ -1247,6 +1247,23 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      *  space, subclasses should override this method. */
     abstract public void paint(Object g);
 
+    /** Method to paint this Fig.  By default it paints an "empty"
+     *  space, subclasses should override this method. */
+    abstract public void appendSvg(StringBuffer sb);
+    
+    protected void appendSvgStyle(StringBuffer sb) {
+        sb.append(
+                " style='fill:rgb(")
+                .append(getFillColor().getRed()).append(",")
+                .append(getFillColor().getGreen()).append(",")
+                .append(getFillColor().getBlue()).append(");")
+                .append("stroke-width:").append(getLineWidth()).append(";")
+                .append("stroke:rgb(")
+                .append(getLineColor().getRed()).append(",")
+                .append(getLineColor().getGreen()).append(",")
+                .append(getLineColor().getBlue()).append(");'");
+    }
+
     /** Return a point at the given distance along the path around this
      *  Fig. By default, uses perimeter of the Fig's bounding
      *  box. Subclasses like FigPoly have more specific logic. */

@@ -105,4 +105,27 @@ public class FigDiamond extends Fig {
             g.drawPolygon(xs, ys, 4);
         }
     }
+    
+    public void appendSvg(StringBuffer sb) {
+        sb.append("<path id='")
+          .append(getId())
+          .append("' class='")
+          .append(getClass().getName())
+          .append("' style='fill:none; stroke-width:")
+          .append(getLineWidth())
+          .append("; stroke:rgb(")
+          .append(getLineColor().getRed()).append(",")
+          .append(getLineColor().getGreen()).append(',')
+          .append(getLineColor().getBlue()).append(" ;' d='");
+        for (int i = 0; i < getPoints().length; ++i) {
+            if (i == 0) {
+                sb.append("M ");
+            } else {
+                sb.append("L ");
+            }
+            sb.append(getPoint(i).x).append(',').append(getPoint(i).y);
+        }
+        sb.append(" ' />");
+    }
+    
 } /* end class FigRect */

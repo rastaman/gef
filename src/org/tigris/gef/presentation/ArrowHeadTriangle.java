@@ -31,45 +31,54 @@
 
 package org.tigris.gef.presentation;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
 
-/** Draws a triangluar arrow head at the end of a FigEdge */
+/**
+ * Draws a triangluar arrow head at the end of a FigEdge
+ */
 
 public class ArrowHeadTriangle extends ArrowHead {
 
-  public void paint(Graphics g, Point start, Point end) {
-    int    xFrom, xTo, yFrom, yTo;
-    double denom, x, y, dx, dy, cos, sin;
-    Polygon triangle;
+    private static final long serialVersionUID = -438086672038929101L;
 
-    xFrom  = start.x;
-    xTo   = end.x;
-    yFrom  = start.y;
-    yTo   = end.y;
-
-    dx   	= (double)(xTo - xFrom);
-    dy   	= (double)(yTo - yFrom);
-    denom 	= dist(dx, dy);
-    if (denom <= 0.01) return;
-
-    cos = arrow_height/denom;
-    sin = arrow_width /denom;
-    x   = xTo - cos*dx;
-    y   = yTo - cos*dy;
-    int x1  = (int)(x - sin*dy);
-    int y1  = (int)(y + sin*dx);
-    int x2  = (int)(x + sin*dy);
-    int y2  = (int)(y - sin*dx);
-
-    triangle = new Polygon();
-    triangle.addPoint(xTo, yTo);
-    triangle.addPoint(x1, y1);
-    triangle.addPoint(x2, y2);
-
-    g.setColor(arrowFillColor);
-    g.fillPolygon(triangle);
-    g.setColor(arrowLineColor);
-    g.drawPolygon(triangle);
-  }
+    public void paint(Object g, Point start, Point end) {
+        int    xFrom, xTo, yFrom, yTo;
+        double denom, x, y, dx, dy, cos, sin;
+        Polygon triangle;
+    
+        xFrom  = start.x;
+        xTo   = end.x;
+        yFrom  = start.y;
+        yTo   = end.y;
+    
+        dx   	= (double)(xTo - xFrom);
+        dy   	= (double)(yTo - yFrom);
+        denom 	= dist(dx, dy);
+        if (denom <= 0.01) return;
+    
+        cos = arrow_height/denom;
+        sin = arrow_width /denom;
+        x   = xTo - cos*dx;
+        y   = yTo - cos*dy;
+        int x1  = (int)(x - sin*dy);
+        int y1  = (int)(y + sin*dx);
+        int x2  = (int)(x + sin*dy);
+        int y2  = (int)(y - sin*dx);
+    
+        triangle = new Polygon();
+        triangle.addPoint(xTo, yTo);
+        triangle.addPoint(x1, y1);
+        triangle.addPoint(x2, y2);
+    
+        if (g instanceof Graphics) {
+            Graphics graphics = (Graphics) g;
+            graphics.setColor(arrowFillColor);
+            graphics.fillPolygon(triangle);
+            graphics.setColor(arrowLineColor);
+            graphics.drawPolygon(triangle);
+        }
+    }
 
 } /* end class ArrowHeadTriangle */

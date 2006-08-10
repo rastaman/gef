@@ -479,20 +479,22 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         paintPathItems(g);
     }
 
+    public void appendSvg(StringBuffer sb) {
+        //computeRoute();
+        _fig.appendSvg(sb);
+        //appendSvgArrowHeads(g);
+        appendSvgPathItems(sb);
+    }
+
     ////////////////////////////////////////////////////////////////
     // display methods
 
     /**
      * Paint ArrowHeads on this FigEdge. Called from paint().
-     * Determines placement and orientation by using
-     * pointAlongPerimeter().
      */
-    final protected void paintArrowHeads(Graphics g) {
+    final protected void paintArrowHeads(Object g) {
         _arrowHeadStart.paintAtHead(g, _fig);
         _arrowHeadEnd.paintAtTail(g, _fig);
-        //     _arrowHeadStart.paint(g, pointAlongPerimeter(5), pointAlongPerimeter(0));
-        //     _arrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength() - 6),
-        //          pointAlongPerimeter(getPerimeterLength() - 1));
     }
 
     final public void paintHighlightLine(Graphics g, int x1, int y1, int x2, int y2) {
@@ -531,6 +533,17 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         }
     }
 
+    /** Paint any labels that are located relative to this FigEdge. */
+    final protected void appendSvgPathItems(StringBuffer sb) {
+        Vector pathVec = getPathItemsRaw();
+        for(int i = 0; i < pathVec.size(); i++) {
+            PathItem element = (PathItem)pathVec.elementAt(i);
+            Fig f = element.getFig();
+            f.appendSvg(sb);
+        }
+    }
+
+    
     /** After the file is loaded, re-establish any connections from the
      * model to the Figs */
     public void postLoad() {

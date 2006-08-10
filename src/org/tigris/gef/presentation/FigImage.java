@@ -133,4 +133,24 @@ public class FigImage extends Fig implements ImageObserver {
     public void setURL(URL newURL) {
         _url = newURL;
     }
+
+    
+    public void appendSvg(StringBuffer sb) {
+        sb.append("<image id='")
+          .append(getId())
+          .append("' class='")
+          .append(getClass().getName())
+          .append("' style='fill:none;' x='")
+          .append(getX())
+          .append("' y='")
+          .append(getY())
+          .append("' width='")
+          .append(getWidth())
+          .append("' height='")
+          .append(getHeight())
+          .append("' xlink:href='")
+          .append(getURL())
+          .append(" />");
+    }
+
 } /* end of FigImage class */

@@ -30,7 +30,6 @@ package org.tigris.gef.presentation;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
@@ -73,7 +72,7 @@ public abstract class Decoration implements java.io.Serializable {
         arrowFillColor = newColor;
     }
 
-    public abstract void paint(Graphics g, Point start, Point end);
+    public abstract void paint(Object g, Point start, Point end);
     
     /** return the approximate arc length of the path in pixel units */
     public int getLineLength(Point one, Point two) {

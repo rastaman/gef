@@ -34,6 +34,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /** Primitive Fig to paint Polygons on a LayerDiagram. FigPolys
@@ -171,9 +172,9 @@ public class FigPoly extends Fig {
         _fixedHandles = n;
     }
 
-    public boolean isSelfLoop() {
-        return _isSelfLoop;
-    }
+//    public boolean isSelfLoop() {
+//        return _isSelfLoop;
+//    }
 
     ////////////////////////////////////////////////////////////////
     // geomertric manipulations
@@ -519,7 +520,29 @@ public class FigPoly extends Fig {
                 _npoints, _xpoints, _ypoints, 
                 getDashed(), _dashes, _dashPeriod);
     }
-
+    
+    public void appendSvg(StringBuffer sb) {
+        sb.append("<path id='")
+          .append(getId())
+          .append("' class='")
+          .append(getClass().getName())
+          .append("' style='fill:none; stroke-width:")
+          .append(getLineWidth())
+          .append("; stroke:rgb(")
+          .append(getLineColor().getRed()).append(",")
+          .append(getLineColor().getGreen()).append(',')
+          .append(getLineColor().getBlue()).append(" ;' d='");
+        for (int i = 0; i < getPoints().length; ++i) {
+            if (i == 0) {
+                sb.append("M ");
+            } else {
+                sb.append("L ");
+            }
+            sb.append(getPoint(i).x).append(',').append(getPoint(i).y);
+        }
+        sb.append(" ' />");
+    }
+    
     ////////////////////////////////////////////////////////////////
     // selection methods
 

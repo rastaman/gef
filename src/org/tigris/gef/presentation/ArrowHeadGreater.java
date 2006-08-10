@@ -35,7 +35,7 @@ import java.awt.*;
 
 public class ArrowHeadGreater extends ArrowHead {
 
-    public void paint(Graphics g, Point start, Point end) {
+    public void paint(Object g, Point start, Point end) {
         int    xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
 
@@ -60,14 +60,12 @@ public class ArrowHeadGreater extends ArrowHead {
         int x2  = (int)(x + sin*dy);
         int y2  = (int)(y - sin*dx);
 
-//     Polygon triangle = new Polygon();
-//     triangle.addPoint(xTo, yTo);
-//     triangle.addPoint(x1, y1);
-//     triangle.addPoint(x2, y2);
-
-        g.setColor(arrowLineColor);
-        g.drawLine(x1, y1, xTo, yTo);
-    g.drawLine(x2, y2, xTo, yTo);
+        if (g instanceof Graphics) {
+            Graphics graphics = (Graphics) g;
+            graphics.setColor(arrowLineColor);
+            graphics.drawLine(x1, y1, xTo, yTo);
+            graphics.drawLine(x2, y2, xTo, yTo);
+        }
     }
 
 }

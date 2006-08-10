@@ -49,7 +49,7 @@ public class ArrowHeadComposite extends ArrowHead {
     _arrowHeads.addElement(ah);
   }
 
-  public void paint(Graphics g, Point start, Point end) {
+  public void paint(Object g, Point start, Point end) {
     System.out.println("paint3 in ArrowHeadComposite should never be called");
   }
 

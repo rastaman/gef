@@ -268,6 +268,17 @@ public class FigLine extends Fig {
                 getDashed(),
                 _dashes, _dashPeriod);
     }
+    
+    public void appendSvg(StringBuffer sb) {
+        sb.append("<line id='").append(getId()).append("' class='").append(getClass().getName()).append("'");
+        appendSvgStyle(sb);
+        sb.append(" x1 = '").append(getX1()).append("'")
+          .append(" y1 = '").append(getY1()).append("'")
+          .append(" x2 = '").append(getX2()).append("'")
+          .append(" y2 = '").append(getY2()).append("' />");
+    }
+    
+
 
 /*
  protected Point getOffsetAmount(Point p1, Point p2, int offset) {

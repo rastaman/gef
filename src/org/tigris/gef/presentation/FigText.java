@@ -766,6 +766,41 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             }
         }
     }
+    
+    public void appendSvg(StringBuffer sb) {
+        sb.append("<text id ='")
+          .append(getId())
+          .append("' x='")
+          .append(getX())
+          .append("' y='")
+          .append(getY())
+          .append("' transform='translate(")
+          .append(getFontSize())
+          .append(',')
+          .append(getFontSize())
+          .append(")'");
+        appendSvgStyle(sb);
+        sb.append(">").append(getText()).append("</text>");
+    }
+    
+    protected void appendSvgStyle(StringBuffer sb) {
+        sb.append(
+                " style='fill:rgb(")
+                .append(getFillColor().getRed()).append(",")
+                .append(getFillColor().getGreen()).append(",")
+                .append(getFillColor().getBlue()).append(");")
+                .append("stroke-width:").append(getLineWidth()).append(";")
+                .append("stroke:rgb(")
+                .append(getLineColor().getRed()).append(",")
+                .append(getLineColor().getGreen()).append(",")
+                .append(getLineColor().getBlue()).append(");'")
+                .append("font:")
+                .append(getFontFamily())
+                .append("; font-size:")
+                .append(getFontSize())
+                .append("'");
+    }
+
 
     /**
      * Draws the given string starting at the given position. The position indicates

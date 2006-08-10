@@ -88,6 +88,15 @@ public class FigCircle extends Fig {
                 _w,
                 _h);
     }
+    
+    public void appendSvg(StringBuffer sb) {
+        sb.append("<ellipse id='").append(getId()).append("'");
+        appendSvgStyle(sb);
+        sb.append("cx='").append(getCenter().x).append("'")
+          .append("cy='").append(getCenter().y).append("'")
+          .append("rx='").append(getHalfWidth()).append("'")
+          .append("ry='").append(getHalfHeight()).append("' />");
+    }
 
     /** Reply true if the given coordinates are inside the circle. */
     public boolean contains(int x, int y) {

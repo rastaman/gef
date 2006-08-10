@@ -35,61 +35,66 @@ import java.awt.*;
 
 public class ArrowHeadQualifier extends ArrowHead {
 
-  public void paint(Graphics g, Point start, Point end) {
-    int    xFrom, xTo, yFrom, yTo;
-    double denom, x, y, wx, wy, dx, dy, cos, sin;
-    Polygon qualifier;
+    private static final long serialVersionUID = -4833472749443682549L;
 
-    int box_height = 20;
-    int box_width  = 5;
-
-    xFrom  = start.x;
-    xTo   = end.x;
-    yFrom  = start.y;
-    yTo   = end.y;
-
-    dx   	= (double)(xTo - xFrom);
-    dy   	= (double)(yTo - yFrom);
-    denom 	= dist(dx, dy);
-    if (denom == 0) return;
-    cos = (box_height)/denom;
-    sin = box_width /denom;
-    x   = xTo - cos*dx;
-    y   = yTo - cos*dy;
-    int x1  = (int)(x - sin*dy);
-    int y1  = (int)(y + sin*dx);
-    int x2  = (int)(x + sin*dy);
-    int y2  = (int)(y - sin*dx);
-    wx  = xTo - x -cos*dx;
-    wy  = yTo - y -cos*dy;
-    //sin = (double)((double)y2 - (double)y1)/ ((double)box_width*2);
-    //cos = (double)((double)x2 - (double)x1)/ ((double)box_width*2);
-    //int x3 = (int) ((double)xTo - sin*dy);
-    //int y3 = (int) ((double)yTo + sin*dx);
-    //int x4 = (int) ((double)xTo + sin*dy);
-    //int y4 = (int) ((double)yTo - sin*dx);
-    int x3 = (int) (xTo - sin*dy);
-    int y3 = (int) (yTo + sin*dx);
-    int x4 = (int) (xTo + sin*dy);
-    int y4 = (int) (yTo - sin*dx);
-    Point topPoint = pointAlongLine(end, start, arrow_height);
-
-    //System.out.println("  ! diamond = topP=" + topPoint + " end=" + end);
-
-
-    qualifier = new Polygon();
-    qualifier.addPoint(x1, y1);
-    qualifier.addPoint(x2, y2);
-    qualifier.addPoint(x4, y4);
-    qualifier.addPoint(x3, y3);
-
-    g.setColor(arrowFillColor);
-    g.fillPolygon(qualifier);
-    g.setColor(arrowLineColor);
-    g.drawPolygon(qualifier);
-    FigText temp;
-    temp = new FigText(x3,y3,x2,y2 , Color.blue, "Times", 8);
-    temp.setText("qualifier");
-  }
+    public void paint(Object g, Point start, Point end) {
+        int    xFrom, xTo, yFrom, yTo;
+        double denom, x, y, wx, wy, dx, dy, cos, sin;
+        Polygon qualifier;
+    
+        int box_height = 20;
+        int box_width  = 5;
+    
+        xFrom  = start.x;
+        xTo   = end.x;
+        yFrom  = start.y;
+        yTo   = end.y;
+    
+        dx   	= (double)(xTo - xFrom);
+        dy   	= (double)(yTo - yFrom);
+        denom 	= dist(dx, dy);
+        if (denom == 0) return;
+        cos = (box_height)/denom;
+        sin = box_width /denom;
+        x   = xTo - cos*dx;
+        y   = yTo - cos*dy;
+        int x1  = (int)(x - sin*dy);
+        int y1  = (int)(y + sin*dx);
+        int x2  = (int)(x + sin*dy);
+        int y2  = (int)(y - sin*dx);
+        wx  = xTo - x -cos*dx;
+        wy  = yTo - y -cos*dy;
+        //sin = (double)((double)y2 - (double)y1)/ ((double)box_width*2);
+        //cos = (double)((double)x2 - (double)x1)/ ((double)box_width*2);
+        //int x3 = (int) ((double)xTo - sin*dy);
+        //int y3 = (int) ((double)yTo + sin*dx);
+        //int x4 = (int) ((double)xTo + sin*dy);
+        //int y4 = (int) ((double)yTo - sin*dx);
+        int x3 = (int) (xTo - sin*dy);
+        int y3 = (int) (yTo + sin*dx);
+        int x4 = (int) (xTo + sin*dy);
+        int y4 = (int) (yTo - sin*dx);
+        Point topPoint = pointAlongLine(end, start, arrow_height);
+    
+        //System.out.println("  ! diamond = topP=" + topPoint + " end=" + end);
+    
+    
+        qualifier = new Polygon();
+        qualifier.addPoint(x1, y1);
+        qualifier.addPoint(x2, y2);
+        qualifier.addPoint(x4, y4);
+        qualifier.addPoint(x3, y3);
+    
+        if (g instanceof Graphics) {
+            Graphics graphics = (Graphics) g;
+            graphics.setColor(arrowFillColor);
+            graphics.fillPolygon(qualifier);
+            graphics.setColor(arrowLineColor);
+            graphics.drawPolygon(qualifier);
+        }
+        FigText temp;
+        temp = new FigText(x3,y3,x2,y2 , Color.blue, "Times", 8);
+        temp.setText("qualifier");
+    }
 
 } /* end class ArrowHeadQualifier */
