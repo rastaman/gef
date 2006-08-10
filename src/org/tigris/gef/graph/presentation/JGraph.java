@@ -37,6 +37,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.Collection;
 import java.util.Collections;
@@ -51,6 +52,7 @@ import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 
 import org.tigris.gef.base.CmdGroup;
+import org.tigris.gef.base.CmdZoom;
 import org.tigris.gef.base.NudgeAction;
 import org.tigris.gef.base.CmdReorder;
 import org.tigris.gef.base.CmdSelectNear;
@@ -76,7 +78,7 @@ import org.tigris.gef.presentation.FigTextEditor;
  * class Editor, and other classes which do the real work.
  */
 
-public class JGraph extends JPanel implements Cloneable, AdjustmentListener {
+public class JGraph extends JPanel implements Cloneable, AdjustmentListener, MouseWheelListener {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -93,6 +95,9 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener {
     private Hashtable _viewPortPositions = new Hashtable();
 
     private String _currentDiagramId = null;
+    
+    private CmdZoom zoomOut = new CmdZoom(0.9);
+    private CmdZoom zoomIn = new CmdZoom(1.1);
 
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -161,6 +166,9 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener {
             updateDrawingSizeToIncludeAllFigs(Collections
                     .enumeration(layerManagerContent));
         } // end if
+        
+        int mask = java.awt.event.KeyEvent.ALT_MASK | java.awt.event.KeyEvent.CTRL_MASK;
+        establishAlternateMouseWheelListener(this, mask);
     }
 
     /**
@@ -577,6 +585,26 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener {
 
     public void adjustmentValueChanged(AdjustmentEvent e) {
         FigTextEditor.getInstance().endEditing();
+    }
+    
+    
+    /**
+     *  Zooms diagram in and out when mousewheel is rolled while holding down
+     *  ctrl and/or alt key.
+     *  Alt, because alt + mouse motion pans the diagram & zooming while panning 
+     *      makes more sense than scrolling while panning.
+     *  Ctrl, because Ctrl/+ and Ctrl/- are used to zoom using the keyboard.
+     */
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        if (e.isAltDown() || e.isControlDown() ) {
+            
+            if (e.getWheelRotation() < 0)
+                this.zoomOut.doIt();
+            else if (e.getWheelRotation() > 0)
+                this.zoomIn.doIt();
+            
+            e.consume();
+        }
     }
 } /* end class JGraph */
 
