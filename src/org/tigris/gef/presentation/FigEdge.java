@@ -543,13 +543,6 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         }
     }
 
-    
-    /** After the file is loaded, re-establish any connections from the
-     * model to the Figs */
-    public void postLoad() {
-        setOwner(getOwner());
-    }
-
     ////////////////////////////////////////////////////////////////
     // notifications and updates
     public void propertyChange(PropertyChangeEvent pce) {

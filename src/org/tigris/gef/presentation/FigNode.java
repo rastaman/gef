@@ -261,8 +261,9 @@ public class FigNode extends FigGroup implements
      *  the given port. */
     public void bindPort(Object port, Fig f) {
         Fig oldPortFig = getPortFig(port);
-        if(oldPortFig != null)
+        if (oldPortFig != null) {
             oldPortFig.setOwner(null); //?
+        }
         f.setOwner(port);
     }
 
@@ -541,12 +542,6 @@ public class FigNode extends FigGroup implements
                 fe.computeRoute();
             }
         }
-    }
-
-    /** After the file is loaded, re-establish any connections from the
-     * model to the Figs */
-    public void postLoad() {
-        setOwner(getOwner());
     }
 
     public void cleanUp() {
