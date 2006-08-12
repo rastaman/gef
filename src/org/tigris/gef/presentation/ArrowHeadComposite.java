@@ -33,42 +33,45 @@ package org.tigris.gef.presentation;
 import java.awt.*;
 import java.util.*;
 
+import javax.naming.OperationNotSupportedException;
+
 /** Abstract class to draw arrow heads on the ends of FigEdges. */
 
 public class ArrowHeadComposite extends ArrowHead {
-  protected Vector _arrowHeads = new Vector();
+    
+    protected Vector _arrowHeads = new Vector();
 
-  public ArrowHeadComposite() { }
+    public ArrowHeadComposite() { }
 
-  public ArrowHeadComposite(ArrowHead ah1, ArrowHead ah2) {
-    _arrowHeads.addElement(ah1);
-    _arrowHeads.addElement(ah2);
-  }
-
-  public void addArrowHead(ArrowHead ah) {
-    _arrowHeads.addElement(ah);
-  }
-
-  public void paint(Object g, Point start, Point end) {
-    System.out.println("paint3 in ArrowHeadComposite should never be called");
-  }
-
-  public void paintAtHead(Graphics g, Fig path) {
-    int size = _arrowHeads.size();
-    for (int i = 0; i < size; i++) {
-      ArrowHead ah = (ArrowHead) _arrowHeads.elementAt(i);
-      ah.paint(g, path.pointAlongPerimeter((i+1)*arrow_height*2),
-	       path.pointAlongPerimeter(i*arrow_height*2));
+    public ArrowHeadComposite(ArrowHead ah1, ArrowHead ah2) {
+        _arrowHeads.addElement(ah1);
+        _arrowHeads.addElement(ah2);
     }
-  }
 
-  public void paintAtTail(Graphics g, Fig path) {
-    int len = path.getPerimeterLength();
-    int size = _arrowHeads.size();
-    for (int i = 0; i < size; i++) {
-      ArrowHead ah = (ArrowHead) _arrowHeads.elementAt(i);
-      ah.paint(g, path.pointAlongPerimeter(len - 1 - (i+1)*arrow_height*2),
-	       path.pointAlongPerimeter(len - 1 - i*arrow_height*2));
+    public void addArrowHead(ArrowHead ah) {
+        _arrowHeads.addElement(ah);
     }
-  }
+
+    public void paint(Object g, Point start, Point end) {
+        System.out.println("paint3 in ArrowHeadComposite should never be called");
+    }
+
+    public void paintAtHead(Object g, Fig path) {
+        int size = _arrowHeads.size();
+        for (int i = 0; i < size; i++) {
+            ArrowHead ah = (ArrowHead) _arrowHeads.elementAt(i);
+            ah.paint(g, path.pointAlongPerimeter((i+1)*arrow_height*2),
+    	       path.pointAlongPerimeter(i*arrow_height*2));
+        }
+    }
+
+    public void paintAtTail(Object g, Fig path) {
+        int len = path.getPerimeterLength();
+        int size = _arrowHeads.size();
+        for (int i = 0; i < size; i++) {
+            ArrowHead ah = (ArrowHead) _arrowHeads.elementAt(i);
+            ah.paint(g, path.pointAlongPerimeter(len - 1 - (i+1)*arrow_height*2),
+    	       path.pointAlongPerimeter(len - 1 - i*arrow_height*2));
+        }
+    }
 } /* end class ArrowHeadComposite */
