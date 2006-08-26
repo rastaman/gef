@@ -628,12 +628,4 @@ public class FigGroup extends Fig {
     public Fig deepSelect(Rectangle hitRect) {
         return this;
     }
-
-    private FigGroup getTopGroup() {
-        FigGroup topGroup = this;
-        while (topGroup.getGroup() != null) {
-            topGroup = (FigGroup) topGroup.getGroup();
-        }
-        return topGroup;
-    }
 } /* end class FigGroup */
