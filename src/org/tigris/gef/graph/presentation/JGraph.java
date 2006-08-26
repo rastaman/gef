@@ -51,18 +51,18 @@ import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 
-import org.tigris.gef.base.CmdGroup;
 import org.tigris.gef.base.CmdZoom;
+import org.tigris.gef.base.GroupAction;
 import org.tigris.gef.base.NudgeAction;
-import org.tigris.gef.base.CmdReorder;
-import org.tigris.gef.base.CmdSelectNear;
 import org.tigris.gef.base.CmdSelectNext;
-import org.tigris.gef.base.CmdUngroup;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerDiagram;
+import org.tigris.gef.base.ReorderAction;
+import org.tigris.gef.base.SelectNearAction;
+import org.tigris.gef.base.UngroupAction;
 import org.tigris.gef.event.GraphSelectionListener;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.ConnectionConstrainer;
@@ -248,14 +248,14 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
         //bindKey(new CmdDelete(), KeyEvent.VK_DELETE, 0);
         //bindKey(new CmdDispose(), KeyEvent.VK_D, ctrl);
 
-        bindKey(new CmdGroup(), KeyEvent.VK_G, ctrl);
-        bindKey(new CmdUngroup(), KeyEvent.VK_U, ctrl);
+        bindKey(new GroupAction(), KeyEvent.VK_G, ctrl);
+        bindKey(new UngroupAction(), KeyEvent.VK_U, ctrl);
 
-        bindKey(new CmdReorder(CmdReorder.SEND_BACKWARD), KeyEvent.VK_B, ctrl);
-        bindKey(new CmdReorder(CmdReorder.BRING_FORWARD), KeyEvent.VK_F, ctrl);
-        bindKey(new CmdReorder(CmdReorder.SEND_TO_BACK), KeyEvent.VK_B,
+        bindKey(new ReorderAction(ReorderAction.SEND_BACKWARD), KeyEvent.VK_B, ctrl);
+        bindKey(new ReorderAction(ReorderAction.BRING_FORWARD), KeyEvent.VK_F, ctrl);
+        bindKey(new ReorderAction(ReorderAction.SEND_TO_BACK), KeyEvent.VK_B,
                 ctrlShift);
-        bindKey(new CmdReorder(CmdReorder.BRING_TO_FRONT), KeyEvent.VK_F,
+        bindKey(new ReorderAction(ReorderAction.BRING_TO_FRONT), KeyEvent.VK_F,
                 ctrlShift);
 
         bindKey(new NudgeAction(NudgeAction.LEFT), KeyEvent.VK_LEFT, 0);
@@ -273,10 +273,10 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
         bindKey(new NudgeAction(NudgeAction.UP, 18), KeyEvent.VK_UP, alt);
         bindKey(new NudgeAction(NudgeAction.DOWN, 18), KeyEvent.VK_DOWN, alt);
 
-        bindKey(new CmdSelectNear(CmdSelectNear.LEFT), KeyEvent.VK_LEFT, meta);
-        bindKey(new CmdSelectNear(CmdSelectNear.RIGHT), KeyEvent.VK_RIGHT, meta);
-        bindKey(new CmdSelectNear(CmdSelectNear.UP), KeyEvent.VK_UP, meta);
-        bindKey(new CmdSelectNear(CmdSelectNear.DOWN), KeyEvent.VK_DOWN, meta);
+        bindKey(new SelectNearAction(SelectNearAction.LEFT), KeyEvent.VK_LEFT, meta);
+        bindKey(new SelectNearAction(SelectNearAction.RIGHT), KeyEvent.VK_RIGHT, meta);
+        bindKey(new SelectNearAction(SelectNearAction.UP), KeyEvent.VK_UP, meta);
+        bindKey(new SelectNearAction(SelectNearAction.DOWN), KeyEvent.VK_DOWN, meta);
     }
 
     /**
@@ -402,7 +402,8 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         drawingPane.setVisible(visible);
-        if (!visible) {
+		if(editor.getActiveTextEditor() != null)
+		{
             FigTextEditor.remove();
         }
     }
@@ -585,6 +586,7 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
 
     public void adjustmentValueChanged(AdjustmentEvent e) {
         FigTextEditor.getInstance().endEditing();
+        editor.damageAll();
     }
     
     
