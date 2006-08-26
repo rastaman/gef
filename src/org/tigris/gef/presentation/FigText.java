@@ -602,8 +602,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
                     redraw();
                 }
                 public void redo() {
-                    _curText = oldText;
-                    redraw();
+                    undo();
                 }
                 public void dispose() {}
             };
@@ -623,11 +622,11 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         if (owner != null) {
             return owner;
         }
-        Fig group = getGroup();
-        if (group == null) {
-            return null;
-        } else {
-            return getOwner(group);
+       Fig figGroup = fig.getGroup();
+           if (figGroup == null) {
+           return null;
+       } else {
+           return getOwner(figGroup);
         }
     }
     
