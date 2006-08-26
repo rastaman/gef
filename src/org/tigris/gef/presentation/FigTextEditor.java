@@ -58,10 +58,13 @@ import org.tigris.gef.undo.UndoManager;
 
 /**
  * A text pane for on screen editing of a FigText.
+ * TODO: This should not be a singleton but should be an instance owned
+ * by Editor.
  * @author jrobbins
  */
 public class FigTextEditor extends JTextPane implements PropertyChangeListener, DocumentListener, KeyListener, FocusListener {
 
+    private static final long serialVersionUID = 7350660058167121420L;
     private FigText figText;
     private JPanel drawingPanel;
     private JLayeredPane layeredPane;
@@ -75,6 +78,10 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
 
     private static final FigTextEditor INSTANCE = new FigTextEditor();
     
+    // TODO: Lets try and remove this and have the only reference
+    // from Editor
+    private static FigTextEditor _activeTextEditor;
+
     public static FigTextEditor getInstance() {
         return INSTANCE;
     }
@@ -152,7 +159,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         addKeyListener(this);
         requestFocus();
         getDocument().addDocumentListener(this);
-
+		ce.setActiveTextEditor(this);
         setSelectionStart(0);
         setSelectionEnd(getDocument().getLength());
         MutableAttributeSet attr = new SimpleAttributeSet();
@@ -176,6 +183,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     }
 
     public void endEditing() {
+		Editor ce =Globals.curEditor();
         removeFocusListener(this);
         updateFigText();
         setVisible(false);
@@ -193,6 +201,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         layeredPane.remove(this);
         drawingPanel.requestFocus();
         _activeTextEditor = null;
+        ce.setActiveTextEditor(null);
     }
     
     public void cancelEditing() {
@@ -213,8 +222,6 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         _activeTextEditor = null;
     }
     
-    private static FigTextEditor _activeTextEditor;
-
     public static synchronized FigTextEditor getActiveTextEditor() {
         return _activeTextEditor;
     }

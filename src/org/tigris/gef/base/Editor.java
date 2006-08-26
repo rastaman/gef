@@ -83,6 +83,11 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     ////////////////////////////////////////////////////////////////
     // constants
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2324579872610012639L;
+
     /** Clicking exactly on a small shape is hard for users to
      *  do. GRIP_MARGIN gives them a chance to have the mouse outside a
      *  Fig by a few pixels and still hit it.  */
@@ -163,6 +168,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 
     private static Log LOG = LogFactory.getLog(Editor.class);
 
+	private FigTextEditor _activeTextEditor =null;
     ////////////////////////////////////////////////////////////////
     // constructors and related functions
 
@@ -658,10 +664,26 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         return _jComponent.getBackground();
     }
 
-    public FigTextEditor getActiveTextEditor() {
-        return FigTextEditor.getActiveTextEditor();
+    public void setActiveTextEditor(FigTextEditor fte)
+	{
+		FigTextEditor oldTextEditor = _activeTextEditor;
+		_activeTextEditor = fte;
+		if (oldTextEditor != null)
+	  		oldTextEditor.endEditing();
+	}
+
+    public FigTextEditor getActiveTextEditor()
+    {
+		if(_activeTextEditor!=null)
+		{
+        	return FigTextEditor.getActiveTextEditor();
+		}
+		else
+		{
+			return null;
+		}
     }
-    
+
     /**
      * This method is called when the Editor is notified that the drawing
      * panel's natural size has changed, typically because a new
