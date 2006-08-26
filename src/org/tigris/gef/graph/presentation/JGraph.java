@@ -52,7 +52,6 @@ import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 
 import org.tigris.gef.base.CmdZoom;
-import org.tigris.gef.base.GroupAction;
 import org.tigris.gef.base.NudgeAction;
 import org.tigris.gef.base.CmdSelectNext;
 import org.tigris.gef.base.Diagram;
@@ -60,9 +59,7 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerDiagram;
-import org.tigris.gef.base.ReorderAction;
 import org.tigris.gef.base.SelectNearAction;
-import org.tigris.gef.base.UngroupAction;
 import org.tigris.gef.event.GraphSelectionListener;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.ConnectionConstrainer;
@@ -237,26 +234,11 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
     /* Set up some standard keystrokes and the Cmds that they invoke. */
     public void initKeys() {
         int shift = KeyEvent.SHIFT_MASK;
-        int ctrl = KeyEvent.CTRL_MASK;
-        int ctrlShift = KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK;
         int alt = KeyEvent.ALT_MASK;
         int meta = KeyEvent.META_MASK;
 
         bindKey(new CmdSelectNext(true), KeyEvent.VK_TAB, 0);
         bindKey(new CmdSelectNext(false), KeyEvent.VK_TAB, shift);
-
-        //bindKey(new CmdDelete(), KeyEvent.VK_DELETE, 0);
-        //bindKey(new CmdDispose(), KeyEvent.VK_D, ctrl);
-
-        bindKey(new GroupAction(), KeyEvent.VK_G, ctrl);
-        bindKey(new UngroupAction(), KeyEvent.VK_U, ctrl);
-
-        bindKey(new ReorderAction(ReorderAction.SEND_BACKWARD), KeyEvent.VK_B, ctrl);
-        bindKey(new ReorderAction(ReorderAction.BRING_FORWARD), KeyEvent.VK_F, ctrl);
-        bindKey(new ReorderAction(ReorderAction.SEND_TO_BACK), KeyEvent.VK_B,
-                ctrlShift);
-        bindKey(new ReorderAction(ReorderAction.BRING_TO_FRONT), KeyEvent.VK_F,
-                ctrlShift);
 
         bindKey(new NudgeAction(NudgeAction.LEFT), KeyEvent.VK_LEFT, 0);
         bindKey(new NudgeAction(NudgeAction.RIGHT), KeyEvent.VK_RIGHT, 0);
