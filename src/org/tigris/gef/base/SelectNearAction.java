@@ -54,8 +54,41 @@ public class SelectNearAction extends UndoableAction {
 
     private int magnitude;
 
-    // //////////////////////////////////////////////////////////////
-    // constructor
+    /**
+     * Creates a new SelectNearAction
+     * 
+     * @param name The name of the action
+     * @param dir The direction of the selection
+     */
+    public SelectNearAction(int dir) {
+        this(dir, 1);
+    }
+    
+    /**
+     * Creates a new SelectNearAction
+     * 
+     * @param name The name of the action
+     * @param dir The direction of the selection
+     */
+    public SelectNearAction(int dir, int mag) {
+        super("SelectNear" + wordFor(dir)); //needs-more-work: direction
+        direction = dir;
+        magnitude = mag;
+    }
+    
+    private static String wordFor(int d) {
+        switch(d) {
+            case LEFT:
+                return "Left";
+            case RIGHT:
+                return "Right";
+            case UP:
+                return "Up";
+            case DOWN:
+                return "Down";
+        }
+        return "";
+    }
 
     /**
      * Creates a new SelectNearAction
