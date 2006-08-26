@@ -646,11 +646,17 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * redrawn.
      */
     public void damage() {
-        if(_layer != null) {
-            _layer.damageAll();
+        Layer lay = getLayer();
+        Fig group = getGroup();
+        while (lay == null && group != null) {
+            lay = group.getLayer();
+            group = group.getGroup();
+        }
+        if (lay != null) {
+            lay.damageAll();
         }
     }
-
+    
     /**
      * Get the rectangle on whose corners the dragging handles are to be drawn.
      * Should be overwritten by Figures with Bounds larger than the HandleBox.
