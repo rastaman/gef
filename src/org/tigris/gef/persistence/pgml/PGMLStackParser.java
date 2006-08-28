@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -101,8 +102,6 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         diagram = null;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Public methods
     /**
      * Read a diagram from an input stream with the
      * default top-level ContentHandler,  {@link InitialHandler InitialHandler}.
@@ -163,6 +162,75 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
                 // System.out.println(
                 //     "closing stream now (in PGMLParser.readDiagram)");
                 is.close();
+            }
+            return diagram;
+        } catch (IOException e) {
+            throw new SAXException(e);
+        } catch (ParserConfigurationException e) {
+            throw new SAXException(e);
+        }
+    }
+
+    /**
+     * Read a diagram from an input stream with the
+     * default top-level ContentHandler,  {@link InitialHandler InitialHandler}.
+     * is set to be the initial ContentHandler for the SAX parser.
+     * @param is Stream that will deliver the PGML file
+     * @param closeStream If true, the stream will be closed after the
+     * PGML file is parsed
+     * @see #readDiagram(InputStream, boolean, DefaultHandler)
+     *
+     * @return The read diagram.
+     * @throws SAXException if something goes wrong.
+     */
+    public Diagram readDiagram(Reader reader, boolean closeStream)
+        throws SAXException {
+        boolean wasGenerateMementos = UndoManager.getInstance().isGenerateMementos();
+        
+        if (wasGenerateMementos) {
+            UndoManager.getInstance().setGenerateMementos(false);
+        }
+        try {
+            return readDiagram(reader, closeStream, new InitialHandler(this));
+        } finally {
+            UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
+        }
+    }
+
+    /**
+     * Read a diagram from an input stream with a user-specificed
+     * ContentHandler as the initial ContentHandler for the SAX parser.
+     * This allows the caller to completely control the processing of the
+     * PGML file.
+     *
+     * @param is Stream that will deliver the PGML file
+     * @param closeStream If true, the stream will be closed after the
+     * PGML file is parsed
+     * @param initialHandler The top level ContentHandler.  In order for
+     * this method to work as expected, this ContentHandler must call the
+     * {@link #setDiagram} method on this object with the read diagram.
+     * @return The read diagram.
+     * @throws SAXException if something goes wrong.
+     */
+    private synchronized Diagram readDiagram(Reader reader, boolean closeStream,
+                                            DefaultHandler initialHandler)
+        throws SAXException {
+        handlerStack = new Stack();
+        try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setNamespaceAware(false);
+            factory.setValidating(false);
+            figRegistry = new HashMap();
+            diagram = null;
+            SAXParser parser = factory.newSAXParser();
+            InputSource source = new InputSource(reader);
+            xmlReader = parser.getXMLReader();
+            parser.parse(source, initialHandler);
+            // source = null;
+            if (closeStream) {
+                // System.out.println(
+                //     "closing stream now (in PGMLParser.readDiagram)");
+                reader.close();
             }
             return diagram;
         } catch (IOException e) {
