@@ -181,13 +181,17 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    * Fig */
   public void translate(int dx,int dy) { content.translate(dx, dy); }
 
-  /** The bounding box of the selection is the bbox of the contained Fig. */
-  public Rectangle getBounds() {
-    return new Rectangle(content.getX() - HAND_SIZE/2,
-			 content.getY() - HAND_SIZE/2,
-			 content.getWidth() + HAND_SIZE,
-			 content.getHeight() + HAND_SIZE);
-  }
+    /**
+     * The bounding box of the selection is the bbox of the contained Fig
+     * with added space for the handles.
+     **/
+    public Rectangle getBounds() {
+        return new Rectangle(
+            content.getX() - HAND_SIZE/2,
+            content.getY() - HAND_SIZE/2,
+            content.getWidth() + HAND_SIZE,
+            content.getHeight() + HAND_SIZE);
+    }
 
     /**
      * Returns my bounding box in the given Rectangle.  This avoids
