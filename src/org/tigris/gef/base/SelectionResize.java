@@ -46,12 +46,14 @@ import org.tigris.gef.presentation.Handle;
 
 public class SelectionResize extends Selection {
 
+    private static final long serialVersionUID = 1996301098909656022L;
+    
     private int cx;
     private int cy;
     private int cw;
     private int ch;
 
-    private static Log log = LogFactory.getLog(ModeDragScroll.class);
+    private static Log log = LogFactory.getLog(SelectionResize.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors
