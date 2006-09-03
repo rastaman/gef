@@ -111,6 +111,7 @@ public class UndoManager {
      * Redo the most recent chain of mementos received by the undo stack
      */
     public void redo() {
+        undoInProgress = true;
         do {
             Memento memento = pop(redoStack);
             redo(memento);
@@ -118,6 +119,7 @@ public class UndoManager {
                 !((Memento)redoStack.get(redoStack.size()-1)).startChain);
         incrementUndoChainCount();
         decrementRedoChainCount();
+        undoInProgress = false;
     }
     
     /**
