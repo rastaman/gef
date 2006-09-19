@@ -31,6 +31,7 @@ package org.tigris.gef.base;
 import java.util.Hashtable;
 
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,22 +50,16 @@ import org.tigris.gef.graph.MutableGraphModel;
 
 public class CmdCreateNode extends Cmd implements GraphFactory {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
+    private static final long serialVersionUID = -4746215260464595235L;
+
     public static Class DEFAULT_NODE_CLASS =
         org.tigris.gef.graph.presentation.NetNode.class;
 
     private static Log LOG = LogFactory.getLog(CmdCreateNode.class);
     
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
-    // All instance variables are stored in the _args Hashtable
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    /** Construct a new Cmd with the given arguments for node class. */
+    /**
+     * Construct a new Cmd with the given arguments for node class.
+     */
     public CmdCreateNode(Hashtable args, String resource, String name) {
         super(args, resource, name);
     }
@@ -73,8 +68,10 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
         super(args, "GefBase", name);
     }
 
-    /** Construct a new Cmd with the given classes for the NetNode
-     *  and its FigNode. */
+    /**
+     * Construct a new Cmd with the given classes for the NetNode
+     *  and its FigNode.
+     */
     public CmdCreateNode(Class nodeClass, String resource, String name) {
         this(new Hashtable(), resource, name);
         setArg("className", nodeClass);
@@ -85,10 +82,17 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
         setArg("className", nodeClass);
     }
 
-    /** Construct a new Cmd with the given classes for the NetNode
-     *  and its FigNode, and set the global sticky mode boolean to
-     *  the given value. This allows the user to place several nodes
-     *  rapidly.  */
+    public CmdCreateNode(Object nodeClass, String name, ImageIcon icon) {
+        super(new Hashtable(), name, icon);
+        setArg("className", nodeClass);
+    }
+
+    /**
+     * Construct a new Cmd with the given classes for the NetNode
+     * and its FigNode, and set the global sticky mode boolean to
+     * the given value. This allows the user to place several nodes
+     * rapidly.
+     */
     public CmdCreateNode(
         Class nodeClass,
         boolean sticky,

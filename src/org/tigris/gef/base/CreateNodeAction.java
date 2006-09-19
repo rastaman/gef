@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.util.Hashtable;
 
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -91,6 +92,12 @@ public class CreateNodeAction extends UndoableAction implements GraphFactory {
         setArg("className", nodeClass);
     }
 
+    public CreateNodeAction(Object nodeClass, String name, ImageIcon icon) {
+        super(name, icon);
+        setArg("className", nodeClass);
+    }
+
+    
     public CreateNodeAction(Class nodeClass, String name) {
         this(new Hashtable(), name);
         setArg("className", nodeClass);
@@ -111,7 +118,7 @@ public class CreateNodeAction extends UndoableAction implements GraphFactory {
         this(nodeClass, name);
         setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
     }
-
+    
     // //////////////////////////////////////////////////////////////
     // Action API
 
@@ -194,9 +201,8 @@ public class CreateNodeAction extends UndoableAction implements GraphFactory {
         return getArg("graphModel");
     }
 
-
     /** Store the given argument under the given name. */
-    private void setArg(String key, Object value) {
+    protected void setArg(String key, Object value) {
         if (args == null) {
             args = new Hashtable();
         }
