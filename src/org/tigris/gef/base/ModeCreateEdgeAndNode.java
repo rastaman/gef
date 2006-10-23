@@ -34,7 +34,8 @@ import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphNodeRenderer;
@@ -63,8 +64,8 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     /**
      * Logger.
      */
-    private static final Logger LOG =
-        Logger.getLogger(ModeCreateEdgeAndNode.class);
+    private static final Log LOG =
+        LogFactory.getLog(ModeCreateEdgeAndNode.class);
     ////////////////////////////////////////////////////////////////
     // static variables
     private static int dragsToExisting = 0;

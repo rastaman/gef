@@ -24,7 +24,8 @@
 
 package org.tigris.gef.persistence.pgml;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -38,7 +39,7 @@ public class UnknownHandler extends DefaultHandler {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(UnknownHandler.class);
+    private static final Log LOG = LogFactory.getLog(UnknownHandler.class);
 
     private int depthCount;
     private HandlerStack stack;

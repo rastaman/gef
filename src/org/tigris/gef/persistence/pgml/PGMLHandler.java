@@ -26,7 +26,8 @@ package org.tigris.gef.persistence.pgml;
 
 import java.beans.PropertyVetoException;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 import org.xml.sax.Attributes;
@@ -42,7 +43,7 @@ public class PGMLHandler extends BaseHandler implements Container {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(PGMLHandler.class);
+    private static final Log LOG = LogFactory.getLog(PGMLHandler.class);
 
     /**
      * The constructor for this handler creates the diagram object according

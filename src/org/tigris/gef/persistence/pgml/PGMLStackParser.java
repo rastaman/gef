@@ -40,7 +40,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
@@ -70,9 +71,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class PGMLStackParser implements HandlerStack, HandlerFactory {
     
-    private static final Logger LOG = Logger.getLogger(PGMLStackParser.class);
-
-    private static HashMap usedColors = new HashMap();
+    private static final Log LOG = LogFactory.getLog(PGMLStackParser.class);
 
     private Stack handlerStack;
     private XMLReader xmlReader;
