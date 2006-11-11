@@ -60,8 +60,8 @@ public abstract class Guide implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // user interface
 
-  /** Bring up a dialog box to set the parameters for this
-   *  guide. E.g., set the size of a grid. */
+  /** Set the parameters for this
+   *  guide. E.g., toggle the size of a grid. */
    public void adjust() { };
 } /* end class Guide */
 
