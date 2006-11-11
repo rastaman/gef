@@ -48,7 +48,7 @@ public class CmdAdjustGrid extends Cmd {
 
   public void doIt() {
     Editor ce = Globals.curEditor();
-    Layer grid = (Layer) ce.getLayerManager().findLayerNamed("Grid");
+    Layer grid = ce.getLayerManager().findLayerNamed("Grid");
     if (grid != null) grid.adjust();
   }
 
