@@ -30,6 +30,15 @@
 
 package org.tigris.gef.base;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Vector;
+
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigPainter;
@@ -37,14 +46,6 @@ import org.tigris.gef.util.EnumerationEmpty;
 import org.tigris.gef.util.EnumerationPredicate;
 import org.tigris.gef.util.PredFigInRect;
 import org.tigris.gef.util.PredFigNodeInRect;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Vector;
 
 /** A Layer is like a drawing layer in high-end drawing applications
  *  (e.g., MacDraw Pro).  A Layer is like a sheet of clear plastic that
@@ -496,6 +497,17 @@ public abstract class Layer implements java.io.Serializable {
      *
      * @see LayerGrid */
     public void adjust() {
+    }
+
+    /** 
+     * Allow the user to edit the properties of this layer (not the
+     * properties of the contents of this layer). For example, in
+     * LayerGrid this could set the grid size. By default, does nothing.
+     *
+     * @see LayerGrid 
+     * @param map a hashmap with properties
+     */
+    public void adjust(HashMap map) {
     }
 
 } /* end class Layer */

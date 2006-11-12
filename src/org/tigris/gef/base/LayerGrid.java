@@ -39,6 +39,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.PrintGraphics;
 import java.awt.Rectangle;
+import java.util.HashMap;
 import java.util.List;
 
 import org.tigris.gef.presentation.Fig;
@@ -286,4 +287,33 @@ public class LayerGrid extends Layer {
     }
     refreshEditors();
   }
+
+  /**
+   * This function allows to adjust various properties of this Layer. <p>
+   *
+   * Supported are:<ul><li>
+   *    "spacing", Integer : the size of the grid <li>
+   *    "paintLines", Boolean : shows grid as lines (overrules dots) <li>
+   *    "paintDots", Boolean : shows grid as dots
+   *    
+   * @see org.tigris.gef.base.Layer#adjust(java.util.HashMap)
+   */
+  public void adjust(HashMap map) {
+      super.adjust(map);
+      Object m;
+      _stamp = null;
+      setHidden(false); 
+      
+      m = map.get("spacing");
+      if (m instanceof Integer) _spacing = ((Integer) m).intValue();
+      
+      m = map.get("paintLines");
+      if (m instanceof Boolean) _paintLines = ((Boolean) m).booleanValue();
+      
+      m = map.get("paintDots");
+      if (m instanceof Boolean) _paintDots = ((Boolean) m).booleanValue();
+
+      refreshEditors();
+  }
+
 } /* end class LayerGrid */
