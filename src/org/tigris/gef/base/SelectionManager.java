@@ -1060,10 +1060,15 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             
             Iterator boundsIt = bounds.iterator();
             
+            //Create an array to store each node's current boundaries
+            List oldBounds = new ArrayList(draggingNodes.size() + draggingOthers.size());
+        	
             Iterator nodeIt = draggingNodes.iterator();
             while (nodeIt.hasNext()) {
                 FigNode figNode = (FigNode)nodeIt.next();
                 Rectangle rect = (Rectangle)boundsIt.next();
+                //Save the current boundaries for redo
+                oldBounds.add(figNode.getBounds());
                 figNode.setBounds(rect);
                 figNode.damage();
             }
@@ -1072,16 +1077,26 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             while (otherIt.hasNext()) {
                 Fig fig = (Fig)otherIt.next();
                 Rectangle rect = (Rectangle)boundsIt.next();
+                //Save the current boundaries for redo
+                oldBounds.add(fig.getBounds());
                 fig.setBounds(rect);
                 fig.damage();
             }
             
+            //Set the undo boundaries to the boundaries we just replaced
+            bounds = oldBounds;
+            
             Iterator pointsIt = points.iterator();
             
+            //Create an array to store each edge's current points
+            List oldPoints = new  ArrayList(nonMovingEdges.size() + movingEdges.size());
+        	
             Iterator edgeIt = movingEdges.iterator();
             while (edgeIt.hasNext()) {
                 FigEdge figEdge = (FigEdge)edgeIt.next();
                 Point[] pts = (Point[])pointsIt.next();
+                //Save the current boundaries for redo
+                oldPoints.add(figEdge.getPoints());
                 figEdge.setPoints(pts);
                 figEdge.damage();
             }
@@ -1090,15 +1105,20 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             while (nMedgeIt.hasNext()) {
                 FigEdge figEdge = (FigEdge)nMedgeIt.next();
                 Point[] pts = (Point[])pointsIt.next();
+                //Save the current boundaries for redo
+                oldPoints.add(figEdge.getPoints());
                 figEdge.setPoints(pts);
                 figEdge.damage();
             }
             
+            //Set the undo points to the points we just replaced
+            points = oldPoints;
+            
             UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
         }
         public void redo() {
-//            _fig.translate(dx, dy);
-//            calcBounds();
+        	//Simply undo the previous undo
+        	undo();
         }
         
         public String toString() {
