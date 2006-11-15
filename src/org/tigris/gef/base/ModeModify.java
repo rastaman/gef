@@ -120,12 +120,12 @@ public class ModeModify extends FigModifyingModeImpl {
         }
 
         mouseEvent.consume();
-        int mouseX = mouseEvent.getX();
-        int mouseY = mouseEvent.getY();
-        newMousePosition.x = mouseX;
-        newMousePosition.y = mouseY;
-        _deltaMouseX = mouseX - dragStartMousePosition.x;
-        _deltaMouseY = mouseY - dragStartMousePosition.y;
+        Point p = mouseEvent.getPoint();
+        getEditor().snap(p); // only allow movement on snap positions
+        newMousePosition.x = p.x;
+        newMousePosition.y = p.y;
+        _deltaMouseX = p.x - dragStartMousePosition.x;
+        _deltaMouseY = p.y - dragStartMousePosition.y;
         if(!_dragInProcess && Math.abs(_deltaMouseX) < MIN_DELTA && Math.abs(_deltaMouseY) < MIN_DELTA) {
             return;
         }
