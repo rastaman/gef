@@ -210,7 +210,14 @@ public class PrintAction extends AbstractAction implements Printable {
             scale = Math.min(pageWidth / (double) (drawingArea.width + 1),
                     pageHeight / (double) (drawingArea.height + 1));
             if (scale < 1.0) {
-                promptFitToPage();
+            	// the printing doesn't fit in a single page;
+            	// let's ask the user what to do
+                if (!promptFitToPage()){
+                	// the user chose to cancel the printing job: let's restore the
+                	// grid, then quit
+                	editor.setGridHidden(h);
+                	return NO_SUCH_PAGE;
+                }
             }
             if (fitDiagramToPage()) {
                 maxPageIndex = 1;
@@ -270,18 +277,29 @@ public class PrintAction extends AbstractAction implements Printable {
         setPageFormat(getPrinterJob().pageDialog(getPageFormat()));
     }
 
-    private void promptFitToPage() {
-        Object[] options = { "Fit to page", "Multiple Pages" };
+    /**
+     * Pops up a dialog to ask the user whether to fit the exceeding diagrams to
+     * page or to print multiple pages. The user can also cancel the print job.
+     * 
+     * @return false if the user has chosen to cancel the printing, true otherwise
+     */
+    private boolean promptFitToPage() {
+        Object[] options = {"Fit to page", "Multiple Pages", "Cancel"};
 
-        int n = JOptionPane.showOptionDialog(null,
-                "The diagram exceeds the current page size. Select option?",
-                "Print", JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        int n = JOptionPane.showOptionDialog(null, 
+        		"The diagram exceeds the current page size. Select option?", "Print", 
+        		JOptionPane.YES_NO_CANCEL_OPTION, 
+        		JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-        if (n == JOptionPane.NO_OPTION) {
-            setFitDiagramToPage(false);
-        } else {
-            setFitDiagramToPage(true);
+        if(n == JOptionPane.CANCEL_OPTION) {
+        	return false;
+        } else { 
+        	if(n == JOptionPane.NO_OPTION) {
+	            setFitDiagramToPage(false);
+	        } else {
+	            setFitDiagramToPage(true);
+	        }
+        	return true;
         }
     }
 }
