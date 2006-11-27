@@ -34,4 +34,9 @@ public abstract class Memento {
      */
     public void dispose() {
     }
+    
+    
+    public String toString() {
+        return (isStartChain() ? "*" : " ") + this.getClass().getName();
+    }
 }
