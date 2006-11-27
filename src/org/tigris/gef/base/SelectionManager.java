@@ -678,7 +678,6 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
         
         if (dragMemento != null) {
-            UndoManager.getInstance().startChain();
             UndoManager.getInstance().addMemento(dragMemento);
         }
         dragMemento = null;
