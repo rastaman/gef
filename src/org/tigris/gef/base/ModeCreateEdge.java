@@ -108,6 +108,8 @@ public class ModeCreateEdge extends ModeCreate {
             if (LOG.isDebugEnabled()) LOG.debug("MousePressed but rejected as already consumed");
             return;
         }
+        
+        UndoManager.getInstance().addMementoLock(this);
         int x = me.getX(), y = me.getY();
         Editor ce = Globals.curEditor();
         Fig underMouse = ce.hit(x, y);
@@ -156,6 +158,8 @@ public class ModeCreateEdge extends ModeCreate {
             return;
         }
 
+        UndoManager.getInstance().startChain();
+    	
         int x = me.getX(), y = me.getY();
         Editor ce = Globals.curEditor();
         Fig f = ce.hit(x, y);
@@ -201,10 +205,11 @@ public class ModeCreateEdge extends ModeCreate {
                     fe.setSourceFigNode(_sourceFigNode);
                     fe.setDestPortFig(destPortFig);
                     fe.setDestFigNode(destFigNode);
+                    endAttached(fe);
+                    
                     if (fe != null)
                         ce.getSelectionManager().select(fe);
                     done();
-                    createMemento(fe);
                     me.consume();
                     if (LOG.isDebugEnabled()) LOG.debug("MouseReleased Edge created and event consumed");
                     return;
@@ -215,6 +220,7 @@ public class ModeCreateEdge extends ModeCreate {
         ce.damageAll();
         _newItem = null;
         if (LOG.isDebugEnabled()) LOG.debug("MouseReleased not on FigNode. Event consumed anyway.");
+        //UndoManager.getInstance().removeMementoLock(this);
         done();
         me.consume();
     }
@@ -227,46 +233,47 @@ public class ModeCreateEdge extends ModeCreate {
         return startPort;
     }
     
-    protected void createMemento(FigEdge fe) {
-        new CreateEdgeCommand(fe).execute();
-    }
-} /* end class ModeCreateEdge */
-
-
-class CreateEdgeCommand implements Command {
-    
-    private FigEdge edgeCreated;
-    
-    CreateEdgeCommand(FigEdge edge) {
-        edgeCreated = edge;
+    protected void endAttached(FigEdge fe) {
+    	UndoManager.getInstance().removeMementoLock(this);
+    	if (UndoManager.getInstance().isGenerateMementos()) {
+    		UndoManager.getInstance().addMemento(new CreateEdgeMemento(editor,_newEdge,fe));
+        }
+    	UndoManager.getInstance().addMementoLock(this);
     }
     
-    public void execute() {
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            CreateEdgeMemento memento = new CreateEdgeMemento();
-            UndoManager.getInstance().startChain();
-            UndoManager.getInstance().addMemento(memento);
-        }
-    }
-    
-    private class CreateEdgeMemento extends Memento {
-        
-        CreateEdgeMemento() {}
-        
-        public void undo() {
-            SelectionManager sm = Globals.curEditor().getSelectionManager();
-            if (sm.containsFig(edgeCreated)) {
-                sm.removeFig(edgeCreated);
-            }
-            edgeCreated.deleteFromModel();
-        }
-        public void redo() {
-        }
-        public void dispose() {
-        }
-        
-        public String toString() {
-            return (isStartChain() ? "*" : " ") + "CreateEdgeMemento " + edgeCreated;
-        }
-    }
+	class CreateEdgeMemento extends Memento {
+	    
+	    private FigEdge edgePlaced;
+	    private Object edge;
+	    private Editor editor;
+	   
+	    CreateEdgeMemento (Editor ed, Object edge, FigEdge edgePlaced) {
+	        this.edgePlaced = edgePlaced;
+	        this.edge = edge;  //Eventually need to pass a collection of objects instead...
+	        this.editor = ed;
+	    }
+	    
+	    public void undo() {
+	    	UndoManager.getInstance().addMementoLock(this);
+	        editor.getSelectionManager().deselect(edgePlaced);
+	        if (edge!=null) ((MutableGraphModel)editor.getGraphModel()).removeEdge(edge);
+	        editor.remove(edgePlaced);
+	        UndoManager.getInstance().removeMementoLock(this);
+	    }
+	    
+	    public void redo() {
+	    	UndoManager.getInstance().addMementoLock(this);
+	        editor.add(edgePlaced);
+	        GraphModel gm = editor.getGraphModel();
+	        if (edge!=null) ((MutableGraphModel)gm).addEdge(edge);
+	        editor.getSelectionManager().select(edgePlaced);
+	        UndoManager.getInstance().removeMementoLock(this);
+	    }
+	    public void dispose() {
+	    }
+	    
+	    public String toString() {
+	        return (isStartChain() ? "*" : " ") + "PlaceMemento " + edgePlaced.getBounds();
+	    }
+	}
 }

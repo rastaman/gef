@@ -32,6 +32,7 @@ package org.tigris.gef.base;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.tigris.gef.undo.UndoManager;
 
 /** 
  * Cmd to delete the Figs selected in the current editor, and dispose
@@ -48,6 +49,7 @@ public class CmdDeleteFromModel extends Cmd {
 
     public void doIt() {
         LOG.debug("Executing CmdDeleteFromModel");
+        UndoManager.getInstance().startChain();
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
         sm.deleteFromModel();

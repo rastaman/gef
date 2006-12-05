@@ -128,20 +128,24 @@ public class SelectionReshape extends Selection implements KeyListener {
         if (selectedFig instanceof FigEdgePoly) {
             final FigEdgePoly figEdgePoly = ((FigEdgePoly)selectedFig);
             
-            class ReshapeMemento extends Memento {
+            class FigEdgeReshapeMemento extends Memento {
 
-                final Polygon oldPolygon;
+                Polygon oldPolygon;
                 
-                ReshapeMemento(final Polygon poly) {
-                    oldPolygon = poly;
+                FigEdgeReshapeMemento(final Polygon poly) {
+                    oldPolygon = new Polygon(poly.xpoints,poly.ypoints,poly.npoints);
                 }
                 public void undo() {
+                	UndoManager.getInstance().addMementoLock(this);
+                	Polygon poly=figEdgePoly.getPolygon();
+                	Polygon curPoly = new Polygon(poly.xpoints,poly.ypoints,poly.npoints);
                     figEdgePoly.setPolygon(oldPolygon);
+                    oldPolygon=curPoly;
                     figEdgePoly.damage();
+                    UndoManager.getInstance().removeMementoLock(this);
                 }
                 public void redo() {
-//                    _fig.translate(dx, dy);
-//                    calcBounds();
+                    undo();
                 }
                 
                 public String toString() {
@@ -150,7 +154,7 @@ public class SelectionReshape extends Selection implements KeyListener {
             }
             
             if (UndoManager.getInstance().isGenerateMementos()) {
-                Memento memento = new ReshapeMemento(figEdgePoly.getPolygon());
+                Memento memento = new FigEdgeReshapeMemento(figEdgePoly.getPolygon());
                 UndoManager.getInstance().startChain();
                 UndoManager.getInstance().addMemento(memento);
             }

@@ -32,6 +32,7 @@ import java.util.*;
 import java.awt.*;
 
 import org.tigris.gef.presentation.*;
+import org.tigris.gef.undo.UndoManager;
 
 /** This is the default implementation for all Modes that are manipulating
  *  the visual representation of the underlying model. It is a subclass
@@ -84,6 +85,7 @@ implements FigModifyingMode
 	public void done() {
 		setCursor(Cursor.getDefaultCursor());
 		editor.finishMode();
+		UndoManager.getInstance().removeMementoLock(this);
 	}
 
     ////////////////////////////////////////////////////////////////

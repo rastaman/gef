@@ -115,15 +115,14 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      */
     public Diagram readDiagram(InputStream is, boolean closeStream)
     	throws SAXException {
-        boolean wasGenerateMementos = UndoManager.getInstance().isGenerateMementos();
         
-        if (wasGenerateMementos) {
-            UndoManager.getInstance().setGenerateMementos(false);
+        if ( UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMementoLock(this);
         }
         try {
             return readDiagram(is, closeStream, new InitialHandler(this));
         } finally {
-            UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
+            UndoManager.getInstance().removeMementoLock(this);
         }
     }
 
@@ -187,12 +186,12 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         boolean wasGenerateMementos = UndoManager.getInstance().isGenerateMementos();
         
         if (wasGenerateMementos) {
-            UndoManager.getInstance().setGenerateMementos(false);
+            //UndoManager.getInstance().setGenerateMementos(false);
         }
         try {
             return readDiagram(reader, closeStream, new InitialHandler(this));
         } finally {
-            UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
+            //UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
         }
     }
 

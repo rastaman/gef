@@ -75,9 +75,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     
     private Fig _dragTopMostFig;
     private Fig _dragLeftMostFig;
-    
-    private boolean wasGenerateMementos;
-    
+        
     /**
      * All of the nodes being dragged
      */
@@ -149,6 +147,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void select(Fig f) {
+    	if (UndoManager.getInstance().isGenerateMementos()) {
+    		UndoManager.getInstance().addMemento(new SelectionMemento());
+    	}
         allDamaged();
         removeAllElements();
         addFig(f);
@@ -162,6 +163,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
      * @param fig Additional fig to select.
      */
     public void addToSelection(Fig fig) {
+    	if (UndoManager.getInstance().isGenerateMementos()) {
+    		UndoManager.getInstance().addMemento(new SelectionMemento());
+    	}
         addFig(fig);
         _editor.damageAll();
         fireSelectionChanged();
@@ -169,6 +173,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     /** Deselect the given Fig */
     public void deselect(Fig f) {
+    	if (UndoManager.getInstance().isGenerateMementos()) {
+    		UndoManager.getInstance().addMemento(new SelectionMemento());
+    	}
         if(containsFig(f)) {
             removeFig(f);
             _editor.damageAll();
@@ -177,6 +184,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void toggle(Fig f) {
+    	if (UndoManager.getInstance().isGenerateMementos()) {
+    		UndoManager.getInstance().addMemento(new SelectionMemento());
+    	}
         _editor.damageAll();
         if(containsFig(f)) {
             removeFig(f);
@@ -190,6 +200,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void deselectAll() {
+    	if (UndoManager.getInstance().isGenerateMementos()) {
+    		UndoManager.getInstance().addMemento(new SelectionMemento());
+    	}
         Rectangle damagedArea = this.getBounds();    // too much area
         removeAllElements();
         _editor.damaged(damagedArea);
@@ -197,6 +210,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void select(Collection items) {
+    	if (UndoManager.getInstance().isGenerateMementos()) {
+    		UndoManager.getInstance().addMemento(new SelectionMemento());
+    	}
         allDamaged();
         removeAllElements();
         addAllFigs(items);
@@ -205,6 +221,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void toggle(Vector items) {
+    	if (UndoManager.getInstance().isGenerateMementos()) {
+    		UndoManager.getInstance().addMemento(new SelectionMemento());
+    	}
         allDamaged();
         Enumeration figs = ((Vector)items.clone()).elements();
         while(figs.hasMoreElements()) {
@@ -512,10 +531,8 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         // While we're dragging we want to create DragMementos instead of
         // any other mementos that the framework would normally create for
         // us. So make sure generate mementos is turned off during drag.
-        wasGenerateMementos = UndoManager.getInstance().isGenerateMementos();
-        UndoManager.getInstance().setGenerateMementos(false);
-        
-        List draggingFigs = new ArrayList();
+
+    	List draggingFigs = new ArrayList();
         _draggingNodes = new ArrayList();
         _draggingMovingEdges = new ArrayList();
         _draggingNonMovingEdges = new ArrayList();
@@ -560,13 +577,15 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             }
         }
 
-        if (wasGenerateMementos) {
+        if (UndoManager.getInstance().isGenerateMementos()) {        
             dragMemento = new DragMemento(
                     _draggingNodes, 
                     _draggingOthers, 
                     _draggingMovingEdges, 
                     _draggingNonMovingEdges);
         }
+        UndoManager.getInstance().addMementoLock(this);
+        
     }
 
     private void checkDragEdge(FigEdge figEdge, List draggingFigs, List draggingNonMovingEdges) {
@@ -675,7 +694,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     public void stopDrag() {
         // Set the generate memento mode back to whatever it was before we
         // started dragging
-        UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
+        UndoManager.getInstance().removeMementoLock(this);;
         
         if (dragMemento != null) {
             UndoManager.getInstance().addMemento(dragMemento);
@@ -1054,9 +1073,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             }
         }
         public void undo() {
-            boolean wasGenerateMementos = UndoManager.getInstance().isGenerateMementos();
-            UndoManager.getInstance().setGenerateMementos(false);
-            
+        	UndoManager.getInstance().addMementoLock(this);
             Iterator boundsIt = bounds.iterator();
             
             //Create an array to store each node's current boundaries
@@ -1113,7 +1130,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             //Set the undo points to the points we just replaced
             points = oldPoints;
             
-            UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
+            UndoManager.getInstance().removeMementoLock(this);
         }
         public void redo() {
         	//Simply undo the previous undo
@@ -1122,6 +1139,30 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         
         public String toString() {
             return (isStartChain() ? "*" : " ") + "DragMemento";
+        }
+    }
+    
+    class SelectionMemento extends Memento {
+    	
+    	Vector prevSelections;
+    	
+    	public SelectionMemento() {
+    		prevSelections = new Vector(_selections);
+    	}
+    	
+    	public void undo() {
+    		Vector curSelections = new Vector(_selections);
+    		_selections = prevSelections;
+    		prevSelections = curSelections;
+    		_editor.damageAll();
+    	}
+    	
+    	public void redo() {
+    		undo();
+    	}
+    	
+        public String toString() {
+            return (isStartChain() ? "*" : " ") + "SelectionMemento";
         }
     }
 }    /* end class SelectionManager */

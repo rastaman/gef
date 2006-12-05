@@ -32,8 +32,11 @@ import java.awt.*;
 import java.awt.event.*;
 
 import org.apache.commons.logging.*;
+import org.tigris.gef.base.ModeCreateEdge.CreateEdgeMemento;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
 
 /** A Mode to interpret user input while creating an edge.  Basically
  *  mouse down starts creating an edge from a source port Fig, mouse
@@ -115,6 +118,8 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
             if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but rejected as already consumed");
             return;
         }
+        
+        UndoManager.getInstance().addMementoLock(this);
         int x = me.getX(), y = me.getY();
         //Editor editor = Globals.curEditor();
         Fig underMouse = editor.hit(x, y);
@@ -167,6 +172,8 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
             return;
         }
 
+        UndoManager.getInstance().startChain();
+        
         int x = me.getX(), y = me.getY();
         Fig f = editor.hit(x, y);
         if (f == null) {
@@ -247,7 +254,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
                         destFigNode.updateEdges();
                     }
                     
-                    endAttached();
+                    endAttached(fe);
                 }
                 done();
                 me.consume();
@@ -264,14 +271,17 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
         }
         _lastX = x;
         _lastY = y;
+        UndoManager.getInstance().removeMementoLock(this);
         me.consume();
     }
 
-    protected void endAttached() {
-        Layer lay = editor.getLayerManager().getActiveLayer();
-        FigEdge fe = (FigEdge) lay.presentationFor(newEdge);
-        createMemento(fe);
-    }
+//    protected void endAttached(FigEdge fe) {
+//    	if (wasGenerateMementos) {
+//        	UndoManager.getInstance().addMemento(new CreatePolyEdgeMemento(editor,newEdge,fe));
+//        }
+//        UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
+//        
+//    }
     
     public void mouseMoved(MouseEvent me) {
         mouseDragged(me);

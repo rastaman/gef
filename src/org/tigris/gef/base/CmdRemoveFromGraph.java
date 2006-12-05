@@ -29,6 +29,8 @@
 
 package org.tigris.gef.base;
 
+import org.tigris.gef.undo.UndoManager;
+
 /** 
  * Cmd to delete Figs from view. This does not do anything to any
  * underlying Net or other model, it is strictly a manipulation of
@@ -48,6 +50,7 @@ public class CmdRemoveFromGraph extends Cmd {
     /** Tell the selected Figs to remove themselves from the
      *  the diagram it is in (and thus all editors). */
     public void doIt() {
+    	UndoManager.getInstance().startChain();
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
         sm.removeFromGraph();

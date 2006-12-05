@@ -28,13 +28,6 @@
 
 package org.tigris.gef.base;
 
-import org.apache.commons.logging.*;
-import org.tigris.gef.graph.*;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.undo.Memento;
-import org.tigris.gef.undo.UndoManager;
-
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -43,6 +36,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.tigris.gef.graph.GraphFactory;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeHooks;
+import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.graph.presentation.NetPrimitive;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
 
 /**
  * Mode to place new a FigNode on a node in a diagram.
@@ -71,8 +77,6 @@ public class ModePlace extends FigModifyingModeImpl {
 
     protected String _instructions; 
 
-    private boolean wasGenerateMementos;
-    
     private static Log LOG = LogFactory.getLog(ModePlace.class);
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -120,8 +124,7 @@ public class ModePlace extends FigModifyingModeImpl {
         if(me.isConsumed()) {
             return;
         }
-        wasGenerateMementos = UndoManager.getInstance().isGenerateMementos();
-        UndoManager.getInstance().setGenerateMementos(false);
+        UndoManager.getInstance().addMementoLock(this);
         _node = _factory.makeNode();
         start();
         editor = Globals.curEditor();
@@ -175,7 +178,7 @@ public class ModePlace extends FigModifyingModeImpl {
     /** Actually add the Perpective to the diagram.
      */
     public void mouseReleased(MouseEvent me) {
-        if(me.isConsumed()) {
+    	if(me.isConsumed()) {
             if (LOG.isDebugEnabled()) LOG.debug("MouseReleased but rejected as already consumed");
             return;
         }
@@ -188,7 +191,8 @@ public class ModePlace extends FigModifyingModeImpl {
         MutableGraphModel mgm = (MutableGraphModel)gm;
         if(mgm.canAddNode(_node)) {
             LOG.debug("mouseReleased Adding fig to editor (" + _pers.getX()+"," + _pers.getY());
-            editor.add(_pers);
+            UndoManager.getInstance().startChain();
+        	editor.add(_pers);
             mgm.addNode(_node);
             if (_addRelatedEdges) {
                 mgm.addNodeRelatedEdges(_node);
@@ -223,15 +227,15 @@ public class ModePlace extends FigModifyingModeImpl {
                ((GraphNodeHooks) _node).postPlacement(editor);
             }
             
-            editor.getSelectionManager().select(_pers);
-            
-            
-            if (wasGenerateMementos) {
-                PlaceMemento memento = new PlaceMemento(_pers);
+            UndoManager.getInstance().removeMementoLock(this);
+            if (UndoManager.getInstance().isGenerateMementos()) {
+				PlaceMemento memento = new PlaceMemento(editor,_node,_pers);
                 UndoManager.getInstance().addMemento(memento);
             }
+            UndoManager.getInstance().addMementoLock(this);
+            
+            editor.getSelectionManager().select(_pers); 
         }
-        UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
         done();
         me.consume();
     }
@@ -260,18 +264,28 @@ public class ModePlace extends FigModifyingModeImpl {
 class PlaceMemento extends Memento {
     
     private FigNode nodePlaced;
+    private Object node;
+    private Editor editor;
     
-    PlaceMemento (FigNode nodePlaced) {
+    PlaceMemento (Editor ed, Object node, FigNode nodePlaced) {
         this.nodePlaced = nodePlaced;
+        this.node = node;
+        this.editor = ed;
     }
+    
     public void undo() {
-        SelectionManager sm = Globals.curEditor().getSelectionManager();
-        if (sm.containsFig(nodePlaced)) {
-            sm.removeFig(nodePlaced);
-        }
-        nodePlaced.deleteFromModel();
+    	UndoManager.getInstance().addMementoLock(this);
+        editor.getSelectionManager().deselect(nodePlaced);
+        ((MutableGraphModel)editor.getGraphModel()).removeNode(node);
+        editor.remove(nodePlaced);
+        UndoManager.getInstance().removeMementoLock(this);
     }
     public void redo() {
+        UndoManager.getInstance().addMementoLock(this);
+        editor.add(nodePlaced);
+       	((MutableGraphModel)editor.getGraphModel()).addNode(node);
+        editor.getSelectionManager().select(nodePlaced);
+        UndoManager.getInstance().removeMementoLock(this);
     }
     public void dispose() {
     }

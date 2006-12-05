@@ -682,7 +682,40 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * Remove this Fig from the Layer it belongs to.
      */
     public void removeFromDiagram() {
-        removeStarted = true;
+        
+    	if (UndoManager.getInstance().isGenerateMementos()) {
+            class FigRemoveMemento extends Memento {
+                
+            	Layer lay;
+            	Fig fig;
+            	Fig encFig;
+            	boolean vis;
+            	
+            	public FigRemoveMemento(Fig f) {
+            		fig=f;
+            		lay=fig.getLayer();
+            		encFig=f.getEnclosingFig();
+            		vis=fig.isVisible();
+            	}
+            	
+                public void undo() {
+                	UndoManager.getInstance().addMementoLock(this);
+                	fig.setEnclosingFig(encFig);
+                	if (lay!=null) lay.add(fig);    
+                	fig.visible=vis;
+                	UndoManager.getInstance().removeMementoLock(this);
+                }
+                
+                public void redo() {
+                	UndoManager.getInstance().addMementoLock(this);
+                	fig.removeFromDiagram();
+                	UndoManager.getInstance().removeMementoLock(this);
+                }
+            };
+            UndoManager.getInstance().addMemento(new FigRemoveMemento(this));
+        }
+    	
+    	removeStarted = true;
         visible = false;
         
         // delete all annotations first

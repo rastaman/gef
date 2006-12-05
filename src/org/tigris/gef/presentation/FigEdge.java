@@ -149,12 +149,15 @@ public abstract class FigEdge extends Fig implements GraphEdge {
                 Point[] points = getPoints();
                 
                 public void undo() {
+                	UndoManager.getInstance().addMementoLock(this);
+                	Point[] newpoints = getPoints();
                     setPoints(points);
+                    points = newpoints;
                     damage();
+                    UndoManager.getInstance().removeMementoLock(this);
                 }
                 public void redo() {
-                    computeRouteImpl();
-                    damage();
+                    undo();
                 }
                 public void dispose() {}
                 

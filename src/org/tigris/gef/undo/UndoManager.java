@@ -20,7 +20,7 @@ public class UndoManager {
     private int undoChainCount = 0;
     private int redoChainCount = 0;
     
-    private boolean generateMementos = true;
+    private Collection mementoLocks = new ArrayList();
     
     private Collection listeners = new ArrayList();
     
@@ -189,10 +189,6 @@ public class UndoManager {
         this.listeners.add(listener);
     }
     
-    private Collection getPropertyChangeListeners() {
-        return listeners;
-    }
-    
     private void fireCanUndo() {
         Iterator i = listeners.iterator();
         while (i.hasNext()) {
@@ -262,15 +258,21 @@ public class UndoManager {
      * @return true is mementos are generated.
      */
     public boolean isGenerateMementos() {
-        return generateMementos;
+        return (mementoLocks.size()==0);
     }
 
-    /**
-     * Turn on and off automatic generation of Mementos by the GEF
-     * framework.
-     * @param generateMementos true to turn on memento generation
+     /**
+     * Maintain list of objects that have requested memento generation
+     * to be disabled.  
+     * @param lockOwner object that requested a lock on new mementos
      */
-    public void setGenerateMementos(boolean generateMementos) {
-        this.generateMementos = generateMementos;
+    
+    public void addMementoLock(Object lockOwner) {
+    	this.mementoLocks.add(lockOwner);
     }
+    
+    public void removeMementoLock(Object lockOwner) {
+    	this.mementoLocks.remove(lockOwner);
+    }
+    
 }
