@@ -260,6 +260,13 @@ public class UndoManager {
     public boolean isGenerateMementos() {
         return (mementoLocks.size()==0);
     }
+    
+    /**
+     * @deprecated use addMementoLock
+     * @param generateMementos
+     */
+    public void setGenerateMementos(boolean generateMementos) {
+    }
 
      /**
      * Maintain list of objects that have requested memento generation
