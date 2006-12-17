@@ -7,6 +7,7 @@ import org.tigris.gef.base.Globals;
 
 public class EdgeAnnotationStrategy extends AnnotationStrategy{
 
+    private static final long serialVersionUID = 839904139158340787L;
     AnnotationHelper helper = AnnotationHelper.instance();
     
     public EdgeAnnotationStrategy(){

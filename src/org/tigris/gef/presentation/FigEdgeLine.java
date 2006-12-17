@@ -38,12 +38,14 @@ import java.awt.Point;
  *  to the destination port. */
 
 public class FigEdgeLine extends FigEdge {
-  ////////////////////////////////////////////////////////////////
-  // FigEdge API
 
-  /** Instanciate a new FigLine as the contained Fig. By default it is
-   *  black and the FigEdge has no ArrowHeads. */
-  protected Fig makeEdgeFig() { return new FigLine(0, 0, 0, 0, Color.black); }
+    private static final long serialVersionUID = 7010064753682104591L;
+
+    /**
+     * Instanciate a new FigLine as the contained Fig. By default it is
+     * black and the FigEdge has no ArrowHeads.
+     */
+    protected Fig makeEdgeFig() { return new FigLine(0, 0, 0, 0, Color.black); }
 
     /** Compute the shape of the line that presents an Edge. */
     public void computeRouteImpl() {

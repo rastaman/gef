@@ -41,14 +41,19 @@ package org.tigris.gef.presentation;
 
 public class FigInk extends FigPoly {
 
-  /** Construct a new FigInk w/ the given attributes. */
-  public FigInk() { super(); _filled = false;}
+    private static final long serialVersionUID = 8099997544376618L;
 
-  /** Construct a new FigInk w/ the given point and attributes. */
-  public FigInk(int x, int y) {
-    super(x, y);
-    _filled = false;
-  }
+    /** Construct a new FigInk w/ the given attributes. */
+    public FigInk() {
+	super();
+	_filled = false;
+    }
+
+    /** Construct a new FigInk w/ the given point and attributes. */
+    public FigInk(int x, int y) {
+        super(x, y);
+        _filled = false;
+    }
 
   ////////////////////////////////////////////////////////////////
   // accessors

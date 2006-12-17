@@ -1,49 +1,53 @@
 package org.tigris.gef.presentation;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Point;
+
 import org.tigris.gef.base.*;
 
 
 
 public class NodeAnnotationStrategy extends AnnotationStrategy{
 	
-	public NodeAnnotationStrategy(){
-	}
+    private static final long serialVersionUID = -7180345622697075103L;
 
-	public Point restoreAnnotationPosition(Fig annotation){
-		int delta_x;
-		float delta_y;
-		Fig owner = annotation.getAnnotationOwner();
-		// in this case: owner is a node
-		if (! ( (owner instanceof FigEdge) || (owner instanceof FigLine) )){
-			AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
-			delta_x = prop.getOffset();
-			delta_y = prop.getRatio();
-			int own_x = (int) owner.getCenter().x;
-			int own_y = (int) owner.getCenter().y;
-			int newX = (int) (own_x + delta_x);
-			int newY = (int) (own_y + delta_y);
-			// neue Position der Annotation einstellen
-			return new Point( (int)newX- (annotation.getWidth()/2), (int)newY-(annotation.getHeight()/2) );
-		}
-		return new Point(1,1);
-	}
+    public NodeAnnotationStrategy(){
+    }
 
-	public void storeAnnotationPosition(Fig annotation){
-		int delta_x; float delta_y;
-		Fig owner = annotation.getAnnotationOwner();
-		// in this case: owner is a node
-		if (! ( (owner instanceof FigEdge) || (owner instanceof FigLine) )){
-			Point anPos 	= annotation.getCenter();
-			Point ownerPos 	= owner.getCenter();
-			delta_x = anPos.x-ownerPos.x;
-			delta_y = anPos.y-ownerPos.y;
-			// store values
-                        AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
-			prop.setOffset(delta_x ,prop.hasFixedOffset());
-			prop.setRatio(delta_y,prop.hasFixedRatio());
-		}
+    public Point restoreAnnotationPosition(Fig annotation){
+	int delta_x;
+	float delta_y;
+	Fig owner = annotation.getAnnotationOwner();
+	// in this case: owner is a node
+	if (! ( (owner instanceof FigEdge) || (owner instanceof FigLine) )){
+		AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
+		delta_x = prop.getOffset();
+		delta_y = prop.getRatio();
+		int own_x = (int) owner.getCenter().x;
+		int own_y = (int) owner.getCenter().y;
+		int newX = (int) (own_x + delta_x);
+		int newY = (int) (own_y + delta_y);
+		// neue Position der Annotation einstellen
+		return new Point( (int)newX- (annotation.getWidth()/2), (int)newY-(annotation.getHeight()/2) );
 	}
+	return new Point(1,1);
+    }
+
+    public void storeAnnotationPosition(Fig annotation){
+	int delta_x; float delta_y;
+	Fig owner = annotation.getAnnotationOwner();
+	// in this case: owner is a node
+	if (! ( (owner instanceof FigEdge) || (owner instanceof FigLine) )){
+            Point anPos 	= annotation.getCenter();
+            Point ownerPos 	= owner.getCenter();
+            delta_x = anPos.x-ownerPos.x;
+            delta_y = anPos.y-ownerPos.y;
+            // store values
+            AnnotationProperties prop = (AnnotationProperties)annotations.get(annotation);
+            prop.setOffset(delta_x ,prop.hasFixedOffset());
+            prop.setRatio(delta_y,prop.hasFixedRatio());
+	}
+    }
 
     public void drawConnectingLine(Fig annotation){
         // if duration=0 -> do not draw the connecting line

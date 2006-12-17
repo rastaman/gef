@@ -29,12 +29,9 @@ package org.tigris.gef.presentation;
 // $Id$
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.util.*;
-
-import org.apache.commons.logging.*;
 
 /** 
  * A FigGroup is a collection of Figs to all be treated as a single item 
@@ -45,6 +42,11 @@ public class FigGroup extends Fig {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6310938507588533546L;
 
     /** 
      * The Fig's contained in this FigGroup  
@@ -72,8 +74,6 @@ public class FigGroup extends Fig {
      */
     private boolean suppressCalcBounds;
 
-    private static Log log = LogFactory.getLog(FigGroup.class);
-    
     ////////////////////////////////////////////////////////////////
     // constructors
 

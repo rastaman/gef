@@ -28,7 +28,8 @@ package org.tigris.gef.presentation;
 // Original Author: brw@tusc.com.au
 // $Id$
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.*;
 import java.net.*;
 
@@ -41,6 +42,11 @@ public class FigImage extends Fig implements ImageObserver {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2567695485399374706L;
 
     /** The Image being rendered */
     protected transient Image _image;

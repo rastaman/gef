@@ -48,7 +48,11 @@ public class FigEdgeRectiline extends FigEdge {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** True if the edge has been laid out automatically once. It will
+  /**
+     * 
+     */
+    private static final long serialVersionUID = 82233091447851020L;
+/** True if the edge has been laid out automatically once. It will
    *  not be done automatically again since the user may have edited the
    *  edge and I dont want to undo that work. */
   protected boolean _initiallyLaidOut = false;
@@ -124,8 +128,6 @@ public class FigEdgeRectiline extends FigEdge {
         Rectangle srcRR = _sourceFigNode.routingRect();
         Rectangle dstRR = _destFigNode.routingRect();
         
-        Object srcPort = sourcePortFig.getOwner();
-        Object dstPort = destPortFig.getOwner();
         int srcSector = ((FigNode)_sourceFigNode).getPortSector(sourcePortFig);
         int dstSector = ((FigNode)_destFigNode).getPortSector(destPortFig);
         

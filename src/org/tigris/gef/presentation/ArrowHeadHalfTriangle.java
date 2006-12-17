@@ -50,8 +50,6 @@ public class ArrowHeadHalfTriangle extends ArrowHead {
         sin = arrow_width /denom;
         x   = xTo - cos*dx;
         y   = yTo - cos*dy;
-        int x1  = (int)(x - sin*dy);
-        int y1  = (int)(y + sin*dx);
         int x2  = (int)(x + sin*dy);
         int y2  = (int)(y - sin*dx);
     

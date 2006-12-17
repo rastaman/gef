@@ -29,51 +29,51 @@ import java.util.BitSet;
 
 public class FigSpline extends FigPoly {
 
-  protected int[] _xknots = new int[5];
-  protected int[] _yknots = new int[5];
-  protected int _nknots;
+    private static final long serialVersionUID = 8105448783671550399L;
+    
+    protected int[] _xknots = new int[5];
+    protected int[] _yknots = new int[5];
+    protected int _nknots;
 
-  protected Polygon _curve;
-  protected int _threshold = 5;
-  protected int SPLINE_THRESH = 2;
-  protected int ARR_WIDTH = 5, ARR_HEIGHT = 16;
-  protected double _junc_t, _delta0, _delta1, _denom, _d_curve_length;
-  protected int _juncX, _juncY;
+    protected Polygon _curve;
+    protected int _threshold = 5;
+    protected int SPLINE_THRESH = 2;
+    protected int ARR_WIDTH = 5, ARR_HEIGHT = 16;
+    protected double _junc_t, _delta0, _delta1, _denom, _d_curve_length;
+    protected int _juncX, _juncY;
 
-  protected int _pattern  = 0x88888888;
-  protected BitSet _style    = new BitSet(32);
+    protected int _pattern  = 0x88888888;
+    protected BitSet _style    = new BitSet(32);
 
-  public FigSpline() {
+    public FigSpline() {
 	super();
-  }  
-  public FigSpline(int x, int y) {
+    }
+    public FigSpline(int x, int y) {
 	super();
 	addPoint(x, y);
-  }  
-  public FigSpline(Color line_color) { super(line_color); }  
-  public FigSpline(Color line_color, Color fill_color) {
+    }
+    public FigSpline(Color line_color) { super(line_color); }  
+    public FigSpline(Color line_color, Color fill_color) {
 	super(line_color, fill_color);
-  }  
-  public void addPoint(int x, int y) {
+    }  
+    public void addPoint(int x, int y) {
 	super.addPoint(x, y);
 	setCount();
 	setSpline();
-  }  
-  public void appendTwoPoints() {
+    }  
+    public void appendTwoPoints() {
 	super.appendTwoPoints();
 	setCount();
 	setSpline();
-  }  
-  public void cleanUp() { }  
-  private double dist(double dx, double dy) {
-	return Math.sqrt(dx*dx+dy*dy);
-  }  
-  private double dist(int x0, int y0, int x1, int y1) {
+    }  
+    public void cleanUp() { }
+    
+    private double dist(int x0, int y0, int x1, int y1) {
 	double dx, dy;
 	dx = (double)(x0-x1);
 	dy = (double)(y0-y1);
 	return Math.sqrt(dx*dx+dy*dy);
-  }  
+    }  
 //   protected void drawControlLine(Graphics g) {
 //     for(int i=0; i<=_npoints-2; i++) {
 //       g.setColor(Color.black);

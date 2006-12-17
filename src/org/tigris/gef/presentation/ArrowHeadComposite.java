@@ -33,12 +33,14 @@ package org.tigris.gef.presentation;
 import java.awt.*;
 import java.util.*;
 
-import javax.naming.OperationNotSupportedException;
-
 /** Abstract class to draw arrow heads on the ends of FigEdges. */
 
 public class ArrowHeadComposite extends ArrowHead {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -9079999150349589867L;
     protected Vector _arrowHeads = new Vector();
 
     public ArrowHeadComposite() { }

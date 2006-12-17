@@ -34,7 +34,6 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /** Primitive Fig to paint Polygons on a LayerDiagram. FigPolys
@@ -48,8 +47,7 @@ import java.util.List;
  * @see FigEdgeRectiline */
 public class FigPoly extends Fig {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
+    private static final long serialVersionUID = -4809619139509617929L;
 
     /** The angle difference at which a point can be deleted. */
     private static final double FUDGEFACTOR = 7;
@@ -473,9 +471,6 @@ public class FigPoly extends Fig {
     
 
     public void cleanUp() {
-        double first = 0;
-        double second = 0;
-
         for(int handleNumber = 1; handleNumber < _npoints - 1; handleNumber++) {
             Point start = new Point(_xpoints[handleNumber - 1], _ypoints[handleNumber - 1]);
             Point middle = new Point(_xpoints[handleNumber], _ypoints[handleNumber]);

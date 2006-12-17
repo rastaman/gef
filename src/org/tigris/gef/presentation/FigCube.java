@@ -38,6 +38,8 @@ import java.io.Serializable;
  * This class is needed to paint cubes (the only 3dim Element in UML)
  **/
 public class FigCube extends Fig implements Serializable {
+    
+    private static final long serialVersionUID = 7798364480460523733L;
     private int D = 20;
     
     public FigCube(int x, int y, int w, int h, Color lColor, Color fColor){

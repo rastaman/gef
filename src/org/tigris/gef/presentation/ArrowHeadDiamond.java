@@ -37,24 +37,23 @@ import java.awt.*;
 
 public class ArrowHeadDiamond extends ArrowHead {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  
-  public static ArrowHeadDiamond WhiteDiamond =
-  new ArrowHeadDiamond(Color.black, Color.white);
+    private static final long serialVersionUID = 7056384380724728325L;
 
-  public static ArrowHeadDiamond BlackDiamond =
-  new ArrowHeadDiamond(Color.black, Color.black);
+    public static ArrowHeadDiamond WhiteDiamond =
+    new ArrowHeadDiamond(Color.black, Color.white);
+
+    public static ArrowHeadDiamond BlackDiamond =
+    new ArrowHeadDiamond(Color.black, Color.black);
 
 
-  ////////////////////////////////////////////////////////////////
-  // constuctors
-  public ArrowHeadDiamond() { }
-  public ArrowHeadDiamond(Color line, Color fill) {
-    super(line, fill);
-    arrow_height = 20;
-    arrow_width = 5;
-  }
+    ////////////////////////////////////////////////////////////////
+    // constuctors
+    public ArrowHeadDiamond() { }
+    public ArrowHeadDiamond(Color line, Color fill) {
+        super(line, fill);
+        arrow_height = 20;
+        arrow_width = 5;
+    }
 
   ////////////////////////////////////////////////////////////////
   // display methods

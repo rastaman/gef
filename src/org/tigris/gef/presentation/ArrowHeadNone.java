@@ -35,8 +35,9 @@ import java.awt.*;
 /** Draws no arrow head at the end of a FigEdge. */
 public class ArrowHeadNone extends ArrowHead {
 
-  public static ArrowHeadNone TheInstance = new ArrowHeadNone();
+    private static final long serialVersionUID = -5863903990732263244L;
+    public static ArrowHeadNone TheInstance = new ArrowHeadNone();
 
-  public void paint(Object g, Point start, Point end) { }
+    public void paint(Object g, Point start, Point end) { }
 
 } /* end class ArrowHeadNone */

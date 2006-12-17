@@ -35,6 +35,8 @@ import java.awt.*;
 
 public class ArrowHeadGreater extends ArrowHead {
 
+    private static final long serialVersionUID = 4300767437944516708L;
+
     public void paint(Object g, Point start, Point end) {
         int    xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;

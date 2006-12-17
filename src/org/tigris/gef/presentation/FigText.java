@@ -47,6 +47,7 @@ import java.util.StringTokenizer;
 
 public class FigText extends Fig implements KeyListener, MouseListener {
 
+    private static final long serialVersionUID = 4659312817576456477L;
     
     public static final int IGNORE = 0;
     public static final int INSERT = 1;
@@ -952,7 +953,6 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      *  now text objects can get larger when you type more, but they
      *  do not get smaller when you backspace.  */
     public void calcBounds() {
-        Rectangle bounds = getBounds();
         if(_font == null) {
             return;
         }
@@ -1127,8 +1127,6 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     private String decode(String text, String lineSeparator) {
 
         StringBuffer buffer = new StringBuffer(text.length());
-        
-        String convertedText = "";
         
         StringTokenizer st = new StringTokenizer(text, "" + HARD_RETURN + SOFT_RETURN, true);
         while (st.hasMoreTokens()) {

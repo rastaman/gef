@@ -29,13 +29,13 @@ package org.tigris.gef.presentation;
 
 import java.awt.*;
 
-import org.tigris.gef.plot2d.Plotter;
-
 /** Primitive Fig for displaying circles and ovals. */
 public class FigCircle extends Fig {
-    ////////////////////////////////////////////////////////////////
-    // constants
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 7376986113799307733L;
     /** Used as a percentage tolerance for making it easier for the user
      *  to select a hollow circle with the mouse. Needs-More-Work: This
      *  is bad design that needs to be changed. Should use just
@@ -94,8 +94,8 @@ public class FigCircle extends Fig {
         appendSvgStyle(sb);
         sb.append("cx='").append(getCenter().x).append("'")
           .append("cy='").append(getCenter().y).append("'")
-          .append("rx='").append(getHalfWidth()).append("'")
-          .append("ry='").append(getHalfHeight()).append("' />");
+          .append("rx='").append(getWidth() / 2).append("'")
+          .append("ry='").append(getHeight() / 2).append("' />");
     }
 
     /** Reply true if the given coordinates are inside the circle. */

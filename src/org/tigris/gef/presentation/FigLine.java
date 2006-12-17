@@ -38,6 +38,8 @@ import org.tigris.gef.base.Geometry;
 
 public class FigLine extends Fig {
 
+    private static final long serialVersionUID = -6961837549764335095L;
+    
     /** Coordinates of the start and end points of the line. Note: _x,
      *  _y, _w, and _h from class Fig are always updated by calcBounds()
      *  whenever _x1, _y1, _x2, or _y2 change.*/

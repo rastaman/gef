@@ -35,8 +35,7 @@ import java.io.Serializable;
 
 public class FigRect extends Fig implements Serializable {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
+    private static final long serialVersionUID = -6171328584588911037L;
 
     /** Construct a new resizable FigRect with the given position and size. */
     public FigRect(int x, int y, int w, int h) {

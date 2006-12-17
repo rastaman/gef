@@ -1,6 +1,8 @@
 package org.tigris.gef.presentation;
 
 public class NoAnnotationStrategy extends AnnotationStrategy {
+
+    private static final long serialVersionUID = 5214334744207570878L;
     private static final NoAnnotationStrategy INSTANCE = new NoAnnotationStrategy();
 
     public static NoAnnotationStrategy getInstance() {

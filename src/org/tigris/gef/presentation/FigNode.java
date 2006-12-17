@@ -53,9 +53,9 @@ import java.util.List;
 public class FigNode extends FigGroup implements
         GraphNode,
         MouseListener {
-    ////////////////////////////////////////////////////////////////
-    // constants
-
+    
+    private static final long serialVersionUID = 5312194520189613781L;
+    
     private static final Log LOG = LogFactory.getLog(FigNode.class);
     /** Constants useful for determining what side (north, south, east,
      *  or west) a port is located on.*/

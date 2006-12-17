@@ -39,46 +39,38 @@ import org.tigris.gef.properties.*;
 
 public class FigRRect extends FigRect {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    private static final long serialVersionUID = -4984437962118691063L;
+    
+    protected int _radius = 16;
 
-  protected int _radius = 16;
+    ////////////////////////////////////////////////////////////////
+    // static initializer
+    static {
+        PropCategoryManager.categorizeProperty("Geometry", "cornerRadius");
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // static initializer
-  static {
-    PropCategoryManager.categorizeProperty("Geometry", "cornerRadius");
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // constructors
-
-
-  /** Construct a new FigRRect w/ the given position and size */
-  public FigRRect(int x, int y, int w, int h) {
-    super(x, y, w, h);
-  }
-
-  /** Construct a new FigRRect w/ the given position, size, line color,
-   * and fill color*/
-  public FigRRect(int x, int y, int w, int h,Color lineColor,Color fillColor) {
-    super(x, y, w, h, lineColor, fillColor);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  /** get and set the "roundness" of the corners.
-   * USED by PGML.tee
-   */
-  public int getCornerRadius() {
-      return _radius;
-  }
-  public void setCornerRadius(int r) { _radius = r; }
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
 
-  ////////////////////////////////////////////////////////////////
-  /// painting methods
+    /** Construct a new FigRRect w/ the given position and size */
+    public FigRRect(int x, int y, int w, int h) {
+        super(x, y, w, h);
+    }
+
+    /** Construct a new FigRRect w/ the given position, size, line color,
+     * and fill color*/
+    public FigRRect(int x, int y, int w, int h,Color lineColor,Color fillColor) {
+        super(x, y, w, h, lineColor, fillColor);
+    }
+
+    /** get and set the "roundness" of the corners.
+     * USED by PGML.tee
+     */
+    public int getCornerRadius() {
+        return _radius;
+    }
+    public void setCornerRadius(int r) { _radius = r; }
 
     /**
      * Paint this FigRRect.

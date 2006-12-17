@@ -55,10 +55,10 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /** The items that are accumulated along the path, a vector. */
     protected Vector _pathItems = new Vector();
 
-    ////////////////////////////////////////////////////////////////
-    // inner classes
     private class PathItem implements java.io.Serializable {
-        final Fig _fig;
+	
+	private static final long serialVersionUID = -5298572087861993804L;
+	final Fig _fig;
         final PathConv _path;
 
         PathItem(final Fig f, final PathConv pc) {

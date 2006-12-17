@@ -39,7 +39,7 @@ public class ArrowHeadQualifier extends ArrowHead {
 
     public void paint(Object g, Point start, Point end) {
         int    xFrom, xTo, yFrom, yTo;
-        double denom, x, y, wx, wy, dx, dy, cos, sin;
+        double denom, x, y, dx, dy, cos, sin;
         Polygon qualifier;
     
         int box_height = 20;
@@ -62,8 +62,6 @@ public class ArrowHeadQualifier extends ArrowHead {
         int y1  = (int)(y + sin*dx);
         int x2  = (int)(x + sin*dy);
         int y2  = (int)(y - sin*dx);
-        wx  = xTo - x -cos*dx;
-        wy  = yTo - y -cos*dy;
         //sin = (double)((double)y2 - (double)y1)/ ((double)box_width*2);
         //cos = (double)((double)x2 - (double)x1)/ ((double)box_width*2);
         //int x3 = (int) ((double)xTo - sin*dy);
@@ -74,10 +72,6 @@ public class ArrowHeadQualifier extends ArrowHead {
         int y3 = (int) (yTo + sin*dx);
         int x4 = (int) (xTo + sin*dy);
         int y4 = (int) (yTo - sin*dx);
-        Point topPoint = pointAlongLine(end, start, arrow_height);
-    
-        //System.out.println("  ! diamond = topP=" + topPoint + " end=" + end);
-    
     
         qualifier = new Polygon();
         qualifier.addPoint(x1, y1);

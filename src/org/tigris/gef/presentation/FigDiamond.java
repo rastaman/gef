@@ -40,8 +40,7 @@ import java.util.List;
 
 public class FigDiamond extends Fig {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
+    private static final long serialVersionUID = -5625367072029450739L;
 
     /** Construct a new resizable FigRect with the given position and size. */
     public FigDiamond(int x, int y, int w, int h) {

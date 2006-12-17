@@ -1,12 +1,8 @@
 package org.tigris.gef.presentation;
 
-//import java.awt.event.*;
-//import javax.swing.*;
-//import java.util.Hashtable;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /** Contains utility methods for solving std geometry problems.
  *

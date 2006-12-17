@@ -39,8 +39,6 @@ import java.util.Vector;
 
 import javax.swing.JMenu;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.CmdReorder;
 import org.tigris.gef.base.Editor;
@@ -762,15 +760,6 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         }
     }
 
-    final private int drawDashedLine(Graphics g, int phase, int x1, int y1, int x2, int y2) {
-        return plotter.drawDashedLine(
-                g, 
-                getLineWidth(), 
-                x1, y1, x2, y2, 
-                phase, 
-                _dashes, _dashPeriod);
-    }
-    
 //    protected void drawDashedPerimeter(Graphics g) {
 //        Point segStart = new Point();
 //        Point segEnd = new Point();

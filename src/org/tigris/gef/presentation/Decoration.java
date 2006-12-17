@@ -28,11 +28,8 @@
 
 package org.tigris.gef.presentation;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Stroke;
 
 /**
  * Abstract class to draw some decoration on FigEdges.
