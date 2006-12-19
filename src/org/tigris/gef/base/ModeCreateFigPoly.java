@@ -35,16 +35,17 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
 
-/** A Mode to interpert user input while creating a FigPoly. All of
- *  the actual event handling is inherited from ModeCreate. This class
- *  just implements the differences needed to make it specific to
- *  polygons. */
+/**
+ * A Mode to interpert user input while creating a FigPoly. All of
+ * the actual event handling is inherited from ModeCreate. This class
+ * just implements the differences needed to make it specific to
+ * polygons.
+ */
 
 public class ModeCreateFigPoly extends ModeCreate {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
+    private static final long serialVersionUID = 2839607058696197299L;
+    
     /** The number of points added so far. */
     protected int _npoints = 0;
     protected int _lastX, _lastY, _startX, _startY;

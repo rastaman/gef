@@ -41,6 +41,8 @@ import org.tigris.gef.presentation.*;
 
 public class ModeCreateFigText extends ModeCreate {
 
+    private static final long serialVersionUID = 3394093467647491098L;
+
   public ModeCreateFigText() {
       super();
       _defaultWidth = 15;

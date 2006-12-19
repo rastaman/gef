@@ -54,6 +54,8 @@ import org.tigris.gef.undo.UndoManager;
 
 public class SelectionReshape extends Selection implements KeyListener {
 
+    private static final long serialVersionUID = 2204649413528863935L;
+    
     private int selectedHandle = -1;
 
     /**

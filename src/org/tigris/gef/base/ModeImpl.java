@@ -43,9 +43,8 @@ import java.util.Hashtable;
 
 public class ModeImpl implements Mode, Serializable, KeyListener, MouseListener, MouseMotionListener {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
+    private static final long serialVersionUID = -3707221186028816573L;
+    
     /** Arguments to this mode. These are usually set just after the
      *  mode is created via the init method and used later.
      */

@@ -58,11 +58,13 @@ import org.tigris.gef.ocl.TemplateReader;
  *  program that uses ObjectSerialization. At this time GEF provides no
  *  support for saving or loading textual representations of documents
  *  that could be used in other tools.<p>
- *
+ *  @deprecated in 0.12.3 use SavePGMLAction
  * @see CmdOpen */
 
 public class CmdSavePGML extends Cmd implements FilenameFilter {
 
+    private static final long serialVersionUID = 5595884484082379585L;
+    
     private static OCLExpander _expander = null;
 
     public CmdSavePGML() {

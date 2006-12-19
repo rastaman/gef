@@ -40,18 +40,15 @@ import org.tigris.gef.presentation.*;
  *  rectangles. */
 
 public class ModeCreateFigRect extends ModeCreate {
-  ////////////////////////////////////////////////////////////////
-  // Mode API
+    private static final long serialVersionUID = 2881047174758002300L;
 
-  public String instructions() { return "Drag to define a rectangle"; }
+    public String instructions() { return "Drag to define a rectangle"; }
 
-  ////////////////////////////////////////////////////////////////
-  // ModeCreate API
-
-  /** Create a new FigRect instance based on the given mouse down
-   *  event and the state of the parent Editor. */
-  public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-    return new FigRect(snapX, snapY, 0, 0);
-  }
+    /** Create a new FigRect instance based on the given mouse down
+     *  event and the state of the parent Editor.
+     */
+    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+      return new FigRect(snapX, snapY, 0, 0);
+    }
 } /* end class ModeCreateFigRect */
 

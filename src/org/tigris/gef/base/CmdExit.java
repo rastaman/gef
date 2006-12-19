@@ -31,10 +31,15 @@
 
 package org.tigris.gef.base;
 
-/** Cmd to close all windows and exit the application.
- *  Needs-More-Work: Needs to keep track of all open windows. */
+/**
+ * Cmd to close all windows and exit the application.
+ * Needs-More-Work: Needs to keep track of all open windows.
+ * @deprecated in 0.12.3 use ExitAction
+ */
 
 public class CmdExit extends Cmd {
+
+    private static final long serialVersionUID = 739924033915132025L;
 
   public CmdExit() {
 	  super("Exit");

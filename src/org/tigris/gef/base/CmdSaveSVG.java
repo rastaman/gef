@@ -32,8 +32,15 @@ import java.io.OutputStream;
 
 import org.tigris.gef.persistence.*;
 
-
+/**
+ * @deprecated in 0.12.3 use SaveSVGAction
+ */
 public class CmdSaveSVG extends CmdSaveGraphics {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -713862282696505691L;
 
     public CmdSaveSVG() {
         super("SaveScalableVectorGraphics");

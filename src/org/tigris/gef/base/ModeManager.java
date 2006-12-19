@@ -47,8 +47,7 @@ import java.util.Vector;
 
 public class ModeManager implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    private static final long serialVersionUID = 3180158274454415153L;
 
     /** The stack of Mode's that are all active simultainously, the
      *  order of Mode's on the stack is their priority, i.e., the

@@ -42,8 +42,7 @@ import org.tigris.gef.presentation.*;
 
 public class ModeCreateFigCircle extends ModeCreate {
 
-  ////////////////////////////////////////////////////////////////
-  // Mode API
+    private static final long serialVersionUID = 2100068733524473429L;
 
   public String instructions() { return "Drag to define a circle"; }
 

@@ -17,10 +17,8 @@ import org.tigris.gef.ui.Highlightable;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
-/** Abastract Fig class for representing edges between ports.
- *
- *  @see FigEdgeLine
- *  @see FigEdgeRectiline
+/**
+ * Abstract Fig class for representing edges between ports.
  */
 public abstract class FigEdge extends Fig implements GraphEdge {
     

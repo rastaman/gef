@@ -35,12 +35,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/** Cmd to select all the Figs in the editor's current
- *  view that were not previously selected.
- *
+/**
+ * Cmd to select all the Figs in the editor's current
+ * view that were not previously selected.
+ * @deprecated in 0.12.3 use SelectInvertAction
  */
 
 public class CmdSelectInvert extends Cmd {
+
+    private static final long serialVersionUID = -7470920956846786762L;
 
     public CmdSelectInvert() {
         super("InvertSelection");

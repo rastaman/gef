@@ -41,11 +41,11 @@ import java.awt.*;
  *  in this framework.  */
 
 public class GuideGrid extends Guide {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-
-  /** Size of the grid. */
-  protected int _gridSize = 8;
+    
+    private static final long serialVersionUID = -8729481663081674989L;
+    
+    /** Size of the grid. */
+    protected int _gridSize = 8;
 
   ////////////////////////////////////////////////////////////////
   // constructors

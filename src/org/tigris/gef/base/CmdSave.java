@@ -37,9 +37,6 @@ import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /** Cmd to save the current document to a binary file using Sun's
  *  ObjectSerialization library. The written file contains the Editor
  *  object and all objects reachable through instance variables of the
@@ -62,12 +59,12 @@ import org.apache.commons.logging.LogFactory;
  *  program that uses ObjectSerialization. At this time GEF provides no
  *  support for saving or loading textual representations of documents
  *  that could be used in other tools.<p>
- *
+ * @deprecated in 0.12.3 use SaveAction
  * @see CmdOpen */
 
 public class CmdSave extends Cmd implements FilenameFilter {
 
-    private static Log LOG = LogFactory.getLog(CmdSave.class);
+    private static final long serialVersionUID = -548213442545482573L;
     
     public CmdSave() {
         super("Save");

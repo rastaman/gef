@@ -62,8 +62,7 @@ import org.tigris.gef.presentation.Handle;
  * @see Editor 
  */
 public class ModeSelect extends FigModifyingModeImpl {
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    private static final long serialVersionUID = 2412264848254549816L;
 
     /** If the user drags a selection rectangle, this is the first corner. */
     private Point selectAnchor = new Point(0, 0);

@@ -44,7 +44,9 @@ import org.tigris.gef.presentation.*;
 
 public class SelectionNoop extends Selection {
 
-  /** Construct a new SelectionNoop around the given DiagramElement */
+    private static final long serialVersionUID = -8883328105257650811L;
+
+/** Construct a new SelectionNoop around the given DiagramElement */
   public SelectionNoop(Fig f) { super(f); }
 
     /** Paint the selection. */

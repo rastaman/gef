@@ -33,9 +33,14 @@ package org.tigris.gef.base;
 
 import java.util.Collection;
 
-/** Cmd to select all the Figs in the editor's current view. */
+/**
+ * Cmd to select all the Figs in the editor's current view.
+ * @deprecated in 0.12.3 use SelectAllAction
+ */
 
 public class CmdSelectAll extends Cmd {
+
+    private static final long serialVersionUID = 4897805406236093681L;
 
   public CmdSelectAll() { super("SelectAll"); }
 

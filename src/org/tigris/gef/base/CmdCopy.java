@@ -38,7 +38,9 @@ import org.tigris.gef.presentation.*;
 
 public class CmdCopy extends Cmd {
 
-  public CmdCopy() { super("Copy"); }
+    private static final long serialVersionUID = -7316080407001846501L;
+
+public CmdCopy() { super("Copy"); }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

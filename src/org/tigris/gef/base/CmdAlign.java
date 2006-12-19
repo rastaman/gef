@@ -40,10 +40,9 @@ import org.tigris.gef.presentation.*;
 
 public class CmdAlign extends Cmd {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-
-  /** Constants specifying the type of alignment requested. */
+    private static final long serialVersionUID = -9169626281664389794L;
+    
+/** Constants specifying the type of alignment requested. */
   public static final int ALIGN_TOPS = 0;
   public static final int ALIGN_BOTTOMS = 1;
   public static final int ALIGN_LEFTS = 2;

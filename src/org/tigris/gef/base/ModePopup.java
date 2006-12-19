@@ -39,14 +39,17 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
-/** A permanent Mode to catch right-mouse-button events and show a
- *  popup menu.  Needs-more-work: this is not fully implemented
- *  yet. It should ask the Fig under the mouse what menu it should
- *  offer. */
+/**
+ * A permanent Mode to catch right-mouse-button events and show a
+ * popup menu.  Needs-more-work: this is not fully implemented
+ * yet. It should ask the Fig under the mouse what menu it should
+ * offer.
+ */
 
 public class ModePopup extends FigModifyingModeImpl {
 
-    private static Log LOG = LogFactory.getLog(ModePopup.class);
+    private static final long serialVersionUID = 288785293995576958L;
+    private static final Log LOG = LogFactory.getLog(ModePopup.class);
     
     ////////////////////////////////////////////////////////////////
     //  constructor

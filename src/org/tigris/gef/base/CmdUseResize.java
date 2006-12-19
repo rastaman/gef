@@ -45,9 +45,11 @@ import org.tigris.gef.presentation.*;
 
 public class CmdUseResize extends Cmd {
 
-  public CmdUseResize() {
-	  super("UseResizeHandles");
-  }
+    private static final long serialVersionUID = 513687782784535871L;
+
+    public CmdUseResize() {
+        super("UseResizeHandles");
+    }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

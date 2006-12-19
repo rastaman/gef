@@ -48,10 +48,13 @@ import org.tigris.gef.presentation.Fig;
 
 /** Cmd to Load a previously saved document document. The loaded
  *  editor is displayed in a new JGraphFrame.
- *
- * @see CmdSave */
+ * @see CmdSave
+ */
 
 public class CmdOpen extends Cmd implements FilenameFilter {
+    
+    private static final long serialVersionUID = 5761727153340445060L;
+
     public CmdOpen() { super("Open"); }
 
     /** Only allow the user to select files that match the fiven

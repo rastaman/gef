@@ -42,8 +42,9 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
 public class ModeBroom extends FigModifyingModeImpl {
-    ////////////////////////////////////////////////////////////////
-    // constants
+    
+    private static final long serialVersionUID = -6846688672699867345L;
+    
     private final int DIRECTION_UNDEFINED = 0;
     private final int DIRECTION_UPWARD = 1;
     private final int DIRECTION_DOWNWARD = 2;

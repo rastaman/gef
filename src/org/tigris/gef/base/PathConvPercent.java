@@ -38,8 +38,10 @@ import org.tigris.gef.presentation.*;
  *  example, a label can be placed in the middle of a FigEdge by using 50%. */
 
 public class PathConvPercent extends PathConv {
-  int percent = 0;
-  int offset = 0;
+    
+    private static final long serialVersionUID = 4657208920168203542L;
+    int percent = 0;
+    int offset = 0;
 
   public PathConvPercent(Fig theFig, int newPercent, int newOffset) {
     super(theFig);

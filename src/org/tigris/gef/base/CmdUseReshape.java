@@ -37,13 +37,15 @@ import org.tigris.gef.presentation.*;
 
 /** Set the current editor to use a SelectionReshape on its current
  *  selections.
- *
+ *  @deprecated in 0.12.3 use UseReshapeAction
  *  @see Editor
  *  @see Selection
  *  @see SelectionReshape
  */
 
 public class CmdUseReshape extends Cmd {
+
+    private static final long serialVersionUID = 6288803732239312025L;
 
   public CmdUseReshape() { super("UseReshapeHandles"); }
 

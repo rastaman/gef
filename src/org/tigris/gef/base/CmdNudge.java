@@ -41,8 +41,8 @@ import org.tigris.gef.graph.MutableGraphSupport;
  */
 
 public class CmdNudge extends Cmd {
-    ////////////////////////////////////////////////////////////////
-    // constants
+    private static final long serialVersionUID = 258695407526065145L;
+    
     public static final int LEFT = 1;
     public static final int RIGHT = 2;
     public static final int UP = 3;

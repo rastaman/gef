@@ -31,12 +31,14 @@
 
 package org.tigris.gef.base;
 
-/** Cmd scroll the view.  Needs-More-Work: not implemented yet.  */
+/**
+ * Cmd scroll the view.  Needs-More-Work: not implemented yet.
+ * @deprecated in 0.12.3 use ScrollAction
+ */
 
 public class CmdScroll extends Cmd {
-  ////////////////////////////////////////////////////////////////
-  // constants
-
+    private static final long serialVersionUID = -7306747105045822502L;
+    
   public static final int LEFT = 1;
   public static final int RIGHT = 2;
   public static final int UP = 3;

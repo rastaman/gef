@@ -42,10 +42,9 @@ import org.tigris.gef.presentation.*;
 
 public class CmdDistribute extends Cmd {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-
-  /** Constants specifying the type of distribution requested. */
+    private static final long serialVersionUID = 196913544124639762L;
+    
+/** Constants specifying the type of distribution requested. */
   public static final int H_SPACING = 0;
   public static final int H_CENTERS = 1;
   public static final int H_PACK    = 2;

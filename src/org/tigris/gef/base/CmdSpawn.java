@@ -38,11 +38,13 @@ import org.tigris.gef.graph.presentation.*;
  *  editor.  Works by making a new JGraphFrame with a clone of the
  *  current editor. The argument "dimension" may be set to th desired
  *  size of the new window.
- *
+ * @deprecated in 0.12.3 use SpawnAction
  * @see Editor
  * @see JGraphFrame */
 
 public class CmdSpawn extends Cmd {
+
+    private static final long serialVersionUID = 1229387464393448165L;
 
   public CmdSpawn() { super("SpawnEditor"); }
 

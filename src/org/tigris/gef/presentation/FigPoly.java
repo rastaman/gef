@@ -36,15 +36,15 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Primitive Fig to paint Polygons on a LayerDiagram. FigPolys
- *  contain a set of points that define the polygon, a boolean to
- *  determine if the polygon should be constrained to rectilinear
- *  (strict horizontal and vertical) segments, and a number of handles
- *  that cannot be moved by user dragging. A FigPoly is not closed
- *  unless the last point equals the first point. Thus, FigPolys can
- *  be used to represent polylines such as FigEdgeRectilinear.
- *
- * @see FigEdgeRectiline */
+/**
+ * Primitive Fig to paint Polygons on a LayerDiagram. FigPolys
+ * contain a set of points that define the polygon, a boolean to
+ * determine if the polygon should be constrained to rectilinear
+ * (strict horizontal and vertical) segments, and a number of handles
+ * that cannot be moved by user dragging. A FigPoly is not closed
+ * unless the last point equals the first point. Thus, FigPolys can
+ * be used to represent polylines such as FigEdgeRectilinear.
+ */
 public class FigPoly extends Fig {
 
     private static final long serialVersionUID = -4809619139509617929L;

@@ -44,7 +44,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.graph.MutableGraphModel;
-import org.tigris.gef.graph.presentation.NetPrimitive;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.undo.Memento;
@@ -60,8 +59,7 @@ import org.tigris.gef.undo.UndoManager;
 
 public class ModePlace extends FigModifyingModeImpl {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    private static final long serialVersionUID = 8861862975789222877L;
 
     /** The (new) node being placed. It might be an existing node that
      *  is adding a new FigNode. */

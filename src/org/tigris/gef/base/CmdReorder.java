@@ -32,12 +32,13 @@
 package org.tigris.gef.base;
 
 /** Cmd to change the back-to-front ordering of Fig's.
- *
+ * @deprecated in 0.12.3 use ReorderAction
  * @see LayerDiagram#reorder */
 
 public class CmdReorder extends Cmd {
-  ////////////////////////////////////////////////////////////////
-  // constants
+    
+    private static final long serialVersionUID = 1315160037668280033L;
+    
   public static final int SEND_TO_BACK = 1;
   public static final int BRING_TO_FRONT = 2;
   public static final int SEND_BACKWARD = 3;

@@ -27,8 +27,13 @@ import java.awt.*;
 
 import java.beans.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 import java.io.Serializable;
 
 import org.tigris.gef.graph.GraphController;
@@ -49,6 +54,8 @@ import org.tigris.gef.ui.ToolBar;
  without any graphics. The Layer stores all the Figs. */
 public class Diagram implements Serializable, GraphListener {
 
+    private static final long serialVersionUID = 4847606736320428403L;
+    
     ////////////////////////////////////////////////////////////////
     // instance variables
     protected String _name = "no title set";

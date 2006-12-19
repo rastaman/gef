@@ -38,7 +38,7 @@ import org.tigris.gef.util.Util;
 
 /** Cmd to Load a previously saved document document. The loaded
  *  editor is displayed in a new JGraphFrame.
- *
+ * @deprecated in 0.12.3 use OpenSVGAction
  * @see CmdSave */
 
 public class CmdOpenSVG extends Cmd implements FilenameFilter {

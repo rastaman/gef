@@ -44,20 +44,16 @@ import org.tigris.gef.util.Localizer;
  * @see org.tigris.gef.presentation.Fig */
 
 public class NudgeAction extends UndoableAction {
-    ////////////////////////////////////////////////////////////////
-    // constants
+    
+    private static final long serialVersionUID = 2121611741541853360L;
+    
     public static final int LEFT = 1;
     public static final int RIGHT = 2;
     public static final int UP = 3;
     public static final int DOWN = 4;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
     private int _direction;
     private int _magnitude;
-
-    ////////////////////////////////////////////////////////////////
-    // constructor
 
     public NudgeAction(int dir) {
         this(dir, 1);

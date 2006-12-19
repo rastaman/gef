@@ -41,17 +41,14 @@ import org.tigris.gef.presentation.*;
  *  lines. */
 
 public class ModeCreateFigLine extends ModeCreate {
-  ////////////////////////////////////////////////////////////////
-  // Mode API
-  public String instructions() { return "Drag to define a line"; }
+    private static final long serialVersionUID = -6899160824566397778L;
 
-  ////////////////////////////////////////////////////////////////
-  // ModeCreate API
+    public String instructions() { return "Drag to define a line"; }
 
-  /** Make a new FigLine based on the given mouse down event and the
-   *  parent Editor's default graphical attributes. */
-  public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-    return new FigLine(snapX, snapY, snapX, snapY);
-  }
+    /** Make a new FigLine based on the given mouse down event and the
+     *  parent Editor's default graphical attributes. */
+    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+        return new FigLine(snapX, snapY, snapX, snapY);
+    }
 } /* end class ModeCreateFigLine */
 

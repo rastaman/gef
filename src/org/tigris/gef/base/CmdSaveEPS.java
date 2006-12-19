@@ -37,11 +37,13 @@ import org.tigris.gef.persistence.*;
  *  diagram in the current editor.
  *
  *  Code loosely adapted from CmdSaveGIF.
- *
+ * @deprecated in 0.12.3 use SaveEPSAction
  *  @author Frank Wienberg, wienberg@informatik.uni-hamburg.de
  */
 
 public class CmdSaveEPS extends CmdSaveGraphics {
+
+    private static final long serialVersionUID = 1727730791092235778L;
 
     public CmdSaveEPS() {
         super("SaveEncapsulatedPostScript");

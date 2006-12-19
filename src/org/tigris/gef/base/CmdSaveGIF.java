@@ -39,11 +39,13 @@ import Acme.JPM.Encoders.GifEncoder;
  *  diagram in the current editor.
  *
  *  Code loosely adapted from CmdPrint.
- *
+ * @deprecated in 0.12.3 use SaveGIFAction
  *  @author Steve Poole, stevep@wrq.com
  */
 
 public class CmdSaveGIF extends CmdSaveGraphics {
+    
+    private static final long serialVersionUID = 4044142753088912626L;
     
     /** Used as background color in image and set transparent. Chosen because
      *  it's unlikely to be selected by the user, and leaves the diagram readable

@@ -32,23 +32,18 @@ package org.tigris.gef.presentation;
 
 import java.awt.*;
 
-/**
- * A Fig that paints edges between ports. This version
- * automatically routes a rectilinear edge. The routing is not very
- * good. It avoids the source and sink nodes and no other nodes. It is
- * basically case-analysis, and some of the cases are wrong or
- * missing. Anyway, the user can edit the edge by dragging
- * handles. The 0th and last handles are fixed in position so that
- * they stay connected to ports. If the user drags a handle next to a
- * fixed handle, a new vertex is automatically inserted.
- * @deprecated FigEdgeRectiline is going to change behaviour dramatically in a
- * future release. If you wish to keep the existing behaviour then switch to
- * using FigEdgeRectiline2 as soon as possible.
+/** A Fig that paints edges between ports. This version
+ *  automatically routes a rectilinear edge. The routing is not very
+ *  good. It avoids the source and sink nodes and no other nodes. It is
+ *  basically case-analysis, and some of the cases are wrong or
+ *  missing. Anyway, the user can edit the edge by dragging
+ *  handles. The 0th and last handles are fixed in position so that
+ *  they stay connected to ports. If the user drags a handle next to a
+ *  fixed handle, a new vertex is automatically inserted.
  *
- * @see FigPoly
- */
+ * @see FigPoly */
 
-public class FigEdgeRectiline extends FigEdge {
+public class FigEdgeRectiline2 extends FigEdge {
 
   ////////////////////////////////////////////////////////////////
   // instance variables

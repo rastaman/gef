@@ -39,7 +39,7 @@ import org.xml.sax.SAXException;
 
 /** Cmd to Load a previously saved document document. The loaded
  *  editor is displayed in a new JGraphFrame.
- *
+ * @deprecated in 0.12.3 use OpenPGMLAction
  * @see CmdSave */
 
 public class CmdOpenPGML extends Cmd implements FilenameFilter {

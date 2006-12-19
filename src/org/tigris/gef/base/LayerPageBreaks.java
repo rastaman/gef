@@ -46,10 +46,9 @@ import org.tigris.gef.presentation.*;
  *  it can be composed, hidden, and reordered. */
 
 public class LayerPageBreaks extends Layer {
-
-  ////////////////////////////////////////////////////////////////
-  // constants
-
+    
+    private static final long serialVersionUID = 5536725864099204670L;
+    
   /** The size of the dashes drawn when the Fig is dashed. */
   public final int DASH_LENGTH = 2;
   public final int GAP_LENGTH = 7;

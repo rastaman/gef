@@ -34,14 +34,18 @@ import org.tigris.gef.presentation.*;
 
 /** Cmd to group all the Fig's selected in the current
  *  editor into a single FigGroup. 
- *
+ * @deprecated in 0.12.3 use GroupAction
  * @see FigGroup
- * @see CmdUngroup  */
+ * @see CmdUngroup
+ */
 
 public class CmdGroup extends Cmd {
 
-  public CmdGroup() {
-	  super("Group");}
+    private static final long serialVersionUID = -8094870867293229677L;
+
+    public CmdGroup() {
+	super("Group");
+    }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

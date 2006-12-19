@@ -37,10 +37,13 @@ import org.tigris.gef.undo.UndoManager;
 /** 
  * Cmd to delete the Figs selected in the current editor, and dispose
  * any underlying Net stuctures. This will also remove from all other views.
+ * @deprecated in 0.12.3 use DeleteFromModelAction
  */
 
 public class CmdDeleteFromModel extends Cmd {
 
+    private static final long serialVersionUID = -6770426022196761889L;
+    
     private static Log LOG = LogFactory.getLog(CmdDeleteFromModel.class);
 
     public CmdDeleteFromModel() {

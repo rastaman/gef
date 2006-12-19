@@ -37,12 +37,17 @@ import java.awt.*;
  *  subclass of Frame, this Cmd makes a new instance and calls
  *  show().  For example, used to open a list of some availible
  *  commands.
- *
+ * @deprecated in 0.12.3 use OpenWindowAction
  * @see org.tigris.gef.graph.presentation.JGraphFrame */
 
 public class CmdOpenWindow extends Cmd {
 
-  public CmdOpenWindow(String className, String name) {
+  /**
+     * 
+     */
+    private static final long serialVersionUID = 883641359701325952L;
+
+public CmdOpenWindow(String className, String name) {
     super(name);
     setArg("className", className);
   }

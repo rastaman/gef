@@ -39,11 +39,13 @@ import java.util.Iterator;
 import java.util.Vector;
 
 /** Cmd to ungroup a selected group object.
- *
+ * @deprecated in 0.12.3 use UngroupAction
  * @see CmdGroup
  * @see FigGroup */
 
 public class CmdUngroup extends Cmd {
+
+    private static final long serialVersionUID = 5447608769108715379L;
 
     public CmdUngroup() {
         super("Ungroup");

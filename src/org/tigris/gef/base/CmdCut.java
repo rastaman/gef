@@ -33,8 +33,13 @@ import java.util.Vector;
 
 import org.tigris.gef.presentation.*;
 
+/**
+ * @deprecated in 0.12.3 us CutAction
+ */
 public class CmdCut extends Cmd {
 	
+    private static final long serialVersionUID = -5296601012186667929L;
+
 	public CmdCut() { super("Cut"); }
 	
 	public void doIt() {

@@ -47,10 +47,9 @@ import org.tigris.gef.presentation.Fig;
 
 public class LayerPolar extends Layer {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    private static final long serialVersionUID = -7584346767965616421L;
 
-  /** The origin of this coordinate system */
+/** The origin of this coordinate system */
   private int _originX = 0, _originY = 0;
 
   /** The spacing between the lines */

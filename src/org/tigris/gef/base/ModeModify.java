@@ -54,18 +54,12 @@ import org.tigris.gef.undo.UndoManager;
  * @see Selection
  */
 public class ModeModify extends FigModifyingModeImpl {
-    ////////////////////////////////////////////////////////////////
-    // constants
-
+    private static final long serialVersionUID = -914125238898272775L;
+    
     /** Minimum amount that the user must move the mouse to indicate that she
      *  really wants to modify something. */
     private static final int MIN_DELTA = 4;
     private double degrees45 = Math.PI / 4;
-
-    private static final int SCROLL_INCREMENT = 10;
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
 
     /** drag in process */
     private boolean _dragInProcess = false;
@@ -132,7 +126,6 @@ public class ModeModify extends FigModifyingModeImpl {
 
         if (!_dragInProcess) {
             _dragInProcess = true;
-            Fig f = (Fig)editor.getSelectionManager().getFigs().get(0);
             UndoManager.getInstance().startChain();
             graphModel = editor.getGraphModel();
             if (graphModel instanceof MutableGraphSupport) {

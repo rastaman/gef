@@ -62,9 +62,9 @@ import org.tigris.gef.util.VetoableChangeEventSource;
  * @see Selection
  */
 public class SelectionManager implements Serializable, KeyListener, MouseListener, MouseMotionListener {
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
+    
+    private static final long serialVersionUID = 3232261288542010603L;
+    
     /**
      * The collection of Selection instances
      */
@@ -803,7 +803,6 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         while(ss.hasMoreElements()) {
             Selection s = (Selection)ss.nextElement();
             Fig f = s.getContent();
-            Object o = f.getOwner();
             f.deleteFromModel();
         }
     }

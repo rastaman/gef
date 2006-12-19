@@ -67,9 +67,6 @@ public class PrintAction extends AbstractAction implements Printable {
 
     private double diagramX, diagramY, diagramWidth, diagramHeight;
     
-    // TODO: this variable was set but never read!!!!!
-    private String diagramName;
-
     public PrintAction() {
         super();
     }
@@ -101,7 +98,6 @@ public class PrintAction extends AbstractAction implements Printable {
      */
     public PrintAction(String name, String diagramName, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
-        this.diagramName = diagramName;
     }
 
     /**
@@ -113,11 +109,14 @@ public class PrintAction extends AbstractAction implements Printable {
      */
     public PrintAction(String name, Icon icon, String diagramName, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
-        this.diagramName = diagramName;
     }
 
+    /**
+     * @deprecated in 0.12.3 The diagramname has never been used by PrintAction.
+     * This method will be removed.
+     * @param diagramName
+     */
     public void setDiagramName(String diagramName) {
-        this.diagramName = diagramName;
     }
 
     public void actionPerformed(ActionEvent arg0) {

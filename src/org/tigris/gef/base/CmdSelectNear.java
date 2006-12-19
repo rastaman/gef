@@ -35,11 +35,13 @@ package org.tigris.gef.base;
 /** Cmd to SelectNear Figs by a small distance.  This is useful when you
  *  want to get diagrams to look just right and you are not to steady
  *  with the mouse.  Also allows user to keep hands on keyboard.
+ *  @deprecated in 0.12.3 use SelectNearAction
  */
 
 public class CmdSelectNear extends Cmd {
-    ////////////////////////////////////////////////////////////////
-    // constants
+    
+    private static final long serialVersionUID = 2806110325379938459L;
+    
     public static final int LEFT = 1;
     public static final int RIGHT = 2;
     public static final int UP = 3;

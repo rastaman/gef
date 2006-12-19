@@ -48,8 +48,8 @@ import org.tigris.gef.undo.UndoManager;
  *  and connecting it to other model elements. */
 
 public class ModeCreateEdge extends ModeCreate {
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    
+    private static final long serialVersionUID = -3551773848229016093L;
 
     /** The NetPort where the arc is paintn from */
     private Object startPort;

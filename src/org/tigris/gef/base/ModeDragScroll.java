@@ -26,9 +26,6 @@
 // Original Author: Sean Chen, schen@webex.net
 package org.tigris.gef.base;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -51,6 +48,9 @@ import javax.swing.JViewport;
  * @author Sean Chen, schen@webex.net
  */
 public class ModeDragScroll extends FigModifyingModeImpl implements ActionListener {
+    
+    private static final long serialVersionUID = -3744868964626889125L;
+
     private Dimension _viewportExtent;
 
     // attributes for autoscrolling...
@@ -72,8 +72,6 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
     private int lastY;
 
     private boolean simpleDrag = false;
-
-    private static Log LOG = LogFactory.getLog(ModeDragScroll.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors and related methods

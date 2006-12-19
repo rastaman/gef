@@ -41,8 +41,7 @@ import org.tigris.gef.presentation.*;
 
 public class ModeCreateFigInk extends ModeCreate {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    private static final long serialVersionUID = -4480520433643756752L;
 
   /** the minium distance that the mouse must move before a new point
    *  is added. */

@@ -43,6 +43,8 @@ import org.tigris.gef.presentation.*;
 
 public class SelectionRotate extends Selection {
 
+    private static final long serialVersionUID = 5294127325030067448L;
+
     /** Construct a new SelectionRotate around the given DiagramElement */
     public SelectionRotate(Fig f) {
         super(f);

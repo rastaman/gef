@@ -54,9 +54,7 @@ import javax.swing.UIManager;
  */
 public class LayerGrid extends Layer {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
+    private static final long serialVersionUID = 4363123625161512763L;
 
   /** The spacing between the lines. */
   private int _spacing = 16;

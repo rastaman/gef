@@ -47,8 +47,8 @@ import java.util.ArrayList;
  *  etc. */
 
 public class LayerManager implements java.io.Serializable {
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+
+    private static final long serialVersionUID = -4133017459593099807L;
 
     /** The Layer's contained within this LayerManager. */
     protected List _layers = new ArrayList();

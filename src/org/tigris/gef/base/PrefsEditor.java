@@ -48,6 +48,8 @@ import java.awt.Panel;
 
 public class PrefsEditor extends Frame {
 
+    private static final long serialVersionUID = -4707206125138468506L;
+
   /** A check box for using flicker-free graphics */
   private Checkbox _tryOffScreenCB;
 

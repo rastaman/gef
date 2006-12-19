@@ -23,16 +23,17 @@
 
 package org.tigris.gef.base;
 
-import org.tigris.gef.util.Localizer;
-
 /**
  * Cmd to setup a page for printing.
  *
  * @author Eugenio Alvarez
+ * @deprecated in 0.12.3 use PrintPageSetupAction
  * @see CmdPrint
  */
 public class CmdPrintPageSetup extends Cmd {
 
+    private static final long serialVersionUID = -5821916114285147277L;
+    
   CmdPrint cmdPrint;
 
   public CmdPrintPageSetup(CmdPrint cmdPrint) { 

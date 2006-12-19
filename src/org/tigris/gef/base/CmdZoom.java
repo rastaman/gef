@@ -7,16 +7,13 @@ package org.tigris.gef.base;
 
 import org.tigris.gef.util.Localizer;
 
-/** Cmd zoom the view.  Needs-More-Work: */
+/** Cmd zoom the view.  Needs-More-Work:
+ * @deprecated in 0.12.3 use ZoomAction
+ */
 
 public class CmdZoom extends Cmd
 {
-    ////////////////////////////////////////////////////////////////
-    // constants
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
+    private static final long serialVersionUID = 8472508088519383941L;
     protected double _magnitude;
 
     ////////////////////////////////////////////////////////////////

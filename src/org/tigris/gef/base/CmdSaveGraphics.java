@@ -33,7 +33,7 @@ import org.apache.commons.logging.*;
 
 /** Abstract Cmd to save a diagram as Graphics in a supplied OutputStream. 
  *  Operates on the diagram in the current editor.
- *
+ *  @deprecated in 0.12.3 use SaveGraphicsAction
  *  @author Frank Wienberg, wienberg@informatik.uni-hamburg.de
  */
 

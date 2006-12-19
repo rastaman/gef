@@ -42,6 +42,8 @@ import org.tigris.gef.util.Localizer;
 
 public class AlignAction extends UndoableAction {
 
+    private static final long serialVersionUID = 4982051206522858526L;
+    
     /** Constants specifying the type of alignment requested. */
     public static final int ALIGN_TOPS = 0;
     public static final int ALIGN_BOTTOMS = 1;

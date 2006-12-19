@@ -39,14 +39,13 @@ import java.util.List;
  *  editor's current view.  This is very convienent for moving among
  *  lots of small Figs.  It also provides a simple example
  *  of an Cmd that is bound to a key.
- *
+ * @deprecated in 0.12.3 use SelectNextAction
  * @see org.tigris.gef.graph.presentation.JGraph#initKeys() */
 
 public class CmdSelectNext extends Cmd {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-
+    private static final long serialVersionUID = -5038323715965138457L;
+    
     public static final String DIR = "Direction";
     public static final String DIR_NEXT = "Next";
     public static final String DIR_PREV = "Previous";

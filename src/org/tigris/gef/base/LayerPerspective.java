@@ -47,6 +47,8 @@ import org.tigris.gef.graph.presentation.*;
 
 public class LayerPerspective extends LayerDiagram implements GraphListener {
 
+    private static final long serialVersionUID = -3219953846728127850L;
+
     /** The space between node FigNodes that are automatically places. */
     public static final int GAP = 16;
 

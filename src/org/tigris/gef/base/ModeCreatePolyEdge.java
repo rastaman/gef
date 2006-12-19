@@ -32,10 +32,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 import org.apache.commons.logging.*;
-import org.tigris.gef.base.ModeCreateEdge.CreateEdgeMemento;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
-import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
 /** A Mode to interpret user input while creating an edge.  Basically
@@ -50,8 +48,8 @@ import org.tigris.gef.undo.UndoManager;
  *  and connecting it to other model elements. */
 
 public class ModeCreatePolyEdge extends ModeCreateEdge {
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    
+    private static final long serialVersionUID = 1991680308906935894L;
 
     /** The NetPort where the arc is paintn from */
     private Object startPort;

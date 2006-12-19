@@ -33,12 +33,16 @@ package org.tigris.gef.base;
 
 import java.net.URL;
 
-/** Cmd to display the contents of the given URL in the browser.
- *  Needs-More-Work: This Cmd can only be used from an applet.
+/**
+ * Cmd to display the contents of the given URL in the browser.
+ * Needs-More-Work: This Cmd can only be used from an applet.
+ * @deprecated in 0.12.3 use ShowURLAction
  */
 
 public class CmdShowURL extends Cmd {
 
+    private static final long serialVersionUID = 8641563793819533804L;
+    
   protected URL _url;
 
   public CmdShowURL(URL url) { this(); url(url); }

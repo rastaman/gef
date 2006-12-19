@@ -28,16 +28,21 @@
 
 package org.tigris.gef.base;
 
-/** An Cmd to modify the way that the Guides constrain the mouse
- *  points entered by the user.  This does not change the apperance of
- *  the LayerGrid.  Needs-More-Work: Should put up a grid preference
- *  dialog box or use the property sheet.  */
+/**
+ * An Cmd to modify the way that the Guides constrain the mouse
+ * points entered by the user.  This does not change the apperance of
+ * the LayerGrid.  Needs-More-Work: Should put up a grid preference
+ * dialog box or use the property sheet.
+ * @deprecated in 0.12.3 use AdjustGuideAction
+ */
 
 public class CmdAdjustGuide extends Cmd {
 
-  public CmdAdjustGuide() {
-	  super("AdjustGridSnap");
-  }
+    private static final long serialVersionUID = 3373558342324430910L;
+
+    public CmdAdjustGuide() {
+        super("AdjustGridSnap");
+    }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

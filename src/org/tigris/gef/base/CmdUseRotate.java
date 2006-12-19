@@ -37,13 +37,15 @@ import org.tigris.gef.presentation.*;
 
 /** Set the current editor to use a SelectionRotate on its current
  *  selections.
- *
+ *  @deprecated in 0.12.3 use UesRotateAction
  *  @see Editor
  *  @see Selection
  *  @see SelectionRotate
  */
 
 public class CmdUseRotate extends Cmd {
+
+    private static final long serialVersionUID = 8929130238670954085L;
 
   public CmdUseRotate() {
 	  super("UseRotationHandles");

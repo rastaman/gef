@@ -44,8 +44,7 @@ import org.tigris.gef.presentation.*;
 
 public class SelectionLowerRight extends Selection {
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    private static final long serialVersionUID = 434028821570397508L;
 
   /** Construct a new SelectionLowerRight for the given Fig */
   public SelectionLowerRight(Fig f) { super(f); }

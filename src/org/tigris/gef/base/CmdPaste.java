@@ -30,14 +30,19 @@
 
 package org.tigris.gef.base;
 
-import java.awt.Point;
-import java.util.*;              // Mainly for Enumeration
 import java.beans.*;
+import java.util.Enumeration;
+import java.util.Vector;
 
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.util.VetoableChangeEventSource;
 
+/**
+ * @deprecated in 0.12.3 use PasteAction
+ */
 public class CmdPaste extends Cmd {
+
+    private static final long serialVersionUID = 8942391014743560735L;
 
   public CmdPaste() { super("Paste"); }
 
@@ -52,7 +57,6 @@ public class CmdPaste extends Cmd {
       Fig f = (Fig) cb.nextElement();
       Editor ce = Globals.curEditor();
       int gridSze = ((GuideGrid) ce.getGuide()).gridSize();
-      Point p = f.getLocation();
       f.translate(gridSze, gridSze);
       f = (Fig) f.clone();
       Object owner = f.getOwner();

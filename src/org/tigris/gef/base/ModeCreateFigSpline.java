@@ -35,16 +35,15 @@ import java.awt.event.MouseEvent;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigSpline;
 
-/** A Mode to interpert user input while creating a FigSpline. All of
- *  the actual event handling is inherited from ModeCreate. This class
- *  just implements the differences needed to make it specific to
- *  polygons. */
+/**
+ * A Mode to interpert user input while creating a FigSpline. All of
+ * the actual event handling is inherited from ModeCreate. This class
+ * just implements the differences needed to make it specific to
+ * polygons.
+ */
 
 public class ModeCreateFigSpline extends ModeCreateFigPoly {
-
-
-  ////////////////////////////////////////////////////////////////
-  // Mode API
+    private static final long serialVersionUID = 5038274770338930599L;
 
   public String instructions() {
     return "Click to add a point; Double-click to finish";

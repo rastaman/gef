@@ -325,7 +325,6 @@ public abstract class SelectionButtons extends SelectionResize {
             numButtonClicks++;
         // get a new node (modelelement) that should be added
         Object newNode = getNewNode(buttonCode);
-        Object owner = content.getOwner();
 
         // get the graphmodel
         Editor ce = Globals.curEditor();

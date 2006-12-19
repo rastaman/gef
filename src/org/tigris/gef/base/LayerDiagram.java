@@ -48,8 +48,8 @@ import org.tigris.gef.presentation.FigPainter;
  *  <TT>FEATURE: graph_visualization</TT></A>
  */
 public class LayerDiagram extends Layer {
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    
+    private static final long serialVersionUID = 6193765162314431069L;
 
     /** The Fig's that are contained in this layer. */
     private List _contents = new ArrayList();
@@ -374,19 +374,19 @@ public class LayerDiagram extends Layer {
     public void reorder(Fig f, int function) {
         switch(function) {
 
-            case CmdReorder.SEND_TO_BACK:
+            case ReorderAction.SEND_TO_BACK:
                 sendToBack(f);
                 break;
 
-            case CmdReorder.BRING_TO_FRONT:
+            case ReorderAction.BRING_TO_FRONT:
                 bringToFront(f);
                 break;
 
-            case CmdReorder.SEND_BACKWARD:
+            case ReorderAction.SEND_BACKWARD:
                 sendBackward(f);
                 break;
 
-            case CmdReorder.BRING_FORWARD:
+            case ReorderAction.BRING_FORWARD:
                 bringForward(f);
                 break;
         }

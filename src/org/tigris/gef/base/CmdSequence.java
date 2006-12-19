@@ -36,10 +36,13 @@ import java.util.*;
 /** Cmd to execute a sequence of Cmd's.  Needs-More-Work: Not done
  *  yet. This could be part of a user macro recording feature.  Or an
  *  easy way for programmers to define new Cmds that are basically
- *  sequence of existing Cmds.  */
+ *  sequence of existing Cmds.
+ *  @deprecated in 0.12.3 use SequenceAction
+ */
 
 public class CmdSequence extends Cmd {
 
+    private static final long serialVersionUID = -2124763382521376440L;
   private Vector _cmds;
 
   /** Construct a new CmdSequence */

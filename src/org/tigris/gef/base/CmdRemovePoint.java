@@ -34,12 +34,14 @@ package org.tigris.gef.base;
 import org.tigris.gef.presentation.Fig;
 
 /** Cmd to remove the selected (last manipulated) point from a FigPoly.
- *
+ * @deprecated in 0.12.3 use RemovePointAction
  * @see FigPoly
  */
 
 public class CmdRemovePoint extends Cmd {
 
+    private static final long serialVersionUID = -1839780715990724918L;
+    
   protected int _selectedHandle = 0;
 
   public CmdRemovePoint() {

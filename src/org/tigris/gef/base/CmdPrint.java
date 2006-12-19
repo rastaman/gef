@@ -44,11 +44,13 @@ import java.util.Vector;
 
 /**
  * Cmd to Print a diagram.  Only works under JDK 1.2 and above.
- *
+ * @deprecated in 0.12.3 use PrintAction
  * @author Eugenio Alvarez
  */
 public class CmdPrint extends Cmd implements Printable {
 
+    private static final long serialVersionUID = 5930094057682454011L;
+    
     PrinterJob printerJob;
     PageFormat pageFormat;
 
@@ -122,7 +124,6 @@ public class CmdPrint extends Cmd implements Printable {
         }
 
         Editor editor = Globals.curEditor();
-        String diagramName = (String)getArg("diagramName");
 
         Graphics2D g2d = (Graphics2D)graphics;
 

@@ -41,9 +41,8 @@ import org.tigris.gef.presentation.*;
 
 public class LayerPerspectiveMutable extends LayerPerspective {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
+    private static final long serialVersionUID = 4692683431762315041L;
+    
     /** The underlying connected graph to be visualized. */
     private MutableGraphModel mutableGraphModel;
 

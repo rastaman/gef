@@ -35,10 +35,13 @@ package org.tigris.gef.base;
  *  subclass of Frame, this Cmd makes a new instance and calls
  *  show().  For example, used to open a list of some availible
  *  commands.
- *
- * @see org.tigris.gef.graph.presentation.JGraphFrame */
+ * @deprecated in 0.12.3 use ShowPropertiesAction
+ * @see org.tigris.gef.graph.presentation.JGraphFrame
+ */
 
 public class CmdShowProperties extends Cmd {
+
+    private static final long serialVersionUID = 7571203445979788114L;
 
   public CmdShowProperties() {
     super("ShowProperties");

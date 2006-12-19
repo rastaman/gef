@@ -45,6 +45,7 @@ import org.tigris.gef.util.Localizer;
 
 public class DistributeAction extends UndoableAction {
 
+    private static final long serialVersionUID = 3630014084522093432L;
     /** Constants specifying the type of distribution requested. */
     public static final int H_SPACING = 0;
     public static final int H_CENTERS = 1;

@@ -34,14 +34,18 @@ package org.tigris.gef.base;
 import java.util.*;
 import javax.swing.ImageIcon;
 
-/** Cmd that sets the next global editor mode. The global editor
- *  mode effects the next editor that you move the mouse into. For
- *  example, in PaletteFig the Line button sets the next global mode to
- *  ModeCreateFigLine.
- *
+/**
+ * Cmd that sets the next global editor mode. The global editor
+ * mode effects the next editor that you move the mouse into. For
+ * example, in PaletteFig the Line button sets the next global mode to
+ * ModeCreateFigLine.
+ * @deprecated in 0.12.3 use SetModeAction
  */
 
 public class CmdSetMode extends Cmd {
+    
+    private static final long serialVersionUID = 6891964133574261999L;
+    
   /** Arguments to pass to the new mode instance after creation. */
   protected Hashtable _modeArgs;
 

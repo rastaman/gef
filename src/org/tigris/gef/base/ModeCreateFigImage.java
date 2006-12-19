@@ -43,11 +43,10 @@ import org.tigris.gef.presentation.*;
 
 public class ModeCreateFigImage extends ModeCreate {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-
-  /** The image to be placed. */
-  protected Image _image;
+    private static final long serialVersionUID = -3062009802693268691L;
+    
+    /** The image to be placed. */
+    protected Image _image;
 
   ////////////////////////////////////////////////////////////////
   // accessors

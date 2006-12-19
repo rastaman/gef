@@ -36,12 +36,14 @@ import org.tigris.gef.undo.UndoManager;
  * underlying Net or other model, it is strictly a manipulation of
  * graphical objects.  Normally CmdDeleteFromModel is the command users will want to execute.
  * This replaces CmdDelete
- *
+ * @deprecated in 0.12.3 use RemoveFromGraphAction
  * @see CmdDeleteFromModel
  * @see Editor
  * @see LayerDiagram */
 
 public class CmdRemoveFromGraph extends Cmd {
+
+    private static final long serialVersionUID = 8789982494893113775L;
 
     public CmdRemoveFromGraph() {
         super("RemoveFromGraph");
