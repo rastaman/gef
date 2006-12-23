@@ -183,33 +183,38 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     }
 
     public void endEditing() {
-		Editor ce =Globals.curEditor();
-        removeFocusListener(this);
-        updateFigText();
-        setVisible(false);
         if (figText == null) {
             return;
         }
-        figText.endTrans();
-        Container parent = getParent();
-        if(parent != null) {
-            parent.remove(this);
-        }
-        figText.removePropertyChangeListener(this);
-        figText.firePropChange("editing", true, false);
-        removeKeyListener(this);
-        layeredPane.remove(this);
-        drawingPanel.requestFocus();
-        _activeTextEditor = null;
+        updateFigText();
+        FigText t = figText;
+        
+        cancelEditingInternal();
+        
+        t.firePropChange("editing", true, false);
+        Editor ce = Globals.curEditor();
+        // This will cause a recursive call back to us, but things
+        // are organized so it won't be infinite recursion.
         ce.setActiveTextEditor(null);
     }
     
     public void cancelEditing() {
-        removeFocusListener(this);
-        setVisible(false);
         if (figText == null) {
             return;
         }
+        cancelEditingInternal();
+        // TODO: Should this be firing a property to tell listeners
+        // that we cancelled editing? - tfm
+    }
+
+    /**
+     * Exit editing mode.  Code which is common to both 
+     * cancelEditing() and endEditing().  It undoes everything
+     * which was done in init().
+     */
+    private void cancelEditingInternal() {
+        removeFocusListener(this);
+        setVisible(false);
         figText.endTrans();
         Container parent = getParent();
         if(parent != null) {
@@ -220,6 +225,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         layeredPane.remove(this);
         drawingPanel.requestFocus();
         _activeTextEditor = null;
+        figText = null;
     }
     
     public static synchronized FigTextEditor getActiveTextEditor() {
@@ -263,6 +269,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
             ke.consume();
         } else if(ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
             // needs-more-work: should revert to orig text.
+            // TODO: Shouldn't this call cancelEditing instead of endEditing?
             endEditing();
             ke.consume();
         }
