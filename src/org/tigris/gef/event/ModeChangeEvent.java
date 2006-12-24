@@ -38,9 +38,8 @@ import java.util.*;
  */
 public class ModeChangeEvent extends EventObject {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected Vector _modes;
+    private static final long serialVersionUID = -6352595981387658622L;
+    private Vector _modes;
 
   ////////////////////////////////////////////////////////////////
   // constructor

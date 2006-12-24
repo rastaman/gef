@@ -5,23 +5,26 @@
 
 package org.tigris.gef.base;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+
 import org.tigris.gef.util.Localizer;
 
 /**
- * Zoom the view.  Needs-More-Work:
- * @deprecated in 0.12.3 use ZoomAction
+ * Zoom the view.
  */
 
-public class CmdZoom extends Cmd
-{
-    private static final long serialVersionUID = 8472508088519383941L;
-    protected double _magnitude;
+public class ZoomAction extends AbstractAction {
+
+    private static final long serialVersionUID = -952853421722122499L;
+    private double _magnitude;
 
     ////////////////////////////////////////////////////////////////
     // constructor
 
     /** Default behaviour is to restore scaling to 1.0 (1 to 1) */
-    public CmdZoom()
+    public ZoomAction()
     {
         this(0);
     }
@@ -30,7 +33,7 @@ public class CmdZoom extends Cmd
     * factor of <code>magnitude</code>.
     * @param magnitude the factor by which to adjust the Editor's scaling. Must be greater than or equal to zero.  If zero, resets the Editor's scale factor to 1.
     */
-    public CmdZoom(double magnitude)
+    public ZoomAction(double magnitude)
     {
         super(wordFor(magnitude));
         _magnitude = magnitude;
@@ -48,9 +51,7 @@ public class CmdZoom extends Cmd
         else return Localizer.localize("GefBase","DoNothing");       // Not a very useful option
     }
 
-    /** Adjust the scale factor of the current editor. */
-    public void doIt()
-    {
+    public void actionPerformed(ActionEvent e) {
         Editor ed = (Editor) Globals.curEditor();
         if (ed == null) return;
 
@@ -60,20 +61,5 @@ public class CmdZoom extends Cmd
             ed.setScale(1.0);
         }
         ed.damageAll();
-    }
-
-    /** Undo the zoom.  Does not yet work for magnitude of 0 (a reset),
-    * and is subject to skew due to precision errors since
-    * for floats we cannot assume <code>(x * f / f) == x</code> */
-    public void undoIt()
-    {
-        Editor ed = (Editor) Globals.curEditor();
-        if (ed == null) return;
-
-        if (_magnitude > 0.0) {
-            ed.setScale(ed.getScale() / _magnitude);
-        } else {
-            System.out.println("Cannot undo CmdZoom reset, yet.");
-        }
     }
 } /* end class CmdZoom */

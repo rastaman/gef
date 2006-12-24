@@ -31,7 +31,6 @@
 package org.tigris.gef.graph;
 
 import java.util.EventObject;
-import java.util.EventListener;
 
 /** A notification that a graph has changed.  The source is the object
  *  that implements MutableGraphModel. The argument is the specific
@@ -39,18 +38,17 @@ import java.util.EventListener;
  *  removed. The argument is null if the entire graph changed. */
 
 public class MutableGraphEvent extends EventObject {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  /** The specific node, port, or arc that was modified. */
-  protected Object _arg;
+    private static final long serialVersionUID = -9143159532643088192L;
+    /** The specific node, port, or arc that was modified. */
+    private Object _arg;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
-  public MutableGraphEvent(Object src) { this(src, null); }
-  public MutableGraphEvent(Object src, Object arg) {
-    super(src);
-    _arg = arg;
-  }
+    public MutableGraphEvent(Object src) { this(src, null); }
+    public MutableGraphEvent(Object src, Object arg) {
+        super(src);
+        _arg = arg;
+    }
 
-  public Object getArg() { return _arg; }
+    public Object getArg() {
+	return _arg;
+    }
 } /* end class MutableGraphEvent */

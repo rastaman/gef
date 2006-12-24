@@ -6,11 +6,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 
 public class Notify extends JFrame {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3943708263259356434L;
 
     public Notify() {
         addWindowListener(
@@ -33,6 +36,6 @@ public class Notify extends JFrame {
     }
     
     public static void main(String args[]) {
-        Notify notify = new Notify();
+        new Notify();
     }
 }

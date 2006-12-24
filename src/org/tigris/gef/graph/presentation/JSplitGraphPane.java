@@ -20,6 +20,8 @@ import org.tigris.gef.graph.presentation.JGraph;
  */
 public class JSplitGraphPane extends JPanel {
 
+    private static final long serialVersionUID = 3796638763703844578L;
+
     /**
      * The clone graph will snap shut if it is smaller then this
      */
@@ -49,11 +51,6 @@ public class JSplitGraphPane extends JPanel {
     private JSplitPane splitPane = null;
     
     /**
-     * The graph populated by the constructor
-     */
-    private JGraph graph;
-    
-    /**
      * A clone graph which is created or destroyed by reposition of
      * the splitter.
      */
@@ -67,7 +64,6 @@ public class JSplitGraphPane extends JPanel {
         splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         this.setLayout(new BorderLayout());
         this.add(splitPane);
-        this.graph = graph;
 
         graph.setPreferredSize(MAX_DIMENSION);
 

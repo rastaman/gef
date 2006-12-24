@@ -55,8 +55,8 @@ import org.tigris.gef.graph.MutableGraphSupport;
 public class DefaultGraphModel
         extends MutableGraphSupport
         implements java.io.Serializable {
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+
+    private static final long serialVersionUID = 8098329898758384131L;
 
     private NetList netList;
 

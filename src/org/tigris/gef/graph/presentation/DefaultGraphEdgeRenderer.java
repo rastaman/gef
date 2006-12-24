@@ -44,6 +44,9 @@ import org.tigris.gef.graph.*;
 
 public class DefaultGraphEdgeRenderer
     implements GraphEdgeRenderer, java.io.Serializable {
+    
+    private static final long serialVersionUID = -9033499828050848988L;
+
     /** Return a Fig that can be used to represent the given Edge */
     public FigEdge getFigEdgeFor(GraphModel graph, Layer lay, Object edge, Map styleAttributes) {
         if (!(edge instanceof NetEdge))  return null;

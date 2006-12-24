@@ -42,16 +42,17 @@ import org.tigris.gef.util.*;
 public class JGraphFrame extends JFrame
 implements IStatusBar, Cloneable, ModeChangeListener {
 
+    private static final long serialVersionUID = -8167010467922210977L;
     /** The toolbar (shown at top of window). */
-    protected ToolBar _toolbar = new PaletteFig();
+    private ToolBar _toolbar = new PaletteFig();
     /** The graph pane (shown in middle of window). */
-    protected JGraph _graph;
+    private JGraph _graph;
     /** A statusbar (shown at bottom ow window). */
-    protected JLabel _statusbar = new JLabel(" ");
+    private JLabel _statusbar = new JLabel(" ");
   
-    protected JPanel _mainPanel = new JPanel(new BorderLayout());
-    protected JPanel _graphPanel = new JPanel(new BorderLayout());
-    protected JMenuBar _menubar = new JMenuBar();
+    private JPanel _mainPanel = new JPanel(new BorderLayout());
+    private JPanel _graphPanel = new JPanel(new BorderLayout());
+    private JMenuBar _menubar = new JMenuBar();
 
     /** Contruct a new JGraphFrame with the title "untitled" and a new
      *  DefaultGraphModel. */
@@ -149,18 +150,11 @@ implements IStatusBar, Cloneable, ModeChangeListener {
   protected void setUpMenus() {
 	JMenuItem openItem,
                   saveItem,
-                  savePGMLItem,
-                  saveSVGItem,
                   printItem,
-                  printPageSetupItem,
-                  prefsItem,
                   exitItem;
-	JMenuItem selectAllItem;
-	JMenuItem deleteItem, cutItem, copyItem, pasteItem;
-	JMenuItem editNodeItem;
+	JMenuItem deleteItem, copyItem, pasteItem;
 	JMenuItem groupItem, ungroupItem;
 	JMenuItem toBackItem, backwardItem, toFrontItem, forwardItem;
-	JMenuItem nudgeUpItem, nudgeDownItem, nudgeLeftItem, nudgeRightItem;
 
 	JMenu file = new JMenu(Localizer.localize("GefBase","File"));
 	file.setMnemonic('F');
@@ -168,12 +162,12 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	//file.add(new CmdNew());
 	openItem = file.add(new CmdOpen());
 	saveItem = file.add(new CmdSave());
-	savePGMLItem = file.add(new CmdSavePGML());
-	saveSVGItem = file.add(new CmdSaveSVG());
+	file.add(new CmdSavePGML());
+	file.add(new CmdSaveSVG());
         CmdPrint cmdPrint = new CmdPrint();
 	printItem = file.add(cmdPrint);
-	printPageSetupItem = file.add(new CmdPrintPageSetup(cmdPrint));
-	prefsItem = file.add(new CmdOpenWindow("org.tigris.gef.base.PrefsEditor",
+	file.add(new CmdPrintPageSetup(cmdPrint));
+	file.add(new CmdOpenWindow("org.tigris.gef.base.PrefsEditor",
 					   "Preferences..."));
 	//file.add(new CmdClose());
 	exitItem = file.add(new CmdExit());
@@ -183,14 +177,14 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	edit.setMnemonic('E');
 	_menubar.add(edit);
 
-    JMenuItem undoItem = edit.add(new UndoAction(Localizer.localize("GefBase","Undo")));
+        JMenuItem undoItem = edit.add(new UndoAction(Localizer.localize("GefBase","Undo")));
         undoItem.setMnemonic(Localizer.localize("GefBase","UndoMnemonic").charAt(0));
         JMenuItem redoItem = edit.add(new RedoAction(Localizer.localize("GefBase","Redo")));
         redoItem.setMnemonic(Localizer.localize("GefBase","RedoMnemonic").charAt(0));
     
 	JMenu select = new JMenu(Localizer.localize("GefBase","Select"));
 	edit.add(select);
-	selectAllItem = select.add(new CmdSelectAll());
+	select.add(new CmdSelectAll());
 	select.add(new CmdSelectNext(false));
 	select.add(new CmdSelectNext(true));
 	select.add(new CmdSelectInvert());
@@ -256,48 +250,30 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 
 	JMenu nudge = new JMenu(Localizer.localize("GefBase","Nudge"));
 	arrange.add(nudge);
-	nudgeLeftItem = nudge.add(new NudgeAction(NudgeAction.LEFT));
-	nudgeRightItem = nudge.add(new NudgeAction(NudgeAction.RIGHT));
-	nudgeUpItem = nudge.add(new NudgeAction(NudgeAction.UP));
-	nudgeDownItem = nudge.add(new NudgeAction(NudgeAction.DOWN));
+	nudge.add(new NudgeAction(NudgeAction.LEFT));
+	nudge.add(new NudgeAction(NudgeAction.RIGHT));
+	nudge.add(new NudgeAction(NudgeAction.UP));
+	nudge.add(new NudgeAction(NudgeAction.DOWN));
 
-	KeyStroke ctrlN = KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK);
 	KeyStroke ctrlO = KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK);
 	KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK);
 	KeyStroke ctrlP = KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK);
 	KeyStroke altF4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK);
 
-	KeyStroke leftArrow, rightArrow, upArrow, downArrow;
-	leftArrow = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0);
-	rightArrow = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0);
-	upArrow = KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0);
-	downArrow = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
-
-	KeyStroke sLeftArrow, sRightArrow, sUpArrow, sDownArrow;
-	sLeftArrow = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.SHIFT_MASK);
-	sRightArrow = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.SHIFT_MASK);
-	sUpArrow = KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.SHIFT_MASK);
-	sDownArrow = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.SHIFT_MASK);
-
-	KeyStroke delKey, ctrlZ, ctrlX, ctrlY, ctrlC, ctrlV, ctrlG, ctrlU, ctrlB,
-	  ctrlF, sCtrlB, sCtrlF;
-	delKey = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
-	ctrlZ = KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK);
-        ctrlY = KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_MASK);
-	ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK);
-	ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK);
-	ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK);
-	ctrlG = KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_MASK);
-	ctrlU = KeyStroke.getKeyStroke(KeyEvent.VK_U, KeyEvent.CTRL_MASK);
-	ctrlB = KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_MASK);
-	ctrlF = KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_MASK);
-	sCtrlB = KeyStroke.getKeyStroke(KeyEvent.VK_B,
+	KeyStroke delKey = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
+	KeyStroke ctrlZ = KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK);
+	KeyStroke ctrlY = KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_MASK);
+	KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK);
+	KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK);
+	KeyStroke ctrlG = KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_MASK);
+	KeyStroke ctrlU = KeyStroke.getKeyStroke(KeyEvent.VK_U, KeyEvent.CTRL_MASK);
+	KeyStroke ctrlB = KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_MASK);
+	KeyStroke ctrlF = KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_MASK);
+	KeyStroke sCtrlB = KeyStroke.getKeyStroke(KeyEvent.VK_B,
 				    KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK);
-	sCtrlF = KeyStroke.getKeyStroke(KeyEvent.VK_F,
+	KeyStroke sCtrlF = KeyStroke.getKeyStroke(KeyEvent.VK_F,
 				    KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK);
 
-	
-	//newItem.setAccelerator(ctrlN);
 	openItem.setAccelerator(ctrlO);
 	saveItem.setAccelerator(ctrlS);
 	printItem.setAccelerator(ctrlP);
@@ -306,7 +282,6 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	deleteItem.setAccelerator(delKey);
 	undoItem.setAccelerator(ctrlZ);
         redoItem.setAccelerator(ctrlY);
-	//cutItem.setAccelerator(ctrlX);
 	copyItem.setAccelerator(ctrlC);
 	pasteItem.setAccelerator(ctrlV);
 

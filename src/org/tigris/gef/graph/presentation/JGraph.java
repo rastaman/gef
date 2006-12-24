@@ -51,15 +51,15 @@ import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 
-import org.tigris.gef.base.CmdZoom;
 import org.tigris.gef.base.NudgeAction;
-import org.tigris.gef.base.CmdSelectNext;
+import org.tigris.gef.base.SelectNextAction;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.base.SelectNearAction;
+import org.tigris.gef.base.ZoomAction;
 import org.tigris.gef.event.GraphSelectionListener;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.ConnectionConstrainer;
@@ -77,10 +77,9 @@ import org.tigris.gef.presentation.FigTextEditor;
 
 public class JGraph extends JPanel implements Cloneable, AdjustmentListener, MouseWheelListener {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
-    /** The Editor object that is being shown in this panel */
+    /**
+     * The Editor object that is being shown in this panel
+     */
     private Editor editor;
 
     private JGraphInternalPane drawingPane;
@@ -93,8 +92,8 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
 
     private String _currentDiagramId = null;
     
-    private CmdZoom zoomOut = new CmdZoom(0.9);
-    private CmdZoom zoomIn = new CmdZoom(1.1);
+    private ZoomAction zoomOut = new ZoomAction(0.9);
+    private ZoomAction zoomIn = new ZoomAction(1.1);
 
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -237,8 +236,8 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
         int alt = KeyEvent.ALT_MASK;
         int meta = KeyEvent.META_MASK;
 
-        bindKey(new CmdSelectNext(true), KeyEvent.VK_TAB, 0);
-        bindKey(new CmdSelectNext(false), KeyEvent.VK_TAB, shift);
+        bindKey(new SelectNextAction("Select Next", true), KeyEvent.VK_TAB, 0);
+        bindKey(new SelectNextAction("Select Previous", false), KeyEvent.VK_TAB, shift);
 
         bindKey(new NudgeAction(NudgeAction.LEFT), KeyEvent.VK_LEFT, 0);
         bindKey(new NudgeAction(NudgeAction.RIGHT), KeyEvent.VK_RIGHT, 0);
@@ -583,9 +582,9 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
         if (e.isAltDown() || e.isControlDown() ) {
             
             if (e.getWheelRotation() < 0)
-                this.zoomOut.doIt();
+                this.zoomOut.actionPerformed(null);
             else if (e.getWheelRotation() > 0)
-                this.zoomIn.doIt();
+                this.zoomIn.actionPerformed(null);
             
             e.consume();
         }
@@ -641,9 +640,6 @@ class JGraphInternalPane extends JPanel {
             toolTipManager.registerComponent(this);
             registeredWithTooltip = true;
         }
-        //} else {
-        //    toolTipManager.unregisterComponent(this);
-        //}
     }
 
     protected void processMouseEvent(MouseEvent e) {

@@ -45,6 +45,9 @@ import org.tigris.gef.graph.*;
 
 public class DefaultGraphNodeRenderer
     implements GraphNodeRenderer, java.io.Serializable {
+    
+    private static final long serialVersionUID = -8396231710414093663L;
+    
     /** Return a Fig that can be used to represent the given node */
     public FigNode getFigNodeFor(GraphModel graph, Layer lay, Object node, Map styleAttributes) {
         if (node instanceof NetNode)

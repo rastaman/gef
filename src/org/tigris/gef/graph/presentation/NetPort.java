@@ -31,7 +31,8 @@ package org.tigris.gef.graph.presentation;
 import java.util.*;
 
 import org.apache.commons.logging.*;
-import org.tigris.gef.graph.*;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphPortHooks;
 
 /** This class models a port in our underlying connected graph model.
  *  A port is place on a node where an edge can connect.  For example,
@@ -45,8 +46,7 @@ public class NetPort
     extends NetPrimitive
     implements GraphPortHooks, java.io.Serializable {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
+    private static final long serialVersionUID = -3506978147166333303L;
 
     // needs-more-work: main framework should not depend on any demo code
     public static String DEFAULT_EDGE_CLASS =

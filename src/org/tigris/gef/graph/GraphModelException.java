@@ -11,7 +11,8 @@ import java.io.PrintWriter;
  */
 public class GraphModelException extends Exception {
 
-    Exception cause;
+    private static final long serialVersionUID = -6447939901902994312L;
+    private Exception cause;
         
     public GraphModelException(String mess) {
         super(mess);

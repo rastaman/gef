@@ -36,9 +36,8 @@ import java.util.*;
  */
 public class GraphSelectionEvent extends EventObject {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected Vector _selections;
+    private static final long serialVersionUID = 7055361155230503398L;
+    private Vector _selections;
 
   ////////////////////////////////////////////////////////////////
   // constructor
