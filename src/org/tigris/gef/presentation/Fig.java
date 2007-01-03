@@ -1717,6 +1717,9 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
      * @param dy the y offset
      */
     public void translate(final int dx, final int dy) {
+	if (dx == 0 && dy == 0) {
+	    return;
+	}
         if (group == null) {
             
             class TranslateMemento extends Memento {
@@ -1753,6 +1756,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
                 UndoManager.getInstance().addMemento(new TranslateMemento(_x, _y, _w, _h));
             }
         }
+        MutableGraphSupport.enableSaveAction();
         translateImpl(dx, dy);
     }
 
