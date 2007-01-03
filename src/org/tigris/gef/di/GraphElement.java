@@ -26,11 +26,10 @@ package org.tigris.gef.di;
 
 import java.beans.PropertyChangeListener;
 
-import org.tigris.gef.presentation.Connecter;
 import org.tigris.gef.ui.Highlightable;
 
 /**
  * An interface to be implemented by connectable figs.
  */
-public interface GraphElement extends Connecter, PropertyChangeListener, Highlightable {
+public interface GraphElement extends GraphicElement, PropertyChangeListener, Highlightable {
 }

@@ -24,10 +24,8 @@
 
 package org.tigris.gef.di;
 
-import org.tigris.gef.presentation.Connecter;
-
 /**
 * An interface to be implemented by edge connectable figs.
 */
-public interface GraphNode extends Connecter {
+public interface GraphNode extends GraphElement {
 }
