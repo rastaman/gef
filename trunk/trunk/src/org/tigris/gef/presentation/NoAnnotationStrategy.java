@@ -10,8 +10,9 @@ public class NoAnnotationStrategy extends AnnotationStrategy {
     }
 
     /**
-     * This class is just a dummy for those Figs that need no Annotations.
-     * It is created by default for all Figs.
+     * TODO - get this translated
+     * Diese Klasse ist nur ein Dummy fuer die Figs, die keine Annotations
+     * haben sollen. Sie wird standardmaessig fuer jede Fig angelegt.
      */
     private NoAnnotationStrategy() {
     }

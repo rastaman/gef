@@ -36,11 +36,12 @@ import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.FigTextEditor;
+import org.tigris.gef.presentation.TextEditor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Component;
 import java.awt.event.*;
 import java.io.Serializable;
 import java.util.Enumeration;
@@ -672,16 +673,12 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 	  		oldTextEditor.endEditing();
 	}
 
-    public FigTextEditor getActiveTextEditor()
-    {
-		if(_activeTextEditor!=null)
-		{
-        	return FigTextEditor.getActiveTextEditor();
-		}
-		else
-		{
-			return null;
-		}
+    public TextEditor getActiveTextEditor() {
+        if(_activeTextEditor != null) {
+            return FigText.getActiveTextEditor();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -769,7 +766,10 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
             return;
         }
         translateMouseEvent(me);
-        FigTextEditor.remove();
+        TextEditor textEditor = FigText.getActiveTextEditor();
+        if (textEditor != null) {
+            textEditor.endEditing();
+        }
 
         Globals.curEditor(this);
         //setUnderMouse(me);

@@ -30,15 +30,23 @@
 
 package org.tigris.gef.presentation;
 
-import org.apache.commons.logging.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.persistence.export.FontUtility;
 import org.tigris.gef.properties.PropCategoryManager;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.*;
 import java.util.StringTokenizer;
+
+import javax.swing.JLabel;
 
 /**
  * This class handles painting and editing text Fig's in a
@@ -84,7 +92,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     /** Color to be drawn behind the actual text characters. Note that
      *  this will be a smaller area than the bounding box which is
      *  filled with FillColor. */
-    private Color _textFillColor = Color.white;
+    private Color textFillColor = Color.white;
 
     /** True if the area behind individual characters is to be filled
      *  with TextColor. */
@@ -130,6 +138,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     private String _curText;
 
     private String lineSeparator;
+    
+    private TextEditor textEditor;
+    
+    private static TextEditor activeTextEditor;
     
     ////////////////////////////////////////////////////////////////
     // static initializer
@@ -258,12 +270,12 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     public Color getTextFillColor() {
-        return _textFillColor;
+        return textFillColor;
     }
 
     public void setTextFillColor(Color c) {
-        firePropChange("textFillColor", _textFillColor, c);
-        _textFillColor = c;
+        firePropChange("textFillColor", textFillColor, c);
+        textFillColor = c;
     }
 
     public boolean getTextFilled() {
@@ -564,10 +576,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * @param s
      */
     public void setText(String s) {
-        FigTextEditor editor = FigTextEditor.getInstance();
         String newText = encode(s, lineSeparator);
-        if (editor.isVisible() && editor.getFigText() == this && !_curText.equals(newText)) {
-            editor.cancelEditing();
+        if (textEditor != null && !_curText.equals(newText)) {
+            textEditor.cancelEditing();
         }
         _curText = newText;
         calcBounds();
@@ -715,7 +726,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         // iterating through the same infomation twice.
         // Can we improve this?
         if(_textFilled) {
-            g.setColor(_textFillColor);
+            g.setColor(textFillColor);
             lines = new StringTokenizer(_curText, "" + HARD_RETURN + SOFT_RETURN, true);
             while(lines.hasMoreTokens()
                     && chunkY <= getHeight() + getY() + _topMargin - _botMargin) {
@@ -897,7 +908,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         // if it is not some control character.
         if (isStartEditingKey(ke) && editable) {
             ke.consume();
-            FigTextEditor te = startTextEditor(ke);
+            TextEditor te = startTextEditor(ke);
             if (!Character.isISOControl(ke.getKeyChar())) {
                 te.setText(te.getText() + ke.getKeyChar());
             }
@@ -937,11 +948,23 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     public void mouseExited(MouseEvent me) {
     }
 
-    public FigTextEditor startTextEditor(InputEvent ie) {
-        FigTextEditor te = FigTextEditor.getInstance();
-        te.init(this, ie);
+    public TextEditor startTextEditor(InputEvent ie) {
+        textEditor = new FigTextEditor(this, ie);
+        activeTextEditor = textEditor;
         _editMode = true;
-        return te;
+        return textEditor;
+    }
+    
+    public static TextEditor getActiveTextEditor() {
+	return activeTextEditor;
+    }
+    
+    public void endTextEditor() {
+	textEditor.endEditing();
+    }
+
+    public void cancelTextEditor() {
+	textEditor.cancelEditing();
     }
 
 
@@ -957,7 +980,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             return;
         }
         if (_fm == null) {
-            _fm = FigTextEditor.getInstance().getFontMetrics(_font);
+            _fm = new JLabel().getFontMetrics(_font);
         }
         
         _lineHeight = _fm.getHeight();
