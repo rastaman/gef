@@ -45,6 +45,7 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -550,6 +551,17 @@ public class FigNode extends FigGroup implements
             FigEdge fe = (FigEdge)figEdges.get(i);
             fe.cleanUp();
         }
+    }
+    
+    
+    /**
+     * Return a list of other Figs that must be forced to be dragged at the
+     * same time as this Fig or null if no dependent. By default this returns
+     * null, override in concrete class as required.
+     * @return List of figs
+     */
+    public List getDragDependencies() {
+	return null;
     }
 }
 
