@@ -308,6 +308,23 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
         return figs;
     }
+    
+    /**
+     * Get a collection of Figs that will be dragged as a result of
+     * dragging this selection.
+     */
+    public List getDraggableFigs() {
+        List figs = new ArrayList(getFigs());
+        Iterator it = getFigs().iterator();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof FigNode) {
+                addDragDependents(figs, (FigNode) o);
+            }
+        }
+
+        return figs;
+    }
 
     /** End a transaction that damages all selected Fig's */
     public void endTrans() {
