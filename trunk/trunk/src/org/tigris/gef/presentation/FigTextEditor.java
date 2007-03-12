@@ -58,9 +58,11 @@ import org.tigris.gef.undo.UndoManager;
 
 /**
  * A text pane for on screen editing of a FigText.
+ * TODO: This should not be a singleton but should be an instance owned
+ * by Editor.
  * @author jrobbins
  */
-public class FigTextEditor extends JTextPane implements PropertyChangeListener, DocumentListener, KeyListener, FocusListener, TextEditor {
+public class FigTextEditor extends JTextPane implements PropertyChangeListener, DocumentListener, KeyListener, FocusListener {
 
     private static final long serialVersionUID = 7350660058167121420L;
     private FigText figText;
@@ -74,7 +76,27 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
 
     private static Log LOG = LogFactory.getLog(FigTextEditor.class);
 
-    public FigTextEditor(FigText ft, InputEvent ie) {
+    private static final FigTextEditor INSTANCE = new FigTextEditor();
+    
+    // TODO: Lets try and remove this and have the only reference
+    // from Editor
+    private static FigTextEditor _activeTextEditor;
+
+    public static FigTextEditor getInstance() {
+        return INSTANCE;
+    }
+    
+    private FigTextEditor() {
+    }
+
+    public static void configure(int extraSpace, Border b, boolean makeBrighter, Color backgroundColor) {
+        _extraSpace = extraSpace;
+        _border = b;
+        _makeBrighter = makeBrighter;
+        _backgroundColor = backgroundColor;
+    }
+
+    public void init(FigText ft, InputEvent ie) {
         setVisible(true);
         figText = ft;
         Editor ce = Globals.curEditor();
@@ -129,6 +151,9 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         layeredPane.add(this, JLayeredPane.POPUP_LAYER, 0);
         String text = ft.getTextFriend();
         
+        remove();
+        _activeTextEditor = this;
+
         setText(text);
 
         addKeyListener(this);
@@ -151,13 +176,6 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
             setSelectionEnd(getDocument().getLength());
         }
         addFocusListener(this);
-    }
-
-    public static void configure(int extraSpace, Border b, boolean makeBrighter, Color backgroundColor) {
-        _extraSpace = extraSpace;
-        _border = b;
-        _makeBrighter = makeBrighter;
-        _backgroundColor = backgroundColor;
     }
 
     public void propertyChange(PropertyChangeEvent pve) {
@@ -206,9 +224,22 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         removeKeyListener(this);
         layeredPane.remove(this);
         drawingPanel.requestFocus();
+        _activeTextEditor = null;
         figText = null;
     }
     
+    public static synchronized FigTextEditor getActiveTextEditor() {
+        return _activeTextEditor;
+    }
+
+    public static synchronized void remove() {
+        if(_activeTextEditor != null) {
+            FigTextEditor old = _activeTextEditor;
+            _activeTextEditor = null;
+            old.endEditing();
+        }
+    }
+
     ////////////////////////////////////////////////////////////////
     // event handlers for KeyListener implementaion
     public void keyTyped(KeyEvent ke) {

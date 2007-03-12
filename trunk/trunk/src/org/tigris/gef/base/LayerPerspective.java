@@ -38,14 +38,12 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.graph.presentation.*;
 
-/**
- * A Layer like found in many drawing applications. It contains a
- * collection of Figs, ordered from back to front. Each
- * LayerPerspective contains part of the overall picture that the
- * user is drawing. LayerPerspective is different from LayerDiagram
- * in that it assumes that you are drawing a connected graph that is
- * represented in a GraphModel and controlled by a GraphController.
- */
+/** A Layer like found in many drawing applications. It contains a
+ *  collection of Figs, ordered from back to front. Each
+ *  LayerPerspective contains part of the overall picture that the
+ *  user is drawing. LayerPerspective is different from LayerDiagram
+ *  in that it assumes that you are drawing a connected graph that is
+ *  represented in a GraphModel and controlled by a GraphController. */
 
 public class LayerPerspective extends LayerDiagram implements GraphListener {
 
@@ -59,27 +57,18 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
      */
     private GraphModel _gm;
   
-    private GraphController controller;
+    private GraphController _controller;
   
     private GraphNodeRenderer _nodeRenderer = new DefaultGraphNodeRenderer();
   
     private GraphEdgeRenderer _edgeRenderer = new DefaultGraphEdgeRenderer();
 
-    /**
-     * Classes of NetNodes and NetEdges that are to be visualized in
-     * this perspective.
-     */
-    private Vector _allowedNetClasses = new Vector();
+  /** Classes of NetNodes and NetEdges that are to be visualized in
+   *  this perspective. */
+  protected Vector _allowedNetClasses = new Vector();
 
-    /**
-     * Rectangles of where to place nodes that are automatically added.
-     */
-    private Hashtable _nodeTypeRegions = new Hashtable();
-    
-    /**
-     * The diagram containing this layer.
-     */
-    private Diagram diagram;
+  /** Rectangles of where to place nodes that are automatically added. */
+  protected Hashtable _nodeTypeRegions = new Hashtable();
 
     private static Log LOG = LogFactory.getLog(LayerPerspective.class);
     
@@ -93,14 +82,14 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
     public LayerPerspective(String name, GraphModel gm) {
         super(name);
         _gm = gm;
-	controller = null;
+	_controller = null;
         _gm.addGraphEventListener(this);
     }
 
     public LayerPerspective(String name, GraphModel gm, GraphController controller) {
         super(name);
         _gm = gm;
-	this.controller = controller;
+	_controller = controller;
         _gm.addGraphEventListener(this);
     }
 
@@ -115,12 +104,11 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
     _gm.addGraphEventListener(this);
   }
 
-    /** Reply the GraphController of the underlying connected graph. */
-    public GraphController getGraphController() { return controller; }
-  
-    public void setGraphController(GraphController controller) {
-	this.controller = controller;
-    }
+  /** Reply the GraphController of the underlying connected graph. */
+  public GraphController getGraphController() { return _controller; }
+  public void setGraphController(GraphController controller) {
+	  _controller = controller;
+  }
 
   public GraphNodeRenderer getGraphNodeRenderer() { return _nodeRenderer; }
   public void setGraphNodeRenderer(GraphNodeRenderer rend) {
@@ -276,38 +264,24 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   }
 
 
-    /** Test to determine if a given NetNode should have a FigNode
-     *  in this layer.  Normally checks NetNode class against a list of
-     *  allowable classes.  For more sophisticated rules, override this
-     *  method.
-     *  <A HREF="../features.html#multiple_perspectives">
-     *  <TT>FEATURE: multiple_perspectives</TT></A>
-     */
-    public boolean shouldShow(Object obj) {
-        if (_allowedNetClasses.size() > 0 &&
-        	!_allowedNetClasses.contains(obj.getClass()))
-            return false;
-        if (obj instanceof NetEdge) {
-            if (getPortFig(((NetEdge)obj).getSourcePort()) == null ||
-        	    getPortFig(((NetEdge)obj).getDestPort()) == null)
-       	    return false;
-        }
-        return true;
+  /** Test to determine if a given NetNode should have a FigNode
+   *  in this layer.  Normally checks NetNode class against a list of
+   *  allowable classes.  For more sophisticated rules, override this
+   *  method.
+   *  <A HREF="../features.html#multiple_perspectives">
+   *  <TT>FEATURE: multiple_perspectives</TT></A>
+   */
+  public boolean shouldShow(Object obj) {
+    if (_allowedNetClasses.size() > 0 &&
+	!_allowedNetClasses.contains(obj.getClass()))
+      return false;
+    if (obj instanceof NetEdge) {
+      if (getPortFig(((NetEdge)obj).getSourcePort()) == null ||
+	  getPortFig(((NetEdge)obj).getDestPort()) == null)
+	return false;
     }
-
-    /**
-     * @param diagram The diagram to set.
-     */
-    void setDiagram(Diagram diagram) {
-        this.diagram = diagram;
-    }
-    
-    /**
-     * @return Returns the diagram.
-     */
-    public Diagram getDiagram() {
-        return diagram;
-    }
+    return true;
+  }
 
   /** Test to determine if a given NetEdge should have an FigEdge
    *  in this layer.  Normally checks NetNode class against a list of

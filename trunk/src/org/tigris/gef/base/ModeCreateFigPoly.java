@@ -36,7 +36,7 @@ import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
 
 /**
- * A Mode to interpert user input while creating a FigPoly. All of
+ * A Mode to interprete user input while creating a FigPoly. All of
  * the actual event handling is inherited from ModeCreate. This class
  * just implements the differences needed to make it specific to
  * polygons.

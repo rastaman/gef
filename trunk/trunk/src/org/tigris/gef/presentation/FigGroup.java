@@ -51,7 +51,7 @@ public class FigGroup extends Fig {
     /** 
      * The Fig's contained in this FigGroup  
      */
-    private List figs;
+    private ArrayList figs;
     
     private int _extraFrameSpace = 0;
     
@@ -80,13 +80,13 @@ public class FigGroup extends Fig {
     /** Construct a new FigGroup that holds no Figs. */
     public FigGroup() {
         super();
-        figs = Collections.synchronizedList(new ArrayList());
+        figs = new ArrayList();
     }
 
     /** Construct a new FigGroup that holds the given Figs. */
-   public FigGroup(final List figs) {
+   public FigGroup(List figs) {
         super();
-        this.figs = Collections.synchronizedList(figs);
+        this.figs = new ArrayList(figs);
         calcBounds();
     }
 
@@ -367,13 +367,13 @@ public class FigGroup extends Fig {
     /** Paint all the Figs in this group. */
     public void paint(Object g) {
     	if (isVisible()) {
-            Iterator it = getFigs().iterator();
-            while(it.hasNext()) {
-		Fig f = (Fig) it.next();
-		if (f.isVisible()) {
-                    f.paint(g);
-		}
-            }
+			int figCount = this.figs.size();
+			for (int figIndex = 0; figIndex < figCount; ++figIndex) {
+				Fig f = (Fig)this.figs.get(figIndex);
+				if (f.isVisible()) {
+					f.paint(g);
+				}
+			}
     	}
     }
     
