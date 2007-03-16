@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -164,6 +164,9 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
     }
   }
 
+  /**
+   * Try and find a blank area of the diagram to place the new Fig.
+   */
   public void bumpOffOtherNodesIn(Fig newFig, Rectangle bounds,
 				  boolean stagger, boolean vertical) {
     Rectangle bbox = newFig.getBounds();
@@ -171,7 +174,11 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
     int col = 0, row = 0, i = 1;
     while (bounds.intersects(bbox)) {
       Enumeration overlappers = nodesIn(bbox);
+      // If there is nothing overlapping then we are done:
       if (!overlappers.hasMoreElements()) return;
+      // Idem if the only found fig is the one we try to place:
+      if ((overlappers.nextElement() == newFig) 
+              && (!overlappers.hasMoreElements())) return;
       int unitOffset = ((i+1)/2) * ((i%2==0) ? -1 : 1);
       if (vertical) bbox.y = origY + unitOffset * (bbox.height + GAP);
       else bbox.x = origX + unitOffset * (bbox.width + GAP);
