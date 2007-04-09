@@ -34,18 +34,25 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.di.GraphNode;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
+import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.ui.Highlightable;
 import org.tigris.gef.undo.UndoManager;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.ByteLookupTable;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
+import java.awt.image.LookupOp;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -58,6 +65,35 @@ public class FigNode extends FigGroup implements
     private static final long serialVersionUID = 5312194520189613781L;
     
     private static final Log LOG = LogFactory.getLog(FigNode.class);
+    
+    private static final LookupOp   SHADOW_LOOKUP_OP;
+    private static final ConvolveOp SHADOW_CONVOLVE_OP;
+
+    // Fields used in paint() for painting shadows
+    private BufferedImage           shadowImage;
+    private int                     cachedWidth = -1;
+    private int                     cachedHeight = -1;
+    
+    /**
+     * Set this to force a repaint of the shadow.
+     * Normally repainting only happens
+     * when the outside boundaries change
+     * (for performance reasons (?)).
+     * In some cases this does not
+     * suffice, and you can set this attribute to force the update.
+     */
+    private boolean forceRepaint;
+    
+    /**
+     * The intensity value of the shadow color (0-255).
+     */
+    protected static final int SHADOW_COLOR_VALUE = 32;
+
+    /**
+     * The transparency value of the shadow color (0-255).
+     */
+    protected static final int SHADOW_COLOR_ALPHA = 128;
+    
     /** Constants useful for determining what side (north, south, east,
      *  or west) a port is located on.*/
     public static final double ang45 = Math.PI / 4;
@@ -79,6 +115,26 @@ public class FigNode extends FigGroup implements
      *  moves.
      */
     private ArrayList figEdges = new ArrayList();
+    
+    private int shadowSize = 0;
+    
+    static {
+        
+        // Setup image ops used in rendering shadows
+        byte[][] data = new byte[4][256];
+        for (int i = 1; i < 256; ++i) {
+            data[0][i] = (byte) SHADOW_COLOR_VALUE;
+            data[1][i] = (byte) SHADOW_COLOR_VALUE;
+            data[2][i] = (byte) SHADOW_COLOR_VALUE;
+            data[3][i] = (byte) SHADOW_COLOR_ALPHA;
+        }
+        float[] blur = new float[9];
+        for (int i = 0; i < blur.length; ++i) {
+            blur[i] = 1 / 12f;
+        }
+        SHADOW_LOOKUP_OP = new LookupOp(new ByteLookupTable(0, data), null);
+        SHADOW_CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, blur));
+    }
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -413,11 +469,78 @@ public class FigNode extends FigGroup implements
     ////////////////////////////////////////////////////////////////
     // painting methods
 
+    /*
+     * Overridden to paint shadows. This method supports painting shadows
+     * for any FigNodeModelElement. Any Figs that are nested within the
+     * FigNodeModelElement will be shadowed.<p>
+     *
+     * TODO: If g is not a Graphics2D shadows cannot be painted. This is
+     * a problem when saving the diagram as SVG.
+     *
+     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
+     */
+    public void paint(Graphics g) {
+        if (shadowSize > 0
+	        && g instanceof Graphics2D) {
+            int width = getWidth();
+            int height = getHeight();
+            int x = getX();
+            int y = getY();
+
+            /* Only create a new shadow image if figure size has changed.
+             * Which does not catch all cases:
+             * consider show/hide toggle of a stereotype on a package:
+             * in this case the total size remains, but the notch
+             * at the corner increases/decreases.
+             * Hence also check the "forceRepaint" attribute.
+             */
+            if (width != cachedWidth
+                    || height != cachedHeight
+                    || forceRepaint) {
+                forceRepaint = false;
+
+                cachedWidth = width;
+                cachedHeight = height;
+
+                BufferedImage img =
+		    new BufferedImage(width + 100,
+				      height + 100,
+				      BufferedImage.TYPE_INT_ARGB);
+
+                // Paint figure onto offscreen image
+                Graphics ig = img.getGraphics();
+                ig.translate(50 - x, 50 - y);
+                paintOnce(ig);
+
+                // Apply two filters to the image:
+                // 1. Apply LookupOp which converts all pixel data in the
+                //    figure to the same shadow color.
+                // 2. Apply ConvolveOp which creates blurred effect around
+                //    the edges of the shadow.
+                shadowImage =
+		    SHADOW_CONVOLVE_OP.filter(
+			    SHADOW_LOOKUP_OP.filter(img, null), null);
+            }
+
+            // Paint shadow image onto canvas
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.drawImage(
+                shadowImage,
+                null,
+                x + shadowSize - 50,
+                y + shadowSize - 50);
+        }
+
+        // Paint figure on top of shadow
+        paintOnce(g);
+    }
+
+
     /** Paints the FigNode to the given Graphics. Calls super.paint to
      *  paint all the Figs contained in the FigNode. Also can draw a
      *  highlighting rectangle around the FigNode. Needs-more-work:
      *  maybe I should implement LayerHighlight instead. */
-    public void paint(Object g) {
+    private void paintOnce(Object g) {
         super.paint(g);
         //System.out.println("[FigNode] paint: owner = " + getOwner());
         if(_highlight) {
@@ -563,6 +686,47 @@ public class FigNode extends FigGroup implements
     public List getDragDependencies() {
 	return null;
     }
+    
+    /**
+     * @param size the new shadow size
+     * TODO: Move the shadow stuff into GEF
+     */
+    public void setShadowSize(int size) {
+        if (size == shadowSize) {
+            return;
+        }
+        MutableGraphSupport.enableSaveAction();
+        shadowSize = size;
+    }
+
+    /**
+     * @deprecated do not use. This was deprecated by bobtarling at the 
+     * same time that it was introduced (Apr 2007), so may be deleted without
+     * warning as soon as its single reference is gone.
+     * @param size
+     */
+    protected void setShadowSizeFriend(int size) {
+        if (size == shadowSize) {
+            return;
+        }
+        shadowSize = size;
+    }
+
+    /**
+     * @return the current shadow size
+     */
+    public int getShadowSize() {
+        return shadowSize;
+    }
+
+    /**
+     * Force painting the shadow.
+     */
+    public void forceRepaintShadow() {
+        forceRepaint = true;
+    }
+
+    
 }
 
 
