@@ -115,7 +115,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
     /**
      * The constructor.
-     *
+     * @deprecated The empty constructor is not required
      */
     public ModeCreateEdgeAndNode() {
         super();
@@ -124,8 +124,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     /**
      * The constructor. <p>
      * 
-     * Preferrably use the constructor below, since it allows a better
-     * mechanism to create the node. 
+     * Preferrably use the constructor
+     * {@link #ModeCreateEdgeAndNode(Editor, Object, boolean, SelectionButtons)}
+     * below, since it allows a better mechanism to create the node. 
      *
      * @param ed the parent editor of this mode. Each Mode instance belongs to
      *           exactly one Editor instance.
@@ -152,10 +153,10 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
      * @param ed the parent editor of this mode. Each Mode instance belongs to
      *           exactly one Editor instance.
      * @param edgeType the class of the edge
-     * @param nodeCreator the SelectionButtons that knows 
-     *                               how to create the node
      * @param post if true, then the edge is postprocessed.
      *             See postProcessEdge().
+     * @param nodeCreator the SelectionButtons that knows 
+     *                               how to create the node
      */
     public ModeCreateEdgeAndNode(
                                  Editor ed,

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -340,7 +340,10 @@ public abstract class SelectionButtons extends SelectionResize {
         GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
         LayerPerspective lay =
             (LayerPerspective) ce.getLayerManager().getActiveLayer();
-        Fig newFC = renderer.getFigNodeFor(gm, lay, newNode, null);
+        Fig newFC = null;
+        if (buttonCode != 14) {
+            newFC = renderer.getFigNodeFor(gm, lay, newNode, null);
+        }
 
         // calculate the position of the newly created fig.
         Rectangle outputRect =
@@ -418,7 +421,9 @@ public abstract class SelectionButtons extends SelectionResize {
         edgeShape.setFilled(false);
         edgeShape.setComplete(true);
         fe.setFig(edgeShape);
-        newFC.damage();
+        if (buttonCode != 14) {
+            newFC.damage();
+        }
 
         ce.getSelectionManager().select(fe);
         ce.getSelectionManager().select(content);

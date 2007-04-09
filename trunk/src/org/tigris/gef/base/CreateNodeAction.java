@@ -140,7 +140,7 @@ public class CreateNodeAction extends UndoableAction implements GraphFactory {
         if (actionName != null) {
             instructions = "Click to place " + actionName.toString();
         }
-        Mode placeMode = new ModePlace(this, instructions);
+        Mode placeMode = createMode(instructions);
 
         Object shouldBeSticky = getArg("shouldBeSticky");
         Globals.mode(placeMode, shouldBeSticky == Boolean.TRUE);
@@ -148,6 +148,16 @@ public class CreateNodeAction extends UndoableAction implements GraphFactory {
             LOG.debug("Mode set to ModePlace with sticky mode "
                     + shouldBeSticky);
         }
+    }
+    
+    /**
+     * To be overrideen on any specialist subclasses that want to
+     * supply their own modes.
+     * @param instructions
+     * @return
+     */
+    protected Mode createMode(String instructions) {
+        return new ModePlace(this, instructions);
     }
 
     // //////////////////////////////////////////////////////////////

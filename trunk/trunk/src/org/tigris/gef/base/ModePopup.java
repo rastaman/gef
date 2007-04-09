@@ -75,8 +75,6 @@ public class ModePopup extends FigModifyingModeImpl {
         int x = me.getX();
         int y = me.getY();
         Fig underMouse = editor.hit(x, y);
-		
-		me = editor.retranslateMouseEvent(me);
 
         // if no Fig is under the mouse, show the editor's popup menu
         if (underMouse == null) {
@@ -89,14 +87,13 @@ public class ModePopup extends FigModifyingModeImpl {
             }
         }
         
-        if (!(underMouse instanceof PopupGenerator)) {
+        if(!(underMouse instanceof PopupGenerator))
             return false;
-        }
 
         SelectionManager selectionManager = editor.getSelectionManager();
-        if (!selectionManager.containsFig(underMouse)) {
+        if(!selectionManager.containsFig(underMouse))
             selectionManager.select(underMouse);
-        } else {
+        else {
             Vector selection = selectionManager.getFigs();
             Vector reassertSelection = new Vector(selection);
             selectionManager.select(reassertSelection);
@@ -124,7 +121,7 @@ public class ModePopup extends FigModifyingModeImpl {
                     else if(a instanceof JSeparator)
                         popup.add((JSeparator)a);
                 }
-                
+                me = editor.retranslateMouseEvent(me);
                 popup.show(editor.getJComponent(), me.getX(), me.getY());
                 me.consume();
                 return true;
@@ -133,8 +130,11 @@ public class ModePopup extends FigModifyingModeImpl {
         return false;
     }
 
-    /**
-     * Determine if a popup menu should be displayed by this
+    ////////////////////////////////////////////////////////////////
+    // event handlers
+
+
+    /** Determine if a popup menu should be displayed by this
      * mouse key being released
      */
     public void mouseReleased(MouseEvent me) {
@@ -150,8 +150,7 @@ public class ModePopup extends FigModifyingModeImpl {
         LOG.debug("MouseReleased is not a popup trigger");
     }
     
-    /**
-     * Determine if a popup menu should be displayed by this
+    /** Determine if a popup menu should be displayed by this
      * mouse key being pressed
      */
     public void mousePressed(MouseEvent me) {
@@ -164,6 +163,7 @@ public class ModePopup extends FigModifyingModeImpl {
             }
             return;
     	}
+        LOG.debug("MousePressed is not a popup trigger");
     }
 	
     /** Determine if a popup menu should be displayed by this
@@ -178,5 +178,6 @@ public class ModePopup extends FigModifyingModeImpl {
                 else  LOG.debug("MouseClicked detected as a popup but no popup to display");
             }
     	}
+        LOG.debug("MouseClicked is not a popup trigger");
     }
 }

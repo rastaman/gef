@@ -55,9 +55,9 @@ public class LayerDiagram extends Layer {
     private List _contents = new ArrayList();
 
     /** A counter so that layers have default names like 'One', 'Two', ... */
-    protected static int _nextLayerNumbered = 1;
+    private static int _nextLayerNumbered = 1;
 
-    private static Log LOG = LogFactory.getLog(LayerDiagram.class);
+    private static final Log LOG = LogFactory.getLog(LayerDiagram.class);
     
     ////////////////////////////////////////////////////////////////
     // constuctors and related methods

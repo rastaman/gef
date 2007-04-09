@@ -308,6 +308,23 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
         return figs;
     }
+    
+    /**
+     * Get a collection of Figs that will be dragged as a result of
+     * dragging this selection.
+     */
+    public List getDraggableFigs() {
+        List figs = new ArrayList(getFigs());
+        Iterator it = getFigs().iterator();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof FigNode) {
+                addDragDependents(figs, (FigNode) o);
+            }
+        }
+
+        return figs;
+    }
 
     /** End a transaction that damages all selected Fig's */
     public void endTrans() {
@@ -555,6 +572,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             } else {
                 FigNode figNode = (FigNode)fig;
                 _draggingNodes.add(figNode);
+                addDragDependents(_draggingNodes, figNode);
                 Collection figEdges = figNode.getFigEdges(null);
                 Iterator it = figEdges.iterator();
                 while(it.hasNext()) {
@@ -563,7 +581,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
                 }
             }
         }
-
+        
         List topLeftList = (_draggingNodes.size() > 0 ? _draggingNodes : _draggingOthers);
         int s = topLeftList.size();
         for(int i = 0; i < s; ++i) {
@@ -587,6 +605,19 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         UndoManager.getInstance().addMementoLock(this);
         
     }
+    
+    private void addDragDependents(List draggingNodes, FigNode figNode) {
+	if (figNode.getDragDependencies() != null) {
+	    Iterator it = figNode.getDragDependencies().iterator();
+	    while (it.hasNext()) {
+		Object dependent = it.next();
+		if (!draggingNodes.contains(dependent)) {
+		    draggingNodes.add(dependent);
+		}
+	    }
+	}
+    }
+
 
     private void checkDragEdge(FigEdge figEdge, List draggingFigs, List draggingNonMovingEdges) {
         FigNode dest = figEdge.getDestFigNode();

@@ -346,7 +346,7 @@ public class ModeModify extends FigModifyingModeImpl {
         damageHighlightTrap();
 
         _highlightTrap = null;
-        List figs = selectionManager.getDraggableFigs();
+        List figs = selectionManager.getFigs();
         int figCount = figs.size();
         Rectangle figBounds = new Rectangle();
         boolean draggedOntoCanvas = true;

@@ -85,14 +85,12 @@ public class Diagram implements Serializable, GraphListener {
 
     public Diagram(String name, GraphModel graphModel) {
         this(name, graphModel, new LayerPerspective(name, graphModel));
-        getLayer().setDiagram(this);
     }
 
     public Diagram(String name, GraphModel graphModel, LayerPerspective layer) {
         _changeSupport = new PropertyChangeSupport(this);
         _name = name;
         _layer = layer;
-        _layer.setDiagram(this);
         setGraphModel(graphModel);
     }
 
@@ -189,12 +187,7 @@ public class Diagram implements Serializable, GraphListener {
         return _layer;
     }
 
-    protected void setLayer(LayerPerspective layer) {
-	if (layer != null) {
-            layer.setDiagram(this);
-	} else if (_layer != null) {
-            _layer.setDiagram(null);
-	}
+    public void setLayer(LayerPerspective layer) {
         _layer = layer;
     }
 
