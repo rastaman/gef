@@ -1051,7 +1051,8 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = new Vector();
         JMenu orderMenu = new JMenu(Localizer.localize("PresentationGef", "Ordering"));
-        orderMenu.setMnemonic('O');
+        orderMenu.setMnemonic(
+            (Localizer.localize("PresentationGef", "OrderingMnemonic")).charAt(0));
         orderMenu.add(CmdReorder.BringForward);
         orderMenu.add(CmdReorder.SendBackward);
         orderMenu.add(CmdReorder.BringToFront);
