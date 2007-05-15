@@ -875,8 +875,16 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         return _fillColor;
     }
 
+    /**
+     * @deprecated use isFilled()
+     * @return
+     */
     public boolean getFilled() {
         return _filled;
+    }
+
+    public boolean isFilled() {
+        return getFilled();
     }
 
     /**
