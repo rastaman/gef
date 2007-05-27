@@ -634,7 +634,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
      * Sets the line color of the edge and of soure/destination arrows.
      * @param c
      */
-    final public void setLineColor(Color c) {
+    public void setLineColor(Color c) {
         _fig.setLineColor(c);
         getSourceArrowHead().setLineColor(c);
         getDestArrowHead().setLineColor(c);
