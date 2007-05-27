@@ -119,7 +119,7 @@ public class FigImage extends Fig implements ImageObserver {
     // painting methods
 
     /** Paint this FigImage on the given Graphics. */
-    public void paint(Object graphicContext) {
+    public void paint(Graphics graphicContext) {
         if (_image == null) {
             if (LOG.isDebugEnabled()) LOG.debug("reloading image");
             if (_url != null) {

@@ -23,11 +23,14 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.tigris.gef.presentation;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 
 import java.beans.PropertyChangeEvent;
@@ -54,8 +57,6 @@ import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
 import org.tigris.gef.graph.MutableGraphSupport;
 
-import org.tigris.gef.plot2d.Java2d;
-import org.tigris.gef.plot2d.Plotter;
 import org.tigris.gef.properties.PropCategoryManager;
 
 import org.tigris.gef.ui.PopupGenerator;
@@ -72,8 +73,6 @@ import org.tigris.gef.util.Localizer;
  */
 public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerator {
 
-    protected static Plotter plotter = new Java2d();
-    
     /** The smallest size that the user can drag this Fig. */
     public final int MIN_SIZE = 4;
 
@@ -778,6 +777,157 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
 //        }
 //    }
 //
+    
+    public void drawRect(Object graphicsContext, boolean filled, Color fillColor, int lineWidth, Color lineColor, int x, int y, int w, int h, boolean dashed, float dashes[], int dashPeriod) {
+        Graphics g = (Graphics)graphicsContext;
+        if (filled && fillColor != null) {
+            int xx = x;
+            int yy = y;
+            int ww = w;
+            int hh = h;
+            if (lineColor != null) {
+                if (lineWidth > 1 && !dashed) {
+                    int lineWidth2 = lineWidth*2;
+                    g.setColor(lineColor);
+                    g.fillRect(xx, yy, ww, hh);
+                    xx += lineWidth;
+                    yy += lineWidth;
+                    ww -= lineWidth2;
+                    hh -= lineWidth2;
+                }
+            }
+            g.setColor(fillColor);
+            g.fillRect(xx, yy, ww, hh);
+            if (lineColor != null) {
+                if (lineWidth == 1 || dashed) {
+                    paintRectLine(g, xx, yy, ww, hh, lineWidth, lineColor, dashed, dashes, dashPeriod);
+                }
+            }
+        } else {
+            paintRectLine(g, x, y, w, h, lineWidth, lineColor, dashed, dashes, dashPeriod);
+        }
+    }
+    
+    /**
+     * Paint the line of a rectangle without any fill.
+     * Manages line width and dashed lines.
+     * @param g The Graphics object
+     * @param x The x co-ordinate of the rectangle
+     * @param y The y co-ordinate of the rectangle
+     * @param w The width of the rectangle
+     * @param h The height of the rectangle
+     * @param lwidth The linewidth of the rectangle
+     */
+    private void paintRectLine(Graphics g, int x, int y, int w, int h, int lineWidth, Color lineColor, boolean dashed, float dashes[], int dashPeriod) {
+        if (lineWidth > 0 && lineColor != null) {
+            g.setColor(lineColor);
+            if (lineWidth == 1) {
+                paintRectLine(g, x, y, w, h, dashed, lineWidth, dashes, dashPeriod);
+            } else {
+                int xx = x;
+                int yy = y;
+                int hh = h;
+                int ww = w;
+                
+                for (int i=0; i < lineWidth; ++i) {
+                    paintRectLine(g, xx++, yy++, ww, hh, dashed, lineWidth, dashes, dashPeriod);
+                    ww -= 2;
+                    hh -= 2;
+                }
+            }
+        }
+    }
+    
+    private void paintRectLine(Graphics g, int x, int y, int w, int h, boolean dashed, int lineWidth, float dashes[], int dashPeriod) {
+        if (!dashed)
+            g.drawRect(x, y, w, h);
+        else {
+            drawDashedRectangle(g, 0, x, y, w, h, lineWidth, dashes, dashPeriod);
+        }
+    }
+    
+    private void drawDashedRectangle(Graphics g, int phase, int x, int y, int w, int h, int lineWidth, float dashes[], int dashPeriod) {
+        
+        phase = drawDashedLine(g, lineWidth, x, y, x + w, y, phase, dashes, dashPeriod);
+        phase = drawDashedLine(g, lineWidth, x + w, y, x + w, y + h, phase, dashes, dashPeriod);
+        phase = drawDashedLine(g, lineWidth, x + w, y + h, x, y + h, phase, dashes, dashPeriod);
+        phase = drawDashedLine(g, lineWidth, x, y + h, x, y, phase, dashes, dashPeriod);
+    }
+    
+    public int drawDashedLine(
+            Object graphicsContext, 
+            int lineWidth, 
+            int x1, int y1, int x2, int y2,
+            int phase, 
+            float[] dashes, int dashPeriod) {
+        if (graphicsContext instanceof Graphics2D) {
+            return drawDashedLineG2D(
+                    (Graphics2D)graphicsContext, 
+                    lineWidth, 
+                    phase, 
+                    x1, y1, x2, y2, 
+                    dashes, dashPeriod);
+        }
+        Graphics g = (Graphics)graphicsContext;
+        // Fall back on the old inefficient method of drawing dashed
+        // lines. This is required until SVGWriter is converted to
+        // extend Graphics2D
+        int segStartX;
+        int segStartY;
+        int segEndX;
+        int segEndY;
+        int dxdx = (x2 - x1) * (x2 - x1);
+        int dydy = (y2 - y1) * (y2 - y1);
+        int length = (int)Math.sqrt(dxdx + dydy);
+        int numDashes = dashes.length;
+        int d;
+        int dashesDist = 0;
+        for(d = 0; d < numDashes; d++) {
+            dashesDist += dashes[d];
+            // find first partial dash?
+        }
+
+        d = 0;
+        int i = 0;
+        while(i < length) {
+            segStartX = x1 + ((x2 - x1) * i) / length;
+            segStartY = y1 + ((y2 - y1) * i) / length;
+            i += dashes[d];
+            d = (d + 1) % numDashes;
+            if(i >= length) {
+                segEndX = x2;
+                segEndY = y2;
+            }
+            else {
+                segEndX = x1 + ((x2 - x1) * i) / length;
+                segEndY = y1 + ((y2 - y1) * i) / length;
+            }
+
+            g.drawLine(segStartX, segStartY, segEndX, segEndY);
+            i += dashes[d];
+            d = (d + 1) % numDashes;
+        }
+
+        // needs-more-work: phase not taken into account
+        return (length + phase) % dashesDist;
+    }
+    
+    private int drawDashedLineG2D(Graphics2D g, int lineWidth, int phase, int x1, int y1, int x2, int y2, float[] dashes, int dashPeriod) {
+        int dxdx = (x2 - x1) * (x2 - x1);
+        int dydy = (y2 - y1) * (y2 - y1);
+        int length = (int)(Math.sqrt(dxdx + dydy) + 0.5);       // This causes a smaller rounding error of 0.5pixels max. . Seems acceptable.
+        Graphics2D g2D = (Graphics2D)g;
+        Stroke  OriginalStroke = g2D.getStroke();               // we need this to restore the original stroke afterwards
+
+        BasicStroke  DashedStroke   = new BasicStroke(lineWidth,   BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f, dashes, (float)phase);
+        //                                           (float width, int cap,                int join,               float miterlimit, float[] dash, float dash_phase)
+        g2D.setStroke(DashedStroke);
+        g2D.drawLine(x1, y1, x2, y2);
+        g2D.setStroke(OriginalStroke);   // undo the manipulation of g
+
+        return (length + phase) % dashPeriod ;
+    }
+    
     final public void firePropChange(String propName, int oldV, int newV) {
         firePropChange(propName, new Integer(oldV), new Integer(newV));
     }
@@ -1271,16 +1421,17 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     }
 
     /**
-     * @depreacted use paint(Object) and make this final
-     * @param g
+     * Method to paint this Fig.  By default it paints an "empty"
+     * space, subclasses should override this method.
      */
-    public void paint(Graphics g) {
-        paint((Object)g);
-    }
+    abstract public void paint(Graphics g);
     
     /** Method to paint this Fig.  By default it paints an "empty"
-     *  space, subclasses should override this method. */
-    abstract public void paint(Object g);
+     * @deprecated use paint(Graphics)
+     */
+    final public void paint(Object g) {
+	paint ((Graphics) g);
+    };
 
     /** Method to paint this Fig.  By default it paints an "empty"
      *  space, subclasses should override this method. */

@@ -66,7 +66,7 @@ public class FigEdgeLine extends FigEdge {
         calcBounds();
     }
 
-    public void paint(Object graphicContext) {
+    public void paint(Graphics graphicContext) {
         super.paint(graphicContext);
         Graphics g = (Graphics)graphicContext;
         if (_highlight) {

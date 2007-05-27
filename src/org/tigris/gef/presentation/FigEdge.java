@@ -472,7 +472,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /**
      * Paint this FigEdge.  TODO: take Highlight into account
      */
-    public void paint(Object graphicContext) {
+    public void paint(Graphics graphicContext) {
         //computeRoute();
         Graphics g = (Graphics)graphicContext;
         _fig.paint(g);

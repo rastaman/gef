@@ -30,6 +30,7 @@ package org.tigris.gef.presentation;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.*;
 
@@ -365,7 +366,7 @@ public class FigGroup extends Fig {
     // display methods
 
     /** Paint all the Figs in this group. */
-    public void paint(Object g) {
+    public void paint(Graphics g) {
     	if (isVisible()) {
             Iterator it = getFigs().iterator();
             while(it.hasNext()) {

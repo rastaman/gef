@@ -680,7 +680,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * Otherwise paint <linewidth> nested rectangles, whereas
      * every rectangle is painted of 4 connecting lines.
      */
-    public void paint(Object graphicContext) {
+    public void paint(Graphics g) {
         if (!(isVisible())) {
             return;
         }
@@ -691,7 +691,6 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
         int lineWidth = getLineWidth();
 
-        Graphics g = (Graphics)graphicContext;
         if (getFilled()) {
             g.setColor(getFillColor());
             g.fillRect(_x, _y, _w, _h);

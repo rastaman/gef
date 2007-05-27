@@ -540,12 +540,12 @@ public class FigNode extends FigGroup implements
      *  paint all the Figs contained in the FigNode. Also can draw a
      *  highlighting rectangle around the FigNode. Needs-more-work:
      *  maybe I should implement LayerHighlight instead. */
-    private void paintOnce(Object g) {
+    private void paintOnce(Graphics g) {
         super.paint(g);
         //System.out.println("[FigNode] paint: owner = " + getOwner());
         if(_highlight) {
             Color lineColor = Globals.getPrefs().getHighlightColor();
-            plotter.drawRect(
+            drawRect(
                     g, 
                     false, null, 
                     3, lineColor, 

@@ -32,6 +32,7 @@
 package org.tigris.gef.presentation;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.io.Serializable;
 
 /**
@@ -50,16 +51,33 @@ public class FigCube extends Fig implements Serializable {
       super(x, y, w, h);
     }
 
-    public void paint(Object g){
-        plotter.drawCube(
-                g, 
-                getLineColor(), 
-                getFillColor(), 
-                getX(), 
-                getY(), 
-                getWidth(), 
-                getHeight(), 
-                D);
+    public void paint(Graphics g){
+        
+        final Color fillColor = getFillColor();
+        final Color lineColor = getLineColor();
+        final int x = getX();
+        final int y = getY();
+        final int w = getWidth();
+        final int h = getHeight();
+        
+        g.setColor(fillColor);
+        g.fillRect(x, y, w, h);
+        g.setColor(lineColor);
+        g.drawRect(x, y, w, h);
+
+        g.setColor(fillColor);
+        g.fillPolygon(new int[]{x, x+D, x+w+D, x+w}, 
+                      new int[]{y, y-D, y-D, y}, 4);
+        g.setColor(lineColor);
+        g.drawPolygon(new int[]{x, x+D, x+w+D, x+w}, 
+                      new int[]{y, y-D, y-D, y}, 4);
+
+        g.setColor(fillColor);
+        g.fillPolygon(new int[]{x+w+D, x+w+D, x+w, x+w}, 
+                          new int[]{y-D, y+h-D, y+h, y}, 4);
+        g.setColor(lineColor);
+        g.drawPolygon(new int[]{x+w+D, x+w+D, x+w, x+w}, 
+                      new int[]{y-D, y+h-D, y+h, y}, 4);
     }
 
     /**

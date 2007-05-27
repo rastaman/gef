@@ -75,18 +75,41 @@ public class FigCircle extends Fig {
     // display methods
 
     /** Draw this FigCircle. */
-    public void paint(Object g) {
-        plotter.drawOval(
-                g,
-                _filled,
-                _fillColor,
-                _lineColor,
-                _lineWidth,
-                getDashed(),
-                _x,
-                _y,
-                _w,
-                _h);
+    public void paint(Graphics g) {
+        
+        final boolean dashed = getDashed();
+        
+        if (dashed && (g instanceof Graphics2D)) {
+            Graphics2D g2d = (Graphics2D)g;
+            Stroke oldStroke = g2d.getStroke();
+            float[] dash = {10.0f, 10.0f};
+            Stroke stroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, dash, 0.0f);
+            g2d.setStroke(stroke);
+            if (_filled && _fillColor != null) {
+                g2d.setColor(_fillColor);
+                g2d.fillOval(_x, _y, _w, _h);
+            }
+
+            if (_lineWidth > 0 && _lineColor != null) {
+                g2d.setColor(_lineColor);
+                g2d.drawOval(_x, _y, _w - _lineWidth, _h - _lineWidth);
+            }
+
+            g2d.setStroke(oldStroke);
+        } else if (_filled && _fillColor != null) {
+            if (_lineWidth > 0 && _lineColor != null) {
+                g.setColor(_lineColor);
+                g.fillOval(_x, _y, _w, _h);
+            }
+
+            if (!_fillColor.equals(_lineColor)) {
+                g.setColor(_fillColor);
+                g.fillOval(_x + _lineWidth, _y + _lineWidth, _w - (_lineWidth*2), _h - (_lineWidth*2));
+            }
+        } else if (_lineWidth > 0 && _lineColor != null) {
+            g.setColor(_lineColor);
+            g.drawOval(_x, _y, _w, _h);
+        }
     }
     
     public void appendSvg(StringBuffer sb) {
