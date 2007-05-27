@@ -24,8 +24,12 @@
 
 package org.tigris.gef.di;
 
+import java.util.List;
+
 /**
 * An interface to be implemented by edge connectable figs.
 */
 public interface GraphNode extends GraphElement {
+    
+    List getGraphEdges();
 }

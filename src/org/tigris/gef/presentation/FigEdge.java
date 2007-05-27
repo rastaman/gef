@@ -12,6 +12,7 @@ import java.util.Vector;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConv;
 import org.tigris.gef.di.GraphEdge;
+import org.tigris.gef.di.GraphNode;
 import org.tigris.gef.graph.GraphEdgeHooks;
 import org.tigris.gef.ui.Highlightable;
 import org.tigris.gef.undo.Memento;
@@ -29,10 +30,10 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     private Fig _destPortFig;
 
     /** FigNode presenting the edge's from-port's parent node. */
-    protected FigNode _sourceFigNode;
+    private FigNode _sourceFigNode;
 
     /** FigNode presenting the edge's to-port's parent node. */
-    protected FigNode _destFigNode;
+    private FigNode _destFigNode;
 
     /** Fig that presents the edge. */
     private Fig _fig;
@@ -380,6 +381,16 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     final public FigNode getSourceFigNode() {
         return _sourceFigNode;
     }
+    
+    final public GraphNode getSourceGraphNode() {
+        return _sourceFigNode;
+    }
+
+    final public GraphNode getDestGraphNode() {
+        return _destFigNode;
+    }
+
+    
 
     /**
      * USED BY PGML.tee
@@ -705,6 +716,20 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         catch(Exception ex) {
             ex.printStackTrace();
         }
+    }
+    
+    /**
+     * Set the GraphNode reprenting this FigEdge's from-node.
+     */
+    public void setSourceGraphNode(GraphNode node) {
+	setSourceFigNode((FigNode) node);
+    }
+    
+    /**
+     * Set the GraphNode reprenting this FigEdge's to-node.
+     */
+    public void setDestGraphNode(GraphNode node) {
+	setDestFigNode((FigNode) node);
     }
 
     /** Get the Fig reprenting this FigEdge's from-port. */

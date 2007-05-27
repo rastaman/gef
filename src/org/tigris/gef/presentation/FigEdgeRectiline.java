@@ -130,11 +130,11 @@ public class FigEdgeRectiline extends FigEdge {
             dstPt = destPortFig.connectionPoint(srcPt);
         }
         
-        Rectangle srcRR = _sourceFigNode.routingRect();
-        Rectangle dstRR = _destFigNode.routingRect();
+        Rectangle srcRR = getSourceFigNode().routingRect();
+        Rectangle dstRR = getDestFigNode().routingRect();
         
-        int srcSector = ((FigNode)_sourceFigNode).getPortSector(sourcePortFig);
-        int dstSector = ((FigNode)_destFigNode).getPortSector(destPortFig);
+        int srcSector = getSourceFigNode().getPortSector(sourcePortFig);
+        int dstSector = getDestFigNode().getPortSector(destPortFig);
         
         // first decide what layout case we have
         Point srcRRPt = routingRectPoint(srcPt, srcRR, srcSector);

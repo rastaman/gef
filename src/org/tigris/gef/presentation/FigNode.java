@@ -217,6 +217,10 @@ public class FigNode extends FigGroup implements
     public List getFigEdges() {
         return (List)(figEdges.clone());
     }
+    
+    public List getGraphEdges() {
+        return (List)(figEdges.clone());
+    }
 
     /** Sets the owner (a node in some underlying model). If the given
      *  node implements GraphNodeHooks, then the FigNode will register
