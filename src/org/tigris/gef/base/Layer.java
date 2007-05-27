@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import org.tigris.gef.di.GraphicElement;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigPainter;
@@ -291,6 +292,14 @@ public abstract class Layer implements java.io.Serializable {
     }
 
     public void remove(Fig f) {
+    }
+
+    public void add(GraphicElement f) {
+	add((Fig) f);
+    }
+
+    public void remove(GraphicElement f) {
+	remove((Fig) f);
     }
 
     public void removeAll() {
