@@ -76,8 +76,7 @@ public class FigRRect extends FigRect {
      * Paint this FigRRect.
      * Dashed lines aren't currently handled.
      */
-    public void paint(Object graphicContext) {
-        Graphics g = (Graphics) graphicContext;
+    public void paint(Graphics g) {
         if (_filled && _fillColor != null) {
             if (_lineColor != null && _lineWidth > 1) {
                 drawFilledRRectWithWideLine(g);

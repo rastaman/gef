@@ -67,7 +67,9 @@ import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.FigTextEditor;
+import org.tigris.gef.presentation.TextEditor;
 
 /**
  * JGraph is a Swing component that displays a connected graph and allows
@@ -383,10 +385,6 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         drawingPane.setVisible(visible);
-		if(editor.getActiveTextEditor() != null)
-		{
-            FigTextEditor.remove();
-        }
     }
     
     /**
@@ -566,7 +564,10 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
     }
 
     public void adjustmentValueChanged(AdjustmentEvent e) {
-        FigTextEditor.getInstance().endEditing();
+	TextEditor textEditor = FigText.getActiveTextEditor();
+	if (textEditor != null) {
+	    textEditor.endEditing();
+	}
         editor.damageAll();
     }
     

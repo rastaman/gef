@@ -439,7 +439,7 @@ public class FigEdgePoly extends FigEdge {
         }
     }
 
-    public void paint(Object graphicContext) {
+    public void paint(Graphics graphicContext) {
         super.paint(graphicContext);
         if (_highlight) {
             FigPoly f = (FigPoly) getFig();

@@ -83,7 +83,7 @@ public class FigDiamond extends Fig {
     // painting methods
 
     /** Paint this FigRect */
-    public void paint(Object graphicContext) {
+    public void paint(Graphics graphicContext) {
         int xs[] = new int[4];
         int ys[] = new int[4];
         xs[0] = _x + _w/2;

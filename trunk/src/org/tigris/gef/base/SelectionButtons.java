@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -147,7 +147,7 @@ public abstract class SelectionButtons extends SelectionResize {
      * @return true if the selection button left from the fig was clicked
      */
     public boolean hitLeft(int x, int y, int w, int h, Rectangle r) {
-        return intersectsRect(r, x, y - h / 2, w + MARGIN, h);
+        return intersectsRect(r, x - w - MARGIN, y - h / 2, w + MARGIN, h);
     }
 
     /**
@@ -159,7 +159,7 @@ public abstract class SelectionButtons extends SelectionResize {
      * @return true if the selection button right from the fig was clicked
      */
     public boolean hitRight(int x, int y, int w, int h, Rectangle r) {
-        return intersectsRect(r, x - w - MARGIN, y - h / 2, w + MARGIN, h);
+        return intersectsRect(r, x, y - h / 2, w + MARGIN, h);
     }
 
     /**
@@ -244,7 +244,12 @@ public abstract class SelectionButtons extends SelectionResize {
      * @param hi the button identifier
      */
     public void paintButtonLeft(Icon i, Graphics g, int x, int y, int hi) {
-        paintButton(i, g, x + MARGIN, y - i.getIconHeight() / 2, hi);
+        paintButton(
+		    i,
+		    g,
+		    x - i.getIconWidth() - MARGIN,
+		    y - i.getIconHeight() / 2,
+		    hi);
     }
 
     /**
@@ -255,12 +260,7 @@ public abstract class SelectionButtons extends SelectionResize {
      * @param hi the button identifier
      */
     public void paintButtonRight(Icon i, Graphics g, int x, int y, int hi) {
-        paintButton(
-		    i,
-		    g,
-		    x - i.getIconWidth() - MARGIN,
-		    y - i.getIconHeight() / 2,
-		    hi);
+        paintButton(i, g, x + MARGIN, y - i.getIconHeight() / 2, hi);
     }
 
     /**
@@ -340,7 +340,10 @@ public abstract class SelectionButtons extends SelectionResize {
         GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
         LayerPerspective lay =
             (LayerPerspective) ce.getLayerManager().getActiveLayer();
-        Fig newFC = renderer.getFigNodeFor(gm, lay, newNode, null);
+        Fig newFC = null;
+        if (buttonCode != 14) {
+            newFC = renderer.getFigNodeFor(gm, lay, newNode, null);
+        }
 
         // calculate the position of the newly created fig.
         Rectangle outputRect =
@@ -362,10 +365,10 @@ public abstract class SelectionButtons extends SelectionResize {
                 x = content.getX();
                 y = content.getY() + content.getHeight() + 100;
             } else if (buttonCode == 12) {
-                x = content.getX() + content.getWidth() + 100;
+                x = Math.max(0, content.getX() - 200);
                 y = content.getY();
             } else if (buttonCode == 13) {
-                x = Math.max(0, content.getX() - 200);
+                x = content.getX() + content.getWidth() + 100;
                 y = content.getY();
             }
             // place the fig if it is not a selfassociation
@@ -407,8 +410,8 @@ public abstract class SelectionButtons extends SelectionResize {
         Object newEdge = null;
         if (buttonCode == 10) newEdge = createEdgeAbove(mgm, newNode);
         else if (buttonCode == 11) newEdge = createEdgeUnder(mgm, newNode);
-        else if (buttonCode == 12) newEdge = createEdgeRight(mgm, newNode);
-        else if (buttonCode == 13) newEdge = createEdgeLeft(mgm, newNode);
+        else if (buttonCode == 12) newEdge = createEdgeLeft(mgm, newNode);
+        else if (buttonCode == 13) newEdge = createEdgeRight(mgm, newNode);
         else if (buttonCode == 14) newEdge = createEdgeToSelf(mgm);
 
         // place the edge on the layer and update the diagram
@@ -418,7 +421,9 @@ public abstract class SelectionButtons extends SelectionResize {
         edgeShape.setFilled(false);
         edgeShape.setComplete(true);
         fe.setFig(edgeShape);
-        newFC.damage();
+        if (buttonCode != 14) {
+            newFC.damage();
+        }
 
         ce.getSelectionManager().select(fe);
         ce.getSelectionManager().select(content);

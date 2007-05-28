@@ -12,6 +12,7 @@ import java.util.Vector;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConv;
 import org.tigris.gef.di.GraphEdge;
+import org.tigris.gef.di.GraphNode;
 import org.tigris.gef.graph.GraphEdgeHooks;
 import org.tigris.gef.ui.Highlightable;
 import org.tigris.gef.undo.Memento;
@@ -29,10 +30,10 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     private Fig _destPortFig;
 
     /** FigNode presenting the edge's from-port's parent node. */
-    protected FigNode _sourceFigNode;
+    private FigNode _sourceFigNode;
 
     /** FigNode presenting the edge's to-port's parent node. */
-    protected FigNode _destFigNode;
+    private FigNode _destFigNode;
 
     /** Fig that presents the edge. */
     private Fig _fig;
@@ -380,6 +381,16 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     final public FigNode getSourceFigNode() {
         return _sourceFigNode;
     }
+    
+    final public GraphNode getSourceNode() {
+        return _sourceFigNode;
+    }
+
+    final public GraphNode getDestNode() {
+        return _destFigNode;
+    }
+
+    
 
     /**
      * USED BY PGML.tee
@@ -472,7 +483,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /**
      * Paint this FigEdge.  TODO: take Highlight into account
      */
-    public void paint(Object graphicContext) {
+    public void paint(Graphics graphicContext) {
         //computeRoute();
         Graphics g = (Graphics)graphicContext;
         _fig.paint(g);
@@ -634,7 +645,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
      * Sets the line color of the edge and of soure/destination arrows.
      * @param c
      */
-    final public void setLineColor(Color c) {
+    public void setLineColor(Color c) {
         _fig.setLineColor(c);
         getSourceArrowHead().setLineColor(c);
         getDestArrowHead().setLineColor(c);
@@ -705,6 +716,20 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         catch(Exception ex) {
             ex.printStackTrace();
         }
+    }
+    
+    /**
+     * Set the GraphNode reprenting this FigEdge's from-node.
+     */
+    public void setSourceNode(GraphNode node) {
+	setSourceFigNode((FigNode) node);
+    }
+    
+    /**
+     * Set the GraphNode reprenting this FigEdge's to-node.
+     */
+    public void setDestNode(GraphNode node) {
+	setDestFigNode((FigNode) node);
     }
 
     /** Get the Fig reprenting this FigEdge's from-port. */

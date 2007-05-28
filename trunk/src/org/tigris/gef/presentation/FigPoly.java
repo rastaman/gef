@@ -30,6 +30,7 @@ package org.tigris.gef.presentation;
 import org.tigris.gef.base.Geometry;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -507,13 +508,34 @@ public class FigPoly extends Fig {
     // painting methods
 
     /** Paint the FigPoly on the given Graphics */
-    public void paint(Object g) {
-        plotter.drawPoly(
-                g, 
-                _filled, getFillColor(), 
-                _lineWidth, getLineColor(), 
-                _npoints, _xpoints, _ypoints, 
-                getDashed(), _dashes, _dashPeriod);
+    public void paint(Graphics g) {
+        
+        if (_filled && _fillColor != null) {
+            g.setColor(_fillColor);
+            g.fillPolygon(_xpoints, _ypoints, _npoints);
+        }
+
+        if (_lineWidth > 0 && _lineColor != null) {
+            g.setColor(_lineColor);
+
+            if (getDashed())
+                drawDashedPerimeter(g, _lineWidth, _npoints, _xpoints, _ypoints, _dashes, _dashPeriod);
+            else
+                g.drawPolyline(_xpoints, _ypoints, _npoints);
+        }
+    }
+    
+    private void drawDashedPerimeter(Graphics g, int lineWidth, int pointCount, int xPoints[], int yPoints[], float dashes[], int dashPeriod) {
+        int phase = 0;
+
+        for(int i = 1; i < pointCount; i++) {
+            phase = drawDashedLine(
+                    g, 
+                    lineWidth, 
+                    xPoints[i - 1], yPoints[i - 1], 
+                    xPoints[i], yPoints[i],
+                    phase, dashes, dashPeriod);
+        }
     }
     
     public void appendSvg(StringBuffer sb) {

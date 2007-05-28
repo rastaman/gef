@@ -28,9 +28,13 @@
 
 package org.tigris.gef.presentation;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 
 import org.tigris.gef.base.Geometry;
 
@@ -261,15 +265,24 @@ public class FigLine extends Fig {
     }
 
     /** Paint this line object. */
-    public void paint(Object g) {
-        plotter.drawLine(
-                g,
-                getLineWidth(),
-                getLineColor(),
-                _x1, _y1, _x2, _y2,
-                getDashed(),
-                _dashes, _dashPeriod);
+    public void paint(Graphics g) {
+	
+        final int lineWidth = getLineWidth();
+        final Color lineColor = getLineColor();
+        final boolean dashed = getDashed();
+        
+        if (lineWidth <= 0) return;
+        
+        if (dashed) {
+            g.setColor(lineColor);
+            drawDashedLine(g, lineWidth, _x1, _y1, _x2, _y2, 0, _dashes, _dashPeriod);
+        } else {
+            g.setColor(lineColor);
+            g.drawLine(_x1, _y1, _x2, _y2);
+        }
+
     }
+    
     
     public void appendSvg(StringBuffer sb) {
         sb.append("<line id='").append(getId()).append("' class='").append(getClass().getName()).append("'");

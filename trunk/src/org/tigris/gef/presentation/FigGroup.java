@@ -30,6 +30,7 @@ package org.tigris.gef.presentation;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.*;
 
@@ -51,7 +52,7 @@ public class FigGroup extends Fig {
     /** 
      * The Fig's contained in this FigGroup  
      */
-    private ArrayList figs;
+    private List figs;
     
     private int _extraFrameSpace = 0;
     
@@ -80,13 +81,13 @@ public class FigGroup extends Fig {
     /** Construct a new FigGroup that holds no Figs. */
     public FigGroup() {
         super();
-        figs = new ArrayList();
+        figs = Collections.synchronizedList(new ArrayList());
     }
 
     /** Construct a new FigGroup that holds the given Figs. */
-   public FigGroup(List figs) {
+   public FigGroup(final List figs) {
         super();
-        this.figs = new ArrayList(figs);
+        this.figs = Collections.synchronizedList(figs);
         calcBounds();
     }
 
@@ -365,15 +366,15 @@ public class FigGroup extends Fig {
     // display methods
 
     /** Paint all the Figs in this group. */
-    public void paint(Object g) {
+    public void paint(Graphics g) {
     	if (isVisible()) {
-			int figCount = this.figs.size();
-			for (int figIndex = 0; figIndex < figCount; ++figIndex) {
-				Fig f = (Fig)this.figs.get(figIndex);
-				if (f.isVisible()) {
-					f.paint(g);
-				}
-			}
+            Iterator it = getFigs().iterator();
+            while(it.hasNext()) {
+		Fig f = (Fig) it.next();
+		if (f.isVisible()) {
+                    f.paint(g);
+		}
+            }
     	}
     }
     

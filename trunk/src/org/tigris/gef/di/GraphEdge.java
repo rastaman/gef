@@ -28,4 +28,13 @@ package org.tigris.gef.di;
 * An interface to be implemented by edge connectable figs.
 */
 public interface GraphEdge extends GraphElement {
+    
+    GraphNode getSourceNode();
+    
+    GraphNode getDestNode();
+    
+    void setSourceNode(GraphNode node);
+    
+    void setDestNode(GraphNode node);
+    
 }
