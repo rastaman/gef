@@ -31,5 +31,5 @@ import java.util.List;
 */
 public interface GraphNode extends GraphElement {
     
-    List getGraphEdges();
+    List getEdges();
 }

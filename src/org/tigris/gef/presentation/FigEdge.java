@@ -382,11 +382,11 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         return _sourceFigNode;
     }
     
-    final public GraphNode getSourceGraphNode() {
+    final public GraphNode getSourceNode() {
         return _sourceFigNode;
     }
 
-    final public GraphNode getDestGraphNode() {
+    final public GraphNode getDestNode() {
         return _destFigNode;
     }
 
@@ -721,14 +721,14 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /**
      * Set the GraphNode reprenting this FigEdge's from-node.
      */
-    public void setSourceGraphNode(GraphNode node) {
+    public void setSourceNode(GraphNode node) {
 	setSourceFigNode((FigNode) node);
     }
     
     /**
      * Set the GraphNode reprenting this FigEdge's to-node.
      */
-    public void setDestGraphNode(GraphNode node) {
+    public void setDestNode(GraphNode node) {
 	setDestFigNode((FigNode) node);
     }
 

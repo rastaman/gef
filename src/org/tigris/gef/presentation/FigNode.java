@@ -218,7 +218,7 @@ public class FigNode extends FigGroup implements
         return (List)(figEdges.clone());
     }
     
-    public List getGraphEdges() {
+    public List getEdges() {
         return (List)(figEdges.clone());
     }
 
