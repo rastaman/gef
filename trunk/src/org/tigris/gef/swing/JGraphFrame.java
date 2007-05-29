@@ -23,6 +23,7 @@
 
 package org.tigris.gef.swing;
 
+import org.tigris.gef.graph.presentation.JGraph;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;

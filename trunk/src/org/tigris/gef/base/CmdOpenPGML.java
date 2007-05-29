@@ -36,7 +36,6 @@ import org.tigris.gef.graph.presentation.*;
 import org.tigris.gef.persistence.pgml.PGMLStackParser;
 import org.tigris.gef.util.Util;
 import org.xml.sax.SAXException;
-import org.tigris.gef.swing.*;
 
 /** Cmd to Load a previously saved document document. The loaded
  *  editor is displayed in a new JGraphFrame.

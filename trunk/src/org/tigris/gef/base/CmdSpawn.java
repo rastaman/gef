@@ -33,7 +33,6 @@ package org.tigris.gef.base;
 import java.awt.*;
 
 import org.tigris.gef.graph.presentation.*;
-import org.tigris.gef.swing.*;
 
 /** Cmd to open a new editor on the same document as in the current
  *  editor.  Works by making a new JGraphFrame with a clone of the

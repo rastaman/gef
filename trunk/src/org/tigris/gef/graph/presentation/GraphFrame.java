@@ -11,7 +11,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.ui.IStatusBar;
 import org.tigris.gef.ui.ToolBar;
-import org.tigris.gef.swing.JGraph;
+import org.tigris.gef.graph.presentation.JGraph;
 
 public interface GraphFrame {
 
