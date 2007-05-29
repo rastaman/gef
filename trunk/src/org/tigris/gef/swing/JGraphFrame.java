@@ -21,7 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.tigris.gef.graph.presentation;
+package org.tigris.gef.swing;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -34,13 +34,15 @@ import org.tigris.gef.undo.RedoAction;
 import org.tigris.gef.undo.UndoAction;
 import org.tigris.gef.event.*;
 import org.tigris.gef.graph.*;
+import org.tigris.gef.graph.presentation.Graph;
+import org.tigris.gef.graph.presentation.GraphFrame;
 import org.tigris.gef.util.*;
 
 /** A window that displays a toolbar, a connected graph editing pane,
  *  and a status bar. */
 
 public class JGraphFrame extends JFrame
-implements IStatusBar, Cloneable, ModeChangeListener {
+implements IStatusBar, Cloneable, ModeChangeListener,GraphFrame {
 
     private static final long serialVersionUID = -8167010467922210977L;
     /** The toolbar (shown at top of window). */
@@ -77,11 +79,17 @@ implements IStatusBar, Cloneable, ModeChangeListener {
 	init( jg);
   }
 
-  public void init() {
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#init()
+ */
+public void init() {
 	  init( new JGraph());
   }
 
-  public void init( JGraph jg) {
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#init(org.tigris.gef.graph.presentation.Graph)
+ */
+public void init( JGraph jg) {
 	_graph = jg;
 	Container content = getContentPane();
 	setUpMenus();
@@ -106,42 +114,84 @@ implements IStatusBar, Cloneable, ModeChangeListener {
   ////////////////////////////////////////////////////////////////
   // Cloneable implementation
 
-  public Object clone() {
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#clone()
+ */
+public Object clone() {
 	return null; //needs-more-work
   }  
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public JGraph getGraph() { return _graph; }  
-  public GraphEdgeRenderer getGraphEdgeRenderer() {
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#getGraph()
+ */
+public Graph getGraph() { return _graph; }  
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#getGraphEdgeRenderer()
+ */
+public GraphEdgeRenderer getGraphEdgeRenderer() {
 	return _graph.getEditor().getGraphEdgeRenderer();
   }  
-  public GraphModel getGraphModel() { return _graph.getGraphModel(); }  
-  public GraphNodeRenderer getGraphNodeRenderer() {
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#getGraphModel()
+ */
+public GraphModel getGraphModel() { return _graph.getGraphModel(); }  
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#getGraphNodeRenderer()
+ */
+public GraphNodeRenderer getGraphNodeRenderer() {
 	return _graph.getEditor().getGraphNodeRenderer();
   }  
-  public JMenuBar getJMenuBar() { return _menubar; }  
-  public ToolBar getToolBar() { return _toolbar; }  
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#getJMenuBar()
+ */
+public JMenuBar getJMenuBar() { return _menubar; }  
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#getToolBar()
+ */
+public ToolBar getToolBar() { return _toolbar; }  
   ////////////////////////////////////////////////////////////////
   // ModeChangeListener implementation
-  public void modeChange(ModeChangeEvent mce) {
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#modeChange(org.tigris.gef.event.ModeChangeEvent)
+ */
+public void modeChange(ModeChangeEvent mce) {
 	//System.out.println("TabDiagram got mode change event");
 	if (!Globals.getSticky() && Globals.mode() instanceof ModeSelect)
 	  _toolbar.unpressAllButtons();
   }
-  public void setGraph(JGraph g) { _graph = g; }
-  public void setGraphEdgeRenderer(GraphEdgeRenderer rend) {
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#setGraph(org.tigris.gef.graph.presentation.Graph)
+ */
+public void setGraph(JGraph g) { _graph = g; }
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#setGraphEdgeRenderer(org.tigris.gef.graph.GraphEdgeRenderer)
+ */
+public void setGraphEdgeRenderer(GraphEdgeRenderer rend) {
 	_graph.getEditor().setGraphEdgeRenderer(rend);
   }
-  public void setGraphModel(GraphModel gm) { _graph.setGraphModel(gm); }
-  public void setGraphNodeRenderer(GraphNodeRenderer rend) {
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#setGraphModel(org.tigris.gef.graph.GraphModel)
+ */
+public void setGraphModel(GraphModel gm) { _graph.setGraphModel(gm); }
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#setGraphNodeRenderer(org.tigris.gef.graph.GraphNodeRenderer)
+ */
+public void setGraphNodeRenderer(GraphNodeRenderer rend) {
 	_graph.getEditor().setGraphNodeRenderer(rend);
   }
-  public void setJMenuBar(JMenuBar mb) {
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#setJMenuBar(javax.swing.JMenuBar)
+ */
+public void setJMenuBar(JMenuBar mb) {
 	_menubar = mb;
 	getContentPane().add(_menubar, BorderLayout.NORTH);
   }
-  public void setToolBar(ToolBar tb) {
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#setToolBar(org.tigris.gef.ui.ToolBar)
+ */
+public void setToolBar(ToolBar tb) {
 	_toolbar = tb;
 	_mainPanel.add(_toolbar, BorderLayout.NORTH);
   }
@@ -297,15 +347,21 @@ implements IStatusBar, Cloneable, ModeChangeListener {
   ////////////////////////////////////////////////////////////////
   // display related methods
 
-  public void setVisible(boolean b) {
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#setVisible(boolean)
+ */
+public void setVisible(boolean b) {
 	super.setVisible(b);
 	if (b) Globals.setStatusBar(this);
   }  
   ////////////////////////////////////////////////////////////////
   // IStatusListener implementation
 
-  /** Show a message in the statusbar. */
+  /* (non-Javadoc)
+ * @see org.tigris.gef.graph.presentation.GraphFrame#showStatus(java.lang.String)
+ */
   public void showStatus(String msg) {
 	if (_statusbar != null) _statusbar.setText(msg);
   }  
+
 } /* end class JGraphFrame */

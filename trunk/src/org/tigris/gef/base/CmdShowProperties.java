@@ -36,7 +36,7 @@ package org.tigris.gef.base;
  *  show().  For example, used to open a list of some availible
  *  commands.
  * @deprecated in 0.12.3 use ShowPropertiesAction
- * @see org.tigris.gef.graph.presentation.JGraphFrame
+ * @see org.tigris.gef.graph.presentation.GraphFrame
  */
 
 public class CmdShowProperties extends Cmd {

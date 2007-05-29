@@ -41,7 +41,7 @@ import org.tigris.gef.util.Localizer;
  * This is very convienent for moving among lots of small Figs. It also provides
  * a simple example of an Action that is bound to a key.
  * 
- * @see org.tigris.gef.graph.presentation.JGraph#initKeys()
+ * @see org.tigris.gef.graph.presentation.Graph#initKeys()
  */
 public class SelectNextAction extends AbstractAction {
 

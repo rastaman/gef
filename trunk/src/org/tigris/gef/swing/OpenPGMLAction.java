@@ -25,7 +25,7 @@
 // Classes: OpenPGMLAction
 // Original Author: andrea.nironi@gmail.com
 
-package org.tigris.gef.base;
+package org.tigris.gef.swing;
 
 import java.awt.Dimension;
 import java.awt.FileDialog;
@@ -38,11 +38,16 @@ import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
-import org.tigris.gef.swing.JGraphFrame;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.SaveAction;
+import org.tigris.gef.graph.presentation.GraphFrame;
 import org.tigris.gef.persistence.pgml.PGMLStackParser;
 import org.tigris.gef.util.Localizer;
 import org.tigris.gef.util.Util;
 import org.xml.sax.SAXException;
+import org.tigris.gef.swing.*;
 
 /**
  * Action to Load a previously saved document document. The loaded editor is

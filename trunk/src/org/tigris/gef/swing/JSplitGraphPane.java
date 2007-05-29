@@ -1,4 +1,4 @@
-package org.tigris.gef.graph.presentation;
+package org.tigris.gef.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -10,7 +10,9 @@ import javax.swing.JSplitPane;
 
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.graph.presentation.JGraph;
+import org.tigris.gef.graph.presentation.Graph;
+import org.tigris.gef.graph.presentation.SplitGraphPane;
+import org.tigris.gef.swing.*;
 
 /**
  * A split pane container for showing two instances of the same
@@ -18,7 +20,7 @@ import org.tigris.gef.graph.presentation.JGraph;
  * 
  * @author Bob Tarling
  */
-public class JSplitGraphPane extends JPanel {
+public class JSplitGraphPane extends JPanel implements SplitGraphPane {
 
     private static final long serialVersionUID = 3796638763703844578L;
 

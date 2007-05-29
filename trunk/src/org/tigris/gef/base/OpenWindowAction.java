@@ -40,7 +40,7 @@ import org.tigris.gef.util.Localizer;
  *  show().  For example, used to open a list of some availible
  *  commands.
  *
- * @see org.tigris.gef.graph.presentation.JGraphFrame 
+ * @see org.tigris.gef.graph.presentation.GraphFrame 
  */
 public class OpenWindowAction extends UndoableAction {
 

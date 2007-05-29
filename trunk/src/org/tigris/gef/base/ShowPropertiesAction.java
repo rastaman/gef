@@ -39,7 +39,7 @@ import org.tigris.gef.util.Localizer;
  * Frame, this Cmd makes a new instance and calls show(). For example, used to
  * open a list of some availible commands.
  * 
- * @see org.tigris.gef.graph.presentation.JGraphFrame
+ * @see org.tigris.gef.graph.presentation.GraphFrame
  */
 
 public class ShowPropertiesAction extends AbstractAction {

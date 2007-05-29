@@ -39,7 +39,7 @@ import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
-import org.tigris.gef.graph.presentation.JGraphFrame;
+import org.tigris.gef.swing.JGraphFrame;
 import org.tigris.gef.persistence.svg.SvgParser;
 import org.tigris.gef.util.Localizer;
 import org.tigris.gef.util.Util;

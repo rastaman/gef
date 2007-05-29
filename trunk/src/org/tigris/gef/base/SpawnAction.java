@@ -33,8 +33,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
-import org.tigris.gef.graph.presentation.JGraphFrame;
+import org.tigris.gef.graph.presentation.GraphFrame;
 import org.tigris.gef.util.Localizer;
+import org.tigris.gef.swing.*;
 
 /**
  * Action to open a new editor on the same document as in the current editor.
@@ -42,7 +43,7 @@ import org.tigris.gef.util.Localizer;
  * argument "dimension" may be set to th desired size of the new window.
  * 
  * @see Editor
- * @see JGraphFrame
+ * @see GraphFrame
  */
 public class SpawnAction extends AbstractAction {
 

@@ -21,7 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.tigris.gef.graph.presentation;
+package org.tigris.gef.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -66,6 +66,8 @@ import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.graph.presentation.DefaultGraphModel;
+import org.tigris.gef.graph.presentation.Graph;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.FigTextEditor;
@@ -77,7 +79,7 @@ import org.tigris.gef.presentation.TextEditor;
  * class Editor, and other classes which do the real work.
  */
 
-public class JGraph extends JPanel implements Cloneable, AdjustmentListener, MouseWheelListener {
+public class JGraph extends JPanel implements Graph {
 
     /**
      * The Editor object that is being shown in this panel
@@ -169,9 +171,9 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
         establishAlternateMouseWheelListener(this, mask);
     }
 
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#equals(java.lang.Object)
+	 */
     public boolean equals(Object o) {
         if (o instanceof JGraph) {
             JGraph other = (JGraph) o;            
@@ -186,26 +188,9 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
         return false;
     }
     
-    /**
-     * @see Object#hashCode()
-     *
-     * TODO: Investigate further:<p>
-     *
-     * According to a mail from GZ (6th November 2004) on the ArgoUML dev list,
-     * {@link javax.swing.RepaintManager} puts these objects in
-     * some kind of data structure that uses this function.
-     * Assuming that there is a reason for this we dare not sabotage
-     * this by short-circuiting this to 0. Instead we rely on that
-     * {@link org.tigris.gef.graph.presentation.JGraph#setDiagram(
-     * org.tigris.gef.base.Diagram)} actually removes this object from
-     * the {@link javax.swing.RepaintManager} and registers it again
-     * when resetting the diagram id.<p>
-     *
-     * This is based on the assumption that the function
-     * {@link #equals(Object)} must work as it does. I (Linus) have not
-     * understood why it must. Could someone please explain that in the
-     * javadoc.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#hashCode()
+	 */
     public int hashCode() {
         if (getCurrentDiagramId() == null) {
             return 0;
@@ -214,25 +199,39 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
         }
     }
     
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#addMouseListener(java.awt.event.MouseListener)
+	 */
     public void addMouseListener(MouseListener listener) {
         drawingPane.addMouseListener(listener);
     }
 
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#addMouseMotionListener(java.awt.event.MouseMotionListener)
+	 */
     public void addMouseMotionListener(MouseMotionListener listener) {
         drawingPane.addMouseMotionListener(listener);
     }
 
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#addKeyListener(java.awt.event.KeyListener)
+	 */
     public void addKeyListener(KeyListener listener) {
         drawingPane.addKeyListener(listener);
     }
 
-    /** Make a copy of this JGraph so that it can be shown in another window. */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#clone()
+	 */
     public Object clone() {
-        JGraph newJGraph = new JGraph((Editor) editor.clone());
+        Graph newJGraph = new JGraph((Editor) editor.clone());
         return newJGraph;
     }
 
     /* Set up some standard keystrokes and the Cmds that they invoke. */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#initKeys()
+	 */
     public void initKeys() {
         int shift = KeyEvent.SHIFT_MASK;
         int alt = KeyEvent.ALT_MASK;
@@ -262,10 +261,9 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
         bindKey(new SelectNearAction(SelectNearAction.DOWN), KeyEvent.VK_DOWN, meta);
     }
 
-    /**
-     * Utility function to bind a keystroke to a Swing Action. Note that GEF
-     * Cmds are subclasses of Swing's Actions.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#bindKey(java.awt.event.ActionListener, int, int)
+	 */
     public void bindKey(ActionListener action, int keyCode, int modifiers) {
         drawingPane.registerKeyboardAction(action, KeyStroke.getKeyStroke(
                 keyCode, modifiers), WHEN_FOCUSED);
@@ -274,15 +272,16 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /** Get the Editor that is being displayed */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#getEditor()
+	 */
     public Editor getEditor() {
         return editor;
     }
 
-    /**
-     * Set the Diagram that should be displayed by setting the GraphModel and
-     * Layer that the Editor is using.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#setDiagram(org.tigris.gef.base.Diagram)
+	 */
     public void setDiagram(Diagram d) {
         if (d == null)
             return;
@@ -333,70 +332,80 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
         setDrawingSize(drawingSize.width, drawingSize.height);
     }
 
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#setDrawingSize(int, int)
+	 */
     public void setDrawingSize(int width, int height) {
         setDrawingSize(new Dimension(width, height));
     }
 
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#setDrawingSize(java.awt.Dimension)
+	 */
     public void setDrawingSize(Dimension dim) {
         editor.drawingSizeChanged(dim);
     }
 
-    /**
-     * Set the GraphModel the Editor is using.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#setGraphModel(org.tigris.gef.graph.GraphModel)
+	 */
     public void setGraphModel(GraphModel gm) {
         editor.setGraphModel(gm);
     }
 
-    /**
-     * Get the GraphModel the Editor is using.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#getGraphModel()
+	 */
     public GraphModel getGraphModel() {
         return editor.getGraphModel();
     }
 
-    /**
-     * Get and set the Renderer used to make FigNodes for nodes in the
-     * GraphModel.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#setGraphNodeRenderer(org.tigris.gef.graph.GraphNodeRenderer)
+	 */
     public void setGraphNodeRenderer(GraphNodeRenderer r) {
         editor.setGraphNodeRenderer(r);
     }
 
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#getGraphNodeRenderer()
+	 */
     public GraphNodeRenderer getGraphNodeRenderer() {
         return editor.getGraphNodeRenderer();
     }
 
-    /**
-     * Get and set the Renderer used to make FigEdges for edges in the
-     * GraphModel.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#setGraphEdgeRenderer(org.tigris.gef.graph.GraphEdgeRenderer)
+	 */
     public void setGraphEdgeRenderer(GraphEdgeRenderer r) {
         editor.setGraphEdgeRenderer(r);
     }
 
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#getGraphEdgeRenderer()
+	 */
     public GraphEdgeRenderer getGraphEdgeRenderer() {
         return editor.getGraphEdgeRenderer();
     }
 
-    /**
-     * When the JGraph is hidden, hide its internal pane
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#setVisible(boolean)
+	 */
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         drawingPane.setVisible(visible);
     }
     
-    /**
-     * Tell Swing/AWT that JGraph handles tab-order itself.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#isManagingFocus()
+	 */
     public boolean isManagingFocus() {
         return true;
     }
 
-    /**
-     * Tell Swing/AWT that JGraph can be tabbed into.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#isFocusTraversable()
+	 */
     public boolean isFocusTraversable() {
         return true;
     }
@@ -404,22 +413,30 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
     ////////////////////////////////////////////////////////////////
     // events
 
-    /**
-     * Add listener to the objects to notify whenever the Editor changes its
-     * current selection.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#addGraphSelectionListener(org.tigris.gef.event.GraphSelectionListener)
+	 */
     public void addGraphSelectionListener(GraphSelectionListener listener) {
         getEditor().addGraphSelectionListener(listener);
     }
 
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#removeGraphSelectionListener(org.tigris.gef.event.GraphSelectionListener)
+	 */
     public void removeGraphSelectionListener(GraphSelectionListener listener) {
         getEditor().removeGraphSelectionListener(listener);
     }
 
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#addModeChangeListener(org.tigris.gef.event.ModeChangeListener)
+	 */
     public void addModeChangeListener(ModeChangeListener listener) {
         getEditor().addModeChangeListener(listener);
     }
 
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#removeModeChangeListener(org.tigris.gef.event.ModeChangeListener)
+	 */
     public void removeModeChangeListener(ModeChangeListener listener) {
         getEditor().removeModeChangeListener(listener);
     }
@@ -434,9 +451,9 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
 
     ////////////////////////////////////////////////////////////////
     // selection methods
-    /**
-     * Add the given item to this Editor's selections.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#select(org.tigris.gef.presentation.Fig)
+	 */
     public void select(Fig f) {
         if (f == null)
             deselectAll();
@@ -444,19 +461,18 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
             editor.getSelectionManager().select(f);
     }
 
-    /**
-     * Find the Fig that owns the given item and select it.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#selectByOwner(java.lang.Object)
+	 */
     public void selectByOwner(Object owner) {
         Layer lay = editor.getLayerManager().getActiveLayer();
         if (lay instanceof LayerDiagram)
             select(((LayerDiagram) lay).presentationFor(owner));
     }
 
-    /**
-     * Find Fig that owns the given item, or the item if it is a Fig, and select
-     * it.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#selectByOwnerOrFig(java.lang.Object)
+	 */
     public void selectByOwnerOrFig(Object owner) {
         if (owner instanceof Fig)
             select((Fig) owner);
@@ -464,9 +480,9 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
             selectByOwner(owner);
     }
 
-    /**
-     * Add the Fig that owns the given item to this Editor's selections.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#selectByOwnerOrNoChange(java.lang.Object)
+	 */
     public void selectByOwnerOrNoChange(Object owner) {
         Layer lay = editor.getLayerManager().getActiveLayer();
         if (lay instanceof LayerDiagram) {
@@ -476,36 +492,44 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
         }
     }
 
-    /**
-     * Remove the given item from this editors selections.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#deselect(org.tigris.gef.presentation.Fig)
+	 */
     public void deselect(Fig f) {
         editor.getSelectionManager().deselect(f);
     }
 
-    /**
-     * Select the given item if it was not already selected, and vis-a-versa.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#toggleItem(org.tigris.gef.presentation.Fig)
+	 */
     public void toggleItem(Fig f) {
         editor.getSelectionManager().toggle(f);
     }
 
-    /** Deslect everything that is currently selected. */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#deselectAll()
+	 */
     public void deselectAll() {
         editor.getSelectionManager().deselectAll();
     }
 
-    /** Select a collection of Figs. */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#select(java.util.Vector)
+	 */
     public void select(Vector items) {
         editor.getSelectionManager().select(items);
     }
 
-    /** Toggle the selection of a collection of Figs. */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#toggleItems(java.util.Vector)
+	 */
     public void toggleItems(Vector items) {
         editor.getSelectionManager().toggle(items);
     }
 
-    /** reply a Vector of all selected Figs. Used in many Cmds. */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#selectedFigs()
+	 */
     public Vector selectedFigs() {
         return editor.getSelectionManager().getFigs();
     }
@@ -516,37 +540,43 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
 
     //   public Dimension getSize() { return new Dimension(1000, 1000); }
 
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#setDefaultSize(int, int)
+	 */
     public void setDefaultSize(int width, int height) {
         defaultSize = new Dimension(width, height);
     }
 
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#setDefaultSize(java.awt.Dimension)
+	 */
     public void setDefaultSize(Dimension dim) {
         defaultSize = dim;
     }
 
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#getDefaultSize()
+	 */
     public Dimension getDefaultSize() {
         return defaultSize;
     }
 
-    /** Get the position of the editor's scrollpane. */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#getViewPosition()
+	 */
     public Point getViewPosition() {
         return scrollPane.getViewport().getViewPosition();
     }
-    /** Set the position of the editor's scrollpane. */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#setViewPosition(java.awt.Point)
+	 */
     public void setViewPosition(Point p) {
         if (p != null) scrollPane.getViewport().setViewPosition(p);
     }
     
-    /**
-     * Establishes alternate MouseWheelListener object that's only active
-     * when the alt/shift/ctrl keys are held down.
-     *	
-     * @param listener MouseWheelListener that will receive MouseWheelEvents
-     *                 generated by this JGraph.
-     * @param mask logical OR of key modifier values as defined by
-     *             java.awt.event.KeyEvent constants. This has been tested with
-     *             ALT_MASK, SHIFT_MASK, and CTRL_MASK.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#establishAlternateMouseWheelListener(java.awt.event.MouseWheelListener, int)
+	 */
     public void establishAlternateMouseWheelListener(MouseWheelListener listener, int mask) {
     		
         WheelKeyListenerToggleAction keyListener = new WheelKeyListenerToggleAction(this.drawingPane, listener, mask);
@@ -563,6 +593,9 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
         return _currentDiagramId;
     }
 
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#adjustmentValueChanged(java.awt.event.AdjustmentEvent)
+	 */
     public void adjustmentValueChanged(AdjustmentEvent e) {
 	TextEditor textEditor = FigText.getActiveTextEditor();
 	if (textEditor != null) {
@@ -572,13 +605,9 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener, Mou
     }
     
     
-    /**
-     *  Zooms diagram in and out when mousewheel is rolled while holding down
-     *  ctrl and/or alt key.
-     *  Alt, because alt + mouse motion pans the diagram & zooming while panning 
-     *      makes more sense than scrolling while panning.
-     *  Ctrl, because Ctrl/+ and Ctrl/- are used to zoom using the keyboard.
-     */
+    /* (non-Javadoc)
+	 * @see org.tigris.gef.graph.presentation.Graph#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 */
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (e.isAltDown() || e.isControlDown() ) {
             
@@ -714,4 +743,5 @@ class WheelKeyListenerToggleAction implements KeyListener {
     
     public void keyTyped(KeyEvent e) {
     }
+    
 }

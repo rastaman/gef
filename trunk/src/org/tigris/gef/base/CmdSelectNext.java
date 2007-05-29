@@ -40,7 +40,7 @@ import java.util.List;
  *  lots of small Figs.  It also provides a simple example
  *  of an Cmd that is bound to a key.
  * @deprecated in 0.12.3 use SelectNextAction
- * @see org.tigris.gef.graph.presentation.JGraph#initKeys() */
+ * @see org.tigris.gef.graph.presentation.Graph#initKeys() */
 
 public class CmdSelectNext extends Cmd {
 

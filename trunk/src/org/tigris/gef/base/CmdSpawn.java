@@ -33,6 +33,7 @@ package org.tigris.gef.base;
 import java.awt.*;
 
 import org.tigris.gef.graph.presentation.*;
+import org.tigris.gef.swing.*;
 
 /** Cmd to open a new editor on the same document as in the current
  *  editor.  Works by making a new JGraphFrame with a clone of the
@@ -40,7 +41,7 @@ import org.tigris.gef.graph.presentation.*;
  *  size of the new window.
  * @deprecated in 0.12.3 use SpawnAction
  * @see Editor
- * @see JGraphFrame */
+ * @see GraphFrame */
 
 public class CmdSpawn extends Cmd {
 

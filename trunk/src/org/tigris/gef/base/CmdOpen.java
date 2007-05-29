@@ -45,6 +45,7 @@ import java.util.List;
 
 import org.tigris.gef.graph.presentation.*;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.swing.*;
 
 /** Cmd to Load a previously saved document document. The loaded
  *  editor is displayed in a new JGraphFrame.
