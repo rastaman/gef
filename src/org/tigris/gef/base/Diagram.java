@@ -503,6 +503,8 @@ public class Diagram implements Serializable, GraphListener {
             removePropertyChangeListenerInt(listener);
         }
 
-        vetoListeners.clear();
+        if(vetoListeners != null) {
+            vetoListeners.clear();
+        }
     }
 }
