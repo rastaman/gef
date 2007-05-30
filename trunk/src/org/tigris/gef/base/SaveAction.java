@@ -27,20 +27,7 @@
 
 package org.tigris.gef.base;
 
-import java.awt.FileDialog;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-
-import javax.swing.AbstractAction;
 import javax.swing.Icon;
-
-import org.tigris.gef.util.Localizer;
 
 /**
  * Action to save the current document to a binary file using Sun's
@@ -67,101 +54,58 @@ import org.tigris.gef.util.Localizer;
  * tools.
  * <p>
  * 
+ * @deprecated use org.tigris.gef.base.SaveAction
+ * @see org.tigris.gef.swing.SaveAction
  * @see OpenAction
  */
-public class SaveAction extends AbstractAction implements FilenameFilter {
+public class SaveAction extends org.tigris.gef.swing.SaveAction {
 
-    private static final long serialVersionUID = -7423650789224426733L;
+	/**
+	 * Creates a new SaveAction
+	 * 
+	 */
+	public SaveAction() {
+		super();
+	}
 
-//    private static Log LOG = LogFactory.getLog(SaveAction.class);
+	/**
+	 * Creates a new SaveAction
+	 * 
+	 * @param name
+	 * @param localize
+	 */
+	public SaveAction(String name, boolean localize) {
+		super(name, localize);
+	}
 
-    public SaveAction() {
-        super("Save");
-    }
+	/**
+	 * Creates a new SaveAction
+	 * 
+	 * @param name
+	 * @param icon
+	 * @param localize
+	 */
+	public SaveAction(String name, Icon icon, boolean localize) {
+		super(name, icon, localize);
+	}
 
-    /**
-     * Creates a new SaveAction
-     * 
-     * @param name The name of the action
-     */
-    public SaveAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new SaveAction
+	 * 
+	 * @param name
+	 * @param icon
+	 */
+	public SaveAction(String name, Icon icon) {
+		super(name, icon);
+	}
 
-    /**
-     * Creates a new SaveAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public SaveAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
-
-    /**
-     * Creates a new SaveAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public SaveAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
-
-    /**
-     * Creates a new SaveAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public SaveAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        try {
-            Editor ce = Globals.curEditor();
-            // TODO Should use JFileChooser
-            FileDialog fd = new FileDialog(ce.findFrame(), "Save Diagram",
-                    FileDialog.SAVE);
-            fd.setFilenameFilter(this);
-            fd.setDirectory(Globals.getLastDirectory());
-            fd.setVisible(true);
-            String filename = fd.getFile(); // blocking
-            String path = fd.getDirectory(); // blocking
-            Globals.setLastDirectory(path);
-            if (filename != null) {
-                Globals.showStatus("Writing " + path + filename + "...");
-                FileOutputStream f = new FileOutputStream(path + filename);
-                ObjectOutput s = new ObjectOutputStream(f);
-                ce.preSave();
-                s.writeObject(ce);
-                ce.postSave();
-                Globals.showStatus("Wrote " + path + filename);
-                f.close();
-            }
-        } catch (FileNotFoundException ignore) {
-            System.out.println("got an FileNotFoundException");
-        } catch (IOException ignore) {
-            System.out.println("got an IOException");
-            ignore.printStackTrace();
-        }
-    }
-
-    /**
-     * Only let the user select files that match the filter. This does not seem
-     * to be called under JDK 1.0.2 on solaris. I have not finished this method,
-     * it currently accepts all filenames.
-     * <p>
-     * 
-     * Needs-More-Work: the source code for this method is duplicated in
-     * OpenAction#accept.
-     * 
-     * @deprecated this method always returns true
-     */
-    public boolean accept(File dir, String name) {
-        return true;
-    }
+	/**
+	 * Creates a new SaveAction
+	 * 
+	 * @param name
+	 */
+	public SaveAction(String name) {
+		super(name);
+	}
 
 }

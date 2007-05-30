@@ -27,83 +27,61 @@
 
 package org.tigris.gef.base;
 
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
-
 import javax.swing.Icon;
 
-import org.tigris.gef.undo.UndoableAction;
-import org.tigris.gef.util.Localizer;
-
-/** Action to open a user interface dialog window. Given the name of a
- *  subclass of Frame, this Action makes a new instance and calls
- *  show().  For example, used to open a list of some availible
- *  commands.
- *
- * @see org.tigris.gef.graph.presentation.GraphFrame 
+/**
+ * Action to open a user interface dialog window. Given the name of a subclass
+ * of Frame, this Action makes a new instance and calls show(). For example,
+ * used to open a list of some availible commands.
+ * 
+ * @deprecated use org.tigris.gef.base.OpenWindowAction
+ * @see org.tigris.gef.swing.OpenWindowAction
+ * @see org.tigris.gef.graph.presentation.GraphFrame
  */
-public class OpenWindowAction extends UndoableAction {
+public class OpenWindowAction extends org.tigris.gef.swing.OpenWindowAction {
 
-    private static final long serialVersionUID = 8660792603517868506L;
-    private String className;
-    
-    /**
-     * Creates a new OpenWindowAction
-     * 
-     * @param name The name of the action
-     */
-    public OpenWindowAction(String name, String className) {
-        this(name, className, false);
-    }
+	/**
+	 * Creates a new OpenWindowAction
+	 * 
+	 * @param name
+	 * @param icon
+	 * @param className
+	 * @param localize
+	 */
+	public OpenWindowAction(String name, Icon icon, String className,
+			boolean localize) {
+		super(name, icon, className, localize);
+	}
 
-    /**
-     * Creates a new OpenWindowAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public OpenWindowAction(String name, String className, Icon icon) {
-        this(name, icon, className, false);
-    }
+	/**
+	 * Creates a new OpenWindowAction
+	 * 
+	 * @param name
+	 * @param className
+	 * @param localize
+	 */
+	public OpenWindowAction(String name, String className, boolean localize) {
+		super(name, className, localize);
+	}
 
-    /**
-     * Creates a new OpenWindowAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public OpenWindowAction(String name, String className, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-        this.className = className;
-    }
+	/**
+	 * Creates a new OpenWindowAction
+	 * 
+	 * @param name
+	 * @param className
+	 * @param icon
+	 */
+	public OpenWindowAction(String name, String className, Icon icon) {
+		super(name, className, icon);
+	}
 
-    /**
-     * Creates a new OpenWindowAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public OpenWindowAction(String name, Icon icon, String className, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-        this.className = className;
-    }
-
-	  public void actionPerformed(ActionEvent e) {
-//	    String className = (String) getArg("className");
-	    Frame window;
-	    Class clazz;
-	    if (className != null) {
-	      Globals.showStatus("Opening window for " + className);
-	      try { clazz = Class.forName(className); }
-	      catch (java.lang.ClassNotFoundException ignore) { return; }
-
-	      try { window = (Frame) clazz.newInstance(); }
-	      catch (java.lang.IllegalAccessException ignore) { return; }
-	      catch (java.lang.InstantiationException ignore) { return; }
-	      window.setVisible(true);
-	      return;
-	    }
-	    System.out.println("invalid window name");
-	  }
+	/**
+	 * Creates a new OpenWindowAction
+	 * 
+	 * @param name
+	 * @param className
+	 */
+	public OpenWindowAction(String name, String className) {
+		super(name, className);
+	}
 }

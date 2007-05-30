@@ -41,7 +41,6 @@ import javax.swing.Icon;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.SaveAction;
 import org.tigris.gef.graph.presentation.GraphFrame;
 import org.tigris.gef.persistence.pgml.PGMLStackParser;
 import org.tigris.gef.util.Localizer;

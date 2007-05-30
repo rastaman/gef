@@ -28,148 +28,73 @@
 package org.tigris.gef.base;
 
 import java.awt.Dimension;
-import java.awt.FileDialog;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.net.URL;
 
-import javax.swing.AbstractAction;
 import javax.swing.Icon;
-
-import org.tigris.gef.swing.JGraphFrame;
-import org.tigris.gef.persistence.pgml.PGMLStackParser;
-import org.tigris.gef.util.Localizer;
-import org.tigris.gef.util.Util;
-import org.xml.sax.SAXException;
 
 /**
  * Action to Load a previously saved document document. The loaded editor is
  * displayed in a new JGraphFrame.
  * 
+ * @deprecated use org.tigris.gef.base.OpenPGMLAction
+ * @see org.tigris.gef.swing.OpenPGMLAction
  * @see SaveAction
  */
-public class OpenPGMLAction extends AbstractAction implements FilenameFilter {
+public class OpenPGMLAction extends org.tigris.gef.swing.OpenPGMLAction {
 
-    private Dimension dimension;
-
-    /**
+	/**
      * Creates a new OpenPGMLAction
-     * 
-     * @param name The name of the action
-     */
-    public OpenPGMLAction(String name) {
-        this(name, null, false);
-    }
+	 * @param name
+	 * @param dimension
+	 * @param localize
+	 */
+	public OpenPGMLAction(String name, Dimension dimension, boolean localize) {
+		super(name, dimension, localize);
+	}
 
-    /**
+	/**
      * Creates a new OpenPGMLAction
-     * 
-     * @param name The name of the action
-     * @param dimension The dimension of the graph
-     */
-    public OpenPGMLAction(String name, Dimension dimension) {
-        this(name, dimension, false);
-    }
+	 * @param name
+	 * @param dimension
+	 */
+	public OpenPGMLAction(String name, Dimension dimension) {
+		super(name, dimension);
+	}
 
-    /**
+	/**
      * Creates a new OpenPGMLAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public OpenPGMLAction(String name, Icon icon) {
-        this(name, icon, null, false);
-    }
+	 * @param name
+	 * @param icon
+	 * @param dimension
+	 * @param localize
+	 */
+	public OpenPGMLAction(String name, Icon icon, Dimension dimension, boolean localize) {
+		super(name, icon, dimension, localize);
+	}
 
-    /**
+	/**
      * Creates a new OpenPGMLAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dimension The dimension of the graph
-     */
-    public OpenPGMLAction(String name, Icon icon, Dimension dimension) {
-        this(name, icon, dimension, false);
-    }
+	 * @param name
+	 * @param icon
+	 * @param dimension
+	 */
+	public OpenPGMLAction(String name, Icon icon, Dimension dimension) {
+		super(name, icon, dimension);
+	}
 
-    /**
+	/**
      * Creates a new OpenPGMLAction
-     * 
-     * @param name The name of the action
-     * @param dimension The dimension of the graph
-     * @param localize Whether to localize the name or not
-     */
-    public OpenPGMLAction(String name, Dimension dimension, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-        this.dimension = dimension;
-    }
+	 * @param name
+	 * @param icon
+	 */
+	public OpenPGMLAction(String name, Icon icon) {
+		super(name, icon);
+	}
 
-    /**
+	/**
      * Creates a new OpenPGMLAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dimension The dimension of the graph
-     * @param localize Whether to localize the name or not
-     */
-    public OpenPGMLAction(String name, Icon icon, Dimension dimension,
-            boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-        this.dimension = dimension;
-    }
-
-    public void actionPerformed(ActionEvent event) {
-        Editor ce = Globals.curEditor();
-        FileDialog fd = new FileDialog(ce.findFrame(), "Open...",
-                FileDialog.LOAD);
-        fd.setFilenameFilter(this);
-        fd.setDirectory(Globals.getLastDirectory());
-        fd.setVisible(true);
-        String filename = fd.getFile(); // blocking
-        String path = fd.getDirectory(); // blocking
-        Globals.setLastDirectory(path);
-
-        if (filename != null) {
-            try {
-                Globals.showStatus("Reading " + path + filename + "...");
-                URL url = Util.fileToURL(new File(path + filename));
-                PGMLStackParser parser = new PGMLStackParser(null);
-                Diagram diag = parser.readDiagram(url.openStream(), false);
-                Editor ed = new Editor(diag);
-                Globals.showStatus("Read " + path + filename);
-                JGraphFrame jgf = new JGraphFrame(path + filename, ed);
-                // Object d = getArg("dimension");
-                // if (dim instanceof Dimension) {
-                // jgf.setSize((Dimension) d);
-                if (dimension != null) {
-                    jgf.setSize(dimension);
-                }
-                jgf.setVisible(true);
-            } catch (SAXException murle) {
-                System.out.println("bad URL");
-            } catch (IOException e) {
-                System.out.println("IOExcept in openpgml");
-            }
-        }
-    }
-
-    /**
-     * Only let the user select files that match the filter. This does not seem
-     * to be called under JDK 1.0.2 on solaris. I have not finished this method,
-     * it currently accepts all filenames.
-     * <p>
-     * 
-     * Needs-More-Work: The source code for this function is duplicated in
-     * CmdSave#accept.
-     * 
-     * @deprecated this method always returns true
-     */
-    public boolean accept(File dir, String name) {
-        return true;
-    }
-
-    static final long serialVersionUID = 00000000000000L;
-
+	 * @param name
+	 */
+	public OpenPGMLAction(String name) {
+		super(name);
+	}
 }
