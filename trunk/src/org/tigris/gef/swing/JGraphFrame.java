@@ -23,21 +23,64 @@
 
 package org.tigris.gef.swing;
 
-import org.tigris.gef.graph.presentation.JGraph;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.KeyEvent;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.ui.*;
-import org.tigris.gef.undo.RedoAction;
-import org.tigris.gef.undo.UndoAction;
-import org.tigris.gef.event.*;
-import org.tigris.gef.graph.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+import javax.swing.border.EtchedBorder;
+
+import org.tigris.gef.base.AlignAction;
+import org.tigris.gef.base.CmdAdjustGrid;
+import org.tigris.gef.base.CmdAdjustGuide;
+import org.tigris.gef.base.CmdAdjustPageBreaks;
+import org.tigris.gef.base.CmdCopy;
+import org.tigris.gef.base.CmdExit;
+import org.tigris.gef.base.CmdGroup;
+import org.tigris.gef.base.CmdOpen;
+import org.tigris.gef.base.CmdOpenWindow;
+import org.tigris.gef.base.CmdPaste;
+import org.tigris.gef.base.CmdPrint;
+import org.tigris.gef.base.CmdPrintPageSetup;
+import org.tigris.gef.base.CmdRemoveFromGraph;
+import org.tigris.gef.base.CmdReorder;
+import org.tigris.gef.base.CmdSave;
+import org.tigris.gef.base.CmdSavePGML;
+import org.tigris.gef.base.CmdSaveSVG;
+import org.tigris.gef.base.CmdSelectAll;
+import org.tigris.gef.base.CmdSelectInvert;
+import org.tigris.gef.base.CmdSelectNext;
+import org.tigris.gef.base.CmdShowProperties;
+import org.tigris.gef.base.CmdSpawn;
+import org.tigris.gef.base.CmdUngroup;
+import org.tigris.gef.base.CmdUseReshape;
+import org.tigris.gef.base.CmdUseResize;
+import org.tigris.gef.base.CmdUseRotate;
+import org.tigris.gef.base.DistributeAction;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.ModeSelect;
+import org.tigris.gef.base.NudgeAction;
+import org.tigris.gef.event.ModeChangeEvent;
+import org.tigris.gef.event.ModeChangeListener;
+import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.graph.presentation.Graph;
 import org.tigris.gef.graph.presentation.GraphFrame;
-import org.tigris.gef.util.*;
+import org.tigris.gef.graph.presentation.JGraph;
+import org.tigris.gef.ui.IStatusBar;
+import org.tigris.gef.ui.PaletteFig;
+import org.tigris.gef.ui.ToolBar;
+import org.tigris.gef.undo.RedoAction;
+import org.tigris.gef.undo.UndoAction;
+import org.tigris.gef.util.Localizer;
 
 /** A window that displays a toolbar, a connected graph editing pane,
  *  and a status bar. */

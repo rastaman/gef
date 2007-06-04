@@ -1,8 +1,8 @@
 package org.tigris.gef.base;
 
-import java.awt.event.MouseEvent;
+import java.util.EventListener;
 
-public interface MouseListener extends java.awt.event.MouseListener {
+public interface MouseListener extends EventListener{
 
 	/**
 	 * mouseClicked

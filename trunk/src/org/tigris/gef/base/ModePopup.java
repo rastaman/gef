@@ -28,8 +28,6 @@ import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.PopupGenerator;
 
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
 import java.util.Vector;
 import java.util.List;
 

@@ -31,8 +31,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.event.MouseEvent;
-
 import org.tigris.gef.presentation.*;
 
 /** A Mode to interpert user input while creating a FigLine. All of

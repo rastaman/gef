@@ -28,8 +28,6 @@
 package org.tigris.gef.base;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 import java.util.Collection;
 import java.util.Enumeration;

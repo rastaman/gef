@@ -30,8 +30,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
 
 import java.util.Enumeration;
 import java.util.Vector;

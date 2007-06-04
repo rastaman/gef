@@ -31,7 +31,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
-import java.awt.event.MouseEvent;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -64,6 +63,7 @@ import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
 import org.tigris.gef.util.Localizer;
+import org.tigris.gef.base.MouseEvent;
 
 /**
  * This class is the base class for basic drawing objects such as rectangles,

@@ -32,9 +32,7 @@ import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JComponent;

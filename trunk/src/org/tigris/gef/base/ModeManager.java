@@ -24,18 +24,19 @@
 
 package org.tigris.gef.base;
 
-import org.apache.commons.logging.*;
+import java.awt.Graphics;
+import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.Vector;
+
+import javax.swing.event.EventListenerList;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.event.ModeChangeEvent;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
-
-import javax.swing.event.EventListenerList;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.Serializable;
-import java.util.Enumeration;
-import java.util.Vector;
 
 /** ModeManager keeps track of all the Modes for a given Editor.
  *  Events are passed to the Modes for handling.  The submodes are

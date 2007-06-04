@@ -28,7 +28,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
+import org.tigris.gef.base.MouseEvent;
 
 import javax.swing.Icon;
 

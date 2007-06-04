@@ -23,9 +23,9 @@
 
 package org.tigris.gef.ui;
 
-import java.awt.event.MouseEvent;
 import java.util.Vector;
+import org.tigris.gef.base.MouseEvent;
 
 public interface PopupGenerator {
-  public Vector getPopUpActions(MouseEvent me);
+	public Vector getPopUpActions(MouseEvent me);
 } /* end interface PopupGenerator */

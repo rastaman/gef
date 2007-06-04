@@ -28,7 +28,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.event.*;
 import java.io.Serializable;
 import java.util.Hashtable;
 

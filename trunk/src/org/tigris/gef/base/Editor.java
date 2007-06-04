@@ -743,6 +743,16 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         me.translatePoint(dx, dy);
         return me;
     }
+    /** Scales the mouse coordinates (which match the model scale)
+     * back to the drawing scale. */
+    public java.awt.event.MouseEvent retranslateMouseEvent(java.awt.event.MouseEvent me) {
+        double xp = me.getX();
+        double yp = me.getY();
+        int dx = (int)(xp * _scale - xp);
+        int dy = (int)(yp * _scale - yp);
+        me.translatePoint(dx, dy);
+        return me;
+    }
 
     /** Invoked after the mouse has been pressed and released.  All
      *  events are passed on the SelectionManager and then ModeManager. */

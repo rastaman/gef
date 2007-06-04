@@ -29,7 +29,6 @@
 package org.tigris.gef.base;
 
 import java.awt.Point;
-import java.awt.event.MouseEvent;
 
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;

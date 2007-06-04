@@ -29,7 +29,7 @@
 package org.tigris.gef.base;
 
 import java.awt.*;
-import java.awt.event.*;
+import org.tigris.gef.base.MouseEvent;
 
 import org.apache.commons.logging.*;
 import org.tigris.gef.graph.*;
