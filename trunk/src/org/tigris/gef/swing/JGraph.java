@@ -23,6 +23,7 @@
 
 package org.tigris.gef.swing;
 
+import java.awt.AWTEventMulticaster;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -32,6 +33,11 @@ import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.ComponentListener;
+import java.awt.event.FocusListener;
+import java.awt.event.HierarchyBoundsListener;
+import java.awt.event.HierarchyListener;
+import java.awt.event.InputMethodListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -39,9 +45,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.EventListener;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -722,16 +731,26 @@ public class JGraph extends JPanel implements Graph {
 	}
 } /* end class JGraph */
 
-class JGraphInternalPane extends JPanel {
+class JGraphInternalPane extends JPanel implements MouseListener, MouseMotionListener, KeyListener{
 
 	private Editor _editor;
 
 	private boolean registeredWithTooltip;
 
-	public JGraphInternalPane(Editor e) {
+    private ArrayList<EventListener> eventListeners;
+
+    public JGraphInternalPane(Editor e) {
 		_editor = e;
 		setLayout(null);
 		setDoubleBuffered(false);
+		
+		//make it listening for itself 
+		addMouseListener(this);
+		addMouseMotionListener(this);
+		addKeyListener(this);
+		
+		//initiate the eventListeners ArrayList
+		eventListeners=new ArrayList<EventListener>();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -790,24 +809,158 @@ class JGraphInternalPane extends JPanel {
 		return true;
 	}
 
-	/** Overload the addMouseListener to support GEF's own MouseListener */
+	/** Overload the addMouseListener to support GEF's own MouseListener 
+	 * @see java.awt.Component.addMouseListener
+	 * */
 	public void addMouseListener(org.tigris.gef.base.MouseListener listener) {
-
+		eventListeners.add(listener);
 	}
 
-	/** Overload the addMouseListener to support GEF's own MouseMotionListener */
+	/** Overload the addMouseListener to support GEF's own MouseMotionListener
+	 * @see java.awt.Component.addMouseMotionListener
+	 *  */
 	public void addMouseMotionListener(
 			org.tigris.gef.base.MouseMotionListener listener) {
-
+		eventListeners.add(listener);
 	}
 
-	/** Overload the addMouseListener to support GEF's own KeyListener */
+	/** Overload the addMouseListener to support GEF's own KeyListener 
+	 * @see java.awt.Component.addKeyListener
+	 *  */
 	public void addKeyListener(org.tigris.gef.base.KeyListener listener) {
-
+		eventListeners.add(listener);
 	}
 
 	static final long serialVersionUID = -5067026168452437942L;
 
+	/**
+	 * Invoked when the mouse button has been clicked (pressed and released) 
+	 * Iterate all the registered MouseListeners and pass a new SwingMouseEventWrapper 
+	 * which wraps the awt MouseEvent to their mouseClicked methods 
+	 */
+	public void mouseClicked(MouseEvent e) {
+		for(EventListener el:eventListeners)
+		{
+			if (el.getClass()==org.tigris.gef.base.MouseListener.class)
+				((org.tigris.gef.base.MouseListener)el).mouseClicked(new SwingMouseEventWrapper(e));
+		};
+	}
+
+	/**
+	 * Invoked when a mouse button has been pressed on a component.
+	 */
+	public void mousePressed(MouseEvent e) {
+		for(EventListener el:eventListeners)
+		{
+			if (el.getClass()==org.tigris.gef.base.MouseListener.class)
+				((org.tigris.gef.base.MouseListener)el).mousePressed(new SwingMouseEventWrapper(e));
+		};
+	}
+
+	/**
+	 * Invoked when a mouse button has been released on a component.
+	 */
+	public void mouseReleased(MouseEvent e){
+		for(EventListener el:eventListeners)
+		{
+			if (el.getClass()==org.tigris.gef.base.MouseListener.class)
+				((org.tigris.gef.base.MouseListener)el).mouseReleased(new SwingMouseEventWrapper(e));
+		};
+    }
+
+	/**
+	 * Invoked when the mouse enters a component.
+	 */
+	public void mouseEntered(MouseEvent e){
+		for(EventListener el:eventListeners)
+		{
+			if (el.getClass()==org.tigris.gef.base.MouseListener.class)
+				((org.tigris.gef.base.MouseListener)el).mouseEntered(new SwingMouseEventWrapper(e));
+		};
+    }
+
+
+	/**
+	 * Invoked when the mouse exits a component.
+	 */
+	public void mouseExited(MouseEvent e){
+		for(EventListener el:eventListeners)
+		{
+			if (el.getClass()==org.tigris.gef.base.MouseListener.class)
+				((org.tigris.gef.base.MouseListener)el).mouseExited(new SwingMouseEventWrapper(e));
+		};
+    }
+
+	   /**
+     * Invoked when a mouse button is pressed on a component and then 
+     * dragged.  <code>MOUSE_DRAGGED</code> events will continue to be 
+     * delivered to the component where the drag originated until the 
+     * mouse button is released (regardless of whether the mouse position 
+     * is within the bounds of the component).
+     * <p> 
+     * Due to platform-dependent Drag&Drop implementations, 
+     * <code>MOUSE_DRAGGED</code> events may not be delivered during a native 
+     * Drag&Drop operation.  
+     */
+    public void mouseDragged(MouseEvent e){
+		for(EventListener el:eventListeners)
+		{
+			if (el.getClass()==org.tigris.gef.base.MouseMotionListener.class)
+				((org.tigris.gef.base.MouseMotionListener)el).mouseDragged(new SwingMouseEventWrapper(e));
+		};
+    }
+
+    /**
+     * Invoked when the mouse cursor has been moved onto a component
+     * but no buttons have been pushed.
+     */
+    public void mouseMoved(MouseEvent e){
+		for(EventListener el:eventListeners)
+		{
+			if (el.getClass()==org.tigris.gef.base.MouseMotionListener.class)
+				((org.tigris.gef.base.MouseMotionListener)el).mouseMoved(new SwingMouseEventWrapper(e));
+		};
+    }
+
+    /**
+     * Invoked when a key has been typed.
+     * See the class description for {@link KeyEvent} for a definition of 
+     * a key typed event.
+     */
+    public void keyTyped(KeyEvent e){
+		for(EventListener el:eventListeners)
+		{
+			if (el.getClass()==org.tigris.gef.base.KeyListener.class)
+				((org.tigris.gef.base.KeyListener)el).keyTyped(new SwingKeyEventWrapper(e));
+		};
+    }
+
+    /**
+     * Invoked when a key has been pressed. 
+     * See the class description for {@link KeyEvent} for a definition of 
+     * a key pressed event.
+     */
+    public void keyPressed(KeyEvent e){
+		for(EventListener el:eventListeners)
+		{
+			if (el.getClass()==org.tigris.gef.base.KeyListener.class)
+				((org.tigris.gef.base.KeyListener)el).keyPressed(new SwingKeyEventWrapper(e));
+		};
+    }
+
+    /**
+     * Invoked when a key has been released.
+     * See the class description for {@link KeyEvent} for a definition of 
+     * a key released event.
+     */
+    public void keyReleased(KeyEvent e){
+		for(EventListener el:eventListeners)
+		{
+			if (el.getClass()==org.tigris.gef.base.KeyListener.class)
+				((org.tigris.gef.base.KeyListener)el).keyReleased(new SwingKeyEventWrapper(e));
+		};
+    }
+    
 } /* end class JGraphInternalPane */
 
 class WheelKeyListenerToggleAction implements KeyListener {
