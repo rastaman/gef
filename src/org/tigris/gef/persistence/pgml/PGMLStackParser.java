@@ -487,7 +487,9 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         }
 
         if (qname.equals("ellipse")) {
+            System.out.println("Found an ellipse");
             if (elementInstance == null) {
+                System.out.println("Created a FigCircle");
                 elementInstance = new FigCircle(0, 0, 50, 50);
             }
             if (elementInstance instanceof FigCircle) {
@@ -500,6 +502,9 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
                 int ryInt =
                     (ry == null || ry.equals("")) ? 10 : Integer.parseInt(ry);
                 f.setBounds(f.getX() - rxInt, f.getY() - ryInt, rxInt * 2, ryInt * 2);
+                if (container instanceof Container) {
+                    ((Container) container).addObject(elementInstance);
+                }
 
                 return null;
             }
