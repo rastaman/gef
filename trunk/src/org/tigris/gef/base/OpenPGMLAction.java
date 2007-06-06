@@ -41,60 +41,61 @@ import javax.swing.Icon;
  */
 public class OpenPGMLAction extends org.tigris.gef.swing.OpenPGMLAction {
 
-	/**
+    /**
      * Creates a new OpenPGMLAction
-	 * @param name
-	 * @param dimension
-	 * @param localize
-	 */
-	public OpenPGMLAction(String name, Dimension dimension, boolean localize) {
-		super(name, dimension, localize);
-	}
+     * @param name
+     * @param dimension
+     * @param localize
+     */
+    public OpenPGMLAction(String name, Dimension dimension, boolean localize) {
+        super(name, dimension, localize);
+    }
 
-	/**
+    /**
      * Creates a new OpenPGMLAction
-	 * @param name
-	 * @param dimension
-	 */
-	public OpenPGMLAction(String name, Dimension dimension) {
-		super(name, dimension);
-	}
+     * @param name
+     * @param dimension
+     */
+    public OpenPGMLAction(String name, Dimension dimension) {
+        super(name, dimension);
+    }
 
-	/**
+    /**
      * Creates a new OpenPGMLAction
-	 * @param name
-	 * @param icon
-	 * @param dimension
-	 * @param localize
-	 */
-	public OpenPGMLAction(String name, Icon icon, Dimension dimension, boolean localize) {
-		super(name, icon, dimension, localize);
-	}
+     * @param name
+     * @param icon
+     * @param dimension
+     * @param localize
+     */
+    public OpenPGMLAction(String name, Icon icon, Dimension dimension,
+            boolean localize) {
+        super(name, icon, dimension, localize);
+    }
 
-	/**
+    /**
      * Creates a new OpenPGMLAction
-	 * @param name
-	 * @param icon
-	 * @param dimension
-	 */
-	public OpenPGMLAction(String name, Icon icon, Dimension dimension) {
-		super(name, icon, dimension);
-	}
+     * @param name
+     * @param icon
+     * @param dimension
+     */
+    public OpenPGMLAction(String name, Icon icon, Dimension dimension) {
+        super(name, icon, dimension);
+    }
 
-	/**
+    /**
      * Creates a new OpenPGMLAction
-	 * @param name
-	 * @param icon
-	 */
-	public OpenPGMLAction(String name, Icon icon) {
-		super(name, icon);
-	}
+     * @param name
+     * @param icon
+     */
+    public OpenPGMLAction(String name, Icon icon) {
+        super(name, icon);
+    }
 
-	/**
+    /**
      * Creates a new OpenPGMLAction
-	 * @param name
-	 */
-	public OpenPGMLAction(String name) {
-		super(name);
-	}
+     * @param name
+     */
+    public OpenPGMLAction(String name) {
+        super(name);
+    }
 }

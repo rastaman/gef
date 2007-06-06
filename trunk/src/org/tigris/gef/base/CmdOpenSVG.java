@@ -43,54 +43,60 @@ import org.tigris.gef.util.Util;
 
 public class CmdOpenSVG extends Cmd implements FilenameFilter {
 
-  static final long serialVersionUID = 00000000000000L;
+    static final long serialVersionUID = 00000000000000L;
 
-  public CmdOpenSVG() {
-	super("OpenSVG");
-	setArg("filterPattern", "*.svg");
-  }  
-  /** Only let the user select files that match the filter. This does
-   * not seem to be called under JDK 1.0.2 on solaris. I have not
-   * finished this method, it currently accepts all filenames. <p>
-   *
-   * Needs-More-Work: The source code for this function is duplicated
-   * in CmdSave#accept.  */
-  public boolean accept(File dir, String name) {
-	System.out.println("checking: "+ dir + " " + name);
-	if (containsArg("filterPattern")) {
-	  // if pattern dosen't match, return false
-	  return true;
-	}
-	return true; // no pattern was specified
-  }  
-  public void doIt() {
-	  Editor ce = Globals.curEditor();
-	  FileDialog fd =
-	new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
-	  fd.setFilenameFilter(this);
-	  fd.setDirectory(Globals.getLastDirectory());
-	  fd.setVisible(true);
-	  String filename = fd.getFile(); // blocking
-	  String path = fd.getDirectory(); // blocking
-	  Globals.setLastDirectory(path);
+    public CmdOpenSVG() {
+        super("OpenSVG");
+        setArg("filterPattern", "*.svg");
+    }
 
-	  if (filename != null) {
-	try {
-	  Globals.showStatus("Reading " + path + filename + "...");
-	  URL url = Util.fileToURL(new File(path + filename));
-	  Diagram diag = SvgParser.SINGLETON.readDiagram(url);
-	  Editor ed = new Editor(diag);
-	  Globals.showStatus("Read " + path + filename);
-	  JGraphFrame jgf = new JGraphFrame(path + filename, ed);
-	  Object d = getArg("dimension");
-	  if (d instanceof Dimension) jgf.setSize((Dimension)d);
-	  jgf.setVisible(true);
-	}
-	catch (MalformedURLException murle) { System.out.println("bad URL"); }
-	catch (IOException e) { System.out.println("IOExcept in opensvg"); }
-	  }
-  }  
-  public void undoIt() {
-	System.out.println("Undo does not make sense for CmdOpen");
-  }  
+    /** Only let the user select files that match the filter. This does
+     * not seem to be called under JDK 1.0.2 on solaris. I have not
+     * finished this method, it currently accepts all filenames. <p>
+     *
+     * Needs-More-Work: The source code for this function is duplicated
+     * in CmdSave#accept.  */
+    public boolean accept(File dir, String name) {
+        System.out.println("checking: " + dir + " " + name);
+        if (containsArg("filterPattern")) {
+            // if pattern dosen't match, return false
+            return true;
+        }
+        return true; // no pattern was specified
+    }
+
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        FileDialog fd = new FileDialog(ce.findFrame(), "Open...",
+                FileDialog.LOAD);
+        fd.setFilenameFilter(this);
+        fd.setDirectory(Globals.getLastDirectory());
+        fd.setVisible(true);
+        String filename = fd.getFile(); // blocking
+        String path = fd.getDirectory(); // blocking
+        Globals.setLastDirectory(path);
+
+        if (filename != null) {
+            try {
+                Globals.showStatus("Reading " + path + filename + "...");
+                URL url = Util.fileToURL(new File(path + filename));
+                Diagram diag = SvgParser.SINGLETON.readDiagram(url);
+                Editor ed = new Editor(diag);
+                Globals.showStatus("Read " + path + filename);
+                JGraphFrame jgf = new JGraphFrame(path + filename, ed);
+                Object d = getArg("dimension");
+                if (d instanceof Dimension)
+                    jgf.setSize((Dimension) d);
+                jgf.setVisible(true);
+            } catch (MalformedURLException murle) {
+                System.out.println("bad URL");
+            } catch (IOException e) {
+                System.out.println("IOExcept in opensvg");
+            }
+        }
+    }
+
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdOpen");
+    }
 } /* end class CmdOpenSVG */

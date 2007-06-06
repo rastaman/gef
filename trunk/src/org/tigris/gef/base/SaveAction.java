@@ -60,52 +60,52 @@ import javax.swing.Icon;
  */
 public class SaveAction extends org.tigris.gef.swing.SaveAction {
 
-	/**
-	 * Creates a new SaveAction
-	 * 
-	 */
-	public SaveAction() {
-		super();
-	}
+    /**
+     * Creates a new SaveAction
+     * 
+     */
+    public SaveAction() {
+        super();
+    }
 
-	/**
-	 * Creates a new SaveAction
-	 * 
-	 * @param name
-	 * @param localize
-	 */
-	public SaveAction(String name, boolean localize) {
-		super(name, localize);
-	}
+    /**
+     * Creates a new SaveAction
+     * 
+     * @param name
+     * @param localize
+     */
+    public SaveAction(String name, boolean localize) {
+        super(name, localize);
+    }
 
-	/**
-	 * Creates a new SaveAction
-	 * 
-	 * @param name
-	 * @param icon
-	 * @param localize
-	 */
-	public SaveAction(String name, Icon icon, boolean localize) {
-		super(name, icon, localize);
-	}
+    /**
+     * Creates a new SaveAction
+     * 
+     * @param name
+     * @param icon
+     * @param localize
+     */
+    public SaveAction(String name, Icon icon, boolean localize) {
+        super(name, icon, localize);
+    }
 
-	/**
-	 * Creates a new SaveAction
-	 * 
-	 * @param name
-	 * @param icon
-	 */
-	public SaveAction(String name, Icon icon) {
-		super(name, icon);
-	}
+    /**
+     * Creates a new SaveAction
+     * 
+     * @param name
+     * @param icon
+     */
+    public SaveAction(String name, Icon icon) {
+        super(name, icon);
+    }
 
-	/**
-	 * Creates a new SaveAction
-	 * 
-	 * @param name
-	 */
-	public SaveAction(String name) {
-		super(name);
-	}
+    /**
+     * Creates a new SaveAction
+     * 
+     * @param name
+     */
+    public SaveAction(String name) {
+        super(name);
+    }
 
 }

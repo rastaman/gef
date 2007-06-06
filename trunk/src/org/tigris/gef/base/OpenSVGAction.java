@@ -54,60 +54,61 @@ import org.tigris.gef.util.Util;
  */
 public class OpenSVGAction extends org.tigris.gef.swing.OpenSVGAction {
 
-	/**
+    /**
      * Creates a new OpenSVGAction
-	 * @param name
-	 * @param dimension
-	 * @param localize
-	 */
-	public OpenSVGAction(String name, Dimension dimension, boolean localize) {
-		super(name, dimension, localize);
-	}
+     * @param name
+     * @param dimension
+     * @param localize
+     */
+    public OpenSVGAction(String name, Dimension dimension, boolean localize) {
+        super(name, dimension, localize);
+    }
 
-	/**
+    /**
      * Creates a new OpenSVGAction
-	 * @param name
-	 * @param dimension
-	 */
-	public OpenSVGAction(String name, Dimension dimension) {
-		super(name, dimension);
-	}
+     * @param name
+     * @param dimension
+     */
+    public OpenSVGAction(String name, Dimension dimension) {
+        super(name, dimension);
+    }
 
-	/**
+    /**
      * Creates a new OpenSVGAction
-	 * @param name
-	 * @param icon
-	 * @param dimension
-	 * @param localize
-	 */
-	public OpenSVGAction(String name, Icon icon, Dimension dimension, boolean localize) {
-		super(name, icon, dimension, localize);
-	}
+     * @param name
+     * @param icon
+     * @param dimension
+     * @param localize
+     */
+    public OpenSVGAction(String name, Icon icon, Dimension dimension,
+            boolean localize) {
+        super(name, icon, dimension, localize);
+    }
 
-	/**
+    /**
      * Creates a new OpenSVGAction
-	 * @param name
-	 * @param icon
-	 * @param dimension
-	 */
-	public OpenSVGAction(String name, Icon icon, Dimension dimension) {
-		super(name, icon, dimension);
-	}
+     * @param name
+     * @param icon
+     * @param dimension
+     */
+    public OpenSVGAction(String name, Icon icon, Dimension dimension) {
+        super(name, icon, dimension);
+    }
 
-	/**
+    /**
      * Creates a new OpenSVGAction
-	 * @param name
-	 * @param icon
-	 */
-	public OpenSVGAction(String name, Icon icon) {
-		super(name, icon);
-	}
+     * @param name
+     * @param icon
+     */
+    public OpenSVGAction(String name, Icon icon) {
+        super(name, icon);
+    }
 
-	/**
+    /**
      * Creates a new OpenSVGAction
-	 * @param name
-	 */
-	public OpenSVGAction(String name) {
-		super(name);
-	}
+     * @param name
+     */
+    public OpenSVGAction(String name) {
+        super(name);
+    }
 }

@@ -35,6 +35,7 @@ import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.graph.presentation.GraphInternalPane;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.FigTextEditor;
@@ -226,16 +227,33 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     public void postSave() {
         _layerManager.postSave();
     }
-	public void setPopupMenu( JPopupMenu p) { _popup= p;}
+
+    public void setPopupMenu( JPopupMenu p) { _popup= p;}
     
     public JPopupMenu getPopupMenu() { return _popup; }
     
-
+    public boolean showPopupMenu(MouseEvent me) {
+        if (_popup != null) {
+            // if the editor has a popup menu, show it
+	    GraphInternalPane gip = (GraphInternalPane) _jComponent;
+	    gip.showPopupMenu(_popup, me.getX(), me.getY());
+            me.consume();
+            return true;
+	}
+        return false;
+    }
+	
     /** Called after the Editor is loaded from a file. */
     public void postLoad() {
         _layerManager.postLoad();
     }
 
+    public void mouseDragged(int x, int y) {
+        GraphInternalPane gip = (GraphInternalPane) _jComponent;
+        MouseEvent me = gip.createMouseDragEvent(x, y);
+        mouseDragged(me);
+    }
+    
     /** Return true if the Grid layer is currently hidden. */
     public boolean getGridHidden() {
         boolean h = false;

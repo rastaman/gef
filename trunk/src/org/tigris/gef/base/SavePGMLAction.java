@@ -74,48 +74,48 @@ import org.tigris.gef.util.Localizer;
  */
 public class SavePGMLAction extends org.tigris.gef.swing.SavePGMLAction {
 
-	/**
+    /**
      * Creates a new SavePGMLAction
-	 * 
-	 */
-	public SavePGMLAction() {
-		super();
-	}
+     * 
+     */
+    public SavePGMLAction() {
+        super();
+    }
 
-	/**
+    /**
      * Creates a new SavePGMLAction
-	 * @param name
-	 * @param localize
-	 */
-	public SavePGMLAction(String name, boolean localize) {
-		super(name, localize);
-	}
+     * @param name
+     * @param localize
+     */
+    public SavePGMLAction(String name, boolean localize) {
+        super(name, localize);
+    }
 
-	/**
+    /**
      * Creates a new SavePGMLAction
-	 * @param name
-	 * @param icon
-	 * @param localize
-	 */
-	public SavePGMLAction(String name, Icon icon, boolean localize) {
-		super(name, icon, localize);
-	}
+     * @param name
+     * @param icon
+     * @param localize
+     */
+    public SavePGMLAction(String name, Icon icon, boolean localize) {
+        super(name, icon, localize);
+    }
 
-	/**
+    /**
      * Creates a new SavePGMLAction
-	 * @param name
-	 * @param icon
-	 */
-	public SavePGMLAction(String name, Icon icon) {
-		super(name, icon);
-	}
+     * @param name
+     * @param icon
+     */
+    public SavePGMLAction(String name, Icon icon) {
+        super(name, icon);
+    }
 
-	/**
+    /**
      * Creates a new SavePGMLAction
-	 * @param name
-	 */
-	public SavePGMLAction(String name) {
-		super(name);
-	}
+     * @param name
+     */
+    public SavePGMLAction(String name) {
+        super(name);
+    }
 
- }
+}

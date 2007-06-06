@@ -302,8 +302,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
      * @param e
      */
      public void actionPerformed(ActionEvent e) {
-         MouseEvent me = new MouseEvent(getEditor().getJComponent(), Event.MOUSE_DRAG, 0, InputEvent.BUTTON1_MASK, recentX, recentY, 0, false);
-         getEditor().mouseDragged(me);
+	 getEditor().mouseDragged(recentX, recentY);
      }
      
 }

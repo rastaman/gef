@@ -36,43 +36,43 @@ import org.tigris.gef.graph.GraphModel;
 
 public class JGraphFrame extends org.tigris.gef.swing.JGraphFrame {
 
-	/**
-	 * Contruct a new JGraphFrame with the title "untitled" and a new
-	 * DefaultGraphModel.
-	 */
-	public JGraphFrame() {
-		super();
-	}
+    /**
+     * Contruct a new JGraphFrame with the title "untitled" and a new
+     * DefaultGraphModel.
+     */
+    public JGraphFrame() {
+        super();
+    }
 
-	public JGraphFrame(boolean init_later) {
-		super(init_later);
-	}
+    public JGraphFrame(boolean init_later) {
+        super(init_later);
+    }
 
-	/**
-	 * Contruct a new JGraphFrame with the given title and a new
-	 * DefaultGraphModel.
-	 */
-	public JGraphFrame(String title) {
-		super(title);
-	}
+    /**
+     * Contruct a new JGraphFrame with the given title and a new
+     * DefaultGraphModel.
+     */
+    public JGraphFrame(String title) {
+        super(title);
+    }
 
-	public JGraphFrame(String title, Editor ed) {
-		super(title, ed);
-	}
+    public JGraphFrame(String title, Editor ed) {
+        super(title, ed);
+    }
 
-	/**
-	 * Contruct a new JGraphFrame with the given title and given JGraph. All
-	 * JGraphFrame contructors call this one.
-	 */
-	public JGraphFrame(String title, JGraph jg) {
-		super(title, jg);
-	}
+    /**
+     * Contruct a new JGraphFrame with the given title and given JGraph. All
+     * JGraphFrame contructors call this one.
+     */
+    public JGraphFrame(String title, JGraph jg) {
+        super(title, jg);
+    }
 
-	/**
-	 * Contruct a new JGraphFrame with the title "untitled" and the given
-	 * GraphModel.
-	 */
-	public JGraphFrame(GraphModel gm) {
-		super(gm);
-	}
+    /**
+     * Contruct a new JGraphFrame with the title "untitled" and the given
+     * GraphModel.
+     */
+    public JGraphFrame(GraphModel gm) {
+        super(gm);
+    }
 } /* end class JGraphFrame */

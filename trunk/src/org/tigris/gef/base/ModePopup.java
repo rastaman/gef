@@ -78,12 +78,8 @@ public class ModePopup extends FigModifyingModeImpl {
 
         // if no Fig is under the mouse, show the editor's popup menu
         if (underMouse == null) {
-            JPopupMenu editorPopup = editor.getPopupMenu();
-            if (editorPopup != null) {
-                // if the editor has a popup menu, show it
-                editorPopup.show(me.getComponent(), me.getX(), me.getY());
-                me.consume();
-                return true;
+            if (editor.showPopupMenu(me)) {
+        	return true;
             }
         }
         

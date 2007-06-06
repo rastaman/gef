@@ -38,51 +38,52 @@ import javax.swing.Icon;
  */
 public class PrintAction extends org.tigris.gef.swing.PrintAction {
 
-	/**
-	 * 
-	 * Creates a new PrintAction
-	 */
-	public PrintAction() {
-		super();
-	}
+    /**
+     * 
+     * Creates a new PrintAction
+     */
+    public PrintAction() {
+        super();
+    }
 
-	/**
-	 * Creates a new PrintAction
-	 * @param name
-	 * @param icon
-	 * @param diagramName
-	 * @param localize
-	 */
-	public PrintAction(String name, Icon icon, String diagramName, boolean localize) {
-		super(name, icon, diagramName, localize);
-	}
+    /**
+     * Creates a new PrintAction
+     * @param name
+     * @param icon
+     * @param diagramName
+     * @param localize
+     */
+    public PrintAction(String name, Icon icon, String diagramName,
+            boolean localize) {
+        super(name, icon, diagramName, localize);
+    }
 
-	/**
-	 * Creates a new PrintAction
-	 * @param name
-	 * @param diagramName
-	 * @param localize
-	 */
-	public PrintAction(String name, String diagramName, boolean localize) {
-		super(name, diagramName, localize);
-	}
+    /**
+     * Creates a new PrintAction
+     * @param name
+     * @param diagramName
+     * @param localize
+     */
+    public PrintAction(String name, String diagramName, boolean localize) {
+        super(name, diagramName, localize);
+    }
 
-	/**
-	 * Creates a new PrintAction
-	 * @param name
-	 * @param diagramName
-	 * @param icon
-	 */
-	public PrintAction(String name, String diagramName, Icon icon) {
-		super(name, diagramName, icon);
-	}
+    /**
+     * Creates a new PrintAction
+     * @param name
+     * @param diagramName
+     * @param icon
+     */
+    public PrintAction(String name, String diagramName, Icon icon) {
+        super(name, diagramName, icon);
+    }
 
-	/**
-	 * Creates a new PrintAction
-	 * @param name
-	 * @param diagramName
-	 */
-	public PrintAction(String name, String diagramName) {
-		super(name, diagramName);
-	}
+    /**
+     * Creates a new PrintAction
+     * @param name
+     * @param diagramName
+     */
+    public PrintAction(String name, String diagramName) {
+        super(name, diagramName);
+    }
 }

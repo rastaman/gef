@@ -1,3 +1,34 @@
+// Copyright (c) 1996-99 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+
+
+
+// File: Graph.java
+// Classes: Graph
+// Original Author: johnnycoding@gmail.com
+// $Id: Graph.java 1011 2007-05-29 17:12:49Z johnnycoding $
+
 package org.tigris.gef.graph.presentation;
 
 import java.awt.Dimension;
@@ -21,198 +52,199 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
 
-public interface Graph extends Cloneable, AdjustmentListener, MouseWheelListener {
+public interface Graph extends Cloneable, AdjustmentListener,
+        MouseWheelListener {
 
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	public boolean equals(Object o);
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object o);
 
-	/**
-	 * @see Object#hashCode()
-	 *
-	 * TODO: Investigate further:<p>
-	 *
-	 * According to a mail from GZ (6th November 2004) on the ArgoUML dev list,
-	 * {@link javax.swing.RepaintManager} puts these objects in
-	 * some kind of data structure that uses this function.
-	 * Assuming that there is a reason for this we dare not sabotage
-	 * this by short-circuiting this to 0. Instead we rely on that
-	 * {@link org.tigris.gef.graph.presentation.Graph#setDiagram(
-	 * org.tigris.gef.base.Diagram)} actually removes this object from
-	 * the {@link javax.swing.RepaintManager} and registers it again
-	 * when resetting the diagram id.<p>
-	 *
-	 * This is based on the assumption that the function
-	 * {@link #equals(Object)} must work as it does. I (Linus) have not
-	 * understood why it must. Could someone please explain that in the
-	 * javadoc.
-	 */
-	public int hashCode();
+    /**
+     * @see Object#hashCode()
+     *
+     * TODO: Investigate further:<p>
+     *
+     * According to a mail from GZ (6th November 2004) on the ArgoUML dev list,
+     * {@link javax.swing.RepaintManager} puts these objects in
+     * some kind of data structure that uses this function.
+     * Assuming that there is a reason for this we dare not sabotage
+     * this by short-circuiting this to 0. Instead we rely on that
+     * {@link org.tigris.gef.graph.presentation.Graph#setDiagram(
+     * org.tigris.gef.base.Diagram)} actually removes this object from
+     * the {@link javax.swing.RepaintManager} and registers it again
+     * when resetting the diagram id.<p>
+     *
+     * This is based on the assumption that the function
+     * {@link #equals(Object)} must work as it does. I (Linus) have not
+     * understood why it must. Could someone please explain that in the
+     * javadoc.
+     */
+    public int hashCode();
 
-	public void addMouseListener(MouseListener listener);
+    public void addMouseListener(MouseListener listener);
 
-	public void addMouseMotionListener(MouseMotionListener listener);
+    public void addMouseMotionListener(MouseMotionListener listener);
 
-	public void addKeyListener(KeyListener listener);
+    public void addKeyListener(KeyListener listener);
 
-	/** Make a copy of this JGraph so that it can be shown in another window. */
-	public Object clone();
+    /** Make a copy of this JGraph so that it can be shown in another window. */
+    public Object clone();
 
-	/* Set up some standard keystrokes and the Cmds that they invoke. */
-	public void initKeys();
+    /* Set up some standard keystrokes and the Cmds that they invoke. */
+    public void initKeys();
 
-	/**
-	 * Utility function to bind a keystroke to a Swing Action. Note that GEF
-	 * Cmds are subclasses of Swing's Actions.
-	 */
-	public void bindKey(ActionListener action, int keyCode, int modifiers);
+    /**
+     * Utility function to bind a keystroke to a Swing Action. Note that GEF
+     * Cmds are subclasses of Swing's Actions.
+     */
+    public void bindKey(ActionListener action, int keyCode, int modifiers);
 
-	/** Get the Editor that is being displayed */
-	public Editor getEditor();
+    /** Get the Editor that is being displayed */
+    public Editor getEditor();
 
-	/**
-	 * Set the Diagram that should be displayed by setting the GraphModel and
-	 * Layer that the Editor is using.
-	 */
-	public void setDiagram(Diagram d);
+    /**
+     * Set the Diagram that should be displayed by setting the GraphModel and
+     * Layer that the Editor is using.
+     */
+    public void setDiagram(Diagram d);
 
-	public void setDrawingSize(int width, int height);
+    public void setDrawingSize(int width, int height);
 
-	public void setDrawingSize(Dimension dim);
+    public void setDrawingSize(Dimension dim);
 
-	/**
-	 * Set the GraphModel the Editor is using.
-	 */
-	public void setGraphModel(GraphModel gm);
+    /**
+     * Set the GraphModel the Editor is using.
+     */
+    public void setGraphModel(GraphModel gm);
 
-	/**
-	 * Get the GraphModel the Editor is using.
-	 */
-	public GraphModel getGraphModel();
+    /**
+     * Get the GraphModel the Editor is using.
+     */
+    public GraphModel getGraphModel();
 
-	/**
-	 * Get and set the Renderer used to make FigNodes for nodes in the
-	 * GraphModel.
-	 */
-	public void setGraphNodeRenderer(GraphNodeRenderer r);
+    /**
+     * Get and set the Renderer used to make FigNodes for nodes in the
+     * GraphModel.
+     */
+    public void setGraphNodeRenderer(GraphNodeRenderer r);
 
-	public GraphNodeRenderer getGraphNodeRenderer();
+    public GraphNodeRenderer getGraphNodeRenderer();
 
-	/**
-	 * Get and set the Renderer used to make FigEdges for edges in the
-	 * GraphModel.
-	 */
-	public void setGraphEdgeRenderer(GraphEdgeRenderer r);
+    /**
+     * Get and set the Renderer used to make FigEdges for edges in the
+     * GraphModel.
+     */
+    public void setGraphEdgeRenderer(GraphEdgeRenderer r);
 
-	public GraphEdgeRenderer getGraphEdgeRenderer();
+    public GraphEdgeRenderer getGraphEdgeRenderer();
 
-	/**
-	 * When the JGraph is hidden, hide its internal pane
-	 */
-	public void setVisible(boolean visible);
+    /**
+     * When the JGraph is hidden, hide its internal pane
+     */
+    public void setVisible(boolean visible);
 
-	/**
-	 * Tell Swing/AWT that JGraph handles tab-order itself.
-	 */
-	public boolean isManagingFocus();
+    /**
+     * Tell Swing/AWT that JGraph handles tab-order itself.
+     */
+    public boolean isManagingFocus();
 
-	/**
-	 * Tell Swing/AWT that JGraph can be tabbed into.
-	 */
-	public boolean isFocusTraversable();
+    /**
+     * Tell Swing/AWT that JGraph can be tabbed into.
+     */
+    public boolean isFocusTraversable();
 
-	/**
-	 * Add listener to the objects to notify whenever the Editor changes its
-	 * current selection.
-	 */
-	public void addGraphSelectionListener(GraphSelectionListener listener);
+    /**
+     * Add listener to the objects to notify whenever the Editor changes its
+     * current selection.
+     */
+    public void addGraphSelectionListener(GraphSelectionListener listener);
 
-	public void removeGraphSelectionListener(GraphSelectionListener listener);
+    public void removeGraphSelectionListener(GraphSelectionListener listener);
 
-	public void addModeChangeListener(ModeChangeListener listener);
+    public void addModeChangeListener(ModeChangeListener listener);
 
-	public void removeModeChangeListener(ModeChangeListener listener);
+    public void removeModeChangeListener(ModeChangeListener listener);
 
-	////////////////////////////////////////////////////////////////
-	// selection methods
-	/**
-	 * Add the given item to this Editor's selections.
-	 */
-	public void select(Fig f);
+    ////////////////////////////////////////////////////////////////
+    // selection methods
+    /**
+     * Add the given item to this Editor's selections.
+     */
+    public void select(Fig f);
 
-	/**
-	 * Find the Fig that owns the given item and select it.
-	 */
-	public void selectByOwner(Object owner);
+    /**
+     * Find the Fig that owns the given item and select it.
+     */
+    public void selectByOwner(Object owner);
 
-	/**
-	 * Find Fig that owns the given item, or the item if it is a Fig, and select
-	 * it.
-	 */
-	public void selectByOwnerOrFig(Object owner);
+    /**
+     * Find Fig that owns the given item, or the item if it is a Fig, and select
+     * it.
+     */
+    public void selectByOwnerOrFig(Object owner);
 
-	/**
-	 * Add the Fig that owns the given item to this Editor's selections.
-	 */
-	public void selectByOwnerOrNoChange(Object owner);
+    /**
+     * Add the Fig that owns the given item to this Editor's selections.
+     */
+    public void selectByOwnerOrNoChange(Object owner);
 
-	/**
-	 * Remove the given item from this editors selections.
-	 */
-	public void deselect(Fig f);
+    /**
+     * Remove the given item from this editors selections.
+     */
+    public void deselect(Fig f);
 
-	/**
-	 * Select the given item if it was not already selected, and vis-a-versa.
-	 */
-	public void toggleItem(Fig f);
+    /**
+     * Select the given item if it was not already selected, and vis-a-versa.
+     */
+    public void toggleItem(Fig f);
 
-	/** Deslect everything that is currently selected. */
-	public void deselectAll();
+    /** Deslect everything that is currently selected. */
+    public void deselectAll();
 
-	/** Select a collection of Figs. */
-	public void select(Vector items);
+    /** Select a collection of Figs. */
+    public void select(Vector items);
 
-	/** Toggle the selection of a collection of Figs. */
-	public void toggleItems(Vector items);
+    /** Toggle the selection of a collection of Figs. */
+    public void toggleItems(Vector items);
 
-	/** reply a Vector of all selected Figs. Used in many Cmds. */
-	public Vector selectedFigs();
+    /** reply a Vector of all selected Figs. Used in many Cmds. */
+    public Vector selectedFigs();
 
-	public void setDefaultSize(int width, int height);
+    public void setDefaultSize(int width, int height);
 
-	public void setDefaultSize(Dimension dim);
+    public void setDefaultSize(Dimension dim);
 
-	public Dimension getDefaultSize();
+    public Dimension getDefaultSize();
 
-	/** Get the position of the editor's scrollpane. */
-	public Point getViewPosition();
+    /** Get the position of the editor's scrollpane. */
+    public Point getViewPosition();
 
-	/** Set the position of the editor's scrollpane. */
-	public void setViewPosition(Point p);
+    /** Set the position of the editor's scrollpane. */
+    public void setViewPosition(Point p);
 
-	/**
-	 * Establishes alternate MouseWheelListener object that's only active
-	 * when the alt/shift/ctrl keys are held down.
-	 *	
-	 * @param listener MouseWheelListener that will receive MouseWheelEvents
-	 *                 generated by this JGraph.
-	 * @param mask logical OR of key modifier values as defined by
-	 *             java.awt.event.KeyEvent constants. This has been tested with
-	 *             ALT_MASK, SHIFT_MASK, and CTRL_MASK.
-	 */
-	public void establishAlternateMouseWheelListener(
-			MouseWheelListener listener, int mask);
+    /**
+     * Establishes alternate MouseWheelListener object that's only active
+     * when the alt/shift/ctrl keys are held down.
+     *	
+     * @param listener MouseWheelListener that will receive MouseWheelEvents
+     *                 generated by this JGraph.
+     * @param mask logical OR of key modifier values as defined by
+     *             java.awt.event.KeyEvent constants. This has been tested with
+     *             ALT_MASK, SHIFT_MASK, and CTRL_MASK.
+     */
+    public void establishAlternateMouseWheelListener(
+            MouseWheelListener listener, int mask);
 
-	public void adjustmentValueChanged(AdjustmentEvent e);
+    public void adjustmentValueChanged(AdjustmentEvent e);
 
-	/**
-	 *  Zooms diagram in and out when mousewheel is rolled while holding down
-	 *  ctrl and/or alt key.
-	 *  Alt, because alt + mouse motion pans the diagram & zooming while panning 
-	 *      makes more sense than scrolling while panning.
-	 *  Ctrl, because Ctrl/+ and Ctrl/- are used to zoom using the keyboard.
-	 */
-	public void mouseWheelMoved(MouseWheelEvent e);
+    /**
+     *  Zooms diagram in and out when mousewheel is rolled while holding down
+     *  ctrl and/or alt key.
+     *  Alt, because alt + mouse motion pans the diagram & zooming while panning 
+     *      makes more sense than scrolling while panning.
+     *  Ctrl, because Ctrl/+ and Ctrl/- are used to zoom using the keyboard.
+     */
+    public void mouseWheelMoved(MouseWheelEvent e);
 
 }

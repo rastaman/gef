@@ -40,48 +40,48 @@ import javax.swing.Icon;
  */
 public class OpenWindowAction extends org.tigris.gef.swing.OpenWindowAction {
 
-	/**
-	 * Creates a new OpenWindowAction
-	 * 
-	 * @param name
-	 * @param icon
-	 * @param className
-	 * @param localize
-	 */
-	public OpenWindowAction(String name, Icon icon, String className,
-			boolean localize) {
-		super(name, icon, className, localize);
-	}
+    /**
+     * Creates a new OpenWindowAction
+     * 
+     * @param name
+     * @param icon
+     * @param className
+     * @param localize
+     */
+    public OpenWindowAction(String name, Icon icon, String className,
+            boolean localize) {
+        super(name, icon, className, localize);
+    }
 
-	/**
-	 * Creates a new OpenWindowAction
-	 * 
-	 * @param name
-	 * @param className
-	 * @param localize
-	 */
-	public OpenWindowAction(String name, String className, boolean localize) {
-		super(name, className, localize);
-	}
+    /**
+     * Creates a new OpenWindowAction
+     * 
+     * @param name
+     * @param className
+     * @param localize
+     */
+    public OpenWindowAction(String name, String className, boolean localize) {
+        super(name, className, localize);
+    }
 
-	/**
-	 * Creates a new OpenWindowAction
-	 * 
-	 * @param name
-	 * @param className
-	 * @param icon
-	 */
-	public OpenWindowAction(String name, String className, Icon icon) {
-		super(name, className, icon);
-	}
+    /**
+     * Creates a new OpenWindowAction
+     * 
+     * @param name
+     * @param className
+     * @param icon
+     */
+    public OpenWindowAction(String name, String className, Icon icon) {
+        super(name, className, icon);
+    }
 
-	/**
-	 * Creates a new OpenWindowAction
-	 * 
-	 * @param name
-	 * @param className
-	 */
-	public OpenWindowAction(String name, String className) {
-		super(name, className);
-	}
+    /**
+     * Creates a new OpenWindowAction
+     * 
+     * @param name
+     * @param className
+     */
+    public OpenWindowAction(String name, String className) {
+        super(name, className);
+    }
 }
