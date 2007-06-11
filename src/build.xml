@@ -202,8 +202,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <echo message="Compiling the sources using ${build.compiler}"/>
     <!-- create directories -->
     <mkdir dir="${build.dest}"/>
-    <javac target="1.3"
-    	   source="1.3"
+    <javac target="1.4"
+    	   source="1.4"
     	   srcdir="${build.src}"
            destdir="${build.dest}"
            debug="${debug}"
