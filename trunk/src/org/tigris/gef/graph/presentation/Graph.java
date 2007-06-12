@@ -52,8 +52,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
 
-public interface Graph extends Cloneable, AdjustmentListener,
-        MouseWheelListener {
+public interface Graph  {
 
     /**
      * @see java.lang.Object#equals(java.lang.Object)

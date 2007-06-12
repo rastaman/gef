@@ -35,9 +35,8 @@ import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-//import java.awt.event.MouseEvent;
 import org.tigris.gef.base.MouseEvent;
+import org.tigris.gef.base.KeyEvent;
 
 /** Abstract superclass for all Mode's that create new
  *  Figs.  This class factors our shared code that would

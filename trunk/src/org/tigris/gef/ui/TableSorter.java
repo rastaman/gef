@@ -42,7 +42,6 @@
 package org.tigris.gef.ui;
 
 import java.util.*;
-import java.util.Date;
 
 import javax.swing.table.TableModel;
 import javax.swing.event.TableModelEvent;
@@ -57,6 +56,11 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import org.tigris.gef.base.SaveAction;
+
+/**
+ * @deprecated not used anymore
+ */
 public class TableSorter extends TableMap
 {
     int             indexes[];

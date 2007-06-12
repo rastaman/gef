@@ -92,7 +92,8 @@ import org.tigris.gef.graph.presentation.GraphInternalPane;
  * class Editor, and other classes which do the real work.
  */
 
-public class JGraph extends JPanel implements Graph {
+public class JGraph extends JPanel implements Graph, Cloneable, AdjustmentListener,
+MouseWheelListener {
 
     /**
      * The Editor object that is being shown in this panel

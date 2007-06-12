@@ -32,8 +32,8 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import org.tigris.gef.base.KeyEvent;
+import org.tigris.gef.base.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 

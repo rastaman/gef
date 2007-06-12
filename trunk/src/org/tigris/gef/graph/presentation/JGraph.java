@@ -23,6 +23,9 @@
 
 package org.tigris.gef.graph.presentation;
 
+import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseWheelListener;
+
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.graph.ConnectionConstrainer;
@@ -37,7 +40,7 @@ import org.tigris.gef.graph.GraphModel;
  * @see org.tigris.gef.swing.JGraph
  */
 
-public class JGraph extends org.tigris.gef.swing.JGraph {
+public class JGraph extends org.tigris.gef.swing.JGraph  {
     /**
      * Make a new JGraph with a new DefaultGraphModel.
      * 
