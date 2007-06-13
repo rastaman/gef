@@ -249,9 +249,27 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
         }
     }
 
+    /**
+     * @deprecated use {@link #mouseMoved(MouseEvent)}
+     */
+    public void mouseMoved(java.awt.event.MouseEvent me) {
+        if (content instanceof java.awt.event.MouseMotionListener) {
+            ((java.awt.event.MouseMotionListener)content).mouseMoved(me);
+        }
+    }
+
     public void mouseDragged(MouseEvent me) {
         if (content instanceof MouseMotionListener) {
             ((MouseMotionListener)content).mouseDragged(me);
+        }
+    }
+    
+    /**
+     * @deprecated use {@link #mouseDragged(MouseEvent)}
+     */
+    public void mouseDragged(java.awt.event.MouseEvent me) {
+        if (content instanceof java.awt.event.MouseMotionListener) {
+            ((java.awt.event.MouseMotionListener)content).mouseDragged(me);
         }
     }
 
@@ -260,10 +278,28 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
             ((MouseListener)content).mousePressed(me);
         }
     }
+    
+    /**
+     * @deprecated use {@link #mousePressed(MouseEvent)}
+     */
+    public void mousePressed(java.awt.event.MouseEvent me) {
+        if (content instanceof java.awt.event.MouseListener) {
+            ((java.awt.event.MouseListener)content).mousePressed(me);
+        }
+    }
 
     public void mouseReleased(MouseEvent me) {
         if (content instanceof MouseListener) {
             ((MouseListener)content).mouseReleased(me);
+        }
+    }
+
+    /**
+     * @deprecated use {@link #mouseReleased(MouseEvent)}
+     */
+    public void mouseReleased(java.awt.event.MouseEvent me) {
+        if (content instanceof java.awt.event.MouseListener) {
+            ((java.awt.event.MouseListener)content).mouseReleased(me);
         }
     }
 
@@ -278,6 +314,17 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
             ((MouseListener)content).mouseEntered(me);
         }
     }
+    
+    /**
+     * @deprecated use {@link #mouseEntered(MouseEvent)}
+     */
+    public void mouseEntered(java.awt.event.MouseEvent me) {
+        if (content instanceof java.awt.event.MouseListener) {
+            ((java.awt.event.MouseListener)content).mouseEntered(me);
+        }
+    }
+
+    
 
     public void mouseExited(MouseEvent me) {
         if (content instanceof MouseListener) {

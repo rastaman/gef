@@ -54,6 +54,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Class to present a node (such as a NetNode) in a diagram.
@@ -730,7 +731,33 @@ public class FigNode extends FigGroup implements
         forceRepaint = true;
     }
 
+    /**
+     * @deprecated use mouseExited(org.tigris.gef.swing.MouseEvent)
+     */
+    public void mouseExited(java.awt.event.MouseEvent me) {
+	mouseExited((MouseEvent) null);
+    }
     
+    /**
+     * @deprecated use mouseEntered(org.tigris.gef.swing.MouseEvent)
+     */
+    public void mouseEntered(java.awt.event.MouseEvent me) {
+	mouseExited((MouseEvent) null);
+    }
+    
+    /**
+     * @deprecated use mousePressed(org.tigris.gef.swing.MouseEvent)
+     */
+    public void mousePressed(java.awt.event.MouseEvent me) {
+	mousePressed((MouseEvent) null);
+    }
+    
+    /**
+     * @deprecated use mousePressed(org.tigris.gef.swing.MouseEvent)
+     */
+    public void mouseReleased(java.awt.event.MouseEvent me) {
+	mousePressed((MouseEvent) null);
+    }
 }
 
 

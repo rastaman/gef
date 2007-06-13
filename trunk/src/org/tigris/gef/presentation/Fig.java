@@ -55,6 +55,7 @@ import org.tigris.gef.graph.GraphEdgeHooks;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
 import org.tigris.gef.graph.MutableGraphSupport;
+import org.tigris.gef.graph.presentation.Graph;
 
 import org.tigris.gef.properties.PropCategoryManager;
 
@@ -1218,6 +1219,7 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         popUpActions.addElement(orderMenu);
         return popUpActions;
     }
+    
 
     /**
      * Returns the prefered size of the Fig. This will be useful for
@@ -1973,5 +1975,22 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
     final public boolean isRemoveStarted() {
         return removeStarted;
     }
+    
+    /**
+     * @deprecated use getPopUpActions(org.tigris.gef.swing.MouseEvent)
+     */
+    public Vector getPopUpActions(java.awt.event.MouseEvent me) {
+	return getPopUpActions((MouseEvent) null);
+    }
+    
+    /**
+     * @deprecated use getTipString(org.tigris.gef.swing.MouseEvent)
+     */
+    public String getTipString(java.awt.event.MouseEvent me) {
+        if (_owner == null) return toString();
+        return _owner.toString();
+    }
 
+    
+    
 }    /* end class Fig */

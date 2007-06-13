@@ -35,15 +35,16 @@ import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.graph.presentation.Graph;
 import org.tigris.gef.graph.presentation.GraphInternalPane;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.FigTextEditor;
 import org.tigris.gef.presentation.TextEditor;
+import org.tigris.gef.swing.SwingMouseEventWrapper;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.io.Serializable;
 import java.util.Enumeration;
 
@@ -473,6 +474,14 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
             _curSel = sel;
         }
     }
+    
+    /**
+     * @deprecated use {@link #setUnderMouse(MouseEvent)}
+     */
+    protected void setUnderMouse(java.awt.event.MouseEvent me) {
+    }
+    
+    
 
     ////////////////////////////////////////////////////////////////
     // document related methods
@@ -750,6 +759,17 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         me.translatePoint((int)Math.round((xp / _scale) - me.getX()), (int)Math.round((yp / _scale) - me.getY()));
         return me;
     }
+    
+    /** Scales the mouse coordinates (which match the drawing scale)
+     * back to the model scale. */
+    protected java.awt.event.MouseEvent translateMouseEvent(java.awt.event.MouseEvent me) {
+        double xp = me.getX();
+        double yp = me.getY();
+        me.translatePoint((int)Math.round((xp / _scale) - me.getX()), (int)Math.round((yp / _scale) - me.getY()));
+        return me;
+    }
+
+    
 
     /** Scales the mouse coordinates (which match the model scale)
      * back to the drawing scale. */
@@ -761,8 +781,12 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         me.translatePoint(dx, dy);
         return me;
     }
-    /** Scales the mouse coordinates (which match the model scale)
-     * back to the drawing scale. */
+    
+    /**
+     * Scales the mouse coordinates (which match the model scale)
+     * back to the drawing scale.
+     * @deprecated use {@link #retranslateMouseEvent(MouseEvent)}
+     */
     public java.awt.event.MouseEvent retranslateMouseEvent(java.awt.event.MouseEvent me) {
         double xp = me.getX();
         double yp = me.getY();
@@ -835,7 +859,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
             _modeManager.mouseEntered(me);
         }
     }
-        
+    
     /** Invoked when the mouse exits the Editor. */
     public void mouseExited(MouseEvent me) {
         translateMouseEvent(me);
@@ -959,5 +983,14 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
      */
     public Selection getCurrentSelection() {
     	return _curSel;
+    }
+    
+    /**
+     * Wrap a swing mouse event in a gef mouse event
+     * @depreacted this will be removed as soon as its usage
+     * is removed from ArgoUML. Do not treat as API
+     */
+    public MouseEvent wrapMouseEvent(java.awt.event.MouseEvent me) {
+	return new SwingMouseEventWrapper(me);
     }
 }

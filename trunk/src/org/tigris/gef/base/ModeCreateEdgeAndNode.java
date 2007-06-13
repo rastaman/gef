@@ -184,7 +184,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         sourceFigNode = fignode;
         startPortFig = fignode.getPortFig(port);
         startPort = port;
-        _newItem = createNewItem(null, x, y);
+        _newItem = createNewItem((MouseEvent)null, x, y);
         destToSource = reverse;
         setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }

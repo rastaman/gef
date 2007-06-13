@@ -184,6 +184,13 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
             m.mouseMoved(me);
         }
     }
+    
+    /**
+     * @deprecated use {@link #mouseMoved(MouseEvent)}
+     */
+    public void mouseMoved(java.awt.event.MouseEvent me) {
+	mouseMoved(getEditor().wrapMouseEvent(me));
+    }
 
     /** Pass events to all modes in order, until one consumes it. */
     public void mouseDragged(MouseEvent me) {
@@ -191,6 +198,13 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
             m.mouseDragged(me);
         }
+    }
+
+    /**
+     * @deprecated use {@link #mouseDragged(MouseEvent)}
+     */
+    public void mouseDragged(java.awt.event.MouseEvent me) {
+	mouseDragged(getEditor().wrapMouseEvent(me));
     }
 
     /** Pass events to all modes in order, until one consumes it. */
@@ -202,6 +216,14 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
         }
     }
 
+    /**
+     * @deprecated use {@link #mouseClicked(MouseEvent)}
+     */
+    public void mouseClicked(java.awt.event.MouseEvent me) {
+	mouseClicked(getEditor().wrapMouseEvent(me));
+    }
+
+    
     /** Pass events to all modes in order, until one consumes it. */
     public void mousePressed(MouseEvent me) {
         checkModeTransitions(me);
@@ -210,6 +232,13 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
             m.mousePressed(me);
         }
+    }
+    
+    /**
+     * @deprecated use {@link #mousePressed(MouseEvent)}
+     */
+    public void mousePressed(java.awt.event.MouseEvent me) {
+	mousePressed(getEditor().wrapMouseEvent(me));
     }
 
     /** Pass events to all modes in order, until one consumes it. */
@@ -221,6 +250,14 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
         }
         //fireModeChanged();
     }
+    
+    /**
+     * @deprecated use {@link #mouseReleased(MouseEvent)}
+     */
+    public void mouseReleased(java.awt.event.MouseEvent me) {
+	mouseReleased(getEditor().wrapMouseEvent(me));
+    }
+
 
     /** Pass events to all modes in order, until one consumes it. */
     public void mouseEntered(MouseEvent me) {
@@ -229,6 +266,15 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
             m.mouseEntered(me);
         }
     }
+    
+    /**
+     * @deprecated use {@link #mouseEntered(MouseEvent)}
+     */
+    public void mouseEntered(java.awt.event.MouseEvent me) {
+	mouseEntered(getEditor().wrapMouseEvent(me));
+    }
+
+    
 
     /** Pass events to all modes in order, until one consumes it. */
     public void mouseExited(MouseEvent me) {
@@ -237,6 +283,14 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
             m.mouseExited(me);
         }
     }
+    
+    /**
+     * @deprecated use {@link #mouseExited(MouseEvent)}
+     */
+    public void mouseExited(java.awt.event.MouseEvent me) {
+	mouseExited(getEditor().wrapMouseEvent(me));
+    }
+
 
     ////////////////////////////////////////////////////////////////
     // mode transitions

@@ -781,10 +781,22 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
     }
 
     public Point getToolTipLocation(MouseEvent event) {
-	event = Globals.curEditor().retranslateMouseEvent(event);
-	return (super.getToolTipLocation(event));
+        event = retranslateMouseEvent(event);
+        return (super.getToolTipLocation(event));
     }
 
+    /** Scales the mouse coordinates (which match the model scale)
+     * back to the drawing scale. */
+    public java.awt.event.MouseEvent retranslateMouseEvent(
+            java.awt.event.MouseEvent me) {
+        double xp = me.getX();
+        double yp = me.getY();
+        int dx = (int) (xp * Globals.curEditor().getScale() - xp);
+        int dy = (int) (yp * Globals.curEditor().getScale() - yp);
+        me.translatePoint(dx, dy);
+        return me;
+    }
+        
     public void setToolTipText(String text) {
 	if ("".equals(text))
 	    text = null;

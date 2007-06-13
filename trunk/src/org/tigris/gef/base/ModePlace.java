@@ -134,6 +134,14 @@ public class ModePlace extends FigModifyingModeImpl {
         mouseMoved(me); // move _pers into position
         me.consume();
     }
+    
+    /**
+     * @deprecated use {@link #mousePressed(MouseEvent)}
+     */
+    public void mousePressed(java.awt.event.MouseEvent me) {
+	mousePressed(getEditor().wrapMouseEvent(me));
+    }
+
 
     /** Move the perpective along with the mouse. */
     public void mouseExited(MouseEvent me) {
@@ -236,6 +244,13 @@ public class ModePlace extends FigModifyingModeImpl {
         }
         done();
         me.consume();
+    }
+    
+    /**
+     * @deprecated use {@link #mouseReleased(MouseEvent)}
+     */
+    public void mouseReleased(java.awt.event.MouseEvent me) {
+	mouseReleased(getEditor().wrapMouseEvent(me));
     }
 
     public void keyTyped(KeyEvent ke) {

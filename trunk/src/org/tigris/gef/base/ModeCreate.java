@@ -117,6 +117,13 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
         }
     }
 
+    /**
+     * @deprecated use {@link #mousePressed(MouseEvent)}
+     */
+    public void mousePressed(java.awt.event.MouseEvent me) {
+        mousePressed(getEditor().wrapMouseEvent(me));
+    }
+
     protected void createFig(MouseEvent me) {
         if(me.isConsumed())
             return;
@@ -131,6 +138,15 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
         me.consume();
         setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
+    
+    /**
+     * @deprecated use {@link #createFig(MouseEvent)}
+     */
+    protected void createFig(java.awt.event.MouseEvent me) {
+	createFig(getEditor().wrapMouseEvent(me));
+    }
+    
+    
     
     /** On mouse drag, resize the new item as the user moves the
      *  mouse.  Maybe the Fig createDrag() method should be removed
@@ -151,6 +167,13 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
         editor.scrollToShow(me.getX(), me.getY());
         me.consume();
     }
+    
+    /**
+     * @deprecated use {@link #mouseDragged(MouseEvent)}
+     */
+    public void mouseDragged(java.awt.event.MouseEvent me) {
+	mouseDragged(getEditor().wrapMouseEvent(me));
+    }
 
     /** On mouse up, officially add the new item to the parent Editor
      *  and select it. Then exit this mode. */
@@ -167,6 +190,14 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
         done();
         me.consume();
     }
+    
+    /**
+     * @deprecated use {@link #mouseReleased(MouseEvent)}
+     */
+    public void mouseReleased(java.awt.event.MouseEvent me) {
+	mouseReleased(getEditor().wrapMouseEvent(me));
+    }
+
 
     public void keyTyped(KeyEvent ke) {
         if(ke.getKeyChar() == KeyEvent.VK_ESCAPE) {
@@ -220,7 +251,16 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
     /** Abstact method to construct a new Fig to be added to the Editor.
      *  Typically, subclasses will make a new instance of some Fig based
      *  on the given mouse down event and the state of the parent Editor
-     *  (specifically, its default graphical attributes). */
-    public abstract Fig createNewItem(MouseEvent me, int snapX, int snapY);
+     *  (specifically, its default graphical attributes).
+     *  TODO: Make abstract
+     */
+    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+	return null;
+    }
+    
+    public Fig createNewItem(java.awt.event.MouseEvent me, int snapX, int snapY) {
+	return createNewItem(getEditor().wrapMouseEvent(me), snapX, snapY);
+    }
+    
 } /* end class ModeCreate */
 

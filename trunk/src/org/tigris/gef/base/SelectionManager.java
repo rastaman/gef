@@ -869,6 +869,16 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             ((Selection)sels.nextElement()).mouseMoved(me);
         }
     }
+    
+    /**
+     * @deprecated use {@link #mouseMoved(MouseEvent)}
+     */
+    public void mouseMoved(java.awt.event.MouseEvent me) {
+        Enumeration sels = _selections.elements();
+        while(sels.hasMoreElements() && !me.isConsumed()) {
+            ((Selection)sels.nextElement()).mouseMoved(me);
+        }
+    }
 
     public void mouseDragged(MouseEvent me) {
         Enumeration sels = _selections.elements();
