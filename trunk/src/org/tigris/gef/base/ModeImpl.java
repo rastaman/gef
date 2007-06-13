@@ -171,6 +171,48 @@ public class ModeImpl implements Mode, Serializable, KeyListener, MouseListener,
 
     public void mouseEntered(MouseEvent me) {
     }
+    
+    /**
+     * @deprecated use {@link #mouseMoved(MouseEvent)}
+     */
+    public void mouseMoved(java.awt.event.MouseEvent me) {
+    }
 
+    /**
+     * @deprecated use {@link #mouseDragged(MouseEvent)}
+     */
+    public void mouseDragged(java.awt.event.MouseEvent me) {
+    }
+
+    /**
+     * @deprecated use {@link #mouseClicked(MouseEvent)}
+     */
+    public void mouseClicked(java.awt.event.MouseEvent me) {
+    }
+
+    /**
+     * @deprecated use {@link #mousePressed(MouseEvent)}
+     */
+    public void mousePressed(java.awt.event.MouseEvent me) {
+    }
+
+    /**
+     * @deprecated use {@link #mouseReleased(MouseEvent)}
+     */
+    public void mouseReleased(java.awt.event.MouseEvent me) {
+    }
+
+    /**
+     * @deprecated use {@link #mouseExited(MouseEvent)}
+     */
+    public void mouseExited(java.awt.event.MouseEvent me) {
+    }
+
+    /**
+     * @deprecated use {@link #mouseEntered(MouseEvent)}
+     */
+    public void mouseEntered(java.awt.event.MouseEvent me) {
+    }
+    
 } /* end class Mode */
 

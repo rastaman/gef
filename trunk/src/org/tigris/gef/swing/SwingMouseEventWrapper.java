@@ -188,5 +188,14 @@ x     * @see org.tigris.gef.base.MouseEvent#getPoint()
     public boolean isShiftDown() {
         return event.isShiftDown();
     }
+    
+    /**
+     * @deprecated only used during the deprecation stage
+     * of java.awt.event.MouseEvent 
+     * @return
+     */
+    public java.awt.event.MouseEvent getWrappedEvent() {
+	return event;
+    }
 
 }

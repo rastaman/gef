@@ -106,6 +106,20 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
         return p;
     }
 
+    /**
+     * @deprecated use {@link #createNewItem(MouseEvent, int, int)}
+     */
+    public Fig createNewItem(java.awt.event.MouseEvent me, int snapX, int snapY) {
+        FigPoly p = new FigPoly(snapX, snapY);
+        p.setLineColor(Globals.getPrefs().getRubberbandColor());
+        p.setFillColor(null);
+        p.addPoint(snapX, snapY); // add the first point twice
+        _startX = _lastX = snapX;
+        _startY = _lastY = snapY;
+        _npoints = 2;
+        return p;
+    }
+
     ////////////////////////////////////////////////////////////////
     // event handlers
 

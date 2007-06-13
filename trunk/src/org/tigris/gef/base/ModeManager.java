@@ -37,6 +37,7 @@ import org.tigris.gef.event.ModeChangeEvent;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.swing.SwingMouseEventWrapper;
 
 /** ModeManager keeps track of all the Modes for a given Editor.
  *  Events are passed to the Modes for handling.  The submodes are
@@ -181,6 +182,7 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
     public void mouseMoved(MouseEvent me) {
         for(int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseMoved(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mouseMoved(me);
         }
     }
@@ -189,22 +191,21 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
      * @deprecated use {@link #mouseMoved(MouseEvent)}
      */
     public void mouseMoved(java.awt.event.MouseEvent me) {
-	mouseMoved(getEditor().wrapMouseEvent(me));
+        for(int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseMoved(me);
+        }
     }
-
+    
+    
+    
     /** Pass events to all modes in order, until one consumes it. */
     public void mouseDragged(MouseEvent me) {
         for(int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseDragged(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mouseDragged(me);
         }
-    }
-
-    /**
-     * @deprecated use {@link #mouseDragged(MouseEvent)}
-     */
-    public void mouseDragged(java.awt.event.MouseEvent me) {
-	mouseDragged(getEditor().wrapMouseEvent(me));
     }
 
     /** Pass events to all modes in order, until one consumes it. */
@@ -212,57 +213,38 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
         checkModeTransitions(me);
         for(int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseClicked(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mouseClicked(me);
         }
     }
 
-    /**
-     * @deprecated use {@link #mouseClicked(MouseEvent)}
-     */
-    public void mouseClicked(java.awt.event.MouseEvent me) {
-	mouseClicked(getEditor().wrapMouseEvent(me));
-    }
-
-    
     /** Pass events to all modes in order, until one consumes it. */
     public void mousePressed(MouseEvent me) {
         checkModeTransitions(me);
         for(int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
             if (LOG.isDebugEnabled()) LOG.debug("MousePressed testing mode " + _modes.get(i).getClass().getName());
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mousePressed(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mousePressed(me);
         }
     }
     
-    /**
-     * @deprecated use {@link #mousePressed(MouseEvent)}
-     */
-    public void mousePressed(java.awt.event.MouseEvent me) {
-	mousePressed(getEditor().wrapMouseEvent(me));
-    }
-
     /** Pass events to all modes in order, until one consumes it. */
     public void mouseReleased(MouseEvent me) {
         checkModeTransitions(me);
         for(int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseReleased(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mouseReleased(me);
         }
         //fireModeChanged();
     }
     
-    /**
-     * @deprecated use {@link #mouseReleased(MouseEvent)}
-     */
-    public void mouseReleased(java.awt.event.MouseEvent me) {
-	mouseReleased(getEditor().wrapMouseEvent(me));
-    }
-
-
     /** Pass events to all modes in order, until one consumes it. */
     public void mouseEntered(MouseEvent me) {
         for(int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseEntered(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mouseEntered(me);
         }
     }
@@ -271,37 +253,33 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
      * @deprecated use {@link #mouseEntered(MouseEvent)}
      */
     public void mouseEntered(java.awt.event.MouseEvent me) {
-	mouseEntered(getEditor().wrapMouseEvent(me));
+        for(int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseEntered(me);
+        }
     }
-
     
-
     /** Pass events to all modes in order, until one consumes it. */
     public void mouseExited(MouseEvent me) {
         for(int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
+            m.mouseExited(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mouseExited(me);
         }
     }
     
-    /**
-     * @deprecated use {@link #mouseExited(MouseEvent)}
-     */
-    public void mouseExited(java.awt.event.MouseEvent me) {
-	mouseExited(getEditor().wrapMouseEvent(me));
-    }
-
-
     ////////////////////////////////////////////////////////////////
     // mode transitions
 
-    /** Check for events that should cause transitions from one Mode to
-     *  another or otherwise change the ModeManager. Really this should be
-     *  specified in a subclass of ModeManager, because ModeManager should
-     *  not make assumptions about the look-and-feel of all future
-     *  applications.  Needs-More-Work: I would like to put the
-     *  transition from ModeSelect to ModeModify here, but there are too
-     *  many interactions, so that code is still in ModeSelect. */
+    /**
+     * Check for events that should cause transitions from one Mode to
+     * another or otherwise change the ModeManager. Really this should be
+     * specified in a subclass of ModeManager, because ModeManager should
+     * not make assumptions about the look-and-feel of all future
+     * applications.  Needs-More-Work: I would like to put the
+     * transition from ModeSelect to ModeModify here, but there are too
+     * many interactions, so that code is still in ModeSelect.
+     */
     public void checkModeTransitions(InputEvent ie) {
         if (!top().canExit() && ie.getID() == MouseEvent.MOUSE_PRESSED) {
             MouseEvent me = (MouseEvent)ie;
@@ -324,7 +302,7 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
             }
         }
     }
-
+    
     ////////////////////////////////////////////////////////////////
     // mode events
 

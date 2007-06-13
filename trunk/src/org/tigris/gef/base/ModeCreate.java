@@ -143,7 +143,16 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
      * @deprecated use {@link #createFig(MouseEvent)}
      */
     protected void createFig(java.awt.event.MouseEvent me) {
-	createFig(getEditor().wrapMouseEvent(me));
+        start();
+        synchronized(snapPt) {
+            snapPt.setLocation(me.getX(), me.getY());
+            editor.snap(snapPt);
+            anchorX = snapPt.x;
+            anchorY = snapPt.y;
+        }
+        _newItem = createNewItem(me, anchorX, anchorY);
+        me.consume();
+        setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
     
     

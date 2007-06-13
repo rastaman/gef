@@ -858,7 +858,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
      */
     public void mouseClicked(MouseEvent e) {
 	for (EventListener el : eventListeners) {
-	    if (el.getClass() == org.tigris.gef.base.MouseListener.class)
+	    if (el instanceof org.tigris.gef.base.MouseListener)
 		((org.tigris.gef.base.MouseListener) el)
 			.mouseClicked(new SwingMouseEventWrapper(e));
 	}
@@ -870,7 +870,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
      */
     public void mousePressed(MouseEvent e) {
 	for (EventListener el : eventListeners) {
-	    if (el.getClass() == org.tigris.gef.base.MouseListener.class)
+	    if (el instanceof org.tigris.gef.base.MouseListener)
 		((org.tigris.gef.base.MouseListener) el)
 			.mousePressed(new SwingMouseEventWrapper(e));
 	}
@@ -882,7 +882,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
      */
     public void mouseReleased(MouseEvent e) {
 	for (EventListener el : eventListeners) {
-	    if (el.getClass() == org.tigris.gef.base.MouseListener.class)
+	    if (el instanceof org.tigris.gef.base.MouseListener)
 		((org.tigris.gef.base.MouseListener) el)
 			.mouseReleased(new SwingMouseEventWrapper(e));
 	}
@@ -894,7 +894,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
      */
     public void mouseEntered(MouseEvent e) {
 	for (EventListener el : eventListeners) {
-	    if (el.getClass() == org.tigris.gef.base.MouseListener.class)
+	    if (el instanceof org.tigris.gef.base.MouseListener)
 		((org.tigris.gef.base.MouseListener) el)
 			.mouseEntered(new SwingMouseEventWrapper(e));
 	}
@@ -906,7 +906,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
      */
     public void mouseExited(MouseEvent e) {
 	for (EventListener el : eventListeners) {
-	    if (el.getClass() == org.tigris.gef.base.MouseListener.class)
+	    if (el instanceof org.tigris.gef.base.MouseListener)
 		((org.tigris.gef.base.MouseListener) el)
 			.mouseExited(new SwingMouseEventWrapper(e));
 	}
@@ -926,7 +926,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
      */
     public void mouseDragged(MouseEvent e) {
 	for (EventListener el : eventListeners) {
-	    if (el.getClass() == org.tigris.gef.base.MouseMotionListener.class)
+	    if (el instanceof org.tigris.gef.base.MouseMotionListener)
 		((org.tigris.gef.base.MouseMotionListener) el)
 			.mouseDragged(new SwingMouseEventWrapper(e));
 	}
@@ -939,7 +939,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
      */
     public void mouseMoved(MouseEvent e) {
 	for (EventListener el : eventListeners) {
-	    if (el.getClass() == org.tigris.gef.base.MouseMotionListener.class)
+	    if (el instanceof org.tigris.gef.base.MouseMotionListener)
 		((org.tigris.gef.base.MouseMotionListener) el)
 			.mouseMoved(new SwingMouseEventWrapper(e));
 	}
@@ -953,7 +953,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
      */
     public void keyTyped(KeyEvent e) {
 	for (EventListener el : eventListeners) {
-	    if (el.getClass() == org.tigris.gef.base.KeyListener.class)
+	    if (el instanceof org.tigris.gef.base.KeyListener)
 		((org.tigris.gef.base.KeyListener) el)
 			.keyTyped(new SwingKeyEventWrapper(e));
 	}
@@ -967,7 +967,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
      */
     public void keyPressed(KeyEvent e) {
 	for (EventListener el : eventListeners) {
-	    if (el.getClass() == org.tigris.gef.base.KeyListener.class)
+	    if (el instanceof org.tigris.gef.base.KeyListener)
 		((org.tigris.gef.base.KeyListener) el)
 			.keyPressed(new SwingKeyEventWrapper(e));
 	}
@@ -981,7 +981,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
      */
     public void keyReleased(KeyEvent e) {
 	for (EventListener el : eventListeners) {
-	    if (el.getClass() == org.tigris.gef.base.KeyListener.class)
+	    if (el instanceof org.tigris.gef.base.KeyListener)
 		((org.tigris.gef.base.KeyListener) el)
 			.keyReleased(new SwingKeyEventWrapper(e));
 	}
