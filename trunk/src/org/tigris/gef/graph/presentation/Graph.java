@@ -31,6 +31,17 @@
 
 package org.tigris.gef.graph.presentation;
 
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.event.ModeChangeListener;
+import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
+
 public interface Graph  {
-    
+    public void setGraphModel(GraphModel gm); 
+    public void addModeChangeListener(ModeChangeListener mcl);
+    public Editor getEditor();
+    public GraphModel getGraphModel();
+    public void setGraphNodeRenderer(GraphNodeRenderer gnr); 
+    public void setGraphEdgeRenderer(GraphEdgeRenderer ger);
 }
