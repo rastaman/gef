@@ -176,48 +176,6 @@ public interface InputEvent {
     public int getModifiers();
 
     /**
-     * Returns the extended modifier mask for this event. Extended modifiers
-     * represent the state of all modal keys, such as ALT, CTRL, META, and the
-     * mouse buttons just after the event occurred
-     * <P>
-     * For example, if the user presses <b>button 1</b> followed by <b>button 2</b>,
-     * and then releases them in the same order, the following sequence of
-     * events is generated:
-     * 
-     * <PRE>
-     *    <code>MOUSE_PRESSED</code>: <code>BUTTON1_DOWN_MASK</code>
-     *    <code>MOUSE_PRESSED</code>:
-     * <code>BUTTON1_DOWN_MASK | BUTTON2_DOWN_MASK</code>
-     *    <code>MOUSE_RELEASED</code>:
-     * <code>BUTTON2_DOWN_MASK</code>
-     *    <code>MOUSE_CLICKED</code>:
-     * <code>BUTTON2_DOWN_MASK</code>
-     *    <code>MOUSE_RELEASED</code>:
-     * <code>MOUSE_CLICKED</code>:
-     * 
-     * </PRE>
-     * 
-     * <P>
-     * It is not recommended to compare the return value of this method using
-     * <code>==</code> because new modifiers can be added in the future. For
-     * example, the appropriate way to check that SHIFT and BUTTON1 are down,
-     * but CTRL is up is demonstrated by the following code:
-     * 
-     * <PRE>
-     * 
-     * int onmask = SHIFT_DOWN_MASK | BUTTON1_DOWN_MASK; int offmask =
-     * CTRL_DOWN_MASK; if (event.getModifiersEx() & (onmask | offmask) ==
-     * onmask) { ... }
-     * 
-     * </PRE>
-     * 
-     * The above code will work even if new modifiers are added.
-     * 
-     * @since 1.4
-     */
-    public int getModifiersEx();
-
-    /**
      * Consumes this event so that it will not be processed in the default
      * manner by the source which originated it.
      */

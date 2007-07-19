@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry path="src" kind="src"/>
-	<classpathentry path="tests" kind="src"/>
-	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
-	<classpathentry path="lib/commons-logging.jar" kind="lib"/>
-	<classpathentry path="tools/junit-3.8.1/junit.jar" kind="lib"/>
-	<classpathentry path="bin" kind="output"/>
+	<classpathentry excluding="org/tigris/gef/swt/JGraph.java|org/tigris/gef/swt/JGraphFrame.java|org/tigris/gef/swt/JSplitGraphPane.java|org/tigris/gef/swt/OpenPGMLAction.java|org/tigris/gef/swt/OpenSVGAction.java|org/tigris/gef/swt/OpenWindowAction.java|org/tigris/gef/swt/PrintAction.java|org/tigris/gef/swt/SaveAction.java|org/tigris/gef/swt/SavePGMLAction.java" kind="src" path="src"/>
+	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="tools/junit-3.8.1/junit.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

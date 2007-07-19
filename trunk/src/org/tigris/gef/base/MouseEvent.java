@@ -163,13 +163,6 @@ public interface MouseEvent extends InputEvent {
     public void translatePoint(int x, int y);
 
     /**
-     * Returns the number of mouse clicks associated with this event.
-     * 
-     * @return integer value for the number of clicks
-     */
-    public int getClickCount();
-
-    /**
      * Returns which, if any, of the mouse buttons has changed state.
      * 
      * @return one of the following constants: <code>NOBUTTON</code>,
@@ -192,13 +185,5 @@ public interface MouseEvent extends InputEvent {
      *         platform
      */
     public boolean isPopupTrigger();
-
-    /**
-     * Returns a parameter string identifying this event. This method is useful
-     * for event-logging and for debugging.
-     * 
-     * @return a string identifying the event and its attributes
-     */
-    public String paramString();
 
 }
