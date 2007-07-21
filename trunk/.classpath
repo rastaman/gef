@@ -5,6 +5,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="tools/junit-3.8.1/junit.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
+	<classpathentry kind="lib" path="D:/Apps/WorkSpace/GEFGSoC2007/lib/swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
