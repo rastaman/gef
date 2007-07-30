@@ -31,9 +31,11 @@
 
 package org.tigris.gef.base;
 
+import org.tigris.gef.graph.presentation.GraphInternalPane;
+
 public interface InputEvent {
 
-    /**
+   /**
      * The Shift key modifier constant. It is recommended that SHIFT_DOWN_MASK
      * be used instead. 
      * 
@@ -192,4 +194,14 @@ public interface InputEvent {
      * Returns id
      */
     public int getID();
+    
+    /**
+     * ggetComponent
+     */
+   public GraphInternalPane getComponent();
+    
+    /**
+     * setComponent
+     */
+    public void setComponent(GraphInternalPane gip);
 }

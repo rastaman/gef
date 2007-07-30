@@ -269,15 +269,18 @@ public class Globals {
 
     /** Return an exisiting instance of class Frame.  This is needed to
      *  create off-screen bit-maps. Needs-more-work: I think Swing keeps
-     *  its own. */
+     *  its own. 
+     *  @deprecated
+     *  */
     public static Frame someFrame() {
-        Editor ce = curEditor();
-        if(ce == null)
-            return null;
-        Component c = ce.getJComponent();
-        while(c != null && !(c instanceof Frame))
-            c = c.getParent();
-        return (Frame)c;
+//        Editor ce = curEditor();
+//        if(ce == null)
+//            return null;
+//        Component c = ce.getJComponent();
+//        while(c != null && !(c instanceof Frame))
+//            c = c.getParent();
+//        return (Frame)c;
+        return null;
     }
 
     ////////////////////////////////////////////////////////////////

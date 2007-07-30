@@ -23,26 +23,118 @@
 
 package org.tigris.gef.graph.presentation;
 
-import javax.swing.JPopupMenu;
-
 import org.tigris.gef.base.MouseEvent;
+import org.tigris.gef.base.PopupMenu;
+import java.awt.*;
+
+    /**
+     * @see java.swt.Component
+     */
 
 public interface GraphInternalPane {
 
     /**
-     * Create a MouseEvent that indicates a mouse drag to the given location
-     * @param x x-co-ordinate for the mouse drag
-     * @param y y-co-ordinate for the mouse drag
-     * @return the MouseEvent
+     * @see java.swt.Component#createMouseDragEvent()
      */
     MouseEvent createMouseDragEvent(int x, int y);
 
     /**
-     * Show the given popup menu
-     * @param popup
-     * @param x
-     * @param y
-     * @see org.tigris.gef.graph.presentation.GraphInternalPane#showPopupMenu(javax.swing.JPopupMenu, int, int)
+     * @see java.swt.Component#getVisibleRect()
      */
-    void showPopupMenu(JPopupMenu popup, int x, int y);
-}
+    Rectangle getVisibleRect();
+
+    /**
+     * @see java.swt.Component#revalidate()
+     */
+    void revalidate();
+
+    /**
+     * @see java.swt.Component#setPreferredSize()
+     */
+    void setPreferredSize(Dimension d);
+
+    /**
+     * @see java.swt.Component#repaint()
+     */
+    void repaint(int x, int y, int width, int height);
+
+    /**
+     * @see java.swt.Component#repaint()
+     */
+    void repaint(int alpha, int x, int y, int width, int height);
+
+    /**
+     * @see java.swt.Component#setCursor()
+     */
+    void setCursor(Cursor c);
+
+    /**
+     * @see java.swt.Component#getFileDialog()
+     */
+    org.tigris.gef.base.FileDialog getFileDialog();
+
+    /**
+     * @see java.swt.Component#getSize()
+     */
+    Dimension getSize();
+
+    /**
+     * @see java.swt.Component#setToolTipText()
+     */
+    void setToolTipText(String text);
+
+    /**
+     * @see java.swt.Component#getBackground()
+     */
+    Color getBackground();
+
+    /**
+     * @see java.swt.Component#createImage()
+     */
+    Image createImage(int x, int h);
+
+    /**
+     * @see java.swt.Component#scrollRectToVisible()
+     */
+    void scrollRectToVisible(Rectangle bounds);
+
+    /**
+     * @see java.swt.Component#getCursor()
+     */
+    Cursor getCursor();
+
+    /**
+     * @see java.swt.Component#getViewPosition()
+     */
+    Point getViewPosition();
+
+    /**
+     * @see java.swt.Component#getExtentSize()
+     */
+    Dimension getExtentSize();    
+
+    /**
+     * @see java.swt.Component#getViewRect()
+     */
+    Rectangle getViewRect();
+
+    /**
+     * @see java.swt.Component#setViewPosition()
+     */
+    void setViewPosition(Point point);
+
+    /**
+     * @see java.swt.Component#getBounds()
+     */
+    Rectangle getBounds();
+
+    /**
+     * @return a created PopupMenu
+     */
+    PopupMenu createPopupMenu();
+
+    /**
+     * @return true if its parent is a Viewport
+     */
+    boolean isParentViewport(); 
+ }

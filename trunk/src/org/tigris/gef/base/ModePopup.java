@@ -78,8 +78,12 @@ public class ModePopup extends FigModifyingModeImpl {
 
         // if no Fig is under the mouse, show the editor's popup menu
         if (underMouse == null) {
-            if (editor.showPopupMenu(me)) {
-        	return true;
+            PopupMenu editorPopup = editor.getPopupMenu();
+            if (editorPopup != null) {
+                // if the editor has a popup menu, show it
+                editorPopup.show(me.getComponent(), me.getX(), me.getY());
+                me.consume();
+                return true;
             }
         }
         
@@ -104,19 +108,12 @@ public class ModePopup extends FigModifyingModeImpl {
                 PopupGenerator popupGenerator = (PopupGenerator) commonInstance;
                 List actions = popupGenerator.getPopUpActions(me);
 
-                JPopupMenu popup = new JPopupMenu();
+                PopupMenu popup = editor.createPopupMenu();
 
                 int size = actions.size();
                 for(int i = 0; i < size; ++i) {
                     Object a = actions.get(i);
-                    if(a instanceof AbstractAction)
-                        popup.add((AbstractAction)a);
-                    else if(a instanceof JMenu)
-                        popup.add((JMenu)a);
-                    else if(a instanceof JMenuItem)
-                        popup.add((JMenuItem)a);
-                    else if(a instanceof JSeparator)
-                        popup.add((JSeparator)a);
+                    popup.add(a);
                 }
                 
                 popup.show(editor.getJComponent(), me.getX(), me.getY());

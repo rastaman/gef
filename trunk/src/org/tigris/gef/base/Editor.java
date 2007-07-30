@@ -152,7 +152,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     private transient boolean _shouldPaint = true;
 
     /** The swing panel that the Editor draws to. */
-    private transient JComponent _jComponent;
+    private transient GraphInternalPane _jComponent;
 
     /** The width of the swing panel before scaling. */
     private transient int _naturalComponentWidth;
@@ -162,12 +162,12 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 
     /** The ancestor of _jComponent that has a peer that can create
      *  an image. */
-    private transient Component _peer_component = null;
+    private transient GraphInternalPane _peer_component = null;
 
     private RenderingHints _renderingHints = new RenderingHints(null);
   
     /** The context menu for this editor */
-    private transient JPopupMenu _popup = null;
+    private transient PopupMenu _popup = null;
 
     private static Log LOG = LogFactory.getLog(Editor.class);
 
@@ -177,7 +177,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 
 
     /** Construct a new Editor to edit the given NetList */
-    public Editor(GraphModel gm, JComponent jComponent) {
+    public Editor(GraphModel gm, GraphInternalPane jComponent) {
         this(gm, jComponent, null);
     }
 
@@ -193,7 +193,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         this(d.getGraphModel(), null, d.getLayer());
     }
 
-    public Editor(GraphModel gm, JComponent jComponent, Layer lay) {
+    public Editor(GraphModel gm, GraphInternalPane jComponent, Layer lay) {
         _jComponent = jComponent;
         defineLayers(gm, lay);
 
@@ -229,21 +229,13 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         _layerManager.postSave();
     }
 
-    public void setPopupMenu( JPopupMenu p) { _popup= p;}
+    public void setPopupMenu( PopupMenu p) { _popup= p;}
     
-    public JPopupMenu getPopupMenu() { return _popup; }
+    public PopupMenu getPopupMenu() { return _popup; }
+
+    /** Create a PopupMenu based on the concreate GraphInternalPane */
+    public PopupMenu createPopupMenu() { return _jComponent.createPopupMenu() ; }
     
-    public boolean showPopupMenu(MouseEvent me) {
-        if (_popup != null) {
-            // if the editor has a popup menu, show it
-	    GraphInternalPane gip = (GraphInternalPane) _jComponent;
-	    gip.showPopupMenu(_popup, me.getX(), me.getY());
-            me.consume();
-            return true;
-	}
-        return false;
-    }
-	
     /** Called after the Editor is loaded from a file. */
     public void postLoad() {
         _layerManager.postLoad();
@@ -619,7 +611,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
             (fig.getY()*_scale),(int)(fig.getWidth()*_scale), 
             (int)(fig.getHeight()*_scale)); 
         bounds.grow((int)(50*_scale),(int)( 50 * _scale)); 
-        JComponent c = getJComponent(); 
+        GraphInternalPane c = getJComponent(); 
         if (c!=null) c.scrollRectToVisible(bounds); 
     }
 
@@ -636,11 +628,11 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     ////////////////////////////////////////////////////////////////
     // Frame and panel related methods
 
-    public JComponent getJComponent() {
+    public GraphInternalPane getJComponent() {
         return _jComponent;
     }
 
-    public void setJComponent(JComponent c) {
+    public void setJComponent(GraphInternalPane c) {
         _jComponent = c;
         _peer_component = null;
     }
@@ -653,14 +645,23 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     }
 
     /** Find the AWT Frame that this Editor is being displayed in. This
-     *  is needed to open a dialog box. */
+     *  is needed to open a dialog box. 
+     *  @deprecated
+     *  @see getFileDialog
+     *  */
     public Frame findFrame() {
-        Component c = _jComponent;
-        while(c != null && !(c instanceof Frame))
-            c = c.getParent();
+        GraphInternalPane c = _jComponent;
+        //while(c != null && !(c instanceof Frame))
+        //    c = c.getParent();
         return (Frame)c;
     }
 
+    /** Get FileDialog interface from GraphInternalPane _jComponent
+      */
+    public FileDialog getFileDialog() {
+        return _jComponent.getFileDialog();
+    }
+    
     /** Create an Image (an off-screen bit-map) to be used to reduce
      *  flicker in redrawing. <p>
      *  
@@ -670,17 +671,18 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     public Image createImage(int w, int h) {
         if(_jComponent == null)
             return null;
-        if(_peer_component == null) {
-            _peer_component = _jComponent;
-            while(_peer_component instanceof JComponent) // getPeer() is deprecated
-                _peer_component = _peer_component.getParent();
-        }
+//        if(_peer_component == null) {
+//            _peer_component = _jComponent;
+//            while(_peer_component instanceof JComponent) // getPeer() is deprecated
+//                _peer_component = _peer_component.getParent();
+//        }
 //     try { if (_jComponent.getPeer() == null) _jComponent.addNotify(); }
 //     catch (java.lang.NullPointerException ignore) { }
         // This catch works around a bug:
         // Sometimes there is an exception in the AWT peer classes,
         // but the next line should still work, despite the exception
-        return _peer_component.createImage(w, h);
+        //return _peer_component.createImage(w, h);
+        return _jComponent.createImage(w,h);
     }
 
     /** Get the backgrund color of the Editor.  Often, none of the

@@ -30,6 +30,8 @@ package org.tigris.gef.swing;
 
 import java.awt.Point;
 
+import org.tigris.gef.graph.presentation.GraphInternalPane;
+
 /**
  * A class which implements org.tigris.gef.base.MouseEvent interface and wraps
  * the functions of java.awt.event.MouseEvent
@@ -49,10 +51,12 @@ import java.awt.Point;
 public class SwingMouseEventWrapper implements org.tigris.gef.base.MouseEvent {
 
     private java.awt.event.MouseEvent event;
+    private GraphInternalPane _jComponent = null;
 
     //set the private event to the awt MouseEvent
     public SwingMouseEventWrapper(java.awt.event.MouseEvent me) {
         this.event = me;
+        _jComponent = (GraphInternalPane)me.getComponent();
     }
 
     /*
@@ -198,4 +202,18 @@ x     * @see org.tigris.gef.base.MouseEvent#getPoint()
 	return event;
     }
 
+    /*
+     * @see org.tigris.gef.base.InputEvent#getComponent()
+     */
+    public GraphInternalPane getComponent() {
+        // TODO Auto-generated method stub
+        return _jComponent;
+    }
+
+    /*
+     * @see org.tigris.gef.base.InputEvent#getComponent()
+     */
+   public void setComponent(GraphInternalPane gip) {
+        _jComponent = gip;        
+    }
 }

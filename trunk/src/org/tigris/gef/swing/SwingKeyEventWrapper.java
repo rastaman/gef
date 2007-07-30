@@ -29,6 +29,7 @@
 package org.tigris.gef.swing;
 
 import org.tigris.gef.base.KeyEvent;
+import org.tigris.gef.graph.presentation.GraphInternalPane;
 
 /**
  * A class which implements org.tigris.gef.base.KeyEvent interface and wraps
@@ -49,6 +50,7 @@ import org.tigris.gef.base.KeyEvent;
 public class SwingKeyEventWrapper implements KeyEvent {
 
     private java.awt.event.KeyEvent event;
+    private GraphInternalPane _jComponent = null;
 
     // set the private event to the awt KeyEvent
     public SwingKeyEventWrapper(java.awt.event.KeyEvent me) {
@@ -190,4 +192,18 @@ public class SwingKeyEventWrapper implements KeyEvent {
         return event.isShiftDown();
     }
 
+    /*
+     * @see org.tigris.gef.base.InputEvent#getComponent()
+     */
+    public GraphInternalPane getComponent() {
+        // TODO Auto-generated method stub
+        return _jComponent;
+    }
+
+    /*
+     * @see org.tigris.gef.base.InputEvent#getComponent()
+     */
+   public void setComponent(GraphInternalPane gip) {
+        _jComponent = gip;        
+    }
 }

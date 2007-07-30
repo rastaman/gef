@@ -38,6 +38,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JComponent;
 import javax.swing.JViewport;
 
+import org.tigris.gef.graph.presentation.GraphInternalPane;
+
 /** A Mode that allows the user to scroll the Editor by clicking and dragging
  * with the middle mouse button.
  * 
@@ -61,7 +63,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
     private boolean _isScrolling = false;
     private JViewport _viewport = null;
     private Cursor _oldCursor = null;
-    private JComponent _component = null;
+    private GraphInternalPane _component = null;
     private Dimension componentSize = null;
     private Point viewPosition = new Point();
     private int deltaX;
@@ -139,19 +141,19 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         }
         
         // ... and the viewport
-        Container parent = _component.getParent();
-        if(!(parent instanceof JViewport)) {
-            //if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no viewport to scrolling");
-            return;
-        }
+//        Container parent = _component.getParent();
+//        if(!(parent instanceof JViewport)) {
+//            //if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no viewport to scrolling");
+//            return;
+//        }
         
         // ok, ready to scroll
         _isScrolling = true;
         me = editor.retranslateMouseEvent(me);
-        _viewport = (JViewport) parent;
+//        _viewport = (JViewport) parent;
 
-        viewPosition = _viewport.getViewPosition();
-        _viewportExtent = _viewport.getExtentSize();
+        viewPosition = _component.getViewPosition();
+        _viewportExtent = _component.getExtentSize();
 
         componentSize = _component.getSize();
         deltaX = 0;
@@ -189,8 +191,8 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
             recentX = mouseX;
             recentY = mouseY;
             // scroll if mouse is  outside the component
-            JComponent jComponent = editor.getJComponent();
-            if(jComponent != null && jComponent.getParent() instanceof JViewport) {
+            GraphInternalPane jComponent = editor.getJComponent();
+            if(jComponent != null && jComponent.isParentViewport()) {
                 boolean ok = doScroll(jComponent, mouseX,mouseY);
                 if ( ok && !autoscroll) {
                     autoscroll = true;
@@ -241,11 +243,11 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         }
     }
 
-    private final boolean doScroll(JComponent jComponent, int mouseX, int mouseY) {
-        if(jComponent != null && jComponent.getParent() instanceof JViewport) {
+    private final boolean doScroll(GraphInternalPane jComponent, int mouseX, int mouseY) {
+        if(jComponent != null && jComponent.isParentViewport()) {
             Dimension componentSize = jComponent.getSize();
-            JViewport view = (JViewport)jComponent.getParent();
-            Rectangle viewRect = view.getViewRect();
+            //JViewport view = (JViewport)jComponent.getParent();
+            Rectangle viewRect = jComponent.getViewRect();
             int viewRight = viewRect.x + viewRect.width;
             int viewY = viewRect.y + viewRect.height;
             // test, if the mouse moves out of the viewport
@@ -253,17 +255,17 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
 
             if   ( mouseX > viewRight &&  ! (viewRight > (componentSize.width - SCROLL_INCREMENT ))) {
                 // mouse moves right out of the view -> scroll to right
-                view.setViewPosition(new Point(viewRect.x + SCROLL_INCREMENT, viewRect.y));
+                jComponent.setViewPosition(new Point(viewRect.x + SCROLL_INCREMENT, viewRect.y));
                 return true;
             } else if ( mouseX < viewRect.x && ! (viewRect.x -  SCROLL_INCREMENT < 0)) {
                 // mouse moves left out of the viewport -> scroll to left
-                view.setViewPosition(new Point(viewRect.x - SCROLL_INCREMENT, viewRect.y));
+                jComponent.setViewPosition(new Point(viewRect.x - SCROLL_INCREMENT, viewRect.y));
                 return true;
             } else if (mouseY > viewY &&  ! (viewY > (componentSize.height -SCROLL_INCREMENT))) {
-                view.setViewPosition(new Point(viewRect.x,  viewRect.y + SCROLL_INCREMENT));
+                jComponent.setViewPosition(new Point(viewRect.x,  viewRect.y + SCROLL_INCREMENT));
                 return true;
             } else if (mouseY < viewRect.y && ! (viewRect.y -SCROLL_INCREMENT < 0)) {
-                view.setViewPosition(new Point(viewRect.x,  viewRect.y - SCROLL_INCREMENT));
+                jComponent.setViewPosition(new Point(viewRect.x,  viewRect.y - SCROLL_INCREMENT));
                 return true;
             }
         }

@@ -37,6 +37,8 @@ import org.tigris.gef.persistence.pgml.PGMLStackParser;
 import org.tigris.gef.util.Util;
 import org.xml.sax.SAXException;
 
+import swingwt.awt.FileDialog;
+
 /** Cmd to Load a previously saved document document. The loaded
  *  editor is displayed in a new JGraphFrame.
  * @deprecated in 0.12.3 use OpenPGMLAction
@@ -51,8 +53,11 @@ public class CmdOpenPGML extends Cmd implements FilenameFilter {
 
     public void doIt() {
         Editor ce = Globals.curEditor();
-        FileDialog fd =
-            new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
+//        java.awt.FileDialog fd =
+//            new java.awt.FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
+        org.tigris.gef.base.FileDialog fd = ce.getFileDialog();
+        fd.setTitle("Open...");
+        fd.setMode(FileDialog.LOAD);
         fd.setFilenameFilter(this);
         fd.setDirectory(Globals.getLastDirectory());
         fd.setVisible(true);

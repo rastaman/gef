@@ -67,8 +67,11 @@ public class CmdOpen extends Cmd implements FilenameFilter {
     public void doIt() {
         try {
             Editor ce = Globals.curEditor();
-            FileDialog fd =
-	            new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
+//            FileDialog fd =
+//	            new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
+            org.tigris.gef.base.FileDialog fd = ce.getFileDialog();
+            fd.setTitle("Open...");
+            fd.setMode(FileDialog.LOAD);
             fd.setFilenameFilter(this);
             fd.setDirectory(Globals.getLastDirectory());
             fd.setVisible(true);

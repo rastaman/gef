@@ -25,10 +25,16 @@ package org.tigris.gef.swing;
 
 import java.awt.AWTEventMulticaster;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.FileDialog;
+import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
@@ -64,6 +70,7 @@ import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 
 import org.tigris.gef.base.NudgeAction;
+import org.tigris.gef.base.PopupMenu;
 import org.tigris.gef.base.SelectNextAction;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -745,6 +752,8 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
 
     private ArrayList<EventListener> eventListeners;
 
+    protected org.tigris.gef.base.FileDialog fileDialog;
+    
     public JGraphInternalPane(Editor e) {
 	_editor = e;
 	setLayout(null);
@@ -994,10 +1003,113 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
 	return new SwingMouseEventWrapper(me);
     }
 
-    public void showPopupMenu(JPopupMenu popup, int x, int y) {
-	popup.show(this, x, y);
+   public Rectangle getVisibleRect()
+    {
+        return super.getVisibleRect();
+    }
+    
+    public void revalidate()
+    {
+        super.revalidate();
+    }
+    
+    public void setPreferredSize(Dimension d)
+    {
+        super.setPreferredSize(d);
+    }
+    
+    public void repaint(int x, int y, int width, int height)
+    {
+        super.repaint(x,y,width,height);
+    }
+    
+    public void repaint(int alpha, int x, int y, int width, int height)
+    {
+        super.repaint(alpha,x,y,width,height);
+    }
+    
+    public void setCursor(Cursor c)
+    {
+        super.setCursor(c);
     }
 
+    private Frame findFrame()
+    {
+        Component c = this;
+        while(c != null && !(c instanceof Frame))
+            c = c.getParent();
+        return (Frame)c;
+    }
+    
+    public org.tigris.gef.base.FileDialog getFileDialog()
+    {
+        fileDialog= new JFileDialog(findFrame()); 
+        return fileDialog;
+    }
+    public Dimension getSize()
+    {
+        return super.getSize(); 
+    }
+    public Color getBackground()
+    {
+        return super.getBackground();
+    }
+    public Image createImage(int x, int h)
+    {
+        return super.createImage(x, h);
+    }
+    public void scrollRectToVisible(Rectangle bounds)
+    {
+        super.scrollRectToVisible(bounds);
+    }
+    public Cursor getCursor()
+    {
+        return super.getCursor();
+    }
+    public Point getViewPosition()
+    {
+        Component parent = this.getParent();
+        if(!(parent instanceof JViewport)) {
+            return new Point(0,0);
+        }
+        return ((JViewport) parent).getViewPosition();
+    }
+    public Dimension getExtentSize()
+    {
+        Component parent = this.getParent();
+        if(!(parent instanceof JViewport)) {
+            return new Dimension(0,0);
+        }
+        return ((JViewport) parent).getExtentSize();
+    }
+    public Rectangle getViewRect()
+    {
+        Component parent = this.getParent();
+        if(!(parent instanceof JViewport)) {
+            return new Rectangle(0,0);
+        }
+        return ((JViewport)parent).getViewRect();
+    }
+    public void setViewPosition(Point p)
+    {
+        Component parent = this.getParent();
+        if(!(parent instanceof JViewport)) {
+            return;
+        }
+        ((JViewport)parent).setViewPosition(p);
+    }
+    public Rectangle getBounds()
+    {
+        return super.getBounds();
+    }
+    public PopupMenu createPopupMenu()
+    {
+        return new org.tigris.gef.swing.JPopupMenu();
+    }
+    public boolean isParentViewport()
+    {
+        return (this.getParent() instanceof JViewport);
+    }
 }
 
 class WheelKeyListenerToggleAction implements KeyListener {
