@@ -28,24 +28,11 @@
 
 package org.tigris.gef.swt;
 
-import java.awt.Point;
-
 import org.eclipse.swt.SWT;
 import org.tigris.gef.base.KeyEvent;
+import org.tigris.gef.graph.presentation.GraphInternalPane;
 
 /**
- * A class which implements org.tigris.gef.base.KeyEvent interface and wraps
- * the functions of java.swt.event.keyEvent
- * <p>
- * 
- * It defines a private java.swt.event.KeyEvent variable and set 
- * it to the passed-in java.swt.event.KeyEvent parameter in the constructor 
- * method.   
- * <p>
- * 
- * Then for each implemented function, it calls the corresponding function in 
- * the private java.swt.event.KeyEvent variable.
- * 
  * @see java.awt.event.KeyEvent
  * @see orgtigris.gef.base.KeyEvent
  */
@@ -53,6 +40,7 @@ public class SwtKeyEventWrapper implements KeyEvent {
 
     private org.eclipse.swt.events.KeyEvent event;
     protected boolean consumed = false;
+    private GraphInternalPane _jComponent = null;
 
     // set the private event to the awt KeyEvent
     public SwtKeyEventWrapper(org.eclipse.swt.events.KeyEvent me) {
@@ -162,6 +150,21 @@ public class SwtKeyEventWrapper implements KeyEvent {
     public boolean isAltGraphDown()
     {
         return (event.stateMask & SWT.ALT) != 0;
+    }
+
+    /*
+     * @see org.tigris.gef.base.InputEvent#getComponent()
+     */
+    public GraphInternalPane getComponent() {
+        // TODO Auto-generated method stub
+        return _jComponent;
+    }
+
+    /*
+     * @see org.tigris.gef.base.InputEvent#getComponent()
+     */
+   public void setComponent(GraphInternalPane gip) {
+        _jComponent = gip;        
     }
 
 }

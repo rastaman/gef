@@ -30,28 +30,20 @@ package org.tigris.gef.swt;
 
 import org.eclipse.swt.SWT;
 import org.tigris.gef.base.MouseEvent;
+import org.tigris.gef.graph.presentation.GraphInternalPane;
+
 import java.awt.Point;
 
 /**
- * A class which implements org.tigris.gef.base.MouseEvent interface and wraps
- * the functions of java.swt.event.MouseEvent
- * <p>
- * 
- * It defines a private java.swt.event.MouseEvent variable and set 
- * it to the passed-in java.swt.event.MouseEvent parameter in the constructor 
- * method.   
- * <p>
- * 
- * Then for each implemented function, it calls the corresponding function in 
- * the private java.swt.event.MouseEvent variable.
- * 
  * @see java.awt.event.MouseEvent
  * @see orgtigris.gef.base.MouseEvent
  */
+
 public class SwtMouseEventWrapper implements MouseEvent {
 
     private org.eclipse.swt.events.MouseEvent event;
     protected boolean consumed = false;
+    private GraphInternalPane _jComponent = null;
 
     //set the private event to the swt MouseEvent
     public SwtMouseEventWrapper(org.eclipse.swt.events.MouseEvent me) {
@@ -209,5 +201,20 @@ public class SwtMouseEventWrapper implements MouseEvent {
     public Point getPoint()
     {
         return new Point(event.x,event.y);
+    }
+
+    /*
+     * @see org.tigris.gef.base.InputEvent#getComponent()
+     */
+    public GraphInternalPane getComponent() {
+        // TODO Auto-generated method stub
+        return _jComponent;
+    }
+
+    /*
+     * @see org.tigris.gef.base.InputEvent#getComponent()
+     */
+   public void setComponent(GraphInternalPane gip) {
+        _jComponent = gip;        
     }
 }
