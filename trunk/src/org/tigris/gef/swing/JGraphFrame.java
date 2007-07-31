@@ -26,6 +26,7 @@ package org.tigris.gef.swing;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -463,5 +464,10 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
         if (_statusbar != null)
             _statusbar.setText(msg);
     }
+
+	public void addWindowListener(WindowAdapter adapter) {
+		// TODO Auto-generated method stub
+		super.addWindowListener(adapter);
+	}
 
 } /* end class JGraphFrame */

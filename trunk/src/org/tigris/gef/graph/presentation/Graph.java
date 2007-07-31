@@ -31,6 +31,8 @@
 
 package org.tigris.gef.graph.presentation;
 
+import java.awt.Dimension;
+
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.GraphEdgeRenderer;
@@ -44,4 +46,6 @@ public interface Graph  {
     public GraphModel getGraphModel();
     public void setGraphNodeRenderer(GraphNodeRenderer gnr); 
     public void setGraphEdgeRenderer(GraphEdgeRenderer ger);
+	public void setSize(Dimension drawAreaSize);
+	public void setPreferredSize(Dimension drawAreaSize);
 }
