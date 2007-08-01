@@ -134,7 +134,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         }
 
         // get the component ...
-        _component = editor.getJComponent();
+        _component = editor.getGraphInternalPane();
         if(_component == null) {
             //if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no component to scrolling");
             return;
@@ -191,7 +191,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
             recentX = mouseX;
             recentY = mouseY;
             // scroll if mouse is  outside the component
-            GraphInternalPane jComponent = editor.getJComponent();
+            GraphInternalPane jComponent = editor.getGraphInternalPane();
             if(jComponent != null && jComponent.isParentViewport()) {
                 boolean ok = doScroll(jComponent, mouseX,mouseY);
                 if ( ok && !autoscroll) {

@@ -181,6 +181,15 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         this(gm, jComponent, null);
     }
 
+    /**
+     * @deprecated us constructor taking a GraphInternalPane
+     * @param gm
+     * @param jComponent
+     */
+    public Editor(GraphModel gm, JComponent jComponent) {
+        this(gm, (GraphInternalPane)jComponent, null);
+    }
+
     public Editor(GraphModel gm) {
         this(gm, null, null);
     }
@@ -611,7 +620,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
             (fig.getY()*_scale),(int)(fig.getWidth()*_scale), 
             (int)(fig.getHeight()*_scale)); 
         bounds.grow((int)(50*_scale),(int)( 50 * _scale)); 
-        GraphInternalPane c = getJComponent(); 
+        GraphInternalPane c = getGraphInternalPane(); 
         if (c!=null) c.scrollRectToVisible(bounds); 
     }
 
@@ -628,7 +637,11 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     ////////////////////////////////////////////////////////////////
     // Frame and panel related methods
 
-    public GraphInternalPane getJComponent() {
+    public JComponent getJComponent() {
+        return (JComponent) _jComponent;
+    }
+
+    public GraphInternalPane getGraphInternalPane() {
         return _jComponent;
     }
 
@@ -862,6 +875,21 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         }
     }
     
+    /** 
+     * Invoked when the mouse enters the Editor.
+     */
+    public void mouseEntered(java.awt.event.MouseEvent me) {
+	translateMouseEvent(me);
+	Globals.curEditor(this);
+	pushMode((FigModifyingMode) Globals.mode());
+	setUnderMouse(me);
+        if(_canSelectElements) {
+            _modeManager.mouseEntered(me);
+        }
+    }
+    
+    
+    
     /** Invoked when the mouse exits the Editor. */
     public void mouseExited(MouseEvent me) {
         translateMouseEvent(me);
@@ -889,6 +917,28 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 
     /** Invoked when the mouse button has been moved (with no buttons no down). */
     public void mouseMoved(MouseEvent me) {
+        translateMouseEvent(me);
+        Globals.curEditor(this);
+        setUnderMouse(me);
+        if(_curFig != null && Globals.getShowFigTips()) {
+            String tip = _curFig.getTipString(me);
+            if(tip != null && tip.length() > 0 && !tip.endsWith(" "))
+                tip += " ";
+            if(tip != null && (_jComponent instanceof JComponent)) {
+                _jComponent.setToolTipText(tip);
+            }
+        }
+        else
+            _jComponent.setToolTipText(null); //was ""
+
+        if(_canSelectElements) {
+            _selectionManager.mouseMoved(me);
+            _modeManager.mouseMoved(me);
+        }
+    }
+
+    /** Invoked when the mouse button has been moved (with no buttons no down). */
+    public void mouseMoved(java.awt.event.MouseEvent me) {
         translateMouseEvent(me);
         Globals.curEditor(this);
         setUnderMouse(me);

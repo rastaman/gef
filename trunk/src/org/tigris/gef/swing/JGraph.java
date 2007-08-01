@@ -151,7 +151,7 @@ MouseWheelListener {
 
     /** Make a new JGraph with the given GraphModel */
     public JGraph(GraphModel gm) {
-	this(new Editor(gm, null));
+	this(new Editor(gm, (GraphInternalPane) null));
     }
 
     /**

@@ -116,7 +116,7 @@ public class ModePopup extends FigModifyingModeImpl {
                     popup.add(a);
                 }
                 
-                popup.show(editor.getJComponent(), me.getX(), me.getY());
+                popup.show(editor.getGraphInternalPane(), me.getX(), me.getY());
                 me.consume();
                 return true;
             }
