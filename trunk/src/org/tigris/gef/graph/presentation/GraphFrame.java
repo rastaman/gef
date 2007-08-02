@@ -92,9 +92,7 @@ public interface GraphFrame {
     /** Show a message in the statusbar. */
     public void showStatus(String msg);
 
-	public void addWindowListener(WindowAdapter adapter);
-
-	public void dispose();
-
-	public void setBounds(int i, int j, int k, int l);
+    public void dispose();
+    
+    public void setBounds(int i, int j, int k, int l);
 }
