@@ -566,7 +566,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
      *  modified objects, but only in cases where most of the visible
      *  area is expected to change anyway. */
     public void damageAll() {
-        Rectangle r = _jComponent.getVisibleRect();
+        Rectangle r = _jComponent.getViewableRect();
         _jComponent.revalidate();
         _jComponent.repaint(r.x, r.y, r.width, r.height);
     }
@@ -704,7 +704,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     public Color getBackground() {
         if(_jComponent == null)
             return Color.lightGray;
-        return _jComponent.getBackground();
+        return _jComponent.getGraphBackground();
     }
 
     public void setActiveTextEditor(FigTextEditor fte)

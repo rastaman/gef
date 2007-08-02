@@ -39,9 +39,9 @@ public interface GraphInternalPane {
     MouseEvent createMouseDragEvent(int x, int y);
 
     /**
-     * @see java.swt.Component#getVisibleRect()
+     * @see java.swt.Component#getViewableRect()
      */
-    Rectangle getVisibleRect();
+    Rectangle getViewableRect();
 
     /**
      * @see java.swt.Component#revalidate()
@@ -74,9 +74,9 @@ public interface GraphInternalPane {
     org.tigris.gef.base.FileDialog getFileDialog();
 
     /**
-     * @see java.swt.Component#getSize()
+     * @see java.swt.Component#getGraphSize()
      */
-    Dimension getSize();
+    Dimension getGraphSize();
 
     /**
      * @see java.swt.Component#setToolTipText()
@@ -84,9 +84,9 @@ public interface GraphInternalPane {
     void setToolTipText(String text);
 
     /**
-     * @see java.swt.Component#getBackground()
+     * @see java.swt.Component#getGraphBackground()
      */
-    Color getBackground();
+    Color getGraphBackground();
 
     /**
      * @see java.swt.Component#createImage()
@@ -122,11 +122,6 @@ public interface GraphInternalPane {
      * @see java.swt.Component#setViewPosition()
      */
     void setViewPosition(Point point);
-
-    /**
-     * @see java.swt.Component#getBounds()
-     */
-    Rectangle getBounds();
 
     /**
      * @return a created PopupMenu

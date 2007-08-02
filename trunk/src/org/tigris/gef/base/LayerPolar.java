@@ -168,7 +168,7 @@ public class LayerPolar extends Layer {
       setHidden(false);
       Editor ce = Globals.curEditor();
       if (ce != null) {
-            Dimension d = ce.getJComponent().getSize();
+            Dimension d = ce.getGraphInternalPane().getGraphSize();
             origin(d.width / 2, d.height / 2);
       }
       else origin(100,100);

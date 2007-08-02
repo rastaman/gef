@@ -155,7 +155,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         viewPosition = _component.getViewPosition();
         _viewportExtent = _component.getExtentSize();
 
-        componentSize = _component.getSize();
+        componentSize = _component.getGraphSize();
         deltaX = 0;
         deltaY = 0;
         lastX = me.getX();
@@ -245,7 +245,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
 
     private final boolean doScroll(GraphInternalPane jComponent, int mouseX, int mouseY) {
         if(jComponent != null && jComponent.isParentViewport()) {
-            Dimension componentSize = jComponent.getSize();
+            Dimension componentSize = jComponent.getGraphSize();
             //JViewport view = (JViewport)jComponent.getParent();
             Rectangle viewRect = jComponent.getViewRect();
             int viewRight = viewRect.x + viewRect.width;

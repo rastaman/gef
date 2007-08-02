@@ -1003,7 +1003,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
 	return new SwingMouseEventWrapper(me);
     }
 
-   public Rectangle getVisibleRect()
+   public Rectangle getViewableRect()
     {
         return super.getVisibleRect();
     }
@@ -1046,11 +1046,11 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
         fileDialog= new JFileDialog(findFrame()); 
         return fileDialog;
     }
-    public Dimension getSize()
+    public Dimension getGraphSize()
     {
         return super.getSize(); 
     }
-    public Color getBackground()
+    public Color getGraphBackground()
     {
         return super.getBackground();
     }
