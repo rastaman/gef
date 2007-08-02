@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -114,8 +115,19 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
 
     public JGraphFrame(boolean init_later) {
         super("untitled");
-        if (!init_later)
+        if (!init_later) {
             init(new JGraph());
+        }
+        addWindowListener(
+            new WindowAdapter() {
+                public void windowClosing(WindowEvent event) {
+                    dispose();
+                }
+                public void windowClosed(WindowEvent event) {
+                    System.exit(0);
+                }
+            }
+        );
     }
 
     /** Contruct a new JGraphFrame with the given title and a new
