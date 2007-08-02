@@ -23,15 +23,12 @@
 
 package org.tigris.gef.swing;
 
-import java.awt.AWTEventMulticaster;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Event;
-import java.awt.FileDialog;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -40,12 +37,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.awt.event.ComponentListener;
-import java.awt.event.FocusListener;
-import java.awt.event.HierarchyBoundsListener;
-import java.awt.event.HierarchyListener;
 import java.awt.event.InputEvent;
-import java.awt.event.InputMethodListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -53,7 +45,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -63,7 +54,6 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
@@ -89,7 +79,6 @@ import org.tigris.gef.graph.presentation.DefaultGraphModel;
 import org.tigris.gef.graph.presentation.Graph;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
-import org.tigris.gef.presentation.FigTextEditor;
 import org.tigris.gef.presentation.TextEditor;
 import org.tigris.gef.graph.presentation.GraphInternalPane;
 
@@ -226,30 +215,15 @@ MouseWheelListener {
 	}
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#addMouseListener(java.awt.event.MouseListener)
-     */
     public void addMouseListener(org.tigris.gef.base.MouseListener listener) {
 	drawingPane.addMouseListener(listener);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#addMouseMotionListener(java.awt.event.MouseMotionListener)
-     */
     public void addMouseMotionListener(
 	    org.tigris.gef.base.MouseMotionListener listener) {
 	drawingPane.addMouseMotionListener(listener);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#addKeyListener(java.awt.event.KeyListener)
-     */
     public void addKeyListener(org.tigris.gef.base.KeyListener listener) {
 	drawingPane.addKeyListener(listener);
     }
@@ -265,11 +239,6 @@ MouseWheelListener {
     }
 
     /* Set up some standard keystrokes and the Cmds that they invoke. */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#initKeys()
-     */
     public void initKeys() {
 	int shift = KeyEvent.SHIFT_MASK;
 	int alt = KeyEvent.ALT_MASK;
@@ -303,12 +272,6 @@ MouseWheelListener {
 		meta);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#bindKey(java.awt.event.ActionListener,
-     *      int, int)
-     */
     public void bindKey(ActionListener action, int keyCode, int modifiers) {
 	drawingPane.registerKeyboardAction(action, KeyStroke.getKeyStroke(
 		keyCode, modifiers), WHEN_FOCUSED);
@@ -326,18 +289,13 @@ MouseWheelListener {
 	return editor;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#setDiagram(org.tigris.gef.base.Diagram)
-     */
     public void setDiagram(Diagram d) {
-	if (d == null)
+	if (d == null) {
 	    return;
+	}
 	if (_currentDiagramId != null) {
-	    _viewPortPositions.put(_currentDiagramId, scrollPane.getViewport()
-		    .getViewRect());
-	} // end if
+	    _viewPortPositions.put(_currentDiagramId, scrollPane.getViewport().getViewRect());
+	}
 	setDrawingSize(getDefaultSize());
 	updateDrawingSizeToIncludeAllFigs(d.elements());
 	editor.getLayerManager().replaceActiveLayer(d.getLayer());
@@ -385,20 +343,10 @@ MouseWheelListener {
 	setDrawingSize(drawingSize.width, drawingSize.height);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#setDrawingSize(int, int)
-     */
     public void setDrawingSize(int width, int height) {
 	setDrawingSize(new Dimension(width, height));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#setDrawingSize(java.awt.Dimension)
-     */
     public void setDrawingSize(Dimension dim) {
 	editor.drawingSizeChanged(dim);
     }
@@ -430,11 +378,6 @@ MouseWheelListener {
 	editor.setGraphNodeRenderer(r);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#getGraphNodeRenderer()
-     */
     public GraphNodeRenderer getGraphNodeRenderer() {
 	return editor.getGraphNodeRenderer();
     }
@@ -448,11 +391,6 @@ MouseWheelListener {
 	editor.setGraphEdgeRenderer(r);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#getGraphEdgeRenderer()
-     */
     public GraphEdgeRenderer getGraphEdgeRenderer() {
 	return editor.getGraphEdgeRenderer();
     }
@@ -488,20 +426,10 @@ MouseWheelListener {
     // //////////////////////////////////////////////////////////////
     // events
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#addGraphSelectionListener(org.tigris.gef.event.GraphSelectionListener)
-     */
     public void addGraphSelectionListener(GraphSelectionListener listener) {
 	getEditor().addGraphSelectionListener(listener);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#removeGraphSelectionListener(org.tigris.gef.event.GraphSelectionListener)
-     */
     public void removeGraphSelectionListener(GraphSelectionListener listener) {
 	getEditor().removeGraphSelectionListener(listener);
     }
@@ -515,11 +443,6 @@ MouseWheelListener {
 	getEditor().addModeChangeListener(listener);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#removeModeChangeListener(org.tigris.gef.event.ModeChangeListener)
-     */
     public void removeModeChangeListener(ModeChangeListener listener) {
 	getEditor().removeModeChangeListener(listener);
     }
@@ -533,11 +456,6 @@ MouseWheelListener {
     // public void paint(Graphics g) { _editor.paint(getGraphics()); }
     // //////////////////////////////////////////////////////////////
     // selection methods
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#select(org.tigris.gef.presentation.Fig)
-     */
     public void select(Fig f) {
 	if (f == null)
 	    deselectAll();
@@ -545,22 +463,12 @@ MouseWheelListener {
 	    editor.getSelectionManager().select(f);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#selectByOwner(java.lang.Object)
-     */
     public void selectByOwner(Object owner) {
 	Layer lay = editor.getLayerManager().getActiveLayer();
 	if (lay instanceof LayerDiagram)
 	    select(((LayerDiagram) lay).presentationFor(owner));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#selectByOwnerOrFig(java.lang.Object)
-     */
     public void selectByOwnerOrFig(Object owner) {
 	if (owner instanceof Fig)
 	    select((Fig) owner);
@@ -568,11 +476,6 @@ MouseWheelListener {
 	    selectByOwner(owner);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#selectByOwnerOrNoChange(java.lang.Object)
-     */
     public void selectByOwnerOrNoChange(Object owner) {
 	Layer lay = editor.getLayerManager().getActiveLayer();
 	if (lay instanceof LayerDiagram) {
@@ -582,56 +485,26 @@ MouseWheelListener {
 	}
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#deselect(org.tigris.gef.presentation.Fig)
-     */
     public void deselect(Fig f) {
 	editor.getSelectionManager().deselect(f);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#toggleItem(org.tigris.gef.presentation.Fig)
-     */
     public void toggleItem(Fig f) {
 	editor.getSelectionManager().toggle(f);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#deselectAll()
-     */
     public void deselectAll() {
 	editor.getSelectionManager().deselectAll();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#select(java.util.Vector)
-     */
     public void select(Vector items) {
 	editor.getSelectionManager().select(items);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#toggleItems(java.util.Vector)
-     */
     public void toggleItems(Vector items) {
 	editor.getSelectionManager().toggle(items);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#selectedFigs()
-     */
     public Vector selectedFigs() {
 	return editor.getSelectionManager().getFigs();
     }
@@ -641,59 +514,27 @@ MouseWheelListener {
     // public Dimension getMinimumSize() { return new Dimension(1000, 1000); }
 
     // public Dimension getSize() { return new Dimension(1000, 1000); }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#setDefaultSize(int, int)
-     */
     public void setDefaultSize(int width, int height) {
 	defaultSize = new Dimension(width, height);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#setDefaultSize(java.awt.Dimension)
-     */
     public void setDefaultSize(Dimension dim) {
 	defaultSize = dim;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#getDefaultSize()
-     */
     public Dimension getDefaultSize() {
 	return defaultSize;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#getViewPosition()
-     */
     public Point getViewPosition() {
 	return scrollPane.getViewport().getViewPosition();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#setViewPosition(java.awt.Point)
-     */
     public void setViewPosition(Point p) {
 	if (p != null)
 	    scrollPane.getViewport().setViewPosition(p);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.tigris.gef.graph.presentation.Graph#establishAlternateMouseWheelListener(java.awt.event.MouseWheelListener,
-     *      int)
-     */
     public void establishAlternateMouseWheelListener(
 	    MouseWheelListener listener, int mask) {
 
@@ -1166,5 +1007,4 @@ class WheelKeyListenerToggleAction implements KeyListener {
 
     public void keyTyped(KeyEvent e) {
     }
-
 }
