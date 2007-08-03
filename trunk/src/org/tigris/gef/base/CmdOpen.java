@@ -32,7 +32,6 @@
 package org.tigris.gef.base;
 
 import java.awt.Dimension;
-import java.awt.FileDialog;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -69,7 +68,7 @@ public class CmdOpen extends Cmd implements FilenameFilter {
             Editor ce = Globals.curEditor();
 //            FileDialog fd =
 //	            new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
-            org.tigris.gef.base.FileDialog fd = ce.getFileDialog();
+            FileDialog fd = ce.getFileDialog();
             fd.setTitle("Open...");
             fd.setMode(FileDialog.LOAD);
             fd.setFilenameFilter(this);

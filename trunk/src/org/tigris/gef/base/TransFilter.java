@@ -33,7 +33,7 @@ import java.awt.image.RGBImageFilter;
  * RGBImageFilter that turns on transparency for pixels of a specified color.
  */
 
-class TransFilter extends RGBImageFilter {
+public class TransFilter extends RGBImageFilter {
     int _transBG;
     
     public TransFilter( int bg ) {

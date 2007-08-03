@@ -36,7 +36,6 @@ import org.tigris.gef.graph.presentation.*;
 import org.tigris.gef.persistence.svg.SvgParser;
 import org.tigris.gef.util.Util;
 
-import swingwt.awt.FileDialog;
 
 /** Cmd to Load a previously saved document document. The loaded
  *  editor is displayed in a new JGraphFrame.
@@ -71,7 +70,7 @@ public class CmdOpenSVG extends Cmd implements FilenameFilter {
         Editor ce = Globals.curEditor();
 //        java.awt.FileDialog fd = new java.awt.FileDialog(ce.findFrame(), "Open...",
 //                FileDialog.LOAD);
-        org.tigris.gef.base.FileDialog fd = ce.getFileDialog();
+        FileDialog fd = ce.getFileDialog();
         fd.setTitle("Open...");
         fd.setMode(FileDialog.LOAD);
         fd.setFilenameFilter(this);

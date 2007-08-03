@@ -28,7 +28,6 @@
 package org.tigris.gef.base;
 
 import java.awt.Dimension;
-import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FilenameFilter;

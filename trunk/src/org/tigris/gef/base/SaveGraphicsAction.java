@@ -49,12 +49,13 @@ public abstract class SaveGraphicsAction extends AbstractAction {
     private static Log LOG = LogFactory.getLog(LayerDiagram.class);
     protected int scale = 1;
     protected OutputStream outputStream;
-    
-    protected abstract void saveGraphics(
-        OutputStream s,
-        Editor ce,
-        Rectangle drawingArea)
-        throws IOException;
+
+    //the abstract method now is implemented in GraphInternalPane method and is called in Editor class.
+//    protected abstract void saveGraphics(
+//        OutputStream s,
+//        Editor ce,
+//        Rectangle drawingArea)
+//        throws IOException;
 
     /**
      * Creates a new SaveGraphicsAction
@@ -170,7 +171,7 @@ public abstract class SaveGraphicsAction extends AbstractAction {
         //  Now, do the real work:
         try {
 //            saveGraphics(s, ce, drawingArea);
-            saveGraphics(outputStream, ce, drawingArea);
+            ce.saveGraphics(outputStream, ce, drawingArea, scale);
         } catch (java.io.IOException e) {
             LOG.error("Error while exporting Graphics:", e);
         }

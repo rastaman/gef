@@ -45,6 +45,8 @@ import org.tigris.gef.swing.SwingMouseEventWrapper;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Enumeration;
 
@@ -1044,5 +1046,9 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
      */
     public MouseEvent wrapMouseEvent(java.awt.event.MouseEvent me) {
 	return new SwingMouseEventWrapper(me);
+    }
+
+    public void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea, int scale) throws IOException {
+    		_jComponent.saveGraphics(s, ce, drawingArea, scale);
     }
 }

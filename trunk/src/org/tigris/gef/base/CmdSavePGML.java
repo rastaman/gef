@@ -36,7 +36,6 @@ import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
 
-import swingwt.awt.FileDialog;
 
 /** Cmd to save the current document to a binary file using Sun's
  *  ObjectSerialization library. The written file contains the Editor
@@ -90,7 +89,7 @@ public class CmdSavePGML extends Cmd implements FilenameFilter {
         		      (LayerPerspective) ce.getLayerManager().getActiveLayer());
 //            java.awt.FileDialog fd = new
 //            java.awt.FileDialog(ce.findFrame(), "Save Diagram in PGML format", FileDialog.SAVE);
-            org.tigris.gef.base.FileDialog fd = ce.getFileDialog();
+            FileDialog fd = ce.getFileDialog();
             fd.setTitle("Save Diagram in PGML format");
             fd.setMode(FileDialog.SAVE);
             fd.setFilenameFilter(this);

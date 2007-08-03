@@ -81,8 +81,11 @@ public class CmdSave extends Cmd implements FilenameFilter {
         try {
             Editor ce = Globals.curEditor();
             // TODO Should use JFileChooser
-            FileDialog fd =
-                new FileDialog(ce.findFrame(), "Save Diagram", FileDialog.SAVE);
+//            FileDialog fd =
+//                new FileDialog(ce.findFrame(), "Save Diagram", FileDialog.SAVE);
+            org.tigris.gef.base.FileDialog fd = ce.getFileDialog();
+            fd.setTitle("Save Diagram");
+            fd.setMode(FileDialog.SAVE);
             fd.setFilenameFilter(this);
             fd.setDirectory(Globals.getLastDirectory());
             fd.setVisible(true);

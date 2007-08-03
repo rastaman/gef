@@ -23,9 +23,12 @@
 
 package org.tigris.gef.graph.presentation;
 
+import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.MouseEvent;
 import org.tigris.gef.base.PopupMenu;
 import java.awt.*;
+import java.io.IOException;
+import java.io.OutputStream;
 
     /**
      * @see java.swt.Component
@@ -127,6 +130,12 @@ public interface GraphInternalPane {
      * @return a created PopupMenu
      */
     PopupMenu createPopupMenu();
+    
+    /**
+     * save the current image to Cilpboard
+     * @throws IOException 
+     */
+    void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea, int scale) throws IOException; 
 
     /**
      * @return true if its parent is a Viewport

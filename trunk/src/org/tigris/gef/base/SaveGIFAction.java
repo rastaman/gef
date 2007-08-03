@@ -75,45 +75,4 @@ public class SaveGIFAction extends SaveGraphicsAction {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
     }
 
-    /**
-     * Write the diagram contained by the current editor into an OutputStream as
-     * a GIF image.
-     */
-    protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea)
-            throws IOException {
-
-        // Create an offscreen image and render the diagram into it.
-
-        Image i = ce.createImage(drawingArea.width * scale, drawingArea.height
-                * scale);
-        Graphics g = i.getGraphics();
-        if (g instanceof Graphics2D) {
-            ((Graphics2D) g).scale(scale, scale);
-        }
-        g.setColor(new Color(TRANSPARENT_BG_COLOR));
-        g.fillRect(0, 0, drawingArea.width * scale, drawingArea.height * scale);
-        // a little extra won't hurt
-        g.translate(-drawingArea.x, -drawingArea.y);
-        ce.print(g);
-
-        // Tell the Acme GIF encoder to save the image as a GIF into the
-        // output stream. Use the TransFilter to make the background
-        // color transparent.
-
-        try {
-            FilteredImageSource fis = new FilteredImageSource(i.getSource(),
-                    new TransFilter(TRANSPARENT_BG_COLOR));
-            GifEncoder ge = new GifEncoder(fis, s);
-            // GifEncoder ge = new GifEncoder( i, s );
-            ge.encode();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        g.dispose();
-        // force garbage collection, to prevent out of memory exceptions
-        g = null;
-        i = null;
-    }
-
-} /* end class SaveGIFAction */
+ } /* end class SaveGIFAction */

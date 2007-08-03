@@ -42,11 +42,11 @@ public abstract class CmdSaveGraphics extends Cmd {
     private static Log LOG = LogFactory.getLog(LayerDiagram.class);
     protected int scale = 1;
     
-    protected abstract void saveGraphics(
-        OutputStream s,
-        Editor ce,
-        Rectangle drawingArea)
-        throws IOException;
+//    protected abstract void saveGraphics(
+//        OutputStream s,
+//        Editor ce,
+//        Rectangle drawingArea)
+//        throws IOException;
 
     protected CmdSaveGraphics(String name) {
         super(name);
@@ -125,7 +125,7 @@ public abstract class CmdSaveGraphics extends Cmd {
 
         //  Now, do the real work:
         try {
-            saveGraphics(s, ce, drawingArea);
+            ce.saveGraphics(s, ce, drawingArea, scale);
         } catch (java.io.IOException e) {
             LOG.error("Error while exporting Graphics:", e);
         }

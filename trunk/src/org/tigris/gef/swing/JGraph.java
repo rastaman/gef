@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -45,6 +46,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.image.FilteredImageSource;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -68,6 +72,7 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.base.SelectNearAction;
+import org.tigris.gef.base.TransFilter;
 import org.tigris.gef.base.ZoomAction;
 import org.tigris.gef.event.GraphSelectionListener;
 import org.tigris.gef.event.ModeChangeListener;
@@ -81,6 +86,8 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.TextEditor;
 import org.tigris.gef.graph.presentation.GraphInternalPane;
+
+import Acme.JPM.Encoders.GifEncoder;
 
 /**
  * JGraph is a Swing component that displays a connected graph and allows
@@ -951,6 +958,48 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
     {
         return (this.getParent() instanceof JViewport);
     }
+    /**
+     * Write the diagram contained by the current editor into an OutputStream as
+     * a GIF image.
+     */
+    public void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea, int scale)
+            throws IOException {
+
+        final int TRANSPARENT_BG_COLOR = 0x00efefef;
+        // Create an offscreen image and render the diagram into it.
+
+        Image i = ce.createImage(drawingArea.width * scale, drawingArea.height
+                * scale);
+        Graphics g = i.getGraphics();
+        if (g instanceof Graphics2D) {
+            ((Graphics2D) g).scale(scale, scale);
+        }
+        g.setColor(new Color(TRANSPARENT_BG_COLOR));
+        g.fillRect(0, 0, drawingArea.width * scale, drawingArea.height * scale);
+        // a little extra won't hurt
+        g.translate(-drawingArea.x, -drawingArea.y);
+        ce.print(g);
+
+        // Tell the Acme GIF encoder to save the image as a GIF into the
+        // output stream. Use the TransFilter to make the background
+        // color transparent.
+
+        try {
+            FilteredImageSource fis = new FilteredImageSource(i.getSource(),
+                    new org.tigris.gef.base.TransFilter(TRANSPARENT_BG_COLOR));
+            GifEncoder ge = new GifEncoder(fis, s);
+            // GifEncoder ge = new GifEncoder( i, s );
+            ge.encode();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        g.dispose();
+        // force garbage collection, to prevent out of memory exceptions
+        g = null;
+        i = null;
+    }
+
 }
 
 class WheelKeyListenerToggleAction implements KeyListener {
