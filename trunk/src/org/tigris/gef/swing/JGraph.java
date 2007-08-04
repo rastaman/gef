@@ -851,111 +851,103 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
 	return new SwingMouseEventWrapper(me);
     }
 
-   public Rectangle getViewableRect()
-    {
+    public Rectangle getViewableRect() {
         return super.getVisibleRect();
     }
     
-    public void revalidate()
-    {
+    public void revalidate() {
         super.revalidate();
     }
     
-    public void setPreferredSize(Dimension d)
-    {
+    public void setPreferredSize(Dimension d) {
         super.setPreferredSize(d);
     }
     
-    public void repaint(int x, int y, int width, int height)
-    {
+    public void repaint(int x, int y, int width, int height) {
         super.repaint(x,y,width,height);
     }
     
-    public void repaint(int alpha, int x, int y, int width, int height)
-    {
+    public void repaint(int alpha, int x, int y, int width, int height) {
         super.repaint(alpha,x,y,width,height);
     }
     
-    public void setCursor(Cursor c)
-    {
+    public void setCursor(Cursor c) {
         super.setCursor(c);
     }
 
-    private Frame findFrame()
-    {
+    private Frame findFrame() {
         Component c = this;
         while(c != null && !(c instanceof Frame))
             c = c.getParent();
         return (Frame)c;
     }
     
-    public org.tigris.gef.base.FileDialog getFileDialog()
-    {
+    public org.tigris.gef.base.FileDialog getFileDialog() {
         fileDialog= new JFileDialog(findFrame()); 
         return fileDialog;
     }
-    public Dimension getGraphSize()
-    {
+    
+    public Dimension getGraphSize() {
         return super.getSize(); 
     }
-    public Color getGraphBackground()
-    {
+    
+    public Color getGraphBackground() {
         return super.getBackground();
     }
-    public Image createImage(int x, int h)
-    {
+    
+    public Image createImage(int x, int h) {
         return super.createImage(x, h);
     }
-    public void scrollRectToVisible(Rectangle bounds)
-    {
+    
+    public void scrollRectToVisible(Rectangle bounds) {
         super.scrollRectToVisible(bounds);
     }
-    public Cursor getCursor()
-    {
+    
+    public Cursor getCursor() {
         return super.getCursor();
     }
-    public Point getViewPosition()
-    {
+    
+    public Point getViewPosition() {
         Component parent = this.getParent();
         if(!(parent instanceof JViewport)) {
             return new Point(0,0);
         }
         return ((JViewport) parent).getViewPosition();
     }
-    public Dimension getExtentSize()
-    {
+    
+    public Dimension getExtentSize() {
         Component parent = this.getParent();
         if(!(parent instanceof JViewport)) {
             return new Dimension(0,0);
         }
         return ((JViewport) parent).getExtentSize();
     }
-    public Rectangle getViewRect()
-    {
+    
+    public Rectangle getViewRect() {
         Component parent = this.getParent();
         if(!(parent instanceof JViewport)) {
             return new Rectangle(0,0);
         }
         return ((JViewport)parent).getViewRect();
     }
-    public void setViewPosition(Point p)
-    {
+    
+    public void setViewPosition(Point p) {
         Component parent = this.getParent();
         if(!(parent instanceof JViewport)) {
             return;
         }
         ((JViewport)parent).setViewPosition(p);
     }
-    public Rectangle getBounds()
-    {
+    
+    public Rectangle getBounds() {
         return super.getBounds();
     }
-    public PopupMenu createPopupMenu()
-    {
+    
+    public PopupMenu createPopupMenu() {
         return new org.tigris.gef.swing.JPopupMenu();
     }
-    public boolean isParentViewport()
-    {
+    
+    public boolean isParentViewport() {
         return (this.getParent() instanceof JViewport);
     }
     /**

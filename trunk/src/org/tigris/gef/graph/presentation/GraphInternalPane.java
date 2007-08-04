@@ -26,6 +26,9 @@ package org.tigris.gef.graph.presentation;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.MouseEvent;
 import org.tigris.gef.base.PopupMenu;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigPainter;
+
 import java.awt.*;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -140,5 +143,5 @@ public interface GraphInternalPane {
     /**
      * @return true if its parent is a Viewport
      */
-    boolean isParentViewport(); 
- }
+    boolean isParentViewport();
+}

@@ -37,6 +37,8 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.graph.presentation.Graph;
 import org.tigris.gef.graph.presentation.GraphInternalPane;
+import org.tigris.gef.graph.presentation.Presentation;
+import org.tigris.gef.graph.presentation.PresentationFactory;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.FigTextEditor;
@@ -218,7 +220,8 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     }
 
     protected void defineLayers(GraphModel gm, Layer lay) {
-        _layerManager.addLayer(new LayerGrid());
+	Layer gridLayer = PresentationFactory.getPresentation().createLayerGrid();
+        _layerManager.addLayer(gridLayer);
         // _layerManager.addLayer(new LayerPageBreaks());
         // the following line is an example of another "grid"
         //_layerManager.addLayer(new LayerPolar());

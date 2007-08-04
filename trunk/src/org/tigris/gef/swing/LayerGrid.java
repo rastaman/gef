@@ -31,7 +31,7 @@
 // $Id$
 
 
-package org.tigris.gef.base;
+package org.tigris.gef.swing;
 
 import java.awt.Color;
 import java.awt.Frame;
@@ -42,6 +42,8 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.List;
 
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 
 import javax.swing.UIManager;
