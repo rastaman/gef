@@ -335,7 +335,7 @@ MouseWheelListener {
 		defaultSize.height);
 	while (iter.hasMoreElements()) {
 	    Fig fig = (Fig) iter.nextElement();
-	    Rectangle rect = SwtUtil.getRectangle(fig.getBounds());
+	    Rectangle rect = SwtUtil.translateRectangle(fig.getBounds());
 	    Point point = rect.getLocation();
 	    Dimension dim = rect.getSize();
 	    if ((point.x + dim.width + 5) > drawingSize.width) {
