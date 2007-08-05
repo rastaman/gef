@@ -34,100 +34,62 @@ import java.io.IOException;
 import java.io.OutputStream;
 
     /**
-     * @see java.swt.Component
+     * @see java.awt.Component
      */
 
 public interface GraphInternalPane {
 
     /**
-     * @see java.swt.Component#createMouseDragEvent()
+     * @see java.awt.Component#createMouseDragEvent()
      */
     MouseEvent createMouseDragEvent(int x, int y);
 
     /**
-     * @see java.swt.Component#getViewableRect()
+     * @see java.awt.Component#getViewableRect()
      */
     Rectangle getViewableRect();
 
     /**
-     * @see java.swt.Component#revalidate()
+     * @see java.awt.Component#revalidate()
      */
     void revalidate();
 
     /**
-     * @see java.swt.Component#setPreferredSize()
+     * @see java.awt.Component#setPreferredSize()
      */
     void setPreferredSize(Dimension d);
 
     /**
-     * @see java.swt.Component#repaint()
+     * @see java.awt.Component#repaint()
      */
     void repaint(int x, int y, int width, int height);
 
     /**
-     * @see java.swt.Component#repaint()
-     */
-    void repaint(int alpha, int x, int y, int width, int height);
-
-    /**
-     * @see java.swt.Component#setCursor()
-     */
-    void setCursor(Cursor c);
-
-    /**
-     * @see java.swt.Component#getFileDialog()
+     * @see java.awt.Component#getFileDialog()
      */
     org.tigris.gef.base.FileDialog getFileDialog();
 
+    
     /**
-     * @see java.swt.Component#getGraphSize()
-     */
-    Dimension getGraphSize();
-
-    /**
-     * @see java.swt.Component#setToolTipText()
+     * @see java.awt.Component#setToolTipText()
      */
     void setToolTipText(String text);
 
     /**
-     * @see java.swt.Component#getGraphBackground()
+     * @see java.awt.Component#getGraphBackground()
      */
     Color getGraphBackground();
 
     /**
-     * @see java.swt.Component#createImage()
+     * @see java.awt.Component#createImage()
      */
-    Image createImage(int x, int h);
+//    Image createImage(int x, int h);
 
     /**
-     * @see java.swt.Component#scrollRectToVisible()
+     * @see java.awt.Component#scrollRectToVisible()
      */
     void scrollRectToVisible(Rectangle bounds);
 
-    /**
-     * @see java.swt.Component#getCursor()
-     */
-    Cursor getCursor();
-
-    /**
-     * @see java.swt.Component#getViewPosition()
-     */
-    Point getViewPosition();
-
-    /**
-     * @see java.swt.Component#getExtentSize()
-     */
-    Dimension getExtentSize();    
-
-    /**
-     * @see java.swt.Component#getViewRect()
-     */
-    Rectangle getViewRect();
-
-    /**
-     * @see java.swt.Component#setViewPosition()
-     */
-    void setViewPosition(Point point);
 
     /**
      * @return a created PopupMenu

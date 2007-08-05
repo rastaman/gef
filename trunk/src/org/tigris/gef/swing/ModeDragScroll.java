@@ -66,7 +66,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
     private boolean _isScrolling = false;
     private JViewport _viewport = null;
     private Cursor _oldCursor = null;
-    private GraphInternalPane _component = null;
+    private JGraphInternalPane _component = null;
     private Dimension componentSize = null;
     private Point viewPosition = new Point();
     private int deltaX;
@@ -137,7 +137,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         }
 
         // get the component ...
-        _component = editor.getGraphInternalPane();
+        _component = (JGraphInternalPane)editor.getGraphInternalPane();
         if(_component == null) {
             //if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no component to scrolling");
             return;
@@ -250,9 +250,9 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
 
     private final boolean doScroll(GraphInternalPane jComponent, int mouseX, int mouseY) {
         if(jComponent != null && jComponent.isParentViewport()) {
-            Dimension componentSize = jComponent.getGraphSize();
+            Dimension componentSize = ((JGraphInternalPane)jComponent).getGraphSize();
             //JViewport view = (JViewport)jComponent.getParent();
-            Rectangle viewRect = jComponent.getViewRect();
+            Rectangle viewRect = ((JGraphInternalPane)jComponent).getViewRect();
             int viewRight = viewRect.x + viewRect.width;
             int viewY = viewRect.y + viewRect.height;
             // test, if the mouse moves out of the viewport
