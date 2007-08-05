@@ -212,7 +212,8 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 
         pushMode(new ModeSelect(this));
         pushMode(new ModePopup(this));
-        pushMode(new ModeDragScroll(this));
+        pushMode(PresentationFactory.getPresentation().createModeDragScroll(this));
+	
         Globals.curEditor(this);
 
         _renderingHints.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
@@ -773,7 +774,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 
     /** Scales the mouse coordinates (which match the drawing scale)
      * back to the model scale. */
-    protected MouseEvent translateMouseEvent(MouseEvent me) {
+    public MouseEvent translateMouseEvent(MouseEvent me) {
         double xp = me.getX();
         double yp = me.getY();
         me.translatePoint((int)Math.round((xp / _scale) - me.getX()), (int)Math.round((yp / _scale) - me.getY()));
