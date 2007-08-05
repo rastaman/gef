@@ -35,9 +35,7 @@ import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
-import org.tigris.gef.graph.presentation.Graph;
 import org.tigris.gef.graph.presentation.GraphInternalPane;
-import org.tigris.gef.graph.presentation.Presentation;
 import org.tigris.gef.graph.presentation.PresentationFactory;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
@@ -45,12 +43,22 @@ import org.tigris.gef.presentation.FigTextEditor;
 import org.tigris.gef.presentation.TextEditor;
 import org.tigris.gef.swing.SwingMouseEventWrapper;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Enumeration;
+
+import javax.swing.JComponent;
 
 /** This class provides an editor for manipulating graphical
  *  documents. The editor is the central class of the graph editing
@@ -657,7 +665,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     }
 
     public void setCursor(Cursor c) {
-        if(getJComponent() != null) {
+        if(getGraphInternalPane() != null) {
             getGraphInternalPane().setCursor(c);
             java.awt.Toolkit.getDefaultToolkit().sync();
         }
