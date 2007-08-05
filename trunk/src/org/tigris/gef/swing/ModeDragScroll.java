@@ -260,17 +260,17 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
 
             if   ( mouseX > viewRight &&  ! (viewRight > (componentSize.width - SCROLL_INCREMENT ))) {
                 // mouse moves right out of the view -> scroll to right
-                jComponent.setViewPosition(new Point(viewRect.x + SCROLL_INCREMENT, viewRect.y));
+        	((JGraphInternalPane)jComponent).setViewPosition(new Point(viewRect.x + SCROLL_INCREMENT, viewRect.y));
                 return true;
             } else if ( mouseX < viewRect.x && ! (viewRect.x -  SCROLL_INCREMENT < 0)) {
                 // mouse moves left out of the viewport -> scroll to left
-                jComponent.setViewPosition(new Point(viewRect.x - SCROLL_INCREMENT, viewRect.y));
+        	((JGraphInternalPane)jComponent).setViewPosition(new Point(viewRect.x - SCROLL_INCREMENT, viewRect.y));
                 return true;
             } else if (mouseY > viewY &&  ! (viewY > (componentSize.height -SCROLL_INCREMENT))) {
-                jComponent.setViewPosition(new Point(viewRect.x,  viewRect.y + SCROLL_INCREMENT));
+        	((JGraphInternalPane)jComponent).setViewPosition(new Point(viewRect.x,  viewRect.y + SCROLL_INCREMENT));
                 return true;
             } else if (mouseY < viewRect.y && ! (viewRect.y -SCROLL_INCREMENT < 0)) {
-                jComponent.setViewPosition(new Point(viewRect.x,  viewRect.y - SCROLL_INCREMENT));
+        	((JGraphInternalPane)jComponent).setViewPosition(new Point(viewRect.x,  viewRect.y - SCROLL_INCREMENT));
                 return true;
             }
         }
