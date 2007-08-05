@@ -106,4 +106,6 @@ public interface GraphInternalPane {
      * @return true if its parent is a Viewport
      */
     boolean isParentViewport();
+    
+    Dimension getGraphSize();
 }
