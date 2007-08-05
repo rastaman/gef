@@ -46,6 +46,6 @@ public interface Graph  {
     public GraphModel getGraphModel();
     public void setGraphNodeRenderer(GraphNodeRenderer gnr); 
     public void setGraphEdgeRenderer(GraphEdgeRenderer ger);
-	public void setSize(Dimension drawAreaSize);
-	public void setPreferredSize(Dimension drawAreaSize);
+    public void setSize(Dimension drawAreaSize);
+    public void setPreferredSize(Dimension drawAreaSize);
 }
