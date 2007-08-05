@@ -78,8 +78,6 @@ public interface GraphFrame {
 
     public void setGraphNodeRenderer(GraphNodeRenderer rend);
 
-    public void setJMenuBar(JMenuBar mb);
-
     public void setToolBar(ToolBar tb);
 
     public void setVisible(boolean b);
