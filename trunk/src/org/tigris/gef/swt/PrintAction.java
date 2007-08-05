@@ -248,7 +248,7 @@ public class PrintAction extends AbstractAction implements Printable {
         }
 
         g2d.setClip(drawingArea);
-        editor.print(SwingUtil.translateGraphics(g2d));
+        editor.print(SwtUtil.translateGraphics(g2d));
         editor.setGridHidden(h);
 
         return (PAGE_EXISTS);

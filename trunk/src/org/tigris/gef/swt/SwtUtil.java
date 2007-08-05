@@ -30,26 +30,43 @@ package org.tigris.gef.swt;
 import swingwt.awt.*;
 
 public class SwtUtil{
-    public static Rectangle translateRectangle(java.awt.Rectangle awt)
-    {
+    
+    private static final int SWINGWT_GRAPHICS = 0;
+    private static final int HOLONGATE_GRAPHICS = 1;
+    private static final int JFREE_GRAPHICS = 2;
+    
+    private static final int GRAPHICS_IMPLEMENTATION = SWINGWT_GRAPHICS;
+    
+    public static Rectangle translateRectangle(java.awt.Rectangle awt) {
 	return new Rectangle(awt.x, awt.y, awt.width, awt.height); 
     }
-    public static Color translateColor(java.awt.Color awt)
-    {
+    
+    public static Color translateColor(java.awt.Color awt) {
 	return new Color(awt.getRGB()); 
     }
-    public static Dimension translateDimension(java.awt.Dimension awt)
-    {
+    
+    public static Dimension translateDimension(java.awt.Dimension awt) {
 	return new Dimension(awt.width, awt.height); 
     }
-    public static Graphics translateGraphics(java.awt.Graphics awt)
-    {
-	swingwt.awt.Graphics _g;
-	java.awt.Rectangle swtRect = awt.getClipBounds();
-	_g = new swingwt.awt.Container().getGraphics();
-	_g.setClip(swtRect.x, swtRect.y, swtRect.width, swtRect.height);
-	_g.setColor(translateColor(awt.getColor()));
-	return _g; 
-    }
     
+    public static java.awt.Graphics translateGraphics(Graphics swt) {
+	// TODO GraphicsTranslator is our own attempt to convert a swingwt Graphics object
+	// to an awt Graphics
+	if (GRAPHICS_IMPLEMENTATION == SWINGWT_GRAPHICS) {
+	    if (swt instanceof Graphics2D) {
+		// TODO we need a Graphics2DTranslator also
+		return new GraphicsTranslator(swt);
+	    } else {
+		return new GraphicsTranslator(swt);
+	    }
+	} else if (GRAPHICS_IMPLEMENTATION == HOLONGATE_GRAPHICS) {
+            // TODO experiment here with Holongate Graphics
+	    return null;
+	} else if (GRAPHICS_IMPLEMENTATION == JFREE_GRAPHICS) {
+            // TODO experiment here with JFree Graphics
+	    return null;
+	} else {
+	    return null;
+	}
+    }
 }

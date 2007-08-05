@@ -44,15 +44,7 @@ public class SwingUtil{
     {
 	return new Dimension(awt.width, awt.height); 
     }
-    public static Graphics translateGraphics(swingwt.awt.Graphics awt)
-    {
-	java.awt.Graphics _g;
-	swingwt.awt.Rectangle swtRect = awt.getClipBounds();
-	_g = new java.awt.Container().getGraphics();
-	_g.setClip(swtRect.x, swtRect.y, swtRect.width, swtRect.height);
-	_g.setColor(translateColor(awt.getColor()));
-	return _g; 
-    }
+    
     public static Image translateImage(swingwt.awt.Image awt)
     {
 	return new java.awt.Container().createImage(awt.getWidth(),awt.getHeight()); 

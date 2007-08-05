@@ -617,7 +617,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
     }
 
     public void paintComponent(Graphics g) {
-	_editor.paint(new GraphicsTranslator(g));
+	_editor.paint(SwtUtil.translateGraphics(g));
     }
 
     public Graphics getGraphics() {
