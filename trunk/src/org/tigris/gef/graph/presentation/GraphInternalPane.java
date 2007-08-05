@@ -108,4 +108,6 @@ public interface GraphInternalPane {
     boolean isParentViewport();
     
     Dimension getGraphSize();
+    
+    void setCursor(Cursor cursor);
 }

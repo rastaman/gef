@@ -153,6 +153,12 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
         init(new JGraph());
     }
 
+    /**
+     * @deprecated
+     */
+    public void init(org.tigris.gef.graph.presentation.JGraph jg) {
+    }
+    
     /* (non-Javadoc)
      * @see org.tigris.gef.graph.presentation.GraphFrame#init(org.tigris.gef.graph.presentation.Graph)
      */
@@ -165,7 +171,7 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
         _graphPanel.add(_graph, BorderLayout.CENTER);
         _graphPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
 
-        _mainPanel.add(_toolbar, BorderLayout.NORTH);
+//        _mainPanel.add(_toolbar, BorderLayout.NORTH);
         _mainPanel.add(_graphPanel, BorderLayout.CENTER);
         content.add(_mainPanel, BorderLayout.CENTER);
         content.add(_statusbar, BorderLayout.SOUTH);
@@ -225,7 +231,9 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
      * @see org.tigris.gef.graph.presentation.GraphFrame#getJMenuBar()
      */
     public JMenuBar getJMenuBar() {
-        return _menubar;
+	return null;
+	// NOT YET IMPLEMENTED
+        //return _menubar;
     }
 
     /* (non-Javadoc)
@@ -287,7 +295,8 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
      */
     public void setToolBar(ToolBar tb) {
         _toolbar = tb;
-        _mainPanel.add(_toolbar, BorderLayout.NORTH);
+        // NOT YET IMPLEMENTED
+        //_mainPanel.add(_toolbar, BorderLayout.NORTH);
     }
 
     /** Set up the menus and keystrokes for menu items. Subclasses can
@@ -302,154 +311,155 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
         file.setMnemonic('F');
         _menubar.add(file);
         //file.add(new CmdNew());
-        openItem = file.add(new CmdOpen());
-        saveItem = file.add(new CmdSave());
-        file.add(new CmdSavePGML());
-        file.add(new CmdSaveSVG());
-        CmdPrint cmdPrint = new CmdPrint();
-        printItem = file.add(cmdPrint);
-        file.add(new CmdPrintPageSetup(cmdPrint));
-        file.add(new CmdOpenWindow("org.tigris.gef.base.PrefsEditor",
-                "Preferences..."));
-        //file.add(new CmdClose());
-        exitItem = file.add(new CmdExit());
-
-        JMenu edit = new JMenu(Localizer.localize("GefBase", "Edit"));
-        edit.setMnemonic('E');
-        _menubar.add(edit);
-
-        JMenuItem undoItem = edit.add(new UndoAction(Localizer.localize(
-                "GefBase", "Undo")));
-        undoItem.setMnemonic(Localizer.localize("GefBase", "UndoMnemonic")
-                .charAt(0));
-        JMenuItem redoItem = edit.add(new RedoAction(Localizer.localize(
-                "GefBase", "Redo")));
-        redoItem.setMnemonic(Localizer.localize("GefBase", "RedoMnemonic")
-                .charAt(0));
-
-        JMenu select = new JMenu(Localizer.localize("GefBase", "Select"));
-        edit.add(select);
-        select.add(new CmdSelectAll());
-        select.add(new CmdSelectNext(false));
-        select.add(new CmdSelectNext(true));
-        select.add(new CmdSelectInvert());
-
-        edit.addSeparator();
-
-        copyItem = edit.add(new CmdCopy());
-        copyItem.setMnemonic('C');
-        pasteItem = edit.add(new CmdPaste());
-        pasteItem.setMnemonic('P');
-
-        deleteItem = edit.add(new CmdRemoveFromGraph());
-        edit.addSeparator();
-        edit.add(new CmdUseReshape());
-        edit.add(new CmdUseResize());
-        edit.add(new CmdUseRotate());
-
-        JMenu view = new JMenu(Localizer.localize("GefBase", "View"));
-        _menubar.add(view);
-        view.setMnemonic('V');
-        view.add(new CmdSpawn());
-        view.add(new CmdShowProperties());
-        //view.addSeparator();
-        //view.add(new CmdZoomIn());
-        //view.add(new CmdZoomOut());
-        //view.add(new CmdZoomNormal());
-        view.addSeparator();
-        view.add(new CmdAdjustGrid());
-        view.add(new CmdAdjustGuide());
-        view.add(new CmdAdjustPageBreaks());
-
-        JMenu arrange = new JMenu(Localizer.localize("GefBase", "Arrange"));
-        _menubar.add(arrange);
-        arrange.setMnemonic('A');
-        groupItem = arrange.add(new CmdGroup());
-        groupItem.setMnemonic('G');
-        ungroupItem = arrange.add(new CmdUngroup());
-        ungroupItem.setMnemonic('U');
-
-        JMenu align = new JMenu(Localizer.localize("GefBase", "Align"));
-        arrange.add(align);
-        align.add(new AlignAction(AlignAction.ALIGN_TOPS));
-        align.add(new AlignAction(AlignAction.ALIGN_BOTTOMS));
-        align.add(new AlignAction(AlignAction.ALIGN_LEFTS));
-        align.add(new AlignAction(AlignAction.ALIGN_RIGHTS));
-        align.add(new AlignAction(AlignAction.ALIGN_H_CENTERS));
-        align.add(new AlignAction(AlignAction.ALIGN_V_CENTERS));
-        align.add(new AlignAction(AlignAction.ALIGN_TO_GRID));
-
-        JMenu distribute = new JMenu(Localizer
-                .localize("GefBase", "Distribute"));
-        arrange.add(distribute);
-        distribute.add(new DistributeAction(DistributeAction.H_SPACING));
-        distribute.add(new DistributeAction(DistributeAction.H_CENTERS));
-        distribute.add(new DistributeAction(DistributeAction.V_SPACING));
-        distribute.add(new DistributeAction(DistributeAction.V_CENTERS));
-
-        JMenu reorder = new JMenu(Localizer.localize("GefBase", "Reorder"));
-        arrange.add(reorder);
-        toBackItem = reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
-        toFrontItem = reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
-        backwardItem = reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
-        forwardItem = reorder.add(new CmdReorder(CmdReorder.BRING_FORWARD));
-
-        JMenu nudge = new JMenu(Localizer.localize("GefBase", "Nudge"));
-        arrange.add(nudge);
-        nudge.add(new NudgeAction(NudgeAction.LEFT));
-        nudge.add(new NudgeAction(NudgeAction.RIGHT));
-        nudge.add(new NudgeAction(NudgeAction.UP));
-        nudge.add(new NudgeAction(NudgeAction.DOWN));
-
-        KeyStroke ctrlO = KeyStroke.getKeyStroke(KeyEvent.VK_O,
-                KeyEvent.CTRL_MASK);
-        KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S,
-                KeyEvent.CTRL_MASK);
-        KeyStroke ctrlP = KeyStroke.getKeyStroke(KeyEvent.VK_P,
-                KeyEvent.CTRL_MASK);
-        KeyStroke altF4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4,
-                KeyEvent.ALT_MASK);
-
-        KeyStroke delKey = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
-        KeyStroke ctrlZ = KeyStroke.getKeyStroke(KeyEvent.VK_Z,
-                KeyEvent.CTRL_MASK);
-        KeyStroke ctrlY = KeyStroke.getKeyStroke(KeyEvent.VK_Y,
-                KeyEvent.CTRL_MASK);
-        KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C,
-                KeyEvent.CTRL_MASK);
-        KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V,
-                KeyEvent.CTRL_MASK);
-        KeyStroke ctrlG = KeyStroke.getKeyStroke(KeyEvent.VK_G,
-                KeyEvent.CTRL_MASK);
-        KeyStroke ctrlU = KeyStroke.getKeyStroke(KeyEvent.VK_U,
-                KeyEvent.CTRL_MASK);
-        KeyStroke ctrlB = KeyStroke.getKeyStroke(KeyEvent.VK_B,
-                KeyEvent.CTRL_MASK);
-        KeyStroke ctrlF = KeyStroke.getKeyStroke(KeyEvent.VK_F,
-                KeyEvent.CTRL_MASK);
-        KeyStroke sCtrlB = KeyStroke.getKeyStroke(KeyEvent.VK_B,
-                KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK);
-        KeyStroke sCtrlF = KeyStroke.getKeyStroke(KeyEvent.VK_F,
-                KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK);
-
-        openItem.setAccelerator(ctrlO);
-        saveItem.setAccelerator(ctrlS);
-        printItem.setAccelerator(ctrlP);
-        exitItem.setAccelerator(altF4);
-
-        deleteItem.setAccelerator(delKey);
-        undoItem.setAccelerator(ctrlZ);
-        redoItem.setAccelerator(ctrlY);
-        copyItem.setAccelerator(ctrlC);
-        pasteItem.setAccelerator(ctrlV);
-
-        groupItem.setAccelerator(ctrlG);
-        ungroupItem.setAccelerator(ctrlU);
-
-        toBackItem.setAccelerator(sCtrlB);
-        toFrontItem.setAccelerator(sCtrlF);
-        backwardItem.setAccelerator(ctrlB);
-        forwardItem.setAccelerator(ctrlF);
+        // NOT YET IMPLEMENTED
+//        openItem = file.add(new CmdOpen());
+//        saveItem = file.add(new CmdSave());
+//        file.add(new CmdSavePGML());
+//        file.add(new CmdSaveSVG());
+//        CmdPrint cmdPrint = new CmdPrint();
+//        printItem = file.add(cmdPrint);
+//        file.add(new CmdPrintPageSetup(cmdPrint));
+//        file.add(new CmdOpenWindow("org.tigris.gef.base.PrefsEditor",
+//                "Preferences..."));
+//        //file.add(new CmdClose());
+//        exitItem = file.add(new CmdExit());
+//
+//        JMenu edit = new JMenu(Localizer.localize("GefBase", "Edit"));
+//        edit.setMnemonic('E');
+//        _menubar.add(edit);
+//
+//        JMenuItem undoItem = edit.add(new UndoAction(Localizer.localize(
+//                "GefBase", "Undo")));
+//        undoItem.setMnemonic(Localizer.localize("GefBase", "UndoMnemonic")
+//                .charAt(0));
+//        JMenuItem redoItem = edit.add(new RedoAction(Localizer.localize(
+//                "GefBase", "Redo")));
+//        redoItem.setMnemonic(Localizer.localize("GefBase", "RedoMnemonic")
+//                .charAt(0));
+//
+//        JMenu select = new JMenu(Localizer.localize("GefBase", "Select"));
+//        edit.add(select);
+//        select.add(new CmdSelectAll());
+//        select.add(new CmdSelectNext(false));
+//        select.add(new CmdSelectNext(true));
+//        select.add(new CmdSelectInvert());
+//
+//        edit.addSeparator();
+//
+//        copyItem = edit.add(new CmdCopy());
+//        copyItem.setMnemonic('C');
+//        pasteItem = edit.add(new CmdPaste());
+//        pasteItem.setMnemonic('P');
+//
+//        deleteItem = edit.add(new CmdRemoveFromGraph());
+//        edit.addSeparator();
+//        edit.add(new CmdUseReshape());
+//        edit.add(new CmdUseResize());
+//        edit.add(new CmdUseRotate());
+//
+//        JMenu view = new JMenu(Localizer.localize("GefBase", "View"));
+//        _menubar.add(view);
+//        view.setMnemonic('V');
+//        view.add(new CmdSpawn());
+//        view.add(new CmdShowProperties());
+//        //view.addSeparator();
+//        //view.add(new CmdZoomIn());
+//        //view.add(new CmdZoomOut());
+//        //view.add(new CmdZoomNormal());
+//        view.addSeparator();
+//        view.add(new CmdAdjustGrid());
+//        view.add(new CmdAdjustGuide());
+//        view.add(new CmdAdjustPageBreaks());
+//
+//        JMenu arrange = new JMenu(Localizer.localize("GefBase", "Arrange"));
+//        _menubar.add(arrange);
+//        arrange.setMnemonic('A');
+//        groupItem = arrange.add(new CmdGroup());
+//        groupItem.setMnemonic('G');
+//        ungroupItem = arrange.add(new CmdUngroup());
+//        ungroupItem.setMnemonic('U');
+//
+//        JMenu align = new JMenu(Localizer.localize("GefBase", "Align"));
+//        arrange.add(align);
+//        align.add(new AlignAction(AlignAction.ALIGN_TOPS));
+//        align.add(new AlignAction(AlignAction.ALIGN_BOTTOMS));
+//        align.add(new AlignAction(AlignAction.ALIGN_LEFTS));
+//        align.add(new AlignAction(AlignAction.ALIGN_RIGHTS));
+//        align.add(new AlignAction(AlignAction.ALIGN_H_CENTERS));
+//        align.add(new AlignAction(AlignAction.ALIGN_V_CENTERS));
+//        align.add(new AlignAction(AlignAction.ALIGN_TO_GRID));
+//
+//        JMenu distribute = new JMenu(Localizer
+//                .localize("GefBase", "Distribute"));
+//        arrange.add(distribute);
+//        distribute.add(new DistributeAction(DistributeAction.H_SPACING));
+//        distribute.add(new DistributeAction(DistributeAction.H_CENTERS));
+//        distribute.add(new DistributeAction(DistributeAction.V_SPACING));
+//        distribute.add(new DistributeAction(DistributeAction.V_CENTERS));
+//
+//        JMenu reorder = new JMenu(Localizer.localize("GefBase", "Reorder"));
+//        arrange.add(reorder);
+//        toBackItem = reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
+//        toFrontItem = reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
+//        backwardItem = reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
+//        forwardItem = reorder.add(new CmdReorder(CmdReorder.BRING_FORWARD));
+//
+//        JMenu nudge = new JMenu(Localizer.localize("GefBase", "Nudge"));
+//        arrange.add(nudge);
+//        nudge.add(new NudgeAction(NudgeAction.LEFT));
+//        nudge.add(new NudgeAction(NudgeAction.RIGHT));
+//        nudge.add(new NudgeAction(NudgeAction.UP));
+//        nudge.add(new NudgeAction(NudgeAction.DOWN));
+//
+//        KeyStroke ctrlO = KeyStroke.getKeyStroke(KeyEvent.VK_O,
+//                KeyEvent.CTRL_MASK);
+//        KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S,
+//                KeyEvent.CTRL_MASK);
+//        KeyStroke ctrlP = KeyStroke.getKeyStroke(KeyEvent.VK_P,
+//                KeyEvent.CTRL_MASK);
+//        KeyStroke altF4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4,
+//                KeyEvent.ALT_MASK);
+//
+//        KeyStroke delKey = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
+//        KeyStroke ctrlZ = KeyStroke.getKeyStroke(KeyEvent.VK_Z,
+//                KeyEvent.CTRL_MASK);
+//        KeyStroke ctrlY = KeyStroke.getKeyStroke(KeyEvent.VK_Y,
+//                KeyEvent.CTRL_MASK);
+//        KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C,
+//                KeyEvent.CTRL_MASK);
+//        KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V,
+//                KeyEvent.CTRL_MASK);
+//        KeyStroke ctrlG = KeyStroke.getKeyStroke(KeyEvent.VK_G,
+//                KeyEvent.CTRL_MASK);
+//        KeyStroke ctrlU = KeyStroke.getKeyStroke(KeyEvent.VK_U,
+//                KeyEvent.CTRL_MASK);
+//        KeyStroke ctrlB = KeyStroke.getKeyStroke(KeyEvent.VK_B,
+//                KeyEvent.CTRL_MASK);
+//        KeyStroke ctrlF = KeyStroke.getKeyStroke(KeyEvent.VK_F,
+//                KeyEvent.CTRL_MASK);
+//        KeyStroke sCtrlB = KeyStroke.getKeyStroke(KeyEvent.VK_B,
+//                KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK);
+//        KeyStroke sCtrlF = KeyStroke.getKeyStroke(KeyEvent.VK_F,
+//                KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK);
+//
+//        openItem.setAccelerator(ctrlO);
+//        saveItem.setAccelerator(ctrlS);
+//        printItem.setAccelerator(ctrlP);
+//        exitItem.setAccelerator(altF4);
+//
+//        deleteItem.setAccelerator(delKey);
+//        undoItem.setAccelerator(ctrlZ);
+//        redoItem.setAccelerator(ctrlY);
+//        copyItem.setAccelerator(ctrlC);
+//        pasteItem.setAccelerator(ctrlV);
+//
+//        groupItem.setAccelerator(ctrlG);
+//        ungroupItem.setAccelerator(ctrlU);
+//
+//        toBackItem.setAccelerator(sCtrlB);
+//        toFrontItem.setAccelerator(sCtrlF);
+//        backwardItem.setAccelerator(ctrlB);
+//        forwardItem.setAccelerator(ctrlF);
 
     }
 

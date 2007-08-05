@@ -251,37 +251,37 @@ MouseWheelListener {
 	int alt = KeyEvent.ALT_MASK;
 	int meta = KeyEvent.META_MASK;
 
-	bindKey(new SelectNextAction("Select Next", true), KeyEvent.VK_TAB, 0);
-	bindKey(new SelectNextAction("Select Previous", false),
-		KeyEvent.VK_TAB, shift);
-
-	bindKey(new NudgeAction(NudgeAction.LEFT), KeyEvent.VK_LEFT, 0);
-	bindKey(new NudgeAction(NudgeAction.RIGHT), KeyEvent.VK_RIGHT, 0);
-	bindKey(new NudgeAction(NudgeAction.UP), KeyEvent.VK_UP, 0);
-	bindKey(new NudgeAction(NudgeAction.DOWN), KeyEvent.VK_DOWN, 0);
-
-	bindKey(new NudgeAction(NudgeAction.LEFT, 8), KeyEvent.VK_LEFT, shift);
-	bindKey(new NudgeAction(NudgeAction.RIGHT, 8), KeyEvent.VK_RIGHT, shift);
-	bindKey(new NudgeAction(NudgeAction.UP, 8), KeyEvent.VK_UP, shift);
-	bindKey(new NudgeAction(NudgeAction.DOWN, 8), KeyEvent.VK_DOWN, shift);
-
-	bindKey(new NudgeAction(NudgeAction.LEFT, 18), KeyEvent.VK_LEFT, alt);
-	bindKey(new NudgeAction(NudgeAction.RIGHT, 18), KeyEvent.VK_RIGHT, alt);
-	bindKey(new NudgeAction(NudgeAction.UP, 18), KeyEvent.VK_UP, alt);
-	bindKey(new NudgeAction(NudgeAction.DOWN, 18), KeyEvent.VK_DOWN, alt);
-
-	bindKey(new SelectNearAction(SelectNearAction.LEFT), KeyEvent.VK_LEFT,
-		meta);
-	bindKey(new SelectNearAction(SelectNearAction.RIGHT),
-		KeyEvent.VK_RIGHT, meta);
-	bindKey(new SelectNearAction(SelectNearAction.UP), KeyEvent.VK_UP, meta);
-	bindKey(new SelectNearAction(SelectNearAction.DOWN), KeyEvent.VK_DOWN,
-		meta);
+//	bindKey(new SelectNextAction("Select Next", true), KeyEvent.VK_TAB, 0);
+//	bindKey(new SelectNextAction("Select Previous", false),
+//		KeyEvent.VK_TAB, shift);
+//
+//	bindKey(new NudgeAction(NudgeAction.LEFT), KeyEvent.VK_LEFT, 0);
+//	bindKey(new NudgeAction(NudgeAction.RIGHT), KeyEvent.VK_RIGHT, 0);
+//	bindKey(new NudgeAction(NudgeAction.UP), KeyEvent.VK_UP, 0);
+//	bindKey(new NudgeAction(NudgeAction.DOWN), KeyEvent.VK_DOWN, 0);
+//
+//	bindKey(new NudgeAction(NudgeAction.LEFT, 8), KeyEvent.VK_LEFT, shift);
+//	bindKey(new NudgeAction(NudgeAction.RIGHT, 8), KeyEvent.VK_RIGHT, shift);
+//	bindKey(new NudgeAction(NudgeAction.UP, 8), KeyEvent.VK_UP, shift);
+//	bindKey(new NudgeAction(NudgeAction.DOWN, 8), KeyEvent.VK_DOWN, shift);
+//
+//	bindKey(new NudgeAction(NudgeAction.LEFT, 18), KeyEvent.VK_LEFT, alt);
+//	bindKey(new NudgeAction(NudgeAction.RIGHT, 18), KeyEvent.VK_RIGHT, alt);
+//	bindKey(new NudgeAction(NudgeAction.UP, 18), KeyEvent.VK_UP, alt);
+//	bindKey(new NudgeAction(NudgeAction.DOWN, 18), KeyEvent.VK_DOWN, alt);
+//
+//	bindKey(new SelectNearAction(SelectNearAction.LEFT), KeyEvent.VK_LEFT,
+//		meta);
+//	bindKey(new SelectNearAction(SelectNearAction.RIGHT),
+//		KeyEvent.VK_RIGHT, meta);
+//	bindKey(new SelectNearAction(SelectNearAction.UP), KeyEvent.VK_UP, meta);
+//	bindKey(new SelectNearAction(SelectNearAction.DOWN), KeyEvent.VK_DOWN,
+//		meta);
     }
 
     public void bindKey(ActionListener action, int keyCode, int modifiers) {
-	drawingPane.registerKeyboardAction(action, KeyStroke.getKeyStroke(
-		keyCode, modifiers), WHEN_FOCUSED);
+//	drawingPane.registerKeyboardAction(action, KeyStroke.getKeyStroke(
+//		keyCode, modifiers), WHEN_FOCUSED);
     }
 
     // //////////////////////////////////////////////////////////////
@@ -617,7 +617,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
     }
 
     public void paintComponent(Graphics g) {
-	_editor.paint(SwingUtil.translateGraphics(g));
+	_editor.paint(new GraphicsTranslator(g));
     }
 
     public Graphics getGraphics() {
@@ -859,8 +859,8 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
         super.revalidate();
     }
     
-    public void setPreferredSize(Dimension d) {
-        super.setPreferredSize(d);
+    public void setPreferredSize(java.awt.Dimension d) {
+        super.setPreferredSize(SwtUtil.translateDimension(d));
     }
     
     public void repaint(int x, int y, int width, int height) {
@@ -871,10 +871,11 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
         super.repaint(alpha,x,y,width,height);
     }
     
-    public void setCursor(Cursor c) {
-        super.setCursor(c);
+    public void setCursor(java.awt.Cursor c) {
+	// NOT YET IMPLEMENTED - can we have a translateCursor method?
+        //super.setCursor(c);
     }
-
+    
     private Frame findFrame() {
         Component c = this;
         while(c != null && !(c instanceof Frame))
@@ -899,8 +900,40 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
 //	return SwingUtil.translateImage(super.createImage(x, h));       
 //    }
     
-    public void scrollRectToVisible(Rectangle bounds) {
-        super.scrollRectToVisible(bounds);
+    public void scrollRectToVisible(java.awt.Rectangle bounds) {
+        super.scrollRectToVisible(SwtUtil.translateRectangle(bounds));
+    }
+    
+    public Point getViewPosition() {
+        Component parent = this.getParent();
+        if(!(parent instanceof JViewport)) {
+            return new Point(0,0);
+        }
+        return ((JViewport) parent).getViewPosition();
+    }
+    
+    public Dimension getExtentSize() {
+        Component parent = this.getParent();
+        if(!(parent instanceof JViewport)) {
+            return new Dimension(0,0);
+        }
+        return ((JViewport) parent).getExtentSize();
+    }
+    
+    public Rectangle getViewRect() {
+        Component parent = this.getParent();
+        if(!(parent instanceof JViewport)) {
+            return new Rectangle(0,0);
+        }
+        return ((JViewport)parent).getViewRect();
+    }
+    
+    public void setViewPosition(Point p) {
+        Component parent = this.getParent();
+        if(!(parent instanceof JViewport)) {
+            return;
+        }
+        ((JViewport)parent).setViewPosition(p);
     }
     
    public Rectangle getBounds() {
@@ -918,42 +951,42 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
      * Write the diagram contained by the current editor into an OutputStream as
      * a GIF image.
      */
-    public void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea, int scale)
+    public void saveGraphics(OutputStream s, Editor ce, java.awt.Rectangle drawingArea, int scale)
             throws IOException {
 
-        final int TRANSPARENT_BG_COLOR = 0x00efefef;
-        // Create an offscreen image and render the diagram into it.
-
-        Image i = new swingwt.awt.Container().createImage(drawingArea.width * scale, drawingArea.height
-                * scale);
-        Graphics g = i.getGraphics();
-        if (g instanceof Graphics2D) {
-            ((Graphics2D) g).scale(scale, scale);
-        }
-        g.setColor(new Color(TRANSPARENT_BG_COLOR));
-        g.fillRect(0, 0, drawingArea.width * scale, drawingArea.height * scale);
-        // a little extra won't hurt
-        g.translate(-drawingArea.x, -drawingArea.y);
-        ce.print(SwingUtil.translateGraphics(g));
-
-        // Tell the Acme GIF encoder to save the image as a GIF into the
-        // output stream. Use the TransFilter to make the background
-        // color transparent.
-
-        try {
-            java.awt.image.FilteredImageSource fis = new java.awt.image.FilteredImageSource(i.getSource(),
-                    new org.tigris.gef.base.TransFilter(TRANSPARENT_BG_COLOR));
-            GifEncoder ge = new GifEncoder(fis, s);
-            // GifEncoder ge = new GifEncoder( i, s );
-            ge.encode();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        g.dispose();
-        // force garbage collection, to prevent out of memory exceptions
-        g = null;
-        i = null;
+//        final int TRANSPARENT_BG_COLOR = 0x00efefef;
+//        // Create an offscreen image and render the diagram into it.
+//
+//        Image i = new swingwt.awt.Container().createImage(drawingArea.width * scale, drawingArea.height
+//                * scale);
+//        Graphics g = i.getGraphics();
+//        if (g instanceof Graphics2D) {
+//            ((Graphics2D) g).scale(scale, scale);
+//        }
+//        g.setColor(new Color(TRANSPARENT_BG_COLOR));
+//        g.fillRect(0, 0, drawingArea.width * scale, drawingArea.height * scale);
+//        // a little extra won't hurt
+//        g.translate(-drawingArea.x, -drawingArea.y);
+//        ce.print(SwingUtil.translateGraphics(g));
+//
+//        // Tell the Acme GIF encoder to save the image as a GIF into the
+//        // output stream. Use the TransFilter to make the background
+//        // color transparent.
+//
+//        try {
+//            java.awt.image.FilteredImageSource fis = new swingwt.awt.image.FilteredImageSource(i.getSource(),
+//                    new org.tigris.gef.base.TransFilter(TRANSPARENT_BG_COLOR));
+//            GifEncoder ge = new GifEncoder(fis, s);
+//            // GifEncoder ge = new GifEncoder( i, s );
+//            ge.encode();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        g.dispose();
+//        // force garbage collection, to prevent out of memory exceptions
+//        g = null;
+//        i = null;
     }
 
 }

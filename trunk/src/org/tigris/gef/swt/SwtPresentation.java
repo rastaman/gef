@@ -9,14 +9,14 @@ import org.tigris.gef.graph.presentation.Presentation;
 public class SwtPresentation implements Presentation {
 
     public Layer createLayerGrid() {
-	return null;
+	return new LayerGrid();
     }
     
     public FigModifyingMode createModeDragScroll(Editor editor) {
-	return null;
+	return new ModeDragScroll(editor);
     }
     
     public GraphFrame createGraphFrame() {
-	return null;
+	return new JGraphFrame();
     }
 }

@@ -46,8 +46,6 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 
-import javax.swing.UIManager;
-
 /** Paint a background drawing guide consisting of horizontal and
  *  vertical lines in a neutral color. This feature is common to many
  *  drawing applications (e.g., MacDraw).  LayerGrid is in concept a
@@ -102,33 +100,17 @@ public class LayerGrid extends Layer {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  /** Construct a new LayerGrid and name it 'Grid'. */
-  public LayerGrid() {
+    /** Construct a new LayerGrid and name it 'Grid'. */
+    public LayerGrid() {
   	super("Grid");
-    //Use the default background color as the color between the lines and dots
-	_bgColor = UIManager.getColor("Panel.background");
-	if (_bgColor == null) {
-	 _bgColor = Color.lightGray;
-	} 	
-  	
-	// The color of the lines and dots should be slightly darker than the
-	// background color
-	final float scale = 0.9f;
-	_color = new Color(
-			 (int) (_bgColor.getRed() * scale),
-			 (int) (_bgColor.getGreen() * scale),
-			 (int) (_bgColor.getBlue() * scale)); 
-  }
+    }
 
-  /** Construct a new LayerGrid with the given foreground color,
-   * background color, line spacing, and lines/dots flag. */
-  public LayerGrid(Color fore, Color back, int spacing, boolean lines) {
-    super("Grid");
-    _color = fore; _bgColor = back; _spacing = spacing; _paintLines = lines;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    /** Construct a new LayerGrid with the given foreground color,
+     * background color, line spacing, and lines/dots flag. */
+    public LayerGrid(Color fore, Color back, int spacing, boolean lines) {
+        super("Grid");
+        _color = fore; _bgColor = back; _spacing = spacing; _paintLines = lines;
+    }
 
     public List getContents() {
         return null;
@@ -137,117 +119,75 @@ public class LayerGrid extends Layer {
     public Fig presentationFor(Object obj) { return null; }
 
   
-  ////////////////////////////////////////////////////////////////
-  // painting methods
-
-  /** Paint the grid lines or dots by repeatedly bitblting a
-   *  precomputed 'stamp' onto the given Graphics */
-  public synchronized void paintContents(Graphics g) {
-    // This line is for printing under Java 1.1
-    if (g instanceof PrintGraphics) {
-      if (!Globals.getPrefs().getPrintGrid()) return;
-      if (_paintLines) paintLines(g, Globals.getPrefs().getPrintBackground());
-      else paintDots(g, Globals.getPrefs().getPrintBackground());
-      return;
-    }
-    if (_stamp == null) {
-      if (_spacing > _stampHeight) _stampHeight = _stampWidth = _spacing;
-      if (Globals.curEditor() == null) {
-	// this is a bad idea, but it works around a very awkward AWT
-	// requirement: that only frames can make Image instances
-	System.out.println("no editor");
-	Frame frame = new Frame();
-	frame.setVisible(true);
-	_stamp = frame.createImage(_stampWidth, _stampHeight);
-	frame.dispose();
-      }
-      else{ _stamp =Globals.curEditor().createImage(_stampWidth,_stampHeight);}
-      if (_stamp != null) {
-	if (_paintLines) paintLines(_stamp, _paintBackground);
-	else if (_paintDots) paintDots(_stamp, _paintBackground);
-      }
+    /** Paint the grid lines or dots by repeatedly bitblting a
+     *  precomputed 'stamp' onto the given Graphics */
+    public synchronized void paintContents(Graphics g) {
+	// NOT YET IMPLEMENTED
     }
 
-    Rectangle clip = g.getClipBounds();
-    int x = clip.x / _spacing * _spacing;
-    int y = clip.y / _spacing * _spacing;
-    int bot = clip.y + clip.height;
-    int right = clip.x + clip.width;
-
-    if (_stamp != null)
-      while (x <= right) {
-	y = clip.y / _spacing * _spacing;
-	while (y <= bot) {
-	  g.drawImage(_stamp, x, y, null);
-	  y += _stampHeight;
-	}
-	x += _stampWidth;
-      }
-  }
-
-  /** Paint lines on the given stamp Image. */
-  private void paintLines(Image i, boolean paintBackground) {
-    Graphics g = i.getGraphics();
-    g.clipRect(0, 0, i.getWidth(null), i.getHeight(null));
-    paintLines(g, paintBackground);
-  }
-
-  /** Paint dots on the given stamp Image. */
-  private void paintDots(Image i, boolean paintBackground) {
-    Graphics g = i.getGraphics();
-    g.clipRect(0, 0, i.getWidth(null), i.getHeight(null));
-    paintDots(g, paintBackground);
-  }
-
-  /** Paint lines on the given Graphics. */
-  private void paintLines(Graphics g, boolean paintBackground) {
-    Rectangle clip = g.getClipBounds();
-    if (paintBackground) {
-      g.setColor(_bgColor);
-      g.fillRect(clip.x, clip.y, clip.width, clip.height);
+    /** Paint lines on the given stamp Image. */
+    private void paintLines(Image i, boolean paintBackground) {
+        Graphics g = i.getGraphics();
+        g.clipRect(0, 0, i.getWidth(null), i.getHeight(null));
+        paintLines(g, paintBackground);
     }
-    int x = clip.x / _spacing * _spacing - _spacing;
-    int y = clip.y / _spacing * _spacing - _spacing;
-    int stepsX = clip.width / _spacing + 2;
-    int stepsY = clip.height / _spacing + 2;
-    int right = clip.x + clip.width;
-    int bot = clip.y + clip.height;
-    g.setColor(_color);
 
-    while (stepsX > 0) {
-      g.drawLine(x, 0, x, bot);
-      x += _spacing;
-      --stepsX;
+    /** Paint dots on the given stamp Image. */
+    private void paintDots(Image i, boolean paintBackground) {
+        Graphics g = i.getGraphics();
+        g.clipRect(0, 0, i.getWidth(null), i.getHeight(null));
+        paintDots(g, paintBackground);
     }
-    while (stepsY > 0) {
-      g.drawLine(0, y, right, y);
-      y += _spacing;
-      --stepsY;
-    }
-  }
 
-  /** Paint dots on the given Graphics. */
-  protected void paintDots(Graphics g, boolean paintBackground) {
-    Rectangle clip = g.getClipBounds();
-    if (paintBackground) {
-      g.setColor(_bgColor);
-      g.fillRect(clip.x, clip.y, clip.width, clip.height);
+    /** Paint lines on the given Graphics. */
+    private void paintLines(Graphics g, boolean paintBackground) {
+        Rectangle clip = g.getClipBounds();
+        if (paintBackground) {
+          g.setColor(_bgColor);
+          g.fillRect(clip.x, clip.y, clip.width, clip.height);
+        }
+        int x = clip.x / _spacing * _spacing - _spacing;
+        int y = clip.y / _spacing * _spacing - _spacing;
+        int stepsX = clip.width / _spacing + 2;
+        int stepsY = clip.height / _spacing + 2;
+        int right = clip.x + clip.width;
+        int bot = clip.y + clip.height;
+        g.setColor(_color);
+    
+        while (stepsX > 0) {
+          g.drawLine(x, 0, x, bot);
+          x += _spacing;
+          --stepsX;
+        }
+        while (stepsY > 0) {
+          g.drawLine(0, y, right, y);
+          y += _spacing;
+          --stepsY;
+        }
     }
-    int x = clip.x / _spacing * _spacing - _spacing;
-    int y = clip.y / _spacing * _spacing - _spacing;
-    int right = clip.x + clip.width;
-    int bot = clip.y + clip.height;
 
-    g.setColor(_color);
-    while (x <= right) {
-      y = 0;
-      while (y <= bot) {
-	g.fillRect(x, y, _dotSize, _dotSize);
-	y += _spacing;
-      }
-      x += _spacing;
+    /** Paint dots on the given Graphics. */
+    protected void paintDots(Graphics g, boolean paintBackground) {
+        Rectangle clip = g.getClipBounds();
+        if (paintBackground) {
+          g.setColor(_bgColor);
+          g.fillRect(clip.x, clip.y, clip.width, clip.height);
+        }
+        int x = clip.x / _spacing * _spacing - _spacing;
+        int y = clip.y / _spacing * _spacing - _spacing;
+        int right = clip.x + clip.width;
+        int bot = clip.y + clip.height;
+    
+        g.setColor(_color);
+        while (x <= right) {
+          y = 0;
+          while (y <= bot) {
+    	g.fillRect(x, y, _dotSize, _dotSize);
+    	y += _spacing;
+          }
+          x += _spacing;
+        }
     }
-  }
 
   ////////////////////////////////////////////////////////////////
   // user interface

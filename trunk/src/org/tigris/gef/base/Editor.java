@@ -626,8 +626,8 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
             (fig.getY()*_scale),(int)(fig.getWidth()*_scale), 
             (int)(fig.getHeight()*_scale)); 
         bounds.grow((int)(50*_scale),(int)( 50 * _scale)); 
-        GraphInternalPane c = getGraphInternalPane(); 
-        if (c!=null) c.scrollRectToVisible(bounds); 
+        GraphInternalPane c = getGraphInternalPane();
+        if (c!=null) c.scrollRectToVisible(bounds);
     }
 
     /** Reply the current SelectionManager of this Editor. */
@@ -658,7 +658,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 
     public void setCursor(Cursor c) {
         if(getJComponent() != null) {
-            getJComponent().setCursor(c);
+            getGraphInternalPane().setCursor(c);
             java.awt.Toolkit.getDefaultToolkit().sync();
         }
     }
