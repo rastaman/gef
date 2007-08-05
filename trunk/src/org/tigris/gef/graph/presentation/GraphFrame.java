@@ -70,7 +70,7 @@ public interface GraphFrame {
     // ModeChangeListener implementation
     public void modeChange(ModeChangeEvent mce);
 
-    public void setGraph(JGraph g);
+//    public void setGraph(JGraph g);
 
     public void setGraphEdgeRenderer(GraphEdgeRenderer rend);
 
