@@ -64,8 +64,6 @@ public interface GraphFrame {
 
     public GraphNodeRenderer getGraphNodeRenderer();
 
-    public JMenuBar getJMenuBar();
-
     public ToolBar getToolBar();
 
     ////////////////////////////////////////////////////////////////
