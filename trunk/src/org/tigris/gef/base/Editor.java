@@ -563,7 +563,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         // the line above should not be needed, but without it I get
         // NullPointerExceptions...
         //- if (f != null) _redrawer.add(f);
-        ((JComponent) getJComponent()).repaint();
+        (getJComponent()).repaint();
     }
 
     public void scaleRect(Rectangle bounds) {
@@ -651,8 +651,8 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     ////////////////////////////////////////////////////////////////
     // Frame and panel related methods
 
-    public JComponent getJComponent() {
-        return (JComponent) _jComponent;
+    public GraphInternalPane getJComponent() {
+        return (GraphInternalPane) _jComponent;
     }
 
     public GraphInternalPane getGraphInternalPane() {

@@ -62,7 +62,22 @@ public interface GraphInternalPane {
     /**
      * @see java.awt.Component#repaint()
      */
+    Rectangle getInternalBounds();
+
+    /**
+     * @see java.awt.Component#repaint()
+     */
+    void repaint();
+
+    /**
+     * @see java.awt.Component#repaint()
+     */
     void repaint(int x, int y, int width, int height);
+
+    /**
+     * @see java.awt.Component#repaint()
+     */
+    void repaint(int alpha, int x, int y, int width, int height);
 
     /**
      * @see java.awt.Component#getFileDialog()

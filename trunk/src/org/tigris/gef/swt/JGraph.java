@@ -657,7 +657,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
     public void setToolTipText(String text) {
 	if ("".equals(text))
 	    text = null;
-	putClientProperty(javax.swing.JComponent.TOOL_TIP_TEXT_KEY, text);
+	//putClientProperty(swingwtx.swing.JComponent.TOOL_TIP_TEXT_KEY, text);
 	ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
 	// if (text != null) {
 	if (!registeredWithTooltip) {
@@ -863,6 +863,10 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
         super.setPreferredSize(SwtUtil.translateDimension(d));
     }
     
+    public void repaint() {
+        super.repaint();
+    }
+    
     public void repaint(int x, int y, int width, int height) {
         super.repaint(x,y,width,height);
     }
@@ -936,8 +940,8 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
         ((JViewport)parent).setViewPosition(p);
     }
     
-   public Rectangle getBounds() {
-        return super.getBounds();
+    public java.awt.Rectangle getInternalBounds() {
+        return SwingUtil.translateRectangle(super.getBounds());
     }
     
     public PopupMenu createPopupMenu() {

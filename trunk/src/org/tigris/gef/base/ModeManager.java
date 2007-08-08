@@ -182,7 +182,6 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
     public void mouseMoved(MouseEvent me) {
         for(int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
-            m.mouseMoved(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mouseMoved(me);
         }
     }
@@ -203,7 +202,6 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
     public void mouseDragged(MouseEvent me) {
         for(int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
-            m.mouseDragged(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mouseDragged(me);
         }
     }
@@ -213,7 +211,6 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
         checkModeTransitions(me);
         for(int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
-            m.mouseClicked(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mouseClicked(me);
         }
     }
@@ -224,7 +221,6 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
         for(int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
             if (LOG.isDebugEnabled()) LOG.debug("MousePressed testing mode " + _modes.get(i).getClass().getName());
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
-            m.mousePressed(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mousePressed(me);
         }
     }
@@ -234,7 +230,6 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
         checkModeTransitions(me);
         for(int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
-            m.mouseReleased(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mouseReleased(me);
         }
         //fireModeChanged();
@@ -244,7 +239,6 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
     public void mouseEntered(MouseEvent me) {
         for(int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
-            m.mouseEntered(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mouseEntered(me);
         }
     }
@@ -263,7 +257,6 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
     public void mouseExited(MouseEvent me) {
         for(int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
             FigModifyingModeImpl m = ((FigModifyingModeImpl)_modes.get(i));
-            m.mouseExited(((SwingMouseEventWrapper) me).getWrappedEvent());
             m.mouseExited(me);
         }
     }

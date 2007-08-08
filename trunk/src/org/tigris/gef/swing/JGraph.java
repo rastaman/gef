@@ -863,6 +863,10 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
         super.setPreferredSize(d);
     }
     
+    public void repaint() {
+        super.repaint();
+    }
+    
     public void repaint(int x, int y, int width, int height) {
         super.repaint(x,y,width,height);
     }
@@ -939,7 +943,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
         ((JViewport)parent).setViewPosition(p);
     }
     
-    public Rectangle getBounds() {
+    public Rectangle getInternalBounds() {
         return super.getBounds();
     }
     

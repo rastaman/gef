@@ -25,15 +25,13 @@ public class GraphicsTranslator extends Graphics {
 
     @Override
     public void clipRect(int arg0, int arg1, int arg2, int arg3) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.clearRect(arg0, arg1, arg2, arg3);
     }
 
     @Override
     public void copyArea(int arg0, int arg1, int arg2, int arg3, int arg4,
 	    int arg5) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.copyArea(arg0, arg1, arg2, arg3, arg4, arg5);
     }
 
     @Override
@@ -44,20 +42,17 @@ public class GraphicsTranslator extends Graphics {
 
     @Override
     public void dispose() {
-	// TODO Auto-generated method stub
-
+	swtGraphics.dispose();
     }
 
     @Override
     public void drawArc(int arg0, int arg1, int arg2, int arg3, int arg4,
 	    int arg5) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.drawArc(arg0, arg1, arg2, arg3, arg4, arg5);
     }
 
     @Override
     public boolean drawImage(Image arg0, int arg1, int arg2, ImageObserver arg3) {
-	// TODO Auto-generated method stub
 	return false;
     }
 
@@ -99,77 +94,65 @@ public class GraphicsTranslator extends Graphics {
 
     @Override
     public void drawLine(int arg0, int arg1, int arg2, int arg3) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.drawLine(arg0, arg1, arg2, arg3);
     }
 
     @Override
     public void drawOval(int arg0, int arg1, int arg2, int arg3) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.drawOval(arg0, arg1, arg2, arg3);
     }
 
     @Override
     public void drawPolygon(int[] arg0, int[] arg1, int arg2) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.drawPolygon(arg0, arg1, arg2);
     }
 
     @Override
     public void drawPolyline(int[] arg0, int[] arg1, int arg2) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.drawPolyline(arg0, arg1, arg2);
     }
 
     @Override
     public void drawRoundRect(int arg0, int arg1, int arg2, int arg3, int arg4,
 	    int arg5) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.drawRoundRect(arg0, arg1, arg2, arg3, arg4, arg5);
     }
 
     @Override
     public void drawString(String arg0, int arg1, int arg2) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.drawString(arg0, arg1, arg2);
     }
 
     @Override
     public void drawString(AttributedCharacterIterator arg0, int arg1, int arg2) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.drawString(arg0.toString(), arg1, arg2);
     }
 
     @Override
     public void fillArc(int arg0, int arg1, int arg2, int arg3, int arg4,
 	    int arg5) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.fillArc(arg0, arg1, arg2, arg3, arg4, arg5);
     }
 
     @Override
     public void fillOval(int arg0, int arg1, int arg2, int arg3) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.fillOval(arg0, arg1, arg2, arg3);
     }
 
     @Override
     public void fillPolygon(int[] arg0, int[] arg1, int arg2) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.fillPolygon(arg0, arg1, arg2);
     }
 
     @Override
     public void fillRect(int arg0, int arg1, int arg2, int arg3) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.fillRect(arg0, arg1, arg2, arg3);
     }
 
     @Override
     public void fillRoundRect(int arg0, int arg1, int arg2, int arg3, int arg4,
 	    int arg5) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.fillRoundRect(arg0, arg1, arg2, arg3, arg4, arg5);
     }
 
     @Override
@@ -180,25 +163,22 @@ public class GraphicsTranslator extends Graphics {
 
     @Override
     public Rectangle getClipBounds() {
-	// TODO Auto-generated method stub
-	return null;
+	return SwingUtil.translateRectangle(swtGraphics.getClipBounds());
     }
 
     @Override
     public Color getColor() {
-	// TODO Auto-generated method stub
-	return null;
+	return SwingUtil.translateColor(swtGraphics.getColor());
     }
 
     @Override
     public Font getFont() {
-	// TODO Auto-generated method stub
-	return null;
+	return new Font(swtGraphics.getFont().getAttributes());
     }
 
     @Override
     public FontMetrics getFontMetrics(Font arg0) {
-	// TODO Auto-generated method stub
+	swtGraphics.getFontMetrics(new swingwt.awt.Font(arg0.getAttributes()));
 	return null;
     }
 
@@ -210,38 +190,32 @@ public class GraphicsTranslator extends Graphics {
 
     @Override
     public void setClip(int arg0, int arg1, int arg2, int arg3) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.setClip(arg0, arg1, arg2, arg3);
     }
 
     @Override
     public void setColor(Color arg0) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.setColor(SwtUtil.translateColor(arg0));
     }
 
     @Override
     public void setFont(Font arg0) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.setFont(new swingwt.awt.Font(arg0.getAttributes()));
     }
 
     @Override
     public void setPaintMode() {
-	// TODO Auto-generated method stub
-
+	swtGraphics.setPaintMode();
     }
 
     @Override
     public void setXORMode(Color arg0) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.setXORMode(SwtUtil.translateColor(arg0));
     }
 
     @Override
     public void translate(int arg0, int arg1) {
-	// TODO Auto-generated method stub
-
+	swtGraphics.translate(arg0, arg1);
     }
 
 }
