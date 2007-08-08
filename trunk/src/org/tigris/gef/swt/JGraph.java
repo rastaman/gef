@@ -602,6 +602,8 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
 
     protected org.tigris.gef.base.FileDialog fileDialog;
     
+    //protected org.holongate.j2d.Graphics2DFactory graphics2dFactory;
+    
     public JGraphInternalPane(Editor e) {
 	_editor = e;
 	setLayout(null);
@@ -612,6 +614,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
 	addMouseMotionListener(this);
 	addKeyListener(this);
 
+	//graphics2dFactory = org.holongate.j2d.J2DRegistry.createGraphics2DFactory(super.getSWTPeer());
 	//initiate the eventListeners ArrayList
 	eventListeners = new ArrayList<EventListener>();
     }

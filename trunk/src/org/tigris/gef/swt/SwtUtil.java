@@ -28,6 +28,7 @@
 package org.tigris.gef.swt;
 
 import swingwt.awt.*;
+import org.jfree.experimental.swt.*;
 
 public class SwtUtil{
     
@@ -35,7 +36,7 @@ public class SwtUtil{
     private static final int HOLONGATE_GRAPHICS = 1;
     private static final int JFREE_GRAPHICS = 2;
     
-    private static final int GRAPHICS_IMPLEMENTATION = SWINGWT_GRAPHICS;
+    private static final int GRAPHICS_IMPLEMENTATION = JFREE_GRAPHICS;
     
     public static Rectangle translateRectangle(java.awt.Rectangle awt) {
 	return new Rectangle(awt.x, awt.y, awt.width, awt.height); 
@@ -60,10 +61,13 @@ public class SwtUtil{
 		return new GraphicsTranslator(swt);
 	    }
 	} else if (GRAPHICS_IMPLEMENTATION == HOLONGATE_GRAPHICS) {
-            // TODO experiment here with Holongate Graphics
 	    return null;
 	} else if (GRAPHICS_IMPLEMENTATION == JFREE_GRAPHICS) {
-            // TODO experiment here with JFree Graphics
+	    if (swt instanceof SWTGraphics2DRenderer) {
+		SWTGraphics2DRenderer render = (SWTGraphics2DRenderer)swt;
+		SWTGraphics2D swtGraphics2D = new SWTGraphics2D(render.getSWTGC());
+		return swtGraphics2D;
+	    }
 	    return null;
 	} else {
 	    return null;
