@@ -651,8 +651,11 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     ////////////////////////////////////////////////////////////////
     // Frame and panel related methods
 
-    public GraphInternalPane getJComponent() {
-        return (GraphInternalPane) _jComponent;
+    /**
+     * @deprecated use getGraphInternalPane
+     */
+    public JComponent getJComponent() {
+        return (JComponent) _jComponent;
     }
 
     public GraphInternalPane getGraphInternalPane() {
