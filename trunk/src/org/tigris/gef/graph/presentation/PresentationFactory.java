@@ -6,7 +6,7 @@ import org.tigris.gef.swt.SwtPresentation;
 
 public class PresentationFactory {
 
-    private static Presentation presentation = new SwtPresentation();// new SwingPresentation();
+    private static Presentation presentation = new SwingPresentation();
 
     static public Presentation getPresentation() {
 	return presentation;
