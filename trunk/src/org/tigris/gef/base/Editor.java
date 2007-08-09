@@ -544,7 +544,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
      *  The given bounds must already be scaled accordingly.
      */
     public void damaged(int x, int y, int width, int height) {
-        getJComponent().repaint(0, x, y, width, height);
+        getGraphInternalPane().repaint(0, x, y, width, height);
     }
 
     /**
