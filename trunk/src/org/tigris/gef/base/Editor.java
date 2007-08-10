@@ -711,8 +711,9 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
 //         This catch works around a bug:
 //         Sometimes there is an exception in the AWT peer classes,
 //         but the next line should still work, despite the exception
-        return new java.awt.Container().createImage(w, h);
-//        return _jComponent.createImage(w,h);
+        //return new java.awt.Container().createImage(w, h);
+        //return _jComponent.createImage(w,h);
+        return getJComponent().createImage(w,h);
     }
 
     /** Get the backgrund color of the Editor.  Often, none of the

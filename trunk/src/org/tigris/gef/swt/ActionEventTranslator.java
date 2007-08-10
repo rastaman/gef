@@ -1,4 +1,4 @@
-// Copyright (c) 1996-06 The Regents of the University of California. All
+// Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,37 +21,36 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: SwtRectangleWrapper.java
-// Classes: SwtRectangleWrapper
-// Original Author: johnnycoding@gmail.com
+// File: ActionEventTranslator.java
+// Classes: ActionEventTranslator
+// $Id: ActionEventTranslator.java 674 2005-05-11 11:43:32Z johnnycoding $
 
 package org.tigris.gef.swt;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
+public class ActionEventTranslator extends java.awt.event.ActionEvent {
 
-import org.tigris.gef.graph.presentation.GraphInternalPane;
+    private swingwt.awt.event.ActionEvent swingwtActionEvent;
 
-public class SwingUtil{
-    public static Rectangle translateRectangle(swingwt.awt.Rectangle awt)
-    {
-	return new Rectangle(awt.x, awt.y, awt.width, awt.height); 
+    public ActionEventTranslator(Object obj, int i, String s) {
+        super(obj, i, s);
     }
-    public static Color translateColor(swingwt.awt.Color awt)
-    {
-	return new Color(awt.getRGB()); 
+
+    public void create(swingwt.awt.event.ActionEvent e) {
+        swingwtActionEvent = e;
     }
-    public static Dimension translateDimension(swingwt.awt.Dimension awt)
-    {
-	return new Dimension(awt.width, awt.height); 
+
+    public String getActionCommand() {
+        return swingwtActionEvent.getActionCommand();
     }
-    
-    public static Image translateImage(swingwt.awt.Image awt)
-    {
-	return new java.awt.Container().createImage(awt.getWidth(),awt.getHeight()); 
+
+    public void setActionCommand(String command) {
+        swingwtActionEvent.setActionCommand(command);
     }
-    public static ActionEvent translateActionEvent(swingwt.awt.event.ActionEvent awt) {
-        swingwt.awt.event.ActionEvent ae = awt;
-        return new ActionEvent(awt.getSource(),awt.getID(), awt.getActionCommand(), awt.getModifiers()); 
+
+    public int getModifiers() {
+        return swingwtActionEvent.getModifiers();
     }
+
+    private static final long serialVersionUID = 1L;
+
 }

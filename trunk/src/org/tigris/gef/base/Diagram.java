@@ -41,13 +41,14 @@ import org.tigris.gef.graph.GraphEvent;
 import org.tigris.gef.graph.GraphListener;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.presentation.DefaultGraphModel;
+import org.tigris.gef.graph.presentation.PresentationFactory;
 
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
+import org.tigris.gef.ui.IToolBar;
 import org.tigris.gef.ui.PaletteFig;
-import org.tigris.gef.ui.ToolBar;
 
 /** A diagram is just combination of a GraphModel, a Layer, and a
  title. The GraphModel stores the connected graph representation,
@@ -61,7 +62,7 @@ public class Diagram implements Serializable, GraphListener {
     protected String _name = "no title set";
     protected String _comments = "(no comments given)";
     private LayerPerspective _layer;
-    protected transient ToolBar _toolBar;
+    protected transient IToolBar _toolBar;
     private transient Vector vetoListeners;
     private transient PropertyChangeSupport _changeSupport;
     // In JDK < 1.4 there is no way to get all listener from the PropertyChangeSupport, so we keep a list here 
@@ -106,7 +107,7 @@ public class Diagram implements Serializable, GraphListener {
 
     ////////////////////////////////////////////////////////////////
     // accessors
-    public ToolBar getToolBar() {
+    public IToolBar getToolBar() {
 
         if(_toolBar == null)
             initToolBar();
@@ -114,7 +115,7 @@ public class Diagram implements Serializable, GraphListener {
         return _toolBar;
     }
 
-    public void setToolBar(ToolBar tb) {
+    public void setToolBar(IToolBar tb) {
         _toolBar = tb;
     }
 

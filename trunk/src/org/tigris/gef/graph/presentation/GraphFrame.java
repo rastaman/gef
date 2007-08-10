@@ -42,6 +42,7 @@ import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.ui.IStatusBar;
+import org.tigris.gef.ui.IToolBar;
 import org.tigris.gef.ui.ToolBar;
 import org.tigris.gef.graph.presentation.JGraph;
 
@@ -64,7 +65,7 @@ public interface GraphFrame {
 
     public GraphNodeRenderer getGraphNodeRenderer();
 
-    public ToolBar getToolBar();
+    public IToolBar getToolBar();
 
     ////////////////////////////////////////////////////////////////
     // ModeChangeListener implementation
@@ -78,7 +79,7 @@ public interface GraphFrame {
 
     public void setGraphNodeRenderer(GraphNodeRenderer rend);
 
-    public void setToolBar(ToolBar tb);
+    public void setToolBar(IToolBar tb);
 
     public void setVisible(boolean b);
 

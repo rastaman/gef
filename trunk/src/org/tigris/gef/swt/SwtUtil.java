@@ -28,6 +28,7 @@
 package org.tigris.gef.swt;
 
 import swingwt.awt.*;
+import swingwtx.swing.*;
 import org.jfree.experimental.swt.*;
 
 public class SwtUtil{
@@ -48,6 +49,10 @@ public class SwtUtil{
     
     public static Dimension translateDimension(java.awt.Dimension awt) {
 	return new Dimension(awt.width, awt.height); 
+    }
+    
+    public static Action translateAction(javax.swing.Action awt) {
+	return new ActionTranslator(awt); 
     }
     
     public static java.awt.Graphics translateGraphics(Graphics swt) {
