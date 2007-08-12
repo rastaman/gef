@@ -251,32 +251,32 @@ MouseWheelListener {
 	int alt = KeyEvent.ALT_MASK;
 	int meta = KeyEvent.META_MASK;
 
-//	bindKey(new SelectNextAction("Select Next", true), KeyEvent.VK_TAB, 0);
-//	bindKey(new SelectNextAction("Select Previous", false),
-//		KeyEvent.VK_TAB, shift);
-//
-//	bindKey(new NudgeAction(NudgeAction.LEFT), KeyEvent.VK_LEFT, 0);
-//	bindKey(new NudgeAction(NudgeAction.RIGHT), KeyEvent.VK_RIGHT, 0);
-//	bindKey(new NudgeAction(NudgeAction.UP), KeyEvent.VK_UP, 0);
-//	bindKey(new NudgeAction(NudgeAction.DOWN), KeyEvent.VK_DOWN, 0);
-//
-//	bindKey(new NudgeAction(NudgeAction.LEFT, 8), KeyEvent.VK_LEFT, shift);
-//	bindKey(new NudgeAction(NudgeAction.RIGHT, 8), KeyEvent.VK_RIGHT, shift);
-//	bindKey(new NudgeAction(NudgeAction.UP, 8), KeyEvent.VK_UP, shift);
-//	bindKey(new NudgeAction(NudgeAction.DOWN, 8), KeyEvent.VK_DOWN, shift);
-//
-//	bindKey(new NudgeAction(NudgeAction.LEFT, 18), KeyEvent.VK_LEFT, alt);
-//	bindKey(new NudgeAction(NudgeAction.RIGHT, 18), KeyEvent.VK_RIGHT, alt);
-//	bindKey(new NudgeAction(NudgeAction.UP, 18), KeyEvent.VK_UP, alt);
-//	bindKey(new NudgeAction(NudgeAction.DOWN, 18), KeyEvent.VK_DOWN, alt);
-//
-//	bindKey(new SelectNearAction(SelectNearAction.LEFT), KeyEvent.VK_LEFT,
-//		meta);
-//	bindKey(new SelectNearAction(SelectNearAction.RIGHT),
-//		KeyEvent.VK_RIGHT, meta);
-//	bindKey(new SelectNearAction(SelectNearAction.UP), KeyEvent.VK_UP, meta);
-//	bindKey(new SelectNearAction(SelectNearAction.DOWN), KeyEvent.VK_DOWN,
-//		meta);
+	bindKey(SwtUtil.translateAction(new SelectNextAction("Select Next", true)), KeyEvent.VK_TAB, 0);
+	bindKey(SwtUtil.translateAction(new SelectNextAction("Select Previous", false)),
+		KeyEvent.VK_TAB, shift);
+
+	bindKey(SwtUtil.translateAction(new NudgeAction(NudgeAction.LEFT)), KeyEvent.VK_LEFT, 0);
+	bindKey(SwtUtil.translateAction(new NudgeAction(NudgeAction.RIGHT)), KeyEvent.VK_RIGHT, 0);
+	bindKey(SwtUtil.translateAction(new NudgeAction(NudgeAction.UP)), KeyEvent.VK_UP, 0);
+	bindKey(SwtUtil.translateAction(new NudgeAction(NudgeAction.DOWN)), KeyEvent.VK_DOWN, 0);
+
+	bindKey(SwtUtil.translateAction(new NudgeAction(NudgeAction.LEFT, 8)), KeyEvent.VK_LEFT, shift);
+	bindKey(SwtUtil.translateAction(new NudgeAction(NudgeAction.RIGHT, 8)), KeyEvent.VK_RIGHT, shift);
+	bindKey(SwtUtil.translateAction(new NudgeAction(NudgeAction.UP, 8)), KeyEvent.VK_UP, shift);
+	bindKey(SwtUtil.translateAction(new NudgeAction(NudgeAction.DOWN, 8)), KeyEvent.VK_DOWN, shift);
+
+	bindKey(SwtUtil.translateAction(new NudgeAction(NudgeAction.LEFT, 18)), KeyEvent.VK_LEFT, alt);
+	bindKey(SwtUtil.translateAction(new NudgeAction(NudgeAction.RIGHT, 18)), KeyEvent.VK_RIGHT, alt);
+	bindKey(SwtUtil.translateAction(new NudgeAction(NudgeAction.UP, 18)), KeyEvent.VK_UP, alt);
+	bindKey(SwtUtil.translateAction(new NudgeAction(NudgeAction.DOWN, 18)), KeyEvent.VK_DOWN, alt);
+
+	bindKey(SwtUtil.translateAction(new SelectNearAction(SelectNearAction.LEFT)), KeyEvent.VK_LEFT,
+		meta);
+	bindKey(SwtUtil.translateAction(new SelectNearAction(SelectNearAction.RIGHT)),
+		KeyEvent.VK_RIGHT, meta);
+	bindKey(SwtUtil.translateAction(new SelectNearAction(SelectNearAction.UP)), KeyEvent.VK_UP, meta);
+	bindKey(SwtUtil.translateAction(new SelectNearAction(SelectNearAction.DOWN)), KeyEvent.VK_DOWN,
+		meta);
     }
 
     public void bindKey(ActionListener action, int keyCode, int modifiers) {
@@ -904,7 +904,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
     }
     
 //    public java.awt.Image createImage(int x, int h) {
-//	return SwingUtil.translateImage(super.createImage(x, h));       
+//	return new java.awt.Container().createImage(x,h);
 //    }
     
     public void scrollRectToVisible(java.awt.Rectangle bounds) {
@@ -948,7 +948,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
     }
     
     public PopupMenu createPopupMenu() {
-        return new org.tigris.gef.swing.JPopupMenu();
+        return new org.tigris.gef.swt.JPopupMenu();
     }
     
     public boolean isParentViewport() {

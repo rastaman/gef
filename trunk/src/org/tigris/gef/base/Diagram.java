@@ -98,7 +98,7 @@ public class Diagram implements Serializable, GraphListener {
     }
 
     protected void initToolBar() {
-        _toolBar = new PaletteFig();
+        _toolBar = PresentationFactory.getPresentation().createPaletteFig();// new PaletteFig();
     }
 
     public void initialize(Object owner) {

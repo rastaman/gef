@@ -29,6 +29,7 @@ package org.tigris.gef.swt;
 
 import java.beans.PropertyChangeListener;
 
+import swingwt.awt.Container;
 import swingwt.awt.event.ActionEvent;
 import swingwtx.swing.*;
 
@@ -45,7 +46,12 @@ public class ActionTranslator implements Action{
     }
 
     public Object getValue(String key) {
-	return null;//swingAction.getValue(key);
+	Object obj = swingAction.getValue(key);
+         
+        if (obj instanceof javax.swing.Icon)
+            return new swingwtx.swing.ImageIcon("D:\\Apps\\GSoc2007\\gef\\src\\org\\tigris\\gef\\Images\\Open.gif");
+        else
+            return obj;
     }
 
     public boolean isEnabled() {
