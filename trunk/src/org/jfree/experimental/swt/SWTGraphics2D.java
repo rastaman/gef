@@ -860,8 +860,9 @@ public class SWTGraphics2D extends Graphics2D {
      * @see java.awt.Graphics#fillOval(int, int, int, int)
      */
     public void fillOval(int x, int y, int width, int height) {
-        // TODO Auto-generated method stub
-
+        this.switchColors();
+        gc.fillOval(x, y, width, height);
+        this.switchColors();
     }
 
     /* (non-Javadoc)
