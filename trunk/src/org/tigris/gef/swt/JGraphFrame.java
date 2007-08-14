@@ -296,7 +296,6 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
      */
     public void setToolBar(IToolBar tb) {
         _toolbar = (org.tigris.gef.swt.ToolBar)tb;
-        // NOT YET IMPLEMENTED
         _mainPanel.add(_toolbar, BorderLayout.NORTH);
     }
 

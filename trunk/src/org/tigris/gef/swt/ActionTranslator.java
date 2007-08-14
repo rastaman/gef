@@ -49,7 +49,7 @@ public class ActionTranslator implements Action{
 	Object obj = swingAction.getValue(key);
          
         if (obj instanceof javax.swing.Icon)
-            return new swingwtx.swing.ImageIcon("D:\\Apps\\GSoc2007\\gef\\src\\org\\tigris\\gef\\Images\\Open.gif");
+            return new swingwtx.swing.ImageIcon();
         else
             return obj;
     }

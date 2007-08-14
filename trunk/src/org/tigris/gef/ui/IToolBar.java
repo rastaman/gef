@@ -1,8 +1,8 @@
 package org.tigris.gef.ui;
 
-import org.tigris.gef.base.MouseEvent;
 import javax.swing.Action;
 import javax.swing.JButton;
+
 public interface IToolBar {
 
     /**

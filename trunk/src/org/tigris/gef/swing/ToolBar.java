@@ -23,6 +23,8 @@
 
 package org.tigris.gef.swing;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.CmdCreateNode;
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.Editor;
@@ -50,16 +52,18 @@ public class ToolBar extends javax.swing.JToolBar implements MouseListener, IToo
     protected Vector _modeButtons = new Vector();
     private static final Color selectedBack = new Color(153, 153, 153);
     private static final Color buttonBack = new Color(204, 204, 204);
+    
+    private static final Log LOG = LogFactory.getLog(ToolBar.class);
 
     public ToolBar() {
         setFloatable(false);
         setName("toolBar");
     }
 
-    public JButton add(Action a)
-    {        
+    public JButton add(Action a) {
         String name = (String)a.getValue(Action.NAME);
         Icon icon = (Icon)a.getValue(Action.SMALL_ICON);
+	LOG.debug("Adding action " + name);
         return add(a, name, icon);
     }
     /* (non-Javadoc)

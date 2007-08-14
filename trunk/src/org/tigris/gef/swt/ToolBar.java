@@ -23,12 +23,13 @@
 
 package org.tigris.gef.swt;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.CmdCreateNode;
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.ui.IToolBar;
-import org.tigris.gef.util.ResourceLoader;
 
 import swingwtx.swing.*;
 import swingwt.awt.*;
@@ -43,6 +44,8 @@ public class ToolBar extends swingwtx.swing.JToolBar implements MouseListener, I
     protected Vector _modeButtons = new Vector();
     private static final Color selectedBack = new Color(153, 153, 153);
     private static final Color buttonBack = new Color(204, 204, 204);
+    
+    private static final Log LOG = LogFactory.getLog(ToolBar.class);
 
     public ToolBar() {
         setFloatable(false);
@@ -53,6 +56,7 @@ public class ToolBar extends swingwtx.swing.JToolBar implements MouseListener, I
      * @see org.tigris.gef.ui.ToolBar#add(swingwtx.swing.Action)
      */
     public JButton add(Action a) {
+	LOG.info("Adding action to toolbar");
         String name = (String)a.getValue(Action.NAME);
         Icon icon = (Icon)a.getValue(Action.SMALL_ICON);
         return add(a, name, icon);
@@ -62,6 +66,7 @@ public class ToolBar extends swingwtx.swing.JToolBar implements MouseListener, I
      * @see org.tigris.gef.ui.ToolBar#add(swingwtx.swing.Action, java.lang.String, java.lang.String)
      */
     public JButton add(Action a, String name, String iconResourceStr) {
+	LOG.info("Adding action to toolbar with name and resource");
         Icon icon =  (Icon)a.getValue(Action.SMALL_ICON);// ResourceLoader.lookupIconResource(iconResourceStr, name);
         //System.out.println(icon);
         return add(a, name, icon);
@@ -71,6 +76,7 @@ public class ToolBar extends swingwtx.swing.JToolBar implements MouseListener, I
      * @see org.tigris.gef.ui.ToolBar#add(swingwtx.swing.Action, java.lang.String, swingwtx.swing.Icon)
      */
     public JButton add(Action a, String name, Icon icon) {
+	LOG.info("Adding action to toolbar with name and icon");
         JButton b = super.add(a);
         b.setName(null);
         b.setText(null);
@@ -89,6 +95,7 @@ public class ToolBar extends swingwtx.swing.JToolBar implements MouseListener, I
      * @see org.tigris.gef.ui.ToolBar#add(swingwt.awt.Component)
      */
     public Component add(Component comp) {
+	LOG.info("Adding component");
         if(comp instanceof JButton) {
             JButton button = (JButton)comp;
             Action action = button.getAction();
@@ -267,7 +274,8 @@ public class ToolBar extends swingwtx.swing.JToolBar implements MouseListener, I
     }
 
     public javax.swing.JButton add(javax.swing.Action a) {
-        return new javax.swing.JButton();//SwtUtil.translateAction(a);   
+	JButton button = super.add(SwtUtil.translateAction(a));
+        return new javax.swing.JButton();
     }
 
     public void mouseClicked(MouseEvent me) {
