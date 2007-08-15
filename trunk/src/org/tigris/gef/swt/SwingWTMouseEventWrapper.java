@@ -53,6 +53,8 @@ public class SwingWTMouseEventWrapper implements org.tigris.gef.base.MouseEvent 
     private swingwt.awt.event.MouseEvent event;
     private GraphInternalPane _jComponent = null;
 
+    private int consumedEventID;
+    
     //set the private event to the awt MouseEvent
     public SwingWTMouseEventWrapper(swingwt.awt.event.MouseEvent me) {
         this.event = me;
@@ -113,6 +115,7 @@ x     * @see org.tigris.gef.base.MouseEvent#getPoint()
      */
     public void consume() {
         event.consume();
+        consumedEventID = event.getID();
     }
 
     /*
@@ -155,7 +158,7 @@ x     * @see org.tigris.gef.base.MouseEvent#getPoint()
      * @see org.tigris.gef.base.InputEvent#isConsumed()
      */
     public boolean isConsumed() {
-        return event.isConsumed();
+        return event.isConsumed() && consumedEventID == event.getID();
     }
 
     /*
