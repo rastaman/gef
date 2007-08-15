@@ -46,7 +46,6 @@ import swingwt.awt.event.MouseListener;
 import swingwt.awt.event.MouseMotionListener;
 import swingwt.awt.event.MouseWheelEvent;
 import swingwt.awt.event.MouseWheelListener;
-import swingwt.awt.image.FilteredImageSource;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -995,7 +994,7 @@ class JGraphInternalPane extends JPanel implements GraphInternalPane,
 //        g = null;
 //        i = null;
     }
-
+    
 }
 
 class WheelKeyListenerToggleAction implements KeyListener {
