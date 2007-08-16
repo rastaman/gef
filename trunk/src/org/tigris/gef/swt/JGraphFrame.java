@@ -34,6 +34,7 @@ import swingwtx.swing.JLabel;
 import swingwtx.swing.JMenu;
 import swingwtx.swing.JMenuBar;
 import swingwtx.swing.JMenuItem;
+import swingwtx.swing.JOptionPane;
 import swingwtx.swing.JPanel;
 import swingwtx.swing.KeyStroke;
 import swingwtx.swing.border.EtchedBorder;
@@ -178,6 +179,13 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
         content.add(_statusbar, BorderLayout.SOUTH);
         setSize(300, 250);
         _graph.addModeChangeListener(this);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                    dispose();                        
+                    System.exit(0);
+            }
+        });
     }
 
     /** Contruct a new JGraphFrame with the title "untitled" and the
