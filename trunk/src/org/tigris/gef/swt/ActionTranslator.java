@@ -48,8 +48,11 @@ public class ActionTranslator implements Action{
     public Object getValue(String key) {
 	Object obj = swingAction.getValue(key);
          
-        if (obj instanceof javax.swing.Icon)
-            return new swingwtx.swing.ImageIcon();
+        if (obj instanceof javax.swing.ImageIcon)
+        {
+            String iconName = ((javax.swing.ImageIcon)obj).getDescription();
+            return org.tigris.gef.swt.ResourceLoader.lookupIconResource(iconName, iconName);
+        }
         else
             return obj;
     }

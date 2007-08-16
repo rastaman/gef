@@ -67,7 +67,7 @@ public class ToolBar extends swingwtx.swing.JToolBar implements MouseListener, I
      */
     public JButton add(Action a, String name, String iconResourceStr) {
 	LOG.info("Adding action to toolbar with name and resource");
-        Icon icon =  (Icon)a.getValue(Action.SMALL_ICON);// ResourceLoader.lookupIconResource(iconResourceStr, name);
+        Icon icon = ResourceLoader.lookupIconResource(iconResourceStr, name);
         //System.out.println(icon);
         return add(a, name, icon);
     }
@@ -275,6 +275,7 @@ public class ToolBar extends swingwtx.swing.JToolBar implements MouseListener, I
 
     public javax.swing.JButton add(javax.swing.Action a) {
 	JButton button = super.add(SwtUtil.translateAction(a));
+        //add(SwtUtil.translateAction(a), (String)a.getValue(Action.NAME),(String)a.getValue(Action.NAME));
         return new javax.swing.JButton();
     }
 

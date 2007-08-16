@@ -38,9 +38,9 @@ import java.util.*;
  */
 
 public class ResourceLoader {
-	private static HashMap _resourceCache = new HashMap();
-	private static List _resourceLocations = new ArrayList();
-	private static List _resourceExtensions = new ArrayList();
+    private static HashMap _resourceCache = new HashMap();
+    private static List _resourceLocations = new ArrayList();
+    private static List _resourceExtensions = new ArrayList();
 
 	public static ImageIcon lookupIconResource(String resource) {
 		return lookupIconResource(resource, resource);
@@ -168,5 +168,13 @@ public class ResourceLoader {
 	public static boolean isInCache(String resource) {
 		return _resourceCache.containsKey(resource);
 	}
+
+    public static List get_resourceLocations() {
+        return _resourceLocations;
+    }
+
+    public static List get_resourceExtensions() {
+        return _resourceExtensions;
+    }
 } /* end class ResourceLoader */
 
