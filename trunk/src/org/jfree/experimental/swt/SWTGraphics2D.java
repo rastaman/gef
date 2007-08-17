@@ -287,14 +287,19 @@ public class SWTGraphics2D extends Graphics2D {
         path.dispose();
     }
 
+    
     /* (non-Javadoc)
      * @see java.awt.Graphics2D#drawImage(java.awt.Image, 
      * java.awt.geom.AffineTransform, java.awt.image.ImageObserver)
      */
     public boolean drawImage(Image image, AffineTransform xform,
             ImageObserver obs) {
-        // TODO Auto-generated method stub
-        return false;
+        org.eclipse.swt.graphics.Image im 
+        = new org.eclipse.swt.graphics.Image(gc.getDevice(), 
+                convertToSWT(convertoBufferedImage(image)));
+        gc.drawImage(im, 0, 0);
+        im.dispose();
+        return true;
     }
 
     /* (non-Javadoc)
@@ -326,7 +331,10 @@ public class SWTGraphics2D extends Graphics2D {
      * java.awt.geom.AffineTransform)
      */
     public void drawRenderedImage(RenderedImage image, AffineTransform xform) {
-        // TODO Auto-generated method stub
+        org.eclipse.swt.graphics.Image im = new org.eclipse.swt.graphics.Image(
+                gc.getDevice(), convertToSWT((BufferedImage)image));
+        gc.drawImage(im, 0, 0);
+        im.dispose();
     }
 
     /* (non-Javadoc)
@@ -335,8 +343,10 @@ public class SWTGraphics2D extends Graphics2D {
      */
     public void drawRenderableImage(RenderableImage image, 
             AffineTransform xform) {
-        // TODO Auto-generated method stub
-
+        org.eclipse.swt.graphics.Image im = new org.eclipse.swt.graphics.Image(
+                gc.getDevice(), convertToSWT((BufferedImage) image));
+        gc.drawImage(im, 0, 0);
+        im.dispose();
     }
 
     /**
@@ -736,13 +746,14 @@ public class SWTGraphics2D extends Graphics2D {
      * @see java.awt.Graphics#setPaintMode()
      */
     public void setPaintMode() {
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.awt.Graphics#setXORMode(java.awt.Color)
      */
     public void setXORMode(Color color) {
-       
+        // TODO Auto-generated method stub
     }
 
     /**
@@ -804,6 +815,7 @@ public class SWTGraphics2D extends Graphics2D {
      * @see java.awt.Graphics#getClip()
      */
     public Shape getClip() {
+        // TODO Auto-generated method stub
         return null;
     }
 
@@ -944,8 +956,11 @@ public class SWTGraphics2D extends Graphics2D {
      */
     public boolean drawImage(Image image, int x, int y, 
             ImageObserver observer) {
-        // TODO Auto-generated method stub
-        return false;
+        org.eclipse.swt.graphics.Image im = new org.eclipse.swt.graphics.Image(
+                gc.getDevice(), convertToSWT(convertoBufferedImage(image)));
+        gc.drawImage(im, x, y);
+        im.dispose();
+        return true;
     }
 
     /* (non-Javadoc)
@@ -954,8 +969,11 @@ public class SWTGraphics2D extends Graphics2D {
      */
     public boolean drawImage(Image image, int x, int y, int width, int height,
             ImageObserver observer) {
-        // TODO Auto-generated method stub
-        return false;
+        org.eclipse.swt.graphics.Image im = new org.eclipse.swt.graphics.Image(
+                gc.getDevice(), convertToSWT(convertoBufferedImage(image)));
+        gc.drawImage(im, x, y);
+        im.dispose();
+        return true;
     }
 
     /* (non-Javadoc)
@@ -964,7 +982,10 @@ public class SWTGraphics2D extends Graphics2D {
      */
     public boolean drawImage(Image image, int x, int y, Color bgcolor,
             ImageObserver observer) {
-        // TODO Auto-generated method stub
+        org.eclipse.swt.graphics.Image im = new org.eclipse.swt.graphics.Image(
+                gc.getDevice(), convertToSWT(convertoBufferedImage(image)));
+        gc.drawImage(im, x, y);
+        im.dispose();
         return false;
     }
 
@@ -974,7 +995,10 @@ public class SWTGraphics2D extends Graphics2D {
      */
     public boolean drawImage(Image image, int x, int y, int width, int height,
             Color bgcolor, ImageObserver observer) {
-        // TODO Auto-generated method stub
+        org.eclipse.swt.graphics.Image im = new org.eclipse.swt.graphics.Image(
+                gc.getDevice(), convertToSWT((BufferedImage) image));
+        gc.drawImage(im, x, y);
+        im.dispose();
         return false;
     }
 
@@ -998,13 +1022,29 @@ public class SWTGraphics2D extends Graphics2D {
         // TODO Auto-generated method stub
         return false;
     }
-
     /* (non-Javadoc)
      * @see java.awt.Graphics#dispose()
      */
     public void dispose() {
     	// we dispose resources we own but user must dispose gc
         disposeResourcePool();
+    }
+
+    static BufferedImage convertoBufferedImage(Image image)
+    {
+        if (image instanceof BufferedImage)
+            return (BufferedImage)image;
+        else
+        {
+            BufferedImage bi = new BufferedImage(image.getWidth(null),image.getHeight(null),BufferedImage.TYPE_INT_BGR);
+            bi.getGraphics().drawImage(image, 0 , 0, null);
+            return bi;
+        }
+    }
+    static BufferedImage convertoRenderedImage(RenderedImage image)
+    {
+            // TODO convert RenderedImage to BufferedImage
+            return (BufferedImage)image;
     }
 
     static ImageData convertToSWT(BufferedImage bufferedImage) {

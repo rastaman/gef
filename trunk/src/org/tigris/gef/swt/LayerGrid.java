@@ -122,45 +122,47 @@ public class LayerGrid extends Layer {
     /** Paint the grid lines or dots by repeatedly bitblting a
      *  precomputed 'stamp' onto the given Graphics */
     public synchronized void paintContents(Graphics g) {
-        if (g instanceof PrintGraphics) {
-            if (!Globals.getPrefs().getPrintGrid()) return;
-            if (_paintLines) paintLines(g, Globals.getPrefs().getPrintBackground());
-            else paintDots(g, Globals.getPrefs().getPrintBackground());
-            return;
-          }
-          if (_stamp == null) {
-            if (_spacing > _stampHeight) _stampHeight = _stampWidth = _spacing;
-            if (Globals.curEditor() == null) {
-        // this is a bad idea, but it works around a very awkward AWT
-        // requirement: that only frames can make Image instances
-        System.out.println("no editor");
-        Frame frame = new Frame();
-        frame.setVisible(true);
-        _stamp = frame.createImage(_stampWidth, _stampHeight);
-        frame.dispose();
-            }
-            else{ _stamp =new java.awt.Container().createImage(_stampWidth,_stampHeight);}//Globals.curEditor().createImage(_stampWidth,_stampHeight);}
-            if (_stamp != null) {
-        if (_paintLines) paintLines(_stamp, _paintBackground);
-        else if (_paintDots) paintDots(_stamp, _paintBackground);
-            }
-          }
-
-          Rectangle clip = g.getClipBounds();
-          int x = clip.x / _spacing * _spacing;
-          int y = clip.y / _spacing * _spacing;
-          int bot = clip.y + clip.height;
-          int right = clip.x + clip.width;
-
-          if (_stamp != null)
-            while (x <= right) {
-        y = clip.y / _spacing * _spacing;
-        while (y <= bot) {
-          g.drawImage(_stamp, x, y, null);
-          y += _stampHeight;
-        }
-        x += _stampWidth;
-            }
+        //if use drawImage, the drawing speed is really slow. need more work.
+        paintLines(g, Globals.getPrefs().getPrintBackground());
+//       if (g instanceof PrintGraphics) {
+//            if (!Globals.getPrefs().getPrintGrid()) return;
+//            if (_paintLines) paintLines(g, Globals.getPrefs().getPrintBackground());
+//            else paintDots(g, Globals.getPrefs().getPrintBackground());
+//            return;
+//          }
+//          if (_stamp == null) {
+//            if (_spacing > _stampHeight) _stampHeight = _stampWidth = _spacing;
+//            if (Globals.curEditor() == null) {
+//        // this is a bad idea, but it works around a very awkward AWT
+//        // requirement: that only frames can make Image instances
+//        System.out.println("no editor");
+//        Frame frame = new Frame();
+//        frame.setVisible(true);
+//        _stamp = frame.createImage(_stampWidth, _stampHeight);
+//        frame.dispose();
+//            }
+//            else{ _stamp =new java.awt.Container().createImage(_stampWidth,_stampHeight);}//Globals.curEditor().createImage(_stampWidth,_stampHeight);}
+//            if (_stamp != null) {
+//        if (_paintLines) paintLines(_stamp, _paintBackground);
+//        else if (_paintDots) paintDots(_stamp, _paintBackground);
+//            }
+//          }
+//
+//          Rectangle clip = g.getClipBounds();
+//          int x = clip.x / _spacing * _spacing;
+//          int y = clip.y / _spacing * _spacing;
+//          int bot = clip.y + clip.height;
+//          int right = clip.x + clip.width;
+//
+//          if (_stamp != null)
+//            while (x <= right) {
+//        y = clip.y / _spacing * _spacing;
+//        while (y <= bot) {
+//          g.drawImage(_stamp, x, y, null);
+//          y += _stampHeight;
+//        }
+//        x += _stampWidth;
+//            }
     }
 
     /** Paint lines on the given stamp Image. */
