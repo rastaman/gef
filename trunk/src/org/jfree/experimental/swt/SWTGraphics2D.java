@@ -706,7 +706,7 @@ public class SWTGraphics2D extends Graphics2D {
      */
     public void drawGlyphVector(GlyphVector g, float x, float y) {
         // TODO Auto-generated method stub
-
+       
     }
 
     /* (non-Javadoc)
@@ -736,15 +736,13 @@ public class SWTGraphics2D extends Graphics2D {
      * @see java.awt.Graphics#setPaintMode()
      */
     public void setPaintMode() {
-        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.awt.Graphics#setXORMode(java.awt.Color)
      */
     public void setXORMode(Color color) {
-        // TODO Auto-generated method stub
-
+       
     }
 
     /**
@@ -806,7 +804,6 @@ public class SWTGraphics2D extends Graphics2D {
      * @see java.awt.Graphics#getClip()
      */
     public Shape getClip() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -825,8 +822,7 @@ public class SWTGraphics2D extends Graphics2D {
      * @see java.awt.Graphics#copyArea(int, int, int, int, int, int)
      */
     public void copyArea(int x, int y, int width, int height, int dx, int dy) {
-        // TODO Auto-generated method stub
-
+        gc.copyArea(x, y, width, height, dx, dy);
     }
 
     /**
@@ -853,8 +849,8 @@ public class SWTGraphics2D extends Graphics2D {
      * @see java.awt.Graphics#clearRect(int, int, int, int)
      */
     public void clearRect(int x, int y, int width, int height) {
-        // TODO Auto-generated method stub
-
+        this.switchColors();
+        gc.fillRectangle(x, y, width, height);
     }
 
     /* (non-Javadoc)
@@ -862,8 +858,7 @@ public class SWTGraphics2D extends Graphics2D {
      */
     public void drawRoundRect(int x, int y, int width, int height,
             int arcWidth, int arcHeight) {
-        // TODO Auto-generated method stub
-
+         gc.drawRoundRectangle(x, y, width, height, arcWidth, arcHeight);
     }
 
     /* (non-Javadoc)
@@ -871,16 +866,16 @@ public class SWTGraphics2D extends Graphics2D {
      */
     public void fillRoundRect(int x, int y, int width, int height,
             int arcWidth, int arcHeight) {
-        // TODO Auto-generated method stub
-
+        this.switchColors();
+        gc.fillRoundRectangle(x, y, width, height, arcWidth, arcHeight);
+        this.switchColors();
     }
 
     /* (non-Javadoc)
      * @see java.awt.Graphics#drawOval(int, int, int, int)
      */
     public void drawOval(int x, int y, int width, int height) {
-        // TODO Auto-generated method stub
-
+        gc.drawOval(x, y, width, height);
     }
 
     /* (non-Javadoc)
@@ -897,8 +892,7 @@ public class SWTGraphics2D extends Graphics2D {
      */
     public void drawArc(int x, int y, int width, int height, int arcStart,
             int arcAngle) {
-        // TODO Auto-generated method stub
-
+       gc.drawArc(x, y, width, height, arcStart, arcAngle);
     }
 
     /* (non-Javadoc)
@@ -906,29 +900,33 @@ public class SWTGraphics2D extends Graphics2D {
      */
     public void fillArc(int x, int y, int width, int height, int arcStart,
             int arcAngle) {
-        // TODO Auto-generated method stub
-
+        this.switchColors();
+        gc.fillArc(x, y, width, height, arcStart, arcAngle);
+        this.switchColors();
     }
 
     /* (non-Javadoc)
      * @see java.awt.Graphics#drawPolyline(int[], int[], int)
      */
     public void drawPolyline(int [] xPoints, int [] yPoints, int npoints) {
-        int[] points = new int[npoints * 2];
-        for (int i=0; i < npoints; ++i) {
-            points[i*2] = xPoints[i];
-            points[i*2 + 1] = yPoints[i];
-        }
-        
-        gc.drawPolyline(points);
+        gc.drawPolyline(toPointArray(xPoints, yPoints, npoints));
     }
 
+    private int[] toPointArray(int [] xPoints, int [] yPoints, int npoints)
+    {
+        int [] pointArray = new int [npoints*2]; 
+        for(int i=0;i<npoints;i++)
+        {
+            pointArray[i*2] = xPoints[i];
+            pointArray[i*2+1] = yPoints[i];
+        }
+        return pointArray;    
+    }
     /* (non-Javadoc)
      * @see java.awt.Graphics#drawPolygon(int[], int[], int)
      */
     public void drawPolygon(int [] xPoints, int [] yPoints, int npoints) {
-        // TODO Auto-generated method stub
-
+        gc.drawPolygon(toPointArray(xPoints, yPoints, npoints));
     }
 
     /* (non-Javadoc)
@@ -936,13 +934,7 @@ public class SWTGraphics2D extends Graphics2D {
      */
     public void fillPolygon(int [] xPoints, int [] yPoints, int npoints) {
         this.switchColors();
-        int[] points = new int[npoints * 2];
-        for (int i=0; i < npoints; ++i) {
-            points[i*2] = xPoints[i];
-            points[i*2 + 1] = yPoints[i];
-        }
-        
-        gc.fillPolygon(points);
+        gc.fillPolygon(toPointArray(xPoints, yPoints, npoints));
         this.switchColors();
     }
 
