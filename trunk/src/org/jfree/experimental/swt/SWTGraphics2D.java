@@ -651,8 +651,35 @@ public class SWTGraphics2D extends Graphics2D {
      * @see java.awt.Graphics2D#getStroke()
      */
     public Stroke getStroke() {
-        return new BasicStroke(gc.getLineWidth(), gc.getLineCap(), 
-                gc.getLineJoin());
+	int lineCap = gc.getLineCap();
+	if (lineCap == SWT.CAP_FLAT) {
+	    lineCap = BasicStroke.CAP_BUTT;
+	} else if (lineCap == SWT.CAP_ROUND) {
+	    lineCap = BasicStroke.CAP_ROUND;
+	} else if (lineCap == SWT.CAP_SQUARE) {
+	    lineCap = BasicStroke.CAP_SQUARE;
+	} else {
+	    // In theory the above should handle everything but occasionally
+	    // we are returned an illegal value that throws an exception in
+	    // the BasicStroke constructor so we set to the default
+	    lineCap = BasicStroke.CAP_SQUARE;
+	}
+	
+	int lineJoin = gc.getLineJoin();
+	if (lineJoin == SWT.JOIN_BEVEL) {
+	    lineJoin = BasicStroke.JOIN_BEVEL;
+	} else if (lineJoin == SWT.JOIN_MITER) {
+	    lineJoin = BasicStroke.JOIN_MITER;
+	} else if (lineJoin == SWT.JOIN_ROUND) {
+	    lineJoin = BasicStroke.JOIN_ROUND;
+	} else {
+	    // In theory the above should handle everything but occasionally
+	    // we are returned an illegal value that throws an exception in
+	    // the BasicStroke constructor so we set to the default
+	    lineJoin = BasicStroke.JOIN_MITER;
+	}
+	
+        return new BasicStroke(gc.getLineWidth(), lineCap, lineJoin);
     }
 
     /* (non-Javadoc)
@@ -887,8 +914,13 @@ public class SWTGraphics2D extends Graphics2D {
      * @see java.awt.Graphics#drawPolyline(int[], int[], int)
      */
     public void drawPolyline(int [] xPoints, int [] yPoints, int npoints) {
-        // TODO Auto-generated method stub
-
+        int[] points = new int[npoints * 2];
+        for (int i=0; i < npoints; ++i) {
+            points[i*2] = xPoints[i];
+            points[i*2 + 1] = yPoints[i];
+        }
+        
+        gc.drawPolyline(points);
     }
 
     /* (non-Javadoc)
@@ -903,8 +935,15 @@ public class SWTGraphics2D extends Graphics2D {
      * @see java.awt.Graphics#fillPolygon(int[], int[], int)
      */
     public void fillPolygon(int [] xPoints, int [] yPoints, int npoints) {
-        // TODO Auto-generated method stub
-
+        this.switchColors();
+        int[] points = new int[npoints * 2];
+        for (int i=0; i < npoints; ++i) {
+            points[i*2] = xPoints[i];
+            points[i*2 + 1] = yPoints[i];
+        }
+        
+        gc.fillPolygon(points);
+        this.switchColors();
     }
 
     /* (non-Javadoc)
