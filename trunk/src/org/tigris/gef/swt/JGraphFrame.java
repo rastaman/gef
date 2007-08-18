@@ -168,6 +168,7 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
         _graph = jg;
         Container content = getContentPane();
         setUpMenus();
+        setJMenuBar(_menubar);
         content.setLayout(new BorderLayout());
         content.add(_menubar, BorderLayout.NORTH);
         _graphPanel.add(_graph, BorderLayout.CENTER);
@@ -240,8 +241,6 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
      * @see org.tigris.gef.graph.presentation.GraphFrame#getJMenuBar()
      */
     public JMenuBar getJMenuBar() {
-	//return null;
-	// NOT YET IMPLEMENTED
         return _menubar;
     }
 
@@ -295,8 +294,9 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
      * @see org.tigris.gef.graph.presentation.GraphFrame#setJMenuBar(swingwtx.swing.JMenuBar)
      */
     public void setJMenuBar(JMenuBar mb) {
+        super.setJMenuBar(mb);
         _menubar = mb;
-        getContentPane().add(_menubar, BorderLayout.NORTH);
+        //getContentPane().add(_menubar, BorderLayout.NORTH);
     }
 
     /* (non-Javadoc)
