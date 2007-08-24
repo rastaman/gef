@@ -256,7 +256,7 @@ public class PrintAction extends AbstractAction implements Printable {
 
     PrinterJob getPrinterJob() {
         if (printerJob == null) {
-            printerJob = new PrinterJob();//.getPrinterJob();
+            //printerJob = new PrinterJob();//.getPrinterJob();
         }
         return printerJob;
     }
