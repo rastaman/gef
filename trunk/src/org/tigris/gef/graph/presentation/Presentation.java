@@ -4,7 +4,6 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.FigModifyingMode;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.ui.IToolBar;
-import org.tigris.gef.ui.PaletteFig;
 
 public interface Presentation {
 
@@ -14,8 +13,6 @@ public interface Presentation {
     
     GraphFrame createGraphFrame();
     
-    IToolBar createToolBar(IToolBar toolBar);
-
     IToolBar createToolBar();
     
     IToolBar createPaletteFig();

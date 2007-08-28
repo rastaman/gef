@@ -27,7 +27,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class ToolBar extends org.tigris.gef.swing.ToolBar{
+public class ToolBar extends org.tigris.gef.swing.SwingToolBar{
     public ToolBar() {
         super();
     }

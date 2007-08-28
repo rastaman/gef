@@ -21,18 +21,11 @@ public class SwingPresentation implements Presentation {
 	return new JGraphFrame();
     }
     
-    public IToolBar createToolBar(IToolBar toolBar)
-    {
-        return (ToolBar)toolBar;
-    }
-
-    public IToolBar createToolBar()
-    {
-        return new ToolBar();
+    public IToolBar createToolBar() {
+        return new SwingToolBar();
     }
 
     public IToolBar createPaletteFig() {
-        // TODO Auto-generated method stub
         return new PaletteFig();
     }
 }

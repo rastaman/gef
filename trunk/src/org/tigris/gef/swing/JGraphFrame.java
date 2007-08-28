@@ -94,7 +94,7 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
     private static final long serialVersionUID = -8167010467922210977L;
 
     /** The toolbar (shown at top of window). */
-    private org.tigris.gef.swing.ToolBar _toolbar = new org.tigris.gef.swing.PaletteFig();
+    private org.tigris.gef.swing.SwingToolBar _toolbar = new org.tigris.gef.swing.PaletteFig();
 
     /** The graph pane (shown in middle of window). */
     private JGraph _graph;
@@ -288,7 +288,7 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
      * @see org.tigris.gef.graph.presentation.GraphFrame#setToolBar(org.tigris.gef.ui.ToolBar)
      */
     public void setToolBar(IToolBar tb) {
-        _toolbar = (org.tigris.gef.swing.ToolBar)tb;
+        _toolbar = (org.tigris.gef.swing.SwingToolBar)tb;
         _mainPanel.add(_toolbar, BorderLayout.NORTH);
     }
 

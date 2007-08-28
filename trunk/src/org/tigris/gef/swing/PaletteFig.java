@@ -59,7 +59,7 @@ import org.tigris.gef.base.ModeSelect;
  * @see ModeCreateFigText
  * @see ModeCreateFigPoly */
 
-public class PaletteFig extends ToolBar {
+public class PaletteFig extends SwingToolBar {
 
     /**
      * 

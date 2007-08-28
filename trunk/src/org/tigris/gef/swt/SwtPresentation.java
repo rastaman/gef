@@ -20,14 +20,9 @@ public class SwtPresentation implements Presentation {
     public GraphFrame createGraphFrame() {
 	return new JGraphFrame();
     }
-    public IToolBar createToolBar(IToolBar toolBar)
-    {
-        return (ToolBar)toolBar;
-    }
 
-    public IToolBar createToolBar()
-    {
-        return new ToolBar();
+    public IToolBar createToolBar() {
+        return new SwingWTToolBar();
     }
     
     public IToolBar createPaletteFig() {
