@@ -24,7 +24,11 @@
 
 package org.tigris.gef.persistence.pgml;
 
+import java.io.ByteArrayInputStream;
+import java.net.URL;
+
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import org.xml.sax.helpers.DefaultHandler;
@@ -60,6 +64,22 @@ public class InitialHandler extends DefaultHandler {
     	throws SAXException {
         if (qname.equals("pgml")) {
             parser.pushHandlerStack(new PGMLHandler(parser, attributes));
+        }
+    }
+    
+    public InputSource resolveEntity(String publicId, String systemId) {
+        if (systemId.endsWith("pgml.dtd")) {
+            URL dtdUrl = this.getClass().getResource(
+                    "/org/tigris/gef/xml/dtd/pgml.dtd");
+            if (dtdUrl != null) {
+                return new InputSource(dtdUrl.toExternalForm());
+            } else {
+                // Return empty DTD if it can't be found
+                return new InputSource(new ByteArrayInputStream(
+                        "<?xml version='1.0' encoding='UTF-8'?>".getBytes()));
+            }
+        } else {
+            return null;
         }
     }
 }
