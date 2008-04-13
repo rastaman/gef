@@ -424,6 +424,27 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
                     int textsizeInt = Integer.parseInt(textsize);
                     text.setFontSize(textsizeInt);
                 }
+                
+                String justification = attributes.getValue("justification");
+                if (justification != null && !justification.equals("")) {
+                    text.setJustificationByName(justification);
+                }
+                String italic = attributes.getValue("italic");
+                if (italic != null && !italic.equals("")) {
+                    text.setItalic(Boolean.valueOf(italic));
+                }
+                String bold = attributes.getValue("bold");
+                if (bold != null && !bold.equals("")) {
+                    text.setBold(Boolean.valueOf(bold));
+                }
+
+                String textColor = attributes.getValue("textcolor");
+                if (textColor != null && !textColor.equals("")) {
+                    text.setTextColor(
+                            ColorFactory.getColor(textColor));
+                }
+                
+                
                 return new FigTextHandler(this, text);
             }
         }
