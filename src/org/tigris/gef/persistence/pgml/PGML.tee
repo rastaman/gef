@@ -98,12 +98,18 @@ height="<ocl>self.height.intValue</ocl>"
 <template class="org.tigris.gef.presentation.FigText">
 <![CDATA[
 <text name="<ocl>org.tigris.gef.persistence.PgmlUtility.getId(self)</ocl>"
+  width="<ocl>self.width.intValue</ocl>"
+  height="<ocl>self.height.intValue</ocl>"
   context="<ocl>self.context</ocl>"
   x="<ocl>self.x.intValue</ocl>"
   y="<ocl>self.y.intValue</ocl>"
   FILL_AND_STROKE
+  textcolor="<ocl>self.textColor</ocl>"  
   font="<ocl>self.fontFamily</ocl>"
+  italic="<ocl>self.italic</ocl>"
+  bold="<ocl>self.bold</ocl>"
   textsize="<ocl>self.fontSize</ocl>"
+  justification="<ocl>self.justificationByName</ocl>"
 ><ocl>self.text</ocl></text>
 ]]>
 </template>
