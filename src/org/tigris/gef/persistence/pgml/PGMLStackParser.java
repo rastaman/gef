@@ -431,11 +431,11 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
                 }
                 String italic = attributes.getValue("italic");
                 if (italic != null && !italic.equals("")) {
-                    text.setItalic(Boolean.valueOf(italic));
+                    text.setItalic(Boolean.valueOf(italic).booleanValue());
                 }
                 String bold = attributes.getValue("bold");
                 if (bold != null && !bold.equals("")) {
-                    text.setBold(Boolean.valueOf(bold));
+                    text.setBold(Boolean.valueOf(bold).booleanValue());
                 }
 
                 String textColor = attributes.getValue("textcolor");
