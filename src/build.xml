@@ -107,8 +107,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <tstamp/>
     <property name="Name" value="GEF"/>
     <property name="name" value="gef"/>
-    <property name="version" value="0.12.4BETA2"/>
-    <property name="year" value="2007"/>
+    <property name="version" value="0.12.4BETA3"/>
+    <property name="year" value="2008"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
 
