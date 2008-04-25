@@ -35,6 +35,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.*;
 import javax.swing.event.*;
 
+
+/**
+ * An undocumented and unused class. This would not appear to be relevent to the GEF
+ * application. If your own application uses this then please copy this code to your
+ * own project before it is removed from GEF.
+ * @deprecated in 0.12.4 by Bob Tarling
+ */
 public class TinyHTMLViewer extends JFrame {
 
   public TinyHTMLViewer(String startPage) {
@@ -56,7 +63,12 @@ public class TinyHTMLViewer extends JFrame {
   //   }
 } /* end class TinyHTMLViewer */
 
-
+/**
+ * An undocumented and unused class. This would not appear to be relevent to the GEF
+ * application. If your own application uses this then please copy this code to your
+ * own project before it is removed from GEF.
+ * @deprecated in 0.12.4 by Bob Tarling
+ */
 class HtmlPane extends JScrollPane implements HyperlinkListener {
   public static String DEFAULT_PAGE = "/uci/uml/help/index.html";
 
