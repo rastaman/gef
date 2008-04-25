@@ -38,10 +38,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
+import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
@@ -77,7 +77,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     public FigTextEditor(FigText ft, InputEvent ie) {
         setVisible(true);
         figText = ft;
-        Editor ce = Globals.curEditor();
+        final Editor ce = Globals.curEditor();
         
         drawingPanel = (JPanel)ce.getJComponent();
         UndoManager.getInstance().startChain(); 
@@ -85,27 +85,25 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         figText.addPropertyChangeListener(this);
         // walk up and add to glass pane
         Component awtComp = drawingPanel;
-        while (!(awtComp instanceof JFrame) && awtComp != null) {
+        while (!(awtComp instanceof RootPaneContainer) && awtComp != null) {
             awtComp = awtComp.getParent();
         }
-        if (!(awtComp instanceof JFrame)) {
-            LOG.warn("no JFrame");
+        if (!(awtComp instanceof RootPaneContainer)) {
+            LOG.warn("no RootPaneContainer");
             return;
         }
-        layeredPane = ((JFrame)awtComp).getLayeredPane();
+        layeredPane = ((RootPaneContainer) awtComp).getLayeredPane();
 
         ft.calcBounds();
         Rectangle bbox = ft.getBounds();
 
-        Color figTextBackgroundColor = ft.getFillColor();
-        Color myBackground;
+        final Color figTextBackgroundColor = ft.getFillColor();
+        final Color myBackground;
         if(_makeBrighter && !figTextBackgroundColor.equals(Color.white)) {
             myBackground = figTextBackgroundColor.brighter();
-        }
-        else if(_backgroundColor != null) {
+        } else if(_backgroundColor != null) {
             myBackground = _backgroundColor;
-        }
-        else {
+        } else {
             myBackground = figTextBackgroundColor;
         }
 
@@ -113,7 +111,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
 
         setBorder(_border);
 
-        double scale = ce.getScale();
+        final double scale = ce.getScale();
         bbox.x = (int)Math.round(bbox.x * scale);
         bbox.y = (int)Math.round(bbox.y * scale);
 
@@ -127,7 +125,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         // bounds will be overwritten later in updateFigText anyway...
         setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width + _extraSpace * 2, bbox.height + _extraSpace * 2);
         layeredPane.add(this, JLayeredPane.POPUP_LAYER, 0);
-        String text = ft.getTextFriend();
+        final String text = ft.getTextFriend();
         
         setText(text);
 
@@ -138,29 +136,33 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         setSelectionStart(0);
         setSelectionEnd(getDocument().getLength());
         MutableAttributeSet attr = new SimpleAttributeSet();
-        if(ft.getJustification() == FigText.JUSTIFY_CENTER)
+        if (ft.getJustification() == FigText.JUSTIFY_CENTER)
             StyleConstants.setAlignment(attr, StyleConstants.ALIGN_CENTER);
-        if(ft.getJustification() == FigText.JUSTIFY_RIGHT)
+        if (ft.getJustification() == FigText.JUSTIFY_RIGHT)
             StyleConstants.setAlignment(attr, StyleConstants.ALIGN_RIGHT);
-        Font font = ft.getFont();
+        final Font font = ft.getFont();
         StyleConstants.setFontFamily(attr, font.getFamily());
         StyleConstants.setFontSize(attr, font.getSize());
         setParagraphAttributes(attr, true);
-        if(ie instanceof KeyEvent) {
+        if (ie instanceof KeyEvent) {
             setSelectionStart(getDocument().getLength());
             setSelectionEnd(getDocument().getLength());
         }
         addFocusListener(this);
     }
 
-    public static void configure(int extraSpace, Border b, boolean makeBrighter, Color backgroundColor) {
+    public static void configure(
+            final int extraSpace,
+            final Border b, 
+            final boolean makeBrighter, 
+            final Color backgroundColor) {
         _extraSpace = extraSpace;
         _border = b;
         _makeBrighter = makeBrighter;
         _backgroundColor = backgroundColor;
     }
 
-    public void propertyChange(PropertyChangeEvent pve) {
+    public void propertyChange(final PropertyChangeEvent pve) {
         updateFigText();
     }
 
@@ -169,12 +171,12 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
             return;
         }
         updateFigText();
-        FigText t = figText;
+        final FigText t = figText;
         
         cancelEditingInternal();
         
         t.firePropChange("editing", true, false);
-        Editor ce = Globals.curEditor();
+        final Editor ce = Globals.curEditor();
         // This will cause a recursive call back to us, but things
         // are organized so it won't be infinite recursion.
         ce.setActiveTextEditor(null);
@@ -199,7 +201,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         setVisible(false);
         figText.endTrans();
         Container parent = getParent();
-        if(parent != null) {
+        if (parent != null) {
             parent.remove(this);
         }
         figText.removePropertyChangeListener(this);
@@ -238,8 +240,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
             ke.consume();
         } else if(ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
             // needs-more-work: should revert to orig text.
-            // TODO: Shouldn't this call cancelEditing instead of endEditing?
-            endEditing();
+            cancelEditing();
             ke.consume();
         }
     }
@@ -265,8 +266,9 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     // internal utility methods
 
     protected void updateFigText() {
-        if(figText == null)
+        if (figText == null) {
             return;
+        }
         
         String text = getText();
         
@@ -274,7 +276,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
 
         if (figText.getReturnAction() == FigText.INSERT && figText.isWordWrap()) {
             return;
-        };
+        }
 
         Rectangle bbox = figText.getBounds();
         Editor ce = Globals.curEditor();
@@ -293,18 +295,18 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         setFont(figText.getFont());
     }
 
-	/**
-	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
-	 */
+    /**
+     * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+     */
 	public void focusGained(FocusEvent e) {
-	}
+    }
 
-	/**
-	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
-	 */
-	public void focusLost(FocusEvent e) {
+    /**
+     * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+     */
+    public void focusLost(FocusEvent e) {
         endEditing();
-	}
+    }
     
     public FigText getFigText() {
         return figText;
