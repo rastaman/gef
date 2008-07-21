@@ -33,6 +33,7 @@ package org.tigris.gef.base;
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.tigris.gef.presentation.Fig;
@@ -97,8 +98,8 @@ public class DistributeAction extends UndoableAction {
     public void actionPerformed(ActionEvent e) {
 
         super.actionPerformed(e);
+        List targets = new ArrayList();
 
-        super.actionPerformed(e);
         Editor ce = Globals.curEditor();
         int packGap = 8;
         if (gap != null) {
@@ -110,15 +111,17 @@ public class DistributeAction extends UndoableAction {
                 Globals.showStatus("Cannot Modify Locked Objects");
                 return;
             }
-            figs = sm.getFigs();
+            targets.addAll(sm.getFigs());
+        } else {
+            targets.addAll(figs);
         }
         int leftMostCenter = 0, rightMostCenter = 0;
         int topMostCenter = 0, bottomMostCenter = 0;
-        int size = figs.size();
+        int size = targets.size();
         if (size == 0) return;
     
         // find the bbox of all selected objects
-        Fig f = (Fig) figs.get(0);
+        Fig f = (Fig) targets.get(0);
         if (_bbox == null) {
             _bbox = f.getBounds();
             leftMostCenter = _bbox.x + _bbox.width / 2;
@@ -126,7 +129,7 @@ public class DistributeAction extends UndoableAction {
             topMostCenter = _bbox.y + _bbox.height / 2;
             bottomMostCenter = _bbox.y + _bbox.height / 2;
             for (int i = 1; i < size; i++) {
-                f = (Fig) figs.get(i);
+                f = (Fig) targets.get(i);
                 Rectangle r = f.getBounds();
                 _bbox.add(r);
                 leftMostCenter = Math.min(leftMostCenter, r.x + r.width / 2);
@@ -139,7 +142,7 @@ public class DistributeAction extends UndoableAction {
         // find the sum of the widths and heights of all selected objects
         int totalWidth = 0, totalHeight = 0;
         for (int i = 0; i < size; i++) {
-            f = (Fig) figs.get(i);
+            f = (Fig) targets.get(i);
             totalWidth += f.getWidth();
             totalHeight += f.getHeight();
         }
@@ -178,22 +181,22 @@ public class DistributeAction extends UndoableAction {
         //when we set the coordinates
         for (int i = 0; i < size; i++) {
             for (int j = i + 1; j < size; j++) {
-            	Fig fi = (Fig) figs.get(i);
-            	Fig fj = (Fig) figs.get(j);
+            	Fig fi = (Fig) targets.get(i);
+            	Fig fj = (Fig) targets.get(j);
             	if (_request == H_SPACING || _request == H_CENTERS ||
                         _request == H_PACK) {
             	    if (fi.getX() > fj.getX()) {
-                        swap(figs, i, j);
+                        swap(targets, i, j);
                     }
                 } else if (fi.getY() > fj.getY()) {
-                    swap(figs, i, j);
+                    swap(targets, i, j);
                 }
             }
         }
     
     
         for (int i = 0; i < size; i++) {
-            f = (Fig) figs.get(i);
+            f = (Fig) targets.get(i);
             switch (_request) {
             case H_SPACING:
             case H_PACK:

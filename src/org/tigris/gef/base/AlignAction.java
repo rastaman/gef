@@ -30,6 +30,7 @@ package org.tigris.gef.base;
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,6 +101,7 @@ public class AlignAction extends UndoableAction {
     public void actionPerformed(ActionEvent e) {
 
         super.actionPerformed(e);
+        List targets = new ArrayList();
         
         Editor ce = Globals.curEditor();
         if (figs == null) {
@@ -108,18 +110,20 @@ public class AlignAction extends UndoableAction {
                 Globals.showStatus("Cannot Modify Locked Objects");
                 return;
             }
-            figs = sm.getFigs();
+            targets.addAll(sm.getFigs());
+          } else {
+              targets.addAll(figs);
           }
-        int size = figs.size();
+        int size = targets.size();
         if (size == 0) return;
-        Rectangle bbox = ((Fig) figs.get(0)).getBounds();
+        Rectangle bbox = ((Fig) targets.get(0)).getBounds();
         for (int i = 1; i < size; i++) {
-            bbox.add(((Fig) figs.get(i)).getBounds());
+            bbox.add(((Fig) targets.get(i)).getBounds());
         }
     
         boundsByFig = new HashMap(size);
         for (int i = 0; i < size; i++) {
-            Fig f = (Fig) figs.get(i);
+            Fig f = (Fig) targets.get(i);
             boundsByFig.put(f, f.getBounds());
             f.align(bbox, direction, ce);
             f.endTrans();
