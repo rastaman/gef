@@ -1,5 +1,5 @@
 // %1034862399516:org.tigris.gef.base%
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -400,9 +400,24 @@ public class ModeBroom extends FigModifyingModeImpl {
     }
 
     /**
-     * TODO: Determine and document the prupose of these modifier keys
-     * How does enter, tab and space (shifted or not) change behaviour
-     * of the broom?
+     * If the designer presses the space bar while using the broom, 
+     * objects on the face of the broom are distributed (i.e., spaced evenly). 
+     * The broom supports three distribution modes: 
+     * objects can be spaced evenly across the space that they use, 
+     * objects can be packed together with only a small gap between them, or 
+     * objects can be distributed evenly over the entire length of the broom's face. 
+     * Repeatedly pressing the space bar cycles among these 
+     * three distribution modes 
+     * and displays a brief message indicating the operation just performed: 
+     * Space evenly, Pack tightly, Spread out and Original.<p>
+     * 
+     * If the designer presses the Enter key while using the broom,
+     * the broom turns red (instead of the normal blue), and objects are not
+     * picked up by the broom when moving forward. 
+     * It works like lifting up the broom. 
+     * Pressing Enter again returns to the normal mode. <p>
+     * 
+     * Pressing the Tab key works exactly like the Enter key. 
      */
     public void keyTyped(KeyEvent ke) {
         super.keyTyped(ke);
