@@ -471,6 +471,13 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     // internal methods
 
     protected void postProcessEdge() {
+        postProcessEdge(newEdge);
+    }
+
+    /**
+     * @param edge the newly created edge 
+     */
+    protected void postProcessEdge(Object edge) {
     }
 
     static final long serialVersionUID = -427957543380196265L;
