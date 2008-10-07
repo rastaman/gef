@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,6 +48,7 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.di.GraphicElement;
@@ -220,19 +221,13 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
 
     /** Construct a new Fig with the given bounds. */
     public Fig(int x, int y, int w, int h) {
-        this(x, y, w, h, Color.black, Color.white, null);
+        /* Do not set the owner to null when none is given: */
+        this(x, y, w, h, Color.black, Color.white);
     }
 
     /** Construct a new Fig with the given bounds and colors. */
     public Fig(int x, int y, int w, int h, Color lineColor, Color fillColor) {
-        this(x, y, w, h, lineColor, fillColor, null);
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // constuctors
-
-    /** Construct a new Fig with the given bounds, colors, and owner. */
-    public Fig(int x, int y, int w, int h, Color lineColor, Color fillColor, Object own) {
+        /* Do not set the owner to null when none is given: */
         this();
         _x = x;
         _y = y;
@@ -249,6 +244,12 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         } else {
             _filled = false;
         }
+
+    }
+
+    /** Construct a new Fig with the given bounds, colors, and owner. */
+    public Fig(int x, int y, int w, int h, Color lineColor, Color fillColor, Object own) {
+        this(x, y, w, h, lineColor, fillColor);
 
         setOwner(own);
         //annotation related
