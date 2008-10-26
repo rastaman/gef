@@ -1,5 +1,5 @@
 // %1031243478619:org.tigris.gef.persistence%
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -151,9 +151,10 @@ public class SvgWriter extends Graphics {
 
         _svg = builder.newDocument();
         _root = _svg.createElement("svg");
-        _root.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        _root.setAttribute("xmlns", SVGns);
         _root.setAttribute("width", "" + (2 * _hInset + scaleX(_drawingArea.width)));
         _root.setAttribute("height", "" + (2 * _vInset + scaleY(_drawingArea.height)));
+        _root.setAttribute("version", "1.1");
     }
 
     public Graphics create() {
@@ -179,7 +180,9 @@ public class SvgWriter extends Graphics {
             case Node.DOCUMENT_NODE:
                 {
                     _writer.println("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
-                    _writer.print("<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 20001102//EN' 'http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd'>\n");
+                    _writer.print("<!DOCTYPE svg PUBLIC " +
+                    		"\"-//W3C//DTD SVG 1.1//EN\" " +
+                    		"\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
                     printDOMTree(((Document)node).getDocumentElement());
                     break;
                 }
@@ -375,17 +378,18 @@ public class SvgWriter extends Graphics {
      * @return The style of the current font as a SVG attribute.
      */
     private String getFontStyleSVG() {
-        String style = "font-family:" + _font.getFamily() + "; font-size:" + _font.getSize() + ";";
+        StringBuilder style = new StringBuilder("font-family:" + _font.getFamily() + ";");
+        style.append(" font-size:" + _font.getSize() + "px;");
 
         // If this is a bold font, add the appropriate attribute.
         if(getFont().isBold())
-            style += " font-weight:bold;";
+            style.append(" font-weight:bold;");
 
         // If this is a italic font, add the appropriate attribute.
         if(getFont().isItalic())
-            style += " font-style:italic;";
+            style.append(" font-style:italic;");
 
-        return style;
+        return style.toString();
     }
 
     public void copyArea(int x, int y, int width, int height, int dx, int dy) {
