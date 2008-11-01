@@ -137,7 +137,7 @@ public class SvgWriter extends Graphics {
     private int _vInset = 10;
     private double xScale = 1.0;
     private double yScale = 1.0;
-    private String SVGns = "http://www.w3.org/2000/SVG";
+    private String SVGns = "http://www.w3.org/2000/svg";
 
     public SvgWriter(OutputStream stream, Rectangle drawingArea) throws IOException, Exception {
         _writer = new Utf8Writer(stream);
@@ -372,26 +372,6 @@ public class SvgWriter extends Graphics {
         return FontUtility.getFontMetrics(font);
     }
 
-    /**
-     * Translate the current font to a SVG 'style' attribute.
-     *
-     * @return The style of the current font as a SVG attribute.
-     */
-    private String getFontStyleSVG() {
-        StringBuilder style = new StringBuilder("font-family:" + _font.getFamily() + ";");
-        style.append(" font-size:" + _font.getSize() + "px;");
-
-        // If this is a bold font, add the appropriate attribute.
-        if(getFont().isBold())
-            style.append(" font-weight:bold;");
-
-        // If this is a italic font, add the appropriate attribute.
-        if(getFont().isItalic())
-            style.append(" font-style:italic;");
-
-        return style.toString();
-    }
-
     public void copyArea(int x, int y, int width, int height, int dx, int dy) {
     }
 
@@ -483,31 +463,30 @@ public class SvgWriter extends Graphics {
         return scaleY(y) + _yOffset;
     }
 
-    private void drawRect(int x, int y, int w, int h, String style) {
+    private void drawRect(int x, int y, int w, int h, String fill, String stroke, String strokeWidth) {
 
-        //System.out.println("[SVGWriter] drawRect: x/y/w/h = " + x + "/" + y + "/" + w + "/" + h);
         Element rect = _svg.createElement("rect");
 
         rect.setAttribute("x", "" + transformX(x));
         rect.setAttribute("y", "" + transformY(y));
         rect.setAttribute("width", "" + scaleX(w));
         rect.setAttribute("height", "" + scaleY(h));
-        rect.setAttribute("style", style);
+        rect.setAttribute("fill", fill);
+        rect.setAttribute("stroke", stroke);
+        rect.setAttribute("stroke-width", strokeWidth);
         _root.appendChild(rect);
     }
 
     public void drawRect(int x, int y, int w, int h) {
-
-        //drawRect( x, y, w, h, "fill:" + getBackgroundColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
-        drawRect(x, y, w, h, "fill: none; stroke:" + getColorAsString() + "; stroke-width:1");
+        drawRect(x, y, w, h, "none", getColorAsString(), "1");
     }
 
     public void fillRect(int x, int y, int w, int h) {
-        drawRect(x, y, w, h, "fill:" + getColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
+        drawRect(x, y, w, h, getColorAsString(), getColorAsString(), "1");
     }
 
     public void clearRect(int x, int y, int w, int h) {
-        drawRect(x, y, w, h, "fill:" + getBackgroundColorAsString() + "; stroke:" + getBackgroundColorAsString() + "; stroke-width:1");
+        drawRect(x, y, w, h, getBackgroundColorAsString(), getBackgroundColorAsString(), "1");
     }
 
     private void writeEllipsePath(int x, int y, int w, int h, int startAngle, int arcAngle) {
@@ -522,23 +501,25 @@ public class SvgWriter extends Graphics {
          */
     }
 
-    private void drawOval(int x, int y, int w, int h, String style) {
+    private void drawOval(int x, int y, int w, int h, String fill, String stroke, String strokeWidth) {
         Element oval = _svg.createElement("ellipse");
 
         oval.setAttribute("cx", "" + transformX(x + w / 2));
         oval.setAttribute("cy", "" + transformY(y + h / 2));
         oval.setAttribute("rx", "" + (double)scaleX(w) / 2);
         oval.setAttribute("ry", "" + (double)scaleY(h) / 2);
-        oval.setAttribute("style", style);
+        oval.setAttribute("fill", fill);
+        oval.setAttribute("stroke", stroke);
+        oval.setAttribute("stroke-width", strokeWidth);
         _root.appendChild(oval);
     }
 
     public void drawOval(int x, int y, int w, int h) {
-        drawOval(x, y, w, h, "fill: none; stroke:" + getColorAsString() + "; stroke-width:1");
+        drawOval(x, y, w, h, "none", getColorAsString(), "1");
     }
 
     public void fillOval(int x, int y, int w, int h) {
-        drawOval(x, y, w, h, "fill:" + getColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
+        drawOval(x, y, w, h, getColorAsString(), getColorAsString(), "1");
     }
 
     public void drawArc(int x, int y, int w, int h, int startAngle, int arcAngle) {
@@ -557,7 +538,7 @@ public class SvgWriter extends Graphics {
          */
     }
 
-    private void drawRoundRect(int x, int y, int w, int h, int arcw, int arch, String style) {
+    private void drawRoundRect(int x, int y, int w, int h, int arcw, int arch, String fill, String stroke, String strokeWidth) {
         Element rect = _svg.createElement("rect");
 
         rect.setAttribute("x", "" + transformX(x));
@@ -566,24 +547,29 @@ public class SvgWriter extends Graphics {
         rect.setAttribute("height", "" + scaleY(h));
         rect.setAttribute("rx", "" + scaleX(arcw));
         rect.setAttribute("ry", "" + scaleY(arch));
-        rect.setAttribute("style", style);
+        rect.setAttribute("fill", fill);
+        rect.setAttribute("stroke", stroke);
+        rect.setAttribute("stroke-width", strokeWidth);
+
         _root.appendChild(rect);
     }
 
     public void drawRoundRect(int x, int y, int w, int h, int arcw, int arch) {
-        drawRoundRect(x, y, w, h, arcw, arch, "fill:" + getBackgroundColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
+        drawRoundRect(x, y, w, h, arcw, arch, getBackgroundColorAsString(), getColorAsString(), "1");
     }
 
     public void fillRoundRect(int x, int y, int w, int h, int arcw, int arch) {
-        drawRoundRect(x, y, w, h, arcw, arch, "fill:" + getColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
+        drawRoundRect(x, y, w, h, arcw, arch, getColorAsString(), getColorAsString(), "1");
     }
 
-    private void drawPolygon(int[] xPoints, int[] yPoints, int nPoints, String style) {
+    private void drawPolygon(int[] xPoints, int[] yPoints, int nPoints, String fill, String stroke, String strokeWidth) {
         double maxX = 0;
         double maxY = 0;
         Element polygon = _svg.createElement("polygon");
 
-        polygon.setAttribute("style", style);
+        polygon.setAttribute("fill", fill);
+        polygon.setAttribute("stroke", stroke);
+        polygon.setAttribute("stroke-width", strokeWidth);
 
         // Create the list of points for this tag.
         // I.e. points="100,100 150,150 200,200"
@@ -608,7 +594,7 @@ public class SvgWriter extends Graphics {
     }
 
     public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-        drawPolygon(xPoints, yPoints, nPoints, "fill:none; stroke:" + getColorAsString() + "; stroke-width:1");
+        drawPolygon(xPoints, yPoints, nPoints, "none", getColorAsString(), "1");
     }
 
     public void drawPolygon(Polygon poly) {
@@ -616,7 +602,7 @@ public class SvgWriter extends Graphics {
     }
 
     public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-        drawPolygon(xPoints, yPoints, nPoints, "fill:" + getColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
+        drawPolygon(xPoints, yPoints, nPoints, getColorAsString(), getColorAsString(), "1");
     }
 
     public void fillPolygon(Polygon poly) {
@@ -628,7 +614,9 @@ public class SvgWriter extends Graphics {
         double maxY = 0;
         Element polyline = _svg.createElement("polyline");
 
-        polyline.setAttribute("style", "fill:" + "none" + "; stroke:" + getColorAsString() + "; stroke-width:1");
+        polyline.setAttribute("fill", "none");
+        polyline.setAttribute("stroke", getColorAsString());
+        polyline.setAttribute("stroke-width", "1");
 
         // Create the list of points for this tag.
         // I.e. points="100,100 150,150 200,200"
@@ -659,7 +647,10 @@ public class SvgWriter extends Graphics {
         line.setAttribute("y1", "" + transformY(y1));
         line.setAttribute("x2", "" + transformX(x2));
         line.setAttribute("y2", "" + transformY(y2));
-        line.setAttribute("style", "fill:" + getColorAsString() + "; stroke:" + getColorAsString() + "; stroke-width:1");
+        line.setAttribute("fill", getColorAsString());
+        line.setAttribute("stroke", getColorAsString());
+        line.setAttribute("stroke-width", "1");
+
         _root.appendChild(line);
     }
 
@@ -711,7 +702,19 @@ public class SvgWriter extends Graphics {
 
         text.setAttribute("x", "" + transformX(x));
         text.setAttribute("y", "" + transformY(y));
-        text.setAttribute("style", getFontStyleSVG());
+        text.setAttribute("font-family", _font.getFamily());
+        text.setAttribute("font-size", "" + _font.getSize());
+
+        // If this is a bold font, add the appropriate attribute.
+        if(getFont().isBold()) {
+            text.setAttribute("font-weight", "bold");
+        }
+
+        // If this is a italic font, add the appropriate attribute.
+        if(getFont().isItalic()) {
+            text.setAttribute("font-style", "italic");
+        }
+
         text.appendChild(_svg.createTextNode(t));
         _root.appendChild(text);
     }
