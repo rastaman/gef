@@ -247,7 +247,7 @@ public abstract class Layer implements java.io.Serializable {
     
     /**
      * USED BY SVG.tee && PGML.tee
-     * @deprectated use PgmlUtility.getContentsNoEdges
+     * @deprecated use PgmlUtility.getContentsNoEdges
      */
     public List getContentsNoEdges() {
         List contents = getContents();
@@ -264,7 +264,7 @@ public abstract class Layer implements java.io.Serializable {
 
     /**
      * USED BY SVG.tee && PGML.tee
-     * @deprectated use PgmlUtility.getContentsEdgesOnly
+     * @deprecated use PgmlUtility.getContentsEdgesOnly
      */
     public List getContentsEdgesOnly() {
         List contents = getContents();
