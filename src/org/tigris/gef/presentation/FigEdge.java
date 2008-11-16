@@ -98,7 +98,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     
     /** Add a new path item to this FigEdge. newPath indicates both the
      *  location and the Fig (usually FigText) that should be drawn. */
-    final public void addPathItem(Fig newFig, PathConv newPath) {
+    public void addPathItem(Fig newFig, PathConv newPath) {
         _pathItems.addElement(new PathItem(newFig, newPath));
         newFig.setGroup(this);
     }
