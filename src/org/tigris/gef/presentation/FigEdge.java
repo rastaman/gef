@@ -74,7 +74,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         }
     }
 
-    /** Contruct a new FigEdge without any underlying edge. */
+    /** Construct a new FigEdge without any underlying edge. */
     public FigEdge() {
         setFig(makeEdgeFig());
     }
@@ -82,7 +82,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    /** Contruct a new FigEdge with the given source and destination
+    /** Construct a new FigEdge with the given source and destination
      *  port figs and FigNodes.  The new FigEdge will represent the
      *  given edge (an object from some underlying model). */
     public FigEdge(Fig s, Fig d, FigNode sfn, FigNode dfn, Object edge) {
