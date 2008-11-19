@@ -30,63 +30,77 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
+import java.awt.Point;
+import java.io.Serializable;
 
 import org.tigris.gef.presentation.*;
 
-/** Abstract class that defines a common interface to all of
- *  path-to-coord mapping objects.  These objects store some
- *  information about a point that is defined relative to a path
- *  (e.g., along a FigEdge) and provide methods to get the
- *  coordinates (x, y) for that point.  This allows us to place labels
- *  along a FigEdge and have the label stay in the right place, even
- *  if the FigEdge moves. */
+/** 
+ * Abstract class that defines a common interface to all of
+ * path-to-coord mapping objects.  These objects store some
+ * information about a point that is defined relative to a path
+ * (e.g., along a FigEdge) and provide methods to get the
+ * coordinates (x, y) for that point.  This allows us to place labels
+ * along a FigEdge and have the label stay in the right place, even
+ * if the FigEdge moves.
+ */
+public abstract class PathConv implements Serializable {
+    
+    /**
+     * @deprecated use getPathFig()
+     */
+    @Deprecated
+    protected Fig _pathFigure; 	// The intermediate path figure
 
-public abstract class PathConv implements java.io.Serializable {
-  protected Fig _pathFigure; 	// The intermediate path figure
+    public PathConv(Fig theFig) {
+        _pathFigure = theFig;
+    }
 
-  public PathConv(Fig theFig) {
-    _pathFigure = theFig;
-  }
+    public Point getPoint() {
+        Point res = new Point();
+        stuffPoint(res);
+        return res;
+    }
+    abstract public void stuffPoint(Point res);
+    abstract protected void setClosestPoint(Point newPoint);
 
-  public Point getPoint() {
-    Point res = new Point();
-    stuffPoint(res);
-    return res;
-  }
-  abstract public void stuffPoint(Point res);
-  abstract public void setClosestPoint(Point newPoint);
+    protected Point getOffsetAmount(Point p1, Point p2, int offset) {
+        Point res = new Point(0, 0);
+        applyOffsetAmount(p1, p2, offset, res);
+        return res;
+    }
 
-  protected Point getOffsetAmount(Point p1, Point p2, int offset) {
-    Point res = new Point(0, 0);
-    applyOffsetAmount(p1, p2, offset, res);
-    return res;
-  }
-
-  protected void applyOffsetAmount(Point p1, Point p2, int offset,
+    protected void applyOffsetAmount(Point p1, Point p2, int offset,
 				   Point res) {
-    // slope of the line we're finding the normal to
-    // is slope, and the normal is the negative reciprocal
-    // slope is (p1.y - p2.y) / (p1.x - p2.x)
-    // so recip is - (p1.x - p2.x) / (p1.y - p2.y)
-    int recipnumerator = (p1.x - p2.x) * -1;
-    int recipdenominator = (p1.y - p2.y);
+        // slope of the line we're finding the normal to
+        // is slope, and the normal is the negative reciprocal
+        // slope is (p1.y - p2.y) / (p1.x - p2.x)
+        // so recip is - (p1.x - p2.x) / (p1.y - p2.y)
+        int recipnumerator = (p1.x - p2.x) * -1;
+        int recipdenominator = (p1.y - p2.y);
 
-    if (recipdenominator == 0 && recipnumerator == 0) return;
-    // find the point offset on the line that gives a 
-    // correct offset
+        if (recipdenominator == 0 && recipnumerator == 0) return;
+        // find the point offset on the line that gives a 
+        // correct offset
 
-    double len = Math.sqrt(recipnumerator * recipnumerator +
+        double len = Math.sqrt(recipnumerator * recipnumerator +
 			   recipdenominator * recipdenominator);
-    int dx = (int) ((recipdenominator * offset) / len);
-    int dy = (int) ((recipnumerator * offset) / len);
-//     if (dx > 10000 || dy > 10000) {
-//       System.out.println("p1=" + p1 + " p2=" + p2);
-//       System.out.println("offset=" + offset);
-//       System.out.println("dx=" + dx + " dy=" + dy);
-//     }
-    res.x += dx;
-    res.y += dy;
-
-  }
-} /* end class PathConv */
+        int dx = (int) ((recipdenominator * offset) / len);
+        int dy = (int) ((recipnumerator * offset) / len);
+    //     if (dx > 10000 || dy > 10000) {
+    //       System.out.println("p1=" + p1 + " p2=" + p2);
+    //       System.out.println("offset=" + offset);
+    //       System.out.println("dx=" + dx + " dy=" + dy);
+    //     }
+        res.x += dx;
+        res.y += dy;
+    }
+    
+    protected Fig getPathFig() {
+        return _pathFigure;
+    }
+    
+    public void paint() {
+        // By default we do nothing.
+    }
+}

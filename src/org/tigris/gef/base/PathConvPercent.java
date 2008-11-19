@@ -30,12 +30,14 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
+import java.awt.Point;
 
 import org.tigris.gef.presentation.*;
 
-/** Used to place labels as specific positions along a FigEdge.  For
- *  example, a label can be placed in the middle of a FigEdge by using 50%. */
+/**
+ * Used to place labels as specific positions along a FigEdge.  For
+ * example, a label can be placed in the middle of a FigEdge by using 50%.
+ */
 
 public class PathConvPercent extends PathConv {
     
@@ -43,31 +45,32 @@ public class PathConvPercent extends PathConv {
     int percent = 0;
     int offset = 0;
 
-  public PathConvPercent(Fig theFig, int newPercent, int newOffset) {
-    super(theFig);
-    setPercentOffset(newPercent, newOffset);
-  }
+    public PathConvPercent(Fig theFig, int newPercent, int newOffset) {
+        super(theFig);
+        setPercentOffset(newPercent, newOffset);
+    }
 
-  public void stuffPoint(Point res) {
-    int figLength = _pathFigure.getPerimeterLength();
-    if (figLength < 10) { res.setLocation(_pathFigure.getCenter()); return; }
-    int pointToGet = (figLength * percent) / 100;
+    public void stuffPoint(Point res) {
+        Fig pathFig = getPathFig();
+        int figLength = pathFig.getPerimeterLength();
+        if (figLength < 10) { res.setLocation(pathFig.getCenter()); return; }
+        int pointToGet = (figLength * percent) / 100;
 
-    _pathFigure.stuffPointAlongPerimeter(pointToGet, res);
+        pathFig.stuffPointAlongPerimeter(pointToGet, res);
 
-    //System.out.println("lP=" + linePoint + " ptG=" + pointToGet +
-    //" figLen=" + figLength);
+        //System.out.println("lP=" + linePoint + " ptG=" + pointToGet +
+        //" figLen=" + figLength);
 
-    applyOffsetAmount(_pathFigure.pointAlongPerimeter(pointToGet + 5),
-		      _pathFigure.pointAlongPerimeter(pointToGet - 5),
+        applyOffsetAmount(pathFig.pointAlongPerimeter(pointToGet + 5),
+		      pathFig.pointAlongPerimeter(pointToGet - 5),
 		      offset,
 		      res);
-  }
+    }
 
-  public void setPercentOffset(int newPercent, int newOffset) {
-    percent = newPercent;
-    offset = newOffset;
-  }
+    public void setPercentOffset(int newPercent, int newOffset) {
+        percent = newPercent;
+        offset = newOffset;
+    }
 
-  public void setClosestPoint(Point newPoint) { }
+    public void setClosestPoint(Point newPoint) { }
 }/* end class PathConvPercent */

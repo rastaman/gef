@@ -30,50 +30,59 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
+import java.awt.Point;
 
 import org.tigris.gef.presentation.*;
 
-/** Used to place labels as specific positions along a FigEdge.  For
- *  example, a label can be placed in the middle of a FigEdge by using 50%. */
+/**
+ * Used to place labels as specific positions along a FigEdge.  For
+ * example, a label can be placed in the middle of a FigEdge by using 50%.
+ */
 
 public class PathConvPercentPlusConst extends PathConv {
     private static final long serialVersionUID = 365473229021070199L;
-    int percent = 0;
-    int _delta = 0;
-    int offset = 0;
+    private int percent = 0;
+    private int _delta = 0;
+    private int offset = 0;
 
-  public PathConvPercentPlusConst(Fig theFig,
+    public PathConvPercentPlusConst(Fig theFig,
 				  int newPercent, int delta,
 				  int newOffset) {
-    super(theFig);
-    setPercentOffset(newPercent, newOffset);
-    _delta = delta;
-  }
+        super(theFig);
+        setPercentOffset(newPercent, newOffset);
+        _delta = delta;
+    }
 
-  public void stuffPoint(Point res) {
-    int figLength = _pathFigure.getPerimeterLength();
-    if (figLength < 10) { res.setLocation(_pathFigure.getCenter()); return; }
-    int pointToGet = ((figLength * percent) / 100) + _delta;
+    public void stuffPoint(Point res) {
+        Fig pathFig = getPathFig();
+        int figLength = pathFig.getPerimeterLength();
+        if (figLength < 10) {
+            res.setLocation(pathFig.getCenter()); return;
+        }
+        int pointToGet = ((figLength * percent) / 100) + _delta;
 
-    if (pointToGet < 0) pointToGet = 0;
-    if (pointToGet > figLength) pointToGet = figLength;
+        if (pointToGet < 0) {
+            pointToGet = 0;
+        }
+        if (pointToGet > figLength) {
+            pointToGet = figLength;
+        }
     
-    _pathFigure.stuffPointAlongPerimeter(pointToGet, res);
+        pathFig.stuffPointAlongPerimeter(pointToGet, res);
 
-    //System.out.println("lP=" + linePoint + " ptG=" + pointToGet +
-    //" figLen=" + figLength);
+        //System.out.println("lP=" + linePoint + " ptG=" + pointToGet +
+        //" figLen=" + figLength);
 
-    applyOffsetAmount(_pathFigure.pointAlongPerimeter(pointToGet + 5),
-		      _pathFigure.pointAlongPerimeter(pointToGet - 5),
+        applyOffsetAmount(pathFig.pointAlongPerimeter(pointToGet + 5),
+		      pathFig.pointAlongPerimeter(pointToGet - 5),
 		      offset,
 		      res);
-  }
+    }
 
-  public void setPercentOffset(int newPercent, int newOffset) {
-    percent = newPercent;
-    offset = newOffset;
-  }
+    public void setPercentOffset(int newPercent, int newOffset) {
+        percent = newPercent;
+        offset = newOffset;
+    }
 
-  public void setClosestPoint(Point newPoint) { }
+    public void setClosestPoint(Point newPoint) { }
 }/* end class PathConvPercentPlusConst */
