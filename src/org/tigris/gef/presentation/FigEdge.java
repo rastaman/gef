@@ -471,7 +471,6 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         int size = _pathItems.size();
         for(int i = 0; i < size; i++) {
             Fig f = ((PathItem)_pathItems.elementAt(i)).getFig();
-            //only pathitems represented in a layer (i.e. being displayed) are of interest
             if (f.intersects(r)) {
                 //System.out.println("Intersects");
                 return true;
