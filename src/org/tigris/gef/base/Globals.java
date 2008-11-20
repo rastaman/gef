@@ -34,12 +34,17 @@ import org.tigris.gef.ui.IStatusBar;
 
 import java.applet.Applet;
 import java.applet.AppletContext;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.Image;
+import java.awt.MediaTracker;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -286,7 +291,7 @@ public class Globals {
     /** True if the next global Mode should remain as the next global
      *  mode even after it has been given to one editor. */
     protected static boolean _sticky = false;
-
+    
     /** Set whether the next global mode should remain as the next
      *  global mode even after it has been given to one editor. */
     public static void setSticky(boolean b) {
@@ -297,13 +302,44 @@ public class Globals {
         return _sticky;
     }
     
+    private static ModeFactory defaultModeFactory = new ModeSelectFactory();
+    private static List<ModeFactory> defaultModeFactories = new ArrayList<ModeFactory>();
+    static {
+        defaultModeFactories.add(new ModeSelectFactory());
+        defaultModeFactories.add(new ModePopupFactory());
+        defaultModeFactories.add(new ModeDragScrollFactory());
+    }
+    
+    /**
+     * The allows a client application to provide a ModeFactory to
+     * create the default Mode for GEF. If not called the default
+     * will be SelectMode
+     * @param modeFactory
+     */
+    public static void setDefaultModeFactory(ModeFactory modeFactory) {
+        defaultModeFactory = modeFactory;
+    }
+    
+    /**
+     * Allows the client to createa list of ModeFactories that will be
+     * used to create the standard modes each time an editor is created.
+     * @param modeFactory
+     */
+    public static void setDefaultModeFactories(List<ModeFactory> modeFactories) {
+        defaultModeFactories = modeFactories;
+    }
+
+    public static List<ModeFactory> getDefaultModeFactories() {
+        return defaultModeFactories;
+    }
+
     /** The next global mode. This is given to an editor on mouse entry */
     protected static Mode _mode;
 
     /** What mode should Editor's go into if the Palette is not
      *  requesting a specific mode? */
     protected static Mode defaultMode() {
-        return new ModeSelect();
+        return defaultModeFactory.createMode();
     }
 
     /** Set the next global mode. */

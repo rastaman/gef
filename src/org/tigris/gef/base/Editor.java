@@ -41,10 +41,22 @@ import org.tigris.gef.presentation.FigTextEditor;
 import org.tigris.gef.presentation.TextEditor;
 
 import javax.swing.*;
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.*;
 import java.io.Serializable;
 import java.util.Enumeration;
+import java.util.List;
 
 /** This class provides an editor for manipulating graphical
  *  documents. The editor is the central class of the graph editing
@@ -195,9 +207,13 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         _jComponent = jComponent;
         defineLayers(gm, lay);
 
-        pushMode(new ModeSelect(this));
-        pushMode(new ModePopup(this));
-        pushMode(new ModeDragScroll(this));
+        // Push the default modes onto the mode stack (or those configured
+        // by the client application).
+        List<ModeFactory> modeFactories = Globals.getDefaultModeFactories();
+        for (ModeFactory factory : modeFactories) {
+            pushMode(factory.createMode(this));
+        }
+        
         Globals.curEditor(this);
 
         _renderingHints.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);

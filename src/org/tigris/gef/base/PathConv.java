@@ -44,7 +44,7 @@ import org.tigris.gef.presentation.*;
  * along a FigEdge and have the label stay in the right place, even
  * if the FigEdge moves.
  */
-public abstract class PathConv implements Serializable {
+public abstract class PathConv implements PathItemPlacementStrategy, Serializable {
     
     /**
      * @deprecated use getPathFig()
@@ -61,6 +61,7 @@ public abstract class PathConv implements Serializable {
         stuffPoint(res);
         return res;
     }
+    
     abstract public void stuffPoint(Point res);
     abstract protected void setClosestPoint(Point newPoint);
 
@@ -100,7 +101,11 @@ public abstract class PathConv implements Serializable {
         return _pathFigure;
     }
     
+    /**
+     * Override in concrete class to paint the path item link.
+     * This is only painted when a single edge is selected.
+     */
     public void paint() {
-        // By default we do nothing.
+        
     }
 }
