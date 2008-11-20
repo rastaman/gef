@@ -6,7 +6,10 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import org.tigris.gef.base.Globals;
@@ -51,14 +54,18 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /** The ArrowHead at the end of the line */
     protected ArrowHead _arrowHeadEnd = ArrowHeadNone.TheInstance;
 
-    /** The items that are accumulated along the path, a vector. */
+    /**
+     * The items that are accumulated along the path, a vector.
+     * @deprecated use getPathItems()
+     */
+    @Deprecated
     protected Vector _pathItems = new Vector();
 
     private class PathItem implements java.io.Serializable {
 	
 	private static final long serialVersionUID = -5298572087861993804L;
 	final Fig _fig;
-        final PathConv _path;
+        final private PathConv _path;
 
         PathItem(final Fig f, final PathConv pc) {
             _fig = f;
@@ -66,11 +73,15 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         }
 
         final public PathConv getPath() {
-            return _path;
+            return (PathConv) _path;
         }
 
         final public Fig getFig() {
             return _fig;
+        }
+        
+        final public void paint() {
+            
         }
     }
 
@@ -324,9 +335,19 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         return figs;
     }
 
-    /** Return the vector of path items on this FigEdge. */
+    /**
+     * Return the vector of path items on this FigEdge.
+     * @deprecated use getPathItems
+     */
     final public Vector getPathItemsRaw() {
         return _pathItems;
+    }
+    
+    /**
+     * @return the path items on this edge.
+     */
+    final public List<PathItem> getPathItems() {
+        return new ArrayList<PathItem>(_pathItems);
     }
 
     final public int getPerimeterLength() {
@@ -451,7 +472,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         for(int i = 0; i < size; i++) {
             Fig f = ((PathItem)_pathItems.elementAt(i)).getFig();
             //only pathitems represented in a layer (i.e. being displayed) are of interest
-            if(f.getLayer() != null && f.intersects(r)) {
+            if (f.intersects(r)) {
                 //System.out.println("Intersects");
                 return true;
             }
