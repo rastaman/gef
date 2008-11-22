@@ -49,9 +49,11 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.ui.PaletteFig;
 import org.tigris.gef.ui.ToolBar;
 
-/** A diagram is just combination of a GraphModel, a Layer, and a
- title. The GraphModel stores the connected graph representation,
- without any graphics. The Layer stores all the Figs. */
+/** 
+ * A diagram is just combination of a GraphModel, a Layer, and a
+ * title. The GraphModel stores the connected graph representation, 
+ * without any graphics. The Layer stores all the Figs. 
+ */
 public class Diagram implements Serializable, GraphListener {
 
     private static final long serialVersionUID = 4847606736320428403L;

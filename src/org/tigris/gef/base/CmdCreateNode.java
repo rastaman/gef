@@ -40,13 +40,14 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.MutableGraphModel;
 
-/*  this Cmd is executed it makes the new objects as per its
- *  arguments, and then it sets the global next mode to ModePlace so
- *  that the user can place the new node in any editor window.
- *
+/**
+ * This Cmd is executed it makes the new objects as per its
+ * arguments, and then it sets the global next mode to ModePlace so
+ * that the user can place the new node in any editor window.
  * @see ModePlace
  * @see NetNode
- * @see FigNode */
+ * @see FigNode 
+ */
 
 public class CmdCreateNode extends Cmd implements GraphFactory {
 

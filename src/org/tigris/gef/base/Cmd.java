@@ -35,19 +35,21 @@ import javax.swing.*;
 import org.tigris.gef.util.Localizer;
 import org.tigris.gef.util.ResourceLoader;
 
-/** Abstract class for all editor commands. The editor serves as a
- *  command shell for executing actions in much the same way that a
- *  DOS or UNIX commmand command shell executes programs. Each command
- *  can have a Hashtable of "command-line" arguments and also look at
- *  global variables (its environment). Once an instance of a Cmd is
- *  made, it can be sent the doIt() and undoIt() messages to perform
- *  that action. <p>
+/** 
+ * Abstract class for all editor commands. 
+ * <p> The editor serves as a 
+ * command shell for executing actions in much the same way that a
+ * DOS or UNIX commmand command shell executes programs. Each command
+ * can have a Hashtable of "command-line" arguments and also look at
+ * global variables (its environment). Once an instance of a Cmd is
+ * made, it can be sent the doIt() and undoIt() messages to perform
+ * that action. </p>
  *
- *  Since this is subclassed from class AbstractAction in the Swing
- *  user interface library, Cmd objects can be easily added to menus
- *  and toolbars. <p>
- *
- *  TODO Implement an undo queue externally from GEF<p>
+ * <p>Since this is subclassed from class AbstractAction in the Swing
+ * user interface library, Cmd objects can be easily added to menus
+ * and toolbars. </p>
+ * <p>
+ * TODO: Implement an undo queue externally from GEF</p>
  **/
 
 public abstract class Cmd extends AbstractAction

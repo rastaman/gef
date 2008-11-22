@@ -42,7 +42,7 @@ public class CmdAlign extends Cmd {
 
     private static final long serialVersionUID = -9169626281664389794L;
     
-/** Constants specifying the type of alignment requested. */
+/* Constants specifying the type of alignment requested. */
   public static final int ALIGN_TOPS = 0;
   public static final int ALIGN_BOTTOMS = 1;
   public static final int ALIGN_LEFTS = 2;
@@ -55,7 +55,7 @@ public class CmdAlign extends Cmd {
   public static final int ALIGN_TO_GRID = 7;
 
   ////////////////////////////////////////////////////////////////
-  // instanve variables
+  // instance variables
 
   /** Specification of the type of alignment requested */
   protected int direction;

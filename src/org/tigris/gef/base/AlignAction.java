@@ -45,7 +45,7 @@ public class AlignAction extends UndoableAction {
 
     private static final long serialVersionUID = 4982051206522858526L;
     
-    /** Constants specifying the type of alignment requested. */
+    /* Constants specifying the type of alignment requested. */
     public static final int ALIGN_TOPS = 0;
     public static final int ALIGN_BOTTOMS = 1;
     public static final int ALIGN_LEFTS = 2;
@@ -66,8 +66,8 @@ public class AlignAction extends UndoableAction {
 
     private Map boundsByFig;
     
-    /** Construct a new CmdAlign.
-     *
+    /** 
+     * Construct a new CmdAlign.
      * @param dir The desired alignment direction, one of the constants
      * listed above.
      */
