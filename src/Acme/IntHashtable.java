@@ -43,12 +43,10 @@ public class IntHashtable extends Dictionary implements Cloneable {
      * @param loadFactor a number between 0.0 and 1.0, it defines
      *        the threshold for rehashing the hashtable into
      *        a bigger one.
-     * @exception IllegalArgumentException If the initial capacity 
+     * @throws IllegalArgumentException If the initial capacity 
      *            is less than or equal to zero.
-     * @exception IllegalArgumentException If the load factor is 
+     * @throws IllegalArgumentException If the load factor is 
      *            less than or equal to zero.
-     * @exception IllegalArgumentException If the load factor is 
-     *            less than or equal to zero.           
      */
     public IntHashtable (int initialCapacity, float loadFactor)
     {
@@ -122,7 +120,7 @@ public class IntHashtable extends Dictionary implements Cloneable {
      * NOTE: This operation is more expensive than the containsKey() method.
      * @param value the value that we are looking for
      * @return true if the specified object is an element of the hashtable.
-     * @exception NullPointerException If the value being searched 
+     * @throws NullPointerException If the value being searched 
      *            for is equal to null.
      * @see IntHashtable#containsKey(int)
      */
@@ -230,7 +228,7 @@ public class IntHashtable extends Dictionary implements Cloneable {
      * @param key the specified key in the hashtable
      * @param value the specified element
      * @return the old value of the key, or null if it did not have one.
-     * @exception NullPointerException If the value of the element 
+     * @throws NullPointerException If the value of the element 
      *            is equal to null.
      * @see IntHashtable#get
      */
