@@ -14,6 +14,7 @@ import java.util.Vector;
 
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConv;
+import org.tigris.gef.base.PathItemPlacementStrategy;
 import org.tigris.gef.di.GraphEdge;
 import org.tigris.gef.di.GraphNode;
 import org.tigris.gef.graph.GraphEdgeHooks;
@@ -346,8 +347,19 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /**
      * @return the path items on this edge.
      */
-    final public List<PathItem> getPathItems() {
+    private List<PathItem> getPathItems() {
         return new ArrayList<PathItem>(_pathItems);
+    }
+    
+    /**
+     * @return all the path item placement strategies used by this edge.
+     */
+    public List<PathItemPlacementStrategy> getPathItemStrategies() {
+        List<PathItemPlacementStrategy> strategyList = new ArrayList<PathItemPlacementStrategy>();
+        for (final PathItem item : getPathItems()) {
+            strategyList.add(item.getPath());
+        }
+        return strategyList;
     }
 
     final public int getPerimeterLength() {
