@@ -68,7 +68,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     /**
      * The collection of Selection instances
      */
-    private ArrayList<Selection> _selections = new ArrayList<Selection>();
+    private List<Selection> _selections = new ArrayList<Selection>();
     private Editor _editor;
     private EventListenerList _listeners = new EventListenerList();
     private DragMemento dragMemento;
