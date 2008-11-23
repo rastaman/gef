@@ -241,26 +241,20 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public Selection findSelectionFor(Fig f) {
-        Enumeration sels = ((Vector)_selections.clone()).elements();
-        while(sels.hasMoreElements()) {
-            Selection sel = (Selection)sels.nextElement();
+        for (Selection sel : getSelections()) {
             if(sel.contains(f)) {
                 return sel;
-            }
+            }            
         }
-
         return null;
     }
 
     public Selection findSelectionAt(int x, int y) {
-        Enumeration sels = ((Vector)_selections.clone()).elements();
-        while(sels.hasMoreElements()) {
-            Selection sel = (Selection)sels.nextElement();
+        for (Selection sel : getSelections()) {
             if(sel.contains(x, y)) {
                 return sel;
-            }
+            }            
         }
-
         return null;
     }
 
@@ -304,7 +298,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         return new Vector(_selections);
     }
 
-    public List getSelections() {
+    public List<Selection> getSelections() {
         return _selections;
     }
 
@@ -877,37 +871,42 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void mouseClicked(MouseEvent me) {
-        Enumeration sels = ((Vector)_selections.clone()).elements();
-        while(sels.hasMoreElements() && !me.isConsumed()) {
-            ((Selection)sels.nextElement()).mouseClicked(me);
+        for (Selection sel : getSelections()) {
+            if (!me.isConsumed()) {
+                sel.mouseClicked(me);
+            }
         }
     }
 
     public void mousePressed(MouseEvent me) {
-        Enumeration sels = ((Vector)_selections.clone()).elements();
-        while(sels.hasMoreElements() && !me.isConsumed()) {
-            ((Selection)sels.nextElement()).mousePressed(me);
+        for (Selection sel : getSelections()) {
+            if (!me.isConsumed()) {
+                sel.mousePressed(me);
+            }
         }
     }
 
     public void mouseReleased(MouseEvent me) {
-        Enumeration sels = ((Vector)_selections.clone()).elements();
-        while(sels.hasMoreElements() && !me.isConsumed()) {
-            ((Selection)sels.nextElement()).mouseReleased(me);
+        for (Selection sel : getSelections()) {
+            if (!me.isConsumed()) {
+                sel.mouseReleased(me);
+            }
         }
     }
 
     public void mouseExited(MouseEvent me) {
-        Enumeration sels = ((Vector)_selections.clone()).elements();
-        while(sels.hasMoreElements() && !me.isConsumed()) {
-            ((Selection)sels.nextElement()).mouseExited(me);
+        for (Selection sel : getSelections()) {
+            if (!me.isConsumed()) {
+                sel.mouseExited(me);
+            }
         }
     }
 
     public void mouseEntered(MouseEvent me) {
-        Enumeration sels = ((Vector)_selections.clone()).elements();
-        while(sels.hasMoreElements() && !me.isConsumed()) {
-            ((Selection)sels.nextElement()).mouseEntered(me);
+        for (Selection sel : getSelections()) {
+            if (!me.isConsumed()) {
+                sel.mouseEntered(me);
+            }
         }
     }
 
