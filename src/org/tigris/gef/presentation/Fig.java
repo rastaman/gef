@@ -918,13 +918,14 @@ public abstract class Fig implements GraphicElement, Cloneable, java.io.Serializ
         int dydy = (y2 - y1) * (y2 - y1);
         int length = (int)(Math.sqrt(dxdx + dydy) + 0.5);       // This causes a smaller rounding error of 0.5pixels max. . Seems acceptable.
         Graphics2D g2D = (Graphics2D)g;
-        Stroke  OriginalStroke = g2D.getStroke();               // we need this to restore the original stroke afterwards
+        Stroke originalStroke = g2D.getStroke();               // we need this to restore the original stroke afterwards
 
-        BasicStroke  DashedStroke   = new BasicStroke(lineWidth,   BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f, dashes, (float)phase);
+        BasicStroke dashedStroke =
+            new BasicStroke(lineWidth,   BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f, dashes, (float)phase);
         //                                           (float width, int cap,                int join,               float miterlimit, float[] dash, float dash_phase)
-        g2D.setStroke(DashedStroke);
+        g2D.setStroke(dashedStroke);
         g2D.drawLine(x1, y1, x2, y2);
-        g2D.setStroke(OriginalStroke);   // undo the manipulation of g
+        g2D.setStroke(originalStroke);   // undo the manipulation of g
 
         return (length + phase) % dashPeriod ;
     }
