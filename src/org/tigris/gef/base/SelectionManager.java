@@ -241,7 +241,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public Selection findSelectionFor(Fig f) {
-        for (Selection sel : getSelections()) {
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> sels = new ArrayList<Selection>(getSelections());
+        for (Selection sel : sels) {
             if(sel.contains(f)) {
                 return sel;
             }            
@@ -250,7 +252,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public Selection findSelectionAt(int x, int y) {
-        for (Selection sel : getSelections()) {
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> sels = new ArrayList<Selection>(getSelections());
+        for (Selection sel : sels) {
             if(sel.contains(x, y)) {
                 return sel;
             }            
@@ -780,7 +784,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     /** When a multiple selection are deleted, each selection is deleted */
     public void removeFromGraph() {
-        for (Selection sel : getSelections()) {
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> sels = new ArrayList<Selection>(_selections);
+        for (Selection sel : sels) {
             sel.delete();
         }
     }
@@ -789,7 +795,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
      * When a multiple selection are deleted, each selection is deleted
      */
     public void dispose() {
-        for (Selection s : getSelections()) {
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> sels = new ArrayList<Selection>(_selections);
+        for (Selection s : sels) {
             Fig f = s.getContent();
             Object o = f.getOwner();
             if(o instanceof VetoableChangeEventSource) {
@@ -831,14 +839,20 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     /** When an event is passed to a multiple selection, try to pass it
      * off to the first selection that will handle it. */
     public void keyTyped(KeyEvent ke) {
-        Iterator<Selection> sels = _selections.iterator();
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> list = 
+            new ArrayList<Selection>(_selections);
+        Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !ke.isConsumed()) {
             sels.next().keyTyped(ke);
         }
     }
 
     public void keyReleased(KeyEvent ke) {
-        Iterator<Selection> sels = _selections.iterator();
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> list = 
+            new ArrayList<Selection>(_selections);
+        Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !ke.isConsumed()) {
             sels.next().keyReleased(ke);
         }
@@ -846,56 +860,80 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void keyPressed(KeyEvent ke) {
-        Iterator<Selection> sels = _selections.iterator();
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> list = 
+            new ArrayList<Selection>(_selections);
+        Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !ke.isConsumed()) {
             sels.next().keyPressed(ke);
         }
     }
 
     public void mouseMoved(MouseEvent me) {
-        Iterator<Selection> sels = _selections.iterator();
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> list = 
+            new ArrayList<Selection>(_selections);
+        Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseMoved(me);
         }
     }
 
     public void mouseDragged(MouseEvent me) {
-        Iterator<Selection> sels = _selections.iterator();
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> list = 
+            new ArrayList<Selection>(_selections);
+        Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseDragged(me);
         }
     }
 
     public void mouseClicked(MouseEvent me) {
-        Iterator<Selection> sels = _selections.iterator();
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> list = 
+            new ArrayList<Selection>(_selections);
+        Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseClicked(me);
         }
     }
 
     public void mousePressed(MouseEvent me) {
-        Iterator<Selection> sels = _selections.iterator();
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> list = 
+            new ArrayList<Selection>(_selections);
+        Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mousePressed(me);
         }
     }
 
     public void mouseReleased(MouseEvent me) {
-        Iterator<Selection> sels = _selections.iterator();
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> list = 
+            new ArrayList<Selection>(_selections);
+        Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseReleased(me);
         }
     }
 
     public void mouseExited(MouseEvent me) {
-        Iterator<Selection> sels = _selections.iterator();
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> list = 
+            new ArrayList<Selection>(_selections);
+        Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseExited(me);
         }
     }
 
     public void mouseEntered(MouseEvent me) {
-        Iterator<Selection> sels = _selections.iterator();
+        // TODO: Why we cannot operate on the list itself?
+        List<Selection> list = 
+            new ArrayList<Selection>(_selections);
+        Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseEntered(me);
         }
