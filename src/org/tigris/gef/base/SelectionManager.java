@@ -780,9 +780,8 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     /** When a multiple selection are deleted, each selection is deleted */
     public void removeFromGraph() {
-        Enumeration ss = ((Vector)_selections.clone()).elements();
-        while(ss.hasMoreElements()) {
-            ((Selection)ss.nextElement()).delete();
+        for (Selection sel : getSelections()) {
+            sel.delete();
         }
     }
 
@@ -790,9 +789,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
      * When a multiple selection are deleted, each selection is deleted
      */
     public void dispose() {
-        Enumeration ss = ((Vector)_selections.clone()).elements();
-        while(ss.hasMoreElements()) {
-            Selection s = (Selection)ss.nextElement();
+        for (Selection s : getSelections()) {
             Fig f = s.getContent();
             Object o = f.getOwner();
             if(o instanceof VetoableChangeEventSource) {
@@ -823,11 +820,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
      * When a multiple selection are deleted, each selection is deleted
      */
     public void deleteFromModel() {
-        Enumeration ss = ((Vector)_selections.clone()).elements();
-        while(ss.hasMoreElements()) {
-            Selection s = (Selection)ss.nextElement();
-            Fig f = s.getContent();
-            f.deleteFromModel();
+        for (Selection sel : getSelections()) {
+            Fig f = sel.getContent();
+            f.deleteFromModel();            
         }
     }
     ////////////////////////////////////////////////////////////////
@@ -836,23 +831,24 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     /** When an event is passed to a multiple selection, try to pass it
      * off to the first selection that will handle it. */
     public void keyTyped(KeyEvent ke) {
-        Enumeration sels = ((Vector)_selections.clone()).elements();
-        while(sels.hasMoreElements() && !ke.isConsumed()) {
-            ((Selection)sels.nextElement()).keyTyped(ke);
+        Iterator<Selection> sels = _selections.iterator();
+        while (sels.hasNext() && !ke.isConsumed()) {
+            sels.next().keyTyped(ke);
         }
     }
 
     public void keyReleased(KeyEvent ke) {
-        Enumeration sels = ((Vector)_selections.clone()).elements();
-        while(sels.hasMoreElements() && !ke.isConsumed()) {
-            ((Selection)sels.nextElement()).keyReleased(ke);
+        Iterator<Selection> sels = _selections.iterator();
+        while (sels.hasNext() && !ke.isConsumed()) {
+            sels.next().keyReleased(ke);
         }
+
     }
 
     public void keyPressed(KeyEvent ke) {
-        Enumeration sels = ((Vector)_selections.clone()).elements();
-        while(sels.hasMoreElements() && !ke.isConsumed()) {
-            ((Selection)sels.nextElement()).keyPressed(ke);
+        Iterator<Selection> sels = _selections.iterator();
+        while (sels.hasNext() && !ke.isConsumed()) {
+            sels.next().keyPressed(ke);
         }
     }
 
@@ -871,42 +867,37 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void mouseClicked(MouseEvent me) {
-        for (Selection sel : getSelections()) {
-            if (!me.isConsumed()) {
-                sel.mouseClicked(me);
-            }
+        Iterator<Selection> sels = _selections.iterator();
+        while (sels.hasNext() && !me.isConsumed()) {
+            sels.next().mouseClicked(me);
         }
     }
 
     public void mousePressed(MouseEvent me) {
-        for (Selection sel : getSelections()) {
-            if (!me.isConsumed()) {
-                sel.mousePressed(me);
-            }
+        Iterator<Selection> sels = _selections.iterator();
+        while (sels.hasNext() && !me.isConsumed()) {
+            sels.next().mousePressed(me);
         }
     }
 
     public void mouseReleased(MouseEvent me) {
-        for (Selection sel : getSelections()) {
-            if (!me.isConsumed()) {
-                sel.mouseReleased(me);
-            }
+        Iterator<Selection> sels = _selections.iterator();
+        while (sels.hasNext() && !me.isConsumed()) {
+            sels.next().mouseReleased(me);
         }
     }
 
     public void mouseExited(MouseEvent me) {
-        for (Selection sel : getSelections()) {
-            if (!me.isConsumed()) {
-                sel.mouseExited(me);
-            }
+        Iterator<Selection> sels = _selections.iterator();
+        while (sels.hasNext() && !me.isConsumed()) {
+            sels.next().mouseExited(me);
         }
     }
 
     public void mouseEntered(MouseEvent me) {
-        for (Selection sel : getSelections()) {
-            if (!me.isConsumed()) {
-                sel.mouseEntered(me);
-            }
+        Iterator<Selection> sels = _selections.iterator();
+        while (sels.hasNext() && !me.isConsumed()) {
+            sels.next().mouseEntered(me);
         }
     }
 
