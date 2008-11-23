@@ -68,7 +68,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     /**
      * The collection of Selection instances
      */
-    private Vector _selections = new Vector();
+    private ArrayList<Selection> _selections = new ArrayList<Selection>();
     private Editor _editor;
     private EventListenerList _listeners = new EventListenerList();
     private DragMemento dragMemento;
@@ -107,12 +107,12 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     /** Add a new selection to the collection of selections */
     protected void addSelection(Selection s) {
-        _selections.addElement(s);
+        _selections.add(s);
     }
 
     protected void addFig(Fig f) {
         if (f.isSelectable()) {
-            _selections.addElement(makeSelectionFor(f));
+            _selections.add(makeSelectionFor(f));
         }
     }
 
@@ -124,19 +124,19 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     protected void removeAllElements() {
-        _selections.removeAllElements();
+        _selections.clear();
     }
 
     protected void removeSelection(Selection s) {
         if(s != null) {
-            _selections.removeElement(s);
+            _selections.remove(s);
         }
     }
 
     protected void removeFig(Fig f) {
         Selection s = findSelectionFor(f);
         if(s != null) {
-            _selections.removeElement(s);
+            _selections.remove(s);
         }
     }
 
@@ -276,10 +276,12 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         return findSelectionFor(f) != null;
     }
 
+    /**
+     * @return true if any Selection is locked
+     */
     public boolean getLocked() {
-        Enumeration sels = _selections.elements();
-        while(sels.hasMoreElements()) {
-            if(((Selection)sels.nextElement()).getLocked()) {
+        for (Selection sel : _selections) {
+            if (sel.getLocked()) {
                 return true;
             }
         }
@@ -294,7 +296,15 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         return _selections.size();
     }
 
+    /**
+     * @deprecated use getSelections()
+     */
+    @Deprecated
     public Vector selections() {
+        return new Vector(_selections);
+    }
+
+    public List getSelections() {
         return _selections;
     }
 
@@ -331,7 +341,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         int selSize = _selections.size();
         List affected = new ArrayList();
         for(int i = 0; i < selSize; ++i) {
-            Selection s = (Selection)_selections.elementAt(i);
+            Selection s = (Selection)_selections.get(i);
             addEnclosed(affected, s.getContent());
         }
 
@@ -344,26 +354,23 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     /** Paint all selection objects */
     public void paint(Graphics g) {
-        Enumeration sels = _selections.elements();
-        while(sels.hasMoreElements()) {
-            ((Selection)sels.nextElement()).paint(g);
+        for (Selection sel : _selections) {
+            sel.paint(g);
         }
     }
 
     /** When the SelectionManager is damageAll, that implies that each
      * Selection should be damageAll. */
     public void damage() {
-        Enumeration ss = _selections.elements();
-        while(ss.hasMoreElements()) {
-            ((Selection)ss.nextElement()).damage();
+        for (Selection sel : _selections) {
+            sel.damage();
         }
     }
 
     /** Reply true iff the given point is inside one of the selected Fig's */
     public boolean contains(int x, int y) {
-        Enumeration sels = _selections.elements();
-        while(sels.hasMoreElements()) {
-            if(((Selection)sels.nextElement()).contains(x, y)) {
+        for (Selection sel : _selections) {
+            if (sel.contains(x, y)) {
                 return true;
             }
         }
@@ -374,9 +381,8 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     /** Reply true iff the given point is inside one of the selected
      * Fig's */
     public boolean hit(Rectangle r) {
-        Enumeration sels = _selections.elements();
-        while(sels.hasMoreElements()) {
-            if(((Selection)sels.nextElement()).hit(r)) {
+        for (Selection sel : _selections) {
+            if (sel.hit(r)) {
                 return true;
             }
         }
@@ -390,9 +396,8 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             return new Rectangle(0, 0, 0, 0);
         }
 
-        Rectangle r = ((Selection)_selections.elementAt(0)).getBounds();
-        for(int i = 1; i < size; ++i) {
-            Selection sel = (Selection)_selections.elementAt(i);
+        Rectangle r = _selections.get(0).getBounds();
+        for (Selection sel : _selections) {
             r.add(sel.getBounds());
         }
 
@@ -401,16 +406,15 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     public Rectangle getContentBounds() {
         Rectangle r = null;
-        Enumeration sels = _selections.elements();
-        if(sels.hasMoreElements()) {
-            r = ((Selection)sels.nextElement()).getContentBounds();
-        }
-        else {
+        Iterator<Selection> it = _selections.iterator();
+        if (it.hasNext()) {
+            r = it.next().getContentBounds();
+        } else {
             return new Rectangle(0, 0, 0, 0);
         }
 
-        while(sels.hasMoreElements()) {
-            Selection sel = (Selection)sels.nextElement();
+        while(it.hasNext()) {
+            Selection sel = it.next();
             r.add(sel.getContentBounds());
         }
 
@@ -435,7 +439,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         int lowestY = Integer.MAX_VALUE;
         Point pt = null;
         for(int i = 0; i < size; i++) {
-            sel = (Selection)_selections.elementAt(i);
+            sel = (Selection)_selections.get(i);
             pt = sel.getLocation();
             if(pt.getX() < lowestX) {
                 lowestX = (int)pt.getX();
@@ -468,9 +472,8 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     /** When Manager selections are sent to back, each of them is sent
      * to back. */
     public void reorder(int func, Layer lay) {
-        Enumeration ss = _selections.elements();
-        while(ss.hasMoreElements()) {
-            ((Selection)ss.nextElement()).reorder(func, lay);
+        for (Selection sel : _selections) {
+            sel.reorder(func, lay);
         }
     }
 
@@ -481,9 +484,8 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         Vector movingEdges = new Vector();
         Vector nodes = new Vector();
         int selSize = _selections.size();
-        for(int i = 0; i < selSize; ++i) {
-            Selection s = (Selection)_selections.elementAt(i);
-            addEnclosed(affected, s.getContent());
+        for (Selection sel : _selections) {
+            addEnclosed(affected, sel.getContent());
         }
 
         int size = affected.size();
@@ -757,9 +759,8 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     /* needs-more-work: should take on more of this responsibility */
     public void hitHandle(Rectangle r, Handle h) {
         if(size() == 1) {
-            ((Selection)_selections.firstElement()).hitHandle(r, h);
-        }
-        else {
+            _selections.get(0).hitHandle(r, h);
+        } else {
             h.index = -1;
         }
     }
@@ -772,14 +773,12 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             return;
         }
 
-        Selection sel = (Selection)_selections.firstElement();
+        Selection sel = _selections.get(0);
         sel.dragHandle(mx, my, an_x, an_y, h);
     }
 
     public void cleanUp() {
-        Enumeration sels = _selections.elements();
-        while(sels.hasMoreElements()) {
-            Selection sel = (Selection)sels.nextElement();
+        for (Selection sel : _selections) {
             Fig f = sel.getContent();
             f.cleanUp();
         }
@@ -864,16 +863,16 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void mouseMoved(MouseEvent me) {
-        Enumeration sels = _selections.elements();
-        while(sels.hasMoreElements() && !me.isConsumed()) {
-            ((Selection)sels.nextElement()).mouseMoved(me);
+        Iterator<Selection> sels = _selections.iterator();
+        while (sels.hasNext() && !me.isConsumed()) {
+            sels.next().mouseMoved(me);
         }
     }
 
     public void mouseDragged(MouseEvent me) {
-        Enumeration sels = _selections.elements();
-        while(sels.hasMoreElements() && !me.isConsumed()) {
-            ((Selection)sels.nextElement()).mouseDragged(me);
+        Iterator<Selection> sels = _selections.iterator();
+        while (sels.hasNext() && !me.isConsumed()) {
+            sels.next().mouseDragged(me);
         }
     }
 
@@ -1174,17 +1173,17 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     
     class SelectionMemento extends Memento {
     	
-    	Vector prevSelections;
+        ArrayList prevSelections;
     	
     	public SelectionMemento() {
-    		prevSelections = new Vector(_selections);
+            prevSelections = new ArrayList(_selections);
     	}
     	
     	public void undo() {
-    		Vector curSelections = new Vector(_selections);
-    		_selections = prevSelections;
-    		prevSelections = curSelections;
-    		_editor.damageAll();
+            ArrayList curSelections = new ArrayList(_selections);
+            _selections = prevSelections;
+            prevSelections = curSelections;
+            _editor.damageAll();
     	}
     	
     	public void redo() {
