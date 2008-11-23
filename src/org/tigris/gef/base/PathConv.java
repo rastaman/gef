@@ -30,6 +30,7 @@
 
 package org.tigris.gef.base;
 
+import java.awt.Graphics;
 import java.awt.Point;
 import java.io.Serializable;
 
@@ -102,10 +103,8 @@ public abstract class PathConv implements PathItemPlacementStrategy, Serializabl
     }
     
     /**
-     * Override in concrete class to paint the path item link.
-     * This is only painted when a single edge is selected.
+     * Does nothing by default. Override in subclass if required.
      */
-    public void paint() {
-        
+    public void paint(Graphics g) {
     }
 }

@@ -30,6 +30,7 @@
 
 package org.tigris.gef.base;
 
+import java.awt.Graphics;
 import java.awt.Point;
 
 /** 
@@ -40,7 +41,18 @@ public interface PathItemPlacementStrategy {
     Point getPoint();
     
     /**
-     * Strategies that require to 
+     * Method to visualize the algorithm of the path item placement strategy.
+     * 
+     * This is implemented as an empty method in PathConv so any class
+     * extending that has no painting of the algorithm by default.
+     * 
+     * It is up to the client application to provide the algorithm when
+     * required and also to call the strategy at the appropriate time.
+     * 
+     * Should the strategy always be visible then the FigEdge paint method
+     * would be responsible for painting the strategy. Should the strategy
+     * only appear on selection then the appropriate Selection classes paint
+     * method should be responsible.
      */
-    void paint();
+    void paint(Graphics g);
 }
