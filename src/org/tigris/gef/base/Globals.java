@@ -313,7 +313,7 @@ public class Globals {
     /**
      * The allows a client application to provide a ModeFactory to
      * create the default Mode for GEF. If not called the default
-     * will be SelectMode
+     * will be ModeSelect
      * @param modeFactory
      */
     public static void setDefaultModeFactory(ModeFactory modeFactory) {
