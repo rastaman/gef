@@ -39,7 +39,7 @@ import java.util.Vector;
 
 /** ModeManager keeps track of all the Modes for a given Editor.
  *  Events are passed to the Modes for handling.  The submodes are
- *  prioritized according to their order on a stack, i.e., the last
+ *  prioritised according to their order on a stack, i.e., the last
  *  Mode added gets the first chance to handle an Event.
  *  The Modes must be of type FigModifyingMode, because Editor can
  *  only deal with such Modes.
@@ -49,7 +49,7 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
 
     private static final long serialVersionUID = 3180158274454415153L;
 
-    /** The stack of Mode's that are all active simultainously, the
+    /** The stack of Modes that are all active simultaneously, the
      *  order of Mode's on the stack is their priority, i.e., the
      *  topmost Mode gets the first chance to handle an incoming
      *  Event. Needs-More-Work: this is a time critical part of the
@@ -165,7 +165,7 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
     /** Pass events to all modes in order, until one consumes it. */
     public void keyPressed(KeyEvent ke) {
         // Executing keyPressed of a Mode may in fact remove other modes
-        // from the stack. So it is neccessary each time to check that a mode
+        // from the stack. So it is necessary each time to check that a mode
         // is still on the stack before calling it.
         Vector modes = (Vector)_modes.clone();
         for(int i = modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
