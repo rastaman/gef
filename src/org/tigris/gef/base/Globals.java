@@ -266,13 +266,13 @@ public class Globals {
 //     if (_tabPropFrame != null) _tabPropFrame.select(f);
 //   }
 
-    /** Static initialization: set up the prop sheet. */
+    /** Static initialisation: set up the prop sheet. */
     //static {
     //if (_tabPropFrame == null) _tabPropFrame = new TabPropFrame();
     //_tabPropFrame.show();
     // }
 
-    /** Return an exisiting instance of class Frame.  This is needed to
+    /** Return an existing instance of class Frame.  This is needed to
      *  create off-screen bit-maps. Needs-more-work: I think Swing keeps
      *  its own. */
     public static Frame someFrame() {
@@ -321,7 +321,7 @@ public class Globals {
     }
     
     /**
-     * Allows the client to createa list of ModeFactories that will be
+     * Allows the client to create a list of ModeFactories that will be
      * used to create the standard modes each time an editor is created.
      * @param modeFactory
      */
@@ -395,12 +395,12 @@ public class Globals {
     /** A global dictionary of PropertyChangeListeners for Figs.  Most
      *  Figs will not have any listeners at any given moment, so I did
      *  not want to allocate an instance variable to hold
-     *  listeners. Instead I use this global Hashtable with Figs ans
+     *  listeners. Instead I use this global Hashtable with Figs and
      *  keys and arrays of up to 4 listeners as values. <p>
      *
      *  Note: It is important that all listeners eventually remove
      *  themselves by calling removePropertyChangeListener.  Otherwise
-     *  this table will keep pointers that can reduce grabage
+     *  this table will keep pointers that can reduce garbage
      *  collection. */
 
     protected static Hashtable _pcListeners = new Hashtable();
