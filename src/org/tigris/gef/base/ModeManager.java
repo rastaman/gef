@@ -101,6 +101,10 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
     /** Add the given Mode to the stack if another instance
      *  of the same class is not already on the stack. */
     public void push(FigModifyingMode newMode) {
+        if (newMode == null) {
+            LOG.info("A null mode was pushed. Ignoring.");
+            return;
+        }        
         if(!includes(newMode.getClass())) {
             _modes.addElement(newMode);
             //fireModeChanged();
@@ -307,6 +311,13 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
 	for (FigModifyingMode m : _modes) {
 	    m.paint(g);
 	}
+    }
+    
+    /**
+     * @return the number of modes in the stack.
+     */
+    public int count() {
+        return _modes.size();
     }
 
 }
