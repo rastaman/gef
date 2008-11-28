@@ -90,7 +90,13 @@ public class TestModeManager extends TestCase {
         assertNotNull("top() didn't returned a Mode.", 
                 mode);
         assertEquals("top() didn't returned the correct Mode.", 
-                mockMode, mode);        
+                mockMode, mode);
+    }
+    
+    public void testPushNull() {
+        ModeManager manager = new ModeManager(editor);
+        manager.push(null);
+        // no error should happen, we ignore nulls
     }
 
     public void testPop() {
