@@ -42,8 +42,8 @@ public class TestModeManager extends TestCase {
     }
 
     public void testTop() {
-        MockMode mockMode = new MockMode();  
-        MockMode2 mockMode2 = new MockMode2();
+        MockCanExitMode mockMode = new MockCanExitMode();  
+        MockNotExitMode mockMode2 = new MockNotExitMode();
         Mode mode = null;
         ModeManager manager = new ModeManager(editor);
         
@@ -69,13 +69,15 @@ public class TestModeManager extends TestCase {
     }
 
     public void testPush() {        
-        MockMode mockMode = new MockMode();  
-        MockMode mockMode2 = new MockMode();
+        MockCanExitMode mockMode = new MockCanExitMode();  
+        MockCanExitMode mockMode2 = new MockCanExitMode();
         Mode mode = null;
         ModeManager manager = new ModeManager(editor);
 
         // we push a mode, and it should return that mode
         manager.push(mockMode);
+        assertEquals("The mode stack was not modified",
+                1, manager.count());
         mode = manager.top();
         assertNotNull("top() didn't returned a Mode.", 
                 mode);
@@ -86,6 +88,8 @@ public class TestModeManager extends TestCase {
         // so push should do nothing and top should return 
         // the same mode again.
         manager.push(mockMode2);
+        assertEquals("The mode stack was modified",
+                1, manager.count());
         mode = manager.top();
         assertNotNull("top() didn't returned a Mode.", 
                 mode);
@@ -100,18 +104,23 @@ public class TestModeManager extends TestCase {
     }
 
     public void testPop() {
-        MockMode mockMode = new MockMode();  
-        MockMode2 mockMode2 = new MockMode2();
+        MockCanExitMode mockMode = new MockCanExitMode();  
+        MockNotExitMode mockMode2 = new MockNotExitMode();
         Mode mode = null;
         ModeManager manager = new ModeManager(editor);
 
         // there is not any mode, so it should return null
         mode = manager.pop();
+        assertEquals("The mode stack should be empty",
+                0, manager.count());
         assertNull(mode);
         
         // we push a mode, and it should return that mode
         manager.push(mockMode);
+        assertEquals(1, manager.count());
         mode = manager.pop();
+        assertEquals("The mode should be emptied",
+                0, manager.count());
         assertNotNull("pop() didn't returned a Mode.", 
                 mode);
         assertEquals("pop() didn't returned the correct Mode.", 
@@ -127,20 +136,59 @@ public class TestModeManager extends TestCase {
         // always because it never exits.
         manager.push(mockMode2);
         mode = manager.pop();
+        assertEquals(1, manager.count());
         mode = manager.pop();
+        assertEquals(1, manager.count());
         assertNotNull("mode has been exited and it shouldn't!", 
                 mode);
 
     }
-/*
+
     public void testPopAll() {
-        fail("Not yet implemented"); // TODO
+        ModeManager manager = new ModeManager(editor);
+        
+        MockCanExitMode mockMode = new MockCanExitMode();        
+        MockCanExitMode2 mockMode2 = new MockCanExitMode2();
+        MockNotExitMode mockMode3 = new MockNotExitMode();
+        
+        manager.push(mockMode);        
+        manager.push(mockMode2);
+        
+        assertEquals("Modes weren't correctly added to the stack",
+                2, manager.count());
+        manager.popAll();
+        assertEquals("Modes weren't correctly popped from the stack",
+                0, manager.count());
+
+        // first in: the mode that cannot be exited 
+        manager.push(mockMode3);
+        manager.push(mockMode);        
+        manager.push(mockMode2);
+
+        assertEquals("Modes weren't correctly added to the stack",
+                3, manager.count());
+        manager.popAll();
+        assertEquals("Mode that cannot be exited shouldn't be popped from the stack",
+                1, manager.count());        
     }
 
+    
     public void testIncludes() {
-        fail("Not yet implemented"); // TODO
+        ModeManager manager = new ModeManager(editor);
+        MockCanExitMode mode = new MockCanExitMode();
+        manager.includes(null);
+        // shouldn't fail.
+        
+        assertFalse("There is no mode in the manager stack",
+                manager.includes(MockCanExitMode.class));
+        manager.push(mode);
+        assertFalse("There is any mode from this type in the manager stack",
+                manager.includes(MockNotExitMode.class));
+        assertTrue("There should be a mode from this class in the manager stack",
+                manager.includes(MockCanExitMode.class));
     }
 
+    /*
     public void testLeaveAll() {
         fail("Not yet implemented"); // TODO
     }
@@ -210,7 +258,7 @@ public class TestModeManager extends TestCase {
  * A mock mode that can be exited
  * @author penyaskito
  */
-class MockMode implements FigModifyingMode {
+class MockCanExitMode implements FigModifyingMode {
 
     public Editor getEditor() {
         return null;
@@ -271,9 +319,16 @@ class MockMode implements FigModifyingMode {
  * A mock mode that cannot be exited
  * @author penyaskito
  */
-class MockMode2 extends MockMode {
+class MockNotExitMode extends MockCanExitMode {
     @Override
     public boolean canExit() {
         return false;
     }
+}
+/**
+ * We need anothed class for some tests.
+ * A mock mode that can be exited
+ * @author penyaskito
+ */
+class MockCanExitMode2 extends MockCanExitMode {
 }
