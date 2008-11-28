@@ -24,17 +24,23 @@
 
 package org.tigris.gef.base;
 
-import org.apache.commons.logging.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.event.ModeChangeEvent;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 
 import javax.swing.event.EventListenerList;
-import java.awt.*;
-import java.awt.event.*;
+
+import java.awt.Graphics;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.Serializable;
-import java.util.Enumeration;
 import java.util.Vector;
 
 /** ModeManager keeps track of all the Modes for a given Editor.
@@ -166,7 +172,7 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
         // Executing keyPressed of a Mode may in fact remove other modes
         // from the stack. So it is necessary each time to check that a mode
         // is still on the stack before calling it.
-        Vector modes = (Vector)_modes.clone();
+        Vector<FigModifyingMode> modes = (Vector<FigModifyingMode>) _modes.clone();
         for(int i = modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
             FigModifyingModeImpl m = ((FigModifyingModeImpl)modes.get(i));
             if (_modes.contains(m)) {
