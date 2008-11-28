@@ -24,7 +24,7 @@
 package org.tigris.gef.base;
 
 /**
- * Factory to create a ModeSelect instance
+ * Factory to create a ModeDragScroll instance
  * @author Bob Tarling
  */
 public class ModeDragScrollFactory implements ModeFactory {
