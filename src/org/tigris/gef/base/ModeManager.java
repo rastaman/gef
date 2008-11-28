@@ -50,11 +50,11 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
     private static final long serialVersionUID = 3180158274454415153L;
 
     /** The stack of Modes that are all active simultaneously, the
-     *  order of Mode's on the stack is their priority, i.e., the
+     *  order of Modes on the stack is their priority, i.e., the
      *  topmost Mode gets the first chance to handle an incoming
      *  Event. Needs-More-Work: this is a time critical part of the
      *  system and should be faster, use an array instead of a Vector.*/
-    private Vector _modes = new Vector();
+    private Vector<FigModifyingMode> _modes = new Vector<FigModifyingMode>();
 
     /** The Editor that owns this ModeManager. */
     public Editor editor;
@@ -89,7 +89,7 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
         if(_modes.isEmpty())
             return null;
         else
-            return (FigModifyingMode)_modes.lastElement();
+            return _modes.lastElement();
     }
 
     /** Add the given Mode to the stack if another instance
@@ -123,14 +123,13 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
             _modes.removeElement(top());
     }
 
-    public boolean includes(Class modeClass) {
-        Enumeration subs = _modes.elements();
-        while(subs.hasMoreElements()) {
-            FigModifyingMode m = (FigModifyingMode)subs.nextElement();
-            if(m.getClass() == modeClass)
+    public boolean includes(Class<? extends FigModifyingMode> modeClass) {
+	for (FigModifyingMode m : _modes) {
+            if(m.getClass() == modeClass) {
                 return true;
-        }
-        return false;
+            }
+	}
+	return false;
     }
 
     /**
@@ -299,11 +298,9 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
 
     /** Paint each mode in the stack: bottom to top. */
     public void paint(Graphics g) {
-        Enumeration modes = _modes.elements();
-        while(modes.hasMoreElements()) {
-            FigModifyingMode m = (FigModifyingMode)modes.nextElement();
-            m.paint(g);
-        }
+	for (FigModifyingMode m : _modes) {
+	    m.paint(g);
+	}
     }
 
 }
