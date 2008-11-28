@@ -28,10 +28,12 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.*;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.Hashtable;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.undo.UndoManager;
 
 /** This is the default implementation for all Modes that are manipulating
@@ -80,7 +82,7 @@ implements FigModifyingMode
     public FigModifyingModeImpl() { }
 
     ////////////////////////////////////////////////////////////////
-    // methods related to transistions among modes
+    // methods related to transitions among modes
 
 	public void done() {
 		setCursor(Cursor.getDefaultCursor());
@@ -141,7 +143,7 @@ implements FigModifyingMode
      *  any selections. */
     final public void paint(Object graphicsContext) { }
 
-    /** Just calls paint(g) bt default. */
+    /** Just calls paint(g) by default. */
     final public void print(Object graphicsContext) {
         paint(graphicsContext);
     }
