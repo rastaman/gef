@@ -167,20 +167,23 @@ public class LayerGrid extends Layer {
     }
 
     Rectangle clip = g.getClipBounds();
-    int x = clip.x / _spacing * _spacing;
-    int y = clip.y / _spacing * _spacing;
-    int bot = clip.y + clip.height;
-    int right = clip.x + clip.width;
+    if (clip != null) {
+        int x = clip.x / _spacing * _spacing;
+        int y = clip.y / _spacing * _spacing;
+        int bot = clip.y + clip.height;
+        int right = clip.x + clip.width;
 
-    if (_stamp != null)
-      while (x <= right) {
-	y = clip.y / _spacing * _spacing;
-	while (y <= bot) {
-	  g.drawImage(_stamp, x, y, null);
-	  y += _stampHeight;
-	}
-	x += _stampWidth;
-      }
+        if (_stamp != null) {
+            while (x <= right) {
+                y = clip.y / _spacing * _spacing;
+                while (y <= bot) {
+                    g.drawImage(_stamp, x, y, null);
+                    y += _stampHeight;
+                }
+                x += _stampWidth;
+            }
+        }
+    }
   }
 
   /** Paint lines on the given stamp Image. */
