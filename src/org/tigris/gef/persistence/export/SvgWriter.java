@@ -139,6 +139,12 @@ public class SvgWriter extends Graphics {
     private double yScale = 1.0;
     private String SVGns = "http://www.w3.org/2000/svg";
 
+    /**
+     * Flag that marks if we need to write the DOCTYPE
+     * and the XML document node of the SVG 
+     */
+    private boolean isInline = false;
+    
     public SvgWriter(OutputStream stream, Rectangle drawingArea) throws IOException, Exception {
         _writer = new Utf8Writer(stream);
         _drawingArea = drawingArea;
@@ -155,6 +161,20 @@ public class SvgWriter extends Graphics {
         _root.setAttribute("width", "" + (2 * _hInset + scaleX(_drawingArea.width)));
         _root.setAttribute("height", "" + (2 * _vInset + scaleY(_drawingArea.height)));
         _root.setAttribute("version", "1.1");
+    }
+    
+    /**
+     * 
+     * @param stream
+     * @param drawingArea  
+     * @param isInline If false, it writes the DOCTYPE and XML nodes. 
+     *                 If true, we don't write them (think on inline SVG) 
+     * @throws IOException
+     * @throws Exception
+     */
+    public SvgWriter(OutputStream stream, Rectangle drawingArea, boolean isInline) throws IOException, Exception {
+        this(stream, drawingArea);
+        this.isInline = isInline;
     }
 
     public Graphics create() {
@@ -179,10 +199,12 @@ public class SvgWriter extends Graphics {
             // print the document element
             case Node.DOCUMENT_NODE:
                 {
-                    _writer.println("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
-                    _writer.print("<!DOCTYPE svg PUBLIC " +
-                    		"\"-//W3C//DTD SVG 1.1//EN\" " +
-                    		"\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
+                    if (!isInline) {
+                        _writer.println("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+                        _writer.print("<!DOCTYPE svg PUBLIC " +
+                        		"\"-//W3C//DTD SVG 1.1//EN\" " +
+                        		"\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
+                    }
                     printDOMTree(((Document)node).getDocumentElement());
                     break;
                 }
