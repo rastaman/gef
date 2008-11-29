@@ -97,10 +97,18 @@ public class TestModeManager extends TestCase {
                 mockMode, mode);
     }
     
+    // TODO: Use this when we move to JUnit4.
+    // @Test(expected = IllegalArgumentException.class)
     public void testPushNull() {
         ModeManager manager = new ModeManager(editor);
-        manager.push(null);
-        // no error should happen, we ignore nulls
+        try {
+            manager.push(null);
+            fail("A IllegalArgumentException should be thrown");
+        }
+        catch (IllegalArgumentException e) {
+            // this is exactly what we were expecting so 
+            // let's just ignore it and let the test pass
+        }
     }
 
     public void testPop() {

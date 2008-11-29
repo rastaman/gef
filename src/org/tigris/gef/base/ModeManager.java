@@ -102,8 +102,8 @@ public class ModeManager implements Serializable, MouseListener, MouseMotionList
      *  of the same class is not already on the stack. */
     public void push(FigModifyingMode newMode) {
         if (newMode == null) {
-            LOG.info("A null mode was pushed. Ignoring.");
-            return;
+            throw new 
+                IllegalArgumentException("You cannot push a null mode.");
         }        
         if(!includes(newMode.getClass())) {
             _modes.addElement(newMode);
