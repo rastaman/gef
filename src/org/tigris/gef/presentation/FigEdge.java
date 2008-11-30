@@ -76,15 +76,24 @@ public abstract class FigEdge extends Fig implements GraphEdge {
 
         private static final long serialVersionUID = -5298572087861993804L;
         final Fig _fig;
-        final private PathConv _path;
+        final private PathItemPlacementStrategy pathItemPlacementStrategy;
 
         PathItem(final Fig f, final PathConv pc) {
             _fig = f;
-            _path = pc;
+            pathItemPlacementStrategy = pc;
         }
 
+        /**
+         * @deprecated in 0.13 use getPathItemPlacementStrategy
+         * @return
+         */
+        @Deprecated
         final public PathConv getPath() {
-            return (PathConv) _path;
+            return (PathConv) pathItemPlacementStrategy;
+        }
+
+        final public PathItemPlacementStrategy getPathItemPlacementStrategy() {
+            return pathItemPlacementStrategy;
         }
 
         final public Fig getFig() {
