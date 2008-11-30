@@ -25,15 +25,20 @@ package org.tigris.gef.graph;
 
 import java.beans.*;
 
-/** A set of methods that edges in a GraphModel may implement.  If the
- *  objects you use to represent edges implement this interface, they
- *  will get the appropriate calls. NetEdge implements these.
- *
- * @see org.tigris.gef.graph.presentation.NetEdge */
+/**
+ * A set of methods that edges in a GraphModel may implement. If the objects you
+ * use to represent edges implement this interface, they will get the
+ * appropriate calls. NetEdge implements these.
+ * 
+ * @see org.tigris.gef.graph.presentation.NetEdge
+ */
 
 public interface GraphEdgeHooks extends java.io.Serializable {
-  void addPropertyChangeListener(PropertyChangeListener l);
-  void removePropertyChangeListener(PropertyChangeListener l);
-  void setHighlight(boolean b);
-  void deleteFromModel();
+    void addPropertyChangeListener(PropertyChangeListener l);
+
+    void removePropertyChangeListener(PropertyChangeListener l);
+
+    void setHighlight(boolean b);
+
+    void deleteFromModel();
 } /* end interface GraphEdgeHooks */

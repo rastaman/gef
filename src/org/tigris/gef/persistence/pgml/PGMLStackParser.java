@@ -62,15 +62,16 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Objects of this class can read an InputStream containing an XML
- * representation of a GEF diagram (PGML file) and produce the
- * equivalent GEF diagram object with all its contents.  This is
- * the functional equivalent of {@link org.argouml.persistence.PGMLParser}
- * but is supposed to provide a more robust foundation for clients to provide
- * extensions to support their custom diagram types.
+ * representation of a GEF diagram (PGML file) and produce the equivalent GEF
+ * diagram object with all its contents. This is the functional equivalent of
+ * {@link org.argouml.persistence.PGMLParser} but is supposed to provide a more
+ * robust foundation for clients to provide extensions to support their custom
+ * diagram types.
+ * 
  * @author Michael A. MacDonald
  */
 public class PGMLStackParser implements HandlerStack, HandlerFactory {
-    
+
     private static final Log LOG = LogFactory.getLog(PGMLStackParser.class);
 
     private Stack handlerStack;
@@ -81,20 +82,20 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
 
     private HashMap translationTable = new HashMap();
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constructors
 
     /**
      * Builds a parser object with the appropriate identifier-to-model-object
-     * mapping.
-     * In general, a GEF diagram's objects can be associated with (owned by)
-     * elements in an external model.  In PGML files, the associated
-     * model element is represented by a unique string.  In reconstructing
-     * a GEF diagram, a mapping between these unique strings
-     * and the objects in the external model allows the association to be
-     * rebuilt.
-     * @param modelElementsByUuid A map that associates the unique string
-     * identifier for the model objects with the model objects themselves
+     * mapping. In general, a GEF diagram's objects can be associated with
+     * (owned by) elements in an external model. In PGML files, the associated
+     * model element is represented by a unique string. In reconstructing a GEF
+     * diagram, a mapping between these unique strings and the objects in the
+     * external model allows the association to be rebuilt.
+     * 
+     * @param modelElementsByUuid
+     *                A map that associates the unique string identifier for the
+     *                model objects with the model objects themselves
      */
     public PGMLStackParser(Map modelElementsByUuid) {
         ownerRegistry = modelElementsByUuid;
@@ -102,21 +103,25 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
     }
 
     /**
-     * Read a diagram from an input stream with the
-     * default top-level ContentHandler,  {@link InitialHandler InitialHandler}.
-     * is set to be the initial ContentHandler for the SAX parser.
-     * @param is Stream that will deliver the PGML file
-     * @param closeStream If true, the stream will be closed after the
-     * PGML file is parsed
+     * Read a diagram from an input stream with the default top-level
+     * ContentHandler, {@link InitialHandler InitialHandler}. is set to be the
+     * initial ContentHandler for the SAX parser.
+     * 
+     * @param is
+     *                Stream that will deliver the PGML file
+     * @param closeStream
+     *                If true, the stream will be closed after the PGML file is
+     *                parsed
      * @see #readDiagram(InputStream, boolean, DefaultHandler)
-     *
+     * 
      * @return The read diagram.
-     * @throws SAXException if something goes wrong.
+     * @throws SAXException
+     *                 if something goes wrong.
      */
     public Diagram readDiagram(InputStream is, boolean closeStream)
-    	throws SAXException {
-        
-        if ( UndoManager.getInstance().isGenerateMementos()) {
+            throws SAXException {
+
+        if (UndoManager.getInstance().isGenerateMementos()) {
             UndoManager.getInstance().addMementoLock(this);
         }
         try {
@@ -127,23 +132,27 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
     }
 
     /**
-     * Read a diagram from an input stream with a user-specificed
-     * ContentHandler as the initial ContentHandler for the SAX parser.
-     * This allows the caller to completely control the processing of the
-     * PGML file.
-     *
-     * @param is Stream that will deliver the PGML file
-     * @param closeStream If true, the stream will be closed after the
-     * PGML file is parsed
-     * @param initialHandler The top level ContentHandler.  In order for
-     * this method to work as expected, this ContentHandler must call the
-     * {@link #setDiagram} method on this object with the read diagram.
+     * Read a diagram from an input stream with a user-specificed ContentHandler
+     * as the initial ContentHandler for the SAX parser. This allows the caller
+     * to completely control the processing of the PGML file.
+     * 
+     * @param is
+     *                Stream that will deliver the PGML file
+     * @param closeStream
+     *                If true, the stream will be closed after the PGML file is
+     *                parsed
+     * @param initialHandler
+     *                The top level ContentHandler. In order for this method to
+     *                work as expected, this ContentHandler must call the
+     *                {@link #setDiagram} method on this object with the read
+     *                diagram.
      * @return The read diagram.
-     * @throws SAXException if something goes wrong.
+     * @throws SAXException
+     *                 if something goes wrong.
      */
-    private synchronized Diagram readDiagram(InputStream is, boolean closeStream,
-                                            DefaultHandler initialHandler)
-        throws SAXException {
+    private synchronized Diagram readDiagram(InputStream is,
+            boolean closeStream, DefaultHandler initialHandler)
+            throws SAXException {
         handlerStack = new Stack();
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -158,7 +167,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
             // source = null;
             if (closeStream) {
                 // System.out.println(
-                //     "closing stream now (in PGMLParser.readDiagram)");
+                // "closing stream now (in PGMLParser.readDiagram)");
                 is.close();
             }
             return diagram;
@@ -170,49 +179,58 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
     }
 
     /**
-     * Read a diagram from an input stream with the
-     * default top-level ContentHandler,  {@link InitialHandler InitialHandler}.
-     * is set to be the initial ContentHandler for the SAX parser.
-     * @param is Stream that will deliver the PGML file
-     * @param closeStream If true, the stream will be closed after the
-     * PGML file is parsed
+     * Read a diagram from an input stream with the default top-level
+     * ContentHandler, {@link InitialHandler InitialHandler}. is set to be the
+     * initial ContentHandler for the SAX parser.
+     * 
+     * @param is
+     *                Stream that will deliver the PGML file
+     * @param closeStream
+     *                If true, the stream will be closed after the PGML file is
+     *                parsed
      * @see #readDiagram(InputStream, boolean, DefaultHandler)
-     *
+     * 
      * @return The read diagram.
-     * @throws SAXException if something goes wrong.
+     * @throws SAXException
+     *                 if something goes wrong.
      */
     public Diagram readDiagram(Reader reader, boolean closeStream)
-        throws SAXException {
-        boolean wasGenerateMementos = UndoManager.getInstance().isGenerateMementos();
-        
+            throws SAXException {
+        boolean wasGenerateMementos = UndoManager.getInstance()
+                .isGenerateMementos();
+
         if (wasGenerateMementos) {
-            //UndoManager.getInstance().setGenerateMementos(false);
+            // UndoManager.getInstance().setGenerateMementos(false);
         }
         try {
             return readDiagram(reader, closeStream, new InitialHandler(this));
         } finally {
-            //UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
+            // UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
         }
     }
 
     /**
-     * Read a diagram from an input stream with a user-specificed
-     * ContentHandler as the initial ContentHandler for the SAX parser.
-     * This allows the caller to completely control the processing of the
-     * PGML file.
-     *
-     * @param is Stream that will deliver the PGML file
-     * @param closeStream If true, the stream will be closed after the
-     * PGML file is parsed
-     * @param initialHandler The top level ContentHandler.  In order for
-     * this method to work as expected, this ContentHandler must call the
-     * {@link #setDiagram} method on this object with the read diagram.
+     * Read a diagram from an input stream with a user-specificed ContentHandler
+     * as the initial ContentHandler for the SAX parser. This allows the caller
+     * to completely control the processing of the PGML file.
+     * 
+     * @param is
+     *                Stream that will deliver the PGML file
+     * @param closeStream
+     *                If true, the stream will be closed after the PGML file is
+     *                parsed
+     * @param initialHandler
+     *                The top level ContentHandler. In order for this method to
+     *                work as expected, this ContentHandler must call the
+     *                {@link #setDiagram} method on this object with the read
+     *                diagram.
      * @return The read diagram.
-     * @throws SAXException if something goes wrong.
+     * @throws SAXException
+     *                 if something goes wrong.
      */
-    private synchronized Diagram readDiagram(Reader reader, boolean closeStream,
-                                            DefaultHandler initialHandler)
-        throws SAXException {
+    private synchronized Diagram readDiagram(Reader reader,
+            boolean closeStream, DefaultHandler initialHandler)
+            throws SAXException {
         handlerStack = new Stack();
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -227,7 +245,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
             // source = null;
             if (closeStream) {
                 // System.out.println(
-                //     "closing stream now (in PGMLParser.readDiagram)");
+                // "closing stream now (in PGMLParser.readDiagram)");
                 reader.close();
             }
             return diagram;
@@ -239,10 +257,10 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
     }
 
     /**
-     * Return the GEF diagram that has been associated with this object via
-     * a previous call to {@link #setDiagram(Diagram)}, or <code>null</code> if
+     * Return the GEF diagram that has been associated with this object via a
+     * previous call to {@link #setDiagram(Diagram)}, or <code>null</code> if
      * the diagram has not yet been set.
-     *
+     * 
      * @return Diagram object associated with this parser.
      */
     public Diagram getDiagram() {
@@ -253,8 +271,9 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * The ContentHandler that actually creates a GEF diagram object in response
      * to a pgml element must call this method to set the diagram associated
      * with the parsing.
-     *
-     * @param theDiagram The diagram.
+     * 
+     * @param theDiagram
+     *                The diagram.
      */
     public void setDiagram(Diagram theDiagram) {
         diagram = theDiagram;
@@ -262,10 +281,11 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
 
     /**
      * Finds the external model object that corresponds to the unique string id.
-     *
+     * 
      * @see #PGMLStackParser(Map)
-     *
-     * @param id The id to search for.
+     * 
+     * @param id
+     *                The id to search for.
      * @return The found object.
      */
     public Object findOwner(String id) {
@@ -273,16 +293,17 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
     }
 
     /**
-     * @param from the type name to be "translated", i.e. replaced
-     *             by something else
-     * @param to   the resulting name
+     * @param from
+     *                the type name to be "translated", i.e. replaced by
+     *                something else
+     * @param to
+     *                the resulting name
      */
     public void addTranslation(String from, String to) {
         translationTable.put(from, to);
     }
 
-
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // HandlerStack implementation
     /**
      * @see org.tigris.gef.persistence.pgml.HandlerStack#pushHandlerStack(org.xml.sax.helpers.DefaultHandler)
@@ -308,14 +329,14 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
     }
 
     /**
-     * Translate types that might appear in the PGML file.
-     * Some elements or attributes in the PGML file may contain class names.
-     * Before these names are interpreted to create object instances, they
-     * are passed through this method.  The default implementation of the
-     * method passes the names through by a map in order to determine if
-     * translation is required.
-     *
-     * @param oldName Class name as it appears in PGML file
+     * Translate types that might appear in the PGML file. Some elements or
+     * attributes in the PGML file may contain class names. Before these names
+     * are interpreted to create object instances, they are passed through this
+     * method. The default implementation of the method passes the names through
+     * by a map in order to determine if translation is required.
+     * 
+     * @param oldName
+     *                Class name as it appears in PGML file
      * @return Class name appropriate for the current code base
      */
     public String translateType(String oldName) {
@@ -328,64 +349,70 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         return translated;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // HandlerFactory implementation
     /**
-     * Returns ContentHandler objects appropriate for the standard
-     * set of elements that can appear within a PGML file.<p>
-     *
+     * Returns ContentHandler objects appropriate for the standard set of
+     * elements that can appear within a PGML file.
+     * <p>
+     * 
      * First, the <em>description</em> attribute is checked for a PGML-style
      * class name specifier; if one is found, it is passed through the
-     * {@link #translateType translateClassName} method and the resulting
-     * class name is instantiated.  If the resulting object is itself
-     * an instance of {@link HandlerFactory}, the method returns the
-     * result of calling {@link HandlerFactory#getHandler getHandler} on that
-     * object with the same arguments.  This allows a Fig object to take
-     * complete control of its own parsing without imposing any change on
-     * the global parsing framework.<p>
-     *
-     * If the element doesn't incorporate a class name, or
-     * if the instanced object does not implement {@link HandlerFactory},
-     * the element name is compared with one of PGML's special
-     * element names.  If a known element name is found, either the element
-     * is processed immediately and null returned, or the appropriate
-     * handler for that element is returned.  If the element name is unknown,
-     * null is returned.<p>
-     *
-     * @param stack Implementation of the stack of content handlers
-     * @param container An object that provides context for the element (most
-     * often by providing an implementation of the {@link Container} interface.
-     * @param uri SAX uri argument
-     * @param localname SAX local element name
-     * @param qname SAX qualified element name
-     * @param attributes The attributes that the SAX parser have identified
-     * for the element.
-     * @return ContentHandler object appropriate for the element, or null
-     * if the element can be skipped
-     *
+     * {@link #translateType translateClassName} method and the resulting class
+     * name is instantiated. If the resulting object is itself an instance of
+     * {@link HandlerFactory}, the method returns the result of calling
+     * {@link HandlerFactory#getHandler getHandler} on that object with the same
+     * arguments. This allows a Fig object to take complete control of its own
+     * parsing without imposing any change on the global parsing framework.
+     * <p>
+     * 
+     * If the element doesn't incorporate a class name, or if the instanced
+     * object does not implement {@link HandlerFactory}, the element name is
+     * compared with one of PGML's special element names. If a known element
+     * name is found, either the element is processed immediately and null
+     * returned, or the appropriate handler for that element is returned. If the
+     * element name is unknown, null is returned.
+     * <p>
+     * 
+     * @param stack
+     *                Implementation of the stack of content handlers
+     * @param container
+     *                An object that provides context for the element (most
+     *                often by providing an implementation of the
+     *                {@link Container} interface.
+     * @param uri
+     *                SAX uri argument
+     * @param localname
+     *                SAX local element name
+     * @param qname
+     *                SAX qualified element name
+     * @param attributes
+     *                The attributes that the SAX parser have identified for the
+     *                element.
+     * @return ContentHandler object appropriate for the element, or null if the
+     *         element can be skipped
+     * 
      * @see org.tigris.gef.persistence.pgml.HandlerFactory#getHandler(
-     *         org.argouml.gef.HandlerStack, java.lang.Object,
-     *         java.lang.String, java.lang.String, java.lang.String,
-     *         org.xml.sax.Attributes)
+     *      org.argouml.gef.HandlerStack, java.lang.Object, java.lang.String,
+     *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
-    public DefaultHandler getHandler(
-            HandlerStack stack,
-            Object container,
-            String uri, String localname, String qname,
-            Attributes attributes) throws SAXException {
-        
+    public DefaultHandler getHandler(HandlerStack stack, Object container,
+            String uri, String localname, String qname, Attributes attributes)
+            throws SAXException {
+
         String href = attributes.getValue("href");
-        
+
         String clsNameBounds = attributes.getValue("description");
         Object elementInstance = null;
         if (clsNameBounds != null) {
-            
+
             StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
             String clsName = translateType(st.nextToken());
-            elementInstance = constructFig(clsName, href, getBounds(clsNameBounds));
+            elementInstance = constructFig(clsName, href,
+                    getBounds(clsNameBounds));
             if (elementInstance instanceof HandlerFactory) {
-                return ((HandlerFactory) elementInstance).getHandler(
-                    stack, container, uri, localname, qname, attributes);
+                return ((HandlerFactory) elementInstance).getHandler(stack,
+                        container, uri, localname, qname, attributes);
             }
         }
 
@@ -393,7 +420,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         if (qname.equals("group")) {
             if (elementInstance instanceof FigGroup) {
                 return getGroupHandler(container, (FigGroup) elementInstance,
-                                       attributes);
+                        attributes);
             }
             if (elementInstance instanceof FigEdge) {
                 setAttrs((FigEdge) elementInstance, attributes);
@@ -424,7 +451,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
                     int textsizeInt = Integer.parseInt(textsize);
                     text.setFontSize(textsizeInt);
                 }
-                
+
                 String justification = attributes.getValue("justification");
                 if (justification != null && !justification.equals("")) {
                     text.setJustificationByName(justification);
@@ -440,11 +467,9 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
 
                 String textColor = attributes.getValue("textcolor");
                 if (textColor != null && !textColor.equals("")) {
-                    text.setTextColor(
-                            ColorFactory.getColor(textColor));
+                    text.setTextColor(ColorFactory.getColor(textColor));
                 }
-                
-                
+
                 return new FigTextHandler(this, text);
             }
         }
@@ -472,13 +497,13 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         if (qname.equals("private")) {
             if (elementInstance != null) {
                 LOG.warn("private element unexpectedly generated instance: "
-                         + elementInstance.toString());
+                        + elementInstance.toString());
             }
             if (container instanceof Container) {
                 return new PrivateHandler(this, (Container) container);
             } else {
                 LOG.warn("private element with inappropriate container: "
-                         + container.toString());
+                        + container.toString());
             }
         }
 
@@ -518,11 +543,12 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
                 setAttrs(f, attributes);
                 String rx = attributes.getValue("rx");
                 String ry = attributes.getValue("ry");
-                int rxInt =
-                    (rx == null || rx.equals("")) ? 10 : Integer.parseInt(rx);
-                int ryInt =
-                    (ry == null || ry.equals("")) ? 10 : Integer.parseInt(ry);
-                f.setBounds(f.getX() - rxInt, f.getY() - ryInt, rxInt * 2, ryInt * 2);
+                int rxInt = (rx == null || rx.equals("")) ? 10 : Integer
+                        .parseInt(rx);
+                int ryInt = (ry == null || ry.equals("")) ? 10 : Integer
+                        .parseInt(ry);
+                f.setBounds(f.getX() - rxInt, f.getY() - ryInt, rxInt * 2,
+                        ryInt * 2);
                 if (container instanceof Container) {
                     ((Container) container).addObject(elementInstance);
                 }
@@ -545,34 +571,44 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         }
         return null;
     }
-    
+
     /**
-     * Find the most useful constructor to build a Fig. Constructors
-     * are looked for in this order<ul>
+     * Find the most useful constructor to build a Fig. Constructors are looked
+     * for in this order
+     * <ul>
      * <li>ConcreteFig(Object element, int x, int y, int w, int h)</li>
      * <li>ConcreteFig(Object element, int x, int y)</li>
      * <li>ConcreteFig(Object element)</li>
-     * <li>ConcreteFig()</li></ul>
+     * <li>ConcreteFig()</li>
+     * </ul>
+     * 
      * @param className
      * @param href
      * @param bounds
      * @return The Fig
      * @throws SAXException
      */
-    protected Fig constructFig(String className, String href, Rectangle bounds) throws SAXException {
+    protected Fig constructFig(String className, String href, Rectangle bounds)
+            throws SAXException {
         try {
             Class figClass = Class.forName(className);
-            
+
             if (href != null) {
                 Constructor[] constructors = figClass.getConstructors();
-                // LOG.info("Look for a constructor that takes Object, int, int, int, int");
-                for (int i=0; i < constructors.length; ++i) {
-                    if (constructors[i].getParameterTypes().length == 5 &&
-                            constructors[i].getParameterTypes()[0].equals(Object.class) &&
-                            constructors[i].getParameterTypes()[1].equals(Integer.TYPE) &&
-                            constructors[i].getParameterTypes()[2].equals(Integer.TYPE) &&
-                            constructors[i].getParameterTypes()[3].equals(Integer.TYPE) &&
-                            constructors[i].getParameterTypes()[4].equals(Integer.TYPE)) {
+                // LOG.info("Look for a constructor that takes Object, int, int,
+                // int, int");
+                for (int i = 0; i < constructors.length; ++i) {
+                    if (constructors[i].getParameterTypes().length == 5
+                            && constructors[i].getParameterTypes()[0]
+                                    .equals(Object.class)
+                            && constructors[i].getParameterTypes()[1]
+                                    .equals(Integer.TYPE)
+                            && constructors[i].getParameterTypes()[2]
+                                    .equals(Integer.TYPE)
+                            && constructors[i].getParameterTypes()[3]
+                                    .equals(Integer.TYPE)
+                            && constructors[i].getParameterTypes()[4]
+                                    .equals(Integer.TYPE)) {
                         Object parameters[] = new Object[5];
                         parameters[0] = findOwner(href);
                         parameters[1] = new Integer(bounds.x);
@@ -582,13 +618,17 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
                         return (Fig) constructors[i].newInstance(parameters);
                     }
                 }
-                
-                // LOG.info("Look for a constructor that takes Object, int, int");
-                for (int i=0; i < constructors.length; ++i) {
-                    if (constructors[i].getParameterTypes().length == 3 &&
-                            constructors[i].getParameterTypes()[0].equals(Object.class) &&
-                            constructors[i].getParameterTypes()[1].equals(Integer.TYPE) &&
-                            constructors[i].getParameterTypes()[2].equals(Integer.TYPE)) {
+
+                // LOG.info("Look for a constructor that takes Object, int,
+                // int");
+                for (int i = 0; i < constructors.length; ++i) {
+                    if (constructors[i].getParameterTypes().length == 3
+                            && constructors[i].getParameterTypes()[0]
+                                    .equals(Object.class)
+                            && constructors[i].getParameterTypes()[1]
+                                    .equals(Integer.TYPE)
+                            && constructors[i].getParameterTypes()[2]
+                                    .equals(Integer.TYPE)) {
                         Object parameters[] = new Object[3];
                         parameters[0] = findOwner(href);
                         parameters[1] = new Integer(bounds.x);
@@ -596,18 +636,20 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
                         return (Fig) constructors[i].newInstance(parameters);
                     }
                 }
-                
-                // LOG.info("Look for a constructor that takes a single Object");
-                for (int i=0; i < constructors.length; ++i) {
-                    if (constructors[i].getParameterTypes().length == 1 &&
-                            constructors[i].getParameterTypes()[0].equals(Object.class)) {
+
+                // LOG.info("Look for a constructor that takes a single
+                // Object");
+                for (int i = 0; i < constructors.length; ++i) {
+                    if (constructors[i].getParameterTypes().length == 1
+                            && constructors[i].getParameterTypes()[0]
+                                    .equals(Object.class)) {
                         Object parameters[] = new Object[1];
                         parameters[0] = findOwner(href);
                         return (Fig) constructors[i].newInstance(parameters);
                     }
                 }
             }
-            
+
             // Give up - return the default constructor
             return (Fig) figClass.newInstance();
         } catch (ClassNotFoundException e) {
@@ -620,27 +662,30 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
             throw new SAXException(e);
         }
     }
-    
+
     /**
      * Associate a string with a Fig object, so the Fig object can be referenced
-     * by the string later in the PGML file.  Default attribute processing
-     * for elements that correspond to Fig objects calls this method,
-     * passing the value of the <em>name</em> attribute as the name parameter.
-     *
+     * by the string later in the PGML file. Default attribute processing for
+     * elements that correspond to Fig objects calls this method, passing the
+     * value of the <em>name</em> attribute as the name parameter.
+     * 
      * @see #setAttrs(Fig, Attributes)
-     * @param fig Newly create Fig object
-     * @param name String that may be used to reference Fig object later
-     * in the PGML file
+     * @param fig
+     *                Newly create Fig object
+     * @param name
+     *                String that may be used to reference Fig object later in
+     *                the PGML file
      */
     public void registerFig(Fig fig, String name) {
         figRegistry.put(name, fig);
     }
 
     /**
-     * Find a Fig object with a name that has been previously registered
-     * with {@link #registerFig registerFig}.
-     *
-     * @param name The name.
+     * Find a Fig object with a name that has been previously registered with
+     * {@link #registerFig registerFig}.
+     * 
+     * @param name
+     *                The name.
      * @return The Fig object found.
      */
     public Fig findFig(String name) {
@@ -650,7 +695,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
     /**
      * Sets the properties of a Fig object according to the values of the
      * attributes in the PGML-file element that specifies the Fig object.
-     *
+     * 
      * @param f
      * @param attrList
      */
@@ -689,8 +734,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         }
 
         String dasharray = attrList.getValue("dasharray");
-        if (dasharray != null
-                && !dasharray.equals("")
+        if (dasharray != null && !dasharray.equals("")
                 && !dasharray.equals("solid")) {
             f.setDashed(true);
         }
@@ -709,16 +753,17 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
 
     /**
      * Sets the properties of Fig objects according to a common set of
-     * attributes found with Fig object elements in PGML files.
-     * In addition to the attributes used by {@link #setCommonAttrs},
-     * this methods registers the object with the value of the <em>name</em>
-     * attribute with {@link #registerFig} and sets the object's owner
-     * (the associate object in the external model) according to the map
-     * supplied at construction and the value of the <em>href</em> attribute.
-     *
+     * attributes found with Fig object elements in PGML files. In addition to
+     * the attributes used by {@link #setCommonAttrs}, this methods registers
+     * the object with the value of the <em>name</em> attribute with
+     * {@link #registerFig} and sets the object's owner (the associate object in
+     * the external model) according to the map supplied at construction and the
+     * value of the <em>href</em> attribute.
+     * 
      * @param f
      * @param attrList
-     * @throws SAXException if something goes wrong.
+     * @throws SAXException
+     *                 if something goes wrong.
      */
     protected void setAttrs(Fig f, Attributes attrList) throws SAXException {
         String name = attrList.getValue("name");
@@ -732,17 +777,19 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         if (owner != null && !owner.equals("")) {
             Object modelElement = findOwner(owner);
             if (modelElement == null) {
-                throw new SAXException("Found href of " + owner + " with no matching element in model");
+                throw new SAXException("Found href of " + owner
+                        + " with no matching element in model");
             }
             if (f.getOwner() != modelElement) {
                 f.setOwner(modelElement);
             } else {
-                LOG.info("Ignoring href on " + f.getClass().getName() + " as it's already set");
+                LOG.info("Ignoring href on " + f.getClass().getName()
+                        + " as it's already set");
             }
         }
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // internal parsing methods
     /**
      * @param container
@@ -751,15 +798,13 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * @return
      * @throws SAXException
      */
-    private DefaultHandler getGroupHandler(Object container,
-                                            FigGroup group,
-                                            Attributes attributes)
-    	throws SAXException {
+    private DefaultHandler getGroupHandler(Object container, FigGroup group,
+            Attributes attributes) throws SAXException {
         if (container instanceof Container) {
             ((Container) container).addObject(group);
         }
-        StringTokenizer st =
-            new StringTokenizer(attributes.getValue("description"), ",;[] ");
+        StringTokenizer st = new StringTokenizer(attributes
+                .getValue("description"), ",;[] ");
         setAttrs(group, attributes);
         if (st.hasMoreElements()) {
             st.nextToken();
@@ -783,20 +828,21 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         }
         return new FigGroupHandler(this, group);
     }
-    
+
     /**
-     * Retrieve a bounds Rectangle from its description where the
-     * description is in the form "anything[x,y,w,h]anything"
+     * Retrieve a bounds Rectangle from its description where the description is
+     * in the form "anything[x,y,w,h]anything"
+     * 
      * @param boundsDescription
      * @return a bounds Rectangle or null is invalid
      */
     Rectangle getBounds(String boundsDescription) {
         try {
             int bracketPosn = boundsDescription.indexOf('[');
-            if (bracketPosn < 0 ) return null;
+            if (bracketPosn < 0)
+                return null;
             boundsDescription = boundsDescription.substring(bracketPosn + 1);
-            StringTokenizer st =
-                new StringTokenizer(boundsDescription, ", ]");
+            StringTokenizer st = new StringTokenizer(boundsDescription, ", ]");
             String xStr = null;
             String yStr = null;
             String wStr = null;
@@ -820,4 +866,3 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
         return null;
     }
 }
-

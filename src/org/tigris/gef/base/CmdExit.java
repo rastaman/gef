@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdExit.java
 // Classes: CmdExit
 // Original Author: jrobbins@ics.uci.edu
@@ -32,8 +29,9 @@
 package org.tigris.gef.base;
 
 /**
- * Cmd to close all windows and exit the application.
- * Needs-More-Work: Needs to keep track of all open windows.
+ * Cmd to close all windows and exit the application. Needs-More-Work: Needs to
+ * keep track of all open windows.
+ * 
  * @deprecated in 0.12.3 use ExitAction
  */
 
@@ -41,15 +39,15 @@ public class CmdExit extends Cmd {
 
     private static final long serialVersionUID = 739924033915132025L;
 
-  public CmdExit() {
-	  super("Exit");
-  }
+    public CmdExit() {
+        super("Exit");
+    }
 
-  public void doIt() {
-    Globals.quit();
-  }
+    public void doIt() {
+        Globals.quit();
+    }
 
-  public void undoIt() {
-    System.out.println("Undo does not make sense for CmdExit");
-  }
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdExit");
+    }
 } /* end class CmdExit */

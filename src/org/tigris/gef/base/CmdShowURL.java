@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdShowURL.java
 // Classes: CmdShowURL
 // Original Author: jrobbins@ics.uci.edu
@@ -34,39 +31,50 @@ package org.tigris.gef.base;
 import java.net.URL;
 
 /**
- * Cmd to display the contents of the given URL in the browser.
- * Needs-More-Work: This Cmd can only be used from an applet.
+ * Cmd to display the contents of the given URL in the browser. Needs-More-Work:
+ * This Cmd can only be used from an applet.
+ * 
  * @deprecated in 0.12.3 use ShowURLAction
  */
 
 public class CmdShowURL extends Cmd {
 
     private static final long serialVersionUID = 8641563793819533804L;
-    
-  protected URL _url;
 
-  public CmdShowURL(URL url) { this(); url(url); }
+    protected URL _url;
 
-  public CmdShowURL(String s) throws java.net.MalformedURLException {
-    this();
-    url(s);
-  }
+    public CmdShowURL(URL url) {
+        this();
+        url(url);
+    }
 
-  public CmdShowURL() { super("ShowURLInBrowser"); }
+    public CmdShowURL(String s) throws java.net.MalformedURLException {
+        this();
+        url(s);
+    }
 
-  public void url(URL u) { _url = u; }
+    public CmdShowURL() {
+        super("ShowURLInBrowser");
+    }
 
-  public void url(String u) throws java.net.MalformedURLException {
-    _url = new URL(u);
-  }
+    public void url(URL u) {
+        _url = u;
+    }
 
-  public URL url() { return _url; }
+    public void url(String u) throws java.net.MalformedURLException {
+        _url = new URL(u);
+    }
 
-  /** Translate all selected Fig's in the current editor. */
-  public void doIt() {
-    Globals.showDocument(_url);
-  }
+    public URL url() {
+        return _url;
+    }
 
-  public void undoIt() { System.out.println("Needs-More-Work"); }
+    /** Translate all selected Fig's in the current editor. */
+    public void doIt() {
+        Globals.showDocument(_url);
+    }
+
+    public void undoIt() {
+        System.out.println("Needs-More-Work");
+    }
 } /* end class CmdShowURL */
-

@@ -25,14 +25,14 @@
 package org.tigris.gef.presentation;
 
 public interface TextEditor {
-    
+
     public String getText();
-    
+
     public void setText(String text);
-    
+
     public void cancelEditing();
-    
+
     public void endEditing();
-    
+
     public void requestFocus();
 }

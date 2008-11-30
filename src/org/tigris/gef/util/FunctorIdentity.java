@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: FunctorIdentity.java
 // Classes: FunctorIdentity
 // Original Author: jrobbins@ics.uci.edu
@@ -33,11 +30,14 @@ package org.tigris.gef.util;
 
 import java.util.*;
 
-/** A useful implementation of interface Functor that simply returns
- *  the same object that was passed to it.  Use this class when you
- *  want to use a method that takes a Functor, but you do not actually
- *  want to apply any function. */
+/**
+ * A useful implementation of interface Functor that simply returns the same
+ * object that was passed to it. Use this class when you want to use a method
+ * that takes a Functor, but you do not actually want to apply any function.
+ */
 
 public class FunctorIdentity implements Functor {
-  public Object apply(Object x) { return x; }
+    public Object apply(Object x) {
+        return x;
+    }
 } /* end class FunctorIdentity */

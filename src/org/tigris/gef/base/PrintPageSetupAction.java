@@ -48,8 +48,10 @@ public class PrintPageSetupAction extends AbstractAction {
     /**
      * Creates a new PrintPageSetupAction
      * 
-     * @param name The name of the action
-     * @param printAction The action to be printed
+     * @param name
+     *                The name of the action
+     * @param printAction
+     *                The action to be printed
      */
     public PrintPageSetupAction(String name, PrintAction printAction) {
         this(name, printAction, false);
@@ -58,9 +60,12 @@ public class PrintPageSetupAction extends AbstractAction {
     /**
      * Creates a new PrintPageSetupAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param printAction The action to be printed
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param printAction
+     *                The action to be printed
      */
     public PrintPageSetupAction(String name, Icon icon, PrintAction printAction) {
         this(name, icon, printAction, false);
@@ -69,9 +74,12 @@ public class PrintPageSetupAction extends AbstractAction {
     /**
      * Creates a new PrintPageSetupAction
      * 
-     * @param name The name of the action
-     * @param printAction The action to be printed
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param printAction
+     *                The action to be printed
+     * @param localize
+     *                Whether to localize the name or not
      */
     public PrintPageSetupAction(String name, PrintAction printAction,
             boolean localize) {
@@ -82,10 +90,14 @@ public class PrintPageSetupAction extends AbstractAction {
     /**
      * Creates a new PrintPageSetupAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param printAction The action to be printed
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param printAction
+     *                The action to be printed
+     * @param localize
+     *                Whether to localize the name or not
      */
     public PrintPageSetupAction(String name, Icon icon,
             PrintAction printAction, boolean localize) {

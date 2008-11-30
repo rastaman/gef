@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdUngroup.java
 // Classes: CmdUngroup
 // Original Author: jrobbins@ics.uci.edu
@@ -38,10 +35,13 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
-/** Cmd to ungroup a selected group object.
+/**
+ * Cmd to ungroup a selected group object.
+ * 
  * @deprecated in 0.12.3 use UngroupAction
  * @see CmdGroup
- * @see FigGroup */
+ * @see FigGroup
+ */
 
 public class CmdUngroup extends Cmd {
 
@@ -56,13 +56,13 @@ public class CmdUngroup extends Cmd {
         Editor currentEditor = Globals.curEditor();
         Vector selectedFigs = currentEditor.getSelectionManager().getFigs();
         Enumeration eachDE = selectedFigs.elements();
-        while(eachDE.hasMoreElements()) {
+        while (eachDE.hasMoreElements()) {
             Object o = eachDE.nextElement();
-            if(o instanceof FigGroup) {
-                FigGroup fg = (FigGroup)o;
+            if (o instanceof FigGroup) {
+                FigGroup fg = (FigGroup) o;
                 Iterator it = fg.getFigs().iterator();
-                while(it.hasNext()) {
-                    Fig f = (Fig)it.next();
+                while (it.hasNext()) {
+                    Fig f = (Fig) it.next();
                     currentEditor.add(f);
                     ungroupedItems.addElement(f);
                 }
@@ -77,4 +77,3 @@ public class CmdUngroup extends Cmd {
         System.out.println("not implemented yet");
     }
 } /* end class CmdUngroup */
-

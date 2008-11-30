@@ -47,8 +47,10 @@ public class FigDiamond extends Fig {
         super(x, y, w, h);
     }
 
-    /** Construct a new resizable FigRect with the given position, size, line color,
-     *  and fill color. */
+    /**
+     * Construct a new resizable FigRect with the given position, size, line
+     * color, and fill color.
+     */
     public FigDiamond(int x, int y, int w, int h, Color lColor, Color fColor) {
         super(x, y, w, h, lColor, fColor);
     }
@@ -59,15 +61,19 @@ public class FigDiamond extends Fig {
         setResizable(resizable);
     }
 
-    /** Construct a new FigRect w/ the given position, size, line color,
-     *  and fill color. */
-    public FigDiamond(int x, int y, int w, int h, boolean resizable, Color lColor, Color fColor) {
+    /**
+     * Construct a new FigRect w/ the given position, size, line color, and fill
+     * color.
+     */
+    public FigDiamond(int x, int y, int w, int h, boolean resizable,
+            Color lColor, Color fColor) {
         super(x, y, w, h, lColor, fColor);
         setResizable(resizable);
     }
 
     /**
      * Makes sure that the edges stick to the outline of the fig.
+     * 
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
     public List getGravityPoints() {
@@ -79,22 +85,22 @@ public class FigDiamond extends Fig {
         return ret;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // painting methods
 
     /** Paint this FigRect */
     public void paint(Graphics graphicContext) {
         int xs[] = new int[4];
         int ys[] = new int[4];
-        xs[0] = _x + _w/2;
+        xs[0] = _x + _w / 2;
         ys[0] = _y;
         xs[1] = _x + _w;
-        ys[1] = _y + _h/2;
-        xs[2] = _x + _w/2;
+        ys[1] = _y + _h / 2;
+        xs[2] = _x + _w / 2;
         ys[2] = _y + _h;
         xs[3] = _x;
-        ys[3] = _y + _h/2;
-        Graphics g = (Graphics)graphicContext;
+        ys[3] = _y + _h / 2;
+        Graphics g = (Graphics) graphicContext;
         if (_filled && getFillColor() != null) {
             g.setColor(getFillColor());
             g.fillPolygon(xs, ys, 4);
@@ -104,18 +110,14 @@ public class FigDiamond extends Fig {
             g.drawPolygon(xs, ys, 4);
         }
     }
-    
+
     public void appendSvg(StringBuffer sb) {
-        sb.append("<path id='")
-          .append(getId())
-          .append("' class='")
-          .append(getClass().getName())
-          .append("' style='fill:none; stroke-width:")
-          .append(getLineWidth())
-          .append("; stroke:rgb(")
-          .append(getLineColor().getRed()).append(",")
-          .append(getLineColor().getGreen()).append(',')
-          .append(getLineColor().getBlue()).append(" ;' d='");
+        sb.append("<path id='").append(getId()).append("' class='").append(
+                getClass().getName()).append(
+                "' style='fill:none; stroke-width:").append(getLineWidth())
+                .append("; stroke:rgb(").append(getLineColor().getRed())
+                .append(",").append(getLineColor().getGreen()).append(',')
+                .append(getLineColor().getBlue()).append(" ;' d='");
         for (int i = 0; i < getPoints().length; ++i) {
             if (i == 0) {
                 sb.append("M ");
@@ -126,5 +128,5 @@ public class FigDiamond extends Fig {
         }
         sb.append(" ' />");
     }
-    
+
 } /* end class FigRect */

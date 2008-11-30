@@ -35,85 +35,99 @@ import org.tigris.gef.presentation.*;
 
 /**
  * An Cmd to align 2 or more objects relative to each other.
+ * 
  * @deprecated use the undoable AlignAction
  */
 
 public class CmdAlign extends Cmd {
 
     private static final long serialVersionUID = -9169626281664389794L;
-    
-/* Constants specifying the type of alignment requested. */
-  public static final int ALIGN_TOPS = 0;
-  public static final int ALIGN_BOTTOMS = 1;
-  public static final int ALIGN_LEFTS = 2;
-  public static final int ALIGN_RIGHTS = 3;
 
-  public static final int ALIGN_CENTERS = 4;
-  public static final int ALIGN_H_CENTERS = 5;
-  public static final int ALIGN_V_CENTERS = 6;
+    /* Constants specifying the type of alignment requested. */
+    public static final int ALIGN_TOPS = 0;
+    public static final int ALIGN_BOTTOMS = 1;
+    public static final int ALIGN_LEFTS = 2;
+    public static final int ALIGN_RIGHTS = 3;
 
-  public static final int ALIGN_TO_GRID = 7;
+    public static final int ALIGN_CENTERS = 4;
+    public static final int ALIGN_H_CENTERS = 5;
+    public static final int ALIGN_V_CENTERS = 6;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    public static final int ALIGN_TO_GRID = 7;
 
-  /** Specification of the type of alignment requested */
-  protected int direction;
+    // //////////////////////////////////////////////////////////////
+    // instance variables
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    /** Specification of the type of alignment requested */
+    protected int direction;
 
-  /** Construct a new CmdAlign.
-   *
-   * @param dir The desired alignment direction, one of the constants
-   * listed above. */
-  public CmdAlign(int dir) {
-    super("Align" + wordFor(dir)); //needs-more-work: direction
-    direction = dir;
-  }
+    // //////////////////////////////////////////////////////////////
+    // constructors
 
-  protected static String wordFor(int d) {
-    switch (d) {
-    case ALIGN_TOPS: return "Tops";
-    case ALIGN_BOTTOMS: return "Bottoms";
-    case ALIGN_LEFTS: return "Lefts";
-    case ALIGN_RIGHTS: return "Rights";
-
-    case ALIGN_CENTERS: return "Centers";
-    case ALIGN_H_CENTERS: return "HorizontalCenters";
-    case ALIGN_V_CENTERS: return "VerticalCenters";
-
-    case ALIGN_TO_GRID: return "ToGrid";
+    /**
+     * Construct a new CmdAlign.
+     * 
+     * @param dir
+     *                The desired alignment direction, one of the constants
+     *                listed above.
+     */
+    public CmdAlign(int dir) {
+        super("Align" + wordFor(dir)); // needs-more-work: direction
+        direction = dir;
     }
-    return "";
-  }
-  ////////////////////////////////////////////////////////////////
-  // Cmd API
 
-  public void doIt() {
-    Editor ce = Globals.curEditor();
-    Vector figs = (Vector) getArg("figs");
-    if (figs == null) {
-      SelectionManager sm = ce.getSelectionManager();
-      if (sm.getLocked()) {
-	Globals.showStatus("Cannot Modify Locked Objects");
-	return;
-      }
-      figs = sm.getFigs();
+    protected static String wordFor(int d) {
+        switch (d) {
+        case ALIGN_TOPS:
+            return "Tops";
+        case ALIGN_BOTTOMS:
+            return "Bottoms";
+        case ALIGN_LEFTS:
+            return "Lefts";
+        case ALIGN_RIGHTS:
+            return "Rights";
+
+        case ALIGN_CENTERS:
+            return "Centers";
+        case ALIGN_H_CENTERS:
+            return "HorizontalCenters";
+        case ALIGN_V_CENTERS:
+            return "VerticalCenters";
+
+        case ALIGN_TO_GRID:
+            return "ToGrid";
+        }
+        return "";
     }
-    int size = figs.size();
-    if (size == 0) return;
-    Rectangle bbox = ((Fig) figs.elementAt(0)).getBounds();
-    for (int i = 1; i < size; i++)
-      bbox.add(((Fig) figs.elementAt(i)).getBounds());
 
-    for (int i = 0; i < size; i++) {
-      Fig f = (Fig) figs.elementAt(i);
-      f.align(bbox, direction, ce);
-      f.endTrans();
+    // //////////////////////////////////////////////////////////////
+    // Cmd API
+
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        Vector figs = (Vector) getArg("figs");
+        if (figs == null) {
+            SelectionManager sm = ce.getSelectionManager();
+            if (sm.getLocked()) {
+                Globals.showStatus("Cannot Modify Locked Objects");
+                return;
+            }
+            figs = sm.getFigs();
+        }
+        int size = figs.size();
+        if (size == 0)
+            return;
+        Rectangle bbox = ((Fig) figs.elementAt(0)).getBounds();
+        for (int i = 1; i < size; i++)
+            bbox.add(((Fig) figs.elementAt(i)).getBounds());
+
+        for (int i = 0; i < size; i++) {
+            Fig f = (Fig) figs.elementAt(i);
+            f.align(bbox, direction, ce);
+            f.endTrans();
+        }
     }
-  }
 
-  public void undoIt() { }
+    public void undoIt() {
+    }
 } /* end class CmdAlign */
-

@@ -49,7 +49,8 @@ public class PasteAction extends UndoableAction {
     /**
      * Creates a new PasteAction
      * 
-     * @param name The name of the action
+     * @param name
+     *                The name of the action
      */
     public PasteAction(String name) {
         this(name, false);
@@ -58,8 +59,10 @@ public class PasteAction extends UndoableAction {
     /**
      * Creates a new PasteAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
      */
     public PasteAction(String name, Icon icon) {
         this(name, icon, false);
@@ -68,8 +71,10 @@ public class PasteAction extends UndoableAction {
     /**
      * Creates a new PasteAction
      * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public PasteAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -78,9 +83,12 @@ public class PasteAction extends UndoableAction {
     /**
      * Creates a new PasteAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public PasteAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
@@ -98,7 +106,7 @@ public class PasteAction extends UndoableAction {
             Fig f = (Fig) cb.nextElement();
             Editor ce = Globals.curEditor();
             int gridSze = ((GuideGrid) ce.getGuide()).gridSize();
-//            Point p = f.getLocation();
+            // Point p = f.getLocation();
             f.translate(gridSze, gridSze);
             f = (Fig) f.clone();
             Object owner = f.getOwner();

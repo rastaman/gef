@@ -30,17 +30,17 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Classes implementing this interface are able to create and initialize
- * a ContentHandler given the information about a new PGML file element.
+ * Classes implementing this interface are able to create and initialize a
+ * ContentHandler given the information about a new PGML file element.
  */
 public interface HandlerFactory {
     /**
-     * Return a ContentHandler appropriate for the element with the given
-     * name and attributes.  If you aren't interested in the content
-     * or any sub-elements of the element, return null, and a
-     * default handler will be used (which usually mean that the contents
-     * and sub-elements are just thrown away).
-     *
+     * Return a ContentHandler appropriate for the element with the given name
+     * and attributes. If you aren't interested in the content or any
+     * sub-elements of the element, return null, and a default handler will be
+     * used (which usually mean that the contents and sub-elements are just
+     * thrown away).
+     * 
      * @param stack
      * @param container
      * @param uri
@@ -50,8 +50,7 @@ public interface HandlerFactory {
      * @return
      * @throws SAXException
      */
-    DefaultHandler getHandler(HandlerStack stack,
-            Object container,
-            String uri, String localname, String qname,
-            Attributes attributes) throws SAXException;
+    DefaultHandler getHandler(HandlerStack stack, Object container, String uri,
+            String localname, String qname, Attributes attributes)
+            throws SAXException;
 }

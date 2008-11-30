@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: VetoableChangeEventSource.java
 // Classes: VetoableChangeEventSource
 // Original Author: esp@parkplace.dhs.org
@@ -34,9 +31,10 @@ package org.tigris.gef.util;
 import java.beans.*;
 import java.util.Vector;
 
-
 public interface VetoableChangeEventSource {
-  void addVetoableChangeListener(VetoableChangeListener l);
-  void removeVetoableChangeListener(VetoableChangeListener l);
-  Vector getVetoableChangeListeners();
+    void addVetoableChangeListener(VetoableChangeListener l);
+
+    void removeVetoableChangeListener(VetoableChangeListener l);
+
+    Vector getVetoableChangeListeners();
 }

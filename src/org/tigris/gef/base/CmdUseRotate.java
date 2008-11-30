@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdUseRotate.java
 // Classes: CmdUseRotate
 // Original Author: jrobbins@ics.uci.edu
@@ -35,42 +32,44 @@ import java.util.*;
 
 import org.tigris.gef.presentation.*;
 
-/** Set the current editor to use a SelectionRotate on its current
- *  selections.
- *  @deprecated in 0.12.3 use UesRotateAction
- *  @see Editor
- *  @see Selection
- *  @see SelectionRotate
+/**
+ * Set the current editor to use a SelectionRotate on its current selections.
+ * 
+ * @deprecated in 0.12.3 use UesRotateAction
+ * @see Editor
+ * @see Selection
+ * @see SelectionRotate
  */
 
 public class CmdUseRotate extends Cmd {
 
     private static final long serialVersionUID = 8929130238670954085L;
 
-  public CmdUseRotate() {
-	  super("UseRotationHandles");
-  }
-
-  public void doIt() {
-    Editor ce = Globals.curEditor();
-    SelectionManager sm = ce.getSelectionManager();
-    Enumeration sels = ((Vector)sm.selections().clone()).elements();
-    //Enumeration sels = sm.selections().elements();
-    while (sels.hasMoreElements()) {
-      Selection s = (Selection) sels.nextElement();
-      if (s instanceof Selection && !(s instanceof SelectionRotate)) {
-	Fig f = s.getContent();
-	if (f.isReshapable()) {
-	  ce.damaged(s);
-	  sm.removeSelection(s);
-	  SelectionRotate sr = new SelectionRotate(f);
-	  sm.addSelection(sr);
-	  ce.damaged(sr);
-	}
-      }
+    public CmdUseRotate() {
+        super("UseRotationHandles");
     }
-  }
 
-  public void undoIt() { System.out.println("not done yet"); }
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        SelectionManager sm = ce.getSelectionManager();
+        Enumeration sels = ((Vector) sm.selections().clone()).elements();
+        // Enumeration sels = sm.selections().elements();
+        while (sels.hasMoreElements()) {
+            Selection s = (Selection) sels.nextElement();
+            if (s instanceof Selection && !(s instanceof SelectionRotate)) {
+                Fig f = s.getContent();
+                if (f.isReshapable()) {
+                    ce.damaged(s);
+                    sm.removeSelection(s);
+                    SelectionRotate sr = new SelectionRotate(f);
+                    sm.addSelection(sr);
+                    ce.damaged(sr);
+                }
+            }
+        }
+    }
+
+    public void undoIt() {
+        System.out.println("not done yet");
+    }
 } /* end class CmdUseRotate */
-

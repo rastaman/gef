@@ -52,7 +52,8 @@ public class ExitAction extends AbstractAction {
     /**
      * Creates a new ExitAction
      * 
-     * @param name The name of the action
+     * @param name
+     *                The name of the action
      */
     public ExitAction(String name) {
         this(name, false);
@@ -61,8 +62,10 @@ public class ExitAction extends AbstractAction {
     /**
      * Creates a new ExitAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
      */
     public ExitAction(String name, Icon icon) {
         this(name, icon, false);
@@ -71,8 +74,10 @@ public class ExitAction extends AbstractAction {
     /**
      * Creates a new ExitAction
      * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public ExitAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -81,9 +86,12 @@ public class ExitAction extends AbstractAction {
     /**
      * Creates a new ExitAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public ExitAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);

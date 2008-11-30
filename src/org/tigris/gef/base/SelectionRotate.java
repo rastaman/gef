@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: SelectionRotate.java
 // Classes: SelectionRotate
 // Original Author: jrobbins@ics.uci.edu
@@ -50,32 +47,33 @@ public class SelectionRotate extends Selection {
         super(f);
     }
 
-  /** Paint the selection. */
-  public void paint(Graphics g) {
-    int x = getContent().getX();
-    int y = getContent().getY();
-    int w = getContent().getWidth();
-    int h = getContent().getHeight();
-    g.setColor(Globals.getPrefs().handleColorFor(getContent()));
-    g.fillOval(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
-    g.fillOval(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
-    g.fillOval(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
-    g.fillOval(x + w, y + h, HAND_SIZE, HAND_SIZE);
-  }
-
-  /** Rotate the Fig when the user drags the roataion
-   *  handle(s). Needs-more-work: not implemented yet.  */
-  public void dragHandle(int mx, int my, int an_x,int an_y, Handle h) {
-    /* do nothing */
-  }
+    /** Paint the selection. */
+    public void paint(Graphics g) {
+        int x = getContent().getX();
+        int y = getContent().getY();
+        int w = getContent().getWidth();
+        int h = getContent().getHeight();
+        g.setColor(Globals.getPrefs().handleColorFor(getContent()));
+        g.fillOval(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
+        g.fillOval(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
+        g.fillOval(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
+        g.fillOval(x + w, y + h, HAND_SIZE, HAND_SIZE);
+    }
 
     /**
-     * Returns -2 to indicate that the user did not click on a handle
-     * or the body of the Fig. Needs-more-work.
+     * Rotate the Fig when the user drags the roataion handle(s).
+     * Needs-more-work: not implemented yet.
+     */
+    public void dragHandle(int mx, int my, int an_x, int an_y, Handle h) {
+        /* do nothing */
+    }
+
+    /**
+     * Returns -2 to indicate that the user did not click on a handle or the
+     * body of the Fig. Needs-more-work.
      */
     public void hitHandle(Rectangle r, Handle h) {
         h.index = -2;
         h.instructions = "Object cannot be rotated";
     }
 } /* end class SelectionRotate */
-

@@ -39,12 +39,11 @@ import org.tigris.gef.graph.*;
 import org.tigris.gef.graph.presentation.*;
 
 /**
- * A Layer like found in many drawing applications. It contains a
- * collection of Figs, ordered from back to front. Each
- * LayerPerspective contains part of the overall picture that the
- * user is drawing. LayerPerspective is different from LayerDiagram
- * in that it assumes that you are drawing a connected graph that is
- * represented in a GraphModel and controlled by a GraphController.
+ * A Layer like found in many drawing applications. It contains a collection of
+ * Figs, ordered from back to front. Each LayerPerspective contains part of the
+ * overall picture that the user is drawing. LayerPerspective is different from
+ * LayerDiagram in that it assumes that you are drawing a connected graph that
+ * is represented in a GraphModel and controlled by a GraphController.
  */
 
 public class LayerPerspective extends LayerDiagram implements GraphListener {
@@ -58,16 +57,16 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
      * The underlying connected graph to be visualized.
      */
     private GraphModel _gm;
-  
+
     private GraphController controller;
-  
+
     private GraphNodeRenderer _nodeRenderer = new DefaultGraphNodeRenderer();
-  
+
     private GraphEdgeRenderer _edgeRenderer = new DefaultGraphEdgeRenderer();
 
     /**
-     * Classes of NetNodes and NetEdges that are to be visualized in
-     * this perspective.
+     * Classes of NetNodes and NetEdges that are to be visualized in this
+     * perspective.
      */
     private Vector _allowedNetClasses = new Vector();
 
@@ -75,136 +74,156 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
      * Rectangles of where to place nodes that are automatically added.
      */
     private Hashtable _nodeTypeRegions = new Hashtable();
-    
+
     /**
      * The diagram containing this layer.
      */
     private Diagram diagram;
 
     private static Log LOG = LogFactory.getLog(LayerPerspective.class);
-    
-  ////////////////////////////////////////////////////////////////
-  // constructors
 
-    /** Construct a new LayerPerspective with the given name, and add it to
-     *  the menu of layers. Needs-More-Work: I have not implemented a
-     *  menu of layers yet. I don't know if that is really the right user
-     *  interface */
+    // //////////////////////////////////////////////////////////////
+    // constructors
+
+    /**
+     * Construct a new LayerPerspective with the given name, and add it to the
+     * menu of layers. Needs-More-Work: I have not implemented a menu of layers
+     * yet. I don't know if that is really the right user interface
+     */
     public LayerPerspective(String name, GraphModel gm) {
         super(name);
         _gm = gm;
-	controller = null;
+        controller = null;
         _gm.addGraphEventListener(this);
     }
 
-    public LayerPerspective(String name, GraphModel gm, GraphController controller) {
+    public LayerPerspective(String name, GraphModel gm,
+            GraphController controller) {
         super(name);
         _gm = gm;
-	this.controller = controller;
+        this.controller = controller;
         _gm.addGraphEventListener(this);
     }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    // //////////////////////////////////////////////////////////////
+    // accessors
 
-  /** Reply the GraphModel of the underlying connected graph. */
-  public GraphModel getGraphModel() { return _gm; }
-  public void setGraphModel(GraphModel gm) {
-    _gm.removeGraphEventListener(this);
-    _gm = gm;
-    _gm.addGraphEventListener(this);
-  }
+    /** Reply the GraphModel of the underlying connected graph. */
+    public GraphModel getGraphModel() {
+        return _gm;
+    }
+
+    public void setGraphModel(GraphModel gm) {
+        _gm.removeGraphEventListener(this);
+        _gm = gm;
+        _gm.addGraphEventListener(this);
+    }
 
     /** Reply the GraphController of the underlying connected graph. */
-    public GraphController getGraphController() { return controller; }
-  
+    public GraphController getGraphController() {
+        return controller;
+    }
+
     public void setGraphController(GraphController controller) {
-	this.controller = controller;
+        this.controller = controller;
     }
 
-  public GraphNodeRenderer getGraphNodeRenderer() { return _nodeRenderer; }
-  public void setGraphNodeRenderer(GraphNodeRenderer rend) {
-    _nodeRenderer = rend;
-  }
-  
-  public GraphEdgeRenderer getGraphEdgeRenderer() { return _edgeRenderer; }
-  public void setGraphEdgeRenderer(GraphEdgeRenderer rend) {
-    _edgeRenderer = rend;
-  }
-
-  /** Add a node class of NetNodes or NetEdges to what will be shown in
-   *  this perspective.   */
-  public void allowNetClass(Class c) { _allowedNetClasses.addElement(c); }
-
-  ////////////////////////////////////////////////////////////////
-  // Layer API
-
-  /** Add a Fig to the contents of this Layer.  Items are added on top
-   *  of all other items. If a node is explicitly added then accept it
-   *  regardless of the predicate, and add it to the net. */
-  //public void add(Fig f) { super.add(f); }
-
-  /** Remove the given Fig from this layer. */
-  //public void remove(Fig f) { super.remove(f); }
-
-  ////////////////////////////////////////////////////////////////
-  // node placement
-
-  public void addNodeTypeRegion(Class nodeClass, Rectangle region) {
-    _nodeTypeRegions.put(nodeClass, region);
-  }
-
-  public void putInPosition(Fig f) {
-    Class nodeClass = f.getOwner().getClass();
-    Rectangle placementRegion =
-      (Rectangle) _nodeTypeRegions.get(nodeClass);
-    if (placementRegion != null) {
-      f.setLocation(placementRegion.x, placementRegion.y);
-      bumpOffOtherNodesIn(f, placementRegion, false, true);
+    public GraphNodeRenderer getGraphNodeRenderer() {
+        return _nodeRenderer;
     }
-  }
 
-  /**
-   * Try and find a blank area of the diagram to place the new Fig.
-   */
-  public void bumpOffOtherNodesIn(Fig newFig, Rectangle bounds,
-				  boolean stagger, boolean vertical) {
-    Rectangle bbox = newFig.getBounds();
-    int origX = bbox.x, origY = bbox.y;
-    int col = 0, row = 0, i = 1;
-    while (bounds.intersects(bbox)) {
-      Enumeration overlappers = nodesIn(bbox);
-      // If there is nothing overlapping then we are done:
-      if (!overlappers.hasMoreElements()) return;
-      // Idem if the only found fig is the one we try to place:
-      if ((overlappers.nextElement() == newFig) 
-              && (!overlappers.hasMoreElements())) return;
-      int unitOffset = ((i+1)/2) * ((i%2==0) ? -1 : 1);
-      if (vertical) bbox.y = origY + unitOffset * (bbox.height + GAP);
-      else bbox.x = origX + unitOffset * (bbox.width + GAP);
-      newFig.setLocation(bbox.x, bbox.y);
-      if (!(bounds.intersects(bbox))) {
-	int x = bounds.x;
-	int y = bounds.y;
-	if (vertical) {
-	  col++;
-	  x = bbox.x + bbox.width + GAP;
-	  if (stagger) y += (col%2)*(bbox.height+GAP)/2;
-	}
-	else {
-	  row++;
-	  y = bbox.y + bbox.height + GAP;
-	  if (stagger) x += (row%2)*(bbox.width+GAP)/2;
-	}
-	newFig.setLocation(x, y);
-	bbox.setLocation(x, y);
-      }
-      i++;
+    public void setGraphNodeRenderer(GraphNodeRenderer rend) {
+        _nodeRenderer = rend;
     }
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // nofitications and updates
+    public GraphEdgeRenderer getGraphEdgeRenderer() {
+        return _edgeRenderer;
+    }
+
+    public void setGraphEdgeRenderer(GraphEdgeRenderer rend) {
+        _edgeRenderer = rend;
+    }
+
+    /**
+     * Add a node class of NetNodes or NetEdges to what will be shown in this
+     * perspective.
+     */
+    public void allowNetClass(Class c) {
+        _allowedNetClasses.addElement(c);
+    }
+
+    // //////////////////////////////////////////////////////////////
+    // Layer API
+
+    /**
+     * Add a Fig to the contents of this Layer. Items are added on top of all
+     * other items. If a node is explicitly added then accept it regardless of
+     * the predicate, and add it to the net.
+     */
+    // public void add(Fig f) { super.add(f); }
+    /** Remove the given Fig from this layer. */
+    // public void remove(Fig f) { super.remove(f); }
+    // //////////////////////////////////////////////////////////////
+    // node placement
+    public void addNodeTypeRegion(Class nodeClass, Rectangle region) {
+        _nodeTypeRegions.put(nodeClass, region);
+    }
+
+    public void putInPosition(Fig f) {
+        Class nodeClass = f.getOwner().getClass();
+        Rectangle placementRegion = (Rectangle) _nodeTypeRegions.get(nodeClass);
+        if (placementRegion != null) {
+            f.setLocation(placementRegion.x, placementRegion.y);
+            bumpOffOtherNodesIn(f, placementRegion, false, true);
+        }
+    }
+
+    /**
+     * Try and find a blank area of the diagram to place the new Fig.
+     */
+    public void bumpOffOtherNodesIn(Fig newFig, Rectangle bounds,
+            boolean stagger, boolean vertical) {
+        Rectangle bbox = newFig.getBounds();
+        int origX = bbox.x, origY = bbox.y;
+        int col = 0, row = 0, i = 1;
+        while (bounds.intersects(bbox)) {
+            Enumeration overlappers = nodesIn(bbox);
+            // If there is nothing overlapping then we are done:
+            if (!overlappers.hasMoreElements())
+                return;
+            // Idem if the only found fig is the one we try to place:
+            if ((overlappers.nextElement() == newFig)
+                    && (!overlappers.hasMoreElements()))
+                return;
+            int unitOffset = ((i + 1) / 2) * ((i % 2 == 0) ? -1 : 1);
+            if (vertical)
+                bbox.y = origY + unitOffset * (bbox.height + GAP);
+            else
+                bbox.x = origX + unitOffset * (bbox.width + GAP);
+            newFig.setLocation(bbox.x, bbox.y);
+            if (!(bounds.intersects(bbox))) {
+                int x = bounds.x;
+                int y = bounds.y;
+                if (vertical) {
+                    col++;
+                    x = bbox.x + bbox.width + GAP;
+                    if (stagger)
+                        y += (col % 2) * (bbox.height + GAP) / 2;
+                } else {
+                    row++;
+                    y = bbox.y + bbox.height + GAP;
+                    if (stagger)
+                        x += (row % 2) * (bbox.width + GAP) / 2;
+                }
+                newFig.setLocation(x, y);
+                bbox.setLocation(x, y);
+            }
+            i++;
+        }
+    }
+
+    // //////////////////////////////////////////////////////////////
+    // nofitications and updates
 
     public void nodeAdded(GraphEvent ge) {
         Object node = ge.getArg();
@@ -215,19 +234,21 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
                 System.out.println("node rejected");
                 return;
             }
-            FigNode newFigNode = _nodeRenderer.getFigNodeFor(_gm, this, node, null);
+            FigNode newFigNode = _nodeRenderer.getFigNodeFor(_gm, this, node,
+                    null);
             if (newFigNode != null) {
                 newFigNode.setLayer(this);
-        	putInPosition(newFigNode);
-                if (LOG.isDebugEnabled()) LOG.debug("Adding node");
-            	add(newFigNode);
+                putInPosition(newFigNode);
+                if (LOG.isDebugEnabled())
+                    LOG.debug("Adding node");
+                add(newFigNode);
             }
-            //else System.out.println("added node de is null");
+            // else System.out.println("added node de is null");
         }
     }
 
     public void edgeAdded(GraphEvent ge) {
-        //System.out.println("LayerPerspective got edgeAdded");
+        // System.out.println("LayerPerspective got edgeAdded");
         Object edge = ge.getArg();
         Fig oldFig = presentationFor(edge);
         if (null == oldFig) {
@@ -235,80 +256,78 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
                 System.out.println("edge rejected");
                 return;
             }
-            FigEdge newFigEdge = _edgeRenderer.getFigEdgeFor(_gm, this, edge, null);
+            FigEdge newFigEdge = _edgeRenderer.getFigEdgeFor(_gm, this, edge,
+                    null);
             if (newFigEdge != null) {
                 newFigEdge.setLayer(this);
                 add(newFigEdge);
-    	        //insertAt(newFigEdge, 0);
+                // insertAt(newFigEdge, 0);
                 newFigEdge.computeRoute();
-                //newFigEdge.reorder(CmdReorder.SEND_TO_BACK, this);
+                // newFigEdge.reorder(CmdReorder.SEND_TO_BACK, this);
                 newFigEdge.endTrans();
             }
-            //else System.out.println("added arc fig is null!!!!!!!!!!!!!!!!");
+            // else System.out.println("added arc fig is null!!!!!!!!!!!!!!!!");
         }
     }
 
-  public void nodeRemoved(GraphEvent ge) {
-    // handled through NetNode subclasses
-      // no, it is not handled through subclasses.
-      // this method body was added by hendrik@freiheit.com
-      // 2003-02-20
-      Fig node = presentationFor(ge.getArg());
-      if (null != node)
-      {
-          // this is a dirty quickfix to deal with highlighted
-          // FigNodes.
-          if (node instanceof FigNode && ((FigNode)node).getHighlight())
-          {
-              ((FigNode)node).setHighlight(false);
-          }
-          remove(node);
-      }
-  }
+    public void nodeRemoved(GraphEvent ge) {
+        // handled through NetNode subclasses
+        // no, it is not handled through subclasses.
+        // this method body was added by hendrik@freiheit.com
+        // 2003-02-20
+        Fig node = presentationFor(ge.getArg());
+        if (null != node) {
+            // this is a dirty quickfix to deal with highlighted
+            // FigNodes.
+            if (node instanceof FigNode && ((FigNode) node).getHighlight()) {
+                ((FigNode) node).setHighlight(false);
+            }
+            remove(node);
+        }
+    }
 
-  public void edgeRemoved(GraphEvent ge) {
-    // handled through NetEdge subclasses
-      // no, it is not handled through subclasses.
-      // this method body was added by hendrik@freiheit.com
-      // 2003-02-20
-      Fig edge = presentationFor(ge.getArg());
-      if (null != edge)
-      {
-          remove(edge);
-      }
-  }
+    public void edgeRemoved(GraphEvent ge) {
+        // handled through NetEdge subclasses
+        // no, it is not handled through subclasses.
+        // this method body was added by hendrik@freiheit.com
+        // 2003-02-20
+        Fig edge = presentationFor(ge.getArg());
+        if (null != edge) {
+            remove(edge);
+        }
+    }
 
-  public void graphChanged(GraphEvent ge) {
-    // needs-more-work 
-  }
+    public void graphChanged(GraphEvent ge) {
+        // needs-more-work
+    }
 
-
-    /** Test to determine if a given NetNode should have a FigNode
-     *  in this layer.  Normally checks NetNode class against a list of
-     *  allowable classes.  For more sophisticated rules, override this
-     *  method.
-     *  <A HREF="../features.html#multiple_perspectives">
-     *  <TT>FEATURE: multiple_perspectives</TT></A>
+    /**
+     * Test to determine if a given NetNode should have a FigNode in this layer.
+     * Normally checks NetNode class against a list of allowable classes. For
+     * more sophisticated rules, override this method. <A
+     * HREF="../features.html#multiple_perspectives">
+     * <TT>FEATURE: multiple_perspectives</TT></A>
      */
     public boolean shouldShow(Object obj) {
-        if (_allowedNetClasses.size() > 0 &&
-        	!_allowedNetClasses.contains(obj.getClass()))
+        if (_allowedNetClasses.size() > 0
+                && !_allowedNetClasses.contains(obj.getClass()))
             return false;
         if (obj instanceof NetEdge) {
-            if (getPortFig(((NetEdge)obj).getSourcePort()) == null ||
-        	    getPortFig(((NetEdge)obj).getDestPort()) == null)
-       	    return false;
+            if (getPortFig(((NetEdge) obj).getSourcePort()) == null
+                    || getPortFig(((NetEdge) obj).getDestPort()) == null)
+                return false;
         }
         return true;
     }
 
     /**
-     * @param diagram The diagram to set.
+     * @param diagram
+     *                The diagram to set.
      */
     void setDiagram(Diagram diagram) {
         this.diagram = diagram;
     }
-    
+
     /**
      * @return Returns the diagram.
      */
@@ -316,21 +335,20 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
         return diagram;
     }
 
-  /** Test to determine if a given NetEdge should have an FigEdge
-   *  in this layer.  Normally checks NetNode class against a list of
-   *  allowable classes.  For more sophisticated rules, override this
-   *  method.
-   *  <A HREF="../features.html#multiple_perspectives">
-   *  <TT>FEATURE: multiple_perspectives</TT></A>
-   */
-//   public boolean shouldShow(NetEdge a) {
-//     if (_allowedNetClasses.size() > 0 &&
-// 	!_allowedNetClasses.contains(a.getClass()))
-//       return false;
-//     if (getPortFig(a.getSourcePort()) == null ||
-// 	getPortFig(a.getDestPort()) == null)
-//       return false;
-//     return true;
-//   }
+    /**
+     * Test to determine if a given NetEdge should have an FigEdge in this
+     * layer. Normally checks NetNode class against a list of allowable classes.
+     * For more sophisticated rules, override this method. <A
+     * HREF="../features.html#multiple_perspectives">
+     * <TT>FEATURE: multiple_perspectives</TT></A>
+     */
+    // public boolean shouldShow(NetEdge a) {
+    // if (_allowedNetClasses.size() > 0 &&
+    // !_allowedNetClasses.contains(a.getClass()))
+    // return false;
+    // if (getPortFig(a.getSourcePort()) == null ||
+    // getPortFig(a.getDestPort()) == null)
+    // return false;
+    // return true;
+    // }
 } /* end class LayerPerspective */
-

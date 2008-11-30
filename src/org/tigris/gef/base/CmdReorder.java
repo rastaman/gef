@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdReorder.java
 // Classes: CmdReorder
 // Original Author: jrobbins@ics.uci.edu
@@ -31,63 +28,70 @@
 
 package org.tigris.gef.base;
 
-/** Cmd to change the back-to-front ordering of Fig's.
+/**
+ * Cmd to change the back-to-front ordering of Fig's.
+ * 
  * @deprecated in 0.12.3 use ReorderAction
- * @see LayerDiagram#reorder */
+ * @see LayerDiagram#reorder
+ */
 
 public class CmdReorder extends Cmd {
-    
+
     private static final long serialVersionUID = 1315160037668280033L;
-    
-  public static final int SEND_TO_BACK = 1;
-  public static final int BRING_TO_FRONT = 2;
-  public static final int SEND_BACKWARD = 3;
-  public static final int BRING_FORWARD = 4;
 
-  public static CmdReorder SendToBack = new CmdReorder(SEND_TO_BACK);
-  public static CmdReorder BringToFront = new CmdReorder(BRING_TO_FRONT);
-  public static CmdReorder SendBackward = new CmdReorder(SEND_BACKWARD);
-  public static CmdReorder BringForward = new CmdReorder(BRING_FORWARD);
+    public static final int SEND_TO_BACK = 1;
+    public static final int BRING_TO_FRONT = 2;
+    public static final int SEND_BACKWARD = 3;
+    public static final int BRING_FORWARD = 4;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  private int function;
+    public static CmdReorder SendToBack = new CmdReorder(SEND_TO_BACK);
+    public static CmdReorder BringToFront = new CmdReorder(BRING_TO_FRONT);
+    public static CmdReorder SendBackward = new CmdReorder(SEND_BACKWARD);
+    public static CmdReorder BringForward = new CmdReorder(BRING_FORWARD);
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    // //////////////////////////////////////////////////////////////
+    // instance variables
+    private int function;
 
-  /** Construct a new CmdReorder with the given reordering
-    constrant (see above) */
-  public CmdReorder(int f) {
-    super(wordFor(f));
-    function = f;
-  }
+    // //////////////////////////////////////////////////////////////
+    // constructor
 
-
-  protected static String wordFor(int f) {
-    switch (f) {
-    case SEND_BACKWARD: return "Backward";
-    case SEND_TO_BACK: return "ToBack";
-    case BRING_FORWARD: return "Forward";
-    case BRING_TO_FRONT: return "ToFront";
+    /**
+     * Construct a new CmdReorder with the given reordering constrant (see
+     * above)
+     */
+    public CmdReorder(int f) {
+        super(wordFor(f));
+        function = f;
     }
-    return "";
-  }
-  
-  ////////////////////////////////////////////////////////////////
-  // Cmd API
 
-  public void doIt() {
-    Editor ce = Globals.curEditor();
-    LayerManager lm = ce.getLayerManager();
-    SelectionManager sm = ce.getSelectionManager();
-    sm.reorder(function, lm.getActiveLayer());
-    sm.endTrans();
-    //ce.repairDamage();
-  }
+    protected static String wordFor(int f) {
+        switch (f) {
+        case SEND_BACKWARD:
+            return "Backward";
+        case SEND_TO_BACK:
+            return "ToBack";
+        case BRING_FORWARD:
+            return "Forward";
+        case BRING_TO_FRONT:
+            return "ToFront";
+        }
+        return "";
+    }
 
-  public void undoIt() {
-    System.out.println("Connot undo CmdReorder, yet");
-  }
+    // //////////////////////////////////////////////////////////////
+    // Cmd API
+
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        LayerManager lm = ce.getLayerManager();
+        SelectionManager sm = ce.getSelectionManager();
+        sm.reorder(function, lm.getActiveLayer());
+        sm.endTrans();
+        // ce.repairDamage();
+    }
+
+    public void undoIt() {
+        System.out.println("Connot undo CmdReorder, yet");
+    }
 } /* end class CmdReorder */
-

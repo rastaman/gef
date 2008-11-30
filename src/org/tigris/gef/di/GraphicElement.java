@@ -32,6 +32,8 @@ import java.awt.Rectangle;
 public interface GraphicElement {
 
     public String getId();
+
     public Rectangle routingRect();
+
     public Object getOwner();
 }

@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: Functor.java
 // Interfaces: Functor
 // Original Author: jrobbins@ics.uci.edu
@@ -33,12 +30,14 @@ package org.tigris.gef.util;
 
 import java.util.*;
 
-/** Interface to define Functor objects.  Functor's are described in
- *  many papers and books about design patterns or coding idioms.  They
- *  are basically functions, but implemented as instances of a class
- *  with only one method. That allows passing the Functor object
- *  around, whereas Java does not allow any operations on functions. */
+/**
+ * Interface to define Functor objects. Functor's are described in many papers
+ * and books about design patterns or coding idioms. They are basically
+ * functions, but implemented as instances of a class with only one method. That
+ * allows passing the Functor object around, whereas Java does not allow any
+ * operations on functions.
+ */
 
-public interface Functor extends java.io.Serializable  {
-  public Object apply(Object x);
+public interface Functor extends java.io.Serializable {
+    public Object apply(Object x);
 } /* end interface Functor */

@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CmdDelete.java
 // Classes: CmdDelete
 // $Id$
@@ -31,15 +29,17 @@ package org.tigris.gef.base;
 
 import org.tigris.gef.undo.UndoManager;
 
-/** 
- * Cmd to delete Figs from view. This does not do anything to any
- * underlying Net or other model, it is strictly a manipulation of
- * graphical objects.  Normally CmdDeleteFromModel is the command users will want to execute.
- * This replaces CmdDelete
+/**
+ * Cmd to delete Figs from view. This does not do anything to any underlying Net
+ * or other model, it is strictly a manipulation of graphical objects. Normally
+ * CmdDeleteFromModel is the command users will want to execute. This replaces
+ * CmdDelete
+ * 
  * @deprecated in 0.12.3 use RemoveFromGraphAction
  * @see CmdDeleteFromModel
  * @see Editor
- * @see LayerDiagram */
+ * @see LayerDiagram
+ */
 
 public class CmdRemoveFromGraph extends Cmd {
 
@@ -49,10 +49,12 @@ public class CmdRemoveFromGraph extends Cmd {
         super("RemoveFromGraph");
     }
 
-    /** Tell the selected Figs to remove themselves from the
-     *  the diagram it is in (and thus all editors). */
+    /**
+     * Tell the selected Figs to remove themselves from the the diagram it is in
+     * (and thus all editors).
+     */
     public void doIt() {
-    	UndoManager.getInstance().startChain();
+        UndoManager.getInstance().startChain();
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
         sm.removeFromGraph();

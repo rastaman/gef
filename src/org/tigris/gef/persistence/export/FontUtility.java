@@ -37,12 +37,12 @@ import javax.swing.JPanel;
  * @stereotype utility
  */
 public class FontUtility {
-    
+
     /**
      * A JPanel from which we can gain font metrics.
      */
     private static final JPanel DUMMY_PANEL = new JPanel();
-    
+
     /**
      * The constructor is not accessible for a utility.
      */
@@ -51,11 +51,13 @@ public class FontUtility {
 
     /**
      * Gets the font metrics for the specified font.
-     * @param font The font for which font metrics is to be obtained.
+     * 
+     * @param font
+     *                The font for which font metrics is to be obtained.
      * @return the FontMetrics
      */
     public static FontMetrics getFontMetrics(Font font) {
-        //return Toolkit.getDefaultToolkit().getFontMetrics(font);
+        // return Toolkit.getDefaultToolkit().getFontMetrics(font);
         return DUMMY_PANEL.getFontMetrics(font);
     }
 }

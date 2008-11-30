@@ -27,26 +27,27 @@ package org.tigris.gef.persistence.pgml;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * A class that implements this interface is responsible for maintaining
- * the stack of ContentHandler objects in response to {@link #pushHandlerStack}
- * and {@link #popHandlerStack} calls, and for making sure that the SAX parser
- * is always using the ContentHandler object at the top of the stack.
- *
+ * A class that implements this interface is responsible for maintaining the
+ * stack of ContentHandler objects in response to {@link #pushHandlerStack} and
+ * {@link #popHandlerStack} calls, and for making sure that the SAX parser is
+ * always using the ContentHandler object at the top of the stack.
+ * 
  * @author Michael MacDonald
  */
 public interface HandlerStack {
     /**
-     * Pushes a new ContentHandler on the stack and insures that the
-     * SAX parser uses that handler for further events.
-     *
-     * @param handler ContentHandler to be pushed on the handler stack
+     * Pushes a new ContentHandler on the stack and insures that the SAX parser
+     * uses that handler for further events.
+     * 
+     * @param handler
+     *                ContentHandler to be pushed on the handler stack
      */
     void pushHandlerStack(DefaultHandler handler);
 
     /**
-     * Removes the top handler from the stack and insures that
-     * the SAX parser calls the previously underlying, now top ContentHandler
-     * object for further events.
+     * Removes the top handler from the stack and insures that the SAX parser
+     * calls the previously underlying, now top ContentHandler object for
+     * further events.
      */
     void popHandlerStack();
 }

@@ -66,7 +66,8 @@ public class ScrollAction extends UndoableAction {
     /**
      * Creates a new ScrollAction
      * 
-     * @param dir The direction of the scroll
+     * @param dir
+     *                The direction of the scroll
      */
     public ScrollAction(int dir) {
         direction = dir;
@@ -76,8 +77,10 @@ public class ScrollAction extends UndoableAction {
     /**
      * Creates a new ScrollAction
      * 
-     * @param name The name of the action
-     * @param dir The direction of the scroll
+     * @param name
+     *                The name of the action
+     * @param dir
+     *                The direction of the scroll
      */
     public ScrollAction(String name, int dir) {
         this(name, dir, false);
@@ -86,9 +89,12 @@ public class ScrollAction extends UndoableAction {
     /**
      * Creates a new ScrollAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dir The direction of the scroll
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param dir
+     *                The direction of the scroll
      */
     public ScrollAction(String name, Icon icon, int dir) {
         this(name, icon, dir, false);
@@ -97,9 +103,12 @@ public class ScrollAction extends UndoableAction {
     /**
      * Creates a new ScrollAction
      * 
-     * @param name The name of the action
-     * @param dir The direction of the scroll
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param dir
+     *                The direction of the scroll
+     * @param localize
+     *                Whether to localize the name or not
      */
     public ScrollAction(String name, int dir, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -110,10 +119,14 @@ public class ScrollAction extends UndoableAction {
     /**
      * Creates a new ScrollAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dir The direction of the scroll
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param dir
+     *                The direction of the scroll
+     * @param localize
+     *                Whether to localize the name or not
      */
     public ScrollAction(String name, Icon icon, int dir, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);

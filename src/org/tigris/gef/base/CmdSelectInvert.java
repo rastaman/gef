@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdSelectInvert.java
 // Classes: CmdSelectInvert
 // Original Author: jrobbins@ics.uci.edu
@@ -36,8 +33,9 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Cmd to select all the Figs in the editor's current
- * view that were not previously selected.
+ * Cmd to select all the Figs in the editor's current view that were not
+ * previously selected.
+ * 
  * @deprecated in 0.12.3 use SelectInvertAction
  */
 
@@ -56,9 +54,9 @@ public class CmdSelectInvert extends Cmd {
         List inverse = new ArrayList(diagramContents.size());
 
         Iterator it = diagramContents.iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Object dc = it.next();
-            if(!selected.contains(dc)) {
+            if (!selected.contains(dc)) {
                 inverse.add(dc);
             }
         }

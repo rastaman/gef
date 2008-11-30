@@ -97,7 +97,6 @@ public class CreateNodeAction extends UndoableAction implements GraphFactory {
         setArg("className", nodeClass);
     }
 
-    
     public CreateNodeAction(Class nodeClass, String name) {
         this(new Hashtable(), name);
         setArg("className", nodeClass);
@@ -118,7 +117,7 @@ public class CreateNodeAction extends UndoableAction implements GraphFactory {
         this(nodeClass, name);
         setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
     }
-    
+
     // //////////////////////////////////////////////////////////////
     // Action API
 
@@ -149,10 +148,11 @@ public class CreateNodeAction extends UndoableAction implements GraphFactory {
                     + shouldBeSticky);
         }
     }
-    
+
     /**
-     * To be overrideen on any specialist subclasses that want to
-     * supply their own modes.
+     * To be overrideen on any specialist subclasses that want to supply their
+     * own modes.
+     * 
      * @param instructions
      * @return
      */
@@ -228,8 +228,9 @@ public class CreateNodeAction extends UndoableAction implements GraphFactory {
         }
     }
 
-    /** Get an argument by name.  If it's not defined then use the given
-     *  default. */
+    /**
+     * Get an argument by name. If it's not defined then use the given default.
+     */
     protected Object getArg(String key, Object defaultValue) {
         if (args == null) {
             return defaultValue;

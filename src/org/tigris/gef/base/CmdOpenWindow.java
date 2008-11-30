@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdOpenWindow.java
 // Classes: CmdOpenWindow
 // Original Author: jrobbins@ics.uci.edu
@@ -33,44 +30,53 @@ package org.tigris.gef.base;
 
 import java.awt.*;
 
-/** Cmd to open a user interface dialog window. Given the name of a
- *  subclass of Frame, this Cmd makes a new instance and calls
- *  show().  For example, used to open a list of some availible
- *  commands.
+/**
+ * Cmd to open a user interface dialog window. Given the name of a subclass of
+ * Frame, this Cmd makes a new instance and calls show(). For example, used to
+ * open a list of some availible commands.
+ * 
  * @deprecated in 0.12.3 use OpenWindowAction
- * @see org.tigris.gef.graph.presentation.JGraphFrame */
+ * @see org.tigris.gef.graph.presentation.JGraphFrame
+ */
 
 public class CmdOpenWindow extends Cmd {
 
-  /**
+    /**
      * 
      */
     private static final long serialVersionUID = 883641359701325952L;
 
-public CmdOpenWindow(String className, String name) {
-    super(name);
-    setArg("className", className);
-  }
-
-  public void doIt() {
-    String className = (String) getArg("className");
-    Frame window;
-    Class clazz;
-    if (className != null) {
-      Globals.showStatus("Opening window for " + className);
-      try { clazz = Class.forName(className); }
-      catch (java.lang.ClassNotFoundException ignore) { return; }
-
-      try { window = (Frame) clazz.newInstance(); }
-      catch (java.lang.IllegalAccessException ignore) { return; }
-      catch (java.lang.InstantiationException ignore) { return; }
-      window.setVisible(true);
-      return;
+    public CmdOpenWindow(String className, String name) {
+        super(name);
+        setArg("className", className);
     }
-    System.out.println("invalid window name");
-  }
 
-  public void undoIt() {
-    System.out.println("undo CmdOpenWindow is not supported");
-  }
+    public void doIt() {
+        String className = (String) getArg("className");
+        Frame window;
+        Class clazz;
+        if (className != null) {
+            Globals.showStatus("Opening window for " + className);
+            try {
+                clazz = Class.forName(className);
+            } catch (java.lang.ClassNotFoundException ignore) {
+                return;
+            }
+
+            try {
+                window = (Frame) clazz.newInstance();
+            } catch (java.lang.IllegalAccessException ignore) {
+                return;
+            } catch (java.lang.InstantiationException ignore) {
+                return;
+            }
+            window.setVisible(true);
+            return;
+        }
+        System.out.println("invalid window name");
+    }
+
+    public void undoIt() {
+        System.out.println("undo CmdOpenWindow is not supported");
+    }
 } /* end class CmdOpenWindow */

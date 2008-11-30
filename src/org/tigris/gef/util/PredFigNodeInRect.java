@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: PredFigNodeInRect.java
 // Classes: PredFigNodeInRect
 // Original Author: jrobbins@ics.uci.edu
@@ -34,28 +32,32 @@ import java.awt.*;
 
 import org.tigris.gef.presentation.*;
 
-/** Predicate that returns true for FigNode's that intersect the
- *  rectangle given in the constructor.  Useful for making a
- *  EnumerationPredicate that finds Figs intersecting a given
- *  Rectangle. */
+/**
+ * Predicate that returns true for FigNode's that intersect the rectangle given
+ * in the constructor. Useful for making a EnumerationPredicate that finds Figs
+ * intersecting a given Rectangle.
+ */
 public class PredFigNodeInRect implements Predicate {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    // //////////////////////////////////////////////////////////////
+    // instance variables
 
-  Rectangle _r;
+    Rectangle _r;
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    // //////////////////////////////////////////////////////////////
+    // constructor
 
-  public PredFigNodeInRect(Rectangle r) { _r = r; }
+    public PredFigNodeInRect(Rectangle r) {
+        _r = r;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // Predicate API
+    // //////////////////////////////////////////////////////////////
+    // Predicate API
 
-  public boolean predicate(Object o) {
-    if (!(o instanceof FigNode)) return false;
-    return ((Fig)o).intersects(_r);
-  }
+    public boolean predicate(Object o) {
+        if (!(o instanceof FigNode))
+            return false;
+        return ((Fig) o).intersects(_r);
+    }
 
 } /* end class PredFigInRect */

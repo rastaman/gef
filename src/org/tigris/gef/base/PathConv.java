@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: PathConv.java
 // Classes: PathConv
 // Original Author: abonner@ics.uci.edu
@@ -36,22 +34,22 @@ import java.io.Serializable;
 
 import org.tigris.gef.presentation.*;
 
-/** 
- * Abstract class that defines a common interface to all of
- * path-to-coord mapping objects.  These objects store some
- * information about a point that is defined relative to a path
- * (e.g., along a FigEdge) and provide methods to get the
- * coordinates (x, y) for that point.  This allows us to place labels
- * along a FigEdge and have the label stay in the right place, even
- * if the FigEdge moves.
+/**
+ * Abstract class that defines a common interface to all of path-to-coord
+ * mapping objects. These objects store some information about a point that is
+ * defined relative to a path (e.g., along a FigEdge) and provide methods to get
+ * the coordinates (x, y) for that point. This allows us to place labels along a
+ * FigEdge and have the label stay in the right place, even if the FigEdge
+ * moves.
  */
-public abstract class PathConv implements PathItemPlacementStrategy, Serializable {
-    
+public abstract class PathConv implements PathItemPlacementStrategy,
+        Serializable {
+
     /**
      * @deprecated use getPathFig()
      */
     @Deprecated
-    protected Fig _pathFigure; 	// The intermediate path figure
+    protected Fig _pathFigure; // The intermediate path figure
 
     public PathConv(Fig theFig) {
         _pathFigure = theFig;
@@ -62,8 +60,9 @@ public abstract class PathConv implements PathItemPlacementStrategy, Serializabl
         stuffPoint(res);
         return res;
     }
-    
+
     abstract public void stuffPoint(Point res);
+
     abstract protected void setClosestPoint(Point newPoint);
 
     protected Point getOffsetAmount(Point p1, Point p2, int offset) {
@@ -72,8 +71,7 @@ public abstract class PathConv implements PathItemPlacementStrategy, Serializabl
         return res;
     }
 
-    protected void applyOffsetAmount(Point p1, Point p2, int offset,
-				   Point res) {
+    protected void applyOffsetAmount(Point p1, Point p2, int offset, Point res) {
         // slope of the line we're finding the normal to
         // is slope, and the normal is the negative reciprocal
         // slope is (p1.y - p2.y) / (p1.x - p2.x)
@@ -81,27 +79,28 @@ public abstract class PathConv implements PathItemPlacementStrategy, Serializabl
         int recipnumerator = (p1.x - p2.x) * -1;
         int recipdenominator = (p1.y - p2.y);
 
-        if (recipdenominator == 0 && recipnumerator == 0) return;
-        // find the point offset on the line that gives a 
+        if (recipdenominator == 0 && recipnumerator == 0)
+            return;
+        // find the point offset on the line that gives a
         // correct offset
 
-        double len = Math.sqrt(recipnumerator * recipnumerator +
-			   recipdenominator * recipdenominator);
+        double len = Math.sqrt(recipnumerator * recipnumerator
+                + recipdenominator * recipdenominator);
         int dx = (int) ((recipdenominator * offset) / len);
         int dy = (int) ((recipnumerator * offset) / len);
-    //     if (dx > 10000 || dy > 10000) {
-    //       System.out.println("p1=" + p1 + " p2=" + p2);
-    //       System.out.println("offset=" + offset);
-    //       System.out.println("dx=" + dx + " dy=" + dy);
-    //     }
+        // if (dx > 10000 || dy > 10000) {
+        // System.out.println("p1=" + p1 + " p2=" + p2);
+        // System.out.println("offset=" + offset);
+        // System.out.println("dx=" + dx + " dy=" + dy);
+        // }
         res.x += dx;
         res.y += dy;
     }
-    
+
     protected Fig getPathFig() {
         return _pathFigure;
     }
-    
+
     /**
      * Does nothing by default. Override in subclass if required.
      */

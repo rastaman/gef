@@ -15,13 +15,16 @@ import org.tigris.gef.base.*;
 public abstract class AnnotationStrategy implements Serializable {
     // hashtable of all annotations
     Hashtable annotations = new Hashtable();
+
     // annotation | AnnotationProperties
 
     public Point restoreAnnotationPosition(Fig annotation) {
         return new Point(1, 1);
     }
+
     // this method auto-moves the annotations
     public abstract void translateAnnotations(Fig owner);
+
     // calculates and stores the values necessary for correct auto-movement
     public abstract void storeAnnotationPosition(Fig annotation);
 
@@ -31,16 +34,13 @@ public abstract class AnnotationStrategy implements Serializable {
     };
 
     // all figs added to an owner fig with this method become annotations of
-	// that fig
-    public void addAnnotation(
-        Fig owner,
-        Fig annotation,
-        AnnotationProperties properties) {
+    // that fig
+    public void addAnnotation(Fig owner, Fig annotation,
+            AnnotationProperties properties) {
         // restrictions
         // 1. no double annotations
-        if ((annotations.containsKey(annotation))
-            || owner == null
-            || annotation == null)
+        if ((annotations.containsKey(annotation)) || owner == null
+                || annotation == null)
             return;
         // tell the annotation its owner
         annotation.setAnnotationOwner(owner);
@@ -61,8 +61,8 @@ public abstract class AnnotationStrategy implements Serializable {
     }
 
     /**
-	 * USED BY PGML.tee
-	 */
+     * USED BY PGML.tee
+     */
     public Vector getAnnotationsVector() {
         Vector v = new Vector();
         Enumeration iter = getAllAnnotations();
@@ -72,9 +72,8 @@ public abstract class AnnotationStrategy implements Serializable {
         return v;
     }
 
-    public void replaceAnnotation(
-        Fig annotation,
-        AnnotationProperties properties) {
+    public void replaceAnnotation(Fig annotation,
+            AnnotationProperties properties) {
         Fig owner = annotation.getAnnotationOwner();
         annotations.remove(annotation);
         addAnnotation(owner, annotation, properties);
@@ -92,7 +91,7 @@ public abstract class AnnotationStrategy implements Serializable {
         java.util.Enumeration iter = annotations.keys();
         while (iter.hasMoreElements()) {
             Fig annotation = (Fig) iter.nextElement();
-            //annotation.delete();
+            // annotation.delete();
             removeAnnotation(annotation);
         }
     }
@@ -102,14 +101,11 @@ public abstract class AnnotationStrategy implements Serializable {
         java.util.Enumeration iter = annotations.keys();
         while (iter.hasMoreElements()) {
             Fig annotation = (Fig) iter.nextElement();
-            AnnotationProperties prop =
-                (AnnotationProperties) annotations.get(annotation);
+            AnnotationProperties prop = (AnnotationProperties) annotations
+                    .get(annotation);
             FigLine line = prop.getConnectingLine();
-            if (Globals
-                .curEditor()
-                .getLayerManager()
-                .getContents()
-                .contains(line)) {
+            if (Globals.curEditor().getLayerManager().getContents().contains(
+                    line)) {
                 Globals.curEditor().remove(line);
             }
         }

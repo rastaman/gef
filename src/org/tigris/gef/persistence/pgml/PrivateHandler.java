@@ -27,9 +27,8 @@ package org.tigris.gef.persistence.pgml;
 import org.xml.sax.SAXException;
 
 /**
- * Content handler for <em>private</em> sub-elements
- * of Fig PGML-file elements.
- * The character contents of these elements specify additional
+ * Content handler for <em>private</em> sub-elements of Fig PGML-file
+ * elements. The character contents of these elements specify additional
  * information about the properties of the Fig object.
  */
 public class PrivateHandler extends BaseHandler {
@@ -39,10 +38,12 @@ public class PrivateHandler extends BaseHandler {
     private Container container;
 
     /**
-     * @param parser The parser object containing the diagram that contains
-     * the fig specified by the element containing this element
-     * @param theContainer The object that will receive the text contents of
-     * this element
+     * @param parser
+     *                The parser object containing the diagram that contains the
+     *                fig specified by the element containing this element
+     * @param theContainer
+     *                The object that will receive the text contents of this
+     *                element
      */
     public PrivateHandler(PGMLStackParser parser, Container theContainer) {
         super(parser);
@@ -52,12 +53,13 @@ public class PrivateHandler extends BaseHandler {
     /**
      * Send the text content of the <em>private</em> element to the containing
      * element.
-     *
-     * @param contents Text content of the element
-     * @throws SAXException if something goes wrong.
+     * 
+     * @param contents
+     *                Text content of the element
+     * @throws SAXException
+     *                 if something goes wrong.
      */
-    public void gotElement(String contents)
-    	throws SAXException {
+    public void gotElement(String contents) throws SAXException {
         container.addObject(contents);
     }
 }

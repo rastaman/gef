@@ -25,6 +25,7 @@ package org.tigris.gef.base;
 
 /**
  * Factory to create a ModeSelect instance
+ * 
  * @author Bob Tarling
  */
 public class ModeSelectFactory implements ModeFactory {

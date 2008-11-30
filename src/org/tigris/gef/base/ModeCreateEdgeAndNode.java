@@ -47,31 +47,30 @@ import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
 
 /**
- *  A Mode to interpret user input while creating an edge.  Basically
- *  mouse down starts creating an edge from a source port Fig, mouse
- *  motion paints a rubberband line, mouse up finds the destination port
- *  and finishes creating the edge and makes an FigEdge and sends
- *  it to the back of the Layer.
- *
- *  The argument "edgeClass" determines the type if edge to suggest
- *  that the Editor's GraphModel construct.  The GraphModel is
- *  responsible for acutally making an edge in the underlying model
- *  and connecting it to other model elements.
- *
+ * A Mode to interpret user input while creating an edge. Basically mouse down
+ * starts creating an edge from a source port Fig, mouse motion paints a
+ * rubberband line, mouse up finds the destination port and finishes creating
+ * the edge and makes an FigEdge and sends it to the back of the Layer.
+ * 
+ * The argument "edgeClass" determines the type if edge to suggest that the
+ * Editor's GraphModel construct. The GraphModel is responsible for acutally
+ * making an edge in the underlying model and connecting it to other model
+ * elements.
+ * 
  * @author jrobbins
  */
 public class ModeCreateEdgeAndNode extends ModeCreate {
     /**
      * Logger.
      */
-    private static final Log LOG =
-        LogFactory.getLog(ModeCreateEdgeAndNode.class);
-    ////////////////////////////////////////////////////////////////
+    private static final Log LOG = LogFactory
+            .getLog(ModeCreateEdgeAndNode.class);
+    // //////////////////////////////////////////////////////////////
     // static variables
     private static int dragsToExisting = 0;
     private static int dragsToNew = 0;
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // instance variables
 
     /**
@@ -95,15 +94,15 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     private Object newEdge;
 
     /**
-     * False if drawing from source and destination.  True if drawing
-     * from destination to source.
+     * False if drawing from source and destination. True if drawing from
+     * destination to source.
      */
     private boolean destToSource = false;
 
     /**
      * The number of points added so far.
      */
-    //protected int _npoints = 0;
+    // protected int _npoints = 0;
     private Handle handle = new Handle(-1);
 
     private FigNode fn;
@@ -112,9 +111,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
     private boolean postProcessEdge = false;
 
-
     /**
      * The constructor.
+     * 
      * @deprecated The empty constructor is not required
      */
     public ModeCreateEdgeAndNode() {
@@ -122,24 +121,26 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     }
 
     /**
-     * The constructor. <p>
+     * The constructor.
+     * <p>
      * 
      * Preferrably use the constructor
      * {@link #ModeCreateEdgeAndNode(Editor, Object, boolean, SelectionButtons)}
-     * below, since it allows a better mechanism to create the node. 
-     *
-     * @param ed the parent editor of this mode. Each Mode instance belongs to
-     *           exactly one Editor instance.
-     * @param edgeType the class of the edge
-     * @param nodeType the class of the node
-     * @param post if true, then the edge is postprocessed.
-     *             See postProcessEdge().
+     * below, since it allows a better mechanism to create the node.
+     * 
+     * @param ed
+     *                the parent editor of this mode. Each Mode instance belongs
+     *                to exactly one Editor instance.
+     * @param edgeType
+     *                the class of the edge
+     * @param nodeType
+     *                the class of the node
+     * @param post
+     *                if true, then the edge is postprocessed. See
+     *                postProcessEdge().
      */
-    public ModeCreateEdgeAndNode(
-				 Editor ed,
-				 Object edgeType,
-				 Object nodeType,
-				 boolean post) {
+    public ModeCreateEdgeAndNode(Editor ed, Object edgeType, Object nodeType,
+            boolean post) {
         super(ed);
         setArg("edgeClass", edgeType);
         setArg("nodeClass", nodeType);
@@ -149,37 +150,42 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
     /**
      * The constructor.
-     *
-     * @param ed the parent editor of this mode. Each Mode instance belongs to
-     *           exactly one Editor instance.
-     * @param edgeType the class of the edge
-     * @param post if true, then the edge is postprocessed.
-     *             See postProcessEdge().
-     * @param nodeCreator the SelectionButtons that knows 
-     *                               how to create the node
+     * 
+     * @param ed
+     *                the parent editor of this mode. Each Mode instance belongs
+     *                to exactly one Editor instance.
+     * @param edgeType
+     *                the class of the edge
+     * @param post
+     *                if true, then the edge is postprocessed. See
+     *                postProcessEdge().
+     * @param nodeCreator
+     *                the SelectionButtons that knows how to create the node
      */
-    public ModeCreateEdgeAndNode(
-                                 Editor ed,
-                                 Object edgeType,
-                                 boolean post,
-                                 SelectionButtons nodeCreator) {
+    public ModeCreateEdgeAndNode(Editor ed, Object edgeType, boolean post,
+            SelectionButtons nodeCreator) {
         super(ed);
         setArg("edgeClass", edgeType);
         setArg("nodeCreator", nodeCreator);
         postProcessEdge = post;
         LOG.debug("postprocessing: " + postProcessEdge);
     }
-    
-    ////////////////////////////////////////////////////////////////
+
+    // //////////////////////////////////////////////////////////////
     // accessors
 
     /**
-     * @param fignode the source fignode
-     * @param port the port
-     * @param x the x to start from
-     * @param y the y to start from
-     * @param reverse true if the direction is reversed, i.e.
-     *                from destination to source
+     * @param fignode
+     *                the source fignode
+     * @param port
+     *                the port
+     * @param x
+     *                the x to start from
+     * @param y
+     *                the y to start from
+     * @param reverse
+     *                true if the direction is reversed, i.e. from destination
+     *                to source
      */
     public void setup(FigNode fignode, Object port, int x, int y,
             boolean reverse) {
@@ -192,7 +198,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // Mode API
 
     /**
@@ -202,23 +208,23 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         return "Drag to define an edge (and a new node)";
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // ModeCreate API
 
     /**
-     * Create the new item that will be drawn. In this case I would
-     * rather create the FigEdge when I am done. Here I just
-     * create a rubberband FigLine to show during dragging.
-     *
+     * Create the new item that will be drawn. In this case I would rather
+     * create the FigEdge when I am done. Here I just create a rubberband
+     * FigLine to show during dragging.
+     * 
      * @see org.tigris.gef.base.ModeCreate#createNewItem(
-     * java.awt.event.MouseEvent, int, int)
+     *      java.awt.event.MouseEvent, int, int)
      */
     public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
         FigPoly p = new FigPoly(snapX, snapY);
         p.setLineColor(Globals.getPrefs().getRubberbandColor());
         p.setFillColor(null);
         p.addPoint(snapX, snapY); // add the first point twice
-        //_npoints = 2;
+        // _npoints = 2;
         return p;
     }
 
@@ -236,24 +242,23 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         startPortFig = null;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // mouse event handlers
 
     /**
-     * On mousePressed determine what port the user is dragging from.
-     * The mousePressed event is sent via ModeSelect.
-     *
+     * On mousePressed determine what port the user is dragging from. The
+     * mousePressed event is sent via ModeSelect.
+     * 
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
     }
 
     /**
-     * On mouseReleased, find the destination port, ask the GraphModel
-     * to connect the two ports.  If that connection is allowed, then
-     * construct a new FigEdge and add it to the Layer and send it to
-     * the back.
-     *
+     * On mouseReleased, find the destination port, ask the GraphModel to
+     * connect the two ports. If that connection is allowed, then construct a
+     * new FigEdge and add it to the Layer and send it to the back.
+     * 
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
@@ -318,9 +323,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                         continue;
                     }
                     Rectangle trap = otherFig.getTrapRect();
-                    if (trap != null && (trap.contains(bbox.x, bbox.y)
-                            && trap.contains(bbox.x + bbox.width,
-					     bbox.y + bbox.height))) {
+                    if (trap != null
+                            && (trap.contains(bbox.x, bbox.y) && trap.contains(
+                                    bbox.x + bbox.width, bbox.y + bbox.height))) {
                         encloser = otherFig;
                     }
                 }
@@ -365,8 +370,8 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                     destPortFig = tempFigPort;
                 }
                 if (edgeType != null) {
-                    newEdge = 
-                        mgm.connect(startPort, foundPort, (Class) edgeType);
+                    newEdge = mgm.connect(startPort, foundPort,
+                            (Class) edgeType);
                 } else {
                     newEdge = mgm.connect(startPort, foundPort);
                 }
@@ -439,7 +444,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             return;
         }
         int x = me.getX(), y = me.getY();
-        //if (_npoints == 0) { me.consume(); return; }
+        // if (_npoints == 0) { me.consume(); return; }
         if (_newItem == null) {
             me.consume();
             return;
@@ -454,7 +459,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         me.consume();
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // key events
 
     /**
@@ -467,7 +472,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         }
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // internal methods
 
     protected void postProcessEdge() {
@@ -475,7 +480,8 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     }
 
     /**
-     * @param edge the newly created edge 
+     * @param edge
+     *                the newly created edge
      */
     protected void postProcessEdge(Object edge) {
     }

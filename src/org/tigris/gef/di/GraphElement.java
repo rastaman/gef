@@ -31,5 +31,6 @@ import org.tigris.gef.ui.Highlightable;
 /**
  * An interface to be implemented by connectable figs.
  */
-public interface GraphElement extends GraphicElement, PropertyChangeListener, Highlightable {
+public interface GraphElement extends GraphicElement, PropertyChangeListener,
+        Highlightable {
 }

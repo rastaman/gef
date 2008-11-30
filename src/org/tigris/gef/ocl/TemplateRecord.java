@@ -36,7 +36,7 @@ public class TemplateRecord {
     }
 
     public String getBody() {
-        if(_buf != null) {
+        if (_buf != null) {
             body = _buf.toString();
         }
         return body;
@@ -46,24 +46,23 @@ public class TemplateRecord {
         return guard;
     }
 
-  public void setBody(String b) {
-    body = b;
-    _buf = null;
-  }
-
-  public void characters(char[] ch,
-                       int start,
-                       int length) {
-    if(_buf == null) {
-        _buf = new StringBuffer();
-        if(body != null) {
-            _buf.append(body);
-        }
+    public void setBody(String b) {
+        body = b;
+        _buf = null;
     }
-    _buf.append(ch,start,length);
-  }
 
-  public Class getKey() {
-    return key;
-  }
-} /** end class TemplateRecord */
+    public void characters(char[] ch, int start, int length) {
+        if (_buf == null) {
+            _buf = new StringBuffer();
+            if (body != null) {
+                _buf.append(body);
+            }
+        }
+        _buf.append(ch, start, length);
+    }
+
+    public Class getKey() {
+        return key;
+    }
+}
+/** end class TemplateRecord */

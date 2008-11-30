@@ -59,7 +59,8 @@ public class OpenSVGAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new OpenSVGAction
      * 
-     * @param name The name of the action
+     * @param name
+     *                The name of the action
      */
     public OpenSVGAction(String name) {
         this(name, null, false);
@@ -68,8 +69,10 @@ public class OpenSVGAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new OpenSVGAction
      * 
-     * @param name The name of the action
-     * @param dimension The dimension of the graph
+     * @param name
+     *                The name of the action
+     * @param dimension
+     *                The dimension of the graph
      */
     public OpenSVGAction(String name, Dimension dimension) {
         this(name, dimension, false);
@@ -78,8 +81,10 @@ public class OpenSVGAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new OpenSVGAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
      */
     public OpenSVGAction(String name, Icon icon) {
         this(name, icon, null, false);
@@ -88,9 +93,12 @@ public class OpenSVGAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new OpenSVGAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dimension The dimension of the graph
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param dimension
+     *                The dimension of the graph
      */
     public OpenSVGAction(String name, Icon icon, Dimension dimension) {
         this(name, icon, dimension, false);
@@ -99,9 +107,12 @@ public class OpenSVGAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new OpenSVGAction
      * 
-     * @param name The name of the action
-     * @param dimension The dimension of the graph
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param dimension
+     *                The dimension of the graph
+     * @param localize
+     *                Whether to localize the name or not
      */
     public OpenSVGAction(String name, Dimension dimension, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -111,10 +122,14 @@ public class OpenSVGAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new OpenSVGAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dimension The dimension of the graph
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param dimension
+     *                The dimension of the graph
+     * @param localize
+     *                Whether to localize the name or not
      */
     public OpenSVGAction(String name, Icon icon, Dimension dimension,
             boolean localize) {

@@ -21,15 +21,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CmdDistribute.java
 // Classes: CmdDistribute
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
 package org.tigris.gef.base;
-
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -50,10 +47,10 @@ public class DistributeAction extends UndoableAction {
     /** Constants specifying the type of distribution requested. */
     public static final int H_SPACING = 0;
     public static final int H_CENTERS = 1;
-    public static final int H_PACK    = 2;
+    public static final int H_PACK = 2;
     public static final int V_SPACING = 4;
     public static final int V_CENTERS = 5;
-    public static final int V_PACK    = 6;
+    public static final int V_PACK = 6;
 
     /** Specification of the type of distribution requested */
     private int _request;
@@ -61,15 +58,18 @@ public class DistributeAction extends UndoableAction {
     private List figs;
     private Integer gap;
 
-    /** Construct a new CmdDistribute.
-     *
-     * @param r The desired alignment direction, one of the constants
-     * listed above. */
+    /**
+     * Construct a new CmdDistribute.
+     * 
+     * @param r
+     *                The desired alignment direction, one of the constants
+     *                listed above.
+     */
     public DistributeAction(int r) {
         super(Localizer.localize("GefBase", "Distribute" + wordFor(r)));
         _request = r;
     }
-    
+
     public DistributeAction(int r, List figs) {
         this(r);
         this.figs = figs;
@@ -77,20 +77,26 @@ public class DistributeAction extends UndoableAction {
 
     private static String wordFor(int r) {
         switch (r) {
-        case H_SPACING:    return "HorizontalSpacing";
-        case H_CENTERS:    return "HorizontalCenters";
-        case H_PACK:       return "Leftward";
-        case V_SPACING:    return "VerticalSpacing";
-        case V_CENTERS:    return "VerticalCenters";
-        case V_PACK:       return "Upward";
+        case H_SPACING:
+            return "HorizontalSpacing";
+        case H_CENTERS:
+            return "HorizontalCenters";
+        case H_PACK:
+            return "Leftward";
+        case V_SPACING:
+            return "VerticalSpacing";
+        case V_CENTERS:
+            return "VerticalCenters";
+        case V_PACK:
+            return "Upward";
         }
         return "";
     }
-    
+
     public void setBoundingBox(Rectangle bbox) {
         _bbox = bbox;
     }
-    
+
     public void setGap(Integer gap) {
         this.gap = gap;
     }
@@ -118,8 +124,9 @@ public class DistributeAction extends UndoableAction {
         int leftMostCenter = 0, rightMostCenter = 0;
         int topMostCenter = 0, bottomMostCenter = 0;
         int size = targets.size();
-        if (size == 0) return;
-    
+        if (size == 0)
+            return;
+
         // find the bbox of all selected objects
         Fig f = (Fig) targets.get(0);
         if (_bbox == null) {
@@ -135,10 +142,11 @@ public class DistributeAction extends UndoableAction {
                 leftMostCenter = Math.min(leftMostCenter, r.x + r.width / 2);
                 rightMostCenter = Math.max(rightMostCenter, r.x + r.width / 2);
                 topMostCenter = Math.min(topMostCenter, r.y + r.height / 2);
-                bottomMostCenter = Math.max(bottomMostCenter, r.y + r.height / 2);
+                bottomMostCenter = Math.max(bottomMostCenter, r.y + r.height
+                        / 2);
             }
         }
-    
+
         // find the sum of the widths and heights of all selected objects
         int totalWidth = 0, totalHeight = 0;
         for (int i = 0; i < size; i++) {
@@ -146,10 +154,10 @@ public class DistributeAction extends UndoableAction {
             totalWidth += f.getWidth();
             totalHeight += f.getHeight();
         }
-    
+
         float gap = 0, oncenter = 0;
         float xNext = 0, yNext = 0;
-    
+
         switch (_request) {
         case H_SPACING:
             xNext = _bbox.x;
@@ -157,7 +165,8 @@ public class DistributeAction extends UndoableAction {
             break;
         case H_CENTERS:
             xNext = leftMostCenter;
-            oncenter = (rightMostCenter - leftMostCenter) / Math.max(size - 1, 1);
+            oncenter = (rightMostCenter - leftMostCenter)
+                    / Math.max(size - 1, 1);
             break;
         case H_PACK:
             xNext = _bbox.x;
@@ -169,23 +178,24 @@ public class DistributeAction extends UndoableAction {
             break;
         case V_CENTERS:
             yNext = topMostCenter;
-            oncenter = (bottomMostCenter - topMostCenter) / Math.max(size - 1, 1);
+            oncenter = (bottomMostCenter - topMostCenter)
+                    / Math.max(size - 1, 1);
             break;
         case V_PACK:
             yNext = _bbox.y;
             gap = packGap;
             break;
         }
-    
-        //sort top-to-bottom or left-to-right, this maintains visual order
-        //when we set the coordinates
+
+        // sort top-to-bottom or left-to-right, this maintains visual order
+        // when we set the coordinates
         for (int i = 0; i < size; i++) {
             for (int j = i + 1; j < size; j++) {
-            	Fig fi = (Fig) targets.get(i);
-            	Fig fj = (Fig) targets.get(j);
-            	if (_request == H_SPACING || _request == H_CENTERS ||
-                        _request == H_PACK) {
-            	    if (fi.getX() > fj.getX()) {
+                Fig fi = (Fig) targets.get(i);
+                Fig fj = (Fig) targets.get(j);
+                if (_request == H_SPACING || _request == H_CENTERS
+                        || _request == H_PACK) {
+                    if (fi.getX() > fj.getX()) {
                         swap(targets, i, j);
                     }
                 } else if (fi.getY() > fj.getY()) {
@@ -193,8 +203,7 @@ public class DistributeAction extends UndoableAction {
                 }
             }
         }
-    
-    
+
         for (int i = 0; i < size; i++) {
             f = (Fig) targets.get(i);
             switch (_request) {
@@ -221,8 +230,8 @@ public class DistributeAction extends UndoableAction {
         }
     }
 
-  public void undoIt() { }
-
+    public void undoIt() {
+    }
 
     protected void swap(List v, int i, int j) {
         Object temp = v.get(i);
@@ -234,4 +243,3 @@ public class DistributeAction extends UndoableAction {
         return _bbox;
     }
 } /* end class CmdDistribute */
-

@@ -59,7 +59,8 @@ public class SpawnAction extends AbstractAction {
     /**
      * Creates a new SpawnAction
      * 
-     * @param name The name of the action
+     * @param name
+     *                The name of the action
      */
     public SpawnAction(String name) {
         this(name, null, null, false);
@@ -68,7 +69,8 @@ public class SpawnAction extends AbstractAction {
     /**
      * Creates a new SpawnAction
      * 
-     * @param name The name of the action
+     * @param name
+     *                The name of the action
      */
     public SpawnAction(String name, String title, Dimension dimension) {
         this(name, title, dimension, false);
@@ -77,8 +79,10 @@ public class SpawnAction extends AbstractAction {
     /**
      * Creates a new SpawnAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
      */
     public SpawnAction(String name, Icon icon) {
         this(name, icon, null, null, false);
@@ -87,8 +91,10 @@ public class SpawnAction extends AbstractAction {
     /**
      * Creates a new SpawnAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
      */
     public SpawnAction(String name, Icon icon, String title, Dimension dimension) {
         this(name, icon, title, dimension, false);
@@ -97,8 +103,10 @@ public class SpawnAction extends AbstractAction {
     /**
      * Creates a new SpawnAction
      * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public SpawnAction(String name, String title, Dimension dimension,
             boolean localize) {
@@ -110,9 +118,12 @@ public class SpawnAction extends AbstractAction {
     /**
      * Creates a new SpawnAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public SpawnAction(String name, Icon icon, String title,
             Dimension dimension, boolean localize) {

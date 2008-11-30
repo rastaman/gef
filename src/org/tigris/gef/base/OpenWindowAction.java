@@ -35,22 +35,23 @@ import javax.swing.Icon;
 import org.tigris.gef.undo.UndoableAction;
 import org.tigris.gef.util.Localizer;
 
-/** Action to open a user interface dialog window. Given the name of a
- *  subclass of Frame, this Action makes a new instance and calls
- *  show().  For example, used to open a list of some availible
- *  commands.
- *
- * @see org.tigris.gef.graph.presentation.JGraphFrame 
+/**
+ * Action to open a user interface dialog window. Given the name of a subclass
+ * of Frame, this Action makes a new instance and calls show(). For example,
+ * used to open a list of some availible commands.
+ * 
+ * @see org.tigris.gef.graph.presentation.JGraphFrame
  */
 public class OpenWindowAction extends UndoableAction {
 
     private static final long serialVersionUID = 8660792603517868506L;
     private String className;
-    
+
     /**
      * Creates a new OpenWindowAction
      * 
-     * @param name The name of the action
+     * @param name
+     *                The name of the action
      */
     public OpenWindowAction(String name, String className) {
         this(name, className, false);
@@ -59,8 +60,10 @@ public class OpenWindowAction extends UndoableAction {
     /**
      * Creates a new OpenWindowAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
      */
     public OpenWindowAction(String name, String className, Icon icon) {
         this(name, icon, className, false);
@@ -69,8 +72,10 @@ public class OpenWindowAction extends UndoableAction {
     /**
      * Creates a new OpenWindowAction
      * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public OpenWindowAction(String name, String className, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -80,30 +85,41 @@ public class OpenWindowAction extends UndoableAction {
     /**
      * Creates a new OpenWindowAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
-    public OpenWindowAction(String name, Icon icon, String className, boolean localize) {
+    public OpenWindowAction(String name, Icon icon, String className,
+            boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
         this.className = className;
     }
 
-	  public void actionPerformed(ActionEvent e) {
-//	    String className = (String) getArg("className");
-	    Frame window;
-	    Class clazz;
-	    if (className != null) {
-	      Globals.showStatus("Opening window for " + className);
-	      try { clazz = Class.forName(className); }
-	      catch (java.lang.ClassNotFoundException ignore) { return; }
+    public void actionPerformed(ActionEvent e) {
+        // String className = (String) getArg("className");
+        Frame window;
+        Class clazz;
+        if (className != null) {
+            Globals.showStatus("Opening window for " + className);
+            try {
+                clazz = Class.forName(className);
+            } catch (java.lang.ClassNotFoundException ignore) {
+                return;
+            }
 
-	      try { window = (Frame) clazz.newInstance(); }
-	      catch (java.lang.IllegalAccessException ignore) { return; }
-	      catch (java.lang.InstantiationException ignore) { return; }
-	      window.setVisible(true);
-	      return;
-	    }
-	    System.out.println("invalid window name");
-	  }
+            try {
+                window = (Frame) clazz.newInstance();
+            } catch (java.lang.IllegalAccessException ignore) {
+                return;
+            } catch (java.lang.InstantiationException ignore) {
+                return;
+            }
+            window.setVisible(true);
+            return;
+        }
+        System.out.println("invalid window name");
+    }
 }

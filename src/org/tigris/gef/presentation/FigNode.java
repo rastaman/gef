@@ -58,32 +58,28 @@ import java.util.List;
 /**
  * Class to present a node (such as a NetNode) in a diagram.
  */
-public class FigNode extends FigGroup implements
-        GraphNode,
-        MouseListener {
-    
+public class FigNode extends FigGroup implements GraphNode, MouseListener {
+
     private static final long serialVersionUID = 5312194520189613781L;
-    
+
     private static final Log LOG = LogFactory.getLog(FigNode.class);
-    
-    private static final LookupOp   SHADOW_LOOKUP_OP;
+
+    private static final LookupOp SHADOW_LOOKUP_OP;
     private static final ConvolveOp SHADOW_CONVOLVE_OP;
 
     // Fields used in paint() for painting shadows
-    private BufferedImage           shadowImage;
-    private int                     cachedWidth = -1;
-    private int                     cachedHeight = -1;
-    
+    private BufferedImage shadowImage;
+    private int cachedWidth = -1;
+    private int cachedHeight = -1;
+
     /**
-     * Set this to force a repaint of the shadow.
-     * Normally repainting only happens
-     * when the outside boundaries change
-     * (for performance reasons (?)).
-     * In some cases this does not
-     * suffice, and you can set this attribute to force the update.
+     * Set this to force a repaint of the shadow. Normally repainting only
+     * happens when the outside boundaries change (for performance reasons (?)).
+     * In some cases this does not suffice, and you can set this attribute to
+     * force the update.
      */
     private boolean forceRepaint;
-    
+
     /**
      * The intensity value of the shadow color (0-255).
      */
@@ -93,33 +89,37 @@ public class FigNode extends FigGroup implements
      * The transparency value of the shadow color (0-255).
      */
     protected static final int SHADOW_COLOR_ALPHA = 128;
-    
-    /** Constants useful for determining what side (north, south, east,
-     *  or west) a port is located on.*/
+
+    /**
+     * Constants useful for determining what side (north, south, east, or west)
+     * a port is located on.
+     */
     public static final double ang45 = Math.PI / 4;
     public static final double ang135 = 3 * Math.PI / 4;
     public static final double ang225 = 5 * Math.PI / 4;
     public static final double ang315 = 7 * Math.PI / 4;
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // instance variables
 
-    /** True if you want ports to show when the mouse moves in and
-     *  be invisible otherwise. */
+    /**
+     * True if you want ports to show when the mouse moves in and be invisible
+     * otherwise.
+     */
     protected boolean _blinkPorts = false;
 
     /** True when we want to draw the user's attention to this FigNode. */
     protected boolean _highlight = false;
 
-    /** A list of FigEdges that need to be rerouted when this FigNode
-     *  moves.
+    /**
+     * A list of FigEdges that need to be rerouted when this FigNode moves.
      */
     private ArrayList figEdges = new ArrayList();
-    
+
     private int shadowSize = 0;
-    
+
     static {
-        
+
         // Setup image ops used in rendering shadows
         byte[][] data = new byte[4][256];
         for (int i = 1; i < 256; ++i) {
@@ -136,14 +136,17 @@ public class FigNode extends FigGroup implements
         SHADOW_CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, blur));
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constructors
 
     public FigNode() {
     }
 
-    /** Constructs a new FigNode on the given node with the given owner.
-     * @param node The model item that this node represents
+    /**
+     * Constructs a new FigNode on the given node with the given owner.
+     * 
+     * @param node
+     *                The model item that this node represents
      */
     public FigNode(Object node) {
         setOwner(node);
@@ -151,10 +154,13 @@ public class FigNode extends FigGroup implements
         // ((GraphNodeHooks)node).addPropertyChangeListener(this);
     }
 
-    /** Constructs a new FigNode on the given node with the given owner
-     *  and Figs.
-     * @param node the model item that this node represents
-     * @param figs the figs to be contained as a group by this FigNode 
+    /**
+     * Constructs a new FigNode on the given node with the given owner and Figs.
+     * 
+     * @param node
+     *                the model item that this node represents
+     * @param figs
+     *                the figs to be contained as a group by this FigNode
      */
     public FigNode(Object node, Collection figs) {
         this(node);
@@ -162,8 +168,9 @@ public class FigNode extends FigGroup implements
     }
 
     /**
-     * Returns true if dragging from a port on this fig should 
-     * automatically go to mode ModeCreateEdge 
+     * Returns true if dragging from a port on this fig should automatically go
+     * to mode ModeCreateEdge
+     * 
      * @return the drag connectable property
      */
     public boolean isDragConnectable() {
@@ -171,16 +178,18 @@ public class FigNode extends FigGroup implements
     }
 
     public Object clone() {
-        FigNode figClone = (FigNode)super.clone();
-        figClone.figEdges = (ArrayList)figEdges.clone();
+        FigNode figClone = (FigNode) super.clone();
+        figClone.figEdges = (ArrayList) figEdges.clone();
         return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // accessors
 
-    /** Set the property of highlighting ports when the user moves the
-     *  mouse over this FigNode. */
+    /**
+     * Set the property of highlighting ports when the user moves the mouse over
+     * this FigNode.
+     */
     public void setBlinkPorts(boolean b) {
         _blinkPorts = b;
         hidePorts();
@@ -188,55 +197,60 @@ public class FigNode extends FigGroup implements
 
     /**
      * Determine if ports are set to appear only on mouseover.
+     * 
      * @return true if ports are set to appear only on mouseover.
      */
     public boolean isBlinkPorts() {
         return _blinkPorts;
     }
 
-
-    /** Adds a FigEdge to the list of them that need to be rerouted when
-     *  this FigNode moves. */
+    /**
+     * Adds a FigEdge to the list of them that need to be rerouted when this
+     * FigNode moves.
+     */
     public void addFigEdge(FigEdge fe) {
         figEdges.add(fe);
     }
 
-    /** removes a FigEdge from the list of them that need to be rerouted when
-     *  this FigNode moves. */
+    /**
+     * removes a FigEdge from the list of them that need to be rerouted when
+     * this FigNode moves.
+     */
     public void removeFigEdge(FigEdge fe) {
         figEdges.remove(fe);
     }
 
-
     public Collection getFigEdges(Collection c) {
-        if (c == null) return figEdges;
+        if (c == null)
+            return figEdges;
         c.addAll(figEdges);
         return c;
     }
 
     public List getFigEdges() {
-        return (List)(figEdges.clone());
-    }
-    
-    public List getEdges() {
-        return (List)(figEdges.clone());
+        return (List) (figEdges.clone());
     }
 
-    /** Sets the owner (a node in some underlying model). If the given
-     *  node implements GraphNodeHooks, then the FigNode will register
-     *  itself as a listener on the node.
+    public List getEdges() {
+        return (List) (figEdges.clone());
+    }
+
+    /**
+     * Sets the owner (a node in some underlying model). If the given node
+     * implements GraphNodeHooks, then the FigNode will register itself as a
+     * listener on the node.
      */
     public void setOwner(Object node) {
         Object oldOwner = getOwner();
         if (oldOwner instanceof GraphNodeHooks) {
-            ((GraphNodeHooks)oldOwner).removePropertyChangeListener(this);
+            ((GraphNodeHooks) oldOwner).removePropertyChangeListener(this);
         } else if (oldOwner instanceof Highlightable) {
-            ((Highlightable)oldOwner).removePropertyChangeListener(this);
+            ((Highlightable) oldOwner).removePropertyChangeListener(this);
         }
         if (node instanceof GraphNodeHooks) {
-            ((GraphNodeHooks)node).addPropertyChangeListener(this);
+            ((GraphNodeHooks) node).addPropertyChangeListener(this);
         } else if (node instanceof Highlightable) {
-            ((Highlightable)node).addPropertyChangeListener(this);
+            ((Highlightable) node).addPropertyChangeListener(this);
         }
         super.setOwner(node);
     }
@@ -244,7 +258,7 @@ public class FigNode extends FigGroup implements
     /** Returns true if any Fig in the group hits the given rect. */
     public boolean hit(Rectangle r) {
         int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
-        if(_filled)
+        if (_filled)
             return cornersHit > 0;
         else
             return cornersHit > 0 && cornersHit < 4;
@@ -255,25 +269,25 @@ public class FigNode extends FigGroup implements
     }
 
     public void setEnclosingFig(Fig f) {
-        if(f != null && f != getEnclosingFig() && getLayer() != null) {
+        if (f != null && f != getEnclosingFig() && getLayer() != null) {
             int edgeCount = figEdges.size();
-            for(int i = 0; i < edgeCount; ++i) {
-                FigEdge fe = (FigEdge)figEdges.get(i);
+            for (int i = 0; i < edgeCount; ++i) {
+                FigEdge fe = (FigEdge) figEdges.get(i);
                 getLayer().bringInFrontOf(fe, f);
             }
         }
         super.setEnclosingFig(f);
-        //System.out.println("enclosing fig has been set");
+        // System.out.println("enclosing fig has been set");
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // Editor API
 
     /** When a FigNode is damaged, all of its edges may need repainting. */
     public void endTrans() {
         int edgeCount = figEdges.size();
-        for(int i = 0; i < edgeCount; ++i) {
-            FigEdge f = (FigEdge)figEdges.get(i);
+        for (int i = 0; i < edgeCount; ++i) {
+            FigEdge f = (FigEdge) figEdges.get(i);
             f.endTrans();
         }
         super.endTrans();
@@ -286,8 +300,8 @@ public class FigNode extends FigGroup implements
         // remove the edges in reverse order because to make sure
         // that other edges in figEdge don't have their position
         // altered as a side effect.
-        while(figEdges.size() > 0) {
-            FigEdge f = (FigEdge)figEdges.get(figEdges.size() - 1);
+        while (figEdges.size() > 0) {
+            FigEdge f = (FigEdge) figEdges.get(figEdges.size() - 1);
             f.removeFromDiagram();
         }
         super.removeFromDiagram();
@@ -299,52 +313,58 @@ public class FigNode extends FigGroup implements
         // delete the edges in reverse order because to make sure
         // that other edges in figEdge don't have their position
         // altered as a side effect.
-        for(int i = figEdges.size()-1; i >= 0; --i) {
-            FigEdge f = (FigEdge)figEdges.get(i);
+        for (int i = figEdges.size() - 1; i >= 0; --i) {
+            FigEdge f = (FigEdge) figEdges.get(i);
             f.deleteFromModel();
         }
         super.deleteFromModel();
     }
 
-    /** When a FigNode is disposed, all of its edges are disposed.
+    /**
+     * When a FigNode is disposed, all of its edges are disposed.
+     * 
      * @deprecated 0.11 use deleteFromModel()
      */
     public void dispose() {
         deleteFromModel();
     }
 
-
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // ports
 
-    /** Sets the port (some object in an underlying model) for Fig f.  f
-     *  must already be contained in the FigNode. f will now represent
-     *  the given port. */
+    /**
+     * Sets the port (some object in an underlying model) for Fig f. f must
+     * already be contained in the FigNode. f will now represent the given port.
+     */
     public void bindPort(Object port, Fig f) {
         Fig oldPortFig = getPortFig(port);
         if (oldPortFig != null) {
-            oldPortFig.setOwner(null); //?
+            oldPortFig.setOwner(null); // ?
         }
         f.setOwner(port);
     }
 
     /** Removes a port from the current FigNode. */
     public void removePort(Fig rep) {
-        if(rep.getOwner() != null)
+        if (rep.getOwner() != null)
             rep.setOwner(null);
     }
 
-    /** Reply the NetPort associated with the topmost Fig under the mouse, or
-     *  null if there is none. */
+    /**
+     * Reply the NetPort associated with the topmost Fig under the mouse, or
+     * null if there is none.
+     */
     public final Object hitPort(Point p) {
         return hitPort(p.x, p.y);
     }
 
-    /** Reply the port that "owns" the topmost Fig under the given point, or
-     *  null if none. */
+    /**
+     * Reply the port that "owns" the topmost Fig under the given point, or null
+     * if none.
+     */
     public Object hitPort(int x, int y) {
         Fig f = hitFig(new Rectangle(x, y, 1, 1));
-        if(f != null) {
+        if (f != null) {
             Object owner = f.getOwner();
             return owner;
         } else {
@@ -352,9 +372,10 @@ public class FigNode extends FigGroup implements
         }
     }
 
-    /** Reply a port for the topmost Fig that actually has a port. This
-     *  allows users to drag edges to or from ports that are hidden by
-     *  other Figs. */
+    /**
+     * Reply a port for the topmost Fig that actually has a port. This allows
+     * users to drag edges to or from ports that are hidden by other Figs.
+     */
     public Object deepHitPort(int x, int y) {
         int figCount = getFigCount();
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
@@ -379,13 +400,12 @@ public class FigNode extends FigGroup implements
         return null;
     }
 
-
     /** Reply the Fig that displays the given NetPort. */
     public Fig getPortFig(Object np) {
         int figCount = getFigCount();
-        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+        for (int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig f = getFigAt(figIndex);
-            if(f.getOwner() == np)
+            if (f.getOwner() == np)
                 return f;
         }
         return null;
@@ -393,46 +413,49 @@ public class FigNode extends FigGroup implements
 
     /**
      * Get all the figs that have some port as their owner
+     * 
      * @return the List of figs
      */
     public List getPortFigs() {
         ArrayList portFigs = new ArrayList();
-		int figCount = getFigCount();
-		for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-			Fig f = getFigAt(figIndex);
-			if(isPortFig(f)) {
+        int figCount = getFigCount();
+        for (int figIndex = 0; figIndex < figCount; ++figIndex) {
+            Fig f = getFigAt(figIndex);
+            if (isPortFig(f)) {
                 portFigs.add(f);
-			}
-		}
+            }
+        }
         return portFigs;
     }
 
-	private boolean isPortFig(Fig f) {
-		boolean retVal = (f.getOwner() != null);
-		if (retVal && getOwner() instanceof GraphNodeHooks) {
-			retVal = f.getOwner() instanceof GraphPortHooks;
-		}
-		return retVal;
-	}
-	
-    ////////////////////////////////////////////////////////////////
+    private boolean isPortFig(Fig f) {
+        boolean retVal = (f.getOwner() != null);
+        if (retVal && getOwner() instanceof GraphNodeHooks) {
+            retVal = f.getOwner() instanceof GraphPortHooks;
+        }
+        return retVal;
+    }
+
+    // //////////////////////////////////////////////////////////////
     // diagram-level operations
 
-    /** Reply the port's sector within the current view.  This version
-     *  works precisely with square FigNodes the angxx constants
-     *  should be removed and calculated by the port if non-square
-     *  FigNodes will be used.
-     *
-     *  <pre>Sectors
-     *		      \  1   /
-     *		       \    /
-     *		        \  /
-     *		     2   \/   -2
-     *			 /\
-     *		        /  \
-     *		       /    \
-     *		      /  -1  \ </pre>
-     **/
+    /**
+     * Reply the port's sector within the current view. This version works
+     * precisely with square FigNodes the angxx constants should be removed and
+     * calculated by the port if non-square FigNodes will be used.
+     * 
+     * <pre>
+     * Sectors
+     * 	      \  1   /
+     * 	       \    /
+     * 	        \  /
+     * 	     2   \/   -2
+     * 		 /\
+     * 	        /  \
+     * 	       /    \
+     * 	      /  -1  \
+     * </pre>
+     */
 
     public int getPortSector(Fig portFig) {
         Rectangle nodeBBox = getBounds();
@@ -445,71 +468,64 @@ public class FigNode extends FigGroup implements
         int dY = pbbCenterY - nbbCenterY;
 
         //
-        //   the key is the tangent of this rectangle
+        // the key is the tangent of this rectangle
         //
-        //   if you didn't care about divisions by zero,
-        //       you could do
+        // if you didn't care about divisions by zero,
+        // you could do
         //
-        //   tangentBox = nodeBBox.height/nodeBBox.width;
-        //   tangentCenters = dY/dX;
-        //   if(Math.abs(tangentCenters) > tangentBox) sector 1 or -1
+        // tangentBox = nodeBBox.height/nodeBBox.width;
+        // tangentCenters = dY/dX;
+        // if(Math.abs(tangentCenters) > tangentBox) sector 1 or -1
         //
         int sector = -1;
-        if(Math.abs(dY * nodeBBox.width) > Math.abs(nodeBBox.height * (dX))) {
-            if(dY > 0) {
+        if (Math.abs(dY * nodeBBox.width) > Math.abs(nodeBBox.height * (dX))) {
+            if (dY > 0) {
                 sector = 1;
             }
-        }
-        else {
+        } else {
             sector = 2;
-            if(dX > 0) {
+            if (dX > 0) {
                 sector = -2;
             }
         }
         return sector;
     }
 
-
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // painting methods
 
     /*
-     * Overridden to paint shadows. This method supports painting shadows
-     * for any FigNodeModelElement. Any Figs that are nested within the
+     * Overridden to paint shadows. This method supports painting shadows for
+     * any FigNodeModelElement. Any Figs that are nested within the
      * FigNodeModelElement will be shadowed.<p>
-     *
-     * TODO: If g is not a Graphics2D shadows cannot be painted. This is
-     * a problem when saving the diagram as SVG.
-     *
+     * 
+     * TODO: If g is not a Graphics2D shadows cannot be painted. This is a
+     * problem when saving the diagram as SVG.
+     * 
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
-        if (shadowSize > 0
-	        && g instanceof Graphics2D) {
+        if (shadowSize > 0 && g instanceof Graphics2D) {
             int width = getWidth();
             int height = getHeight();
             int x = getX();
             int y = getY();
 
-            /* Only create a new shadow image if figure size has changed.
-             * Which does not catch all cases:
-             * consider show/hide toggle of a stereotype on a package:
-             * in this case the total size remains, but the notch
-             * at the corner increases/decreases.
-             * Hence also check the "forceRepaint" attribute.
+            /*
+             * Only create a new shadow image if figure size has changed. Which
+             * does not catch all cases: consider show/hide toggle of a
+             * stereotype on a package: in this case the total size remains, but
+             * the notch at the corner increases/decreases. Hence also check the
+             * "forceRepaint" attribute.
              */
-            if (width != cachedWidth
-                    || height != cachedHeight
-                    || forceRepaint) {
+            if (width != cachedWidth || height != cachedHeight || forceRepaint) {
                 forceRepaint = false;
 
                 cachedWidth = width;
                 cachedHeight = height;
 
-                BufferedImage img =
-		    new BufferedImage(width + 100,
-				      height + 100,
-				      BufferedImage.TYPE_INT_ARGB);
+                BufferedImage img = new BufferedImage(width + 100,
+                        height + 100, BufferedImage.TYPE_INT_ARGB);
 
                 // Paint figure onto offscreen image
                 Graphics ig = img.getGraphics();
@@ -518,48 +534,40 @@ public class FigNode extends FigGroup implements
 
                 // Apply two filters to the image:
                 // 1. Apply LookupOp which converts all pixel data in the
-                //    figure to the same shadow color.
+                // figure to the same shadow color.
                 // 2. Apply ConvolveOp which creates blurred effect around
-                //    the edges of the shadow.
-                shadowImage =
-		    SHADOW_CONVOLVE_OP.filter(
-			    SHADOW_LOOKUP_OP.filter(img, null), null);
+                // the edges of the shadow.
+                shadowImage = SHADOW_CONVOLVE_OP.filter(SHADOW_LOOKUP_OP
+                        .filter(img, null), null);
             }
 
             // Paint shadow image onto canvas
             Graphics2D g2d = (Graphics2D) g;
-            g2d.drawImage(
-                shadowImage,
-                null,
-                x + shadowSize - 50,
-                y + shadowSize - 50);
+            g2d.drawImage(shadowImage, null, x + shadowSize - 50, y
+                    + shadowSize - 50);
         }
 
         // Paint figure on top of shadow
         paintOnce(g);
     }
 
-
-    /** Paints the FigNode to the given Graphics. Calls super.paint to
-     *  paint all the Figs contained in the FigNode. Also can draw a
-     *  highlighting rectangle around the FigNode. Needs-more-work:
-     *  maybe I should implement LayerHighlight instead. */
+    /**
+     * Paints the FigNode to the given Graphics. Calls super.paint to paint all
+     * the Figs contained in the FigNode. Also can draw a highlighting rectangle
+     * around the FigNode. Needs-more-work: maybe I should implement
+     * LayerHighlight instead.
+     */
     private void paintOnce(Graphics g) {
         super.paint(g);
-        //System.out.println("[FigNode] paint: owner = " + getOwner());
-        if(_highlight) {
+        // System.out.println("[FigNode] paint: owner = " + getOwner());
+        if (_highlight) {
             Color lineColor = Globals.getPrefs().getHighlightColor();
-            drawRect(
-                    g, 
-                    false, null, 
-                    3, lineColor, 
-                    _x-5, _y-5, _w+9, _h+8, 
-                    false, _dashes, _dashPeriod);
+            drawRect(g, false, null, 3, lineColor, _x - 5, _y - 5, _w + 9,
+                    _h + 8, false, _dashes, _dashPeriod);
         }
     }
 
-
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // Highlightable implementation
     public void setHighlight(boolean b) {
         _highlight = b;
@@ -570,30 +578,30 @@ public class FigNode extends FigGroup implements
         return _highlight;
     }
 
-
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // notifications and updates
 
-    /** The node object that this FigNode is presenting has changed
-     *  state, or been disposed or highlighted. */
+    /**
+     * The node object that this FigNode is presenting has changed state, or
+     * been disposed or highlighted.
+     */
     public void propertyChange(PropertyChangeEvent pce) {
-        //System.out.println("FigNode got a PropertyChangeEvent");
+        // System.out.println("FigNode got a PropertyChangeEvent");
         String pName = pce.getPropertyName();
         Object src = pce.getSource();
-        if(pName.equals("disposed") && src == getOwner()) {
+        if (pName.equals("disposed") && src == getOwner()) {
             removeFromDiagram();
         }
-        if(pName.equals("highlight") && src == getOwner())
-            setHighlight(((Boolean)pce.getNewValue()).booleanValue());
+        if (pName.equals("highlight") && src == getOwner())
+            setHighlight(((Boolean) pce.getNewValue()).booleanValue());
     }
-
 
     /** Make the port Figs visible. Used when blinkingPorts is true. */
     public void showPorts() {
         int figCount = getFigCount();
-        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+        for (int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig f = getFigAt(figIndex);
-            if(f.getOwner() != null) {
+            if (f.getOwner() != null) {
                 f.setLineWidth(1);
                 f.setFilled(true);
             }
@@ -604,9 +612,9 @@ public class FigNode extends FigGroup implements
     /** Make the port Figs invisible. Used when blinkingPorts is true. */
     public void hidePorts() {
         int figCount = getFigCount();
-        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
+        for (int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig f = getFigAt(figIndex);
-            if(f.getOwner() != null) {
+            if (f.getOwner() != null) {
                 f.setLineWidth(0);
                 f.setFilled(false);
             }
@@ -614,20 +622,24 @@ public class FigNode extends FigGroup implements
         endTrans();
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // event handlers
 
-    /** If the mouse enters this FigNode's bbox and the
-     *  _blinkPorts flag is set, then show ports. */
+    /**
+     * If the mouse enters this FigNode's bbox and the _blinkPorts flag is set,
+     * then show ports.
+     */
     public void mouseEntered(MouseEvent me) {
-        if(_blinkPorts)
+        if (_blinkPorts)
             showPorts();
     }
 
-    /** If the mouse exits this FigNode's bbox and the
-     *  _blinkPorts flag is set, then hide ports. */
+    /**
+     * If the mouse exits this FigNode's bbox and the _blinkPorts flag is set,
+     * then hide ports.
+     */
     public void mouseExited(MouseEvent me) {
-        if(_blinkPorts)
+        if (_blinkPorts)
             hidePorts();
     }
 
@@ -642,7 +654,6 @@ public class FigNode extends FigGroup implements
     /** Do nothing when mouse is clicked in FigNode. */
     public void mouseClicked(MouseEvent me) {
     }
-
 
     protected void translateImpl(int dx, int dy) {
         super.translateImpl(dx, dy);
@@ -659,14 +670,14 @@ public class FigNode extends FigGroup implements
     }
 
     /**
-     * Update the position of edges according to the position of the node.
-     * Does nothing if undo in progress.
+     * Update the position of edges according to the position of the node. Does
+     * nothing if undo in progress.
      */
     public void updateEdges() {
         if (!UndoManager.getInstance().isUndoInProgress()) {
             int edgeCount = figEdges.size();
-            for(int edgeIndex = 0; edgeIndex < edgeCount; ++edgeIndex) {
-                FigEdge fe = (FigEdge)figEdges.get(edgeIndex);
+            for (int edgeIndex = 0; edgeIndex < edgeCount; ++edgeIndex) {
+                FigEdge fe = (FigEdge) figEdges.get(edgeIndex);
                 fe.computeRoute();
             }
         }
@@ -674,26 +685,26 @@ public class FigNode extends FigGroup implements
 
     public void cleanUp() {
         int edgeCount = figEdges.size();
-        for(int i = 0; i < edgeCount; ++i) {
-            FigEdge fe = (FigEdge)figEdges.get(i);
+        for (int i = 0; i < edgeCount; ++i) {
+            FigEdge fe = (FigEdge) figEdges.get(i);
             fe.cleanUp();
         }
     }
-    
-    
+
     /**
-     * Return a list of other Figs that must be forced to be dragged at the
-     * same time as this Fig or null if no dependent. By default this returns
-     * null, override in concrete class as required.
+     * Return a list of other Figs that must be forced to be dragged at the same
+     * time as this Fig or null if no dependent. By default this returns null,
+     * override in concrete class as required.
+     * 
      * @return List of figs
      */
     public List getDragDependencies() {
-	return null;
+        return null;
     }
-    
+
     /**
-     * @param size the new shadow size
-     * TODO: Move the shadow stuff into GEF
+     * @param size
+     *                the new shadow size TODO: Move the shadow stuff into GEF
      */
     public void setShadowSize(int size) {
         if (size == shadowSize) {
@@ -704,9 +715,9 @@ public class FigNode extends FigGroup implements
     }
 
     /**
-     * @deprecated do not use. This was deprecated by bobtarling at the 
-     * same time that it was introduced (Apr 2007), so may be deleted without
-     * warning as soon as its single reference is gone.
+     * @deprecated do not use. This was deprecated by bobtarling at the same
+     *             time that it was introduced (Apr 2007), so may be deleted
+     *             without warning as soon as its single reference is gone.
      * @param size
      */
     protected void setShadowSizeFriend(int size) {
@@ -730,7 +741,4 @@ public class FigNode extends FigGroup implements
         forceRepaint = true;
     }
 
-    
 }
-
-

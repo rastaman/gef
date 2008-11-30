@@ -39,14 +39,15 @@ import javax.swing.Action;
 import org.tigris.gef.di.GraphElement;
 import org.tigris.gef.presentation.Fig;
 
-/** An abstract class that makes it easier to implement your own
- *  version of MutableGraphModel. This class basically includes the
- *  code for event notifications, so that you don't have to write
- *  that.  It also provides a few utility methods.
+/**
+ * An abstract class that makes it easier to implement your own version of
+ * MutableGraphModel. This class basically includes the code for event
+ * notifications, so that you don't have to write that. It also provides a few
+ * utility methods.
  */
 
-public abstract class MutableGraphSupport
-        implements MutableGraphModel, java.io.Serializable {
+public abstract class MutableGraphSupport implements MutableGraphModel,
+        java.io.Serializable {
 
     private Vector _graphListeners;
 
@@ -65,11 +66,12 @@ public abstract class MutableGraphSupport
         return _graphListeners;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // MutableGraphModel implementation
 
-    /** Return a valid node in this graph
-     * TODO Should throw a GraphModelException or InvalidArgumentException
+    /**
+     * Return a valid node in this graph TODO Should throw a GraphModelException
+     * or InvalidArgumentException
      */
     public Object createNode(String name, Hashtable args) {
         Object newNode;
@@ -93,56 +95,52 @@ public abstract class MutableGraphSupport
         return connectionConstrainer;
     }
 
-
     /**
-     * Apply the object containing the ruleset for what edges and
-     * ports can connect in the graph
+     * Apply the object containing the ruleset for what edges and ports can
+     * connect in the graph
      */
     public void setConnectionConstrainer(ConnectionConstrainer cc) {
-        connectionConstrainer = cc;        
+        connectionConstrainer = cc;
     }
 
-    /** Return true if the type of the given node can be mapped to a
-     *  type supported by this type of diagram
+    /**
+     * Return true if the type of the given node can be mapped to a type
+     * supported by this type of diagram
      */
     public boolean canDragNode(Object node) {
         return false;
     }
 
-    /** Create a new node based on the given one and add it to the graph.*/
+    /** Create a new node based on the given one and add it to the graph. */
     public void dragNode(Object node) {
     }
 
-    /** Return true if the connection to the old node can be rerouted to
-     * the new node.
+    /**
+     * Return true if the connection to the old node can be rerouted to the new
+     * node.
      */
-    public boolean canChangeConnectedNode(
-            Object newNode,
-            Object oldNode,
+    public boolean canChangeConnectedNode(Object newNode, Object oldNode,
             Object edge) {
         return false;
     }
 
     /**
-     * Determine if the two given ports can be connected by the
-     * given kind of edge. This delegates either to the registered 
-     * ConnectionConstrainer or if unregistered then ignores
-     * edgeClass and calls canConnect(port,port).
-     * @param fromPort the source port for which to test
-     * @param toPort the destination port for which to test
-     * @param edgeType An identifier indicating the type of edge to create
+     * Determine if the two given ports can be connected by the given kind of
+     * edge. This delegates either to the registered ConnectionConstrainer or if
+     * unregistered then ignores edgeClass and calls canConnect(port,port).
+     * 
+     * @param fromPort
+     *                the source port for which to test
+     * @param toPort
+     *                the destination port for which to test
+     * @param edgeType
+     *                An identifier indicating the type of edge to create
      */
-    public boolean canConnect(
-            Object fromPort,
-            Object toPort,
-            Object edgeType) {
+    public boolean canConnect(Object fromPort, Object toPort, Object edgeType) {
         boolean canConnect = false;
         if (connectionConstrainer != null) {
-            canConnect =
-                connectionConstrainer.isConnectionValid(
-                    edgeType,
-                    fromPort,
-                    toPort);
+            canConnect = connectionConstrainer.isConnectionValid(edgeType,
+                    fromPort, toPort);
         } else {
             canConnect = canConnect(fromPort, toPort);
         }
@@ -150,72 +148,70 @@ public abstract class MutableGraphSupport
     }
 
     /**
-     * Determine if the two given ports can be connected by the
-     * given kind of edge. This delegates either to the registered 
-     * ConnectionConstrainer or if unregistered then ignores
-     * edgeClass and calls canConnect(port,port).
-     * @param fromPort the source port for which to test
-     * @param toPort the destination port for which to test
-     * @param edgeClass The edge class for which test
+     * Determine if the two given ports can be connected by the given kind of
+     * edge. This delegates either to the registered ConnectionConstrainer or if
+     * unregistered then ignores edgeClass and calls canConnect(port,port).
+     * 
+     * @param fromPort
+     *                the source port for which to test
+     * @param toPort
+     *                the destination port for which to test
+     * @param edgeClass
+     *                The edge class for which test
      */
-    public boolean canConnect(
-            Object fromPort,
-            Object toPort,
-            Class edgeClass) {
+    public boolean canConnect(Object fromPort, Object toPort, Class edgeClass) {
         boolean canConnect = false;
         if (connectionConstrainer != null) {
-            canConnect =
-                connectionConstrainer.isConnectionValid(
-                    edgeClass,
-                    fromPort,
-                    toPort);
+            canConnect = connectionConstrainer.isConnectionValid(edgeClass,
+                    fromPort, toPort);
         } else {
             canConnect = canConnect(fromPort, toPort);
         }
         return canConnect;
     }
 
-    /** Reroutes the connection to the old node to be connected to
-     * the new node.
+    /**
+     * Reroutes the connection to the old node to be connected to the new node.
      */
-    public void changeConnectedNode(
-            Object newNode,
-            Object oldNode,
-            Object edge,
-            boolean isSource) {
+    public void changeConnectedNode(Object newNode, Object oldNode,
+            Object edge, boolean isSource) {
     }
 
-    /** Contruct and add a new edge of the given kind. By default ignore
-     *  edgeClass and call connect(port,port). */
+    /**
+     * Contruct and add a new edge of the given kind. By default ignore
+     * edgeClass and call connect(port,port).
+     */
     public Object connect(Object fromPort, Object toPort, Object edgeClass) {
         return connect(fromPort, toPort);
     }
 
     /**
-     * Construct and add a new edge of the given kind and connect
-     * the given ports. By default ignore
-     *  edgeClass and call connect(port,port).
-     *
-     * @param fromPort   The originating port to connect
-     *
-     * @param toPort     The destination port to connect
-     *
-     * @param edgeType   Some indicator of the type of edge to create. This
-     *                   could be a <code>Class</code> or some other value
-     *                   as input to a factory to create the required edge
-     *                   model.
-     *
-     * @param styleAttributes key/value pairs from which to create the edge.
-     *
-     * @return           The type of edge created (the same as
-     *                   <code>edgeClass</code> if we succeeded,
-     *                   <code>null</code> otherwise)
+     * Construct and add a new edge of the given kind and connect the given
+     * ports. By default ignore edgeClass and call connect(port,port).
+     * 
+     * @param fromPort
+     *                The originating port to connect
+     * 
+     * @param toPort
+     *                The destination port to connect
+     * 
+     * @param edgeType
+     *                Some indicator of the type of edge to create. This could
+     *                be a <code>Class</code> or some other value as input to
+     *                a factory to create the required edge model.
+     * 
+     * @param styleAttributes
+     *                key/value pairs from which to create the edge.
+     * 
+     * @return The type of edge created (the same as <code>edgeClass</code> if
+     *         we succeeded, <code>null</code> otherwise)
      */
-    public Object connect(Object fromPort, Object toPort, Object edgeType, Map styleAttributes) {
+    public Object connect(Object fromPort, Object toPort, Object edgeType,
+            Map styleAttributes) {
         return connect(fromPort, toPort);
     }
-    
-    ////////////////////////////////////////////////////////////////
+
+    // //////////////////////////////////////////////////////////////
     // utility methods
 
     public boolean containsNode(Object node) {
@@ -233,7 +229,7 @@ public abstract class MutableGraphSupport
         if (nodes == null) {
             return false;
         }
-        for (int i=0; i < nodes.size(); ++i) {
+        for (int i = 0; i < nodes.size(); ++i) {
             List ports = getPorts(nodes.get(i));
             if (ports != null && ports.contains(port)) {
                 return true;
@@ -260,7 +256,7 @@ public abstract class MutableGraphSupport
         return containsNodePort(port) || containsEdgePort(port);
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // listener registration
 
     public void addGraphEventListener(GraphListener listener) {
@@ -269,6 +265,7 @@ public abstract class MutableGraphSupport
         }
         _graphListeners.addElement(listener);
     }
+
     public void removeGraphEventListener(GraphListener listener) {
         if (_graphListeners == null) {
             return;
@@ -276,7 +273,7 @@ public abstract class MutableGraphSupport
         _graphListeners.removeElement(listener);
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // event notifications
 
     public void fireNodeAdded(Object node) {
@@ -357,22 +354,22 @@ public abstract class MutableGraphSupport
     public static void setSaveAction(Action action) {
         saveAction = action;
     }
-    
+
     public static void enableSaveAction() {
         if (saveAction != null) {
             saveAction.setEnabled(true);
         }
     }
-    
+
     public void removeNode(Object node) {
         fireNodeRemoved(node);
     }
-    
+
     /** Add the given node to the graph, if valid. */
     public void addNode(Object node) {
         fireNodeAdded(node);
     }
-    
+
     /** Add the given edge to the graph, if valid. */
     public void addEdge(Object edge) {
         fireEdgeAdded(edge);
@@ -386,7 +383,8 @@ public abstract class MutableGraphSupport
     /** Remove the given edge from the graph. */
     public void removeFig(Fig fig) {
         if (fig instanceof GraphElement) {
-            throw new IllegalArgumentException("Use removeEdge or removeNode to remove a complex Fig");
+            throw new IllegalArgumentException(
+                    "Use removeEdge or removeNode to remove a complex Fig");
         }
         fig.removeFromDiagram();
         fireGraphChanged();
@@ -410,9 +408,7 @@ public abstract class MutableGraphSupport
     /**
      * Returns true if handle can be enclosed into encloser.
      */
-    public boolean isEnclosable(
-            Object handle,
-            Object encloser) {
+    public boolean isEnclosable(Object handle, Object encloser) {
         return true;
     }
 

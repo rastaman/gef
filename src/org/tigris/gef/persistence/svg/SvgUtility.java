@@ -40,7 +40,8 @@ public class SvgUtility {
      * description otherwise it is in hexadecimal red green blue format of
      * either #rrggbb or #rgb.
      * 
-     * @param color The color to convert to SVG style
+     * @param color
+     *                The color to convert to SVG style
      * @return a string representing the color in SVG format
      */
     public static String getColor(Color color) {
@@ -48,23 +49,24 @@ public class SvgUtility {
         if (colorDescr != null) {
             return colorDescr;
         }
-        
+
         int red = color.getRed();
         int green = color.getGreen();
         int blue = color.getBlue();
 
         if (red < 15 && green < 15 && blue < 15) {
-            return "#" + Integer.toHexString(color.getRed())
-                 + " " + Integer.toHexString(color.getGreen())
-                 + " " + Integer.toHexString(color.getBlue());
+            return "#" + Integer.toHexString(color.getRed()) + " "
+                    + Integer.toHexString(color.getGreen()) + " "
+                    + Integer.toHexString(color.getBlue());
         }
-        return "#" + colorToHex(color.getRed())
-             + " " + colorToHex(color.getGreen())
-             + " " + colorToHex(color.getBlue());
+        return "#" + colorToHex(color.getRed()) + " "
+                + colorToHex(color.getGreen()) + " "
+                + colorToHex(color.getBlue());
     }
 
     /**
      * Convert an integer representing a color scale to 2 hex digits.
+     * 
      * @param integer
      * @return A string of exactly 2 hexadecimal digits.
      */
@@ -76,32 +78,33 @@ public class SvgUtility {
         if (integer > 15) {
             return Integer.toHexString(integer);
         }
-        
+
         return "0" + Integer.toHexString(integer);
     }
-    
+
     /**
      * Get a color name for a color or null if this is some custom color.
+     * 
      * @param color
      * @return the color name or null.
      */
     private static String getColorName(Color color) {
-        
+
         String colorName = null;
-        
+
         // TODO expand to full SVG color list.
         if (color.equals(Color.white)) {
             colorName = "white";
-        } else if(color.equals(Color.black)) {
+        } else if (color.equals(Color.black)) {
             colorName = "black";
-        } else if(color.equals(Color.red)) {
+        } else if (color.equals(Color.red)) {
             colorName = "red";
-        } else if(color.equals(Color.green)) {
+        } else if (color.equals(Color.green)) {
             colorName = "green";
-        } else if(color.equals(Color.blue)) {
+        } else if (color.equals(Color.blue)) {
             colorName = "blue";
         }
-        
+
         return colorName;
     }
 }

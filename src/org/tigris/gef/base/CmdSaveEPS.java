@@ -32,13 +32,15 @@ import java.awt.Rectangle;
 
 import org.tigris.gef.persistence.*;
 
-/** Cmd to save a diagram as PostScript in a supplied OutputStream. 
- *  Requires the CH.ifa.draw.util.PostscriptWriter class. Operates on the
- *  diagram in the current editor.
- *
- *  Code loosely adapted from CmdSaveGIF.
+/**
+ * Cmd to save a diagram as PostScript in a supplied OutputStream. Requires the
+ * CH.ifa.draw.util.PostscriptWriter class. Operates on the diagram in the
+ * current editor.
+ * 
+ * Code loosely adapted from CmdSaveGIF.
+ * 
  * @deprecated in 0.12.3 use SaveEPSAction
- *  @author Frank Wienberg, wienberg@informatik.uni-hamburg.de
+ * @author Frank Wienberg, wienberg@informatik.uni-hamburg.de
  */
 
 public class CmdSaveEPS extends CmdSaveGraphics {
@@ -49,11 +51,10 @@ public class CmdSaveEPS extends CmdSaveGraphics {
         super("SaveEncapsulatedPostScript");
     }
 
-    protected void saveGraphics(OutputStream s, Editor ce,
-                                Rectangle drawingArea)
-                 throws IOException {
+    protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea)
+            throws IOException {
         PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
-        ps.translate(-drawingArea.x,-drawingArea.y);
+        ps.translate(-drawingArea.x, -drawingArea.y);
         ce.print(ps);
         ps.dispose();
     }

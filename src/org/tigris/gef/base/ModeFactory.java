@@ -24,19 +24,22 @@
 package org.tigris.gef.base;
 
 /**
- * The interface that Mode factories should implement.
- * This allows the type of Mode to be created under various circumstances to
- * be specified.
+ * The interface that Mode factories should implement. This allows the type of
+ * Mode to be created under various circumstances to be specified.
+ * 
  * @author Bob Tarling
  */
 public interface ModeFactory {
     /**
      * Create a new instance of the relevant Mode class
+     * 
      * @return
      */
     FigModifyingMode createMode();
+
     /**
      * Create a new instance of the relevant Mode class
+     * 
      * @return
      */
     FigModifyingMode createMode(Editor editor);

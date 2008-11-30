@@ -26,7 +26,7 @@ import org.tigris.gef.undo.UndoManager;
  * Abstract Fig class for representing edges between ports.
  */
 public abstract class FigEdge extends Fig implements GraphEdge {
-    
+
     /** Fig presenting the edge's from-port . */
     private Fig _sourcePortFig;
 
@@ -42,8 +42,10 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /** Fig that presents the edge. */
     private Fig _fig;
 
-    /** True if the FigEdge should be drawn from the nearest point of
-     *  each port Fig. */
+    /**
+     * True if the FigEdge should be drawn from the nearest point of each port
+     * Fig.
+     */
     protected boolean _useNearest = false;
 
     /** True when the FigEdgde should be drawn highlighted. */
@@ -57,15 +59,16 @@ public abstract class FigEdge extends Fig implements GraphEdge {
 
     /**
      * The items that are accumulated along the path, a vector.
+     * 
      * @deprecated use getPathItems()
      */
     @Deprecated
     protected Vector _pathItems = new Vector();
 
     private class PathItem implements java.io.Serializable {
-	
-	private static final long serialVersionUID = -5298572087861993804L;
-	final Fig _fig;
+
+        private static final long serialVersionUID = -5298572087861993804L;
+        final Fig _fig;
         final private PathConv _path;
 
         PathItem(final Fig f, final PathConv pc) {
@@ -80,9 +83,9 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         final public Fig getFig() {
             return _fig;
         }
-        
+
         final public void paint() {
-            
+
         }
     }
 
@@ -91,12 +94,14 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         setFig(makeEdgeFig());
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constructors
 
-    /** Construct a new FigEdge with the given source and destination
-     *  port figs and FigNodes.  The new FigEdge will represent the
-     *  given edge (an object from some underlying model). */
+    /**
+     * Construct a new FigEdge with the given source and destination port figs
+     * and FigNodes. The new FigEdge will represent the given edge (an object
+     * from some underlying model).
+     */
     public FigEdge(Fig s, Fig d, FigNode sfn, FigNode dfn, Object edge) {
         setSourcePortFig(s);
         setDestPortFig(d);
@@ -107,9 +112,11 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         _fig.setGroup(this);
         _fig.setLayer(getLayer());
     }
-    
-    /** Add a new path item to this FigEdge. newPath indicates both the
-     *  location and the Fig (usually FigText) that should be drawn. */
+
+    /**
+     * Add a new path item to this FigEdge. newPath indicates both the location
+     * and the Fig (usually FigText) that should be drawn.
+     */
     public void addPathItem(Fig newFig, PathConv newPath) {
         _pathItems.addElement(new PathItem(newFig, newPath));
         newFig.setGroup(this);
@@ -121,8 +128,8 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         Rectangle res = _fig.getBounds();
         Point loc = new Point();
         int size = _pathItems.size();
-        for(int i = 0; i < size; i++) {
-            PathItem element = (PathItem)_pathItems.elementAt(i);
+        for (int i = 0; i < size; i++) {
+            PathItem element = (PathItem) _pathItems.elementAt(i);
             PathConv pc = element.getPath();
             Fig f = element.getFig();
             int oldX = f.getX();
@@ -130,7 +137,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
             int halfWidth = f.getWidth() / 2;
             int halfHeight = f.getHeight() / 2;
             pc.stuffPoint(loc);
-            if(oldX != loc.x || oldY != loc.y) {
+            if (oldX != loc.x || oldY != loc.y) {
                 f.damage();
                 f.setLocation(loc.x - halfWidth, loc.y - halfHeight);
             }
@@ -148,50 +155,55 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         _fig.cleanUp();
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // Routing related methods
 
-    /** Method to compute the route a FigEdge should follow.  By defualt
-     *  this does nothing. Sublcasses, like FigEdgeRectiline override
-     *  this method. */
+    /**
+     * Method to compute the route a FigEdge should follow. By defualt this does
+     * nothing. Sublcasses, like FigEdgeRectiline override this method.
+     */
     final public void computeRoute() {
         if (UndoManager.getInstance().isGenerateMementos()) {
             Memento memento = new Memento() {
                 Point[] points = getPoints();
-                
+
                 public void undo() {
-                	UndoManager.getInstance().addMementoLock(this);
-                	Point[] newpoints = getPoints();
+                    UndoManager.getInstance().addMementoLock(this);
+                    Point[] newpoints = getPoints();
                     setPoints(points);
                     points = newpoints;
                     damage();
                     UndoManager.getInstance().removeMementoLock(this);
                 }
+
                 public void redo() {
                     undo();
                 }
-                public void dispose() {}
-                
+
+                public void dispose() {
+                }
+
                 public String toString() {
-                    return (isStartChain() ? "*" : " ") + "ComputeRouteMemento " + points;
+                    return (isStartChain() ? "*" : " ")
+                            + "ComputeRouteMemento " + points;
                 }
             };
             UndoManager.getInstance().addMemento(memento);
         }
         computeRouteImpl();
     }
-    
+
     abstract public void computeRouteImpl();
-    
+
     final public boolean contains(int x, int y) {
-        if(_fig.contains(x, y)) {
+        if (_fig.contains(x, y)) {
             return true;
         }
 
         int size = _pathItems.size();
-        for(int i = 0; i < size; i++) {
-            Fig f = ((PathItem)_pathItems.elementAt(i)).getFig();
-            if(f.contains(x, y)) {
+        for (int i = 0; i < size; i++) {
+            Fig f = ((PathItem) _pathItems.elementAt(i)).getFig();
+            if (f.contains(x, y)) {
                 return true;
             }
         }
@@ -200,36 +212,38 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     }
 
     public void removeFromDiagram() {
-        if(_sourceFigNode instanceof FigNode) {
-            ((FigNode)_sourceFigNode).removeFigEdge(this);
+        if (_sourceFigNode instanceof FigNode) {
+            ((FigNode) _sourceFigNode).removeFigEdge(this);
         }
 
-        if(_destFigNode instanceof FigNode) {
-            ((FigNode)_destFigNode).removeFigEdge(this);
+        if (_destFigNode instanceof FigNode) {
+            ((FigNode) _destFigNode).removeFigEdge(this);
         }
 
         super.removeFromDiagram();
     }
 
-    /** Get and set the flag about using Fig connection points rather
-     *  than centers. */
+    /**
+     * Get and set the flag about using Fig connection points rather than
+     * centers.
+     */
     final public boolean getBetweenNearestPoints() {
         return _useNearest;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // Fig API
 
     /** Reply the bounding box for this FigEdge. */
     final public Rectangle getBounds(Rectangle r) {
-        if(r == null) {
+        if (r == null) {
             r = new Rectangle();
         }
 
         _fig.getBounds(r);
         int size = _pathItems.size();
-        for(int pathItemIndex = 0; pathItemIndex < size; pathItemIndex++) {
-            PathItem pathItem = (PathItem)_pathItems.get(pathItemIndex);
+        for (int pathItemIndex = 0; pathItemIndex < size; pathItemIndex++) {
+            PathItem pathItem = (PathItem) _pathItems.get(pathItemIndex);
             Fig f = pathItem.getFig();
             r.add(f.getBounds());
         }
@@ -260,20 +274,18 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         return _destPortFig;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // accessors
 
     /**
-     * Return the Fig that will be drawn.
-     * USED BY PGML.tee
+     * Return the Fig that will be drawn. USED BY PGML.tee
      */
     final public Fig getFig() {
         return _fig;
     }
 
     /**
-     * The first point ion an edge
-     * USED BY PGML.tee
+     * The first point ion an edge USED BY PGML.tee
      */
     final public Point getFirstPoint() {
         return _fig.getFirstPoint();
@@ -296,6 +308,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
 
     /**
      * An edge cannot be filled with color
+     * 
      * @return false
      */
     final public boolean hasFillColor() {
@@ -313,8 +326,10 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         return _fig.getNumPoints();
     }
 
-    /** Return the path item on this FigEdge closest to the given
-     *  location. needs-more-work: not implemented yet. */
+    /**
+     * Return the path item on this FigEdge closest to the given location.
+     * needs-more-work: not implemented yet.
+     */
     final public Fig getPathItem(PathConv pointOnPath) {
         // needs-more-work: Find the closest Fig to this point
         return null;
@@ -329,8 +344,8 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /** Return all figs of the path items */
     final public Vector getPathItemFigs() {
         Vector figs = new Vector();
-        for(int i = 0; i < _pathItems.size(); i++) {
-            figs.add(getPathItemFig((PathItem)_pathItems.elementAt(i)));
+        for (int i = 0; i < _pathItems.size(); i++) {
+            figs.add(getPathItemFig((PathItem) _pathItems.elementAt(i)));
         }
 
         return figs;
@@ -338,19 +353,20 @@ public abstract class FigEdge extends Fig implements GraphEdge {
 
     /**
      * Return the vector of path items on this FigEdge.
+     * 
      * @deprecated use getPathItems
      */
     final public Vector getPathItemsRaw() {
         return _pathItems;
     }
-    
+
     /**
      * @return the path items on this edge.
      */
     private List<PathItem> getPathItems() {
         return new ArrayList<PathItem>(_pathItems);
     }
-    
+
     /**
      * @return all the path item placement strategies used by this edge.
      */
@@ -375,8 +391,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     }
 
     /**
-     * TODO document
-     * Used in SVG.TEE
+     * TODO document Used in SVG.TEE
      */
     public String getPrivateData() {
         Fig spf = getSourcePortFig();
@@ -384,19 +399,19 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         FigNode sfn = getSourceFigNode();
         FigNode dfn = getDestFigNode();
         String data = "";
-        if(spf != null) {
+        if (spf != null) {
             data += "sourcePortFig=\"" + spf.getId() + "\" ";
         }
 
-        if(dpf != null) {
+        if (dpf != null) {
             data += "destPortFig=\"" + dpf.getId() + "\" ";
         }
 
-        if(sfn != null) {
+        if (sfn != null) {
             data += "sourceFigNode=\"" + sfn.getId() + "\" ";
         }
 
-        if(dfn != null) {
+        if (dfn != null) {
             data += "destFigNode=\"" + dfn.getId() + "\" ";
         }
 
@@ -414,7 +429,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     final public FigNode getSourceFigNode() {
         return _sourceFigNode;
     }
-    
+
     final public GraphNode getSourceNode() {
         return _sourceFigNode;
     }
@@ -422,8 +437,6 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     final public GraphNode getDestNode() {
         return _destFigNode;
     }
-
-    
 
     /**
      * USED BY PGML.tee
@@ -441,14 +454,14 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     }
 
     public boolean hit(Rectangle r) {
-        if(_fig.hit(r)) {
+        if (_fig.hit(r)) {
             return true;
         }
 
         int size = _pathItems.size();
-        for(int i = 0; i < size; i++) {
-            Fig f = ((PathItem)_pathItems.elementAt(i)).getFig();
-            if(f.isAnnotation() && f.hit(r)) {
+        for (int i = 0; i < size; i++) {
+            Fig f = ((PathItem) _pathItems.elementAt(i)).getFig();
+            if (f.isAnnotation() && f.hit(r)) {
                 return true;
             }
         }
@@ -459,14 +472,14 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     final public Fig hitFig(Rectangle r) {
         Enumeration iter = _pathItems.elements();
         Fig res = null;
-        if(_fig.hit(r)) {
+        if (_fig.hit(r)) {
             res = _fig;
         }
 
-        while(iter.hasMoreElements()) {
-            PathItem pi = (PathItem)iter.nextElement();
+        while (iter.hasMoreElements()) {
+            PathItem pi = (PathItem) iter.nextElement();
             Fig f = pi.getFig();
-            if(f.hit(r)) {
+            if (f.hit(r)) {
                 res = f;
             }
         }
@@ -475,21 +488,21 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     }
 
     final public boolean intersects(Rectangle r) {
-        if(_fig.intersectsPerimeter(r)) {
-            //System.out.println("Intersects perimeter");
+        if (_fig.intersectsPerimeter(r)) {
+            // System.out.println("Intersects perimeter");
             return true;
         }
 
         int size = _pathItems.size();
-        for(int i = 0; i < size; i++) {
-            Fig f = ((PathItem)_pathItems.elementAt(i)).getFig();
+        for (int i = 0; i < size; i++) {
+            Fig f = ((PathItem) _pathItems.elementAt(i)).getFig();
             if (f.intersects(r)) {
-                //System.out.println("Intersects");
+                // System.out.println("Intersects");
                 return true;
             }
         }
 
-        //System.out.println("Doesn't intersect");
+        // System.out.println("Doesn't intersect");
         return false;
     }
 
@@ -505,32 +518,32 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         return _fig.isRotatable();
     }
 
-    /** 
-     * Abstract method to make the Fig that will be drawn for this
-     * FigEdge. In FigEdgeLine this method constructs a FigLine. In
-     * FigEdgeRectiline, this method constructs a FigPoly.
+    /**
+     * Abstract method to make the Fig that will be drawn for this FigEdge. In
+     * FigEdgeLine this method constructs a FigLine. In FigEdgeRectiline, this
+     * method constructs a FigPoly.
      */
     protected abstract Fig makeEdgeFig();
 
     /**
-     * Paint this FigEdge.  TODO: take Highlight into account
+     * Paint this FigEdge. TODO: take Highlight into account
      */
     public void paint(Graphics graphicContext) {
-        //computeRoute();
-        Graphics g = (Graphics)graphicContext;
+        // computeRoute();
+        Graphics g = (Graphics) graphicContext;
         _fig.paint(g);
         paintArrowHeads(g);
         paintPathItems(g);
     }
 
     public void appendSvg(StringBuffer sb) {
-        //computeRoute();
+        // computeRoute();
         _fig.appendSvg(sb);
-        //appendSvgArrowHeads(g);
+        // appendSvgArrowHeads(g);
         appendSvgPathItems(sb);
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // display methods
 
     /**
@@ -541,23 +554,24 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         _arrowHeadEnd.paintAtTail(g, _fig);
     }
 
-    final public void paintHighlightLine(Graphics g, int x1, int y1, int x2, int y2) {
-        g.setColor(Globals.getPrefs().getHighlightColor());    /* needs-more-work */
+    final public void paintHighlightLine(Graphics g, int x1, int y1, int x2,
+            int y2) {
+        g.setColor(Globals.getPrefs().getHighlightColor()); /* needs-more-work */
         double dx = (x2 - x1);
         double dy = (y2 - y1);
         double denom = Math.sqrt(dx * dx + dy * dy);
-        if(denom == 0) {
+        if (denom == 0) {
             return;
         }
 
         double orthoX = dy / denom;
         double orthoY = -dx / denom;
         // needs-more-work: should fill poly instead
-        for(double i = 2.0; i < 5.0; i += 0.27) {
-            int hx1 = (int)(x1 + i * orthoX);
-            int hy1 = (int)(y1 + i * orthoY);
-            int hx2 = (int)(x2 + i * orthoX);
-            int hy2 = (int)(y2 + i * orthoY);
+        for (double i = 2.0; i < 5.0; i += 0.27) {
+            int hx1 = (int) (x1 + i * orthoX);
+            int hy1 = (int) (y1 + i * orthoY);
+            int hx2 = (int) (x2 + i * orthoX);
+            int hy2 = (int) (y2 + i * orthoY);
             g.drawLine(hx1, hy1, hx2, hy2);
         }
     }
@@ -565,14 +579,14 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /** Paint any labels that are located relative to this FigEdge. */
     final protected void paintPathItems(Graphics g) {
         Vector pathVec = getPathItemsRaw();
-        for(int i = 0; i < pathVec.size(); i++) {
-            PathItem element = (PathItem)pathVec.elementAt(i);
-            //       PathConv path = element.getPath();
+        for (int i = 0; i < pathVec.size(); i++) {
+            PathItem element = (PathItem) pathVec.elementAt(i);
+            // PathConv path = element.getPath();
             Fig f = element.getFig();
-            //       int halfWidth = f.getWidth() / 2;
-            //       int halfHeight = f.getHeight() / 2;
-            //       Point loc = path.getPoint();
-            //       f.setLocation(loc.x - halfWidth, loc.y - halfHeight);
+            // int halfWidth = f.getWidth() / 2;
+            // int halfHeight = f.getHeight() / 2;
+            // Point loc = path.getPoint();
+            // f.setLocation(loc.x - halfWidth, loc.y - halfHeight);
             f.paint(g);
         }
     }
@@ -580,25 +594,25 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /** Paint any labels that are located relative to this FigEdge. */
     final protected void appendSvgPathItems(StringBuffer sb) {
         Vector pathVec = getPathItemsRaw();
-        for(int i = 0; i < pathVec.size(); i++) {
-            PathItem element = (PathItem)pathVec.elementAt(i);
+        for (int i = 0; i < pathVec.size(); i++) {
+            PathItem element = (PathItem) pathVec.elementAt(i);
             Fig f = element.getFig();
             f.appendSvg(sb);
         }
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // notifications and updates
     public void propertyChange(PropertyChangeEvent pce) {
-        //System.out.println("FigEdge got a PropertyChangeEvent");
+        // System.out.println("FigEdge got a PropertyChangeEvent");
         String pName = pce.getPropertyName();
         Object src = pce.getSource();
-        if(pName.equals("disposed") && src == getOwner()) {
+        if (pName.equals("disposed") && src == getOwner()) {
             removeFromDiagram();
         }
 
-        if(pName.equals("highlight") && src == getOwner()) {
-            _highlight = ((Boolean)pce.getNewValue()).booleanValue();
+        if (pName.equals("highlight") && src == getOwner()) {
+            _highlight = ((Boolean) pce.getNewValue()).booleanValue();
             damage();
         }
     }
@@ -610,9 +624,9 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     }
 
     final public void removePathItem(Fig goneFig) {
-        for(int i = 0; i < _pathItems.size(); i++) {
-            PathItem curItem = (PathItem)_pathItems.elementAt(i);
-            if(curItem.getFig() == goneFig) {
+        for (int i = 0; i < _pathItems.size(); i++) {
+            PathItem curItem = (PathItem) _pathItems.elementAt(i);
+            if (curItem.getFig() == goneFig) {
                 removePathItem(curItem);
                 return;
             }
@@ -636,14 +650,13 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     public void setDestFigNode(FigNode fn) {
         // assert fn != null
         try {
-            if(_destFigNode instanceof FigNode) {
-                ((FigNode)_destFigNode).removeFigEdge(this);
+            if (_destFigNode instanceof FigNode) {
+                ((FigNode) _destFigNode).removeFigEdge(this);
             }
 
             _destFigNode = fn;
             fn.addFigEdge(this);
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -651,13 +664,14 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /** Set the Fig reprenting this FigEdge's to-port. */
     final public void setDestPortFig(Fig fig) {
         if (fig == null) {
-            throw new IllegalArgumentException("A destination port must be supplied");
+            throw new IllegalArgumentException(
+                    "A destination port must be supplied");
         }
         _destPortFig = fig;
     }
 
     public void setFig(Fig f) {
-        if(_fig != null && _fig.getGroup() == this) {
+        if (_fig != null && _fig.getGroup() == this) {
             _fig.setGroup(null);
         }
 
@@ -666,7 +680,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         _fig.setLayer(getLayer());
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // Highlightable implementation
     final public void setHighlight(boolean b) {
         _highlight = b;
@@ -675,6 +689,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
 
     /**
      * Sets the line color of the edge and of soure/destination arrows.
+     * 
      * @param c
      */
     public void setLineColor(Color c) {
@@ -692,23 +707,23 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         calcBounds();
     }
 
-    /** Set the edge (some object in an underlying model) that this
-     *  FigEdge should represent. */
+    /**
+     * Set the edge (some object in an underlying model) that this FigEdge
+     * should represent.
+     */
     public void setOwner(Object own) {
-        //System.out.println("Setting owner of " + this + " to " + own);
+        // System.out.println("Setting owner of " + this + " to " + own);
         Object oldOwner = getOwner();
-        if(oldOwner instanceof GraphEdgeHooks) {
-            ((GraphEdgeHooks)oldOwner).removePropertyChangeListener(this);
-        }
-        else if(oldOwner instanceof Highlightable) {
-            ((Highlightable)oldOwner).removePropertyChangeListener(this);
+        if (oldOwner instanceof GraphEdgeHooks) {
+            ((GraphEdgeHooks) oldOwner).removePropertyChangeListener(this);
+        } else if (oldOwner instanceof Highlightable) {
+            ((Highlightable) oldOwner).removePropertyChangeListener(this);
         }
 
-        if(own instanceof GraphEdgeHooks) {
-            ((GraphEdgeHooks)own).addPropertyChangeListener(this);
-        }
-        else if(own instanceof Highlightable) {
-            ((Highlightable)own).addPropertyChangeListener(this);
+        if (own instanceof GraphEdgeHooks) {
+            ((GraphEdgeHooks) own).addPropertyChangeListener(this);
+        } else if (own instanceof Highlightable) {
+            ((Highlightable) own).addPropertyChangeListener(this);
         }
 
         super.setOwner(own);
@@ -738,30 +753,29 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     public void setSourceFigNode(FigNode fn) {
         // assert fn != null
         try {
-            if(_sourceFigNode instanceof FigNode) {
-                ((FigNode)_sourceFigNode).removeFigEdge(this);
+            if (_sourceFigNode instanceof FigNode) {
+                ((FigNode) _sourceFigNode).removeFigEdge(this);
             }
 
             _sourceFigNode = fn;
             fn.addFigEdge(this);
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
+
     /**
      * Set the GraphNode reprenting this FigEdge's from-node.
      */
     public void setSourceNode(GraphNode node) {
-	setSourceFigNode((FigNode) node);
+        setSourceFigNode((FigNode) node);
     }
-    
+
     /**
      * Set the GraphNode reprenting this FigEdge's to-node.
      */
     public void setDestNode(GraphNode node) {
-	setDestFigNode((FigNode) node);
+        setDestFigNode((FigNode) node);
     }
 
     /** Get the Fig reprenting this FigEdge's from-port. */
@@ -799,4 +813,4 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     final public void updatePathItemLocations() {
         calcBounds();
     }
-}    /* end class FigEdge */
+} /* end class FigEdge */

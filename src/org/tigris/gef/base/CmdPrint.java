@@ -28,7 +28,6 @@
 // File: CmdPrint.java
 // Classes: CmdPrint
 // Original Author: jrobbins@ics.uci.edu
-
 package org.tigris.gef.base;
 
 import org.tigris.gef.presentation.Fig;
@@ -43,14 +42,15 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 /**
- * Cmd to Print a diagram.  Only works under JDK 1.2 and above.
+ * Cmd to Print a diagram. Only works under JDK 1.2 and above.
+ * 
  * @deprecated in 0.12.3 use PrintAction
  * @author Eugenio Alvarez
  */
 public class CmdPrint extends Cmd implements Printable {
 
     private static final long serialVersionUID = 5930094057682454011L;
-    
+
     PrinterJob printerJob;
     PageFormat pageFormat;
 
@@ -86,11 +86,10 @@ public class CmdPrint extends Cmd implements Printable {
 
         printerJob.setPrintable(new CmdPrint(), getPageFormat());
 
-        if(printerJob.printDialog()) {
+        if (printerJob.printDialog()) {
             try {
                 printerJob.print();
-            }
-            catch(PrinterException pe) {
+            } catch (PrinterException pe) {
                 Globals.showStatus("Error got a Printer exception");
             }
         }
@@ -119,13 +118,13 @@ public class CmdPrint extends Cmd implements Printable {
     }
 
     public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) {
-        if(pageIndex >= maxPageIndex) {
+        if (pageIndex >= maxPageIndex) {
             return NO_SUCH_PAGE;
         }
 
         Editor editor = Globals.curEditor();
 
-        Graphics2D g2d = (Graphics2D)graphics;
+        Graphics2D g2d = (Graphics2D) graphics;
 
         Rectangle drawingArea = null;
 
@@ -133,31 +132,31 @@ public class CmdPrint extends Cmd implements Printable {
         Vector selectedFigs = sm.getFigs();
         Enumeration iter = null;
 
-        if(selectedFigs.size() > 0) {
+        if (selectedFigs.size() > 0) {
             iter = selectedFigs.elements();
-        }
-        else {
+        } else {
             iter = editor.figs();
             drawingArea = new Rectangle();
         } // end else if
 
-        while(iter.hasMoreElements()) {
-            Fig fig = (Fig)iter.nextElement();
+        while (iter.hasMoreElements()) {
+            Fig fig = (Fig) iter.nextElement();
             Rectangle rect = fig.getBounds();
-            if(drawingArea == null) {
+            if (drawingArea == null) {
                 drawingArea = new Rectangle(rect);
             }
             drawingArea.add(rect);
         }
 
-        if(drawingArea == null || drawingArea.width == 0 || drawingArea.height == 0) {
+        if (drawingArea == null || drawingArea.width == 0
+                || drawingArea.height == 0) {
             return NO_SUCH_PAGE;
         }
 
         boolean h = editor.getGridHidden();
         editor.setGridHidden(true);
 
-        if(isFirstPrintCall()) {
+        if (isFirstPrintCall()) {
             setFirstPrintCall(false);
 
             pageWidth = pageFormat.getImageableWidth();
@@ -166,44 +165,45 @@ public class CmdPrint extends Cmd implements Printable {
             pageX = pageFormat.getImageableX();
             pageY = pageFormat.getImageableY();
 
-            diagramWidth = (double)drawingArea.width;
-            diagramHeight = (double)drawingArea.height;
+            diagramWidth = (double) drawingArea.width;
+            diagramHeight = (double) drawingArea.height;
 
-            diagramX = (double)drawingArea.x;
-            diagramY = (double)drawingArea.y;
+            diagramX = (double) drawingArea.x;
+            diagramY = (double) drawingArea.y;
 
-            scale = Math.min(pageWidth / (double)(drawingArea.width + 1), pageHeight / (double)(drawingArea.height + 1));
-            
+            scale = Math.min(pageWidth / (double) (drawingArea.width + 1),
+                    pageHeight / (double) (drawingArea.height + 1));
+
             if (scale < 1.0) {
-            	// the printing doesn't fit in a single page;
-            	// let's ask the user what to do
-                if (!promptFitToPage()){
-                	// the user chose to cancel the printing job: let's restore the
-                	// grid, then quit
-                	editor.setGridHidden(h);
-                	return NO_SUCH_PAGE;
+                // the printing doesn't fit in a single page;
+                // let's ask the user what to do
+                if (!promptFitToPage()) {
+                    // the user chose to cancel the printing job: let's restore
+                    // the
+                    // grid, then quit
+                    editor.setGridHidden(h);
+                    return NO_SUCH_PAGE;
                 }
             }
-            if(fitDiagramToPage()) {
+            if (fitDiagramToPage()) {
                 maxPageIndex = 1;
-            }
-            else {
-                nCol = Math.max((int)Math.ceil(diagramWidth / pageWidth), 1);
-                int nRow = Math.max((int)Math.ceil(diagramHeight / pageHeight), 1);
+            } else {
+                nCol = Math.max((int) Math.ceil(diagramWidth / pageWidth), 1);
+                int nRow = Math.max(
+                        (int) Math.ceil(diagramHeight / pageHeight), 1);
                 maxPageIndex = nCol * nRow;
             }
         }
 
-        if(fitDiagramToPage()) {
-            if(scale < 1.0) {
+        if (fitDiagramToPage()) {
+            if (scale < 1.0) {
                 g2d.scale(scale, scale);
-                g2d.translate((pageX / scale) - diagramX + 1, (pageY / scale) - diagramY + 1);
-            }
-            else {
+                g2d.translate((pageX / scale) - diagramX + 1, (pageY / scale)
+                        - diagramY + 1);
+            } else {
                 g2d.translate(pageX - diagramX + 1, pageY - diagramY + 1);
             }
-        }
-        else {
+        } else {
             double iCol = pageIndex % nCol;
             double iRow = pageIndex / nCol;
             double x = iCol * pageWidth;
@@ -219,16 +219,16 @@ public class CmdPrint extends Cmd implements Printable {
     }
 
     PrinterJob getPrinterJob() {
-        if(printerJob == null) {
+        if (printerJob == null) {
             printerJob = PrinterJob.getPrinterJob();
         }
         return printerJob;
     }
 
     PageFormat getPageFormat() {
-        if(pageFormat == null) {
+        if (pageFormat == null) {
             PrinterJob pj = getPrinterJob();
-            if(pj != null) {
+            if (pj != null) {
                 pageFormat = pj.defaultPage();
             }
         }
@@ -247,24 +247,27 @@ public class CmdPrint extends Cmd implements Printable {
      * Pops up a dialog to ask the user whether to fit the exceeding diagrams to
      * page or to print multiple pages. The user can also cancel the print job.
      * 
-     * @return false if the user has chosen to cancel the printing, true otherwise
+     * @return false if the user has chosen to cancel the printing, true
+     *         otherwise
      */
     private boolean promptFitToPage() {
-        Object[] options = {"Fit to page", "Multiple Pages", "Cancel"};
+        Object[] options = { "Fit to page", "Multiple Pages", "Cancel" };
 
-        int n = JOptionPane.showOptionDialog(null, "The diagram exceeds the current page size. Select option?", "Print", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        int n = JOptionPane.showOptionDialog(null,
+                "The diagram exceeds the current page size. Select option?",
+                "Print", JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-        if(n == JOptionPane.CANCEL_OPTION) {
-        	return false;
-        } else { 
-        	if(n == JOptionPane.NO_OPTION) {
-	            setFitDiagramToPage(false);
-	        } else {
-	            setFitDiagramToPage(true);
-	        }
-        	return true;
+        if (n == JOptionPane.CANCEL_OPTION) {
+            return false;
+        } else {
+            if (n == JOptionPane.NO_OPTION) {
+                setFitDiagramToPage(false);
+            } else {
+                setFitDiagramToPage(true);
+            }
+            return true;
         }
     }
 
 } /* end class CmdPrint */
-

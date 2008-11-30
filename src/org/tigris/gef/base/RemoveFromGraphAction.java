@@ -50,7 +50,8 @@ public class RemoveFromGraphAction extends UndoableAction {
     /**
      * Creates a new RemoveFromGraphAction
      * 
-     * @param name The name of the action
+     * @param name
+     *                The name of the action
      */
     public RemoveFromGraphAction(String name) {
         this(name, false);
@@ -59,8 +60,10 @@ public class RemoveFromGraphAction extends UndoableAction {
     /**
      * Creates a new RemoveFromGraphAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
      */
     public RemoveFromGraphAction(String name, Icon icon) {
         this(name, icon, false);
@@ -69,8 +72,10 @@ public class RemoveFromGraphAction extends UndoableAction {
     /**
      * Creates a new RemoveFromGraphAction
      * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public RemoveFromGraphAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -79,9 +84,12 @@ public class RemoveFromGraphAction extends UndoableAction {
     /**
      * Creates a new RemoveFromGraphAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public RemoveFromGraphAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);

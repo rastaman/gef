@@ -46,16 +46,15 @@ public class CmdSaveSVG extends CmdSaveGraphics {
         super("SaveScalableVectorGraphics");
     }
 
-    protected void saveGraphics(OutputStream s, Editor ce,
-                                Rectangle drawingArea)
-                 throws IOException {
+    protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea)
+            throws IOException {
         SVGWriter writer = null;
         try {
-	    writer = new SVGWriter(s, drawingArea);
+            writer = new SVGWriter(s, drawingArea);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (writer != null) {   
+        if (writer != null) {
             ce.print(writer);
             writer.dispose();
         }

@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // From Sun's Beanbox
 // Support for PropertyEditors that use tags.
 
@@ -36,35 +34,35 @@ import java.beans.*;
 
 class PropertySelector extends JComboBox implements ItemListener {
 
-  public PropertySelector(PropertyEditor pe) {
-    editor = pe;
-    String tags[] = editor.getTags();
-    for (int i = 0; i < tags.length; i++) {
-      addItem(tags[i]);
+    public PropertySelector(PropertyEditor pe) {
+        editor = pe;
+        String tags[] = editor.getTags();
+        for (int i = 0; i < tags.length; i++) {
+            addItem(tags[i]);
+        }
+        setSelectedIndex(0);
+        // This is a noop if the getAsText is not a tag.
+        setSelectedItem(editor.getAsText());
+        addItemListener(this);
     }
-    setSelectedIndex(0);
-    // This is a noop if the getAsText is not a tag.
-    setSelectedItem(editor.getAsText());
-    addItemListener(this);
-  }
 
-  public Dimension getMinimumSize() {
-    return new Dimension(80, 20);
-  }
+    public Dimension getMinimumSize() {
+        return new Dimension(80, 20);
+    }
 
-  public Dimension getPreferredSize() {
-    return new Dimension(80, 20);
-  }
+    public Dimension getPreferredSize() {
+        return new Dimension(80, 20);
+    }
 
-  public void itemStateChanged(ItemEvent evt) {
-    String s = getSelectedItem().toString();
-    editor.setAsText(s);
-  }
-  
-//   public void repaint() {
-//     super.repaint();
-//     //setSelectedItem(editor.getAsText());
-//   }
-  
-  PropertyEditor editor;    
+    public void itemStateChanged(ItemEvent evt) {
+        String s = getSelectedItem().toString();
+        editor.setAsText(s);
+    }
+
+    // public void repaint() {
+    // super.repaint();
+    // //setSelectedItem(editor.getAsText());
+    // }
+
+    PropertyEditor editor;
 }

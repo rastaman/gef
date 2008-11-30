@@ -48,18 +48,19 @@ import org.tigris.gef.util.Localizer;
 public class UngroupAction extends UndoableAction {
 
     private static final long serialVersionUID = -5373541224263019450L;
-    
+
     /**
      * Creates a new UngroupAction
      */
-    public UngroupAction(){
+    public UngroupAction() {
         super();
     }
 
     /**
      * Creates a new UngroupAction
      * 
-     * @param name The name of the action
+     * @param name
+     *                The name of the action
      */
     public UngroupAction(String name) {
         this(name, false);
@@ -68,8 +69,10 @@ public class UngroupAction extends UndoableAction {
     /**
      * Creates a new UngroupAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
      */
     public UngroupAction(String name, Icon icon) {
         this(name, icon, false);
@@ -78,8 +81,10 @@ public class UngroupAction extends UndoableAction {
     /**
      * Creates a new UngroupAction
      * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public UngroupAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -88,9 +93,12 @@ public class UngroupAction extends UndoableAction {
     /**
      * Creates a new UngroupAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public UngroupAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);

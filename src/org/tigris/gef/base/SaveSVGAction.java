@@ -43,7 +43,8 @@ public class SaveSVGAction extends SaveGraphicsAction {
     /**
      * Creates a new SaveSVGAction
      * 
-     * @param name The name of the action
+     * @param name
+     *                The name of the action
      */
     public SaveSVGAction(String name) {
         this(name, false);
@@ -52,8 +53,10 @@ public class SaveSVGAction extends SaveGraphicsAction {
     /**
      * Creates a new SaveSVGAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
      */
     public SaveSVGAction(String name, Icon icon) {
         this(name, icon, false);
@@ -62,8 +65,10 @@ public class SaveSVGAction extends SaveGraphicsAction {
     /**
      * Creates a new SaveSVGAction
      * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public SaveSVGAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -72,9 +77,12 @@ public class SaveSVGAction extends SaveGraphicsAction {
     /**
      * Creates a new SaveSVGAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public SaveSVGAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);

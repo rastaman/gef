@@ -21,7 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.tigris.gef.ui;
 
 import java.awt.*;
@@ -29,21 +28,16 @@ import java.awt.*;
 import javax.swing.*;
 
 public class ColorRenderer extends DefaultListCellRenderer {
-  public Component getListCellRendererComponent(JList list,
-        Object value, int index, boolean isSelected, 
-        boolean cellHasFocus) {
-    JLabel label = (JLabel)
-      super.getListCellRendererComponent(list, value, index,
-					 isSelected, cellHasFocus);
+    public Component getListCellRendererComponent(JList list, Object value,
+            int index, boolean isSelected, boolean cellHasFocus) {
+        JLabel label = (JLabel) super.getListCellRendererComponent(list, value,
+                index, isSelected, cellHasFocus);
 
-    if (value instanceof Color) {
-      label.setIcon(Swatch.forColor((Color) value));
-      label.setText("  ");
+        if (value instanceof Color) {
+            label.setIcon(Swatch.forColor((Color) value));
+            label.setText("  ");
+        } else
+            label.setIcon(null);
+        return label;
     }
-    else label.setIcon(null);
-    return label;
-  }
 } /* end class ColorRenderer */
-
-
-

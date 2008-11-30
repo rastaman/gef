@@ -21,7 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 // File: ArrowHead.java
 // Classes: ArrowHead
 // Original Author: abonner@ics.uci.edu
@@ -38,29 +37,29 @@ public class ArrowHeadGreater extends ArrowHead {
     private static final long serialVersionUID = 4300767437944516708L;
 
     public void paint(Object g, Point start, Point end) {
-        int    xFrom, xTo, yFrom, yTo;
+        int xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
 
-        xFrom  = start.x;
-        xTo   = end.x;
-        yFrom  = start.y;
-        yTo   = end.y;
+        xFrom = start.x;
+        xTo = end.x;
+        yFrom = start.y;
+        yTo = end.y;
 
-        dx   	= (double)(xTo - xFrom);
-        dy   	= (double)(yTo - yFrom);
-        denom 	= dist(dx, dy);
+        dx = (double) (xTo - xFrom);
+        dy = (double) (yTo - yFrom);
+        denom = dist(dx, dy);
         if (denom == 0) {
             return;
-        } 
+        }
 
-        cos = arrow_height/denom;
-        sin = arrow_width /denom;
-        x   = xTo - cos*dx;
-        y   = yTo - cos*dy;
-        int x1  = (int)(x - sin*dy);
-        int y1  = (int)(y + sin*dx);
-        int x2  = (int)(x + sin*dy);
-        int y2  = (int)(y - sin*dx);
+        cos = arrow_height / denom;
+        sin = arrow_width / denom;
+        x = xTo - cos * dx;
+        y = yTo - cos * dy;
+        int x1 = (int) (x - sin * dy);
+        int y1 = (int) (y + sin * dx);
+        int x2 = (int) (x + sin * dy);
+        int y2 = (int) (y - sin * dx);
 
         if (g instanceof Graphics) {
             Graphics graphics = (Graphics) g;

@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: NetNode.java
 // Classes: NetNode
 // Original Author: ics125 spring 1996
@@ -42,138 +39,167 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
-/** This class models a node in our underlying connected graph
- *  model. Nodes have ports that are their connection points to other
- *  nodes. This class is used by DefaultGraphModel, if you implement
- *  your own GraphModel, you can use your own application-specific
- *  objects as nodes.
- *
+/**
+ * This class models a node in our underlying connected graph model. Nodes have
+ * ports that are their connection points to other nodes. This class is used by
+ * DefaultGraphModel, if you implement your own GraphModel, you can use your own
+ * application-specific objects as nodes.
+ * 
  * @see NetEdge
- * @see NetPort */
+ * @see NetPort
+ */
 
-public abstract class NetNode extends NetPrimitive
-implements GraphNodeHooks, java.io.Serializable  {
-    ////////////////////////////////////////////////////////////////
+public abstract class NetNode extends NetPrimitive implements GraphNodeHooks,
+        java.io.Serializable {
+    // //////////////////////////////////////////////////////////////
     // instance variables
 
     /** An array of the ports on this node */
     private List _ports;
-  
+
     private static Log LOG = LogFactory.getLog(NetNode.class);
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constructors and related methods
 
-    /** 
-     * Construct a new node from the given default node and number of
-     * ports. The attributes of the default node will be used if they
-     * are not overridden in this node (i.e., nodes have attributes and
-     * there is a virual copy relationship between some nodes).
+    /**
+     * Construct a new node from the given default node and number of ports. The
+     * attributes of the default node will be used if they are not overridden in
+     * this node (i.e., nodes have attributes and there is a virual copy
+     * relationship between some nodes).
      */
-    public NetNode(NetNode deft, List ports) { _ports = ports; }
+    public NetNode(NetNode deft, List ports) {
+        _ports = ports;
+    }
 
     /**
      * Construct a new NetNode with no default attributes and no ports.
      */
-    public NetNode() { this(null, new ArrayList()); }
+    public NetNode() {
+        this(null, new ArrayList());
+    }
 
-    /** Usually when nodes are created it is deon through newInstance
-     *  and there is no chance to supply a default node or to connect
-     *  this node to some other application level object. So after a
-     *  node is constructed initialize is called to supply that
-     *  information. <p>
-     *
-     * Needs-More-Work: what is the class protocol design here? */
+    /**
+     * Usually when nodes are created it is deon through newInstance and there
+     * is no chance to supply a default node or to connect this node to some
+     * other application level object. So after a node is constructed initialize
+     * is called to supply that information.
+     * <p>
+     * 
+     * Needs-More-Work: what is the class protocol design here?
+     */
     public abstract void initialize(Hashtable args);
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // accessors
 
     /** Returns the attribute table of the node. */
-    public Object getAttributes() { return null; }
+    public Object getAttributes() {
+        return null;
+    }
 
     /** reply my NetPort with the given index. */
-    public NetPort getPort(int i) { return (NetPort) _ports.get(i); }
+    public NetPort getPort(int i) {
+        return (NetPort) _ports.get(i);
+    }
 
     /** reply my NetPorts. */
-    public List getPorts() { return _ports; }
-    public void setPorts(List ports) { _ports = ports; }
-    public void addPort(NetPort p) { _ports.add(p); }
+    public List getPorts() {
+        return _ports;
+    }
 
+    public void setPorts(List ports) {
+        _ports = ports;
+    }
+
+    public void addPort(NetPort p) {
+        _ports.add(p);
+    }
 
     /** Remove this node from the underling connected graph model. */
     public void deleteFromModel() {
         LOG.debug("Deleting from model");
         Iterator ps = _ports.iterator();
         while (ps.hasNext()) {
-            ((NetPort)ps.next()).deleteFromModel();
+            ((NetPort) ps.next()).deleteFromModel();
         }
-        
-        DefaultGraphModel gm =
-            (DefaultGraphModel)Globals.curEditor().getGraphModel();
+
+        DefaultGraphModel gm = (DefaultGraphModel) Globals.curEditor()
+                .getGraphModel();
         gm.removeNode(this);
-      
+
         firePropertyChange("disposed", false, true);
     }
 
-  ////////////////////////////////////////////////////////////////
-  // Visualization related methods
+    // //////////////////////////////////////////////////////////////
+    // Visualization related methods
 
-  /** Reply the FigNode that is appropriate for visualizing this
-   *  node in the given Layer.  If no such FigNode already exists,
-   *  instanciate a new one. */
-  public FigNode presentationFor(Layer lay) {
-    FigNode fn;
-    if (lay != null) {
-      fn = (FigNode) lay.presentationFor(this);
-      if (fn != null) return fn;
+    /**
+     * Reply the FigNode that is appropriate for visualizing this node in the
+     * given Layer. If no such FigNode already exists, instanciate a new one.
+     */
+    public FigNode presentationFor(Layer lay) {
+        FigNode fn;
+        if (lay != null) {
+            fn = (FigNode) lay.presentationFor(this);
+            if (fn != null)
+                return fn;
+        }
+        fn = makePresentation(lay);
+        return fn;
     }
-    fn = makePresentation(lay);
-    return fn;
-  }
 
-  /** Construct and return a new FigNode to present this NetNode
-   *  in the given Layer. A default implementation is supplied as an
-   *  example, but all subclasses should override this method. NetPorts
-   *  of this NetNode should be associated with individual Figs that
-   *  make up the FigNode. */
-  public abstract FigNode makePresentation(Layer lay);
+    /**
+     * Construct and return a new FigNode to present this NetNode in the given
+     * Layer. A default implementation is supplied as an example, but all
+     * subclasses should override this method. NetPorts of this NetNode should
+     * be associated with individual Figs that make up the FigNode.
+     */
+    public abstract FigNode makePresentation(Layer lay);
 
+    // //////////////////////////////////////////////////////////////
+    // net-level hooks
 
-  ////////////////////////////////////////////////////////////////
-  // net-level hooks
+    /**
+     * Do some application specific action just after this node is connected to
+     * another node. the arguments contain some info about what ports were
+     * connected.
+     */
+    public void postConnect(GraphModel gm, Object anotherNode, Object myPort,
+            Object otherPort) {
+    }
 
-  /** Do some application specific action just after this node is
-   *  connected to another node. the arguments contain some info about
-   *  what ports were connected. */
-  public void postConnect(GraphModel gm, Object anotherNode,
-			  Object myPort, Object otherPort) { }
+    /**
+     * Do some application specific action just after this node is disconnected
+     * from another node. the arguments contain some info about what ports were
+     * connected.
+     */
+    public void postDisconnect(GraphModel gm, Object anotherNode,
+            Object myPort, Object otherPort) {
+    }
 
-  /** Do some application specific action just after this node is
-   *  disconnected from another node. the arguments contain some info
-   *  about what ports were connected. */
-  public void postDisconnect(GraphModel gm, Object anotherNode,
-			     Object myPort, Object otherPort) { }
+    // //////////////////////////////////////////////////////////////
+    // net-level constraints
 
-  ////////////////////////////////////////////////////////////////
-  // net-level constraints
+    /**
+     * Allow for application specific rules about which nodes can be connected
+     * to which other nodes. This is called from the NetPort, so the port has
+     * first say as to whether it can be connected to some other port.
+     * NetPort.canConnectTo() just calls NetNode.canConnectTo(). By default
+     * anything can be connected to anything.
+     */
+    public boolean canConnectTo(GraphModel gm, Object otherNode,
+            Object otherPort, Object myPort) {
+        return true;
+    }
 
-  /** Allow for application specific rules about which nodes can be
-   *  connected to which other nodes. This is called from the NetPort,
-   *  so the port has first say as to whether it can be connected to
-   *  some other port. NetPort.canConnectTo() just calls
-   *  NetNode.canConnectTo(). By default anything can be connected to
-   *  anything. */
-  public boolean canConnectTo(GraphModel gm, Object otherNode,
-			      Object otherPort, Object myPort) {
-    return true;
-  }
+    // //////////////////////////////////////////////////////////////
+    // diagram-level hooks
 
-  ////////////////////////////////////////////////////////////////
-  // diagram-level hooks
-
-  /** Do some application specific actions after the node is placed in
-   *  a drawing area. */
-  public void postPlacement(Editor ed) { }
+    /**
+     * Do some application specific actions after the node is placed in a
+     * drawing area.
+     */
+    public void postPlacement(Editor ed) {
+    }
 } /* end class NetNode */
-

@@ -30,10 +30,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Handler for unknown elements in PGML files or elements that are
- * completely specified by their attributes.
- * This handler skips the element's contents
- * and sub-elements.
+ * Handler for unknown elements in PGML files or elements that are completely
+ * specified by their attributes. This handler skips the element's contents and
+ * sub-elements.
  */
 public class UnknownHandler extends DefaultHandler {
     /**
@@ -45,7 +44,8 @@ public class UnknownHandler extends DefaultHandler {
     private HandlerStack stack;
 
     /**
-     * @param theStack The stack of ContentHandler's for this parsing operation
+     * @param theStack
+     *                The stack of ContentHandler's for this parsing operation
      */
     public UnknownHandler(HandlerStack theStack) {
         depthCount = 1;
@@ -54,14 +54,14 @@ public class UnknownHandler extends DefaultHandler {
 
     /**
      * Increments depth count.
-     *
+     * 
      * @param uri
      * @param localname
      * @param qname
      * @param attributes
      */
     public void startElement(String uri, String localname, String qname,
-        Attributes attributes) {
+            Attributes attributes) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Ignoring unexpected element: " + qname);
         }
@@ -69,9 +69,9 @@ public class UnknownHandler extends DefaultHandler {
     }
 
     /**
-     * Decrements depth count; pops itself off the stack when the depth count
-     * is 0.
-     *
+     * Decrements depth count; pops itself off the stack when the depth count is
+     * 0.
+     * 
      * @param uri
      * @param localname
      * @param qname

@@ -50,21 +50,21 @@ import org.tigris.gef.undo.UndoManager;
 import org.tigris.gef.util.VetoableChangeEventSource;
 
 /**
- * This class handles Manager selections. It is basically a
- * collection of Selection instances. Most of its operations
- * just dispatch the same operation to each of the Selection
- * instances in turn.<p>
- *
- * The SelectionManager is also responsible for sending out
- * GraphSelectionEvents to any GraphSelectionListeners that are
- * registered.
- *
+ * This class handles Manager selections. It is basically a collection of
+ * Selection instances. Most of its operations just dispatch the same operation
+ * to each of the Selection instances in turn.
+ * <p>
+ * 
+ * The SelectionManager is also responsible for sending out GraphSelectionEvents
+ * to any GraphSelectionListeners that are registered.
+ * 
  * @see Selection
  */
-public class SelectionManager implements Serializable, KeyListener, MouseListener, MouseMotionListener {
-    
+public class SelectionManager implements Serializable, KeyListener,
+        MouseListener, MouseMotionListener {
+
     private static final long serialVersionUID = 3232261288542010603L;
-    
+
     /**
      * The collection of Selection instances
      */
@@ -72,22 +72,22 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     private Editor _editor;
     private EventListenerList _listeners = new EventListenerList();
     private DragMemento dragMemento;
-    
+
     private Fig _dragTopMostFig;
     private Fig _dragLeftMostFig;
-        
+
     /**
      * All of the nodes being dragged
      */
     private List _draggingNodes;
     /**
-     * All the edges that have both ends attached to nodes that are
-     * being dragged (they will also be dragged).
+     * All the edges that have both ends attached to nodes that are being
+     * dragged (they will also be dragged).
      */
     private List _draggingMovingEdges;
     /**
-     * Edges that only have one end attached to an edge being dragged
-     * (they will be reshaped)
+     * Edges that only have one end attached to an edge being dragged (they will
+     * be reshaped)
      */
     private List _draggingNonMovingEdges;
     /**
@@ -95,14 +95,13 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
      */
     private List _draggingOthers;
 
-
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constructor
     public SelectionManager(Editor ed) {
         _editor = ed;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // accessors
 
     /** Add a new selection to the collection of selections */
@@ -119,7 +118,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     protected void addAllFigs(Collection c) {
         Iterator it = c.iterator();
         while (it.hasNext()) {
-            addFig((Fig)it.next());
+            addFig((Fig) it.next());
         }
     }
 
@@ -128,14 +127,14 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     protected void removeSelection(Selection s) {
-        if(s != null) {
+        if (s != null) {
             _selections.remove(s);
         }
     }
 
     protected void removeFig(Fig f) {
         Selection s = findSelectionFor(f);
-        if(s != null) {
+        if (s != null) {
             _selections.remove(s);
         }
     }
@@ -147,9 +146,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void select(Fig f) {
-    	if (UndoManager.getInstance().isGenerateMementos()) {
-    		UndoManager.getInstance().addMemento(new SelectionMemento());
-    	}
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(new SelectionMemento());
+        }
         allDamaged();
         removeAllElements();
         addFig(f);
@@ -159,13 +158,14 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     /**
      * Adds an additional fig to the current selection.
-     *
-     * @param fig Additional fig to select.
+     * 
+     * @param fig
+     *                Additional fig to select.
      */
     public void addToSelection(Fig fig) {
-    	if (UndoManager.getInstance().isGenerateMementos()) {
-    		UndoManager.getInstance().addMemento(new SelectionMemento());
-    	}
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(new SelectionMemento());
+        }
         addFig(fig);
         _editor.damageAll();
         fireSelectionChanged();
@@ -173,10 +173,10 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     /** Deselect the given Fig */
     public void deselect(Fig f) {
-    	if (UndoManager.getInstance().isGenerateMementos()) {
-    		UndoManager.getInstance().addMemento(new SelectionMemento());
-    	}
-        if(containsFig(f)) {
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(new SelectionMemento());
+        }
+        if (containsFig(f)) {
             removeFig(f);
             _editor.damageAll();
             fireSelectionChanged();
@@ -184,14 +184,13 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void toggle(Fig f) {
-    	if (UndoManager.getInstance().isGenerateMementos()) {
-    		UndoManager.getInstance().addMemento(new SelectionMemento());
-    	}
-        _editor.damageAll();
-        if(containsFig(f)) {
-            removeFig(f);
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(new SelectionMemento());
         }
-        else {
+        _editor.damageAll();
+        if (containsFig(f)) {
+            removeFig(f);
+        } else {
             addFig(f);
         }
 
@@ -200,19 +199,19 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void deselectAll() {
-    	if (UndoManager.getInstance().isGenerateMementos()) {
-    		UndoManager.getInstance().addMemento(new SelectionMemento());
-    	}
-        Rectangle damagedArea = this.getBounds();    // too much area
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(new SelectionMemento());
+        }
+        Rectangle damagedArea = this.getBounds(); // too much area
         removeAllElements();
         _editor.damaged(damagedArea);
         fireSelectionChanged();
     }
 
     public void select(Collection items) {
-    	if (UndoManager.getInstance().isGenerateMementos()) {
-    		UndoManager.getInstance().addMemento(new SelectionMemento());
-    	}
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(new SelectionMemento());
+        }
         allDamaged();
         removeAllElements();
         addAllFigs(items);
@@ -221,17 +220,16 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     public void toggle(Vector items) {
-    	if (UndoManager.getInstance().isGenerateMementos()) {
-    		UndoManager.getInstance().addMemento(new SelectionMemento());
-    	}
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(new SelectionMemento());
+        }
         allDamaged();
-        Enumeration figs = ((Vector)items.clone()).elements();
-        while(figs.hasMoreElements()) {
-            Fig f = (Fig)figs.nextElement();
-            if(containsFig(f)) {
+        Enumeration figs = ((Vector) items.clone()).elements();
+        while (figs.hasMoreElements()) {
+            Fig f = (Fig) figs.nextElement();
+            if (containsFig(f)) {
                 removeFig(f);
-            }
-            else {
+            } else {
                 addFig(f);
             }
         }
@@ -244,9 +242,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         // TODO: Why we cannot operate on the list itself?
         List<Selection> sels = new ArrayList<Selection>(getSelections());
         for (Selection sel : sels) {
-            if(sel.contains(f)) {
+            if (sel.contains(f)) {
                 return sel;
-            }            
+            }
         }
         return null;
     }
@@ -255,21 +253,23 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         // TODO: Why we cannot operate on the list itself?
         List<Selection> sels = new ArrayList<Selection>(getSelections());
         for (Selection sel : sels) {
-            if(sel.contains(x, y)) {
+            if (sel.contains(x, y)) {
                 return sel;
-            }            
+            }
         }
         return null;
     }
 
-    /** Reply true if the given selection instance is part of my
-     * collection */
+    /**
+     * Reply true if the given selection instance is part of my collection
+     */
     public boolean contains(Selection s) {
         return _selections.contains(s);
     }
 
-    /** Reply true if the given Fig is selected by any of my
-     * selection objects */
+    /**
+     * Reply true if the given Fig is selected by any of my selection objects
+     */
     public boolean containsFig(Fig f) {
         return findSelectionFor(f) != null;
     }
@@ -287,9 +287,10 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         return false;
     }
 
-    /** Reply the number of selected Fig's. This assumes that
-     * this collection holds only Selection instances and each of
-     * those holds one Fig */
+    /**
+     * Reply the number of selected Fig's. This assumes that this collection
+     * holds only Selection instances and each of those holds one Fig
+     */
     public int size() {
         return _selections.size();
     }
@@ -310,16 +311,16 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     public Vector getFigs() {
         Vector figs = new Vector(_selections.size());
         int selCount = _selections.size();
-        for(int i = 0; i < selCount; ++i) {
-            figs.addElement(((Selection)_selections.get(i)).getContent());
+        for (int i = 0; i < selCount; ++i) {
+            figs.addElement(((Selection) _selections.get(i)).getContent());
         }
 
         return figs;
     }
-    
+
     /**
-     * Get a collection of Figs that will be dragged as a result of
-     * dragging this selection.
+     * Get a collection of Figs that will be dragged as a result of dragging
+     * this selection.
      */
     public List getDraggableFigs() {
         List figs = new ArrayList(getFigs());
@@ -338,14 +339,14 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     public void endTrans() {
         int selSize = _selections.size();
         List affected = new ArrayList();
-        for(int i = 0; i < selSize; ++i) {
-            Selection s = (Selection)_selections.get(i);
+        for (int i = 0; i < selSize; ++i) {
+            Selection s = (Selection) _selections.get(i);
             addEnclosed(affected, s.getContent());
         }
 
         int size = affected.size();
-        for(int i = 0; i < size; ++i) {
-            Fig f = (Fig)affected.get(i);
+        for (int i = 0; i < size; ++i) {
+            Fig f = (Fig) affected.get(i);
             f.endTrans();
         }
     }
@@ -357,8 +358,10 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         }
     }
 
-    /** When the SelectionManager is damageAll, that implies that each
-     * Selection should be damageAll. */
+    /**
+     * When the SelectionManager is damageAll, that implies that each Selection
+     * should be damageAll.
+     */
     public void damage() {
         for (Selection sel : _selections) {
             sel.damage();
@@ -376,8 +379,9 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         return false;
     }
 
-    /** Reply true iff the given point is inside one of the selected
-     * Fig's */
+    /**
+     * Reply true iff the given point is inside one of the selected Fig's
+     */
     public boolean hit(Rectangle r) {
         for (Selection sel : _selections) {
             if (sel.hit(r)) {
@@ -390,7 +394,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     public Rectangle getBounds() {
         int size = _selections.size();
-        if(size == 0) {
+        if (size == 0) {
             return new Rectangle(0, 0, 0, 0);
         }
 
@@ -411,7 +415,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             return new Rectangle(0, 0, 0, 0);
         }
 
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Selection sel = it.next();
             r.add(sel.getContentBounds());
         }
@@ -420,15 +424,15 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     /**
-     * This method will return the upper-left coordinate point
-     * of the entire selection by iterating through the figs
-     *
+     * This method will return the upper-left coordinate point of the entire
+     * selection by iterating through the figs
+     * 
      * @return Point - the point for that upper left corner
-     *
+     * 
      */
     public Point getLocation() {
         int size = _selections.size();
-        if(size < 1) {
+        if (size < 1) {
             return new Point(0, 0);
         }
 
@@ -436,15 +440,15 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         int lowestX = Integer.MAX_VALUE;
         int lowestY = Integer.MAX_VALUE;
         Point pt = null;
-        for(int i = 0; i < size; i++) {
-            sel = (Selection)_selections.get(i);
+        for (int i = 0; i < size; i++) {
+            sel = (Selection) _selections.get(i);
             pt = sel.getLocation();
-            if(pt.getX() < lowestX) {
-                lowestX = (int)pt.getX();
+            if (pt.getX() < lowestX) {
+                lowestX = (int) pt.getX();
             }
 
-            if(pt.getY() < lowestY) {
-                lowestY = (int)pt.getY();
+            if (pt.getY() < lowestY) {
+                lowestY = (int) pt.getY();
             }
         }
 
@@ -453,22 +457,24 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         return new Point(lowestX, lowestY);
     }
 
-    //   /** Align the selected Fig's relative to each other */
-    //   /* needs-more-work: more of this logic should be in ActionAlign */
-    //   public void align(int dir) {
-    //     Editor ed = Globals.curEditor();
-    //     Rectangle bbox = getContentBounds();
-    //     Enumeration ss = _selections.elements();
-    //     while (ss.hasMoreElements())
-    //       ((Selection) ss.nextElement()).align(bbox, dir, ed);
-    //   }
-    //   public void align(Rectangle r, int dir, Editor ed) {
-    //     Enumeration ss = _selections.elements();
-    //     while(ss.hasMoreElements()) ((Selection)ss.nextElement()).align(r,dir,ed);
-    //   }
+    // /** Align the selected Fig's relative to each other */
+    // /* needs-more-work: more of this logic should be in ActionAlign */
+    // public void align(int dir) {
+    // Editor ed = Globals.curEditor();
+    // Rectangle bbox = getContentBounds();
+    // Enumeration ss = _selections.elements();
+    // while (ss.hasMoreElements())
+    // ((Selection) ss.nextElement()).align(bbox, dir, ed);
+    // }
+    // public void align(Rectangle r, int dir, Editor ed) {
+    // Enumeration ss = _selections.elements();
+    // while(ss.hasMoreElements())
+    // ((Selection)ss.nextElement()).align(r,dir,ed);
+    // }
 
-    /** When Manager selections are sent to back, each of them is sent
-     * to back. */
+    /**
+     * When Manager selections are sent to back, each of them is sent to back.
+     */
     public void reorder(int func, Layer lay) {
         for (Selection sel : _selections) {
             sel.reorder(func, lay);
@@ -487,31 +493,30 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         }
 
         int size = affected.size();
-        for(int i = 0; i < size; ++i) {
-            Fig f = (Fig)affected.elementAt(i);
+        for (int i = 0; i < size; ++i) {
+            Fig f = (Fig) affected.elementAt(i);
             int fx = f.getX();
             int fy = f.getY();
             dx = Math.max(-fx, dx);
             dy = Math.max(-fy, dy);
         }
 
-        for(int i = 0; i < size; ++i) {
-            Fig f = (Fig)affected.elementAt(i);
-            if(!(f instanceof FigNode)) {
-                f.translate(dx, dy);    // lost selection.translate() !
-            }
-            else {
-                FigNode fn = (FigNode)f;
+        for (int i = 0; i < size; ++i) {
+            Fig f = (Fig) affected.elementAt(i);
+            if (!(f instanceof FigNode)) {
+                f.translate(dx, dy); // lost selection.translate() !
+            } else {
+                FigNode fn = (FigNode) f;
                 nodes.addElement(fn);
                 fn.superTranslate(dx, dy);
                 Collection figEdges = fn.getFigEdges(null);
                 Iterator it = figEdges.iterator();
                 while (it.hasNext()) {
                     Object fe = it.next();
-                    if(nonMovingEdges.contains(fe) && !movingEdges.contains(fe)) {
+                    if (nonMovingEdges.contains(fe)
+                            && !movingEdges.contains(fe)) {
                         movingEdges.addElement(fe);
-                    }
-                    else {
+                    } else {
                         nonMovingEdges.addElement(fe);
                     }
                 }
@@ -519,26 +524,26 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         }
 
         int meSize = movingEdges.size();
-        for(int i = 0; i < meSize; i++) {
-            FigEdge fe = (FigEdge)movingEdges.elementAt(i);
+        for (int i = 0; i < meSize; i++) {
+            FigEdge fe = (FigEdge) movingEdges.elementAt(i);
             fe.translateEdge(dx, dy);
         }
 
         int fnSize = nodes.size();
-        for(int i = 0; i < fnSize; i++) {
-            FigNode fn = (FigNode)nodes.elementAt(i);
+        for (int i = 0; i < fnSize; i++) {
+            FigNode fn = (FigNode) nodes.elementAt(i);
             fn.updateEdges();
         }
     }
 
     protected void addEnclosed(Collection affected, Fig f) {
-        if(!affected.contains(f)) {
+        if (!affected.contains(f)) {
             affected.add(f);
             List enclosed = f.getEnclosedFigs();
-            if(enclosed != null) {
+            if (enclosed != null) {
                 int size = enclosed.size();
-                for(int i = 0; i < size; ++i) {
-                    addEnclosed(affected, (Fig)enclosed.get(i));
+                for (int i = 0; i < size; ++i) {
+                    addEnclosed(affected, (Fig) enclosed.get(i));
                 }
             }
         }
@@ -549,93 +554,92 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         // any other mementos that the framework would normally create for
         // us. So make sure generate mementos is turned off during drag.
 
-    	List draggingFigs = new ArrayList();
+        List draggingFigs = new ArrayList();
         _draggingNodes = new ArrayList();
         _draggingMovingEdges = new ArrayList();
         _draggingNonMovingEdges = new ArrayList();
         _draggingOthers = new ArrayList();
-        
+
         int selectionCount = _selections.size();
-        for(int selectionIndex = 0; selectionIndex < selectionCount; ++selectionIndex) {
-            Selection selection = (Selection)_selections.get(selectionIndex);
+        for (int selectionIndex = 0; selectionIndex < selectionCount; ++selectionIndex) {
+            Selection selection = (Selection) _selections.get(selectionIndex);
             addEnclosed(draggingFigs, selection.getContent());
         }
 
         int figCount = draggingFigs.size();
-        for(int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig fig = (Fig)draggingFigs.get(figIndex);
-            if(fig instanceof FigEdge) {
-                FigEdge figEdge = (FigEdge)fig;
+        for (int figIndex = 0; figIndex < figCount; ++figIndex) {
+            Fig fig = (Fig) draggingFigs.get(figIndex);
+            if (fig instanceof FigEdge) {
+                FigEdge figEdge = (FigEdge) fig;
                 checkDragEdge(figEdge, draggingFigs, _draggingNonMovingEdges);
-            } else if(!(fig instanceof FigNode)) {
+            } else if (!(fig instanceof FigNode)) {
                 _draggingOthers.add(fig);
             } else {
-                FigNode figNode = (FigNode)fig;
+                FigNode figNode = (FigNode) fig;
                 _draggingNodes.add(figNode);
                 addDragDependents(_draggingNodes, figNode);
                 Collection figEdges = figNode.getFigEdges(null);
                 Iterator it = figEdges.iterator();
-                while(it.hasNext()) {
-                    FigEdge figEdge = (FigEdge)it.next();
-                    checkDragEdge(figEdge, draggingFigs, _draggingNonMovingEdges);
+                while (it.hasNext()) {
+                    FigEdge figEdge = (FigEdge) it.next();
+                    checkDragEdge(figEdge, draggingFigs,
+                            _draggingNonMovingEdges);
                 }
             }
         }
-        
-        List topLeftList = (_draggingNodes.size() > 0 ? _draggingNodes : _draggingOthers);
+
+        List topLeftList = (_draggingNodes.size() > 0 ? _draggingNodes
+                : _draggingOthers);
         int s = topLeftList.size();
-        for(int i = 0; i < s; ++i) {
-            Fig fig = (Fig)topLeftList.get(i);
-            if(_dragLeftMostFig == null || fig.getX() < _dragLeftMostFig.getX()) {
+        for (int i = 0; i < s; ++i) {
+            Fig fig = (Fig) topLeftList.get(i);
+            if (_dragLeftMostFig == null
+                    || fig.getX() < _dragLeftMostFig.getX()) {
                 _dragLeftMostFig = fig;
             }
 
-            if(_dragTopMostFig == null || fig.getY() < _dragTopMostFig.getY()) {
+            if (_dragTopMostFig == null || fig.getY() < _dragTopMostFig.getY()) {
                 _dragTopMostFig = fig;
             }
         }
 
-        if (UndoManager.getInstance().isGenerateMementos()) {        
-            dragMemento = new DragMemento(
-                    _draggingNodes, 
-                    _draggingOthers, 
-                    _draggingMovingEdges, 
-                    _draggingNonMovingEdges);
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            dragMemento = new DragMemento(_draggingNodes, _draggingOthers,
+                    _draggingMovingEdges, _draggingNonMovingEdges);
         }
         UndoManager.getInstance().addMementoLock(this);
-        
+
     }
-    
+
     private void addDragDependents(List draggingNodes, FigNode figNode) {
-	if (figNode.getDragDependencies() != null) {
-	    Iterator it = figNode.getDragDependencies().iterator();
-	    while (it.hasNext()) {
-		Object dependent = it.next();
-		if (!draggingNodes.contains(dependent)) {
-		    draggingNodes.add(dependent);
-		}
-	    }
-	}
-    }
-
-
-    private void checkDragEdge(FigEdge figEdge, List draggingFigs, List draggingNonMovingEdges) {
-        FigNode dest = figEdge.getDestFigNode();
-        FigNode source = figEdge.getSourceFigNode();
-        if(draggingFigs.contains(dest) && draggingFigs.contains(source)) {
-            if(!_draggingMovingEdges.contains(figEdge)) {
-                _draggingMovingEdges.add(figEdge);
+        if (figNode.getDragDependencies() != null) {
+            Iterator it = figNode.getDragDependencies().iterator();
+            while (it.hasNext()) {
+                Object dependent = it.next();
+                if (!draggingNodes.contains(dependent)) {
+                    draggingNodes.add(dependent);
+                }
             }
         }
-        else {
-            if(!draggingNonMovingEdges.contains(figEdge)) {
+    }
+
+    private void checkDragEdge(FigEdge figEdge, List draggingFigs,
+            List draggingNonMovingEdges) {
+        FigNode dest = figEdge.getDestFigNode();
+        FigNode source = figEdge.getSourceFigNode();
+        if (draggingFigs.contains(dest) && draggingFigs.contains(source)) {
+            if (!_draggingMovingEdges.contains(figEdge)) {
+                _draggingMovingEdges.add(figEdge);
+            }
+        } else {
+            if (!draggingNonMovingEdges.contains(figEdge)) {
                 draggingNonMovingEdges.add(figEdge);
             }
         }
     }
 
     public void drag(int dx, int dy) {
-        if(_dragLeftMostFig == null || _dragTopMostFig == null) {
+        if (_dragLeftMostFig == null || _dragTopMostFig == null) {
             return;
         }
 
@@ -644,45 +648,52 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         dx = Math.max(-_dragLeftMostFig.getX(), dx);
         dy = Math.max(-_dragTopMostFig.getY(), dy);
         int nodeCount = _draggingNodes.size();
-        for(int i = 0; i < nodeCount; ++i) {
-            FigNode figNode = (FigNode)_draggingNodes.get(i);
+        for (int i = 0; i < nodeCount; ++i) {
+            FigNode figNode = (FigNode) _draggingNodes.get(i);
             figNode.getBounds(figBounds);
             dirtyRegion.add(figBounds.x, figBounds.y);
             dirtyRegion.add(figBounds.x + dx, figBounds.y + dy);
-            dirtyRegion.add(figBounds.x + figBounds.width, figBounds.y + figBounds.height);
-            dirtyRegion.add(figBounds.x + figBounds.width + dx, figBounds.y + figBounds.height + dy);
+            dirtyRegion.add(figBounds.x + figBounds.width, figBounds.y
+                    + figBounds.height);
+            dirtyRegion.add(figBounds.x + figBounds.width + dx, figBounds.y
+                    + figBounds.height + dy);
             figNode.superTranslate(dx, dy);
-            // the next one will confuse everything if elements and annotations are selected and moved
-            //figNode.translateAnnotations();
+            // the next one will confuse everything if elements and annotations
+            // are selected and moved
+            // figNode.translateAnnotations();
         }
 
         int otherCount = _draggingOthers.size();
-        for(int i = 0; i < otherCount; ++i) {
-            Fig fig = (Fig)_draggingOthers.get(i);
+        for (int i = 0; i < otherCount; ++i) {
+            Fig fig = (Fig) _draggingOthers.get(i);
             fig.getBounds(figBounds);
             dirtyRegion.add(figBounds.x, figBounds.y);
             dirtyRegion.add(figBounds.x + dx, figBounds.y + dy);
-            dirtyRegion.add(figBounds.x + figBounds.width, figBounds.y + figBounds.height);
-            dirtyRegion.add(figBounds.x + figBounds.width + dx, figBounds.y + figBounds.height + dy);
+            dirtyRegion.add(figBounds.x + figBounds.width, figBounds.y
+                    + figBounds.height);
+            dirtyRegion.add(figBounds.x + figBounds.width + dx, figBounds.y
+                    + figBounds.height + dy);
             fig.translate(dx, dy);
             fig.translateAnnotations();
         }
 
         int movingEdgeCount = _draggingMovingEdges.size();
-        for(int i = 0; i < movingEdgeCount; i++) {
-            FigEdge figEdge = (FigEdge)_draggingMovingEdges.get(i);
+        for (int i = 0; i < movingEdgeCount; i++) {
+            FigEdge figEdge = (FigEdge) _draggingMovingEdges.get(i);
             figEdge.getBounds(figBounds);
             dirtyRegion.add(figBounds.x, figBounds.y);
             dirtyRegion.add(figBounds.x + dx, figBounds.y + dy);
-            dirtyRegion.add(figBounds.x + figBounds.width, figBounds.y + figBounds.height);
-            dirtyRegion.add(figBounds.x + figBounds.width + dx, figBounds.y + figBounds.height + dy);
+            dirtyRegion.add(figBounds.x + figBounds.width, figBounds.y
+                    + figBounds.height);
+            dirtyRegion.add(figBounds.x + figBounds.width + dx, figBounds.y
+                    + figBounds.height + dy);
             figEdge.translateEdge(dx, dy);
             figEdge.translateAnnotations();
         }
 
         int nonMovingEdgeCount = _draggingNonMovingEdges.size();
-        for(int i = 0; i < nonMovingEdgeCount; i++) {
-            FigEdge figEdge = (FigEdge)_draggingNonMovingEdges.get(i);
+        for (int i = 0; i < nonMovingEdgeCount; i++) {
+            FigEdge figEdge = (FigEdge) _draggingNonMovingEdges.get(i);
             figEdge.getBounds(figBounds);
             dirtyRegion.add(figBounds);
             figEdge.computeRoute();
@@ -697,10 +708,11 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         dirtyRegion.width += 2 * extraDirt;
         dirtyRegion.height += 2 * extraDirt;
         Layer layer = _dragLeftMostFig.getLayer();
-        //try to get the layer of the owning fig (if there is one) in case layer is null.
-        if(layer == null) {
-            if(_dragLeftMostFig.getOwner() instanceof Fig) {
-                layer = ((Fig)_dragLeftMostFig.getOwner()).getLayer();
+        // try to get the layer of the owning fig (if there is one) in case
+        // layer is null.
+        if (layer == null) {
+            if (_dragLeftMostFig.getOwner() instanceof Fig) {
+                layer = ((Fig) _dragLeftMostFig.getOwner()).getLayer();
             }
         }
 
@@ -708,13 +720,17 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             List editors = layer.getEditors();
             int editorCount = editors.size();
             Rectangle dirtyRegionScaled = new Rectangle();
-            for(int editorIndex = 0; editorIndex < editorCount; ++editorIndex) {
-                Editor editor = (Editor)editors.get(editorIndex);
+            for (int editorIndex = 0; editorIndex < editorCount; ++editorIndex) {
+                Editor editor = (Editor) editors.get(editorIndex);
                 double editorScale = editor.getScale();
-                dirtyRegionScaled.x = (int)Math.floor(dirtyRegion.x * editorScale);
-                dirtyRegionScaled.y = (int)Math.floor(dirtyRegion.y * editorScale);
-                dirtyRegionScaled.width = (int)Math.floor(dirtyRegion.width * editorScale) + 1;
-                dirtyRegionScaled.height = (int)Math.floor(dirtyRegion.height * editorScale) + 1;
+                dirtyRegionScaled.x = (int) Math.floor(dirtyRegion.x
+                        * editorScale);
+                dirtyRegionScaled.y = (int) Math.floor(dirtyRegion.y
+                        * editorScale);
+                dirtyRegionScaled.width = (int) Math.floor(dirtyRegion.width
+                        * editorScale) + 1;
+                dirtyRegionScaled.height = (int) Math.floor(dirtyRegion.height
+                        * editorScale) + 1;
                 editor.damaged(dirtyRegionScaled);
             }
         } else {
@@ -725,16 +741,17 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     public void stopDrag() {
         // Set the generate memento mode back to whatever it was before we
         // started dragging
-        UndoManager.getInstance().removeMementoLock(this);;
-        
+        UndoManager.getInstance().removeMementoLock(this);
+        ;
+
         if (dragMemento != null) {
             UndoManager.getInstance().addMemento(dragMemento);
         }
         dragMemento = null;
-        
+
         cleanup();
     }
-    
+
     private void cleanup() {
         _dragTopMostFig = null;
         _dragLeftMostFig = null;
@@ -744,30 +761,35 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         _draggingOthers = null;
     }
 
-    // The top-left corner of the rectangle enclosing all figs that will move when translated
+    // The top-left corner of the rectangle enclosing all figs that will move
+    // when translated
     // (i.e. not including any non-moving edges).
     public Point getDragLocation() {
         return new Point(_dragLeftMostFig.getX(), _dragTopMostFig.getY());
     }
 
-    /** If only one thing is selected, then it is possible to mouse on
-     * one of its handles, but if Manager things are selected, users
-     * can only drag the objects around */
+    /**
+     * If only one thing is selected, then it is possible to mouse on one of its
+     * handles, but if Manager things are selected, users can only drag the
+     * objects around
+     */
 
     /* needs-more-work: should take on more of this responsibility */
     public void hitHandle(Rectangle r, Handle h) {
-        if(size() == 1) {
+        if (size() == 1) {
             _selections.get(0).hitHandle(r, h);
         } else {
             h.index = -1;
         }
     }
 
-    /** If only one thing is selected, then it is possible to mouse on
-     * one of its handles, but if Manager things are selected, users
-     * can only drag the objects around */
+    /**
+     * If only one thing is selected, then it is possible to mouse on one of its
+     * handles, but if Manager things are selected, users can only drag the
+     * objects around
+     */
     public void dragHandle(int mx, int my, int an_x, int an_y, Handle h) {
-        if(size() != 1) {
+        if (size() != 1) {
             return;
         }
 
@@ -800,26 +822,27 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         for (Selection s : sels) {
             Fig f = s.getContent();
             Object o = f.getOwner();
-            if(o instanceof VetoableChangeEventSource) {
-                Vector v = (Vector)((VetoableChangeEventSource)o).getVetoableChangeListeners().clone();
+            if (o instanceof VetoableChangeEventSource) {
+                Vector v = (Vector) ((VetoableChangeEventSource) o)
+                        .getVetoableChangeListeners().clone();
                 Enumeration vv = v.elements();
                 vv = v.elements();
                 Object firstElem = null;
                 boolean firstIteration = true;
-                while(vv.hasMoreElements()) {
+                while (vv.hasMoreElements()) {
                     Object elem = vv.nextElement();
-                    if(elem instanceof Fig) {
-                        if(firstIteration) {
+                    if (elem instanceof Fig) {
+                        if (firstIteration) {
                             firstElem = elem;
                             firstIteration = false;
                             continue;
                         }
 
-                        ((Fig)elem).removeFromDiagram();
+                        ((Fig) elem).removeFromDiagram();
                     }
                 }
 
-                ((Fig)firstElem).deleteFromModel();
+                ((Fig) firstElem).deleteFromModel();
             }
         }
     }
@@ -830,18 +853,20 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     public void deleteFromModel() {
         for (Selection sel : getSelections()) {
             Fig f = sel.getContent();
-            f.deleteFromModel();            
+            f.deleteFromModel();
         }
     }
-    ////////////////////////////////////////////////////////////////
+
+    // //////////////////////////////////////////////////////////////
     // input events
 
-    /** When an event is passed to a multiple selection, try to pass it
-     * off to the first selection that will handle it. */
+    /**
+     * When an event is passed to a multiple selection, try to pass it off to
+     * the first selection that will handle it.
+     */
     public void keyTyped(KeyEvent ke) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = 
-            new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(_selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !ke.isConsumed()) {
             sels.next().keyTyped(ke);
@@ -850,8 +875,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     public void keyReleased(KeyEvent ke) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = 
-            new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(_selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !ke.isConsumed()) {
             sels.next().keyReleased(ke);
@@ -861,8 +885,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     public void keyPressed(KeyEvent ke) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = 
-            new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(_selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !ke.isConsumed()) {
             sels.next().keyPressed(ke);
@@ -871,8 +894,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     public void mouseMoved(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = 
-            new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(_selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseMoved(me);
@@ -881,8 +903,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     public void mouseDragged(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = 
-            new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(_selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseDragged(me);
@@ -891,8 +912,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     public void mouseClicked(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = 
-            new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(_selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseClicked(me);
@@ -901,8 +921,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     public void mousePressed(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = 
-            new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(_selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mousePressed(me);
@@ -911,8 +930,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     public void mouseReleased(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = 
-            new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(_selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseReleased(me);
@@ -921,8 +939,7 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     public void mouseExited(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = 
-            new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(_selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseExited(me);
@@ -931,15 +948,14 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
 
     public void mouseEntered(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = 
-            new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(_selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseEntered(me);
         }
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // graph events
     public void addGraphSelectionListener(GraphSelectionListener listener) {
         _listeners.add(GraphSelectionListener.class, listener);
@@ -950,71 +966,72 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
     }
 
     protected void fireSelectionChanged() {
-        cleanup();    // just to be paranoid
+        cleanup(); // just to be paranoid
         Object[] listeners = _listeners.getListenerList();
         GraphSelectionEvent e = null;
-        for(int i = listeners.length - 2; i >= 0; i -= 2) {
-            if(listeners[i] == GraphSelectionListener.class) {
-                if(e == null) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == GraphSelectionListener.class) {
+                if (e == null) {
                     e = new GraphSelectionEvent(_editor, getFigs());
                 }
 
-                //needs-more-work: should copy vector, use JGraph as src?
-                ((GraphSelectionListener)listeners[i + 1]).selectionChanged(e);
+                // needs-more-work: should copy vector, use JGraph as src?
+                ((GraphSelectionListener) listeners[i + 1]).selectionChanged(e);
             }
         }
 
         updatePropertySheet();
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // property sheet methods
     public void updatePropertySheet() {
-        //     if (_selections.size() != 1) Globals.propertySheetSubject(null);
-        //     else {
-        //       Fig f = (Fig) getFigs().elementAt(0);
-        //       Globals.propertySheetSubject(f);
-        //     }
+        // if (_selections.size() != 1) Globals.propertySheetSubject(null);
+        // else {
+        // Fig f = (Fig) getFigs().elementAt(0);
+        // Globals.propertySheetSubject(f);
+        // }
     }
 
     /**
-     * Determines and returns the first common superclass of all selected
-     * items.
+     * Determines and returns the first common superclass of all selected items.
      */
     public Class findCommonSuperClass() {
         Iterator selectionIter = _selections.iterator();
         Map superclasses = new HashMap();
         int maxCount = 0;
         Class maxClass = null;
-        while(selectionIter.hasNext()) {
-            Class figClass = ((Selection)selectionIter.next()).getContent().getClass();
+        while (selectionIter.hasNext()) {
+            Class figClass = ((Selection) selectionIter.next()).getContent()
+                    .getClass();
             int count = 0;
-            if(superclasses.containsKey(figClass.getName())) {
-                count = ((Integer)superclasses.get(figClass.getName())).intValue();
+            if (superclasses.containsKey(figClass.getName())) {
+                count = ((Integer) superclasses.get(figClass.getName()))
+                        .intValue();
                 superclasses.put(figClass.getName(), new Integer(++count));
-            }
-            else {
+            } else {
                 count = 1;
                 superclasses.put(figClass.getName(), new Integer(count));
             }
 
-            if(count > maxCount) {
+            if (count > maxCount) {
                 maxCount = count;
                 maxClass = figClass;
             }
 
             Class superClass = figClass.getSuperclass();
-            while(!(superClass == null || superClass.equals(Fig.class))) {
-                if(superclasses.containsKey(superClass.getName())) {
-                    count = ((Integer)superclasses.get(superClass.getName())).intValue();
-                    superclasses.put(superClass.getName(), new Integer(++count));
-                }
-                else {
+            while (!(superClass == null || superClass.equals(Fig.class))) {
+                if (superclasses.containsKey(superClass.getName())) {
+                    count = ((Integer) superclasses.get(superClass.getName()))
+                            .intValue();
+                    superclasses
+                            .put(superClass.getName(), new Integer(++count));
+                } else {
                     count = 1;
                     superclasses.put(superClass.getName(), new Integer(count));
                 }
 
-                if(count > maxCount) {
+                if (count > maxCount) {
                     maxCount = count;
                     maxClass = superClass;
                 }
@@ -1023,26 +1040,27 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             }
         }
 
-        if(maxCount == _selections.size()) {
+        if (maxCount == _selections.size()) {
             return maxClass;
-        }
-        else {
+        } else {
             return Fig.class;
         }
     }
 
     /**
-     * Searches for the first appearance of an object of the designated type
-     * in the current selection.
-     *
-     * @param type Type of selection class to look for.
+     * Searches for the first appearance of an object of the designated type in
+     * the current selection.
+     * 
+     * @param type
+     *                Type of selection class to look for.
      * @return The first selected object being instance of the designated type.
      */
     public Object findFirstSelectionOfType(Class type) {
         Iterator selectionIter = _selections.iterator();
-        while(selectionIter.hasNext()) {
-            Object selectionObj = ((Selection)selectionIter.next()).getContent();
-            if(selectionObj.getClass().equals(type)) {
+        while (selectionIter.hasNext()) {
+            Object selectionObj = ((Selection) selectionIter.next())
+                    .getContent();
+            if (selectionObj.getClass().equals(type)) {
                 return selectionObj;
             }
         }
@@ -1050,55 +1068,48 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
         return null;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // static methods
-    //protected static Hashtable _SelectionRegistry = new Hashtable();
+    // protected static Hashtable _SelectionRegistry = new Hashtable();
     // needs-more-work: cache a pool of selection objects?
     public static Selection makeSelectionFor(Fig f) {
         Selection customSelection = f.makeSelection();
-        if(customSelection != null) {
+        if (customSelection != null) {
             return customSelection;
         }
 
-        //if (f.isRotatable()) return new SelectionRotate(f);
-        if(f.isReshapable()) {
+        // if (f.isRotatable()) return new SelectionRotate(f);
+        if (f.isReshapable()) {
             return new SelectionReshape(f);
-        }
-        else if(f.isLowerRightResizable()) {
+        } else if (f.isLowerRightResizable()) {
             return new SelectionLowerRight(f);
-        }
-        else if(f.isResizable()) {
+        } else if (f.isResizable()) {
             return new SelectionResize(f);
-        }
-        else if(f.isMovable()) {
+        } else if (f.isMovable()) {
             return new SelectionMove(f);
-        }
-        else {
+        } else {
             return new SelectionNoop(f);
         }
     }
-    
+
     class DragMemento extends Memento {
 
         List draggingNodes;
         List draggingOthers;
         List bounds;
-        
+
         List movingEdges;
         List nonMovingEdges;
         List points;
-        
-        public DragMemento(
-                List draggingNodes,
-                List draggingOthers,
-                List movingEdges,
-                List nonMovingEdges) {
+
+        public DragMemento(List draggingNodes, List draggingOthers,
+                List movingEdges, List nonMovingEdges) {
             bounds = new ArrayList(draggingNodes.size() + draggingOthers.size());
-            
+
             this.draggingNodes = draggingNodes;
             Iterator nodeIt = draggingNodes.iterator();
             while (nodeIt.hasNext()) {
-                FigNode node = (FigNode)nodeIt.next();
+                FigNode node = (FigNode) nodeIt.next();
                 Rectangle rect = node.getBounds();
                 bounds.add(rect);
             }
@@ -1106,120 +1117,124 @@ public class SelectionManager implements Serializable, KeyListener, MouseListene
             this.draggingOthers = draggingOthers;
             Iterator otherIt = draggingOthers.iterator();
             while (otherIt.hasNext()) {
-                Fig fig = (Fig)otherIt.next();
+                Fig fig = (Fig) otherIt.next();
                 Rectangle rect = fig.getBounds();
                 bounds.add(rect);
             }
-            
+
             points = new ArrayList(nonMovingEdges.size() + movingEdges.size());
-            
+
             this.movingEdges = movingEdges;
             Iterator movEdgeIt = movingEdges.iterator();
             while (movEdgeIt.hasNext()) {
-                FigEdge edge = (FigEdge)movEdgeIt.next();
+                FigEdge edge = (FigEdge) movEdgeIt.next();
                 Point[] pts = edge.getPoints();
                 points.add(pts);
             }
-            
+
             this.nonMovingEdges = nonMovingEdges;
             Iterator it = nonMovingEdges.iterator();
             while (it.hasNext()) {
-                FigEdge edge = (FigEdge)it.next();
+                FigEdge edge = (FigEdge) it.next();
                 Point[] pts = edge.getPoints();
                 points.add(pts);
             }
         }
+
         public void undo() {
-        	UndoManager.getInstance().addMementoLock(this);
+            UndoManager.getInstance().addMementoLock(this);
             Iterator boundsIt = bounds.iterator();
-            
-            //Create an array to store each node's current boundaries
-            List oldBounds = new ArrayList(draggingNodes.size() + draggingOthers.size());
-        	
+
+            // Create an array to store each node's current boundaries
+            List oldBounds = new ArrayList(draggingNodes.size()
+                    + draggingOthers.size());
+
             Iterator nodeIt = draggingNodes.iterator();
             while (nodeIt.hasNext()) {
-                FigNode figNode = (FigNode)nodeIt.next();
-                Rectangle rect = (Rectangle)boundsIt.next();
-                //Save the current boundaries for redo
+                FigNode figNode = (FigNode) nodeIt.next();
+                Rectangle rect = (Rectangle) boundsIt.next();
+                // Save the current boundaries for redo
                 oldBounds.add(figNode.getBounds());
                 figNode.setBounds(rect);
                 figNode.damage();
             }
-            
+
             Iterator otherIt = draggingOthers.iterator();
             while (otherIt.hasNext()) {
-                Fig fig = (Fig)otherIt.next();
-                Rectangle rect = (Rectangle)boundsIt.next();
-                //Save the current boundaries for redo
+                Fig fig = (Fig) otherIt.next();
+                Rectangle rect = (Rectangle) boundsIt.next();
+                // Save the current boundaries for redo
                 oldBounds.add(fig.getBounds());
                 fig.setBounds(rect);
                 fig.damage();
             }
-            
-            //Set the undo boundaries to the boundaries we just replaced
+
+            // Set the undo boundaries to the boundaries we just replaced
             bounds = oldBounds;
-            
+
             Iterator pointsIt = points.iterator();
-            
-            //Create an array to store each edge's current points
-            List oldPoints = new  ArrayList(nonMovingEdges.size() + movingEdges.size());
-        	
+
+            // Create an array to store each edge's current points
+            List oldPoints = new ArrayList(nonMovingEdges.size()
+                    + movingEdges.size());
+
             Iterator edgeIt = movingEdges.iterator();
             while (edgeIt.hasNext()) {
-                FigEdge figEdge = (FigEdge)edgeIt.next();
-                Point[] pts = (Point[])pointsIt.next();
-                //Save the current boundaries for redo
+                FigEdge figEdge = (FigEdge) edgeIt.next();
+                Point[] pts = (Point[]) pointsIt.next();
+                // Save the current boundaries for redo
                 oldPoints.add(figEdge.getPoints());
                 figEdge.setPoints(pts);
                 figEdge.damage();
             }
-            
+
             Iterator nMedgeIt = nonMovingEdges.iterator();
             while (nMedgeIt.hasNext()) {
-                FigEdge figEdge = (FigEdge)nMedgeIt.next();
-                Point[] pts = (Point[])pointsIt.next();
-                //Save the current boundaries for redo
+                FigEdge figEdge = (FigEdge) nMedgeIt.next();
+                Point[] pts = (Point[]) pointsIt.next();
+                // Save the current boundaries for redo
                 oldPoints.add(figEdge.getPoints());
                 figEdge.setPoints(pts);
                 figEdge.damage();
             }
-            
-            //Set the undo points to the points we just replaced
+
+            // Set the undo points to the points we just replaced
             points = oldPoints;
-            
+
             UndoManager.getInstance().removeMementoLock(this);
         }
+
         public void redo() {
-        	//Simply undo the previous undo
-        	undo();
+            // Simply undo the previous undo
+            undo();
         }
-        
+
         public String toString() {
             return (isStartChain() ? "*" : " ") + "DragMemento";
         }
     }
-    
+
     class SelectionMemento extends Memento {
-    	
+
         ArrayList prevSelections;
-    	
-    	public SelectionMemento() {
+
+        public SelectionMemento() {
             prevSelections = new ArrayList(_selections);
-    	}
-    	
-    	public void undo() {
+        }
+
+        public void undo() {
             ArrayList curSelections = new ArrayList(_selections);
             _selections = prevSelections;
             prevSelections = curSelections;
             _editor.damageAll();
-    	}
-    	
-    	public void redo() {
-    		undo();
-    	}
-    	
+        }
+
+        public void redo() {
+            undo();
+        }
+
         public String toString() {
             return (isStartChain() ? "*" : " ") + "SelectionMemento";
         }
     }
-}    /* end class SelectionManager */
+} /* end class SelectionManager */

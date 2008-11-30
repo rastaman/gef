@@ -33,17 +33,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
-/** A class that implements the concept of a connected graph. A
- *  NetList is not any one object in the connected graph, it is the
- *  overall graph. A NetList contains a list of nodes and edges.  This
- *  class is used by DefaulGraphModel, if you implement your own
- *  GraphModel, you can use your own application-specific
- *  representation of graphs.
+/**
+ * A class that implements the concept of a connected graph. A NetList is not
+ * any one object in the connected graph, it is the overall graph. A NetList
+ * contains a list of nodes and edges. This class is used by DefaulGraphModel,
+ * if you implement your own GraphModel, you can use your own
+ * application-specific representation of graphs.
  */
 
 public class NetList extends NetPrimitive implements java.io.Serializable {
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // instance variables
 
     /** The nodes in the NetList */
@@ -55,34 +55,44 @@ public class NetList extends NetPrimitive implements java.io.Serializable {
     /** The name of this connected graph. */
     String name;
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constructors
 
     /** Construct a new NetList with no contained nodes. */
-    public NetList() { }
+    public NetList() {
+    }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // accessors
 
     public String getId() {
         return name;
     }
 
-    public void setName(String n) { name = n; }
-    public String getName() { return name; }
+    public void setName(String n) {
+        name = n;
+    }
 
-    /** 
-     * Reply the vector of nodes 
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Reply the vector of nodes
      */
-    public List getNodes() { return nodes; }
+    public List getNodes() {
+        return nodes;
+    }
 
-    /** 
+    /**
      * Reply the vector of edges
      */
-    public List getEdges() { return edges; }
+    public List getEdges() {
+        return edges;
+    }
 
     /** Reply the vector of nodes */
-    public Collection getNodes(Collection c) { 
+    public Collection getNodes(Collection c) {
         if (c == null) {
             return new Vector(nodes);
         } else {
@@ -101,13 +111,15 @@ public class NetList extends NetPrimitive implements java.io.Serializable {
         }
     }
 
-    /** Add a node to this NetList.  */
+    /** Add a node to this NetList. */
     public void addNode(NetNode n) {
         nodes.add(n);
     }
 
-    /** Remove a node from this NetList. When a node is deleted a
-     *  notification is sent out. */
+    /**
+     * Remove a node from this NetList. When a node is deleted a notification is
+     * sent out.
+     */
     public void removeNode(NetNode n) {
         if (n != null && nodes.contains(n)) {
             nodes.remove(n);
@@ -123,19 +135,18 @@ public class NetList extends NetPrimitive implements java.io.Serializable {
     public void removeEdge(NetEdge a) {
         if (a != null && edges.contains(a)) {
             edges.remove(a);
-        } 
+        }
     }
-    
+
     /** Remove all the nodes from this NetList. */
     public void removeAllNodes() {
         nodes.clear();
     }
-    
+
     /** Remove all the edges from this NetList. */
     public void removeAllEdges() {
         edges.clear();
     }
-    
+
     static final long serialVersionUID = -238774170084340147L;
 } /* end class NetList */
-

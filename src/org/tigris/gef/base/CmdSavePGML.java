@@ -21,7 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 // File: CmdSave.java
 // Classes: CmdSave
 // Original Author: jrobbins@ics.uci.edu
@@ -36,58 +35,65 @@ import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
 
-/** Cmd to save the current document to a binary file using Sun's
- *  ObjectSerialization library. The written file contains the Editor
- *  object and all objects reachable through instance variables of the
- *  Editor (e.g., the selections, the views, the contents of the
- *  views, the net-level description of the graph, etc.).  UI objects
- *  such as Windows, Frames, Panels, and Images are not stored because
- *  I have marked those instance variables as transient in the source
- *  code. <p>
- *
- *  One advantage of this approach to saving and loading is that
- *  developers using GEF can add subclasses (e.g., to NetNode) which
- *  introduce new instance variables, and those will be saved and
- *  loaded without the developers having to special load and save
- *  methods. However, make sure that you do not point to any AWT
- *  objects unless those instance variables are transient because those
- *  cannot be saved. <p>
- *
- *  Needs-More-Work: the files produced by a save are not really good
- *  for anything other than reloading into this tool, or another Java
- *  program that uses ObjectSerialization. At this time GEF provides no
- *  support for saving or loading textual representations of documents
- *  that could be used in other tools.<p>
- *  @deprecated in 0.12.3 use SavePGMLAction
- * @see CmdOpen */
+/**
+ * Cmd to save the current document to a binary file using Sun's
+ * ObjectSerialization library. The written file contains the Editor object and
+ * all objects reachable through instance variables of the Editor (e.g., the
+ * selections, the views, the contents of the views, the net-level description
+ * of the graph, etc.). UI objects such as Windows, Frames, Panels, and Images
+ * are not stored because I have marked those instance variables as transient in
+ * the source code.
+ * <p>
+ * 
+ * One advantage of this approach to saving and loading is that developers using
+ * GEF can add subclasses (e.g., to NetNode) which introduce new instance
+ * variables, and those will be saved and loaded without the developers having
+ * to special load and save methods. However, make sure that you do not point to
+ * any AWT objects unless those instance variables are transient because those
+ * cannot be saved.
+ * <p>
+ * 
+ * Needs-More-Work: the files produced by a save are not really good for
+ * anything other than reloading into this tool, or another Java program that
+ * uses ObjectSerialization. At this time GEF provides no support for saving or
+ * loading textual representations of documents that could be used in other
+ * tools.
+ * <p>
+ * 
+ * @deprecated in 0.12.3 use SavePGMLAction
+ * @see CmdOpen
+ */
 
 public class CmdSavePGML extends Cmd implements FilenameFilter {
 
     private static final long serialVersionUID = 5595884484082379585L;
-    
+
     private static OCLExpander _expander = null;
 
     public CmdSavePGML() {
-	    super("SaveAsPGML");
+        super("SaveAsPGML");
     }
 
-    /** Only allow the user to select files that match the fiven
-     *  filename pattern. Needs-More-Work: this is not used yet. */
+    /**
+     * Only allow the user to select files that match the fiven filename
+     * pattern. Needs-More-Work: this is not used yet.
+     */
     public CmdSavePGML(String filterPattern) {
         this();
         setArg("filterPattern", filterPattern);
     }
 
     public void doIt() {
-            //@@@ just for easy debugging
+        // @@@ just for easy debugging
         try {
-            _expander = new OCLExpander(TemplateReader.getInstance().read("/org/tigris/gef/xml/dtd/PGML.tee"));
-                
+            _expander = new OCLExpander(TemplateReader.getInstance().read(
+                    "/org/tigris/gef/xml/dtd/PGML.tee"));
+
             Editor ce = Globals.curEditor();
             Diagram d = new Diagram("junk", ce.getGraphModel(),
-        		      (LayerPerspective) ce.getLayerManager().getActiveLayer());
-            FileDialog fd = new
-         	    FileDialog(ce.findFrame(), "Save Diagram in PGML format", FileDialog.SAVE);
+                    (LayerPerspective) ce.getLayerManager().getActiveLayer());
+            FileDialog fd = new FileDialog(ce.findFrame(),
+                    "Save Diagram in PGML format", FileDialog.SAVE);
             fd.setFilenameFilter(this);
             fd.setDirectory(Globals.getLastDirectory());
             fd.setVisible(true);
@@ -95,15 +101,15 @@ public class CmdSavePGML extends Cmd implements FilenameFilter {
             String path = fd.getDirectory(); // blocking
             Globals.setLastDirectory(path);
             if (filename != null) {
-             	Globals.showStatus("Writing " + path + filename + "...");
-             	FileWriter fw = new FileWriter(path + filename);
-            	System.out.println("Cmd save in PGML...");
-                
+                Globals.showStatus("Writing " + path + filename + "...");
+                FileWriter fw = new FileWriter(path + filename);
+                System.out.println("Cmd save in PGML...");
+
                 _expander.expand(fw, d);
-            	System.out.println("save done");
-            	Globals.showStatus("Wrote " + path + filename);
-            	fw.close();
-            //ce.setTitle(filename);
+                System.out.println("save done");
+                Globals.showStatus("Wrote " + path + filename);
+                fw.close();
+                // ce.setTitle(filename);
             }
         } catch (FileNotFoundException ignore) {
             System.out.println("got an FileNotFoundException");
@@ -116,96 +122,95 @@ public class CmdSavePGML extends Cmd implements FilenameFilter {
         }
     }
 
-  /** Only let the user select files that match the filter. This does
-   *  not seem to be called under JDK 1.0.2 on solaris. I have not
-   *  finished this method, it currently accepts all filenames. <p>
-   *
-   *  Needs-More-Work: the source code for this method is duplicated in
-   *  CmdOpen#accept.  */
-  public boolean accept(File dir, String name) {
-    System.out.println("checking: "+ dir + " " + name);
-    if (containsArg("filterPattern")) {
-      // if pattern dosen't match, return false
-      return true;
+    /**
+     * Only let the user select files that match the filter. This does not seem
+     * to be called under JDK 1.0.2 on solaris. I have not finished this method,
+     * it currently accepts all filenames.
+     * <p>
+     * 
+     * Needs-More-Work: the source code for this method is duplicated in
+     * CmdOpen#accept.
+     */
+    public boolean accept(File dir, String name) {
+        System.out.println("checking: " + dir + " " + name);
+        if (containsArg("filterPattern")) {
+            // if pattern dosen't match, return false
+            return true;
+        }
+        return true; // no pattern was specified
     }
-    return true; // no pattern was specified
-  }
 
-  public void undoIt() {
-    System.out.println("Undo does not make sense for CmdSave");
-  }
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdSave");
+    }
 
-
-//   protected void initTemplates() {
-//     t.put(Diagram.class,
-// 	  "<pgml>\n"+
-// 	  "  ($self.contents$)\n"+
-// 	  "</pgml>");
-//     t.put(Rectangle.class,
-// 	  "x='($self.x$)' y='($self.y$)' "+
-// 	  "w='($self.width$)' h='($self.height$)'");
-//     t.put(FigRect.class,
-// 	  "<rectangle ($self.bounds$) "+
-// 	  "           fill='($self.filled)'\n"+
-// 	  "           fillcolor='($self.fillColor)'\n"+
-// 	  "           stroke='($self.lineWidth)'\n"+
-// 	  "           strokecolor='($self.lineColor)'\n"+
-// 	  "/>");
-//     t.put(FigRRect.class,
-// 	  "<rectangle ($self.bounds$)\n"+
-// 	  "           fill='($self.filled)'\n"+
-// 	  "           fillcolor='($self.fillColor)'\n"+
-// 	  "           stroke='($self.lineWidth)'\n"+
-// 	  "           strokecolor='($self.lineColor)'\n"+
-// 	  "           rounding='($self.cornerRadius$)'\n"+
-// 	  "/>");
-//     t.put(FigCircle.class,
-// 	  "<ellipse ($self.bounds$)\n"+
-// 	  "         fill='($self.filled)'\n"+
-// 	  "         fillcolor='($self.fillColor)'\n"+
-// 	  "         stroke='($self.lineWidth)'\n"+
-// 	  "         strokecolor='($self.lineColor)'\n"+
-// 	  "/>");
-//     t.put(FigText.class,
-// 	  "<text ($self.bounds$) \n"+
-// 	  "      fill='($self.filled)'\n"+
-// 	  "      fillcolor='($self.fillColor)'\n"+
-// 	  "      stroke='($self.lineWidth)'\n"+
-// 	  "      strokecolor='($self.lineColor)'\n"+
-// 	  "      textsize='($self.fontSize$)'\n"+
-// 	  ">($self.text$)</text>");
-//     t.put(FigLine.class,
-// 	  "<path\n"+
-// 	  "     fill='($self.filled)'\n"+
-// 	  "     fillcolor='($self.fillColor)'\n"+
-// 	  "     stroke='($self.lineWidth)'\n"+
-// 	  "     strokecolor='($self.lineColor)'\n"+
-// 	  ">\n"+
-// 	  "  <moveto x='($self.x1$)' y='($self.y1$)'>\n"+
-// 	  "  <lineto x='($self.x2$)' y='($self.y2$)'>\n"+
-// 	  "</path>");
-//     t.put(FigPoly.class,
-// 	  "<path>\n"+
-// 	  "  <moveto x='($self.x1$)' y='($self.y1$)'>\n"+
-// 	  "  <lineto ($self.points$)>\n"+
-// 	  "</path>");
-//     //spline?
-//     //image?
-//     t.put(FigGroup.class,
-// 	  "<group description='($self.class$)'\n"+
-// 	  "       href='($ref.owner$)\n"+
-// 	  ">\n"+
-// 	  "  ($self.figs$)\n"+
-// 	  "</group>");
-//     t.put(FigEdge.class,
-// 	  "<group description='($self.class$)'\n"+
-// 	  "       href='($ref.owner$)'\n"+
-// 	  ">\n"+
-// 	  "  ($self.fig$)\n"+
-// 	  "</group>");
-//   }
+    // protected void initTemplates() {
+    // t.put(Diagram.class,
+    // "<pgml>\n"+
+    // " ($self.contents$)\n"+
+    // "</pgml>");
+    // t.put(Rectangle.class,
+    // "x='($self.x$)' y='($self.y$)' "+
+    // "w='($self.width$)' h='($self.height$)'");
+    // t.put(FigRect.class,
+    // "<rectangle ($self.bounds$) "+
+    // " fill='($self.filled)'\n"+
+    // " fillcolor='($self.fillColor)'\n"+
+    // " stroke='($self.lineWidth)'\n"+
+    // " strokecolor='($self.lineColor)'\n"+
+    // "/>");
+    // t.put(FigRRect.class,
+    // "<rectangle ($self.bounds$)\n"+
+    // " fill='($self.filled)'\n"+
+    // " fillcolor='($self.fillColor)'\n"+
+    // " stroke='($self.lineWidth)'\n"+
+    // " strokecolor='($self.lineColor)'\n"+
+    // " rounding='($self.cornerRadius$)'\n"+
+    // "/>");
+    // t.put(FigCircle.class,
+    // "<ellipse ($self.bounds$)\n"+
+    // " fill='($self.filled)'\n"+
+    // " fillcolor='($self.fillColor)'\n"+
+    // " stroke='($self.lineWidth)'\n"+
+    // " strokecolor='($self.lineColor)'\n"+
+    // "/>");
+    // t.put(FigText.class,
+    // "<text ($self.bounds$) \n"+
+    // " fill='($self.filled)'\n"+
+    // " fillcolor='($self.fillColor)'\n"+
+    // " stroke='($self.lineWidth)'\n"+
+    // " strokecolor='($self.lineColor)'\n"+
+    // " textsize='($self.fontSize$)'\n"+
+    // ">($self.text$)</text>");
+    // t.put(FigLine.class,
+    // "<path\n"+
+    // " fill='($self.filled)'\n"+
+    // " fillcolor='($self.fillColor)'\n"+
+    // " stroke='($self.lineWidth)'\n"+
+    // " strokecolor='($self.lineColor)'\n"+
+    // ">\n"+
+    // " <moveto x='($self.x1$)' y='($self.y1$)'>\n"+
+    // " <lineto x='($self.x2$)' y='($self.y2$)'>\n"+
+    // "</path>");
+    // t.put(FigPoly.class,
+    // "<path>\n"+
+    // " <moveto x='($self.x1$)' y='($self.y1$)'>\n"+
+    // " <lineto ($self.points$)>\n"+
+    // "</path>");
+    // //spline?
+    // //image?
+    // t.put(FigGroup.class,
+    // "<group description='($self.class$)'\n"+
+    // " href='($ref.owner$)\n"+
+    // ">\n"+
+    // " ($self.figs$)\n"+
+    // "</group>");
+    // t.put(FigEdge.class,
+    // "<group description='($self.class$)'\n"+
+    // " href='($ref.owner$)'\n"+
+    // ">\n"+
+    // " ($self.fig$)\n"+
+    // "</group>");
+    // }
 
 } /* end class CmdSavePGML */
-
-
-

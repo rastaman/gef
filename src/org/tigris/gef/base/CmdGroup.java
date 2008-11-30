@@ -32,8 +32,10 @@ import java.util.*;
 
 import org.tigris.gef.presentation.*;
 
-/** Cmd to group all the Fig's selected in the current
- *  editor into a single FigGroup. 
+/**
+ * Cmd to group all the Fig's selected in the current editor into a single
+ * FigGroup.
+ * 
  * @deprecated in 0.12.3 use GroupAction
  * @see FigGroup
  * @see CmdUngroup
@@ -44,34 +46,35 @@ public class CmdGroup extends Cmd {
     private static final long serialVersionUID = -8094870867293229677L;
 
     public CmdGroup() {
-	super("Group");
+        super("Group");
     }
 
-  public void doIt() {
-    Editor ce = Globals.curEditor();
-    Vector selectedFigs = ce.getSelectionManager().getFigs();
-    FigGroup _newItem = new FigGroup();
-    Enumeration eachDE = selectedFigs.elements();
-    while (eachDE.hasMoreElements()) {
-      Object o = eachDE.nextElement();
-      if (o instanceof Fig) {
-	Fig f = (Fig) o;
-	_newItem.addFig(f);
-      }
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        Vector selectedFigs = ce.getSelectionManager().getFigs();
+        FigGroup _newItem = new FigGroup();
+        Enumeration eachDE = selectedFigs.elements();
+        while (eachDE.hasMoreElements()) {
+            Object o = eachDE.nextElement();
+            if (o instanceof Fig) {
+                Fig f = (Fig) o;
+                _newItem.addFig(f);
+            }
+        }
+        eachDE = selectedFigs.elements();
+        while (eachDE.hasMoreElements()) {
+            Object o = eachDE.nextElement();
+            if (o instanceof Fig) {
+                Fig f = (Fig) o;
+                ce.remove(f);
+            }
+        }
+        ce.add(_newItem);
+        ce.getSelectionManager().deselectAll();
+        ce.getSelectionManager().select(_newItem);
     }
-    eachDE = selectedFigs.elements();
-    while (eachDE.hasMoreElements()) {
-      Object o = eachDE.nextElement();
-      if (o instanceof Fig) {
-	Fig f = (Fig) o;
-	ce.remove(f);
-      }
-    }
-    ce.add(_newItem);
-    ce.getSelectionManager().deselectAll();
-    ce.getSelectionManager().select(_newItem);
-  }
 
-  public void undoIt() { System.out.println("not done yet"); }
+    public void undoIt() {
+        System.out.println("not done yet");
+    }
 } /* end class CmdGroup */
-

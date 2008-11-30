@@ -32,13 +32,15 @@ import java.awt.Rectangle;
 
 import org.tigris.gef.persistence.*;
 
-/** Cmd to save a diagram as PostScript in a supplied OutputStream. 
- *  Requires the CH.ifa.draw.util.PostscriptWriter class. Operates on the
- *  diagram in the current editor.
- *
- *  Code loosely adapted from CmdSaveGIF.
- *  @deprecated in 0.12.3 use SavePSAction
- *  @author Frank Wienberg, wienberg@informatik.uni-hamburg.de
+/**
+ * Cmd to save a diagram as PostScript in a supplied OutputStream. Requires the
+ * CH.ifa.draw.util.PostscriptWriter class. Operates on the diagram in the
+ * current editor.
+ * 
+ * Code loosely adapted from CmdSaveGIF.
+ * 
+ * @deprecated in 0.12.3 use SavePSAction
+ * @author Frank Wienberg, wienberg@informatik.uni-hamburg.de
  */
 
 public class CmdSavePS extends CmdSaveGraphics {
@@ -49,19 +51,18 @@ public class CmdSavePS extends CmdSaveGraphics {
         super("SavePostScript");
     }
 
-    protected void saveGraphics(OutputStream s, Editor ce,
-			      Rectangle drawingArea)
-                 throws IOException {
+    protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea)
+            throws IOException {
         PostscriptWriter ps = new PostscriptWriter(s);
-        ps.translate(32,32+778);
-        double scale=Math.min(535.0/drawingArea.width,
-			      778.0/drawingArea.height);
+        ps.translate(32, 32 + 778);
+        double scale = Math.min(535.0 / drawingArea.width,
+                778.0 / drawingArea.height);
         if (scale < 1.0) {
-            ps.scale(scale,scale);
+            ps.scale(scale, scale);
         }
-        ps.translate(-drawingArea.x,-drawingArea.y);
-        ps.setClip(drawingArea.x, drawingArea.y,
-	           drawingArea.width, drawingArea.height);
+        ps.translate(-drawingArea.x, -drawingArea.y);
+        ps.setClip(drawingArea.x, drawingArea.y, drawingArea.width,
+                drawingArea.height);
         // java bug if using Rectangle.shape() ???
         ce.print(ps);
         ps.dispose();

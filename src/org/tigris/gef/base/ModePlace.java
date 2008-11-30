@@ -50,9 +50,9 @@ import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
 /**
- * Mode to place new a FigNode on a node in a diagram.
- * Normally invoked via CmdCreateNode.
- *
+ * Mode to place new a FigNode on a node in a diagram. Normally invoked via
+ * CmdCreateNode.
+ * 
  * @see CmdCreateNode
  * @see FigNode
  */
@@ -61,22 +61,27 @@ public class ModePlace extends FigModifyingModeImpl {
 
     private static final long serialVersionUID = 8861862975789222877L;
 
-    /** The (new) node being placed. It might be an existing node that
-     *  is adding a new FigNode. */
+    /**
+     * The (new) node being placed. It might be an existing node that is adding
+     * a new FigNode.
+     */
     protected Object _node;
 
-    /** The (new) FigNode being placed. It might be an existing
-     *  FigNode on an existing node being placed in another diagram. */
+    /**
+     * The (new) FigNode being placed. It might be an existing FigNode on an
+     * existing node being placed in another diagram.
+     */
     protected FigNode _pers;
 
     protected GraphFactory _factory;
 
     protected boolean _addRelatedEdges = false;
 
-    protected String _instructions; 
+    protected String _instructions;
 
     private static Log LOG = LogFactory.getLog(ModePlace.class);
-    ////////////////////////////////////////////////////////////////
+
+    // //////////////////////////////////////////////////////////////
     // constructor
 
     /** Construct a new instance of ModePlace and store the given node. */
@@ -92,15 +97,17 @@ public class ModePlace extends FigModifyingModeImpl {
         _node = null;
         _pers = null;
         _instructions = instructions;
-    } 
+    }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // user feedback
 
-    /** A string to be shown in the status bar of the Editor when this
-     * mode is on top of the ModeManager. */
+    /**
+     * A string to be shown in the status bar of the Editor when this mode is on
+     * top of the ModeManager.
+     */
     public String instructions() {
-        if(_instructions == null)
+        if (_instructions == null)
             _instructions = "";
         return _instructions;
     }
@@ -114,12 +121,12 @@ public class ModePlace extends FigModifyingModeImpl {
         _addRelatedEdges = b;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // event handlers
 
     /** Move the perpective along with the mouse. */
     public void mousePressed(MouseEvent me) {
-        if(me.isConsumed()) {
+        if (me.isConsumed()) {
             return;
         }
         UndoManager.getInstance().addMementoLock(this);
@@ -130,7 +137,9 @@ public class ModePlace extends FigModifyingModeImpl {
         GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
         Layer lay = editor.getLayerManager().getActiveLayer();
         _pers = renderer.getFigNodeFor(gm, lay, _node, null);
-        if (LOG.isDebugEnabled()) LOG.debug("mousePressed: Got a fig at position (" + _pers.getX() + "," + _pers.getY() + ")");
+        if (LOG.isDebugEnabled())
+            LOG.debug("mousePressed: Got a fig at position (" + _pers.getX()
+                    + "," + _pers.getY() + ")");
         mouseMoved(me); // move _pers into position
         me.consume();
     }
@@ -144,21 +153,25 @@ public class ModePlace extends FigModifyingModeImpl {
 
     /** Move the perpective along with the mouse. */
     public void mouseMoved(MouseEvent me) {
-        if(me.isConsumed()) {
+        if (me.isConsumed()) {
             return;
         }
         int x = me.getX();
         int y = me.getY();
-        if(_pers == null) {
+        if (_pers == null) {
             me.consume();
             return;
         }
         editor.damageAll();
         Point snapPt = new Point(x, y);
         editor.snap(snapPt);
-        if (LOG.isDebugEnabled()) LOG.debug("mouseMoved: About to set location (" + _pers.getX() + "," + _pers.getY() + ")");
+        if (LOG.isDebugEnabled())
+            LOG.debug("mouseMoved: About to set location (" + _pers.getX()
+                    + "," + _pers.getY() + ")");
         _pers.setLocation(snapPt.x, snapPt.y);
-        if (LOG.isDebugEnabled()) LOG.debug("mouseMoved: Location set (" + _pers.getX() + "," + _pers.getY() + ")");
+        if (LOG.isDebugEnabled())
+            LOG.debug("mouseMoved: Location set (" + _pers.getX() + ","
+                    + _pers.getY() + ")");
         editor.damageAll();
         me.consume();
     }
@@ -173,24 +186,28 @@ public class ModePlace extends FigModifyingModeImpl {
         mouseMoved(me);
     }
 
-    /** Actually add the Perpective to the diagram.
+    /**
+     * Actually add the Perpective to the diagram.
      */
     public void mouseReleased(MouseEvent me) {
-    	if(me.isConsumed()) {
-            if (LOG.isDebugEnabled()) LOG.debug("MouseReleased but rejected as already consumed");
+        if (me.isConsumed()) {
+            if (LOG.isDebugEnabled())
+                LOG.debug("MouseReleased but rejected as already consumed");
             return;
         }
         GraphModel gm = editor.getGraphModel();
-        if(!(gm instanceof MutableGraphModel)) {
-            if (LOG.isDebugEnabled()) LOG.debug("MouseReleased but rejected as graph is not mutable");
+        if (!(gm instanceof MutableGraphModel)) {
+            if (LOG.isDebugEnabled())
+                LOG.debug("MouseReleased but rejected as graph is not mutable");
             return;
         }
 
-        MutableGraphModel mgm = (MutableGraphModel)gm;
-        if(mgm.canAddNode(_node)) {
-            LOG.debug("mouseReleased Adding fig to editor (" + _pers.getX()+"," + _pers.getY());
+        MutableGraphModel mgm = (MutableGraphModel) gm;
+        if (mgm.canAddNode(_node)) {
+            LOG.debug("mouseReleased Adding fig to editor (" + _pers.getX()
+                    + "," + _pers.getY());
             UndoManager.getInstance().startChain();
-        	editor.add(_pers);
+            editor.add(_pers);
             mgm.addNode(_node);
             if (_addRelatedEdges) {
                 mgm.addNodeRelatedEdges(_node);
@@ -201,9 +218,9 @@ public class ModePlace extends FigModifyingModeImpl {
             Layer lay = editor.getLayerManager().getActiveLayer();
             List otherFigs = lay.getContents();
             Iterator it = otherFigs.iterator();
-            while(it.hasNext()) {
-                Fig otherFig = (Fig)it.next();
-                if(!(otherFig.getUseTrapRect())) {
+            while (it.hasNext()) {
+                Fig otherFig = (Fig) it.next();
+                if (!(otherFig.getUseTrapRect())) {
                     continue;
                 }
                 if (!(otherFig instanceof FigNode)) {
@@ -216,30 +233,32 @@ public class ModePlace extends FigModifyingModeImpl {
                     continue;
                 }
                 Rectangle trap = otherFig.getTrapRect();
-                if(trap != null && (trap.contains(bbox.x, bbox.y) && trap.contains(bbox.x + bbox.width, bbox.y + bbox.height))) {
+                if (trap != null
+                        && (trap.contains(bbox.x, bbox.y) && trap.contains(
+                                bbox.x + bbox.width, bbox.y + bbox.height))) {
                     encloser = otherFig;
                 }
             }
             _pers.setEnclosingFig(encloser);
             if (_node instanceof GraphNodeHooks) {
-               ((GraphNodeHooks) _node).postPlacement(editor);
+                ((GraphNodeHooks) _node).postPlacement(editor);
             }
-            
+
             UndoManager.getInstance().removeMementoLock(this);
             if (UndoManager.getInstance().isGenerateMementos()) {
-				PlaceMemento memento = new PlaceMemento(editor,_node,_pers);
+                PlaceMemento memento = new PlaceMemento(editor, _node, _pers);
                 UndoManager.getInstance().addMemento(memento);
             }
             UndoManager.getInstance().addMementoLock(this);
-            
-            editor.getSelectionManager().select(_pers); 
+
+            editor.getSelectionManager().select(_pers);
         }
         done();
         me.consume();
     }
 
     public void keyTyped(KeyEvent ke) {
-        if(ke.getKeyChar() == KeyEvent.VK_ESCAPE) {
+        if (ke.getKeyChar() == KeyEvent.VK_ESCAPE) {
             LOG.debug("ESC pressed");
             leave();
         }
@@ -253,42 +272,45 @@ public class ModePlace extends FigModifyingModeImpl {
 
     /** Paint the FigNode being dragged around. */
     public void paint(Graphics g) {
-        if(_pers != null) {
-            _pers.paint((Object)g);
+        if (_pers != null) {
+            _pers.paint((Object) g);
         }
     }
 } /* end class ModePlace */
 
 class PlaceMemento extends Memento {
-    
+
     private FigNode nodePlaced;
     private Object node;
     private Editor editor;
-    
-    PlaceMemento (Editor ed, Object node, FigNode nodePlaced) {
+
+    PlaceMemento(Editor ed, Object node, FigNode nodePlaced) {
         this.nodePlaced = nodePlaced;
         this.node = node;
         this.editor = ed;
     }
-    
+
     public void undo() {
-    	UndoManager.getInstance().addMementoLock(this);
+        UndoManager.getInstance().addMementoLock(this);
         editor.getSelectionManager().deselect(nodePlaced);
-        ((MutableGraphModel)editor.getGraphModel()).removeNode(node);
+        ((MutableGraphModel) editor.getGraphModel()).removeNode(node);
         editor.remove(nodePlaced);
         UndoManager.getInstance().removeMementoLock(this);
     }
+
     public void redo() {
         UndoManager.getInstance().addMementoLock(this);
         editor.add(nodePlaced);
-       	((MutableGraphModel)editor.getGraphModel()).addNode(node);
+        ((MutableGraphModel) editor.getGraphModel()).addNode(node);
         editor.getSelectionManager().select(nodePlaced);
         UndoManager.getInstance().removeMementoLock(this);
     }
+
     public void dispose() {
     }
-    
+
     public String toString() {
-        return (isStartChain() ? "*" : " ") + "PlaceMemento " + nodePlaced.getBounds();
+        return (isStartChain() ? "*" : " ") + "PlaceMemento "
+                + nodePlaced.getBounds();
     }
 }

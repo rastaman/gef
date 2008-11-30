@@ -39,21 +39,20 @@ import javax.swing.table.*;
 import javax.swing.event.TableModelListener;
 import javax.swing.event.TableModelEvent;
 
-public class TableMap extends AbstractTableModel implements TableModelListener
-{
+public class TableMap extends AbstractTableModel implements TableModelListener {
     protected TableModel model;
 
-    public TableModel  getModel() {
+    public TableModel getModel() {
         return model;
     }
 
-    public void  setModel(TableModel model) {
+    public void setModel(TableModel model) {
         this.model = model;
         model.addTableModelListener(this);
     }
 
-    // By default, Implement TableModel by forwarding all messages 
-    // to the model. 
+    // By default, Implement TableModel by forwarding all messages
+    // to the model.
 
     public Object getValueAt(int aRow, int aColumn) {
         return model.getValueAt(aRow, aColumn);
@@ -80,13 +79,14 @@ public class TableMap extends AbstractTableModel implements TableModelListener
     }
 
     public boolean isCellEditable(int row, int column) {
-         return model.isCellEditable(row, column);
+        return model.isCellEditable(row, column);
     }
-//
-// Implementation of the TableModelListener interface, 
-//
 
-    // By default forward all events to all the listeners. 
+    //
+    // Implementation of the TableModelListener interface,
+    //
+
+    // By default forward all events to all the listeners.
     public void tableChanged(TableModelEvent e) {
         fireTableChanged(e);
     }

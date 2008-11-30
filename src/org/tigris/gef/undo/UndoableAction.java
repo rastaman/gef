@@ -32,22 +32,23 @@ import javax.swing.Icon;
  */
 public abstract class UndoableAction extends AbstractAction {
 
-
     /**
      * @see javax.swing.AbstractAction.AbstractAction()
      */
     public UndoableAction() {
         super();
     }
+
     /**
      * @see javax.swing.AbstractAction.AbstractAction(java.lang.String)
      */
     public UndoableAction(String name) {
         super(name);
     }
+
     /**
-     * @see javax.swing.AbstractAction.AbstractAction(
-     *       java.lang.String, javax.swing.Icon)
+     * @see javax.swing.AbstractAction.AbstractAction( java.lang.String,
+     *      javax.swing.Icon)
      */
     public UndoableAction(String name, Icon icon) {
         super(name, icon);

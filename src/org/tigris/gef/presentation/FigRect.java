@@ -43,8 +43,10 @@ public class FigRect extends Fig implements Serializable {
         super(x, y, w, h);
     }
 
-    /** Construct a new resizable FigRect with the given position, size, line color,
-     *  and fill color. */
+    /**
+     * Construct a new resizable FigRect with the given position, size, line
+     * color, and fill color.
+     */
     public FigRect(int x, int y, int w, int h, Color lColor, Color fColor) {
         super(x, y, w, h, lColor, fColor);
     }
@@ -55,28 +57,30 @@ public class FigRect extends Fig implements Serializable {
         this.resizable = resizable;
     }
 
-    /** Construct a new FigRect w/ the given position, size, line color,
-     *  and fill color. */
-    public FigRect(int x, int y, int w, int h, boolean resizable, Color lColor, Color fColor) {
+    /**
+     * Construct a new FigRect w/ the given position, size, line color, and fill
+     * color.
+     */
+    public FigRect(int x, int y, int w, int h, boolean resizable, Color lColor,
+            Color fColor) {
         super(x, y, w, h, lColor, fColor);
         this.resizable = resizable;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // painting methods
 
     /** Paint this FigRect */
     public void paint(Graphics g) {
-        drawRect(
-                g,
-                _filled, _fillColor,
-                _lineWidth, _lineColor,
-                _x, _y, _w, _h,
-                getDashed(), _dashes, _dashPeriod);
+        drawRect(g, _filled, _fillColor, _lineWidth, _lineColor, _x, _y, _w,
+                _h, getDashed(), _dashes, _dashPeriod);
     }
-    
+
     public void appendSvg(StringBuffer sb) {
-        sb.append("<rect id='").append(getId()).append("' x='").append(getX()).append("' y='").append(getY()).append("' width='").append(getWidth()).append("' height='").append(getHeight()).append("'");
+        sb.append("<rect id='").append(getId()).append("' x='").append(getX())
+                .append("' y='").append(getY()).append("' width='").append(
+                        getWidth()).append("' height='").append(getHeight())
+                .append("'");
         appendSvgStyle(sb);
         sb.append(" />");
     }

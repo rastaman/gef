@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: EnumerationEmpty.java
 // Classes: EnumerationEmpty
 // Original Author: jrobbins@ics.uci.edu
@@ -33,38 +30,43 @@ package org.tigris.gef.util;
 
 import java.util.*;
 
-/** A enumeration that is always empty. Functially equivelant to:
- *
- *  <code>(new Vector()).elements();</code>
- *
- *  This is useful when you must pass or return an enumeration, but you
- *  do not have any elements.
+/**
+ * A enumeration that is always empty. Functially equivelant to:
+ * 
+ * <code>(new Vector()).elements();</code>
+ * 
+ * This is useful when you must pass or return an enumeration, but you do not
+ * have any elements.
  */
 
-public class EnumerationEmpty
-implements Enumeration, Iterator, java.io.Serializable {
+public class EnumerationEmpty implements Enumeration, Iterator,
+        java.io.Serializable {
 
-  public boolean hasMoreElements() { return false; }
-  public Object nextElement() {
-    throw new NoSuchElementException();
-  }
-  protected static EnumerationEmpty _theInstance = new EnumerationEmpty();
-  public static EnumerationEmpty theInstance() { return _theInstance; }
+    public boolean hasMoreElements() {
+        return false;
+    }
 
-  // Implementing the Iterator interface:
-  public boolean hasNext()
-  {
-    return hasMoreElements();
-  };
+    public Object nextElement() {
+        throw new NoSuchElementException();
+    }
 
-  public Object next()
-  {
-    return nextElement();
-  };
+    protected static EnumerationEmpty _theInstance = new EnumerationEmpty();
 
-  public void remove()
-  {
-	  throw new java.util.NoSuchElementException();
-  };
+    public static EnumerationEmpty theInstance() {
+        return _theInstance;
+    }
+
+    // Implementing the Iterator interface:
+    public boolean hasNext() {
+        return hasMoreElements();
+    };
+
+    public Object next() {
+        return nextElement();
+    };
+
+    public void remove() {
+        throw new java.util.NoSuchElementException();
+    };
 
 } /* end class EnumerationEmpty */

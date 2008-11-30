@@ -40,7 +40,7 @@ import org.tigris.gef.presentation.FigPoly;
  * The handler for elements that represent FigEdge objects.
  */
 public class FigEdgeHandler extends BaseHandler implements Container {
-    
+
     /**
      * The Fig for the edge.
      */
@@ -48,10 +48,10 @@ public class FigEdgeHandler extends BaseHandler implements Container {
 
     /**
      * @param parser
-     *            The overall parser object.
+     *                The overall parser object.
      * @param theEdge
-     *            The FigEdge object created to correspond to the current XML
-     *            element.
+     *                The FigEdge object created to correspond to the current
+     *                XML element.
      */
     public FigEdgeHandler(PGMLStackParser parser, FigEdge theEdge) {
         super(parser);
@@ -144,8 +144,7 @@ public class FigEdgeHandler extends BaseHandler implements Container {
 
             if (spf == null || dpf == null || sfn == null || dfn == null) {
                 throw new SAXException("Can't find nodes for FigEdge: "
-                        + (String) o
-                        + ":" + edge.getId() + ":"
+                        + (String) o + ":" + edge.getId() + ":"
                         + edge.toString());
             } else {
                 edge.setSourcePortFig(spf);

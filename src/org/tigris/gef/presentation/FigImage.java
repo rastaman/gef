@@ -40,7 +40,7 @@ import org.tigris.gef.base.*;
 
 public class FigImage extends Fig implements ImageObserver {
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // instance variables
 
     /**
@@ -54,22 +54,23 @@ public class FigImage extends Fig implements ImageObserver {
     /** The URL of the Image being rendered */
     protected URL _url;
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constructors
 
     private static Log LOG = LogFactory.getLog(FigImage.class);
-    
-    /** Construct a new FigImage with the given position, size, and Image.  */
+
+    /** Construct a new FigImage with the given position, size, and Image. */
     public FigImage(int x, int y, int w, int h, Image img) {
         super(x, y, w, h);
         _image = img;
     }
+
     /** Construct a new FigImage w/ the given position and image. */
     public FigImage(int x, int y, Image i) {
         this(x, y, 0, 0, i);
         setSize(i.getWidth(this), i.getHeight(this));
     }
-    
+
     /** Construct a new FigImage w/ the given position and URL. */
     public FigImage(int x, int y, URL imageUrl) {
         super(x, y, 0, 0);
@@ -78,50 +79,44 @@ public class FigImage extends Fig implements ImageObserver {
         Globals.waitForImages();
         setSize(_image.getWidth(this), _image.getHeight(this));
     }
-    ////////////////////////////////////////////////////////////////
+
+    // //////////////////////////////////////////////////////////////
     // Editor API
 
-    public void createDrag(
-            int anchorX,
-            int anchorY,
-            int x,
-            int y,
-            int snapX,
+    public void createDrag(int anchorX, int anchorY, int x, int y, int snapX,
             int snapY) {
         setLocation(snapX, snapY);
     }
-    
+
     /**
      * USED BY SVG.tee
      */
     public URL getURL() {
         return _url;
     }
-    ////////////////////////////////////////////////////////////////
+
+    // //////////////////////////////////////////////////////////////
     // accessors
 
     // needs-more-work: add get and put for the url...
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // ImageObserver API
 
-    public boolean imageUpdate(
-            Image img,
-            int infoflags,
-            int x,
-            int y,
-            int w,
+    public boolean imageUpdate(Image img, int infoflags, int x, int y, int w,
             int h) {
         boolean done = ((infoflags & (ERROR | FRAMEBITS | ALLBITS)) != 0);
         return !done;
     }
-    ////////////////////////////////////////////////////////////////
+
+    // //////////////////////////////////////////////////////////////
     // painting methods
 
     /** Paint this FigImage on the given Graphics. */
     public void paint(Graphics graphicContext) {
         if (_image == null) {
-            if (LOG.isDebugEnabled()) LOG.debug("reloading image");
+            if (LOG.isDebugEnabled())
+                LOG.debug("reloading image");
             if (_url != null) {
                 _image = Globals.getImage(_url);
                 Globals.waitForImages();
@@ -136,27 +131,18 @@ public class FigImage extends Fig implements ImageObserver {
             g.fillRect(getX(), getY(), getWidth(), getHeight());
         }
     }
+
     public void setURL(URL newURL) {
         _url = newURL;
     }
 
-    
     public void appendSvg(StringBuffer sb) {
-        sb.append("<image id='")
-          .append(getId())
-          .append("' class='")
-          .append(getClass().getName())
-          .append("' style='fill:none;' x='")
-          .append(getX())
-          .append("' y='")
-          .append(getY())
-          .append("' width='")
-          .append(getWidth())
-          .append("' height='")
-          .append(getHeight())
-          .append("' xlink:href='")
-          .append(getURL())
-          .append(" />");
+        sb.append("<image id='").append(getId()).append("' class='").append(
+                getClass().getName()).append("' style='fill:none;' x='")
+                .append(getX()).append("' y='").append(getY()).append(
+                        "' width='").append(getWidth()).append("' height='")
+                .append(getHeight()).append("' xlink:href='").append(getURL())
+                .append(" />");
     }
 
 } /* end of FigImage class */

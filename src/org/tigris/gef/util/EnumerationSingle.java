@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: EnumerationSingle.java
 // Classes: EnumerationSingle
 // Original Author: jrobbins@ics.uci.edu
@@ -33,31 +30,36 @@ package org.tigris.gef.util;
 
 import java.util.*;
 
-/** A enumeration that has exactly one element. Functially equivelant to:
+/**
+ * A enumeration that has exactly one element. Functially equivelant to:
  * 
- *  <code>
+ * <code>
  *  Vector v = new Vector();
  *  v.addElement(obj);
  *  return v.elements();
  *  </code>
  * 
- *  This is useful when you must pass or return an enumeration, but you
- *  do not have many elements. */
+ * This is useful when you must pass or return an enumeration, but you do not
+ * have many elements.
+ */
 
-public class EnumerationSingle
-implements Enumeration, java.io.Serializable {
-  Object _element = null;
+public class EnumerationSingle implements Enumeration, java.io.Serializable {
+    Object _element = null;
 
-  public EnumerationSingle(Object ele) { _element = ele; }
-  public boolean hasMoreElements() { return _element != null; }
-  public Object nextElement() {
-    if (_element != null) {
-      Object o = _element;
-      _element = null;
-      return o;
+    public EnumerationSingle(Object ele) {
+        _element = ele;
     }
-    else throw new NoSuchElementException();
-  }
+
+    public boolean hasMoreElements() {
+        return _element != null;
+    }
+
+    public Object nextElement() {
+        if (_element != null) {
+            Object o = _element;
+            _element = null;
+            return o;
+        } else
+            throw new NoSuchElementException();
+    }
 } /* end class EnumerationSingle */
-
-

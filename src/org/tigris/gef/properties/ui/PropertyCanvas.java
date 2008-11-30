@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // From Sun's Beanbox
 // Support for drawing a property value in a Canvas.
 
@@ -36,48 +34,53 @@ import java.beans.*;
 
 class PropertyCanvas extends JPanel implements MouseListener {
 
-  public PropertyCanvas(JFrame frame, PropertyEditor pe) {
-    this.frame = frame;
-    editor = pe;
-    addMouseListener(this);
-  }
-  
-  public void paint(Graphics g) {
-    Rectangle box = new Rectangle(2, 2,
-				  getSize().width - 4,
-				  getSize().height - 4);
-    editor.paintValue(g, box);
-  }
-  
-  public Dimension getMinimumSize() {
-    return new Dimension(80, 20);
-  }
-
-  public Dimension getPreferredSize() {
-    return new Dimension(80, 20);
-  }
-
-
-  private static boolean ignoreClick = false;
-  
-  public void mouseClicked(MouseEvent evt) {
-    if (! ignoreClick) {
-      try {
-	ignoreClick = true;
-	int x = frame.getLocation().x - 30;
-	int y = frame.getLocation().y + 50;
-	new PropertyDialog(frame, editor, x, y);
-      } finally {
-	ignoreClick = false;
-      }
+    public PropertyCanvas(JFrame frame, PropertyEditor pe) {
+        this.frame = frame;
+        editor = pe;
+        addMouseListener(this);
     }
-  }
-  
-  public void mousePressed(MouseEvent evt) { }  
-  public void mouseReleased(MouseEvent evt) { } 
-  public void mouseEntered(MouseEvent evt) { } 
-  public void mouseExited(MouseEvent evt) { }
-  
-  private JFrame frame;
-  private PropertyEditor editor;
+
+    public void paint(Graphics g) {
+        Rectangle box = new Rectangle(2, 2, getSize().width - 4,
+                getSize().height - 4);
+        editor.paintValue(g, box);
+    }
+
+    public Dimension getMinimumSize() {
+        return new Dimension(80, 20);
+    }
+
+    public Dimension getPreferredSize() {
+        return new Dimension(80, 20);
+    }
+
+    private static boolean ignoreClick = false;
+
+    public void mouseClicked(MouseEvent evt) {
+        if (!ignoreClick) {
+            try {
+                ignoreClick = true;
+                int x = frame.getLocation().x - 30;
+                int y = frame.getLocation().y + 50;
+                new PropertyDialog(frame, editor, x, y);
+            } finally {
+                ignoreClick = false;
+            }
+        }
+    }
+
+    public void mousePressed(MouseEvent evt) {
+    }
+
+    public void mouseReleased(MouseEvent evt) {
+    }
+
+    public void mouseEntered(MouseEvent evt) {
+    }
+
+    public void mouseExited(MouseEvent evt) {
+    }
+
+    private JFrame frame;
+    private PropertyEditor editor;
 }

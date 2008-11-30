@@ -57,7 +57,8 @@ public class OpenPGMLAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new OpenPGMLAction
      * 
-     * @param name The name of the action
+     * @param name
+     *                The name of the action
      */
     public OpenPGMLAction(String name) {
         this(name, null, false);
@@ -66,8 +67,10 @@ public class OpenPGMLAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new OpenPGMLAction
      * 
-     * @param name The name of the action
-     * @param dimension The dimension of the graph
+     * @param name
+     *                The name of the action
+     * @param dimension
+     *                The dimension of the graph
      */
     public OpenPGMLAction(String name, Dimension dimension) {
         this(name, dimension, false);
@@ -76,8 +79,10 @@ public class OpenPGMLAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new OpenPGMLAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
      */
     public OpenPGMLAction(String name, Icon icon) {
         this(name, icon, null, false);
@@ -86,9 +91,12 @@ public class OpenPGMLAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new OpenPGMLAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dimension The dimension of the graph
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param dimension
+     *                The dimension of the graph
      */
     public OpenPGMLAction(String name, Icon icon, Dimension dimension) {
         this(name, icon, dimension, false);
@@ -97,9 +105,12 @@ public class OpenPGMLAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new OpenPGMLAction
      * 
-     * @param name The name of the action
-     * @param dimension The dimension of the graph
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param dimension
+     *                The dimension of the graph
+     * @param localize
+     *                Whether to localize the name or not
      */
     public OpenPGMLAction(String name, Dimension dimension, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -109,10 +120,14 @@ public class OpenPGMLAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new OpenPGMLAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dimension The dimension of the graph
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param dimension
+     *                The dimension of the graph
+     * @param localize
+     *                Whether to localize the name or not
      */
     public OpenPGMLAction(String name, Icon icon, Dimension dimension,
             boolean localize) {

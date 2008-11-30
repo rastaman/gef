@@ -21,17 +21,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 package org.tigris.gef.event;
 
 import java.util.*;
 
-/** An event object that contains information about the current
- *  selection(s) in an Editor.  These events are sent to registered
- *  GraphSelectionListeners whenever the Editor's selection
- *  changes.
- *
+/**
+ * An event object that contains information about the current selection(s) in
+ * an Editor. These events are sent to registered GraphSelectionListeners
+ * whenever the Editor's selection changes.
+ * 
  * @see ModeChangeListener
  * @see org.tigris.gef.base.Editor
  * @see org.tigris.gef.base.SelectionManager
@@ -41,15 +39,17 @@ public class ModeChangeEvent extends EventObject {
     private static final long serialVersionUID = -6352595981387658622L;
     private Vector _modes;
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public ModeChangeEvent(Object src, Vector modes) {
-    super(src);
-    _modes = modes;
-  }
+    // //////////////////////////////////////////////////////////////
+    // constructor
+    public ModeChangeEvent(Object src, Vector modes) {
+        super(src);
+        _modes = modes;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
-  public Vector getModes() { return _modes; }
+    // //////////////////////////////////////////////////////////////
+    // accessors
+    public Vector getModes() {
+        return _modes;
+    }
 
 } /* end class ModeChangeEvent */

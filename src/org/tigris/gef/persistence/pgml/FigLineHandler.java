@@ -41,9 +41,11 @@ public class FigLineHandler extends BaseHandler {
     int _x1, _y1, _x2, _y2;
 
     /**
-     * @param parser The PGMLStackParser for the diagram that contains this
-     * FigLine
-     * @param theLine The object corresponding to the element being parsed
+     * @param parser
+     *                The PGMLStackParser for the diagram that contains this
+     *                FigLine
+     * @param theLine
+     *                The object corresponding to the element being parsed
      */
     public FigLineHandler(PGMLStackParser parser, FigLine theLine) {
         super(parser);
@@ -53,31 +55,26 @@ public class FigLineHandler extends BaseHandler {
     }
 
     /**
-     * We set the line coordinates according
-     * to the values received from <em>moveto</em> and <em>lineto</em>
-     * sub-elements.
+     * We set the line coordinates according to the values received from
+     * <em>moveto</em> and <em>lineto</em> sub-elements.
      */
     public void gotElement(String contents) {
         line.setShape(_x1, _y1, _x2, _y2);
     }
 
     /**
-     * Override the getElementHandler in {@link BaseHandler BaseHandler}.
-     * We interpret the attributes of sub-elements moveto and lineto
-     * immediately as line coordinates, and then skip over these
-     * elements by returning null from this function.
-     *
+     * Override the getElementHandler in {@link BaseHandler BaseHandler}. We
+     * interpret the attributes of sub-elements moveto and lineto immediately as
+     * line coordinates, and then skip over these elements by returning null
+     * from this function.
+     * 
      * @see org.tigris.gef.persistence.pgml.BaseHandler#getElementHandler(
-     *         org.argouml.gef.HandlerStack, java.lang.Object,
-     *         java.lang.String, java.lang.String, java.lang.String,
-     *         org.xml.sax.Attributes)
+     *      org.argouml.gef.HandlerStack, java.lang.Object, java.lang.String,
+     *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     protected DefaultHandler getElementHandler(HandlerStack stack,
-                                                Object container,
-                                                String uri,
-                                                String localname,
-                                                String qname,
-                                                Attributes attributes) {
+            Object container, String uri, String localname, String qname,
+            Attributes attributes) {
         if (qname.equals("moveto")) {
             String x1 = attributes.getValue("x");
             String y1 = attributes.getValue("y");

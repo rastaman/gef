@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdNudge.java
 // Classes: CmdNudge
 // Original Author: jrobbins@ics.uci.edu
@@ -37,16 +34,18 @@ import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.undo.UndoableAction;
 import org.tigris.gef.util.Localizer;
 
-/** Cmd to Nudge Figs by a small distance.  This is useful when you
- *  want to get diagrams to look just right and you are not to steady
- *  with the mouse.  Also allows user to keep hands on keyboard.
- *
- * @see org.tigris.gef.presentation.Fig */
+/**
+ * Cmd to Nudge Figs by a small distance. This is useful when you want to get
+ * diagrams to look just right and you are not to steady with the mouse. Also
+ * allows user to keep hands on keyboard.
+ * 
+ * @see org.tigris.gef.presentation.Fig
+ */
 
 public class NudgeAction extends UndoableAction {
-    
+
     private static final long serialVersionUID = 2121611741541853360L;
-    
+
     public static final int LEFT = 1;
     public static final int RIGHT = 2;
     public static final int UP = 3;
@@ -60,53 +59,55 @@ public class NudgeAction extends UndoableAction {
     }
 
     public NudgeAction(int dir, int mag) {
-        super(Localizer.localize("GefBase", "Nudge" + wordFor(dir))); //needs-more-work: direction
+        super(Localizer.localize("GefBase", "Nudge" + wordFor(dir))); // needs-more-work:
+                                                                        // direction
         _direction = dir;
         _magnitude = mag;
     }
 
     protected static String wordFor(int d) {
-        switch(d) {
-            case LEFT:
-                return "Left";
-            case RIGHT:
-                return "Right";
-            case UP:
-                return "Up";
-            case DOWN:
-                return "Down";
+        switch (d) {
+        case LEFT:
+            return "Left";
+        case RIGHT:
+            return "Right";
+        case UP:
+            return "Up";
+        case DOWN:
+            return "Down";
         }
         return "";
     }
 
-    /** Move the selected items a few pixels in the given
-     *  direction. Note that the sign convention is the opposite of
-     *  CmdScroll. */
+    /**
+     * Move the selected items a few pixels in the given direction. Note that
+     * the sign convention is the opposite of CmdScroll.
+     */
     public void actionPerformed(ActionEvent e) {
 
         super.actionPerformed(e);
-        
+
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
-        if(sm.getLocked()) {
+        if (sm.getLocked()) {
             Globals.showStatus("Cannot Modify Locked Objects");
             return;
         }
 
         int dx = 0, dy = 0;
-        switch(_direction) {
-            case LEFT:
-                dx = 0 - _magnitude;
-                break;
-            case RIGHT:
-                dx = _magnitude;
-                break;
-            case UP:
-                dy = 0 - _magnitude;
-                break;
-            case DOWN:
-                dy = _magnitude;
-                break;
+        switch (_direction) {
+        case LEFT:
+            dx = 0 - _magnitude;
+            break;
+        case RIGHT:
+            dx = _magnitude;
+            break;
+        case UP:
+            dy = 0 - _magnitude;
+            break;
+        case DOWN:
+            dy = _magnitude;
+            break;
         }
         // Should I move it so that it aligns with the next grid?
         sm.translate(dx, dy);
@@ -118,4 +119,3 @@ public class NudgeAction extends UndoableAction {
         System.out.println("Cannot undo CmdNudge, yet.");
     }
 } /* end class CmdNudge */
-

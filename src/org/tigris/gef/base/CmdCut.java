@@ -37,33 +37,35 @@ import org.tigris.gef.presentation.*;
  * @deprecated in 0.12.3 us CutAction
  */
 public class CmdCut extends Cmd {
-	
+
     private static final long serialVersionUID = -5296601012186667929L;
 
-	public CmdCut() { super("Cut"); }
-	
-	public void doIt() {
-		System.out.println("[CmdCut] doIt");
-		Editor ce = Globals.curEditor();
-		SelectionManager selectionManager = ce.getSelectionManager();
-		Vector copiedElements = selectionManager.selections();
-		Vector figs = new Vector();
-		Enumeration copies = copiedElements.elements();
-		while (copies.hasMoreElements()) {
-			Selection s = (Selection) copies.nextElement();
-			Fig f = s.getContent();
-			if (f instanceof FigEdge) continue;
-			//needs-more-work: add support for cut-and-paste of edges
-			f = (Fig) f.clone();
-			figs.addElement(f);
-		}
-		Globals.clipBoard = figs;
-		selectionManager.removeFromGraph();
-	}
-	
-	public void undoIt() {
-		System.out.println("Undo does not make sense for CmdCut");
-	}
-	
-} /* end class CmdCut */
+    public CmdCut() {
+        super("Cut");
+    }
 
+    public void doIt() {
+        System.out.println("[CmdCut] doIt");
+        Editor ce = Globals.curEditor();
+        SelectionManager selectionManager = ce.getSelectionManager();
+        Vector copiedElements = selectionManager.selections();
+        Vector figs = new Vector();
+        Enumeration copies = copiedElements.elements();
+        while (copies.hasMoreElements()) {
+            Selection s = (Selection) copies.nextElement();
+            Fig f = s.getContent();
+            if (f instanceof FigEdge)
+                continue;
+            // needs-more-work: add support for cut-and-paste of edges
+            f = (Fig) f.clone();
+            figs.addElement(f);
+        }
+        Globals.clipBoard = figs;
+        selectionManager.removeFromGraph();
+    }
+
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdCut");
+    }
+
+} /* end class CmdCut */

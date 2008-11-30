@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: PaletteFig.java
 // Classes: PaletteFig
 // Original Author: ics125 spring 1996
@@ -43,21 +40,22 @@ import org.tigris.gef.base.ModeCreateFigSpline;
 import org.tigris.gef.base.ModeCreateFigText;
 import org.tigris.gef.base.ModeSelect;
 
-
-/** A Palette that defines buttons to create lines, rectangles,
- *  rounded rectangles, circles, and text. Also a select button is
- *  provided to switch back to ModeSelect.
- *
- *  Needs-more-work: sticky mode buttons are not supported right
- *  now. They should be in the next release.
- *
+/**
+ * A Palette that defines buttons to create lines, rectangles, rounded
+ * rectangles, circles, and text. Also a select button is provided to switch
+ * back to ModeSelect.
+ * 
+ * Needs-more-work: sticky mode buttons are not supported right now. They should
+ * be in the next release.
+ * 
  * @see ModeSelect
  * @see ModeCreateFigLine
  * @see ModeCreateFigRect
  * @see ModeCreateFigRRect
  * @see ModeCreateFigCircle
  * @see ModeCreateFigText
- * @see ModeCreateFigPoly */
+ * @see ModeCreateFigPoly
+ */
 
 public class PaletteFig extends ToolBar {
 
@@ -66,17 +64,16 @@ public class PaletteFig extends ToolBar {
      */
     private static final long serialVersionUID = 304194274216578087L;
 
-
     public PaletteFig() {
         defineButtons();
     }
-  
+
     /**
-     * Defined the buttons in this palette. Each of these buttons is
-     * associated with an CmdSetMode, and that Cmd sets the next
-     * global Mode to somethign appropriate. All the buttons can stick
-     * except 'select'. If the user unclicks the sticky checkbox, the
-     * 'select' button is automatically pressed.
+     * Defined the buttons in this palette. Each of these buttons is associated
+     * with an CmdSetMode, and that Cmd sets the next global Mode to somethign
+     * appropriate. All the buttons can stick except 'select'. If the user
+     * unclicks the sticky checkbox, the 'select' button is automatically
+     * pressed.
      */
     public void defineButtons() {
         add(new CmdSetMode(ModeSelect.class, "Select"));
@@ -92,6 +89,3 @@ public class PaletteFig extends ToolBar {
         add(new CmdSetMode(ModeCreateFigInk.class, "Ink"));
     }
 } /* end class PaletteFig */
-
-
-

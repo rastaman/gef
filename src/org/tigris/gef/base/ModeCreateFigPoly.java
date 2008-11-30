@@ -36,33 +36,34 @@ import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
 
 /**
- * A Mode to interprete user input while creating a FigPoly. All of
- * the actual event handling is inherited from ModeCreate. This class
- * just implements the differences needed to make it specific to
- * polygons.
+ * A Mode to interprete user input while creating a FigPoly. All of the actual
+ * event handling is inherited from ModeCreate. This class just implements the
+ * differences needed to make it specific to polygons.
  */
 
 public class ModeCreateFigPoly extends ModeCreate {
 
     private static final long serialVersionUID = 2839607058696197299L;
-    
+
     /** The number of points added so far. */
     protected int _npoints = 0;
     protected int _lastX, _lastY, _startX, _startY;
     protected Handle _handle = new Handle(-1);
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // Mode API
 
     public String instructions() {
         return "Click to add a point; Double-click to finish";
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // ModeCreate API
 
-    /** Create a new FigRect instance based on the given mouse down
-     *  event and the state of the parent Editor. */
+    /**
+     * Create a new FigRect instance based on the given mouse down event and the
+     * state of the parent Editor.
+     */
     public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
         FigPoly p = new FigPoly(snapX, snapY);
         p.addPoint(snapX, snapY); // add the first point twice
@@ -72,7 +73,7 @@ public class ModeCreateFigPoly extends ModeCreate {
         return p;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // Event handlers
 
     public void mousePressed(MouseEvent me) {
@@ -144,9 +145,8 @@ public class ModeCreateFigPoly extends ModeCreate {
 
     /** Internal function to see if the user clicked twice on the same spot. */
     protected boolean nearLast(int x, int y) {
-        return x > _lastX - Editor.GRIP_SIZE
-            && x < _lastX + Editor.GRIP_SIZE
-            && y > _lastY - Editor.GRIP_SIZE
-            && y < _lastY + Editor.GRIP_SIZE;
+        return x > _lastX - Editor.GRIP_SIZE && x < _lastX + Editor.GRIP_SIZE
+                && y > _lastY - Editor.GRIP_SIZE
+                && y < _lastY + Editor.GRIP_SIZE;
     }
 } /* end class ModeCreateFigPoly */

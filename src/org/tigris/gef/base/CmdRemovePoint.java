@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdRemovePoint.java
 // Classes: CmdRemovePoint
 // Original Author: jrobbins@ics.uci.edu
@@ -33,7 +30,9 @@ package org.tigris.gef.base;
 
 import org.tigris.gef.presentation.Fig;
 
-/** Cmd to remove the selected (last manipulated) point from a FigPoly.
+/**
+ * Cmd to remove the selected (last manipulated) point from a FigPoly.
+ * 
  * @deprecated in 0.12.3 use RemovePointAction
  * @see FigPoly
  */
@@ -41,34 +40,38 @@ import org.tigris.gef.presentation.Fig;
 public class CmdRemovePoint extends Cmd {
 
     private static final long serialVersionUID = -1839780715990724918L;
-    
-  protected int _selectedHandle = 0;
 
-  public CmdRemovePoint() {
-	  super("RemovePointFromPolygon");
-  }
+    protected int _selectedHandle = 0;
 
-  public CmdRemovePoint(int i) { this(); _selectedHandle = i; }
-
-  /** Ask the current editor's selected Fig to remove its point. */
-  public void doIt() {
-    Fig f = null;
-    Selection sel = null;
-    Editor ce = Globals.curEditor();
-    SelectionManager sm = ce.getSelectionManager();
-    if (sm.getLocked()) {
-      Globals.showStatus("Cannot Modify Locked Objects");
-      return;
+    public CmdRemovePoint() {
+        super("RemovePointFromPolygon");
     }
 
-    if (sm.selections().isEmpty()) return;
-    sel = (Selection) sm.selections().firstElement();
-    f = (Fig) sel.getContent();
-    f.removePoint(_selectedHandle);
-    f.endTrans();
-  }
+    public CmdRemovePoint(int i) {
+        this();
+        _selectedHandle = i;
+    }
 
-  public void undoIt() {
-    System.out.println("this operation currently cannot be undone");
-  }
+    /** Ask the current editor's selected Fig to remove its point. */
+    public void doIt() {
+        Fig f = null;
+        Selection sel = null;
+        Editor ce = Globals.curEditor();
+        SelectionManager sm = ce.getSelectionManager();
+        if (sm.getLocked()) {
+            Globals.showStatus("Cannot Modify Locked Objects");
+            return;
+        }
+
+        if (sm.selections().isEmpty())
+            return;
+        sel = (Selection) sm.selections().firstElement();
+        f = (Fig) sel.getContent();
+        f.removePoint(_selectedHandle);
+        f.endTrans();
+    }
+
+    public void undoIt() {
+        System.out.println("this operation currently cannot be undone");
+    }
 } /* end class CmdRemovePoint */

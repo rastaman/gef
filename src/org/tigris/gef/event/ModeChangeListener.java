@@ -25,17 +25,18 @@ package org.tigris.gef.event;
 
 import java.util.*;
 
-/** An interface that must be implemented by any object that wants to
- *  be notified when an Editor changes its selection(s).
- *
+/**
+ * An interface that must be implemented by any object that wants to be notified
+ * when an Editor changes its selection(s).
+ * 
  * @see org.tigris.gef.base.Editor
  * @see org.tigris.gef.base.SelectionManager
  */
 
 public interface ModeChangeListener extends EventListener {
 
-  void modeChange(ModeChangeEvent mce);
-  //? void modeAdded(modeChangeEvent mce);
-  //? void modeRemoved(modeChangeEvent mce);
+    void modeChange(ModeChangeEvent mce);
+    // ? void modeAdded(modeChangeEvent mce);
+    // ? void modeRemoved(modeChangeEvent mce);
 
 } /* end class ModeChangeListener */

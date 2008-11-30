@@ -21,33 +21,32 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 package org.tigris.gef.util;
 
 /**
  * @author Piotr Kaminski
  */
 public class UnexpectedException extends RuntimeException {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  private Throwable nestedException;
+    // //////////////////////////////////////////////////////////////
+    // instance variables
+    private Throwable nestedException;
 
+    // //////////////////////////////////////////////////////////////
+    // constructors
+    public UnexpectedException(String s, Throwable t) {
+        super(s);
+        nestedException = t;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  //constructors
-  public UnexpectedException(String s, Throwable t) {
-    super(s);
-    nestedException = t;
-  }
+    public UnexpectedException(Throwable e) {
+        super();
+        nestedException = e;
+    }
 
-  public UnexpectedException(Throwable e) {
-    super();
-    nestedException = e;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-  public Throwable getNestedException() { return nestedException; }
+    // //////////////////////////////////////////////////////////////
+    // accessors
+    public Throwable getNestedException() {
+        return nestedException;
+    }
 
 } /* end class UnexpectedException */

@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: NetEdge.java
 // Classes: NetEdge
 // Original Author: ics125 spring 1996
@@ -39,84 +36,110 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
-/** This class models an edge in our underlying connected graph
- *  model. This class is used by the DefaultGraphModel.  If you define
- *  your own GraphModel, you can user your own application-specific
- *  objects as edges.
+/**
+ * This class models an edge in our underlying connected graph model. This class
+ * is used by the DefaultGraphModel. If you define your own GraphModel, you can
+ * user your own application-specific objects as edges.
  */
 
-public abstract class NetEdge extends NetPrimitive
-implements GraphEdgeHooks, java.io.Serializable {
+public abstract class NetEdge extends NetPrimitive implements GraphEdgeHooks,
+        java.io.Serializable {
 
     private static final Log LOG = LogFactory.getLog(NetEdge.class);
-    
-    ////////////////////////////////////////////////////////////////
+
+    // //////////////////////////////////////////////////////////////
     // instance variables
 
     /** The start and end ports of this edge. */
     protected NetPort _sourcePort;
     protected NetPort _destPort;
 
-    /** The ports that are part of this edge. Most of the time Edges do
-     *  not have any ports. However, in some connected graph notations,
-     *  users are allowed to attach notes to edges, or something that
-     *  requrires edges to go from an edge to a node, or an edge to an
-     *  edge. */
+    /**
+     * The ports that are part of this edge. Most of the time Edges do not have
+     * any ports. However, in some connected graph notations, users are allowed
+     * to attach notes to edges, or something that requrires edges to go from an
+     * edge to a node, or an edge to an edge.
+     */
     protected Vector _ports;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    // //////////////////////////////////////////////////////////////
+    // constructors
 
-  /** Construct a new NetEdge */
-  public NetEdge() { }
+    /** Construct a new NetEdge */
+    public NetEdge() {
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    // //////////////////////////////////////////////////////////////
+    // accessors
 
-  public void setSourcePort(NetPort s) { _sourcePort = s; }
-  public NetPort getSourcePort() { return _sourcePort; }
-  public void setDestPort(NetPort d) { _destPort = d; }
-  public NetPort getDestPort() { return _destPort; }
+    public void setSourcePort(NetPort s) {
+        _sourcePort = s;
+    }
 
-  /** Given one port (source or destination), reply the other port
-   *  (destination or source). */
-  public NetPort otherEnd(NetPort oneEnd) {
-    NetPort sp = getSourcePort();
-    if (sp == oneEnd) { return getDestPort(); }
-    else { return sp; }
-  }
+    public NetPort getSourcePort() {
+        return _sourcePort;
+    }
 
-  public Vector getPorts() { return _ports; }
-  public void setPorts(Vector v) { _ports = v; }
-  
-  ////////////////////////////////////////////////////////////////
-  // net-level hooks
+    public void setDestPort(NetPort d) {
+        _destPort = d;
+    }
 
-  /** Connect the source and destination ports, iff they agree to
-   * being connected (i.e., canConnectTo() returns true). Reply true
-   * on success. This method is noramlly called after a new edge
-   * instance is made. Maybe this behavior should be in a constructor,
-   * but I want to use Class#newInstance so constructors do not get
-   * any arguments. */
-  public boolean connect(GraphModel gm, Object srcPort, Object destPort) {
-    NetPort srcNetPort = (NetPort) srcPort;
-    NetPort destNetPort = (NetPort) destPort;
-    if (!srcNetPort.canConnectTo(gm, destPort)) return false;
-    if (!destNetPort.canConnectTo(gm, srcPort)) return false;
+    public NetPort getDestPort() {
+        return _destPort;
+    }
 
-    setSourcePort(srcNetPort);
-    setDestPort(destNetPort);
+    /**
+     * Given one port (source or destination), reply the other port (destination
+     * or source).
+     */
+    public NetPort otherEnd(NetPort oneEnd) {
+        NetPort sp = getSourcePort();
+        if (sp == oneEnd) {
+            return getDestPort();
+        } else {
+            return sp;
+        }
+    }
 
-    srcNetPort.addEdge(this);
-    destNetPort.addEdge(this);
-    
-    srcNetPort.postConnect(gm, destPort);
-    destNetPort.postConnect(gm, srcPort);
-    return true;
-  }
+    public Vector getPorts() {
+        return _ports;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // Editor API
+    public void setPorts(Vector v) {
+        _ports = v;
+    }
+
+    // //////////////////////////////////////////////////////////////
+    // net-level hooks
+
+    /**
+     * Connect the source and destination ports, iff they agree to being
+     * connected (i.e., canConnectTo() returns true). Reply true on success.
+     * This method is noramlly called after a new edge instance is made. Maybe
+     * this behavior should be in a constructor, but I want to use
+     * Class#newInstance so constructors do not get any arguments.
+     */
+    public boolean connect(GraphModel gm, Object srcPort, Object destPort) {
+        NetPort srcNetPort = (NetPort) srcPort;
+        NetPort destNetPort = (NetPort) destPort;
+        if (!srcNetPort.canConnectTo(gm, destPort))
+            return false;
+        if (!destNetPort.canConnectTo(gm, srcPort))
+            return false;
+
+        setSourcePort(srcNetPort);
+        setDestPort(destNetPort);
+
+        srcNetPort.addEdge(this);
+        destNetPort.addEdge(this);
+
+        srcNetPort.postConnect(gm, destPort);
+        destNetPort.postConnect(gm, srcPort);
+        return true;
+    }
+
+    // //////////////////////////////////////////////////////////////
+    // Editor API
 
     /** Remove this NetEdge from the underlying connected graph model. */
     public void deleteFromModel() {
@@ -124,11 +147,11 @@ implements GraphEdgeHooks, java.io.Serializable {
         if (getSourcePort() != null && getDestPort() != null) {
             _sourcePort.removeEdge(this);
             _destPort.removeEdge(this);
-            
-            DefaultGraphModel gm =
-                (DefaultGraphModel)Globals.curEditor().getGraphModel();
+
+            DefaultGraphModel gm = (DefaultGraphModel) Globals.curEditor()
+                    .getGraphModel();
             gm.removeEdge(this);
-          
+
             // needs-more-work: assumes no parallel edges!
             _sourcePort.postDisconnect(gm, getDestPort());
             _destPort.postDisconnect(gm, getSourcePort());
@@ -136,37 +159,38 @@ implements GraphEdgeHooks, java.io.Serializable {
         }
     }
 
-  ////////////////////////////////////////////////////////////////
-  // diagram-level operations
+    // //////////////////////////////////////////////////////////////
+    // diagram-level operations
 
-  /** The Fig to use in views of a given type */
-  public FigEdge presentationFor(Layer lay) {
-    FigEdge fe;
-    if (lay != null) {
-      fe = (FigEdge) lay.presentationFor(this);
-      if (fe != null) return fe;
+    /** The Fig to use in views of a given type */
+    public FigEdge presentationFor(Layer lay) {
+        FigEdge fe;
+        if (lay != null) {
+            fe = (FigEdge) lay.presentationFor(this);
+            if (fe != null)
+                return fe;
+        }
+        NetNode sourceNode = _sourcePort.getParentNode();
+        NetNode destNode = _destPort.getParentNode();
+        FigNode sourceFigNode = sourceNode.presentationFor(lay);
+        FigNode destFigNode = destNode.presentationFor(lay);
+        Fig sourcePortFig = sourceFigNode.getPortFig(_sourcePort);
+        Fig destPortFig = destFigNode.getPortFig(_destPort);
+        fe = makePresentation(lay);
+        fe.setSourcePortFig(sourcePortFig);
+        fe.setDestPortFig(destPortFig);
+        fe.setSourceFigNode(sourceFigNode);
+        fe.setDestFigNode(destFigNode);
+        fe.setOwner(this);
+        return fe;
     }
-    NetNode sourceNode = _sourcePort.getParentNode();
-    NetNode destNode = _destPort.getParentNode();
-    FigNode sourceFigNode = sourceNode.presentationFor(lay);
-    FigNode destFigNode = destNode.presentationFor(lay);
-    Fig sourcePortFig = sourceFigNode.getPortFig(_sourcePort);
-    Fig destPortFig = destFigNode.getPortFig(_destPort);
-    fe = makePresentation(lay);
-    fe.setSourcePortFig(sourcePortFig);
-    fe.setDestPortFig(destPortFig);
-    fe.setSourceFigNode(sourceFigNode);
-    fe.setDestFigNode(destFigNode);
-    fe.setOwner(this);
-    return fe;
-  }
 
-  /** Abstract method that returns a FigEdge to represent this edge in
-   *  a given Layer.  This is just a quick and simple way to do it if
-   *  you use a DefaultGraphModel because DefaultgraphEdgeRenderer
-   *  calls this. Override this method if you want your Edge
-   *  subclasses to have a different look.  The better way to do it is
-   *  to implement your own GraphEdgeRenderer. */
-  public abstract FigEdge makePresentation(Layer lay);
+    /**
+     * Abstract method that returns a FigEdge to represent this edge in a given
+     * Layer. This is just a quick and simple way to do it if you use a
+     * DefaultGraphModel because DefaultgraphEdgeRenderer calls this. Override
+     * this method if you want your Edge subclasses to have a different look.
+     * The better way to do it is to implement your own GraphEdgeRenderer.
+     */
+    public abstract FigEdge makePresentation(Layer lay);
 } /* end class NetEdge */
-

@@ -43,10 +43,11 @@ import org.tigris.gef.presentation.Handle;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
-/** A Selection that allows the user to reshape the selected Fig.
- *  This is used with FigPoly, FigLine, and FigInk.  One handle is
- *  drawn over each point on the Fig.
- *
+/**
+ * A Selection that allows the user to reshape the selected Fig. This is used
+ * with FigPoly, FigLine, and FigInk. One handle is drawn over each point on the
+ * Fig.
+ * 
  * @see FigLine
  * @see FigPoly
  * @see FigInk
@@ -55,7 +56,7 @@ import org.tigris.gef.undo.UndoManager;
 public class SelectionReshape extends Selection implements KeyListener {
 
     private static final long serialVersionUID = 2204649413528863935L;
-    
+
     private int selectedHandle = -1;
 
     /**
@@ -66,7 +67,7 @@ public class SelectionReshape extends Selection implements KeyListener {
     }
 
     /**
-     * Return a handle ID for the handle under the mouse, or -1 if none. 
+     * Return a handle ID for the handle under the mouse, or -1 if none.
      */
     public void hitHandle(Rectangle r, Handle h) {
         Fig fig = getContent();
@@ -82,8 +83,8 @@ public class SelectionReshape extends Selection implements KeyListener {
             }
         }
         if (fig instanceof FigEdgePoly) {
-            for (int i = 0; i < npoints-1; ++i) {
-                if (Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
+            for (int i = 0; i < npoints - 1; ++i) {
+                if (Geometry.intersects(r, xs[i], ys[i], xs[i + 1], ys[i + 1])) {
                     h.index = fig.getNumPoints();
                     h.instructions = "Add a point";
                     return;
@@ -96,8 +97,8 @@ public class SelectionReshape extends Selection implements KeyListener {
     }
 
     /**
-     * Paint the handles at the four corners and midway along each edge
-     * of the bounding box.
+     * Paint the handles at the four corners and midway along each edge of the
+     * bounding box.
      */
     public void paint(Graphics g) {
         Fig fig = getContent();
@@ -106,15 +107,13 @@ public class SelectionReshape extends Selection implements KeyListener {
         int[] ys = fig.getYs();
         g.setColor(Globals.getPrefs().handleColorFor(fig));
         for (int i = 0; i < npoints; ++i) {
-            g.fillRect(
-                    xs[i] - HAND_SIZE/2, ys[i] - HAND_SIZE/2,
-                    HAND_SIZE, HAND_SIZE);
+            g.fillRect(xs[i] - HAND_SIZE / 2, ys[i] - HAND_SIZE / 2, HAND_SIZE,
+                    HAND_SIZE);
         }
         if (selectedHandle != -1) {
-            g.drawRect(
-                    xs[selectedHandle] - HAND_SIZE/2 - 2,
-                    ys[selectedHandle] - HAND_SIZE/2 - 2,
-                    HAND_SIZE + 3, HAND_SIZE + 3);
+            g.drawRect(xs[selectedHandle] - HAND_SIZE / 2 - 2,
+                    ys[selectedHandle] - HAND_SIZE / 2 - 2, HAND_SIZE + 3,
+                    HAND_SIZE + 3);
         }
     }
 
@@ -124,54 +123,60 @@ public class SelectionReshape extends Selection implements KeyListener {
      */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle h) {
         final Fig selectedFig = getContent();
-        
-        
+
         // check assertions
         if (selectedFig instanceof FigEdgePoly) {
-            final FigEdgePoly figEdgePoly = ((FigEdgePoly)selectedFig);
-            
+            final FigEdgePoly figEdgePoly = ((FigEdgePoly) selectedFig);
+
             class FigEdgeReshapeMemento extends Memento {
 
                 Polygon oldPolygon;
-                
+
                 FigEdgeReshapeMemento(final Polygon poly) {
-                    oldPolygon = new Polygon(poly.xpoints,poly.ypoints,poly.npoints);
+                    oldPolygon = new Polygon(poly.xpoints, poly.ypoints,
+                            poly.npoints);
                 }
+
                 public void undo() {
-                	UndoManager.getInstance().addMementoLock(this);
-                	Polygon poly=figEdgePoly.getPolygon();
-                	Polygon curPoly = new Polygon(poly.xpoints,poly.ypoints,poly.npoints);
+                    UndoManager.getInstance().addMementoLock(this);
+                    Polygon poly = figEdgePoly.getPolygon();
+                    Polygon curPoly = new Polygon(poly.xpoints, poly.ypoints,
+                            poly.npoints);
                     figEdgePoly.setPolygon(oldPolygon);
-                    oldPolygon=curPoly;
+                    oldPolygon = curPoly;
                     figEdgePoly.damage();
                     UndoManager.getInstance().removeMementoLock(this);
                 }
+
                 public void redo() {
                     undo();
                 }
-                
+
                 public String toString() {
-                    return (isStartChain() ? "*" : " ") + "ReshapeMemento " + oldPolygon;
+                    return (isStartChain() ? "*" : " ") + "ReshapeMemento "
+                            + oldPolygon;
                 }
             }
-            
+
             if (UndoManager.getInstance().isGenerateMementos()) {
-                Memento memento = new FigEdgeReshapeMemento(figEdgePoly.getPolygon());
+                Memento memento = new FigEdgeReshapeMemento(figEdgePoly
+                        .getPolygon());
                 UndoManager.getInstance().startChain();
                 UndoManager.getInstance().addMemento(memento);
             }
-            
+
             int npoints = selectedFig.getNumPoints();
             int[] xs = selectedFig.getXs();
             int[] ys = selectedFig.getYs();
-            Rectangle r = new Rectangle(anX-4, anY-4, 8, 8);
+            Rectangle r = new Rectangle(anX - 4, anY - 4, 8, 8);
             if (h.index == figEdgePoly.getNumPoints()) {
                 // If we're dragging the perimeter of a FigEdgePoly then
                 // create a handle at that point.
-                for (int i = 0; i < npoints-1; ++i) {
-                    if (Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
-                        figEdgePoly.insertPoint(i,r.x,r.y);
-                        h.index = i+1;
+                for (int i = 0; i < npoints - 1; ++i) {
+                    if (Geometry.intersects(r, xs[i], ys[i], xs[i + 1],
+                            ys[i + 1])) {
+                        figEdgePoly.insertPoint(i, r.x, r.y);
+                        h.index = i + 1;
                         break;
                     }
                 }
@@ -182,13 +187,13 @@ public class SelectionReshape extends Selection implements KeyListener {
             }
             // If we're dragging the first or last end then maybe we need
             // to do something special in some sub class.
-            if ((h.index == 0)||(h.index == figEdgePoly.getNumPoints()-1)) {
-                updateEdgeEnds(figEdgePoly,h,mX,mY);
+            if ((h.index == 0) || (h.index == figEdgePoly.getNumPoints() - 1)) {
+                updateEdgeEnds(figEdgePoly, h, mX, mY);
             } // end if
         }
-        
+
         if (selectedFig instanceof FigPoly) {
-            FigPoly poly = (FigPoly)selectedFig;
+            FigPoly poly = (FigPoly) selectedFig;
             if (h.index == 0 || h.index == (poly.getNumPoints() - 1)) {
                 Point moveTo = new Point(mX, mY);
                 poly.setEndPoints(moveTo, moveTo);
@@ -200,16 +205,17 @@ public class SelectionReshape extends Selection implements KeyListener {
         }
     }
 
-    public void updateEdgeEnds(FigEdge poly, Handle handle, int x, int y ) {
+    public void updateEdgeEnds(FigEdge poly, Handle handle, int x, int y) {
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // event handlers
 
     public void keyPressed(KeyEvent ke) {
-        if (ke.isConsumed()) return;
+        if (ke.isConsumed())
+            return;
         if (getContent() instanceof KeyListener) {
-            ((KeyListener)getContent()).keyPressed(ke);
+            ((KeyListener) getContent()).keyPressed(ke);
         }
     }
 
@@ -218,8 +224,7 @@ public class SelectionReshape extends Selection implements KeyListener {
             return;
         }
         if (getContent() instanceof KeyListener) {
-            ((KeyListener)getContent()).keyReleased(ke);
+            ((KeyListener) getContent()).keyReleased(ke);
         }
     }
 } /* end class SelectionReshape */
-

@@ -36,10 +36,12 @@ import javax.swing.Icon;
  * 
  * @author Bob Tarling
  */
-public class UndoAction extends AbstractAction implements PropertyChangeListener {
-    
+public class UndoAction extends AbstractAction implements
+        PropertyChangeListener {
+
     /**
      * Construct the undo action with a display name
+     * 
      * @param name
      */
     public UndoAction(String name) {
@@ -47,9 +49,10 @@ public class UndoAction extends AbstractAction implements PropertyChangeListener
         UndoManager.getInstance().addPropertyChangeListener(this);
         setEnabled(false);
     }
-    
+
     /**
      * Construct the undo action with a display name and icon.
+     * 
      * @param name
      * @param icon
      */
@@ -65,13 +68,13 @@ public class UndoAction extends AbstractAction implements PropertyChangeListener
     public void actionPerformed(ActionEvent e) {
         UndoManager.getInstance().undo();
     }
-    
+
     /**
      * When the undo stack is down to zero we are disabled.
      */
     public void propertyChange(PropertyChangeEvent event) {
         if ("canUndo".equals(event.getPropertyName())) {
-            setEnabled ("true".equals(event.getNewValue()));
+            setEnabled("true".equals(event.getNewValue()));
         }
     }
 }

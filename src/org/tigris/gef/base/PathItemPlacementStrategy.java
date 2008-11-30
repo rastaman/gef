@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: PathConv.java
 // Classes: PathConv
 // Original Author: abonner@ics.uci.edu
@@ -33,26 +31,26 @@ package org.tigris.gef.base;
 import java.awt.Graphics;
 import java.awt.Point;
 
-/** 
+/**
  * An interface defining the methods required for path item placement.
  */
 public interface PathItemPlacementStrategy {
-    
+
     Point getPoint();
-    
+
     /**
      * Method to visualize the algorithm of the path item placement strategy.
      * 
-     * This is implemented as an empty method in PathConv so any class
-     * extending that has no painting of the algorithm by default.
+     * This is implemented as an empty method in PathConv so any class extending
+     * that has no painting of the algorithm by default.
      * 
-     * It is up to the client application to provide the algorithm when
-     * required and also to call the strategy at the appropriate time.
+     * It is up to the client application to provide the algorithm when required
+     * and also to call the strategy at the appropriate time.
      * 
-     * Should the strategy always be visible then the FigEdge paint method
-     * would be responsible for painting the strategy. Should the strategy
-     * only appear on selection then the appropriate Selection classes paint
-     * method should be responsible.
+     * Should the strategy always be visible then the FigEdge paint method would
+     * be responsible for painting the strategy. Should the strategy only appear
+     * on selection then the appropriate Selection classes paint method should
+     * be responsible.
      */
     void paint(Graphics g);
 }

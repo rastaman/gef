@@ -21,10 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-
 // File: FigInk.java
 // Classes: FigInk
 // Original Author: jrobbins@ics.uci.edu
@@ -32,10 +28,11 @@
 
 package org.tigris.gef.presentation;
 
-/** Primitive Fig to paint Ink on a LayerDiagram. Ink is like an open
- *  polygon with no fill.  The main difference between FigInk and
- *  FigPoly is in the way that they are created.
- *
+/**
+ * Primitive Fig to paint Ink on a LayerDiagram. Ink is like an open polygon
+ * with no fill. The main difference between FigInk and FigPoly is in the way
+ * that they are created.
+ * 
  * @see FigPoly
  */
 
@@ -45,8 +42,8 @@ public class FigInk extends FigPoly {
 
     /** Construct a new FigInk w/ the given attributes. */
     public FigInk() {
-	super();
-	_filled = false;
+        super();
+        _filled = false;
     }
 
     /** Construct a new FigInk w/ the given point and attributes. */
@@ -55,20 +52,22 @@ public class FigInk extends FigPoly {
         _filled = false;
     }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    // //////////////////////////////////////////////////////////////
+    // accessors
 
-  /** Line width of ink must be always be 1, so do nothing  */
-  public void setLineWidth(int w) { }
+    /** Line width of ink must be always be 1, so do nothing */
+    public void setLineWidth(int w) {
+    }
 
-  /** FigInks can never be filled, so do nothing. */
-  public void setFilled(boolean f) { }
+    /** FigInks can never be filled, so do nothing. */
+    public void setFilled(boolean f) {
+    }
 
-  /** FigInks can never be rectilinear, so do nothing. */
-  public void setRectilinear(boolean r) { }
+    /** FigInks can never be rectilinear, so do nothing. */
+    public void setRectilinear(boolean r) {
+    }
 
-  public boolean contains(int x, int y) {
-    return super.findHandle(x, y) != -1;
-  }
+    public boolean contains(int x, int y) {
+        return super.findHandle(x, y) != -1;
+    }
 } /* end class FigInk */
-

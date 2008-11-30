@@ -43,12 +43,13 @@ import javax.imageio.ImageIO;
  * This is a rewrite of CmdSaveGIF to use the JDK 1.4 ImageIO library to write
  * PNG files, with both better performance and memory efficiency. Unfortunately
  * though, this is only available to those with JRE1.4 and above.
+ * 
  * @deprecated in 0.12.3 use SavePNGAction
  */
 public class CmdSavePNG extends CmdSaveGraphics {
 
     private static final long serialVersionUID = 2694114560467440132L;
-    
+
     /**
      * Used as background color in image and set transparent. Chosen because
      * it's unlikely to be selected by the user, and leaves the diagram readable
@@ -68,9 +69,8 @@ public class CmdSavePNG extends CmdSaveGraphics {
             throws IOException {
 
         // Create an offscreen image and render the diagram into it.
-        Image i = new BufferedImage(drawingArea.width * scale, 
-                drawingArea.height * scale,
-                BufferedImage.TYPE_INT_ARGB);
+        Image i = new BufferedImage(drawingArea.width * scale,
+                drawingArea.height * scale, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = (Graphics2D) i.getGraphics();
         g.scale(scale, scale);
         g.setColor(new Color(TRANSPARENT_BG_COLOR, true));

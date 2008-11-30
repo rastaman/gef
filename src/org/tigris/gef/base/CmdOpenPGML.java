@@ -37,10 +37,13 @@ import org.tigris.gef.persistence.pgml.PGMLStackParser;
 import org.tigris.gef.util.Util;
 import org.xml.sax.SAXException;
 
-/** Cmd to Load a previously saved document document. The loaded
- *  editor is displayed in a new JGraphFrame.
+/**
+ * Cmd to Load a previously saved document document. The loaded editor is
+ * displayed in a new JGraphFrame.
+ * 
  * @deprecated in 0.12.3 use OpenPGMLAction
- * @see CmdSave */
+ * @see CmdSave
+ */
 
 public class CmdOpenPGML extends Cmd implements FilenameFilter {
 
@@ -51,8 +54,8 @@ public class CmdOpenPGML extends Cmd implements FilenameFilter {
 
     public void doIt() {
         Editor ce = Globals.curEditor();
-        FileDialog fd =
-            new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
+        FileDialog fd = new FileDialog(ce.findFrame(), "Open...",
+                FileDialog.LOAD);
         fd.setFilenameFilter(this);
         fd.setDirectory(Globals.getLastDirectory());
         fd.setVisible(true);
@@ -70,7 +73,8 @@ public class CmdOpenPGML extends Cmd implements FilenameFilter {
                 Globals.showStatus("Read " + path + filename);
                 JGraphFrame jgf = new JGraphFrame(path + filename, ed);
                 Object d = getArg("dimension");
-                if (d instanceof Dimension) jgf.setSize((Dimension)d);
+                if (d instanceof Dimension)
+                    jgf.setSize((Dimension) d);
                 jgf.setVisible(true);
             } catch (SAXException murle) {
                 System.out.println("bad URL");
@@ -80,26 +84,28 @@ public class CmdOpenPGML extends Cmd implements FilenameFilter {
         }
     }
 
-  /** Only let the user select files that match the filter. This does
-   * not seem to be called under JDK 1.0.2 on solaris. I have not
-   * finished this method, it currently accepts all filenames. <p>
-   *
-   * Needs-More-Work: The source code for this function is duplicated
-   * in CmdSave#accept.  */
-  public boolean accept(File dir, String name) {
-    System.out.println("checking: "+ dir + " " + name);
-    if (containsArg("filterPattern")) {
-      // if pattern dosen't match, return false
-      return true;
+    /**
+     * Only let the user select files that match the filter. This does not seem
+     * to be called under JDK 1.0.2 on solaris. I have not finished this method,
+     * it currently accepts all filenames.
+     * <p>
+     * 
+     * Needs-More-Work: The source code for this function is duplicated in
+     * CmdSave#accept.
+     */
+    public boolean accept(File dir, String name) {
+        System.out.println("checking: " + dir + " " + name);
+        if (containsArg("filterPattern")) {
+            // if pattern dosen't match, return false
+            return true;
+        }
+        return true; // no pattern was specified
     }
-    return true; // no pattern was specified
-  }
 
-  public void undoIt() {
-    System.out.println("Undo does not make sense for CmdOpen");
-  }
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdOpen");
+    }
 
-  
-  static final long serialVersionUID = 00000000000000L;
+    static final long serialVersionUID = 00000000000000L;
 
 } /* end class CmdOpenPGML */

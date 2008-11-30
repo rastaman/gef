@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: GraphNodeRenderer.java
 // Interfaces: GraphNodeRenderer
 // Original Author: jrobbins@ics.uci.edu
@@ -35,26 +33,36 @@ import java.util.Map;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.FigNode;
 
-/** An interface for FigNode factories. Similiar in concept to the
- *  Swing class TreeCellRenderer.
+/**
+ * An interface for FigNode factories. Similiar in concept to the Swing class
+ * TreeCellRenderer.
  */
 
 public interface GraphNodeRenderer extends java.io.Serializable {
-    /** 
+    /**
      * Factory for a FigNode that can be used to represent the given node
-     * @param graphmodel the model in which to place the FigNode
-     * @param layer the layer in which to place the FigNode
-     * @param node the model element from which to create the FigNode
-     * @param attributeMap an optional map of attributes to style the fig.
-     * return the new FigNode
+     * 
+     * @param graphmodel
+     *                the model in which to place the FigNode
+     * @param layer
+     *                the layer in which to place the FigNode
+     * @param node
+     *                the model element from which to create the FigNode
+     * @param attributeMap
+     *                an optional map of attributes to style the fig. return the
+     *                new FigNode
      */
-    FigNode getFigNodeFor(GraphModel graphmodel, Layer layer, Object node, Map attributeMap);
-    
-    /** 
+    FigNode getFigNodeFor(GraphModel graphmodel, Layer layer, Object node,
+            Map attributeMap);
+
+    /**
      * Factory for a FigNode that can be used to represent the given node
-     * @param node the model element from which to create the FigNode
-     * @param attributeMap an optional map of attributes to style the fig.
-     * return the new FigNode
+     * 
+     * @param node
+     *                the model element from which to create the FigNode
+     * @param attributeMap
+     *                an optional map of attributes to style the fig. return the
+     *                new FigNode
      */
     FigNode getFigNodeFor(Object node, int x, int y, Map attributeMap);
 } /* end interface GraphNodeRenderer */

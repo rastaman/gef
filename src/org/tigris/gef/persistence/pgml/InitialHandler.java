@@ -44,29 +44,28 @@ public class InitialHandler extends DefaultHandler {
     private PGMLStackParser parser;
 
     /**
-     * @param theParser The PGMLStackParser object associated with the diagram
-     * that is to be read.
+     * @param theParser
+     *                The PGMLStackParser object associated with the diagram
+     *                that is to be read.
      */
     InitialHandler(PGMLStackParser theParser) {
         parser = theParser;
     }
 
     /**
-     * Creates a PGMLHandler object to parse a PGML element corresponding
-     * to a diagram in a PGML file.
-     *
-     * @see org.xml.sax.ContentHandler#startElement(
-     *         java.lang.String, java.lang.String, java.lang.String,
-     *         org.xml.sax.Attributes)
+     * Creates a PGMLHandler object to parse a PGML element corresponding to a
+     * diagram in a PGML file.
+     * 
+     * @see org.xml.sax.ContentHandler#startElement( java.lang.String,
+     *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     public void startElement(String uri, String localname, String qname,
-        Attributes attributes)
-    	throws SAXException {
+            Attributes attributes) throws SAXException {
         if (qname.equals("pgml")) {
             parser.pushHandlerStack(new PGMLHandler(parser, attributes));
         }
     }
-    
+
     public InputSource resolveEntity(String publicId, String systemId) {
         if (systemId.endsWith("pgml.dtd")) {
             URL dtdUrl = this.getClass().getResource(

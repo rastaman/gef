@@ -34,9 +34,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * Handler for pgml elements, which represent entire diagram objects
- * in PGML files.
- *
+ * Handler for pgml elements, which represent entire diagram objects in PGML
+ * files.
+ * 
  * @author Michael A. MacDonald
  */
 public class PGMLHandler extends BaseHandler implements Container {
@@ -46,28 +46,31 @@ public class PGMLHandler extends BaseHandler implements Container {
     private static final Log LOG = LogFactory.getLog(PGMLHandler.class);
 
     /**
-     * The constructor for this handler creates the diagram object according
-     * to the attributes associated with the pgml element and associates
-     * it with the PGMLStackParser object that is parsing the file.  Handlers
-     * of sub-elements use this association to find the diagram object.
-     *
-     * @param parser The object that is parsing the PGML file
-     * @param attrList The attributes identified by the SAX parser for the pgml
-     * element.  The name, scale, description, and showSingleMultiplicity
-     * attributes are used to construct the appropriate GED diagram object
-     * and set its properties.
-     * @throws SAXException if something goes wrong.
+     * The constructor for this handler creates the diagram object according to
+     * the attributes associated with the pgml element and associates it with
+     * the PGMLStackParser object that is parsing the file. Handlers of
+     * sub-elements use this association to find the diagram object.
+     * 
+     * @param parser
+     *                The object that is parsing the PGML file
+     * @param attrList
+     *                The attributes identified by the SAX parser for the pgml
+     *                element. The name, scale, description, and
+     *                showSingleMultiplicity attributes are used to construct
+     *                the appropriate GED diagram object and set its properties.
+     * @throws SAXException
+     *                 if something goes wrong.
      */
     public PGMLHandler(PGMLStackParser parser, Attributes attrList)
-    	throws SAXException {
+            throws SAXException {
         super(parser);
         String name = attrList.getValue("name");
         LOG.info("Got a diagram name of " + name);
         String scale = attrList.getValue("scale");
         String clsName = attrList.getValue("description");
         LOG.info("Got a description of " + clsName);
-        String showSingleMultiplicity =
-            attrList.getValue("showSingleMultiplicity");
+        String showSingleMultiplicity = attrList
+                .getValue("showSingleMultiplicity");
         try {
             if (clsName != null && !clsName.equals("")) {
                 initDiagram(clsName);
@@ -85,8 +88,8 @@ public class PGMLHandler extends BaseHandler implements Container {
 
             if (showSingleMultiplicity != null
                     && !"".equals(showSingleMultiplicity)) {
-                diagram.setShowSingleMultiplicity(
-                        Boolean.valueOf(showSingleMultiplicity).booleanValue());
+                diagram.setShowSingleMultiplicity(Boolean.valueOf(
+                        showSingleMultiplicity).booleanValue());
             }
         } catch (PropertyVetoException ex) {
             throw new SAXException(ex);
@@ -107,16 +110,19 @@ public class PGMLHandler extends BaseHandler implements Container {
             getPGMLStackParser().setDiagram((Diagram) cls.newInstance());
             if (initStr != null && !initStr.equals("")) {
                 getPGMLStackParser().getDiagram().initialize(
-                    getPGMLStackParser().findOwner(initStr));
+                        getPGMLStackParser().findOwner(initStr));
             }
         } catch (Exception ex) {
             LOG.error("Exception caught", ex);
             throw new SAXException(ex);
         }
     }
+
     /**
      * Adds a Fig object to the diagram represented by the pgml element.
-     * @param toAdd The Fig object to be added to the diagram.
+     * 
+     * @param toAdd
+     *                The Fig object to be added to the diagram.
      */
     public void addObject(Object toAdd) {
         Diagram diagram = getPGMLStackParser().getDiagram();

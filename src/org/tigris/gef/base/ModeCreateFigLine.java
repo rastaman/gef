@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: ModeCreateFigLine.java
 // Classes: ModeCreateFigLine
 // Original Author: ics125 spring 1996
@@ -35,20 +32,24 @@ import java.awt.event.MouseEvent;
 
 import org.tigris.gef.presentation.*;
 
-/** A Mode to interpert user input while creating a FigLine. All of
- *  the actual event handling is inherited from ModeCreate. This class
- *  just implements the differences needed to make it specific to
- *  lines. */
+/**
+ * A Mode to interpert user input while creating a FigLine. All of the actual
+ * event handling is inherited from ModeCreate. This class just implements the
+ * differences needed to make it specific to lines.
+ */
 
 public class ModeCreateFigLine extends ModeCreate {
     private static final long serialVersionUID = -6899160824566397778L;
 
-    public String instructions() { return "Drag to define a line"; }
+    public String instructions() {
+        return "Drag to define a line";
+    }
 
-    /** Make a new FigLine based on the given mouse down event and the
-     *  parent Editor's default graphical attributes. */
+    /**
+     * Make a new FigLine based on the given mouse down event and the parent
+     * Editor's default graphical attributes.
+     */
     public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
         return new FigLine(snapX, snapY, snapX, snapY);
     }
 } /* end class ModeCreateFigLine */
-

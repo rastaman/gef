@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CmdCopy.java
 // Classes: CmdCopy
 // Original Author: jrobbins@ics.uci.edu
@@ -30,8 +28,8 @@
 
 package org.tigris.gef.base;
 
-import java.awt.datatransfer.*;  // Clipboard, Transferable, DataFlavor, etc.
-import java.util.Enumeration;    // To store the scribble in.
+import java.awt.datatransfer.*; // Clipboard, Transferable, DataFlavor, etc.
+import java.util.Enumeration; // To store the scribble in.
 import java.util.Vector;
 
 import org.tigris.gef.presentation.*;
@@ -40,96 +38,101 @@ public class CmdCopy extends Cmd {
 
     private static final long serialVersionUID = -7316080407001846501L;
 
-public CmdCopy() { super("Copy"); }
-
-  public void doIt() {
-    Editor ce = Globals.curEditor();
-    Vector copiedElements = ce.getSelectionManager().selections();
-    Vector figs = new Vector();
-    Enumeration copies = copiedElements.elements();
-    while (copies.hasMoreElements()) {
-      Selection s = (Selection) copies.nextElement();
-      Fig f = s.getContent();
-      if (f instanceof FigEdge) continue;
-      //needs-more-work: add support for cut-and-paste of edges
-      f = (Fig) f.clone();
-      figs.addElement(f);
+    public CmdCopy() {
+        super("Copy");
     }
-    Globals.clipBoard = figs;
-  }
 
-  public void undoIt() {
-    System.out.println("Undo does not make sense for CmdCopy");
-  }
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        Vector copiedElements = ce.getSelectionManager().selections();
+        Vector figs = new Vector();
+        Enumeration copies = copiedElements.elements();
+        while (copies.hasMoreElements()) {
+            Selection s = (Selection) copies.nextElement();
+            Fig f = s.getContent();
+            if (f instanceof FigEdge)
+                continue;
+            // needs-more-work: add support for cut-and-paste of edges
+            f = (Fig) f.clone();
+            figs.addElement(f);
+        }
+        Globals.clipBoard = figs;
+    }
 
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdCopy");
+    }
 
-
-  // Awaiting jdk 1.2
-  /**
-   * The DataFlavor used for our particular type of cut-and-paste data.
-   * This one will transfer data in the form of a serialized Vector object.
-   * Note that in Java 1.1.1, this works intra-application, but not between
-   * applications.  Java 1.1.1 inter-application data transfer is limited to
-   * the pre-defined string and text data flavors.
-   */
-  //public static final DataFlavor dataFlavor =
-      //new DataFlavor(Fig.class, "Fig");
-
-  //protected Vector figs = new Vector(256,256);  // Store the Figs.
-
-  /**
-   * Copy the current scribble and store it in a SimpleSelection object
-   * (defined below).  Then put that object on the clipboard for pasting.
-   */
-  // Going to have to wait for jdk 1.2 for this code to work.
-  //public void copy(Fig fig) {
+    // Awaiting jdk 1.2
+    /**
+     * The DataFlavor used for our particular type of cut-and-paste data. This
+     * one will transfer data in the form of a serialized Vector object. Note
+     * that in Java 1.1.1, this works intra-application, but not between
+     * applications. Java 1.1.1 inter-application data transfer is limited to
+     * the pre-defined string and text data flavors.
+     */
+    // public static final DataFlavor dataFlavor =
+    // new DataFlavor(Fig.class, "Fig");
+    // protected Vector figs = new Vector(256,256); // Store the Figs.
+    /**
+     * Copy the current scribble and store it in a SimpleSelection object
+     * (defined below). Then put that object on the clipboard for pasting.
+     */
+    // Going to have to wait for jdk 1.2 for this code to work.
+    // public void copy(Fig fig) {
     // Get system clipboard
-    //Clipboard c = ProjectBrowser.TheInstance.getToolkit().getSystemClipboard();
+    // Clipboard c =
+    // ProjectBrowser.TheInstance.getToolkit().getSystemClipboard();
     // Copy and save the scribble in a Transferable object
-    //SimpleSelection f = new SimpleSelection(fig, dataFlavor);
+    // SimpleSelection f = new SimpleSelection(fig, dataFlavor);
     // Put that object on the clipboard
-    //c.setContents(f, f);
-    //Transferable t = c.getContents(ProjectBrowser.TheInstance);
-    //if (t instanceof Transferable)
-      //System.out.println("Copy, success!");
-    //System.out.println("copy has been executed" + " t = " + t);
-  //}
+    // c.setContents(f, f);
+    // Transferable t = c.getContents(ProjectBrowser.TheInstance);
+    // if (t instanceof Transferable)
+    // System.out.println("Copy, success!");
+    // System.out.println("copy has been executed" + " t = " + t);
+    // }
+    /**
+     * This nested class implements the Transferable and ClipboardOwner
+     * interfaces used in data transfer. It is a simple class that remembers a
+     * selected object and makes it available in only one specified flavor.
+     */
+    // Awaiting jdk 1.2
+    static class SimpleSelection implements Transferable, ClipboardOwner {
+        protected Fig selection; // The data to be transferred.
+        protected DataFlavor flavor; // The one data flavor supported.
 
-  /**
-   * This nested class implements the Transferable and ClipboardOwner
-   * interfaces used in data transfer.  It is a simple class that remembers a
-   * selected object and makes it available in only one specified flavor.
-   */
-  // Awaiting jdk 1.2
-  static class SimpleSelection implements Transferable, ClipboardOwner {
-    protected Fig selection;    // The data to be transferred.
-    protected DataFlavor flavor;   // The one data flavor supported.
-    public SimpleSelection(Fig selection, DataFlavor flavor) {
-      this.selection = selection;  // Specify data.
-      this.flavor = flavor;        // Specify flavor.
-    }
+        public SimpleSelection(Fig selection, DataFlavor flavor) {
+            this.selection = selection; // Specify data.
+            this.flavor = flavor; // Specify flavor.
+        }
 
-    /** Return the list of supported flavors.  Just one in this case */
-    public DataFlavor[] getTransferDataFlavors() {
-      return new DataFlavor[] { flavor };
-    }
-    /** Check whether we support a specified flavor */
-    public boolean isDataFlavorSupported(DataFlavor f) {
-      return f.equals(flavor);
-    }
-    /** If the flavor is right, transfer the data (i.e. return it) */
-    public Object getTransferData(DataFlavor f)
-         throws UnsupportedFlavorException {
-      if (f.equals(flavor)) return selection;
-      else throw new UnsupportedFlavorException(f);
-    }
+        /** Return the list of supported flavors. Just one in this case */
+        public DataFlavor[] getTransferDataFlavors() {
+            return new DataFlavor[] { flavor };
+        }
 
-    /** This is the ClipboardOwner method.  Called when the data is no
-     *  longer on the clipboard.  In this case, we don't need to do much. */
-    public void lostOwnership(Clipboard c, Transferable t) {
-      selection = null;
+        /** Check whether we support a specified flavor */
+        public boolean isDataFlavorSupported(DataFlavor f) {
+            return f.equals(flavor);
+        }
+
+        /** If the flavor is right, transfer the data (i.e. return it) */
+        public Object getTransferData(DataFlavor f)
+                throws UnsupportedFlavorException {
+            if (f.equals(flavor))
+                return selection;
+            else
+                throw new UnsupportedFlavorException(f);
+        }
+
+        /**
+         * This is the ClipboardOwner method. Called when the data is no longer
+         * on the clipboard. In this case, we don't need to do much.
+         */
+        public void lostOwnership(Clipboard c, Transferable t) {
+            selection = null;
+        }
     }
-  }
 
 } /* end class CmdCopy */
-

@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: SelectionNoop.java
 // Classes: SelectionNoop
 // Original Author: jrobbins@ics.uci.edu
@@ -36,18 +33,19 @@ import java.awt.Rectangle;
 
 import org.tigris.gef.presentation.*;
 
-/** 
- * Selection object that does not allow the user to do anything. This
- * might be useful for some special Figs. it is not used by the Figs
- * provided by GEF.
+/**
+ * Selection object that does not allow the user to do anything. This might be
+ * useful for some special Figs. it is not used by the Figs provided by GEF.
  */
 
 public class SelectionNoop extends Selection {
 
     private static final long serialVersionUID = -8883328105257650811L;
 
-/** Construct a new SelectionNoop around the given DiagramElement */
-  public SelectionNoop(Fig f) { super(f); }
+    /** Construct a new SelectionNoop around the given DiagramElement */
+    public SelectionNoop(Fig f) {
+        super(f);
+    }
 
     /** Paint the selection. */
     public void paint(Graphics g) {
@@ -57,9 +55,9 @@ public class SelectionNoop extends Selection {
         int h = getContent().getHeight();
         g.setColor(Globals.getPrefs().handleColorFor(getContent()));
         g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH,
-               w + BORDER_WIDTH * 2 - 1, h + BORDER_WIDTH * 2 - 1);
-        g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1,
-               w + BORDER_WIDTH * 2 + 2 - 1, h + BORDER_WIDTH * 2 + 2 - 1);
+                w + BORDER_WIDTH * 2 - 1, h + BORDER_WIDTH * 2 - 1);
+        g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1, w + BORDER_WIDTH
+                * 2 + 2 - 1, h + BORDER_WIDTH * 2 + 2 - 1);
         g.fillOval(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
         g.fillOval(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
         g.fillOval(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
@@ -67,11 +65,11 @@ public class SelectionNoop extends Selection {
     }
 
     /**
-     * SelectionNoop is used when there are no handles, so dragHandle
-     * does nothing. Actually, hitHandle always returns -1 , so this
-     * method should never even get called.
+     * SelectionNoop is used when there are no handles, so dragHandle does
+     * nothing. Actually, hitHandle always returns -1 , so this method should
+     * never even get called.
      */
-    public void dragHandle(int mx, int my, int an_x,int an_y, Handle h) {
+    public void dragHandle(int mx, int my, int an_x, int an_y, Handle h) {
         /* do nothing */
     }
 
@@ -83,4 +81,3 @@ public class SelectionNoop extends Selection {
         h.instructions = "Object cannot be moved or resized";
     }
 } /* end class SelectionNoop */
-

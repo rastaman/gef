@@ -39,12 +39,12 @@ import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.MutableGraphSupport;
 
-/** This interface provides a facade to a net-level
- *  representation. Similiar in concept to the Swing class
- *  TreeModel. This implementation of GraphModel uses the GEF classes
- *  NetList, NetNode, NetPort, and NetEdge.  If you implement your own
- *  GraphModel, you can use your own application-specific classes.
- *
+/**
+ * This interface provides a facade to a net-level representation. Similiar in
+ * concept to the Swing class TreeModel. This implementation of GraphModel uses
+ * the GEF classes NetList, NetNode, NetPort, and NetEdge. If you implement your
+ * own GraphModel, you can use your own application-specific classes.
+ * 
  * @see NetList
  * @see NetNode
  * @see NetPort
@@ -52,17 +52,16 @@ import org.tigris.gef.graph.MutableGraphSupport;
  * @see AdjacencyListGraphModel
  */
 
-public class DefaultGraphModel
-        extends MutableGraphSupport
-        implements java.io.Serializable {
+public class DefaultGraphModel extends MutableGraphSupport implements
+        java.io.Serializable {
 
     private static final long serialVersionUID = 8098329898758384131L;
 
     private NetList netList;
 
     private static Log LOG = LogFactory.getLog(DefaultGraphModel.class);
-    
-    ////////////////////////////////////////////////////////////////
+
+    // //////////////////////////////////////////////////////////////
     // constructors
 
     public DefaultGraphModel() {
@@ -78,20 +77,23 @@ public class DefaultGraphModel
         netList = nl;
     }
 
-    /** Return all nodes in the graph 
+    /**
+     * Return all nodes in the graph
      */
     public List getNodes() {
         return netList.getNodes();
     }
 
-    /** Return all edges in the graph
-    */
+    /**
+     * Return all edges in the graph
+     */
     public List getEdges() {
         return netList.getEdges();
     }
 
-    /** Return all ports on node or edge
-    */
+    /**
+     * Return all ports on node or edge
+     */
     public List getPorts(Object nodeOrEdge) {
         if (nodeOrEdge instanceof NetNode)
             return ((NetNode) nodeOrEdge).getPorts();
@@ -130,12 +132,12 @@ public class DefaultGraphModel
     public List getInEdges(Object port) {
         Vector res = new Vector();
         Vector edge = ((NetPort) port).getEdges();
-        for( int i = 0; i < edge.size(); i++ ) {
-            NetEdge ne = (NetEdge) edge.elementAt( i );
-            if( ne.getDestPort() == port ) {
-                res.add( ne );
+        for (int i = 0; i < edge.size(); i++) {
+            NetEdge ne = (NetEdge) edge.elementAt(i);
+            if (ne.getDestPort() == port) {
+                res.add(ne);
             }
-        }		
+        }
         return res;
     }
 
@@ -143,10 +145,10 @@ public class DefaultGraphModel
     public List getOutEdges(Object port) {
         Vector res = new Vector();
         Vector edge = ((NetPort) port).getEdges();
-        for( int i = 0; i < edge.size(); i++ ) {
-            NetEdge ne = (NetEdge) edge.elementAt( i );
-            if( ne.getSourcePort() == port ) {
-                res.add( ne );
+        for (int i = 0; i < edge.size(); i++) {
+            NetEdge ne = (NetEdge) edge.elementAt(i);
+            if (ne.getSourcePort() == port) {
+                res.add(ne);
             }
         }
         return res;
@@ -159,21 +161,21 @@ public class DefaultGraphModel
         return null; // raise exception
     }
 
-    /** Return  the other end of an edge */
+    /** Return the other end of an edge */
     public Object getDestPort(Object edge) {
         if (edge instanceof NetEdge)
             return ((NetEdge) edge).getDestPort();
         return null; // raise exception
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // interface MutableGraphListener
 
     /** Return a valid node in this graph */
     public Object createNode(String name, Hashtable args) {
         Object newNode;
-        //Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
-        //assert _nodeClass != null
+        // Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
+        // assert _nodeClass != null
         try {
             newNode = Class.forName(name).newInstance();
         } catch (java.lang.ClassNotFoundException ignore) {
@@ -185,7 +187,7 @@ public class DefaultGraphModel
         }
 
         if (newNode instanceof GraphNodeHooks)
-             ((GraphNodeHooks) newNode).initialize(args);
+            ((GraphNodeHooks) newNode).initialize(args);
         return newNode;
     }
 
@@ -211,13 +213,14 @@ public class DefaultGraphModel
     public boolean canDragNode(Object node) {
         return (node instanceof NetNode);
     }
-    
+
     /** Add the given node to the graph, if valid. */
     public void addNode(Object node) {
         NetNode n = (NetNode) node;
         netList.addNode(n);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Added a node. There are now " + netList.getNodes(null).size() + " edges");
+            LOG.debug("Added a node. There are now "
+                    + netList.getNodes(null).size() + " edges");
         }
         super.addNode(node);
     }
@@ -227,7 +230,8 @@ public class DefaultGraphModel
         NetEdge e = (NetEdge) edge;
         netList.addEdge(e);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Added an edge. There are now " + netList.getEdges(null).size() + " edges");
+            LOG.debug("Added an edge. There are now "
+                    + netList.getEdges(null).size() + " edges");
         }
         super.addEdge(e);
     }
@@ -262,22 +266,26 @@ public class DefaultGraphModel
         netList.removeAllEdges();
         netList.removeAllNodes();
         super.removeAll();
-    }    
-    
+    }
+
     public void dragNode(Object node) {
         addNode(node);
     }
 
-    /** Return true if the two given ports can be connected by a 
-    * kind of edge to be determined by the ports. */
+    /**
+     * Return true if the two given ports can be connected by a kind of edge to
+     * be determined by the ports.
+     */
     public boolean canConnect(Object srcPort, Object destPort) {
         if (srcPort instanceof NetPort && destPort instanceof NetPort) {
             NetPort s = (NetPort) srcPort;
             NetPort d = (NetPort) destPort;
-            if (LOG.isDebugEnabled()) LOG.debug("Checking with ports to see if connection valid");
+            if (LOG.isDebugEnabled())
+                LOG.debug("Checking with ports to see if connection valid");
             return s.canConnectTo(this, d) && d.canConnectTo(this, s);
         } else {
-            if (LOG.isDebugEnabled()) LOG.debug("By default, cannot connect non-NetPort objects");
+            if (LOG.isDebugEnabled())
+                LOG.debug("By default, cannot connect non-NetPort objects");
             return false;
         }
     }
@@ -294,7 +302,8 @@ public class DefaultGraphModel
         if (srcPort instanceof NetPort && destPort instanceof NetPort) {
             NetPort s = (NetPort) srcPort;
             NetPort d = (NetPort) destPort;
-            //System.out.println("calling makeEdgeFor:" + s.getClass().getName());
+            // System.out.println("calling makeEdgeFor:" +
+            // s.getClass().getName());
             NetEdge e = s.makeEdgeFor(d);
             return connectInternal(s, d, e);
         } else
@@ -302,17 +311,18 @@ public class DefaultGraphModel
     }
 
     /**
-     * Contruct and add a new edge of the given kind
-     * The default is to assume the edge type is a Class.
+     * Contruct and add a new edge of the given kind The default is to assume
+     * the edge type is a Class.
      */
     public Object connect(Object srcPort, Object destPort, Object edgeType) {
-        return connect(srcPort, destPort, (Class)edgeType);
+        return connect(srcPort, destPort, (Class) edgeType);
     }
 
     /** Contruct and add a new edge of the given kind */
     public Object connect(Object srcPort, Object destPort, Class edgeClass) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Attempting to connect " + srcPort + " to " + destPort + " with " + edgeClass);
+            LOG.debug("Attempting to connect " + srcPort + " to " + destPort
+                    + " with " + edgeClass);
         }
         if (!canConnect(srcPort, destPort, edgeClass)) {
             LOG.warn("Connection not allowed");
@@ -332,15 +342,18 @@ public class DefaultGraphModel
     }
 
     /**
-     * Asks the given edge to attempt to connect itself to the given
-     * ports.
-     * @param s source port
-     * @param d destination port
-     * @param e edge
+     * Asks the given edge to attempt to connect itself to the given ports.
+     * 
+     * @param s
+     *                source port
+     * @param d
+     *                destination port
+     * @param e
+     *                edge
      * @return the edge or null if the edge rejects the connection.
      */
     protected Object connectInternal(NetPort s, NetPort d, NetEdge e) {
-        //System.out.println("connectInternal");
+        // System.out.println("connectInternal");
         if (e.connect(this, s, d)) {
             addEdge(e);
             return e;
@@ -349,23 +362,19 @@ public class DefaultGraphModel
         }
     }
 
-    /** Return true if the connection to the old node can be rerouted to
-     * the new node.
+    /**
+     * Return true if the connection to the old node can be rerouted to the new
+     * node.
      */
-    public boolean canChangeConnectedNode(
-        Object newNode,
-        Object oldNode,
-        Object edge) {
+    public boolean canChangeConnectedNode(Object newNode, Object oldNode,
+            Object edge) {
         return false;
     }
 
-    /** Reroutes the connection to the old node to be connected to
-     * the new node.
+    /**
+     * Reroutes the connection to the old node to be connected to the new node.
      */
-    public void changeConnectedNode(
-        Object newNode,
-        Object oldNode,
-        Object edge,
-        boolean isSource) {
+    public void changeConnectedNode(Object newNode, Object oldNode,
+            Object edge, boolean isSource) {
     }
 } /* end class DefaultGraphModel */

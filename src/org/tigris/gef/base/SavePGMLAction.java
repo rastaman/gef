@@ -86,7 +86,8 @@ public class SavePGMLAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new SavePGMLAction
      * 
-     * @param name The name of the action
+     * @param name
+     *                The name of the action
      */
     public SavePGMLAction(String name) {
         this(name, false);
@@ -95,8 +96,10 @@ public class SavePGMLAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new SavePGMLAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
      */
     public SavePGMLAction(String name, Icon icon) {
         this(name, icon, false);
@@ -105,8 +108,10 @@ public class SavePGMLAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new SavePGMLAction
      * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public SavePGMLAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -115,9 +120,12 @@ public class SavePGMLAction extends AbstractAction implements FilenameFilter {
     /**
      * Creates a new SavePGMLAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public SavePGMLAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);

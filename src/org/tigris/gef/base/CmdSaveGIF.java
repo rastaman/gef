@@ -33,69 +33,72 @@ import java.io.*;
 
 import Acme.JPM.Encoders.GifEncoder;
 
-
-/** Cmd to save a diagram as a GIF image in a supplied OutputStream.
- *  Requires the Acme.JPM.Encoders.GifEncoder class. Operates on the
- *  diagram in the current editor.
- *
- *  Code loosely adapted from CmdPrint.
+/**
+ * Cmd to save a diagram as a GIF image in a supplied OutputStream. Requires the
+ * Acme.JPM.Encoders.GifEncoder class. Operates on the diagram in the current
+ * editor.
+ * 
+ * Code loosely adapted from CmdPrint.
+ * 
  * @deprecated in 0.12.3 use SaveGIFAction
- *  @author Steve Poole, stevep@wrq.com
+ * @author Steve Poole, stevep@wrq.com
  */
 
 public class CmdSaveGIF extends CmdSaveGraphics {
-    
+
     private static final long serialVersionUID = 4044142753088912626L;
-    
-    /** Used as background color in image and set transparent. Chosen because
-     *  it's unlikely to be selected by the user, and leaves the diagram readable
-     *  if viewed without transparency. */
-    
+
+    /**
+     * Used as background color in image and set transparent. Chosen because
+     * it's unlikely to be selected by the user, and leaves the diagram readable
+     * if viewed without transparency.
+     */
+
     public static final int TRANSPARENT_BG_COLOR = 0x00efefef;
-    
-    
+
     public CmdSaveGIF() {
         super("SaveGIF");
     }
-    
-    /** Write the diagram contained by the current editor into an OutputStream
-     *  as a GIF image. */
-    protected void saveGraphics(OutputStream s, 
-                                Editor ce, 
-                                Rectangle drawingArea) throws IOException {
-        
-        //	Create an offscreen image and render the diagram into it.
-        
-        Image i = ce.createImage( drawingArea.width * scale, drawingArea.height * scale );
+
+    /**
+     * Write the diagram contained by the current editor into an OutputStream as
+     * a GIF image.
+     */
+    protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea)
+            throws IOException {
+
+        // Create an offscreen image and render the diagram into it.
+
+        Image i = ce.createImage(drawingArea.width * scale, drawingArea.height
+                * scale);
         Graphics g = i.getGraphics();
         if (g instanceof Graphics2D) {
             ((Graphics2D) g).scale(scale, scale);
         }
-        g.setColor( new Color(TRANSPARENT_BG_COLOR) );
-        g.fillRect( 0, 0, drawingArea.width * scale, drawingArea.height * scale );
+        g.setColor(new Color(TRANSPARENT_BG_COLOR));
+        g.fillRect(0, 0, drawingArea.width * scale, drawingArea.height * scale);
         // a little extra won't hurt
-        g.translate( -drawingArea.x, -drawingArea.y );
-        ce.print( g );
-        
-        //	Tell the Acme GIF encoder to save the image as a GIF into the
-        //	output stream. Use the TransFilter to make the background
-        //	color transparent.
-        
+        g.translate(-drawingArea.x, -drawingArea.y);
+        ce.print(g);
+
+        // Tell the Acme GIF encoder to save the image as a GIF into the
+        // output stream. Use the TransFilter to make the background
+        // color transparent.
+
         try {
-            FilteredImageSource fis =
-            new FilteredImageSource( i.getSource(),
-            new TransFilter( TRANSPARENT_BG_COLOR ) );
-            GifEncoder ge = new GifEncoder( fis, s );
-            //GifEncoder ge = new GifEncoder( i, s );
+            FilteredImageSource fis = new FilteredImageSource(i.getSource(),
+                    new TransFilter(TRANSPARENT_BG_COLOR));
+            GifEncoder ge = new GifEncoder(fis, s);
+            // GifEncoder ge = new GifEncoder( i, s );
             ge.encode();
-        } catch( IOException e ) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         g.dispose();
         // force garbage collection, to prevent out of memory exceptions
         g = null;
         i = null;
     }
-    
+
 } /* end class CmdSaveGIF */

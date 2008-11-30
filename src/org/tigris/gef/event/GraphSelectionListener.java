@@ -25,16 +25,18 @@ package org.tigris.gef.event;
 
 import java.util.*;
 
-/** An interface that must be implemented by any object that wants to
- *  be notified when an Editor changes its selection(s).
- *
+/**
+ * An interface that must be implemented by any object that wants to be notified
+ * when an Editor changes its selection(s).
+ * 
  * @see org.tigris.gef.base.Editor
- * @see org.tigris.gef.base.SelectionManager */
+ * @see org.tigris.gef.base.SelectionManager
+ */
 
 public interface GraphSelectionListener extends EventListener {
 
-  void selectionChanged(GraphSelectionEvent gse);
-  //? void selectionAdded(GraphSelectionEvent gse);
-  //? void selectionRemoved(GraphSelectionEvent gse);
+    void selectionChanged(GraphSelectionEvent gse);
+    // ? void selectionAdded(GraphSelectionEvent gse);
+    // ? void selectionRemoved(GraphSelectionEvent gse);
 
 } /* end class GraphSelectionListener */

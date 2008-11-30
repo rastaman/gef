@@ -31,12 +31,13 @@ package org.tigris.gef.graph;
 import java.util.Hashtable;
 import java.util.Map;
 
-/** This interface provides a facade to a net-level
- *  representation. Similiar in concept to the Swing class
- *  TreeModel.<p>
- *
- *  This interface goes beyond GraphModel in that it allows
- *  modifications to the graph, instead of just access.
+/**
+ * This interface provides a facade to a net-level representation. Similiar in
+ * concept to the Swing class TreeModel.
+ * <p>
+ * 
+ * This interface goes beyond GraphModel in that it allows modifications to the
+ * graph, instead of just access.
  */
 
 public interface MutableGraphModel extends GraphModel {
@@ -47,13 +48,14 @@ public interface MutableGraphModel extends GraphModel {
     boolean canAddNode(Object node);
 
     /** Return a valid node in this graph */
-    Object createNode( String name, Hashtable args);
+    Object createNode(String name, Hashtable args);
 
     /** Return true if the given object is a valid edge in this graph */
     boolean canAddEdge(Object edge);
 
-    /** Return true if the type of the given object can be mapped to
-     *  a supported type.
+    /**
+     * Return true if the type of the given object can be mapped to a supported
+     * type.
      */
     boolean canDragNode(Object node);
 
@@ -74,30 +76,38 @@ public interface MutableGraphModel extends GraphModel {
 
     /** Remove the given edge from the graph. Sends a notification. */
     void removeEdge(Object edge);
-	
+
     /** Create a new node based on the given node and add it to the graph */
     void dragNode(Object node);
-    
-    /** Return true if the connection to the old node can be rerouted to
-     * the new node.
+
+    /**
+     * Return true if the connection to the old node can be rerouted to the new
+     * node.
      */
     boolean canChangeConnectedNode(Object newNode, Object oldNode, Object edge);
-  
-    /** Return true if the two given ports can be connected by a 
-     * kind of edge to be determined by the ports. */
+
+    /**
+     * Return true if the two given ports can be connected by a kind of edge to
+     * be determined by the ports.
+     */
     boolean canConnect(Object fromP, Object toP);
-    
-    /** Return true if the two given ports can be connected by the given
-     * kind of edge. */
+
+    /**
+     * Return true if the two given ports can be connected by the given kind of
+     * edge.
+     */
     boolean canConnect(Object fromP, Object toP, Object edgeType);
 
-    /** Reroutes the connection to the old node to be connected to
-     * the new node.
+    /**
+     * Reroutes the connection to the old node to be connected to the new node.
      */
-    void changeConnectedNode(Object newNode, Object oldNode, Object edge, boolean isSource);
-  
-    /** Contruct and add a new edge of a kind determined by the
-     *  ports. Sends a notification.  */
+    void changeConnectedNode(Object newNode, Object oldNode, Object edge,
+            boolean isSource);
+
+    /**
+     * Contruct and add a new edge of a kind determined by the ports. Sends a
+     * notification.
+     */
     Object connect(Object fromPort, Object toPort);
 
     /** Contruct and add a new edge with given attributes. Sends a notification. */
@@ -107,7 +117,8 @@ public interface MutableGraphModel extends GraphModel {
     Object connect(Object fromPort, Object toPort, Object edgeType);
 
     /** Contruct and add a new edge with given attributes. Sends a notification. */
-    Object connect(Object fromPort, Object toPort, Object edgeType, Map attributes);
+    Object connect(Object fromPort, Object toPort, Object edgeType,
+            Map attributes);
 
     /**
      * Returns true if handle can be enclosed into encloser.

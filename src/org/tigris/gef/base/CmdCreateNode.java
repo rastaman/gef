@@ -41,23 +41,23 @@ import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.MutableGraphModel;
 
 /**
- * This Cmd is executed it makes the new objects as per its
- * arguments, and then it sets the global next mode to ModePlace so
- * that the user can place the new node in any editor window.
+ * This Cmd is executed it makes the new objects as per its arguments, and then
+ * it sets the global next mode to ModePlace so that the user can place the new
+ * node in any editor window.
+ * 
  * @see ModePlace
  * @see NetNode
- * @see FigNode 
+ * @see FigNode
  */
 
 public class CmdCreateNode extends Cmd implements GraphFactory {
 
     private static final long serialVersionUID = -4746215260464595235L;
 
-    public static Class DEFAULT_NODE_CLASS =
-        org.tigris.gef.graph.presentation.NetNode.class;
+    public static Class DEFAULT_NODE_CLASS = org.tigris.gef.graph.presentation.NetNode.class;
 
     private static Log LOG = LogFactory.getLog(CmdCreateNode.class);
-    
+
     /**
      * Construct a new Cmd with the given arguments for node class.
      */
@@ -70,8 +70,8 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
     }
 
     /**
-     * Construct a new Cmd with the given classes for the NetNode
-     *  and its FigNode.
+     * Construct a new Cmd with the given classes for the NetNode and its
+     * FigNode.
      */
     public CmdCreateNode(Class nodeClass, String resource, String name) {
         this(new Hashtable(), resource, name);
@@ -89,16 +89,12 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
     }
 
     /**
-     * Construct a new Cmd with the given classes for the NetNode
-     * and its FigNode, and set the global sticky mode boolean to
-     * the given value. This allows the user to place several nodes
-     * rapidly.
+     * Construct a new Cmd with the given classes for the NetNode and its
+     * FigNode, and set the global sticky mode boolean to the given value. This
+     * allows the user to place several nodes rapidly.
      */
-    public CmdCreateNode(
-        Class nodeClass,
-        boolean sticky,
-        String resource,
-        String name) {
+    public CmdCreateNode(Class nodeClass, boolean sticky, String resource,
+            String name) {
         this(nodeClass, resource, name);
         setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
     }
@@ -108,11 +104,13 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
         setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // Cmd API
 
-    /** Actually instanciate the NetNode and FigNode objects and
-     * set the global next mode to ModePlace */
+    /**
+     * Actually instanciate the NetNode and FigNode objects and set the global
+     * next mode to ModePlace
+     */
     public void doIt() {
         Editor ce = Globals.curEditor();
         GraphModel gm = ce.getGraphModel();
@@ -129,30 +127,31 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
 
         Object shouldBeSticky = getArg("shouldBeSticky");
         Globals.mode(placeMode, shouldBeSticky == Boolean.TRUE);
-        if (LOG.isDebugEnabled()) LOG.debug("Mode set to ModePlace with sticky mode " + shouldBeSticky);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Mode set to ModePlace with sticky mode "
+                    + shouldBeSticky);
     }
 
     public void undoIt() {
         LOG.warn("undo is not implemented");
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // GraphFactory implementation
 
     public GraphModel makeGraphModel() {
         return null;
     }
-    
+
     public Object makeEdge() {
         return null;
     }
 
     /**
-     * Factory method for creating a new NetNode from the
-     * className argument.
-     * TODO This returns null on error. We need to define some
-     * basic exception classes.
-     */    
+     * Factory method for creating a new NetNode from the className argument.
+     * TODO This returns null on error. We need to define some basic exception
+     * classes.
+     */
     public Object makeNode() {
         Object newNode;
         Object nodeType = getArg("className", DEFAULT_NODE_CLASS);
@@ -162,7 +161,7 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
             newNode = a.getValue("node");
         } else {
             Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
-            //assert _nodeClass != null
+            // assert _nodeClass != null
             try {
                 newNode = nodeClass.newInstance();
             } catch (java.lang.IllegalAccessException ignore) {
@@ -182,10 +181,10 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
         return newNode;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // for testing purpose only
     public Object getActiveGraphModel() {
         return getArg("graphModel");
     }
-    
+
 } /* end class CmdCreateNode */

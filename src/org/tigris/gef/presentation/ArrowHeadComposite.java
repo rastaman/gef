@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: ArrowHeadComposite.java
 // Classes: ArrowHeadComposite
 // Original Author: abonner@ics.uci.edu
@@ -36,14 +34,15 @@ import java.util.*;
 /** Abstract class to draw arrow heads on the ends of FigEdges. */
 
 public class ArrowHeadComposite extends ArrowHead {
-    
+
     /**
      * 
      */
     private static final long serialVersionUID = -9079999150349589867L;
     protected Vector _arrowHeads = new Vector();
 
-    public ArrowHeadComposite() { }
+    public ArrowHeadComposite() {
+    }
 
     public ArrowHeadComposite(ArrowHead ah1, ArrowHead ah2) {
         _arrowHeads.addElement(ah1);
@@ -55,15 +54,16 @@ public class ArrowHeadComposite extends ArrowHead {
     }
 
     public void paint(Object g, Point start, Point end) {
-        System.out.println("paint3 in ArrowHeadComposite should never be called");
+        System.out
+                .println("paint3 in ArrowHeadComposite should never be called");
     }
 
     public void paintAtHead(Object g, Fig path) {
         int size = _arrowHeads.size();
         for (int i = 0; i < size; i++) {
             ArrowHead ah = (ArrowHead) _arrowHeads.elementAt(i);
-            ah.paint(g, path.pointAlongPerimeter((i+1)*arrow_height*2),
-    	       path.pointAlongPerimeter(i*arrow_height*2));
+            ah.paint(g, path.pointAlongPerimeter((i + 1) * arrow_height * 2),
+                    path.pointAlongPerimeter(i * arrow_height * 2));
         }
     }
 
@@ -72,8 +72,9 @@ public class ArrowHeadComposite extends ArrowHead {
         int size = _arrowHeads.size();
         for (int i = 0; i < size; i++) {
             ArrowHead ah = (ArrowHead) _arrowHeads.elementAt(i);
-            ah.paint(g, path.pointAlongPerimeter(len - 1 - (i+1)*arrow_height*2),
-    	       path.pointAlongPerimeter(len - 1 - i*arrow_height*2));
+            ah.paint(g, path.pointAlongPerimeter(len - 1 - (i + 1)
+                    * arrow_height * 2), path.pointAlongPerimeter(len - 1 - i
+                    * arrow_height * 2));
         }
     }
 } /* end class ArrowHeadComposite */

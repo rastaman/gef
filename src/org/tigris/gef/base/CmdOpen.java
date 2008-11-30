@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdOpen.java
 // Classes: CmdOpen
 // Original Author: jrobbins@ics.uci.edu
@@ -46,19 +43,25 @@ import java.util.List;
 import org.tigris.gef.graph.presentation.*;
 import org.tigris.gef.presentation.Fig;
 
-/** Cmd to Load a previously saved document document. The loaded
- *  editor is displayed in a new JGraphFrame.
+/**
+ * Cmd to Load a previously saved document document. The loaded editor is
+ * displayed in a new JGraphFrame.
+ * 
  * @see CmdSave
  */
 
 public class CmdOpen extends Cmd implements FilenameFilter {
-    
+
     private static final long serialVersionUID = 5761727153340445060L;
 
-    public CmdOpen() { super("Open"); }
+    public CmdOpen() {
+        super("Open");
+    }
 
-    /** Only allow the user to select files that match the fiven
-     *  filename pattern.  Needs-More-Work: This is not used yet. */
+    /**
+     * Only allow the user to select files that match the fiven filename
+     * pattern. Needs-More-Work: This is not used yet.
+     */
     public CmdOpen(String filterPattern) {
         this();
         setArg("filterPattern", filterPattern);
@@ -67,32 +70,33 @@ public class CmdOpen extends Cmd implements FilenameFilter {
     public void doIt() {
         try {
             Editor ce = Globals.curEditor();
-            FileDialog fd =
-	            new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
+            FileDialog fd = new FileDialog(ce.findFrame(), "Open...",
+                    FileDialog.LOAD);
             fd.setFilenameFilter(this);
             fd.setDirectory(Globals.getLastDirectory());
             fd.setVisible(true);
             String filename = fd.getFile(); // blocking
             String path = fd.getDirectory(); // blocking
             Globals.setLastDirectory(path);
-      
+
             if (filename != null) {
-    	        Globals.showStatus("Reading " + path + filename + "...");
+                Globals.showStatus("Reading " + path + filename + "...");
                 FileInputStream fis = new FileInputStream(path + filename);
-    	        ObjectInput s = new ObjectInputStream(fis);
+                ObjectInput s = new ObjectInputStream(fis);
                 List figs = (List) s.readObject();
                 if (fis != null) {
                     fis.close();
                 }
-            	Globals.showStatus("Read " + path + filename);
+                Globals.showStatus("Read " + path + filename);
                 JGraphFrame jgf = new JGraphFrame(path + filename);
-                Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
-                for (Iterator it = figs.iterator(); it.hasNext(); ) {
+                Layer lay = Globals.curEditor().getLayerManager()
+                        .getActiveLayer();
+                for (Iterator it = figs.iterator(); it.hasNext();) {
                     lay.add((Fig) it.next());
                 }
                 Object d = getArg("dimension");
                 if (d instanceof Dimension) {
-                    jgf.setSize((Dimension)d);
+                    jgf.setSize((Dimension) d);
                 }
                 jgf.setVisible(true);
             }
@@ -103,25 +107,27 @@ public class CmdOpen extends Cmd implements FilenameFilter {
         } catch (IOException ignore) {
             System.out.println("got an IOException");
         }
-   
+
     }
 
-  /** Only let the user select files that match the filter. This does
-   * not seem to be called under JDK 1.0.2 on solaris. I have not
-   * finished this method, it currently accepts all filenames. <p>
-   *
-   * Needs-More-Work: The source code for this function is duplicated
-   * in CmdSave#accept.  */
-  public boolean accept(File dir, String name) {
-    if (containsArg("filterPattern")) {
-      // if pattern dosen't match, return false
-      return true;
+    /**
+     * Only let the user select files that match the filter. This does not seem
+     * to be called under JDK 1.0.2 on solaris. I have not finished this method,
+     * it currently accepts all filenames.
+     * <p>
+     * 
+     * Needs-More-Work: The source code for this function is duplicated in
+     * CmdSave#accept.
+     */
+    public boolean accept(File dir, String name) {
+        if (containsArg("filterPattern")) {
+            // if pattern dosen't match, return false
+            return true;
+        }
+        return true; // no pattern was specified
     }
-    return true; // no pattern was specified
-  }
 
-  public void undoIt() {
-    System.out.println("Undo does not make sense for CmdOpen");
-  }
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdOpen");
+    }
 } /* end class CmdOpen */
-

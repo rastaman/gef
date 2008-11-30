@@ -10,8 +10,8 @@ public class NoAnnotationStrategy extends AnnotationStrategy {
     }
 
     /**
-     * This class is just a dummy for those Figs that need no Annotations.
-     * It is created by default for all Figs.
+     * This class is just a dummy for those Figs that need no Annotations. It is
+     * created by default for all Figs.
      */
     private NoAnnotationStrategy() {
     }
@@ -21,10 +21,9 @@ public class NoAnnotationStrategy extends AnnotationStrategy {
     }
 
     /*
-    protected void restoreAnnotationPosition(Fig annotation){
-        // do nothing in this case
-    }
-    */
+     * protected void restoreAnnotationPosition(Fig annotation){ // do nothing
+     * in this case }
+     */
 
     public void storeAnnotationPosition(Fig annotation) {
         // do nothing in this case

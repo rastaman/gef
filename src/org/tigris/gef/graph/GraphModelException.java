@@ -13,7 +13,7 @@ public class GraphModelException extends Exception {
 
     private static final long serialVersionUID = -6447939901902994312L;
     private Exception cause;
-        
+
     public GraphModelException(String mess) {
         super(mess);
     }
@@ -22,12 +22,12 @@ public class GraphModelException extends Exception {
         super(mess);
         cause = e;
     }
-    
+
     public GraphModelException(Exception e) {
         super();
         cause = e;
     }
-    
+
     public void printStackTrace() {
         super.printStackTrace();
         if (cause != null) {

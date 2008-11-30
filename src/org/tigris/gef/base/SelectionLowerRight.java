@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: SelectionLowerRight.java
 // Classes: SelectionLowerRight
 // Original Author: jrobbins@ics.uci.edu
@@ -35,24 +32,29 @@ import java.awt.*;
 
 import org.tigris.gef.presentation.*;
 
-/** A Selection class to represent selections on Figs that present
- *  resize handles. The selected Fig can be moved or resized. Figrect,
- *  FigRRect, FigCircle, and FigGroup are some of the Figs that
- *  normally use this Selection.  The selected Fig is told it's new
- *  bounding box, and some Figs (like FigGroup or FigPoly) do
- *  calculations to scale themselves.*/
+/**
+ * A Selection class to represent selections on Figs that present resize
+ * handles. The selected Fig can be moved or resized. Figrect, FigRRect,
+ * FigCircle, and FigGroup are some of the Figs that normally use this
+ * Selection. The selected Fig is told it's new bounding box, and some Figs
+ * (like FigGroup or FigPoly) do calculations to scale themselves.
+ */
 
 public class SelectionLowerRight extends Selection {
 
     private static final long serialVersionUID = 434028821570397508L;
 
-  /** Construct a new SelectionLowerRight for the given Fig */
-  public SelectionLowerRight(Fig f) { super(f); }
+    /** Construct a new SelectionLowerRight for the given Fig */
+    public SelectionLowerRight(Fig f) {
+        super(f);
+    }
 
-    /** Return a handle ID for the handle under the mouse, or -1 if
-     *  none. Needs-More-Work: in the future, return a Handle instance or
-     *  null. <p>
-     *  <pre>
+    /**
+     * Return a handle ID for the handle under the mouse, or -1 if none.
+     * Needs-More-Work: in the future, return a Handle instance or null.
+     * <p>
+     * 
+     * <pre>
      *   0-------1-------2
      *   |               |
      *   3               4
@@ -65,16 +67,20 @@ public class SelectionLowerRight extends Selection {
         int cy = getContent().getY();
         int cw = getContent().getWidth();
         int ch = getContent().getHeight();
-        Rectangle testRect = new Rectangle(cx+cw, cy+ch, HAND_SIZE, HAND_SIZE);
+        Rectangle testRect = new Rectangle(cx + cw, cy + ch, HAND_SIZE,
+                HAND_SIZE);
         if (r.intersects(testRect)) {
-            h.index = 7; h.instructions = "Resize object";
+            h.index = 7;
+            h.instructions = "Resize object";
         } else {
-            h.index = -1; 
+            h.index = -1;
         }
     }
 
-    /** Paint the handles at the four corners and midway along each edge
-     * of the bounding box.  */
+    /**
+     * Paint the handles at the four corners and midway along each edge of the
+     * bounding box.
+     */
     public void paint(Graphics g) {
         int cx = getContent().getX();
         int cy = getContent().getY();
@@ -82,16 +88,17 @@ public class SelectionLowerRight extends Selection {
         int ch = getContent().getHeight();
         g.setColor(Globals.getPrefs().handleColorFor(getContent()));
 
-        //dashed
-        g.drawRect(
-                cx - HAND_SIZE/2, cy - HAND_SIZE/2,
-	            cw + HAND_SIZE-1, ch + HAND_SIZE-1);
+        // dashed
+        g.drawRect(cx - HAND_SIZE / 2, cy - HAND_SIZE / 2, cw + HAND_SIZE - 1,
+                ch + HAND_SIZE - 1);
         g.fillRect(cx + cw, cy + ch, HAND_SIZE, HAND_SIZE);
     }
 
-    /** Change some attribute of the selected Fig when the user drags one of its
-     *  handles. Needs-More-Work: someday I might implement resizing that
-     *  maintains the aspect ratio. */
+    /**
+     * Change some attribute of the selected Fig when the user drags one of its
+     * handles. Needs-More-Work: someday I might implement resizing that
+     * maintains the aspect ratio.
+     */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
         int x = getContent().getX(), y = getContent().getY();
         int w = getContent().getWidth(), h = getContent().getHeight();
@@ -102,13 +109,20 @@ public class SelectionLowerRight extends Selection {
         case -1:
             getContent().translate(anX - mX, anY - mY);
             return;
-        case 0: break;
-        case 1: break;
-        case 2: break;
-        case 3: break;
-        case 4: break;
-        case 5: break;
-        case 6: break;
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
         case 7:
             newW = mX - x;
             newW = (newW < minWidth) ? minWidth : newW;
@@ -122,4 +136,3 @@ public class SelectionLowerRight extends Selection {
         getContent().setBounds(newX, newY, newW, newH);
     }
 } /* end class SelectionLowerRight */
-

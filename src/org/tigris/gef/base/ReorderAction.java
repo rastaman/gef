@@ -64,9 +64,11 @@ public class ReorderAction extends UndoableAction {
     /**
      * Construct a new ReorderAction with the given reordering constrant (see
      * above)
-     *
-     * @param function The function of the reorder
-     * @deprecated hardcoded names are going to be removed. Use ReorderAction(name, function) instead 
+     * 
+     * @param function
+     *                The function of the reorder
+     * @deprecated hardcoded names are going to be removed. Use
+     *             ReorderAction(name, function) instead
      */
     public ReorderAction(int function) {
         this(wordFor(function), function, false);
@@ -76,8 +78,10 @@ public class ReorderAction extends UndoableAction {
      * Construct a new ReorderAction with the given reordering constrant (see
      * above)
      * 
-     * @param name The name of the action
-     * @param function The function of the reorder
+     * @param name
+     *                The name of the action
+     * @param function
+     *                The function of the reorder
      */
     public ReorderAction(String name, int function) {
         this(name, function, false);
@@ -87,9 +91,12 @@ public class ReorderAction extends UndoableAction {
      * Construct a new ReorderAction with the given reordering constrant (see
      * above)
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param function The function of the reorder
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param function
+     *                The function of the reorder
      */
     public ReorderAction(String name, Icon icon, int function) {
         this(name, icon, function, false);
@@ -99,9 +106,12 @@ public class ReorderAction extends UndoableAction {
      * Construct a new ReorderAction with the given reordering constrant (see
      * above)
      * 
-     * @param name The name of the action
-     * @param function The function of the reorder
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param function
+     *                The function of the reorder
+     * @param localize
+     *                Whether to localize the name or not
      */
     public ReorderAction(String name, int function, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -112,10 +122,14 @@ public class ReorderAction extends UndoableAction {
      * Construct a new ReorderAction with the given reordering constrant (see
      * above)
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param function The function of the reorder
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param function
+     *                The function of the reorder
+     * @param localize
+     *                Whether to localize the name or not
      */
     public ReorderAction(String name, Icon icon, int function, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
@@ -123,7 +137,7 @@ public class ReorderAction extends UndoableAction {
     }
 
     /**
-     * @deprecated hardcoded names are going to be removed 
+     * @deprecated hardcoded names are going to be removed
      */
     protected static String wordFor(int f) {
         switch (f) {

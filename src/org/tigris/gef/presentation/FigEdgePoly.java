@@ -34,38 +34,41 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
-
-/** A Fig that paints edges between ports. This version
- *  automatically routes a rectilinear edge. The routing is not very
- *  good. It avoids the source and sink nodes and no other nodes. It is
- *  basically case-analysis, and some of the cases are wrong or
- *  missing. Anyway, the user can edit the edge by dragging
- *  handles. The 0th and last handles are fixed in position so that
- *  they stay connected to ports. If the user drags a handle next to a
- *  fixed handle, a new vertex is automatically inserted.
- *
- * @see FigPoly */
+/**
+ * A Fig that paints edges between ports. This version automatically routes a
+ * rectilinear edge. The routing is not very good. It avoids the source and sink
+ * nodes and no other nodes. It is basically case-analysis, and some of the
+ * cases are wrong or missing. Anyway, the user can edit the edge by dragging
+ * handles. The 0th and last handles are fixed in position so that they stay
+ * connected to ports. If the user drags a handle next to a fixed handle, a new
+ * vertex is automatically inserted.
+ * 
+ * @see FigPoly
+ */
 
 public class FigEdgePoly extends FigEdge {
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // instance variables
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // FigEdge API
-    
+
     /**
      * 
      */
     private static final long serialVersionUID = -5534202173807357676L;
-    /** True if the edge has been laid out automatically once. It will
-     *  not be done automatically again since the user may have edited the
-     *  edge and I dont want to undo that work.
+    /**
+     * True if the edge has been laid out automatically once. It will not be
+     * done automatically again since the user may have edited the edge and I
+     * dont want to undo that work.
      */
     protected boolean _initiallyLaidOut;
-    
-    /** Instantiate a FigPoly with its rectilinear flag set. By default
-     *  the FigPoly is black and the FigEdge has no ArrowHeads. */
+
+    /**
+     * Instantiate a FigPoly with its rectilinear flag set. By default the
+     * FigPoly is black and the FigEdge has no ArrowHeads.
+     */
     protected Fig makeEdgeFig() {
         FigPoly res = new FigPoly(Color.black);
         res.setRectilinear(false);
@@ -74,19 +77,21 @@ public class FigEdgePoly extends FigEdge {
         return res;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // accessors
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // routing methods
 
-    /** Find the route that the edge should follow.  Basically case
-     *  analysis to route around source and destination nodes.
-     *  Needs-More-Work: A better algorithm would really be useful.
-     *  Needs-More-Work: Sometimes the edge can get non-rectilinear. <p>
-     *   
-     *  TODO: MVW: This functions is called too many times (within ArgoUML)! 
-     *  I count 6x or 7x while creating an edge.
+    /**
+     * Find the route that the edge should follow. Basically case analysis to
+     * route around source and destination nodes. Needs-More-Work: A better
+     * algorithm would really be useful. Needs-More-Work: Sometimes the edge can
+     * get non-rectilinear.
+     * <p>
+     * 
+     * TODO: MVW: This functions is called too many times (within ArgoUML)! I
+     * count 6x or 7x while creating an edge.
      */
     public void computeRouteImpl() {
         if (!_initiallyLaidOut) {
@@ -94,23 +99,25 @@ public class FigEdgePoly extends FigEdge {
             _initiallyLaidOut = true;
         }
         FigPoly p = ((FigPoly) getFig());
-        
+
         Fig sourcePortFig = getSourcePortFig();
         Fig destPortFig = getDestPortFig();
-        
+
         Point srcPt = sourcePortFig.getCenter();
         Point dstPt = destPortFig.getCenter();
 
         if (_useNearest) {
             if (p.getNumPoints() == 2) {
-                //? two iterations of refinement, maybe should be a for-loop
+                // ? two iterations of refinement, maybe should be a for-loop
                 srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
-                dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints() - 2));
+                dstPt = destPortFig.connectionPoint(p
+                        .getPoint(p.getNumPoints() - 2));
                 srcPt = sourcePortFig.connectionPoint(dstPt);
                 dstPt = destPortFig.connectionPoint(srcPt);
             } else {
                 srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
-                dstPt = destPortFig.connectionPoint(p.getPoint(p.getNumPoints() - 2));
+                dstPt = destPortFig.connectionPoint(p
+                        .getPoint(p.getNumPoints() - 2));
             }
         }
 
@@ -119,9 +126,11 @@ public class FigEdgePoly extends FigEdge {
     } /* end computeRoute */
 
     /**
-     * Internal function to actually compute the layout of the line if
-     * it has never been done on that line before.
-     * @throws IllegalStateException if the edge is not connected to 2 ports
+     * Internal function to actually compute the layout of the line if it has
+     * never been done on that line before.
+     * 
+     * @throws IllegalStateException
+     *                 if the edge is not connected to 2 ports
      */
     protected void layoutEdge() {
         int npoints = 0;
@@ -129,9 +138,12 @@ public class FigEdgePoly extends FigEdge {
         int ypoints[] = new int[16];
         Fig sourcePortFig = getSourcePortFig();
         Fig destPortFig = getDestPortFig();
-        
+
         if (sourcePortFig == null || destPortFig == null) {
-            throw new IllegalStateException("Both the source port and dest port fig must be defined on a " + this.getClass().getName() + " before the edge can be layed out");
+            throw new IllegalStateException(
+                    "Both the source port and dest port fig must be defined on a "
+                            + this.getClass().getName()
+                            + " before the edge can be layed out");
         }
         Point srcPt = sourcePortFig.getCenter();
         Point dstPt = destPortFig.getCenter();
@@ -158,39 +170,34 @@ public class FigEdgePoly extends FigEdge {
         ((FigPoly) getFig()).setPolygon(routePoly);
     }
 
-    /** Reply a point on the given routing rect that is "straight out"
-     *  from the connection point in the proper direction. */
+    /**
+     * Reply a point on the given routing rect that is "straight out" from the
+     * connection point in the proper direction.
+     */
     protected Point routingRectPoint(Point p, Rectangle r, int sector) {
         switch (sector) {
-            case -1 :
-                return new Point(p.x, r.y);
-            case 2 :
-                return new Point(r.x, p.y);
-            case 1 :
-                return new Point(p.x, r.y + r.height);
-            case -2 :
-                return new Point(r.x + r.width, p.y);
-            default :
-                System.out.println("error, undefined sector!");
-                return p;
+        case -1:
+            return new Point(p.x, r.y);
+        case 2:
+            return new Point(r.x, p.y);
+        case 1:
+            return new Point(p.x, r.y + r.height);
+        case -2:
+            return new Point(r.x + r.width, p.y);
+        default:
+            System.out.println("error, undefined sector!");
+            return p;
         }
     }
 
-    /** Try to find a route from the last point in (xs, ys) to point (x,
-     *  y).  Try to avoid the given rectangles along the
-     *  way. Needs-More-Work: should allow a vector of rectangles to
-     *  avoid. */
-    protected int tryRoute(
-            int x,
-            int y,
-            int np,
-            int xs[],
-            int ys[],
-            Rectangle avoid1,
-            Rectangle avoid2,
-            int srcSector,
-            int dstSector) {
-                
+    /**
+     * Try to find a route from the last point in (xs, ys) to point (x, y). Try
+     * to avoid the given rectangles along the way. Needs-More-Work: should
+     * allow a vector of rectangles to avoid.
+     */
+    protected int tryRoute(int x, int y, int np, int xs[], int ys[],
+            Rectangle avoid1, Rectangle avoid2, int srcSector, int dstSector) {
+
         if (np > 12) {
             return 0;
         }
@@ -224,45 +231,24 @@ public class FigEdgePoly extends FigEdge {
                 && fx != avoidPt.x) {
             xs[np] = avoidPt.x;
             ys[np++] = fy;
-            return tryRoute(
-                x,
-                y,
-                np,
-                xs,
-                ys,
-                avoid1,
-                avoid2,
-                srcSector,
-                dstSector)
-                + 1;
+            return tryRoute(x, y, np, xs, ys, avoid1, avoid2, srcSector,
+                    dstSector) + 1;
         }
         if ((srcSector == 2 || srcSector == -2 || fx == avoidPt.x)
                 && fy != avoidPt.y) {
             xs[np] = fx;
             ys[np++] = avoidPt.y;
-            return tryRoute(
-                x,
-                y,
-                np,
-                xs,
-                ys,
-                avoid1,
-                avoid2,
-                srcSector,
-                dstSector)
-                + 1;
+            return tryRoute(x, y, np, xs, ys, avoid1, avoid2, srcSector,
+                    dstSector) + 1;
         }
         return 0;
     }
 
-    /** Find a point on the corner of one of the avoid rectangles that
-     *  is a good intermediate point for the edge layout. */
-    protected Point findAvoidPt(
-            int fx,
-            int fy,
-            int x,
-            int y,
-            Rectangle avoid1,
+    /**
+     * Find a point on the corner of one of the avoid rectangles that is a good
+     * intermediate point for the edge layout.
+     */
+    protected Point findAvoidPt(int fx, int fy, int x, int y, Rectangle avoid1,
             Rectangle avoid2) {
         Point res = new Point(fx, fy);
         if (avoid1.x + avoid1.width < avoid2.x) {
@@ -284,53 +270,47 @@ public class FigEdgePoly extends FigEdge {
         return res;
     }
 
-    /** Reply true if the line segment from (x1, y1) to (x2, y2) does
-     *  not intersect the given avoid rectangles. */
-    protected boolean segOK(
-            int x1,
-            int y1,
-            int x2,
-            int y2,
-            Rectangle avoid1,
+    /**
+     * Reply true if the line segment from (x1, y1) to (x2, y2) does not
+     * intersect the given avoid rectangles.
+     */
+    protected boolean segOK(int x1, int y1, int x2, int y2, Rectangle avoid1,
             Rectangle avoid2) {
-                
+
         int xmin = Math.min(x1, x2);
         int xmax = Math.max(x1, x2);
         int ymin = Math.min(y1, y2);
         int ymax = Math.max(y1, y2);
-        
+
         int rright = avoid1.x + avoid1.width;
         int rbot = avoid1.y + avoid1.height;
         if (x1 == x2) { // vertical
-            if (x1 > avoid1.x && x1 < rright
-                    && ((ymin < avoid1.y && ymax > avoid1.y)
-                        || (ymin < rbot && ymax > rbot))) {
+            if (x1 > avoid1.x
+                    && x1 < rright
+                    && ((ymin < avoid1.y && ymax > avoid1.y) || (ymin < rbot && ymax > rbot))) {
                 return false;
             }
         }
         if (y1 == y2) { // horizontal
             if (y1 > avoid1.y
-                && y1 < rbot
-                && ((xmin < avoid1.x && xmax > avoid1.x)
-                    || (xmin < rright && xmax > rright)))
+                    && y1 < rbot
+                    && ((xmin < avoid1.x && xmax > avoid1.x) || (xmin < rright && xmax > rright)))
                 return false;
         }
-        
+
         rright = avoid2.x + avoid2.width;
         rbot = avoid2.y + avoid2.height;
         if (x1 == x2) { // vertical
             if (x1 > avoid2.x
                     && x1 < rright
-                    && ((ymin < avoid2.y && ymax > avoid2.y)
-                        || (ymin < rbot && ymax > rbot))) {
+                    && ((ymin < avoid2.y && ymax > avoid2.y) || (ymin < rbot && ymax > rbot))) {
                 return false;
             }
         }
         if (y1 == y2) { // horizontal
             if (y1 > avoid2.y
                     && y1 < rbot
-                    && ((xmin < avoid2.x && xmax > avoid2.x)
-                        || (xmin < rright && xmax > rright))) {
+                    && ((xmin < avoid2.x && xmax > avoid2.x) || (xmin < rright && xmax > rright))) {
                 return false;
             }
         }
@@ -361,24 +341,23 @@ public class FigEdgePoly extends FigEdge {
                     }
                 }
                 if (np > 2) {
-                    //Point handlePoint = new Point(p._xpoints[i],p._ypoints[i]);
+                    // Point handlePoint = new
+                    // Point(p._xpoints[i],p._ypoints[i]);
                     Point handlePoint = new Point(x, y);
-                    
+
                     Fig sourcePortFig = getSourcePortFig();
                     Fig destPortFig = getDestPortFig();
-                    
+
                     Point srcPt = sourcePortFig.getCenter();
                     Point dstPt = destPortFig.getCenter();
-                    
+
                     if (i == 1 && np == 3) {
                         srcPt = sourcePortFig.connectionPoint(handlePoint);
                         dstPt = destPortFig.connectionPoint(handlePoint);
                         p.moveVertex(new Handle(0), srcPt.x, srcPt.y, true);
-                        p.moveVertex(
-                            new Handle(np - 1),
-                            dstPt.x,
-                            dstPt.y,
-                            true);
+                        p
+                                .moveVertex(new Handle(np - 1), dstPt.x,
+                                        dstPt.y, true);
                         calcBounds();
                     } else if (i == 1) {
                         srcPt = sourcePortFig.connectionPoint(handlePoint);
@@ -386,11 +365,9 @@ public class FigEdgePoly extends FigEdge {
                         calcBounds();
                     } else if (i == (np - 2)) {
                         dstPt = destPortFig.connectionPoint(handlePoint);
-                        p.moveVertex(
-                            new Handle(np - 1),
-                            dstPt.x,
-                            dstPt.y,
-                            true);
+                        p
+                                .moveVertex(new Handle(np - 1), dstPt.x,
+                                        dstPt.y, true);
                         calcBounds();
                     }
                 }
@@ -408,15 +385,14 @@ public class FigEdgePoly extends FigEdge {
 
     /** Set the current vector of points. */
     public void setPolygon(Polygon p) {
-        ((FigPoly)getFig()).setPolygon(p);
+        ((FigPoly) getFig()).setPolygon(p);
         calcBounds();
     }
 
     public Polygon getPolygon() {
-        return ((FigPoly)getFig()).getPolygon();
+        return ((FigPoly) getFig()).getPolygon();
     }
 
-    
     /** Add a point to this polygon. Fires PropertyChange with "bounds". */
     public void insertPoint(int i, int x, int y) {
         FigPoly p = ((FigPoly) getFig());
@@ -425,8 +401,10 @@ public class FigEdgePoly extends FigEdge {
 
     private static Handle _TempHandle = new Handle(0);
 
-    /** Set the end points of this polygon, regardless of the number of
-     *  fixed handles. This is used when nodes move. */
+    /**
+     * Set the end points of this polygon, regardless of the number of fixed
+     * handles. This is used when nodes move.
+     */
     public void setEndPoints(Point start, Point end) {
         FigPoly p = ((FigPoly) getFig());
         while (p._npoints < 2)
@@ -452,7 +430,7 @@ public class FigEdgePoly extends FigEdge {
             }
         }
     }
-    
+
     public void setInitiallyLaidOut(boolean laidOut) {
         _initiallyLaidOut = laidOut;
     }

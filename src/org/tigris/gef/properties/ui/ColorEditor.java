@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: ColorEditor.java
 // Interfaces: ColorEditor
 // Original Author: jrobbins@ics.uci.edu
@@ -35,168 +32,175 @@ import java.awt.*;
 import javax.swing.*;
 import java.beans.*;
 
-/** <A HREF="../features.html#color_picker">
- *  <TT>FEATURE: color_picker</TT></A>
+/**
+ * <A HREF="../features.html#color_picker"> <TT>FEATURE: color_picker</TT></A>
  */
 
-public class ColorEditor extends JPanel
-implements PropertyEditor { //, MouseListener {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+public class ColorEditor extends JPanel implements PropertyEditor { // ,
+                                                                    // MouseListener
+                                                                    // {
+    // //////////////////////////////////////////////////////////////
+    // instance variables
 
-  public Color _color = Color.white;
-  private java.util.Vector listeners;
+    public Color _color = Color.white;
+    private java.util.Vector listeners;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    // //////////////////////////////////////////////////////////////
+    // constructors
 
-  public ColorEditor() {
-    setLayout(null);
-    //addNotify();
-    setSize(getInsets().left + getInsets().right + 20,
-	    getInsets().top + getInsets().bottom + 20);
-    setForeground(Color.lightGray);
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public void setValue(Object c) {
-    if (!(c instanceof Color)) return;
-    _color = (Color) c;
-    repaint();
-    firePropertyChange();
-    //ColorPickerGrid.updateIfEditing(this);
-  }
-
-  public Object getValue() { return _color; }
-  
-  public boolean isPaintable() { return true; }
-
-  ////////////////////////////////////////////////////////////////
-  // drawing methods
-
-  public void paintValue(java.awt.Graphics g, java.awt.Rectangle box) {
-    g.setColor(Color.lightGray);
-    g.draw3DRect(box.x, box.y, box.width - 1, box.height - 1, true);
-    g.setColor((Color)getValue());
-    g.fill3DRect(box.x + 1, box.y + 1, box.width - 2, box.height - 2, true);
-  }
-
-  public void paint(java.awt.Graphics g) {
-    //System.out.println("painting!");
-    paintValue(g, getBounds());
-  }
-
-
-  public String getJavaInitializationString() {
-    Color c = (Color) getValue();
-    return "new Color(" + getAsText() + ")";
-  }
-
-  public String getAsText() {
-    return "" + _color.getRed() + ", " +
-      _color.getBlue() + ", " + _color.getGreen();
-  }
-
-  public void setAsText(String text) { }
-
-  public String[] getTags() { return null; }
-
-  public java.awt.Component getCustomEditor() {
-    ColorPickerGrid cpg = new ColorPickerGrid(Color.white);
-    //System.out.println("made ColorPickerGrid");
-    cpg.setPEColor(this);
-    //System.out.println("set ColorPickerGrid editor");
-    return cpg;
-  }
-
-  public boolean supportsCustomEditor() { return true; }
-
-  public Dimension getMinimumSize() {
-    return new Dimension(300, 400);
-  }
-
-  public Dimension getPreferredSize() {
-    return new Dimension(300, 400);
-  }
-
-  
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-//   public void mouseEntered(MouseEvent me) { }
-//   public void mouseExited(MouseEvent me) { }
-//   public void mouseClicked(MouseEvent me) { }
-//   public void mouseReleased(MouseEvent me) { }
-  
-//   public void mousePressed(MouseEvent me) {
-//     int gx = me.getX();
-//     int gy = me.getY();
-//     Component c = this;
-//     while (c instanceof Component) {
-//       Point loc = c.location();
-//       gx += loc.x;
-//       gy += loc.y;
-//       c = c.getParent();
-//     }
-//     ColorPickerGrid.edit(this, gx, gy);
-//     me.consume();
-//   }
-
-// //   public void colorPicked(Color newColor) {
-// //     if (newColor == null) return;
-// //     setColor(newColor);
-// //     _changes.firePropertyChange(
-// //     postEvent(new Event(this, Event.ACTION_EVENT, newColor));
-// //   }
-
-  public Frame getFrame() {
-    Component c = this;
-    while (c != null && !(c instanceof Frame)) {
-      c = c.getParent();
+    public ColorEditor() {
+        setLayout(null);
+        // addNotify();
+        setSize(getInsets().left + getInsets().right + 20, getInsets().top
+                + getInsets().bottom + 20);
+        setForeground(Color.lightGray);
     }
-    return (Frame) c;
-  }
 
-//   public void hide() {
-//     super.hide();
-//     //ColorPickerGrid.stopIfEditing(this); 
-//   }
+    // //////////////////////////////////////////////////////////////
+    // accessors
 
-
-  public synchronized void
-  addPropertyChangeListener(PropertyChangeListener listener) {
-    if (listeners == null) {
-      listeners = new java.util.Vector();
+    public void setValue(Object c) {
+        if (!(c instanceof Color))
+            return;
+        _color = (Color) c;
+        repaint();
+        firePropertyChange();
+        // ColorPickerGrid.updateIfEditing(this);
     }
-    listeners.addElement(listener);
-  }
 
-  public synchronized void
-  removePropertyChangeListener( PropertyChangeListener listener) {
-    if (listeners == null) {
-      return;
+    public Object getValue() {
+        return _color;
     }
-    listeners.removeElement(listener);
-  }
 
+    public boolean isPaintable() {
+        return true;
+    }
 
-  public void firePropertyChange() {
-    java.util.Vector targets;
-    PropertyChangeListener target;
-    synchronized (this) {
-      if (listeners == null) return;
-      targets = (java.util.Vector) listeners.clone();
+    // //////////////////////////////////////////////////////////////
+    // drawing methods
+
+    public void paintValue(java.awt.Graphics g, java.awt.Rectangle box) {
+        g.setColor(Color.lightGray);
+        g.draw3DRect(box.x, box.y, box.width - 1, box.height - 1, true);
+        g.setColor((Color) getValue());
+        g.fill3DRect(box.x + 1, box.y + 1, box.width - 2, box.height - 2, true);
     }
-    // Tell our listeners that "everything" has changed.
-    PropertyChangeEvent evt = new PropertyChangeEvent(this, null, null, null);
-    for (int i = 0; i < targets.size(); i++) {
-      target = (PropertyChangeListener) targets.elementAt(i);
-      target.propertyChange(evt);
+
+    public void paint(java.awt.Graphics g) {
+        // System.out.println("painting!");
+        paintValue(g, getBounds());
     }
-  }
+
+    public String getJavaInitializationString() {
+        Color c = (Color) getValue();
+        return "new Color(" + getAsText() + ")";
+    }
+
+    public String getAsText() {
+        return "" + _color.getRed() + ", " + _color.getBlue() + ", "
+                + _color.getGreen();
+    }
+
+    public void setAsText(String text) {
+    }
+
+    public String[] getTags() {
+        return null;
+    }
+
+    public java.awt.Component getCustomEditor() {
+        ColorPickerGrid cpg = new ColorPickerGrid(Color.white);
+        // System.out.println("made ColorPickerGrid");
+        cpg.setPEColor(this);
+        // System.out.println("set ColorPickerGrid editor");
+        return cpg;
+    }
+
+    public boolean supportsCustomEditor() {
+        return true;
+    }
+
+    public Dimension getMinimumSize() {
+        return new Dimension(300, 400);
+    }
+
+    public Dimension getPreferredSize() {
+        return new Dimension(300, 400);
+    }
+
+    // //////////////////////////////////////////////////////////////
+    // event handlers
+
+    // public void mouseEntered(MouseEvent me) { }
+    // public void mouseExited(MouseEvent me) { }
+    // public void mouseClicked(MouseEvent me) { }
+    // public void mouseReleased(MouseEvent me) { }
+
+    // public void mousePressed(MouseEvent me) {
+    // int gx = me.getX();
+    // int gy = me.getY();
+    // Component c = this;
+    // while (c instanceof Component) {
+    // Point loc = c.location();
+    // gx += loc.x;
+    // gy += loc.y;
+    // c = c.getParent();
+    // }
+    // ColorPickerGrid.edit(this, gx, gy);
+    // me.consume();
+    // }
+
+    // // public void colorPicked(Color newColor) {
+    // // if (newColor == null) return;
+    // // setColor(newColor);
+    // // _changes.firePropertyChange(
+    // // postEvent(new Event(this, Event.ACTION_EVENT, newColor));
+    // // }
+
+    public Frame getFrame() {
+        Component c = this;
+        while (c != null && !(c instanceof Frame)) {
+            c = c.getParent();
+        }
+        return (Frame) c;
+    }
+
+    // public void hide() {
+    // super.hide();
+    // //ColorPickerGrid.stopIfEditing(this);
+    // }
+
+    public synchronized void addPropertyChangeListener(
+            PropertyChangeListener listener) {
+        if (listeners == null) {
+            listeners = new java.util.Vector();
+        }
+        listeners.addElement(listener);
+    }
+
+    public synchronized void removePropertyChangeListener(
+            PropertyChangeListener listener) {
+        if (listeners == null) {
+            return;
+        }
+        listeners.removeElement(listener);
+    }
+
+    public void firePropertyChange() {
+        java.util.Vector targets;
+        PropertyChangeListener target;
+        synchronized (this) {
+            if (listeners == null)
+                return;
+            targets = (java.util.Vector) listeners.clone();
+        }
+        // Tell our listeners that "everything" has changed.
+        PropertyChangeEvent evt = new PropertyChangeEvent(this, null, null,
+                null);
+        for (int i = 0; i < targets.size(); i++) {
+            target = (PropertyChangeListener) targets.elementAt(i);
+            target.propertyChange(evt);
+        }
+    }
 
 } /* end class ColorEditor */

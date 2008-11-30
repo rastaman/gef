@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: PropSheetCategory.java
 // Interfaces: PropSheetCategory
 // Original Author: jrobbins@ics.uci.edu
@@ -39,307 +36,321 @@ import java.lang.reflect.*;
 
 import org.tigris.gef.properties.*;
 
-/** A PropSheet that shows only properties in a given Category. The
- *  display of the properties is in a fairly random order down the
- *  sheet.  This class also has several static registration methods
- *  that control how specific properties will be displayed and
- *  editied. */
+/**
+ * A PropSheet that shows only properties in a given Category. The display of
+ * the properties is in a fairly random order down the sheet. This class also
+ * has several static registration methods that control how specific properties
+ * will be displayed and editied.
+ */
 
 public class PropSheetCategory extends PropSheet {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  //public static final String dots = ".  .  .  .  .  .  .  .  .  .  .  .  .  .";
-  public static final String dots = "";
+    // //////////////////////////////////////////////////////////////
+    // constants
+    // public static final String dots = ". . . . . . . . . . . . . .";
+    public static final String dots = "";
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    // //////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** Given a property name, which AWT component edits its value. */
-  protected Hashtable _keysComps;
-  /** Given an AWT component, what is the name of the property it edits. */
-  protected Hashtable _compsKeys;
-  protected Hashtable _inUse; // used as a set
-  protected Hashtable _labels;
-  protected Hashtable _shown; // used as a set
-  protected String _category = "Misc";
+    /** Given a property name, which AWT component edits its value. */
+    protected Hashtable _keysComps;
+    /** Given an AWT component, what is the name of the property it edits. */
+    protected Hashtable _compsKeys;
+    protected Hashtable _inUse; // used as a set
+    protected Hashtable _labels;
+    protected Hashtable _shown; // used as a set
+    protected String _category = "Misc";
 
-  protected PropertyDescriptor _properties[];
-  protected JFrame _jframe;
-//   protected JScrollPane _scroller = new JScrollPane();
-//   protected JPanel _innerPanel = new JPanel();
+    protected PropertyDescriptor _properties[];
+    protected JFrame _jframe;
 
+    // protected JScrollPane _scroller = new JScrollPane();
+    // protected JPanel _innerPanel = new JPanel();
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    // //////////////////////////////////////////////////////////////
+    // constructors
 
-  public PropSheetCategory(JFrame f) {
-    super();
-    _jframe = f;
-    setTabName("no key");
-    //setLayout(new BorderLayout());
-    //_innerPanel.setLayout(new PropsGridLayout(4, 4));
-    setLayout(new PropsGridLayout(4, 4));
-    //setLayout(new GridLayout(0, 2, 4, 4));
-    //setLayout(new FlowLayout());
-    //addNotify();
-    setSize(getInsets().left + getInsets().right + 250,
-	   getInsets().top + getInsets().bottom + 300);
-    setFont(getPropertiesFont());
-//     _scroller.add(_innerPanel);
-//     add(_scroller, BorderLayout.CENTER);
-    _keysComps = new Hashtable(20);
-    _compsKeys = new Hashtable(20);
-    _labels = new Hashtable(20);
-    _inUse = new Hashtable(20);
-    _shown = new Hashtable(20);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // static initializer
-  static {
-    String[] searchPath = { "org.tigris.gef.properties.ui", "sun.beans.editors" };
-    // needs-more-work: doesn't seem to recognize my components!
-    PropertyEditorManager.setEditorSearchPath(searchPath);
-    PropertyEditorManager.registerEditor(java.awt.Color.class,
-					 org.tigris.gef.properties.ui.ColorEditor.class);
-    PropertyEditorManager.registerEditor(java.awt.Rectangle.class,
-					 org.tigris.gef.properties.ui.RectangleEditor.class);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public String getCategory() { return _category; }
-
-  public void setCategory(String cat) {
-    if (cat == _category) return;
-    _category = cat;
-    setTabName(cat);
-    if (_sel != null) {
-      updateComponents();
-      repaint();
+    public PropSheetCategory(JFrame f) {
+        super();
+        _jframe = f;
+        setTabName("no key");
+        // setLayout(new BorderLayout());
+        // _innerPanel.setLayout(new PropsGridLayout(4, 4));
+        setLayout(new PropsGridLayout(4, 4));
+        // setLayout(new GridLayout(0, 2, 4, 4));
+        // setLayout(new FlowLayout());
+        // addNotify();
+        setSize(getInsets().left + getInsets().right + 250, getInsets().top
+                + getInsets().bottom + 300);
+        setFont(getPropertiesFont());
+        // _scroller.add(_innerPanel);
+        // add(_scroller, BorderLayout.CENTER);
+        _keysComps = new Hashtable(20);
+        _compsKeys = new Hashtable(20);
+        _labels = new Hashtable(20);
+        _inUse = new Hashtable(20);
+        _shown = new Hashtable(20);
     }
-  }
 
-  public Component addKeyComp(PropertyDescriptor pd) {
-    Component comp = (Component) _keysComps.get(pd);
-    if (comp == null) {            // || !rightType(pd, comp))
-      comp = makeComp(pd);
-      _keysComps.put(pd, comp);
-      _compsKeys.put(comp, pd);
-      JLabel lab = new JLabel(pd.getName() + dots);
-      _labels.put(pd, lab);
+    // //////////////////////////////////////////////////////////////
+    // static initializer
+    static {
+        String[] searchPath = { "org.tigris.gef.properties.ui",
+                "sun.beans.editors" };
+        // needs-more-work: doesn't seem to recognize my components!
+        PropertyEditorManager.setEditorSearchPath(searchPath);
+        PropertyEditorManager.registerEditor(java.awt.Color.class,
+                org.tigris.gef.properties.ui.ColorEditor.class);
+        PropertyEditorManager.registerEditor(java.awt.Rectangle.class,
+                org.tigris.gef.properties.ui.RectangleEditor.class);
     }
-    _inUse.put(pd, pd);
-    return comp;
-  }
 
+    // //////////////////////////////////////////////////////////////
+    // accessors
 
-  public void updateKeysComps() {
-    _inUse.clear();
-    if (_sel == null) return;
-    Class selClass = _sel.getClass();
-    //@
-    try {
-      BeanInfo bi = Introspector.getBeanInfo(selClass);
-      _properties = bi.getPropertyDescriptors();
-    } catch (IntrospectionException ex) {
-      System.out.println("PropertySheet: Couldn't introspect\n" +
-			 ex.toString());
-      return;
+    public String getCategory() {
+        return _category;
     }
-    for (int i = 0; i < _properties.length; i++) {
-      // //addPropertyDescriptor(_properties[i], selClass);
-      // Don't display hidden or expert properties.
-      if (PropCategoryManager.inCategory(_category, _properties[i])) {
-	Component comp = addKeyComp(_properties[i]);
-	boolean canPut = (_properties[i].getWriteMethod() != null);
-	if (comp instanceof TextComponent)
-	  ((TextComponent)comp).setEditable(canPut);
-	else comp.setEnabled(canPut);
-      }
+
+    public void setCategory(String cat) {
+        if (cat == _category)
+            return;
+        _category = cat;
+        setTabName(cat);
+        if (_sel != null) {
+            updateComponents();
+            repaint();
+        }
     }
-  }
 
-  public void show(PropertyDescriptor pd) {
-    JLabel lab = (JLabel) _labels.get(pd);
-    Component comp = (Component) _keysComps.get(pd);
-    setComponentValue(pd, comp);
-    if (_shown.containsKey(pd)) return;
-    //_innerPanel.add(lab);
-    //_innerPanel.add(comp);
-    add(lab);
-    add(comp);
-    lab.setVisible(true);
-    comp.setVisible(true);
-    _shown.put(pd, pd);
-  }
-
-  public void hide(PropertyDescriptor pd) {
-    if (!_shown.containsKey(pd)) return;
-    JLabel lab = (JLabel) _labels.get(pd);
-    Component comp = (Component) _keysComps.get(pd);
-    lab.setVisible(false);
-    comp.setVisible(false);
-    //_innerPanel.remove(lab);
-    //_innerPanel.remove(comp);
-    remove(lab);
-    remove(comp);
-    _shown.remove(pd);
-  }
-
-  public Dimension getMinimumSize() {
-    return new Dimension(100, 100);
-  }
-
-  public Dimension getPreferredSize() {
-    return new Dimension(300, 400);
-  }
-
-  public Dimension getSize() {
-    return new Dimension(300, 400);
-  }
-
-
-  /** If I don't have a comp for a given property name, or the last
-   * comp is not suitable, then make a new AWT component (possibly a
-   * PropertyEditor). */
-  public Component makeComp(PropertyDescriptor pd) {
-    Component comp = null;
-    try {
-      // // Object value = _sel.get(pd);
-      Method getter = pd.getReadMethod();
-      Method setter = pd.getWriteMethod();
-      Object args[] = { };
-      Object value = getter.invoke(_sel, args);
-      Class type = pd.getPropertyType();
-      PropertyEditor editor = null;
-      Class pec = pd.getPropertyEditorClass();
-      if (pec != null) {
-	try {
-	  editor = (PropertyEditor)pec.newInstance();
-	} catch (Exception ex) {
-	  System.out.println("exception in makecomp");
-	  // Drop through.
-	}
-      }
-      if (editor == null) {
-	editor = PropertyEditorManager.findEditor(type);
-      }
-      if (editor == null) {
-	return new JLabel(value == null ? "(null)" : value.toString());
-      }
-      editor.setValue(value);
-      editor.addPropertyChangeListener(this);
-      _editorsPds.put(editor, pd);
-      _pdsEditors.put(pd, editor);
-
-      if (editor.isPaintable() && editor.supportsCustomEditor())
-	comp = new PropertyCanvas(_jframe, editor);
-      else if (editor instanceof java.awt.Component) {
-	comp = (java.awt.Component) editor;
-      }
-      // if it has a small custom editor, embed it
-      // if it has a custom editor but not paintable, use an "Edit" button
-      else if (editor.getTags() != null)
-	comp = new PropertySelector(editor);
-      else if (editor.getAsText() != null) {
-	String init = editor.getAsText();
-	comp = new PropertyText(editor);
-      } else {
-	System.err.println("Warning: Property \"" + pd.toString() +
-			   "\" has non-displayabale editor. Skipping.");
-      }
-
-    } catch (InvocationTargetException ex) {
-      System.err.println("Skipping property " + pd.toString() +
-			 " ; exception on target: " + ex.getTargetException());
-      ex.getTargetException().printStackTrace();
-    } catch (IllegalAccessException ex) {
-      System.err.println("Skipping property " + pd.toString() +
-			 " ; Illegal Access on target: " +
-			 ex.toString());
-      ex.printStackTrace();
+    public Component addKeyComp(PropertyDescriptor pd) {
+        Component comp = (Component) _keysComps.get(pd);
+        if (comp == null) { // || !rightType(pd, comp))
+            comp = makeComp(pd);
+            _keysComps.put(pd, comp);
+            _compsKeys.put(comp, pd);
+            JLabel lab = new JLabel(pd.getName() + dots);
+            _labels.put(pd, lab);
+        }
+        _inUse.put(pd, pd);
+        return comp;
     }
-    return comp;
-  }
 
-
-  protected boolean inRecursion = false;
-  
-  /** Display the value of a given property */
-  public void setComponentValue(PropertyDescriptor pd, Component comp) {
-    //System.out.println("setComponentValue");
-
-    if (inRecursion) return;
-    
-    Object value = null;
-    try {
-       Method getter = pd.getReadMethod();
-       Method setter = pd.getWriteMethod();
-       Object args[] = { };
-       value = getter.invoke(_sel, args);
+    public void updateKeysComps() {
+        _inUse.clear();
+        if (_sel == null)
+            return;
+        Class selClass = _sel.getClass();
+        // @
+        try {
+            BeanInfo bi = Introspector.getBeanInfo(selClass);
+            _properties = bi.getPropertyDescriptors();
+        } catch (IntrospectionException ex) {
+            System.out.println("PropertySheet: Couldn't introspect\n"
+                    + ex.toString());
+            return;
+        }
+        for (int i = 0; i < _properties.length; i++) {
+            // //addPropertyDescriptor(_properties[i], selClass);
+            // Don't display hidden or expert properties.
+            if (PropCategoryManager.inCategory(_category, _properties[i])) {
+                Component comp = addKeyComp(_properties[i]);
+                boolean canPut = (_properties[i].getWriteMethod() != null);
+                if (comp instanceof TextComponent)
+                    ((TextComponent) comp).setEditable(canPut);
+                else
+                    comp.setEnabled(canPut);
+            }
+        }
     }
-    catch (Exception ex) { System.out.println("unexpected Exception!"); }
-    if (value == null) { System.out.println("null value"); return;}
-    // System.out.println("set component value");
 
-    if (comp == null) System.out.println("tag is null");
-    
-    inRecursion = true;
-    if (comp instanceof PropertyEditor)
-      ((PropertyEditor)comp).setValue(value);
-    else if (comp instanceof PropertyText) {
-      ((PropertyText)comp).setText(value.toString());
+    public void show(PropertyDescriptor pd) {
+        JLabel lab = (JLabel) _labels.get(pd);
+        Component comp = (Component) _keysComps.get(pd);
+        setComponentValue(pd, comp);
+        if (_shown.containsKey(pd))
+            return;
+        // _innerPanel.add(lab);
+        // _innerPanel.add(comp);
+        add(lab);
+        add(comp);
+        lab.setVisible(true);
+        comp.setVisible(true);
+        _shown.put(pd, pd);
     }
-    else if (comp instanceof PropertySelector) {
-      //System.out.println("setComponentValue case 2:" + value);
-      String tag = value.toString();
-      if (value instanceof Boolean) {
-	if (((Boolean)value).booleanValue()) tag = "True";
-	else tag = "False";
-      }
-      if (tag == null) System.out.println("tag is null");
-      ((PropertySelector)comp).setSelectedItem(tag);
-      //        Vector items = (Vector) _enumProps.get(pd);
-      //        if (items != null && items.contains(value))
-      //  	((Choice)comp).select(items.indexOf(value));
+
+    public void hide(PropertyDescriptor pd) {
+        if (!_shown.containsKey(pd))
+            return;
+        JLabel lab = (JLabel) _labels.get(pd);
+        Component comp = (Component) _keysComps.get(pd);
+        lab.setVisible(false);
+        comp.setVisible(false);
+        // _innerPanel.remove(lab);
+        // _innerPanel.remove(comp);
+        remove(lab);
+        remove(comp);
+        _shown.remove(pd);
     }
-    //     else if (value instanceof Integer && comp instanceof TextComponent) {
-    //       TextComponent tc = (TextComponent) comp;
-    //       tc.setText(((Integer) value).toString());
-    //     }
-    //     else if (value instanceof Boolean && comp instanceof Checkbox) {
-    //       ((Checkbox)comp).setState(value.equals(Boolean.TRUE));
-    //     }
-    else if (comp instanceof Label)
-      ((Label)comp).setText(value.toString());
-    else {
-      PropertyEditor editor = (PropertyEditor) _pdsEditors.get(pd);
-      //System.out.println("editor = " + editor);
-      if (editor != null) {
-	_ignorePropChanges = true;
-	//System.out.println("safe update?");
-	editor.setValue(value);
-	_ignorePropChanges = false;
-      }
-      //else System.out.println("xxx");
+
+    public Dimension getMinimumSize() {
+        return new Dimension(100, 100);
     }
-    inRecursion = false;    
-  }
 
+    public Dimension getPreferredSize() {
+        return new Dimension(300, 400);
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // update methods
+    public Dimension getSize() {
+        return new Dimension(300, 400);
+    }
 
-  public void addNotify() {
-    if (_keysComps != null) super.addNotify();
-  }
+    /**
+     * If I don't have a comp for a given property name, or the last comp is not
+     * suitable, then make a new AWT component (possibly a PropertyEditor).
+     */
+    public Component makeComp(PropertyDescriptor pd) {
+        Component comp = null;
+        try {
+            // // Object value = _sel.get(pd);
+            Method getter = pd.getReadMethod();
+            Method setter = pd.getWriteMethod();
+            Object args[] = {};
+            Object value = getter.invoke(_sel, args);
+            Class type = pd.getPropertyType();
+            PropertyEditor editor = null;
+            Class pec = pd.getPropertyEditorClass();
+            if (pec != null) {
+                try {
+                    editor = (PropertyEditor) pec.newInstance();
+                } catch (Exception ex) {
+                    System.out.println("exception in makecomp");
+                    // Drop through.
+                }
+            }
+            if (editor == null) {
+                editor = PropertyEditorManager.findEditor(type);
+            }
+            if (editor == null) {
+                return new JLabel(value == null ? "(null)" : value.toString());
+            }
+            editor.setValue(value);
+            editor.addPropertyChangeListener(this);
+            _editorsPds.put(editor, pd);
+            _pdsEditors.put(pd, editor);
 
-  public boolean canEdit(Object item) {
-    return item != null && super.canEdit(item);
-  }
+            if (editor.isPaintable() && editor.supportsCustomEditor())
+                comp = new PropertyCanvas(_jframe, editor);
+            else if (editor instanceof java.awt.Component) {
+                comp = (java.awt.Component) editor;
+            }
+            // if it has a small custom editor, embed it
+            // if it has a custom editor but not paintable, use an "Edit" button
+            else if (editor.getTags() != null)
+                comp = new PropertySelector(editor);
+            else if (editor.getAsText() != null) {
+                String init = editor.getAsText();
+                comp = new PropertyText(editor);
+            } else {
+                System.err.println("Warning: Property \"" + pd.toString()
+                        + "\" has non-displayabale editor. Skipping.");
+            }
+
+        } catch (InvocationTargetException ex) {
+            System.err.println("Skipping property " + pd.toString()
+                    + " ; exception on target: " + ex.getTargetException());
+            ex.getTargetException().printStackTrace();
+        } catch (IllegalAccessException ex) {
+            System.err.println("Skipping property " + pd.toString()
+                    + " ; Illegal Access on target: " + ex.toString());
+            ex.printStackTrace();
+        }
+        return comp;
+    }
+
+    protected boolean inRecursion = false;
+
+    /** Display the value of a given property */
+    public void setComponentValue(PropertyDescriptor pd, Component comp) {
+        // System.out.println("setComponentValue");
+
+        if (inRecursion)
+            return;
+
+        Object value = null;
+        try {
+            Method getter = pd.getReadMethod();
+            Method setter = pd.getWriteMethod();
+            Object args[] = {};
+            value = getter.invoke(_sel, args);
+        } catch (Exception ex) {
+            System.out.println("unexpected Exception!");
+        }
+        if (value == null) {
+            System.out.println("null value");
+            return;
+        }
+        // System.out.println("set component value");
+
+        if (comp == null)
+            System.out.println("tag is null");
+
+        inRecursion = true;
+        if (comp instanceof PropertyEditor)
+            ((PropertyEditor) comp).setValue(value);
+        else if (comp instanceof PropertyText) {
+            ((PropertyText) comp).setText(value.toString());
+        } else if (comp instanceof PropertySelector) {
+            // System.out.println("setComponentValue case 2:" + value);
+            String tag = value.toString();
+            if (value instanceof Boolean) {
+                if (((Boolean) value).booleanValue())
+                    tag = "True";
+                else
+                    tag = "False";
+            }
+            if (tag == null)
+                System.out.println("tag is null");
+            ((PropertySelector) comp).setSelectedItem(tag);
+            // Vector items = (Vector) _enumProps.get(pd);
+            // if (items != null && items.contains(value))
+            // ((Choice)comp).select(items.indexOf(value));
+        }
+        // else if (value instanceof Integer && comp instanceof TextComponent) {
+        // TextComponent tc = (TextComponent) comp;
+        // tc.setText(((Integer) value).toString());
+        // }
+        // else if (value instanceof Boolean && comp instanceof Checkbox) {
+        // ((Checkbox)comp).setState(value.equals(Boolean.TRUE));
+        // }
+        else if (comp instanceof Label)
+            ((Label) comp).setText(value.toString());
+        else {
+            PropertyEditor editor = (PropertyEditor) _pdsEditors.get(pd);
+            // System.out.println("editor = " + editor);
+            if (editor != null) {
+                _ignorePropChanges = true;
+                // System.out.println("safe update?");
+                editor.setValue(value);
+                _ignorePropChanges = false;
+            }
+            // else System.out.println("xxx");
+        }
+        inRecursion = false;
+    }
+
+    // //////////////////////////////////////////////////////////////
+    // update methods
+
+    public void addNotify() {
+        if (_keysComps != null)
+            super.addNotify();
+    }
+
+    public boolean canEdit(Object item) {
+        return item != null && super.canEdit(item);
+    }
 
     public void updateComponents() {
         super.updateComponents();
@@ -356,10 +367,11 @@ public class PropSheetCategory extends PropSheet {
         validate();
     }
 
-  public void updateComponent(PropertyDescriptor pd) {
-    //System.out.println("updateComponent");
-    Component comp = (Component) _keysComps.get(pd);
-    if (comp != null) setComponentValue(pd, comp);
-  }
+    public void updateComponent(PropertyDescriptor pd) {
+        // System.out.println("updateComponent");
+        Component comp = (Component) _keysComps.get(pd);
+        if (comp != null)
+            setComponentValue(pd, comp);
+    }
 
 } /* end class PropSheetCategory */

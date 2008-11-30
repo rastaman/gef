@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CmdPaste.java
 // Classes: CmdPaste
 // Original Author: jrobbins@ics.uci.edu
@@ -44,86 +42,82 @@ public class CmdPaste extends Cmd {
 
     private static final long serialVersionUID = 8942391014743560735L;
 
-  public CmdPaste() { super("Paste"); }
-
-  // needs-more-work: if the Fig was removed from the model, then I would
-  // need to create a new owner.
-
-  public void doIt() {
-    SelectionManager sm = Globals.curEditor().getSelectionManager();
-    Vector figs = new Vector();
-    Enumeration cb = Globals.clipBoard.elements();
-    while (cb.hasMoreElements()) {
-      Fig f = (Fig) cb.nextElement();
-      Editor ce = Globals.curEditor();
-      int gridSze = ((GuideGrid) ce.getGuide()).gridSize();
-      f.translate(gridSze, gridSze);
-      f = (Fig) f.clone();
-      Object owner = f.getOwner();
-      if (owner instanceof VetoableChangeEventSource && f instanceof VetoableChangeListener)
-        ((VetoableChangeEventSource)owner).addVetoableChangeListener((VetoableChangeListener)f);
-      ce.add(f);
-      figs.addElement(f);
+    public CmdPaste() {
+        super("Paste");
     }
-    sm.deselectAll();
-    sm.select(figs);
-  }
 
-  public void undoIt() {
-    System.out.println("Undo does not make sense for CmdPaste");
-  }
+    // needs-more-work: if the Fig was removed from the model, then I would
+    // need to create a new owner.
 
-  /**
-   * The DataFlavor used for our particular type of cut-and-paste data.
-   * This one will transfer data in the form of a serialized Vector object.
-   * Note that in Java 1.1.1, this works intra-application, but not between
-   * applications.  Java 1.1.1 inter-application data transfer is limited to
-   * the pre-defined string and text data flavors.
-   */
-
-  // Awating jdk 1.2
-  //public static final DataFlavor dataFlavor =
-      //new DataFlavor(Fig.class, "Fig");
-
-  // Awating jdk 1.2
-  //protected Vector figs = new Vector(256,256);  // Store the Figs.
-
-  // Awating jdk 1.2
-  //public void paste() {
-  /**
-   * Ask for the Transferable contents of the system clipboard, then ask that
-   * object for the scribble data it represents.  If either step fails, beep!
-   */
-    //Clipboard c = ProjectBrowser.TheInstance.getToolkit().getSystemClipboard();  // Get clipboard.
-    /*Clipboard c = ProjectBrowser.TheInstance.getToolkit().getSystemClipboard();  // Get clipboard.
-    Transferable t = c.getContents(ProjectBrowser.TheInstance);                  // Get its contents.
-    //System.out.println("paste has been executed");
-    System.out.println("t = " + t);
-
-    if (t == null) {              // If there is nothing to paste, beep.
-      ProjectBrowser.TheInstance.getToolkit().beep();
-      System.out.println("paste has been executed");
-      return;
+    public void doIt() {
+        SelectionManager sm = Globals.curEditor().getSelectionManager();
+        Vector figs = new Vector();
+        Enumeration cb = Globals.clipBoard.elements();
+        while (cb.hasMoreElements()) {
+            Fig f = (Fig) cb.nextElement();
+            Editor ce = Globals.curEditor();
+            int gridSze = ((GuideGrid) ce.getGuide()).gridSize();
+            f.translate(gridSze, gridSze);
+            f = (Fig) f.clone();
+            Object owner = f.getOwner();
+            if (owner instanceof VetoableChangeEventSource
+                    && f instanceof VetoableChangeListener)
+                ((VetoableChangeEventSource) owner)
+                        .addVetoableChangeListener((VetoableChangeListener) f);
+            ce.add(f);
+            figs.addElement(f);
+        }
+        sm.deselectAll();
+        sm.select(figs);
     }
-    try {
-      // Ask for clipboard contents to be converted to our data flavor.
-      // This will throw an exception if our flavor is not supported.
-      Fig newFig = (Fig) t.getTransferData(dataFlavor);
-      if (newFig instanceof Fig)
-        System.out.println("success!");
-      System.out.println("paste1 has been executed");
-      // Add all those pasted lines to our scribble.
-      //for(int i = 0; i < newFigs.size(); i++)
-        //figs.addElement(newFigs.elementAt(i));
-      // And redraw the whole thing
-      //repaint();
+
+    public void undoIt() {
+        System.out.println("Undo does not make sense for CmdPaste");
     }
-    catch (UnsupportedFlavorException e) {
-      ProjectBrowser.TheInstance.getToolkit().beep();   // If clipboard has some other type of data
-    }
-    catch (Exception e) {
-      ProjectBrowser.TheInstance.getToolkit().beep();   // Or if anything else goes wrong...
-    }
-  }*/
+
+    /**
+     * The DataFlavor used for our particular type of cut-and-paste data. This
+     * one will transfer data in the form of a serialized Vector object. Note
+     * that in Java 1.1.1, this works intra-application, but not between
+     * applications. Java 1.1.1 inter-application data transfer is limited to
+     * the pre-defined string and text data flavors.
+     */
+
+    // Awating jdk 1.2
+    // public static final DataFlavor dataFlavor =
+    // new DataFlavor(Fig.class, "Fig");
+    // Awating jdk 1.2
+    // protected Vector figs = new Vector(256,256); // Store the Figs.
+    // Awating jdk 1.2
+    // public void paste() {
+    /**
+     * Ask for the Transferable contents of the system clipboard, then ask that
+     * object for the scribble data it represents. If either step fails, beep!
+     */
+    // Clipboard c =
+    // ProjectBrowser.TheInstance.getToolkit().getSystemClipboard(); // Get
+    // clipboard.
+    /*
+     * Clipboard c =
+     * ProjectBrowser.TheInstance.getToolkit().getSystemClipboard(); // Get
+     * clipboard. Transferable t = c.getContents(ProjectBrowser.TheInstance); //
+     * Get its contents. //System.out.println("paste has been executed");
+     * System.out.println("t = " + t);
+     * 
+     * if (t == null) { // If there is nothing to paste, beep.
+     * ProjectBrowser.TheInstance.getToolkit().beep(); System.out.println("paste
+     * has been executed"); return; } try { // Ask for clipboard contents to be
+     * converted to our data flavor. // This will throw an exception if our
+     * flavor is not supported. Fig newFig = (Fig)
+     * t.getTransferData(dataFlavor); if (newFig instanceof Fig)
+     * System.out.println("success!"); System.out.println("paste1 has been
+     * executed"); // Add all those pasted lines to our scribble. //for(int i =
+     * 0; i < newFigs.size(); i++) //figs.addElement(newFigs.elementAt(i)); //
+     * And redraw the whole thing //repaint(); } catch
+     * (UnsupportedFlavorException e) {
+     * ProjectBrowser.TheInstance.getToolkit().beep(); // If clipboard has some
+     * other type of data } catch (Exception e) {
+     * ProjectBrowser.TheInstance.getToolkit().beep(); // Or if anything else
+     * goes wrong... } }
+     */
 } /* end class CmdPaste */
-

@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdAdjustGrid.java
 // Classes: CmdAdjustGrid
 // Original Author: jrobbins@ics.uci.edu
@@ -31,10 +28,11 @@
 
 package org.tigris.gef.base;
 
-/** An Cmd to modify the way that the grid layer of the current
- *  document looks.  For now it just cycles among a few predefined
- *  looks.  Needs-More-Work: should put up a grid preference dialog
- *  box or use property sheet.  */
+/**
+ * An Cmd to modify the way that the grid layer of the current document looks.
+ * For now it just cycles among a few predefined looks. Needs-More-Work: should
+ * put up a grid preference dialog box or use property sheet.
+ */
 public class CmdAdjustGrid extends Cmd {
 
     /**
@@ -43,14 +41,16 @@ public class CmdAdjustGrid extends Cmd {
     private static final long serialVersionUID = 3761403097309984825L;
 
     public CmdAdjustGrid() {
-	    super("AdjustGrid");
+        super("AdjustGrid");
     }
 
-  public void doIt() {
-    Editor ce = Globals.curEditor();
-    Layer grid = ce.getLayerManager().findLayerNamed("Grid");
-    if (grid != null) grid.adjust();
-  }
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        Layer grid = ce.getLayerManager().findLayerNamed("Grid");
+        if (grid != null)
+            grid.adjust();
+    }
 
-  public void undoIt() { }
+    public void undoIt() {
+    }
 } /* end class CmdAdjustGrid */

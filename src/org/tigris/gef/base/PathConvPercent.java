@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: PathConvPercent.java
 // Classes: PathConvPercent
 // Original Author: abonner@ics.uci.edu
@@ -35,12 +33,12 @@ import java.awt.Point;
 import org.tigris.gef.presentation.*;
 
 /**
- * Used to place labels as specific positions along a FigEdge.  For
- * example, a label can be placed in the middle of a FigEdge by using 50%.
+ * Used to place labels as specific positions along a FigEdge. For example, a
+ * label can be placed in the middle of a FigEdge by using 50%.
  */
 
 public class PathConvPercent extends PathConv {
-    
+
     private static final long serialVersionUID = 4657208920168203542L;
     int percent = 0;
     int offset = 0;
@@ -53,18 +51,19 @@ public class PathConvPercent extends PathConv {
     public void stuffPoint(Point res) {
         Fig pathFig = getPathFig();
         int figLength = pathFig.getPerimeterLength();
-        if (figLength < 10) { res.setLocation(pathFig.getCenter()); return; }
+        if (figLength < 10) {
+            res.setLocation(pathFig.getCenter());
+            return;
+        }
         int pointToGet = (figLength * percent) / 100;
 
         pathFig.stuffPointAlongPerimeter(pointToGet, res);
 
-        //System.out.println("lP=" + linePoint + " ptG=" + pointToGet +
-        //" figLen=" + figLength);
+        // System.out.println("lP=" + linePoint + " ptG=" + pointToGet +
+        // " figLen=" + figLength);
 
-        applyOffsetAmount(pathFig.pointAlongPerimeter(pointToGet + 5),
-		      pathFig.pointAlongPerimeter(pointToGet - 5),
-		      offset,
-		      res);
+        applyOffsetAmount(pathFig.pointAlongPerimeter(pointToGet + 5), pathFig
+                .pointAlongPerimeter(pointToGet - 5), offset, res);
     }
 
     public void setPercentOffset(int newPercent, int newOffset) {
@@ -72,5 +71,6 @@ public class PathConvPercent extends PathConv {
         offset = newOffset;
     }
 
-    public void setClosestPoint(Point newPoint) { }
+    public void setClosestPoint(Point newPoint) {
+    }
 }/* end class PathConvPercent */

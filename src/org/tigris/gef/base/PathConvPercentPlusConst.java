@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: PathConvPercentPlusConst.java
 // Classes: PathConvPercentPlusConst
 // Original Author: abonner@ics.uci.edu
@@ -35,8 +33,8 @@ import java.awt.Point;
 import org.tigris.gef.presentation.*;
 
 /**
- * Used to place labels as specific positions along a FigEdge.  For
- * example, a label can be placed in the middle of a FigEdge by using 50%.
+ * Used to place labels as specific positions along a FigEdge. For example, a
+ * label can be placed in the middle of a FigEdge by using 50%.
  */
 
 public class PathConvPercentPlusConst extends PathConv {
@@ -45,9 +43,8 @@ public class PathConvPercentPlusConst extends PathConv {
     private int _delta = 0;
     private int offset = 0;
 
-    public PathConvPercentPlusConst(Fig theFig,
-				  int newPercent, int delta,
-				  int newOffset) {
+    public PathConvPercentPlusConst(Fig theFig, int newPercent, int delta,
+            int newOffset) {
         super(theFig);
         setPercentOffset(newPercent, newOffset);
         _delta = delta;
@@ -57,7 +54,8 @@ public class PathConvPercentPlusConst extends PathConv {
         Fig pathFig = getPathFig();
         int figLength = pathFig.getPerimeterLength();
         if (figLength < 10) {
-            res.setLocation(pathFig.getCenter()); return;
+            res.setLocation(pathFig.getCenter());
+            return;
         }
         int pointToGet = ((figLength * percent) / 100) + _delta;
 
@@ -67,16 +65,14 @@ public class PathConvPercentPlusConst extends PathConv {
         if (pointToGet > figLength) {
             pointToGet = figLength;
         }
-    
+
         pathFig.stuffPointAlongPerimeter(pointToGet, res);
 
-        //System.out.println("lP=" + linePoint + " ptG=" + pointToGet +
-        //" figLen=" + figLength);
+        // System.out.println("lP=" + linePoint + " ptG=" + pointToGet +
+        // " figLen=" + figLength);
 
-        applyOffsetAmount(pathFig.pointAlongPerimeter(pointToGet + 5),
-		      pathFig.pointAlongPerimeter(pointToGet - 5),
-		      offset,
-		      res);
+        applyOffsetAmount(pathFig.pointAlongPerimeter(pointToGet + 5), pathFig
+                .pointAlongPerimeter(pointToGet - 5), offset, res);
     }
 
     public void setPercentOffset(int newPercent, int newOffset) {
@@ -84,5 +80,6 @@ public class PathConvPercentPlusConst extends PathConv {
         offset = newOffset;
     }
 
-    public void setClosestPoint(Point newPoint) { }
+    public void setClosestPoint(Point newPoint) {
+    }
 }/* end class PathConvPercentPlusConst */

@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdShowProperties.java
 // Classes: CmdShowProperties
 // Original Author: jrobbins@ics.uci.edu
@@ -31,10 +28,11 @@
 
 package org.tigris.gef.base;
 
-/** Cmd to open a user interface dialog window. Given the name of a
- *  subclass of Frame, this Cmd makes a new instance and calls
- *  show().  For example, used to open a list of some availible
- *  commands.
+/**
+ * Cmd to open a user interface dialog window. Given the name of a subclass of
+ * Frame, this Cmd makes a new instance and calls show(). For example, used to
+ * open a list of some availible commands.
+ * 
  * @deprecated in 0.12.3 use ShowPropertiesAction
  * @see org.tigris.gef.graph.presentation.JGraphFrame
  */
@@ -43,15 +41,15 @@ public class CmdShowProperties extends Cmd {
 
     private static final long serialVersionUID = 7571203445979788114L;
 
-  public CmdShowProperties() {
-    super("ShowProperties");
-  }
+    public CmdShowProperties() {
+        super("ShowProperties");
+    }
 
-  public void doIt() {
-    Globals.startPropertySheet();
-  }
+    public void doIt() {
+        Globals.startPropertySheet();
+    }
 
-  public void undoIt() {
-    System.out.println("undo CmdShowProperties is not supported");
-  }
+    public void undoIt() {
+        System.out.println("undo CmdShowProperties is not supported");
+    }
 } /* end class CmdShowProperties */

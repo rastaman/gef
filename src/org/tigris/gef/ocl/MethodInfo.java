@@ -33,16 +33,16 @@ import java.lang.reflect.Method;
 class MethodInfo {
     Object object;
     Method method;
-    
+
     MethodInfo(Object o, Method m) {
         object = o;
         method = m;
     }
-    
+
     Object getObject() {
         return object;
     }
-    
+
     Method getMethod() {
         return method;
     }

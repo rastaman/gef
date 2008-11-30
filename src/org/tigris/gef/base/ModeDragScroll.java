@@ -40,15 +40,17 @@ import java.awt.event.ActionListener;
 import javax.swing.JComponent;
 import javax.swing.JViewport;
 
-/** A Mode that allows the user to scroll the Editor by clicking and dragging
+/**
+ * A Mode that allows the user to scroll the Editor by clicking and dragging
  * with the middle mouse button.
  * 
  * @see Mode
  * @see Editor
  * @author Sean Chen, schen@webex.net
  */
-public class ModeDragScroll extends FigModifyingModeImpl implements ActionListener {
-    
+public class ModeDragScroll extends FigModifyingModeImpl implements
+        ActionListener {
+
     private static final long serialVersionUID = -3744868964626889125L;
 
     private Dimension _viewportExtent;
@@ -73,13 +75,14 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
 
     private boolean simpleDrag = false;
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constructors and related methods
 
     /**
      * Construct a new ModeDragScroll with the given parent.
      * 
-     * @param editor The Editor this Mode will drag
+     * @param editor
+     *                The Editor this Mode will drag
      */
     public ModeDragScroll(Editor editor) {
         super(editor);
@@ -87,8 +90,8 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
     }
 
     /**
-     * Construct a new ModeDragScroll instance. Its parent must be set
-     * before this instance can be used.
+     * Construct a new ModeDragScroll instance. Its parent must be set before
+     * this instance can be used.
      * 
      */
     public ModeDragScroll() {
@@ -110,43 +113,50 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
     }
 
     /**
-     * Grabs component to begin scrolling.  Will turn cursor into a hand.
+     * Grabs component to begin scrolling. Will turn cursor into a hand.
      * 
-     * @param me 
+     * @param me
      */
     public void mousePressed(MouseEvent me) {
         boolean isAltDown = (me.isAltDown() || me.isAltGraphDown());
-        boolean isOtherDown = me.isMetaDown() || me.isControlDown(); // SHIFT speeds up movement
+        boolean isOtherDown = me.isMetaDown() || me.isControlDown(); // SHIFT
+                                                                        // speeds
+                                                                        // up
+                                                                        // movement
         boolean button1 = ((me.getModifiers() & MouseEvent.BUTTON1_MASK) != 0);
         boolean button2 = ((me.getModifiers() & MouseEvent.BUTTON2_MASK) != 0);
 
-        // Note JDK bug: for middle mouse button isAltDown() always returns true.
+        // Note JDK bug: for middle mouse button isAltDown() always returns
+        // true.
         // (JDK 1.4 introduced ALT_DOWN_MASK to fix the bug.)
-        boolean buttonCondition =    (button1 && isAltDown && !isOtherDown)
-                                  || (button2 && !isOtherDown);
+        boolean buttonCondition = (button1 && isAltDown && !isOtherDown)
+                || (button2 && !isOtherDown);
 
         // if only mouse button1 is pressed, activate the auto scrolling
-        simpleDrag = ! buttonCondition && button1;
+        simpleDrag = !buttonCondition && button1;
 
-        if(!buttonCondition) {
-            //if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but with wrong button condition for scrolling");
+        if (!buttonCondition) {
+            // if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but
+            // with wrong button condition for scrolling");
             return;
         }
 
         // get the component ...
         _component = editor.getJComponent();
-        if(_component == null) {
-            //if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no component to scrolling");
+        if (_component == null) {
+            // if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no
+            // component to scrolling");
             return;
         }
-        
+
         // ... and the viewport
         Container parent = _component.getParent();
-        if(!(parent instanceof JViewport)) {
-            //if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no viewport to scrolling");
+        if (!(parent instanceof JViewport)) {
+            // if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but no
+            // viewport to scrolling");
             return;
         }
-        
+
         // ok, ready to scroll
         _isScrolling = true;
         me = editor.retranslateMouseEvent(me);
@@ -170,16 +180,17 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         if (simpleDrag) {
             autoTimer.stop();
             autoscroll = false;
-            //_simpleDrag = false;
+            // _simpleDrag = false;
         }
-        //if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected scrolling started and event consumed");
+        // if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected scrolling
+        // started and event consumed");
     }
 
     /**
      * If mouse is outside the component, begins autoscrolling or speeds it up.
      * Otherwise will just scroll.
      * 
-     * @param me 
+     * @param me
      */
     public void mouseDragged(MouseEvent me) {
 
@@ -190,11 +201,12 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
             int mouseY = me.getY();
             recentX = mouseX;
             recentY = mouseY;
-            // scroll if mouse is  outside the component
+            // scroll if mouse is outside the component
             JComponent jComponent = editor.getJComponent();
-            if(jComponent != null && jComponent.getParent() instanceof JViewport) {
-                boolean ok = doScroll(jComponent, mouseX,mouseY);
-                if ( ok && !autoscroll) {
+            if (jComponent != null
+                    && jComponent.getParent() instanceof JViewport) {
+                boolean ok = doScroll(jComponent, mouseX, mouseY);
+                if (ok && !autoscroll) {
                     autoscroll = true;
                     autoTimer.start();
                 } else if (!ok) {
@@ -203,18 +215,20 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
                 }
             }
 
-            //if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected and simple drag took place");
+            // if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected and
+            // simple drag took place");
         } else {
 
-            if(!_isScrolling) {
-                //if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected bu not in scrolling mode");
+            if (!_isScrolling) {
+                // if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected bu
+                // not in scrolling mode");
                 return;
             }
 
             me = editor.retranslateMouseEvent(me);
             int x = me.getX();
             int y = me.getY();
-            //System.out.println("[MOdeDragScroll] x,y: " + x +"," +y);
+            // System.out.println("[MOdeDragScroll] x,y: " + x +"," +y);
 
             int factor = (me.isShiftDown() ? 4 : 1);
 
@@ -222,10 +236,12 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
             deltaY = factor * (lastY - y);
 
             deltaX = Math.max(-viewPosition.x, deltaX);
-            deltaX = Math.min(componentSize.width - (viewPosition.x + _viewportExtent.width), deltaX);
+            deltaX = Math.min(componentSize.width
+                    - (viewPosition.x + _viewportExtent.width), deltaX);
 
             deltaY = Math.max(-viewPosition.y, deltaY);
-            deltaY = Math.min(componentSize.height - (viewPosition.y + _viewportExtent.height), deltaY);
+            deltaY = Math.min(componentSize.height
+                    - (viewPosition.y + _viewportExtent.height), deltaY);
 
             viewPosition.x += deltaX;
             viewPosition.y += deltaY;
@@ -239,33 +255,43 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
             }
             me.consume();
             editor.translateMouseEvent(me);
-            //if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected, viewport moved and event consumed");
+            // if (LOG.isDebugEnabled()) LOG.debug("MouseDragged detected,
+            // viewport moved and event consumed");
         }
     }
 
     private final boolean doScroll(JComponent jComponent, int mouseX, int mouseY) {
-        if(jComponent != null && jComponent.getParent() instanceof JViewport) {
+        if (jComponent != null && jComponent.getParent() instanceof JViewport) {
             Dimension componentSize = jComponent.getSize();
-            JViewport view = (JViewport)jComponent.getParent();
+            JViewport view = (JViewport) jComponent.getParent();
             Rectangle viewRect = view.getViewRect();
             int viewRight = viewRect.x + viewRect.width;
             int viewY = viewRect.y + viewRect.height;
             // test, if the mouse moves out of the viewport
-            // Then auto scrolling is activated but only within the component boundaries
+            // Then auto scrolling is activated but only within the component
+            // boundaries
 
-            if   ( mouseX > viewRight &&  ! (viewRight > (componentSize.width - SCROLL_INCREMENT ))) {
+            if (mouseX > viewRight
+                    && !(viewRight > (componentSize.width - SCROLL_INCREMENT))) {
                 // mouse moves right out of the view -> scroll to right
-                view.setViewPosition(new Point(viewRect.x + SCROLL_INCREMENT, viewRect.y));
+                view.setViewPosition(new Point(viewRect.x + SCROLL_INCREMENT,
+                        viewRect.y));
                 return true;
-            } else if ( mouseX < viewRect.x && ! (viewRect.x -  SCROLL_INCREMENT < 0)) {
+            } else if (mouseX < viewRect.x
+                    && !(viewRect.x - SCROLL_INCREMENT < 0)) {
                 // mouse moves left out of the viewport -> scroll to left
-                view.setViewPosition(new Point(viewRect.x - SCROLL_INCREMENT, viewRect.y));
+                view.setViewPosition(new Point(viewRect.x - SCROLL_INCREMENT,
+                        viewRect.y));
                 return true;
-            } else if (mouseY > viewY &&  ! (viewY > (componentSize.height -SCROLL_INCREMENT))) {
-                view.setViewPosition(new Point(viewRect.x,  viewRect.y + SCROLL_INCREMENT));
+            } else if (mouseY > viewY
+                    && !(viewY > (componentSize.height - SCROLL_INCREMENT))) {
+                view.setViewPosition(new Point(viewRect.x, viewRect.y
+                        + SCROLL_INCREMENT));
                 return true;
-            } else if (mouseY < viewRect.y && ! (viewRect.y -SCROLL_INCREMENT < 0)) {
-                view.setViewPosition(new Point(viewRect.x,  viewRect.y - SCROLL_INCREMENT));
+            } else if (mouseY < viewRect.y
+                    && !(viewRect.y - SCROLL_INCREMENT < 0)) {
+                view.setViewPosition(new Point(viewRect.x, viewRect.y
+                        - SCROLL_INCREMENT));
                 return true;
             }
         }
@@ -274,18 +300,20 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
 
     /**
      * Stops scrolling, clears all references
-     * @param me 
+     * 
+     * @param me
      */
     public void mouseReleased(MouseEvent me) {
         // stop autoscrolling
-        if(autoscroll) {
+        if (autoscroll) {
             autoTimer.stop();
             autoscroll = false;
             simpleDrag = false;
         }
 
-        if(!_isScrolling) {
-            //if (LOG.isDebugEnabled()) LOG.debug("MouseReleased detected but not in scrolling mode");
+        if (!_isScrolling) {
+            // if (LOG.isDebugEnabled()) LOG.debug("MouseReleased detected but
+            // not in scrolling mode");
             return;
         }
         _isScrolling = false;
@@ -296,16 +324,20 @@ public class ModeDragScroll extends FigModifyingModeImpl implements ActionListen
         _viewport = null;
         _oldCursor = null;
         me.consume();
-        //if (LOG.isDebugEnabled()) LOG.debug("MouseReleased detected so ending scroll and event consumed");
+        // if (LOG.isDebugEnabled()) LOG.debug("MouseReleased detected so ending
+        // scroll and event consumed");
     }
 
     /**
      * Interface ActionListener: Simulate mouse dragging
+     * 
      * @param e
      */
-     public void actionPerformed(ActionEvent e) {
-         MouseEvent me = new MouseEvent(getEditor().getJComponent(), Event.MOUSE_DRAG, 0, InputEvent.BUTTON1_MASK, recentX, recentY, 0, false);
-         getEditor().mouseDragged(me);
-     }
-     
+    public void actionPerformed(ActionEvent e) {
+        MouseEvent me = new MouseEvent(getEditor().getJComponent(),
+                Event.MOUSE_DRAG, 0, InputEvent.BUTTON1_MASK, recentX, recentY,
+                0, false);
+        getEditor().mouseDragged(me);
+    }
+
 }

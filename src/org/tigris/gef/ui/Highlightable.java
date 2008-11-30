@@ -21,17 +21,16 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 package org.tigris.gef.ui;
 
 import java.beans.*;
 
 public interface Highlightable {
-  void setHighlight(boolean b);
-  boolean getHighlight();
+    void setHighlight(boolean b);
 
-  void addPropertyChangeListener(PropertyChangeListener listen);
-  void removePropertyChangeListener(PropertyChangeListener listen);
+    boolean getHighlight();
+
+    void addPropertyChangeListener(PropertyChangeListener listen);
+
+    void removePropertyChangeListener(PropertyChangeListener listen);
 } /* end interface Highlightable */

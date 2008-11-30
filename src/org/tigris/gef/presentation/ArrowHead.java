@@ -39,7 +39,7 @@ import java.awt.Stroke;
  */
 
 public abstract class ArrowHead extends Decoration {
-    
+
     public ArrowHead() {
         super();
     }
@@ -48,38 +48,39 @@ public abstract class ArrowHead extends Decoration {
         super(line, fill);
     }
 
-    
     public void paintAtHead(Object g, Fig path) {
-		if (g instanceof Graphics2D) {
-	        Graphics2D g2 = (Graphics2D) g;
-	        Stroke oldStroke = g2.getStroke();
-	        g2.setStroke(new BasicStroke(path.getLineWidth()));
-	        int[] xs = path.getXs();
-	        int[] ys = path.getYs();
-	        paint(g2, new Point(xs[1], ys[1]), new Point(xs[0], ys[0]));
-	        g2.setStroke(oldStroke);
-		} else {
-			int[] xs = path.getXs();
-			int[] ys = path.getYs();
-			paint(g, new Point(xs[1], ys[1]), new Point(xs[0], ys[0]));
-		}
+        if (g instanceof Graphics2D) {
+            Graphics2D g2 = (Graphics2D) g;
+            Stroke oldStroke = g2.getStroke();
+            g2.setStroke(new BasicStroke(path.getLineWidth()));
+            int[] xs = path.getXs();
+            int[] ys = path.getYs();
+            paint(g2, new Point(xs[1], ys[1]), new Point(xs[0], ys[0]));
+            g2.setStroke(oldStroke);
+        } else {
+            int[] xs = path.getXs();
+            int[] ys = path.getYs();
+            paint(g, new Point(xs[1], ys[1]), new Point(xs[0], ys[0]));
+        }
     }
 
     public void paintAtTail(Object g, Fig path) {
         if (g instanceof Graphics2D) {
-			Graphics2D g2 = (Graphics2D) g;
-			Stroke oldStroke = g2.getStroke();
-			g2.setStroke(new BasicStroke(path.getLineWidth()));
-			int[] xs = path.getXs();
-			int[] ys = path.getYs();
-			int pointCount = path.getNumPoints();
-			paint(g2, new Point(xs[pointCount-2], ys[pointCount-2]), new Point(xs[pointCount-1], ys[pointCount-1]));
-			g2.setStroke(oldStroke);
+            Graphics2D g2 = (Graphics2D) g;
+            Stroke oldStroke = g2.getStroke();
+            g2.setStroke(new BasicStroke(path.getLineWidth()));
+            int[] xs = path.getXs();
+            int[] ys = path.getYs();
+            int pointCount = path.getNumPoints();
+            paint(g2, new Point(xs[pointCount - 2], ys[pointCount - 2]),
+                    new Point(xs[pointCount - 1], ys[pointCount - 1]));
+            g2.setStroke(oldStroke);
         } else {
-			int pointCount = path.getNumPoints();
-			int[] xs = path.getXs();
-			int[] ys = path.getYs();
-            paint(g, new Point(xs[pointCount-2], ys[pointCount-2]), new Point(xs[pointCount-1], ys[pointCount-1]));
+            int pointCount = path.getNumPoints();
+            int[] xs = path.getXs();
+            int[] ys = path.getYs();
+            paint(g, new Point(xs[pointCount - 2], ys[pointCount - 2]),
+                    new Point(xs[pointCount - 1], ys[pointCount - 1]));
         }
     }
 } /* end class ArrowHead */

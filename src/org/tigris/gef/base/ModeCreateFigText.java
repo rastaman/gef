@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: ModeCreateFigText.java
 // Classes: ModeCreateFigText
 // Original Author: ics125 spring 1996
@@ -34,29 +32,31 @@ import java.awt.event.MouseEvent;
 
 import org.tigris.gef.presentation.*;
 
-/** A Mode to interpert user input while creating a FigText. All of
- *  the actual event handling is inherited from ModeCreate. This class
- *  just implements the differences needed to make it specific to
- *  text.  */
+/**
+ * A Mode to interpert user input while creating a FigText. All of the actual
+ * event handling is inherited from ModeCreate. This class just implements the
+ * differences needed to make it specific to text.
+ */
 
 public class ModeCreateFigText extends ModeCreate {
 
     private static final long serialVersionUID = 3394093467647491098L;
 
-  public ModeCreateFigText() {
-      super();
-      _defaultWidth = 15;
-      _defaultHeight = 15;
-  }
-  
-  public String instructions() {
-    return "Drag to define a text rectangle, then type";
-  }
+    public ModeCreateFigText() {
+        super();
+        _defaultWidth = 15;
+        _defaultHeight = 15;
+    }
 
-  /** Create a new FigText instance based on the given mouse down
-   *  event and the state of the parent Editor. */
-  public Fig createNewItem(MouseEvent e, int snapX, int snapY) {
-    return new FigText(snapX, snapY, 0, 0);
-  }
+    public String instructions() {
+        return "Drag to define a text rectangle, then type";
+    }
+
+    /**
+     * Create a new FigText instance based on the given mouse down event and the
+     * state of the parent Editor.
+     */
+    public Fig createNewItem(MouseEvent e, int snapX, int snapY) {
+        return new FigText(snapX, snapY, 0, 0);
+    }
 } /* end class ModeCreateFigText */
-

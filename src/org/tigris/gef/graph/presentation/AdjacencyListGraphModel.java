@@ -21,152 +21,168 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-
 package org.tigris.gef.graph.presentation;
 
 import java.util.*;
 
 import org.tigris.gef.graph.*;
 
-/** This class is an example of an alternative way to implement
- * MutableGraphModel.  Needs-more-work: this code has not been used
- * or tested.
- *
- * @see DefaultGraphModel */
+/**
+ * This class is an example of an alternative way to implement
+ * MutableGraphModel. Needs-more-work: this code has not been used or tested.
+ * 
+ * @see DefaultGraphModel
+ */
 
 public abstract class AdjacencyListGraphModel extends MutableGraphSupport
-implements java.io.Serializable {
+        implements java.io.Serializable {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    // //////////////////////////////////////////////////////////////
+    // constants
 
-  public static String UNLABELED = "Unlabeled";
+    public static String UNLABELED = "Unlabeled";
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    // //////////////////////////////////////////////////////////////
+    // instance variables
 
-  protected Vector _nodes = new Vector();
-  protected Vector _edges = new Vector();
+    protected Vector _nodes = new Vector();
+    protected Vector _edges = new Vector();
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    // //////////////////////////////////////////////////////////////
+    // constructors
 
-  public AdjacencyListGraphModel() { }
-
-
-  ////////////////////////////////////////////////////////////////
-  // invariants
-
-  public boolean OK() {
-    if (_nodes == null) return false;
-    if (_edges == null) return false;
-    // all edges must start and end on some port on a node in this graph
-    Enumeration edgeNum = _edges.elements();
-    while (edgeNum.hasMoreElements()) {
-      Object[] e = (Object[]) edgeNum.nextElement();
-      if (!containsPort(e[0]) || !containsPort(e[1])) return false;
+    public AdjacencyListGraphModel() {
     }
-    return true;
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // GraphModel implementation
+    // //////////////////////////////////////////////////////////////
+    // invariants
 
-  public List getNodes() { return _nodes; }
-  public List getEdges() { return _edges; }
-
-  public abstract List getPorts(Object nodeOrEdge);
-  public abstract Object getOwner(Object port);
-
-  public Object getSourcePort(Object edge) {
-    Object[] labeledEgde = (Object[]) edge;
-    return labeledEgde[0];
-  }
-
-  public Object getDestPort(Object edge) {
-    Object[] labeledEgde = (Object[]) edge;
-    return labeledEgde[1];
-  }
-
-  public List getInEdges(Object port) {
-    Vector res = new Vector();
-    Enumeration edgeEnum = _edges.elements();
-    while (edgeEnum.hasMoreElements()) {
-      Object[] e = (Object[]) edgeEnum.nextElement();
-      if (port == e[1]) res.addElement(e);
+    public boolean OK() {
+        if (_nodes == null)
+            return false;
+        if (_edges == null)
+            return false;
+        // all edges must start and end on some port on a node in this graph
+        Enumeration edgeNum = _edges.elements();
+        while (edgeNum.hasMoreElements()) {
+            Object[] e = (Object[]) edgeNum.nextElement();
+            if (!containsPort(e[0]) || !containsPort(e[1]))
+                return false;
+        }
+        return true;
     }
-    return res;
-  }
-  
-  public List getOutEdges(Object port) {
-    Vector res = new Vector();
-    Enumeration edgeEnum = _edges.elements();
-    while (edgeEnum.hasMoreElements()) {
-      Object[] e = (Object[]) edgeEnum.nextElement();
-      if (port == e[0]) res.addElement(e);
+
+    // //////////////////////////////////////////////////////////////
+    // GraphModel implementation
+
+    public List getNodes() {
+        return _nodes;
     }
-    return res;
-  }
-  
-  ////////////////////////////////////////////////////////////////
-  // MutableGraphModel implementation
 
-  // needs-more-work: notifications
-  
-  public boolean canAddNode(Object node) { return true; }
-
-  public boolean canAddEdge(Object edge) {
-    return (edge instanceof Object[]) && ((Object[])edge).length == 3;
-  }
-
-  public void addNode(Object node) { _nodes.addElement(node); }
-
-  public void addEdge(Object edge) {
-    if (canAddEdge(edge)) _edges.addElement(edge);
-  }
-
-  public void removeNode(Object node) {
-    _nodes.removeElement(node);
-    // needs-more-work: remove associated edges
-  }
-  
-  public void removeEdge(Object edge) { _edges.removeElement(edge); }
-
-  public boolean canConnect(Object srcNode, Object destNode) {
-    return true;
-  }
-
-  public Object connect(Object srcPort, Object destPort) {
-    return addLabeledEdge(srcPort, destPort, UNLABELED);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // labeled edges
-
-  public Object getEdgeLabel(Object edge) {
-    Object[] labeledEgde = (Object[]) edge;
-    return labeledEgde[2];
-  }
-
-  public Object addLabeledEdge(Object srcPort, Object destPort, Object label) {
-    Object[] e = new Object[3];
-    e[0] = srcPort;
-    e[1] = destPort;
-    e[2] = label;
-    addEdge(e);
-    return e;
-  }
-
-  public Vector getEdgesLabeled(Object label) {
-    Vector res = new Vector();
-    Enumeration edgeEnum = _edges.elements();
-    while (edgeEnum.hasMoreElements()) {
-      Object[] e = (Object[]) edgeEnum.nextElement();
-      if (label == getEdgeLabel(e)) res.addElement(e);
+    public List getEdges() {
+        return _edges;
     }
-    return res;
-  }
+
+    public abstract List getPorts(Object nodeOrEdge);
+
+    public abstract Object getOwner(Object port);
+
+    public Object getSourcePort(Object edge) {
+        Object[] labeledEgde = (Object[]) edge;
+        return labeledEgde[0];
+    }
+
+    public Object getDestPort(Object edge) {
+        Object[] labeledEgde = (Object[]) edge;
+        return labeledEgde[1];
+    }
+
+    public List getInEdges(Object port) {
+        Vector res = new Vector();
+        Enumeration edgeEnum = _edges.elements();
+        while (edgeEnum.hasMoreElements()) {
+            Object[] e = (Object[]) edgeEnum.nextElement();
+            if (port == e[1])
+                res.addElement(e);
+        }
+        return res;
+    }
+
+    public List getOutEdges(Object port) {
+        Vector res = new Vector();
+        Enumeration edgeEnum = _edges.elements();
+        while (edgeEnum.hasMoreElements()) {
+            Object[] e = (Object[]) edgeEnum.nextElement();
+            if (port == e[0])
+                res.addElement(e);
+        }
+        return res;
+    }
+
+    // //////////////////////////////////////////////////////////////
+    // MutableGraphModel implementation
+
+    // needs-more-work: notifications
+
+    public boolean canAddNode(Object node) {
+        return true;
+    }
+
+    public boolean canAddEdge(Object edge) {
+        return (edge instanceof Object[]) && ((Object[]) edge).length == 3;
+    }
+
+    public void addNode(Object node) {
+        _nodes.addElement(node);
+    }
+
+    public void addEdge(Object edge) {
+        if (canAddEdge(edge))
+            _edges.addElement(edge);
+    }
+
+    public void removeNode(Object node) {
+        _nodes.removeElement(node);
+        // needs-more-work: remove associated edges
+    }
+
+    public void removeEdge(Object edge) {
+        _edges.removeElement(edge);
+    }
+
+    public boolean canConnect(Object srcNode, Object destNode) {
+        return true;
+    }
+
+    public Object connect(Object srcPort, Object destPort) {
+        return addLabeledEdge(srcPort, destPort, UNLABELED);
+    }
+
+    // //////////////////////////////////////////////////////////////
+    // labeled edges
+
+    public Object getEdgeLabel(Object edge) {
+        Object[] labeledEgde = (Object[]) edge;
+        return labeledEgde[2];
+    }
+
+    public Object addLabeledEdge(Object srcPort, Object destPort, Object label) {
+        Object[] e = new Object[3];
+        e[0] = srcPort;
+        e[1] = destPort;
+        e[2] = label;
+        addEdge(e);
+        return e;
+    }
+
+    public Vector getEdgesLabeled(Object label) {
+        Vector res = new Vector();
+        Enumeration edgeEnum = _edges.elements();
+        while (edgeEnum.hasMoreElements()) {
+            Object[] e = (Object[]) edgeEnum.nextElement();
+            if (label == getEdgeLabel(e))
+                res.addElement(e);
+        }
+        return res;
+    }
 } /* end class AdjacencyListGraphModel */

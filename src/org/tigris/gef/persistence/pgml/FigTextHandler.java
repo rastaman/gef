@@ -36,9 +36,11 @@ public class FigTextHandler extends BaseHandler {
     private FigText text;
 
     /**
-     * @param parser The PGMLStackParser for the diagram that contains this
-     * FigText object
-     * @param theText The object corresponding to the element being parsed
+     * @param parser
+     *                The PGMLStackParser for the diagram that contains this
+     *                FigText object
+     * @param theText
+     *                The object corresponding to the element being parsed
      */
     public FigTextHandler(PGMLStackParser parser, FigText theText) {
         super(parser);
@@ -47,7 +49,9 @@ public class FigTextHandler extends BaseHandler {
 
     /**
      * The FigText text is set to the character contents of the element.
-     * @param contents The characters within the element.
+     * 
+     * @param contents
+     *                The characters within the element.
      */
     public void gotElement(String contents) {
         text.setText(contents);

@@ -33,8 +33,10 @@ public class NearAction extends UndoableAction {
     /**
      * Creates a new NearAction
      * 
-     * @param name The name of the action
-     * @param direction The direction of the nudge
+     * @param name
+     *                The name of the action
+     * @param direction
+     *                The direction of the nudge
      */
     public NearAction(String name, int direction) {
         this(name, direction, 1, false);
@@ -43,9 +45,12 @@ public class NearAction extends UndoableAction {
     /**
      * Creates a new NearAction
      * 
-     * @param name The name of the action
-     * @param direction The direction of the nudge
-     * @param magnitude The magnitude of the nudge
+     * @param name
+     *                The name of the action
+     * @param direction
+     *                The direction of the nudge
+     * @param magnitude
+     *                The magnitude of the nudge
      */
     public NearAction(String name, int direction, int magnitude) {
         this(name, direction, magnitude, false);
@@ -54,9 +59,12 @@ public class NearAction extends UndoableAction {
     /**
      * Creates a new NearAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param direction The direction of the nudge
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param direction
+     *                The direction of the nudge
      */
     public NearAction(String name, Icon icon, int direction) {
         this(name, icon, direction, 1, false);
@@ -65,10 +73,14 @@ public class NearAction extends UndoableAction {
     /**
      * Creates a new NearAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param direction The direction of the nudge
-     * @param magnitude The magnitude of the nudge
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param direction
+     *                The direction of the nudge
+     * @param magnitude
+     *                The magnitude of the nudge
      */
     public NearAction(String name, Icon icon, int direction, int magnitude) {
         this(name, icon, direction, magnitude, false);
@@ -77,9 +89,12 @@ public class NearAction extends UndoableAction {
     /**
      * Creates a new NearAction
      * 
-     * @param name The name of the action
-     * @param direction The direction of the nudge
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param direction
+     *                The direction of the nudge
+     * @param localize
+     *                Whether to localize the name or not
      */
     public NearAction(String name, int direction, boolean localize) {
         this(name, direction, 1, localize);
@@ -88,10 +103,14 @@ public class NearAction extends UndoableAction {
     /**
      * Creates a new NearAction
      * 
-     * @param name The name of the action
-     * @param direction The direction of the nudge
-     * @param magnitude The magnitude of the nudge
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param direction
+     *                The direction of the nudge
+     * @param magnitude
+     *                The magnitude of the nudge
+     * @param localize
+     *                Whether to localize the name or not
      */
     public NearAction(String name, int direction, int magnitude,
             boolean localize) {
@@ -103,10 +122,14 @@ public class NearAction extends UndoableAction {
     /**
      * Creates a new NearAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param direction The direction of the nudge
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param direction
+     *                The direction of the nudge
+     * @param localize
+     *                Whether to localize the name or not
      */
     public NearAction(String name, Icon icon, int direction, boolean localize) {
         this(name, icon, direction, 1, localize);
@@ -115,11 +138,16 @@ public class NearAction extends UndoableAction {
     /**
      * Creates a new NearAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param direction The direction of the nudge
-     * @param magnitude The magnitude of the nudge
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param direction
+     *                The direction of the nudge
+     * @param magnitude
+     *                The magnitude of the nudge
+     * @param localize
+     *                Whether to localize the name or not
      */
     public NearAction(String name, Icon icon, int direction, int magnitude,
             boolean localize) {

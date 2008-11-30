@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdUseResize.java
 // Classes: CmdUseResize
 // Original Author: jrobbins@ics.uci.edu
@@ -35,12 +32,12 @@ import java.util.*;
 
 import org.tigris.gef.presentation.*;
 
-/** Set the current editor to use a SelectionResize on its current
- *  selections.
- *
- *  @see Editor
- *  @see Selection
- *  @see SelectionResize
+/**
+ * Set the current editor to use a SelectionResize on its current selections.
+ * 
+ * @see Editor
+ * @see Selection
+ * @see SelectionResize
  */
 
 public class CmdUseResize extends Cmd {
@@ -51,25 +48,26 @@ public class CmdUseResize extends Cmd {
         super("UseResizeHandles");
     }
 
-  public void doIt() {
-    Editor ce = Globals.curEditor();
-    SelectionManager sm = ce.getSelectionManager();
-    Enumeration sels = ((Vector)sm.selections().clone()).elements();
-    while (sels.hasMoreElements()) {
-      Selection s = (Selection) sels.nextElement();
-      if (s instanceof Selection && !(s instanceof SelectionResize)) {
-	Fig f = s.getContent();
-	if (f.isReshapable()) {
-	  ce.damaged(s);
-	  sm.removeSelection(s);
-	  SelectionResize sr = new SelectionResize(f);
-	  sm.addSelection(sr);
-	  ce.damaged(sr);
-	}
-      }
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        SelectionManager sm = ce.getSelectionManager();
+        Enumeration sels = ((Vector) sm.selections().clone()).elements();
+        while (sels.hasMoreElements()) {
+            Selection s = (Selection) sels.nextElement();
+            if (s instanceof Selection && !(s instanceof SelectionResize)) {
+                Fig f = s.getContent();
+                if (f.isReshapable()) {
+                    ce.damaged(s);
+                    sm.removeSelection(s);
+                    SelectionResize sr = new SelectionResize(f);
+                    sm.addSelection(sr);
+                    ce.damaged(sr);
+                }
+            }
+        }
     }
-  }
 
-  public void undoIt() { System.out.println("not done yet"); }
+    public void undoIt() {
+        System.out.println("not done yet");
+    }
 } /* end class CmdUseResize */
-

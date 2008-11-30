@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdSelectNear.java
 // Classes: CmdSelectNear
 // Original Author: jrobbins@ics.uci.edu
@@ -31,28 +28,29 @@
 
 package org.tigris.gef.base;
 
-
-/** Cmd to SelectNear Figs by a small distance.  This is useful when you
- *  want to get diagrams to look just right and you are not to steady
- *  with the mouse.  Also allows user to keep hands on keyboard.
- *  @deprecated in 0.12.3 use SelectNearAction
+/**
+ * Cmd to SelectNear Figs by a small distance. This is useful when you want to
+ * get diagrams to look just right and you are not to steady with the mouse.
+ * Also allows user to keep hands on keyboard.
+ * 
+ * @deprecated in 0.12.3 use SelectNearAction
  */
 
 public class CmdSelectNear extends Cmd {
-    
+
     private static final long serialVersionUID = 2806110325379938459L;
-    
+
     public static final int LEFT = 1;
     public static final int RIGHT = 2;
     public static final int UP = 3;
     public static final int DOWN = 4;
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // instance variables
     private int _direction;
     private int _magnitude;
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constructor
 
     public CmdSelectNear(int dir) {
@@ -60,53 +58,54 @@ public class CmdSelectNear extends Cmd {
     }
 
     public CmdSelectNear(int dir, int mag) {
-        super("SelectNear" + wordFor(dir)); //needs-more-work: direction
+        super("SelectNear" + wordFor(dir)); // needs-more-work: direction
         _direction = dir;
         _magnitude = mag;
     }
 
     protected static String wordFor(int d) {
-        switch(d) {
-            case LEFT:
-                return "Left";
-            case RIGHT:
-                return "Right";
-            case UP:
-                return "Up";
-            case DOWN:
-                return "Down";
+        switch (d) {
+        case LEFT:
+            return "Left";
+        case RIGHT:
+            return "Right";
+        case UP:
+            return "Up";
+        case DOWN:
+            return "Down";
         }
         return "";
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // Cmd API
 
-    /** Move the selected items a few pixels in the given
-     *  direction. Note that the sign convention is the opposite of
-     *  CmdScroll. */
+    /**
+     * Move the selected items a few pixels in the given direction. Note that
+     * the sign convention is the opposite of CmdScroll.
+     */
     public void doIt() {
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
-        if(sm.getLocked()) {
+        if (sm.getLocked()) {
             Globals.showStatus("Cannot Modify Locked Objects");
             return;
         }
 
         int dx = 0, dy = 0;
-        switch(_direction) {
-            case LEFT:
-                dx = 0 - _magnitude;
-                break;
-            case RIGHT:
-                dx = _magnitude;
-                break;
-            case UP:
-                dy = 0 - _magnitude;
-                break;
-            case DOWN:
-                dy = _magnitude;
-                break;
+        switch (_direction) {
+        case LEFT:
+            dx = 0 - _magnitude;
+            break;
+        case RIGHT:
+            dx = _magnitude;
+            break;
+        case UP:
+            dy = 0 - _magnitude;
+            break;
+        case DOWN:
+            dy = _magnitude;
+            break;
         }
         // Should I move it so that it aligns with the next grid?
         sm.translate(dx, dy);
@@ -118,4 +117,3 @@ public class CmdSelectNear extends Cmd {
     }
 
 } /* end class CmdSelectNear */
-

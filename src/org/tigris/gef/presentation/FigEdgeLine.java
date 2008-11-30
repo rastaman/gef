@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: FigEdgeLine.java
 // Classes: FigEdgeLine
 // Original Author: jrobbins@ics.uci.edu
@@ -34,28 +32,32 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
-/** An FigEdge that shows a straight line from the source port
- *  to the destination port. */
+/**
+ * An FigEdge that shows a straight line from the source port to the destination
+ * port.
+ */
 
 public class FigEdgeLine extends FigEdge {
 
     private static final long serialVersionUID = 7010064753682104591L;
 
     /**
-     * Instanciate a new FigLine as the contained Fig. By default it is
-     * black and the FigEdge has no ArrowHeads.
+     * Instanciate a new FigLine as the contained Fig. By default it is black
+     * and the FigEdge has no ArrowHeads.
      */
-    protected Fig makeEdgeFig() { return new FigLine(0, 0, 0, 0, Color.black); }
+    protected Fig makeEdgeFig() {
+        return new FigLine(0, 0, 0, 0, Color.black);
+    }
 
     /** Compute the shape of the line that presents an Edge. */
     public void computeRouteImpl() {
         Fig sourcePortFig = getSourcePortFig();
-  	    Fig destPortFig = getDestPortFig();
+        Fig destPortFig = getDestPortFig();
         Point srcPt = sourcePortFig.getCenter();
         Point dstPt = destPortFig.getCenter();
 
         if (_useNearest) {
-            //? two iterations of refinement, maybe should be a for-loop
+            // ? two iterations of refinement, maybe should be a for-loop
             srcPt = sourcePortFig.connectionPoint(dstPt);
             dstPt = destPortFig.connectionPoint(srcPt);
             srcPt = sourcePortFig.connectionPoint(dstPt);
@@ -68,11 +70,10 @@ public class FigEdgeLine extends FigEdge {
 
     public void paint(Graphics graphicContext) {
         super.paint(graphicContext);
-        Graphics g = (Graphics)graphicContext;
+        Graphics g = (Graphics) graphicContext;
         if (_highlight) {
             FigLine f = (FigLine) getFig();
             paintHighlightLine(g, f.getX1(), f.getY1(), f.getX2(), f.getY2());
         }
     }
 } /* end class FigEdgeLine */
-

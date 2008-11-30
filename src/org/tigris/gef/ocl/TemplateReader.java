@@ -39,20 +39,21 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
 public class TemplateReader extends DefaultHandler {
-    
+
     private final static TemplateReader INSTANCE = new TemplateReader();
 
     private static final Log LOG = LogFactory.getLog(TemplateReader.class);
-  
-    private Hashtable _templates;  /* Class -> Vector of TemplateRecord */
+
+    private Hashtable _templates; /* Class -> Vector of TemplateRecord */
     private Vector _macros;
 
     private TemplateRecord _currentTemplate = null;
     private MacroRecord _currentMacro = null;
-    
+
     private String filename;
 
-    protected TemplateReader() { }
+    protected TemplateReader() {
+    }
 
     public static TemplateReader getInstance() {
         return INSTANCE;
@@ -66,12 +67,12 @@ public class TemplateReader extends DefaultHandler {
                 in = TemplateReader.class.getResourceAsStream(filename);
             } catch (Exception ex) {
                 String relativePath = filename;
-                if(relativePath.startsWith("/")) {
+                if (relativePath.startsWith("/")) {
                     relativePath = relativePath.substring(1);
                 }
                 in = new FileInputStream(relativePath);
             }
-    
+
             _templates = new Hashtable();
             _macros = new Vector();
             SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -79,8 +80,9 @@ public class TemplateReader extends DefaultHandler {
             factory.setValidating(false);
             SAXParser pc = factory.newSAXParser();
             InputSource source = new InputSource(in);
-            source.setSystemId(new java.net.URL("file",null,filename).toString());
-            pc.parse(source,this);
+            source.setSystemId(new java.net.URL("file", null, filename)
+                    .toString());
+            pc.parse(source, this);
         } catch (Exception ex) {
             throw new ExpansionException(ex);
         }
@@ -106,57 +108,55 @@ public class TemplateReader extends DefaultHandler {
     public void processingInstruction(String target, String data) {
     }
 
-    public void startElement(String uri,
-                String localname, 
-                String elementName, 
-                Attributes atts) throws SAXException {
+    public void startElement(String uri, String localname, String elementName,
+            Attributes atts) throws SAXException {
         if (elementName.equals("template")) {
             String guard = atts.getValue("guard");
             String className = atts.getValue("class");
-            LOG.debug("Start template guard=\"" + guard + "\" class=\"" + className + "\"");
+            LOG.debug("Start template guard=\"" + guard + "\" class=\""
+                    + className + "\"");
             java.lang.Class classObj = null;
             Object objToStack = null;
             try {
                 classObj = Class.forName(className);
             } catch (ClassNotFoundException e) {
-                throw new SAXException("Can't find the class " + className + 
-                        " refered to in the file " + filename, e);
+                throw new SAXException("Can't find the class " + className
+                        + " refered to in the file " + filename, e);
             }
 
-            _currentTemplate = new TemplateRecord(classObj,guard,null);
+            _currentTemplate = new TemplateRecord(classObj, guard, null);
             _currentMacro = null;
 
         } else if (elementName.equals("macro")) {
             String name = atts.getValue("name");
             _currentMacro = new MacroRecord(name, null);
             _currentTemplate = null;
-        }
-        else {
+        } else {
             _currentMacro = null;
             _currentTemplate = null;
-            if(!elementName.equals("TemplateSet")) {
+            if (!elementName.equals("TemplateSet")) {
                 throw new SAXException("unknown tag: " + elementName);
             }
         }
     }
 
     public void characters(char[] ch, int start, int length) {
-        if(_currentMacro != null) {
-            _currentMacro.characters(ch,start,length);
+        if (_currentMacro != null) {
+            _currentMacro.characters(ch, start, length);
         } else {
-            if(_currentTemplate != null) {
-                _currentTemplate.characters(ch,start,length);
+            if (_currentTemplate != null) {
+                _currentTemplate.characters(ch, start, length);
             }
         }
     }
-    
+
     /**
-     * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+     * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
+     *      java.lang.String, java.lang.String)
      */
-    public void endElement(String uri,
-                String localname, 
-                String elementName) throws SAXException {
-        if(_currentTemplate != null && elementName.equals("template")) {
+    public void endElement(String uri, String localname, String elementName)
+            throws SAXException {
+        if (_currentTemplate != null && elementName.equals("template")) {
             String body = _currentTemplate.getBody().trim();
             body = expandMacros(body);
             _currentTemplate.setBody(body);
@@ -168,7 +168,7 @@ public class TemplateReader extends DefaultHandler {
             existing.addElement(_currentTemplate);
             _templates.put(classObj, existing);
             _currentTemplate = null;
-        } else if(_currentMacro != null && elementName.equals("macro")) {
+        } else if (_currentMacro != null && elementName.equals("macro")) {
             String body = _currentMacro.getBody().trim();
             body = expandMacros(body);
             _currentMacro.setBody(body);
@@ -176,11 +176,11 @@ public class TemplateReader extends DefaultHandler {
             int newNameLength = _currentMacro.getName().length();
             int size = _macros.size();
             for (int i = 0; i < size && !inserted; i++) {
-            String n = ((MacroRecord)_macros.elementAt(i)).name;
-            if (n.length() < newNameLength) {
-                _macros.insertElementAt(_currentMacro, i);
-                inserted = true;
-            }
+                String n = ((MacroRecord) _macros.elementAt(i)).name;
+                if (n.length() < newNameLength) {
+                    _macros.insertElementAt(_currentMacro, i);
+                    inserted = true;
+                }
             }
             if (!inserted) {
                 _macros.addElement(_currentMacro);
@@ -188,9 +188,9 @@ public class TemplateReader extends DefaultHandler {
             _currentMacro = null;
         }
     }
-    
+
     public String expandMacros(String body) {
-        StringBuffer resultBuffer = new StringBuffer(body.length()*2);
+        StringBuffer resultBuffer = new StringBuffer(body.length() * 2);
         StringTokenizer st = new StringTokenizer(body, "\n\r");
         while (st.hasMoreElements()) {
             String line = st.nextToken();
@@ -204,22 +204,23 @@ public class TemplateReader extends DefaultHandler {
     /** each line can have at most one macro */
     public String expandMacrosOnOneLine(String body) {
         int numMacros = _macros.size();
-        for (int i=0; i < numMacros; i++) {
-            String k = ((MacroRecord)_macros.elementAt(i)).name;
+        for (int i = 0; i < numMacros; i++) {
+            String k = ((MacroRecord) _macros.elementAt(i)).name;
             int findIndex = body.indexOf(k);
             if (findIndex != -1) {
-                String mac = ((MacroRecord)_macros.elementAt(i)).body;
+                String mac = ((MacroRecord) _macros.elementAt(i)).body;
                 StringBuffer resultBuffer;
                 String prefix = body.substring(0, findIndex);
                 String suffix = body.substring(findIndex + k.length());
-                resultBuffer = new StringBuffer(mac.length() +
-                				(prefix.length() + suffix.length())*10);
+                resultBuffer = new StringBuffer(mac.length()
+                        + (prefix.length() + suffix.length()) * 10);
                 StringTokenizer st = new StringTokenizer(mac, "\n\r");
                 while (st.hasMoreElements()) {
-                  resultBuffer.append(prefix);
-                  resultBuffer.append(st.nextToken());
-                  resultBuffer.append(suffix);
-                  if (st.hasMoreElements()) resultBuffer.append("\n");
+                    resultBuffer.append(prefix);
+                    resultBuffer.append(st.nextToken());
+                    resultBuffer.append(suffix);
+                    if (st.hasMoreElements())
+                        resultBuffer.append("\n");
                 }
                 return resultBuffer.toString();
             }
@@ -228,12 +229,11 @@ public class TemplateReader extends DefaultHandler {
     }
 } /* end class TemplateReader */
 
-
 class MacroRecord {
     String name;
     String body;
     private StringBuffer _buf = null;
-    
+
     MacroRecord(String n, String b) {
         name = n;
         body = b;
@@ -244,7 +244,7 @@ class MacroRecord {
     }
 
     public String getBody() {
-        if(_buf != null) {
+        if (_buf != null) {
             body = _buf.toString();
         }
         return body;
@@ -256,14 +256,12 @@ class MacroRecord {
     }
 
     public void characters(char[] ch, int start, int length) {
-        if(_buf == null) {
+        if (_buf == null) {
             _buf = new StringBuffer();
-            if(body != null) {
+            if (body != null) {
                 _buf.append(body);
             }
         }
-        _buf.append(ch,start,length);
+        _buf.append(ch, start, length);
     }
 } /* end class MacroRecord */
-
-

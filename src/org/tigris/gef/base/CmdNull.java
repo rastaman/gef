@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdNull.java
 // Classes: CmdNull
 // Original Author: jrobbins@ics.uci.edu
@@ -32,11 +29,11 @@
 package org.tigris.gef.base;
 
 /**
- * Cmd to do nothing.  This might make some other code simpler.  For
- * example, keybinding query funcitons can return a "real" Cmd if
- * there is one bound to the given key, and an instance of CmdNull if
- * there is not.  The alternative would be to return null and force
- * the caller to check for null.
+ * Cmd to do nothing. This might make some other code simpler. For example,
+ * keybinding query funcitons can return a "real" Cmd if there is one bound to
+ * the given key, and an instance of CmdNull if there is not. The alternative
+ * would be to return null and force the caller to check for null.
+ * 
  * @deprecated in 0.12.3 use NullAction
  */
 
@@ -44,13 +41,15 @@ public class CmdNull extends Cmd {
 
     private static final long serialVersionUID = 1658731580779408872L;
 
-  public CmdNull() {
-	  super("DoNothing");
-  }
+    public CmdNull() {
+        super("DoNothing");
+    }
 
-  /** Do nothing */
-  public void doIt() { }
+    /** Do nothing */
+    public void doIt() {
+    }
 
-  /** This is the only undo method that works :) */
-  public void undoIt() { }
+    /** This is the only undo method that works :) */
+    public void undoIt() {
+    }
 } /* end class CmdNull */

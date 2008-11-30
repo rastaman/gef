@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: ModeCreateFigSpline.java
 // Classes: ModeCreateFigSpline
 // Original Author: jrobbins@ics.uci.edu
@@ -36,60 +34,61 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigSpline;
 
 /**
- * A Mode to interpert user input while creating a FigSpline. All of
- * the actual event handling is inherited from ModeCreate. This class
- * just implements the differences needed to make it specific to
- * polygons.
+ * A Mode to interpert user input while creating a FigSpline. All of the actual
+ * event handling is inherited from ModeCreate. This class just implements the
+ * differences needed to make it specific to polygons.
  */
 
 public class ModeCreateFigSpline extends ModeCreateFigPoly {
     private static final long serialVersionUID = 5038274770338930599L;
 
-  public String instructions() {
-    return "Click to add a point; Double-click to finish";
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // ModeCreate API
-
-  /** Create a new FigRect instance based on the given mouse down
-   *  event and the state of the parent Editor. */
-  public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-    FigSpline p = new FigSpline(snapX, snapY);
-    p.addPoint(snapX, snapY); // add the first point twice
-    _startX = _lastX = snapX; _startY = _lastY = snapY;
-    _npoints = 2;
-    return p;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // Event handlers
-
-
-  public void mouseReleased(MouseEvent me) {
-    if (me.isConsumed()) return;
-    int x = me.getX(), y = me.getY();
-    if (_npoints > 2 && nearLast(x, y)) {
-      FigSpline p = (FigSpline) _newItem;
-      editor.damageAll();
-      _handle.index = p.getNumPoints() - 1;
-      p.moveVertex(_handle, _startX, _startY, true);
-
-      p.removePoint(_handle.index);
-
-      _npoints = 0;
-      editor.damageAll();
-      editor.add(p);
-      editor.getSelectionManager().select(p);
-      _newItem = null;
-      done();
-      me.consume();
-      return;
+    public String instructions() {
+        return "Click to add a point; Double-click to finish";
     }
-    _lastX = x; _lastY = y;
-    me.consume();
-  }
 
+    // //////////////////////////////////////////////////////////////
+    // ModeCreate API
+
+    /**
+     * Create a new FigRect instance based on the given mouse down event and the
+     * state of the parent Editor.
+     */
+    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+        FigSpline p = new FigSpline(snapX, snapY);
+        p.addPoint(snapX, snapY); // add the first point twice
+        _startX = _lastX = snapX;
+        _startY = _lastY = snapY;
+        _npoints = 2;
+        return p;
+    }
+
+    // //////////////////////////////////////////////////////////////
+    // Event handlers
+
+    public void mouseReleased(MouseEvent me) {
+        if (me.isConsumed())
+            return;
+        int x = me.getX(), y = me.getY();
+        if (_npoints > 2 && nearLast(x, y)) {
+            FigSpline p = (FigSpline) _newItem;
+            editor.damageAll();
+            _handle.index = p.getNumPoints() - 1;
+            p.moveVertex(_handle, _startX, _startY, true);
+
+            p.removePoint(_handle.index);
+
+            _npoints = 0;
+            editor.damageAll();
+            editor.add(p);
+            editor.getSelectionManager().select(p);
+            _newItem = null;
+            done();
+            me.consume();
+            return;
+        }
+        _lastX = x;
+        _lastY = y;
+        me.consume();
+    }
 
 } /* end class ModeCreateFigSpline */
-

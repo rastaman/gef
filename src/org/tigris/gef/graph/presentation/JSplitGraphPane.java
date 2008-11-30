@@ -13,8 +13,7 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.presentation.JGraph;
 
 /**
- * A split pane container for showing two instances of the same
- * graph.
+ * A split pane container for showing two instances of the same graph.
  * 
  * @author Bob Tarling
  */
@@ -26,39 +25,39 @@ public class JSplitGraphPane extends JPanel {
      * The clone graph will snap shut if it is smaller then this
      */
     private static final int MINIMUM_CLONE_HEIGHT = 30;
-    
+
     /**
      * A zero by zero dimension
      */
     private static final Dimension ZERO_DIMENSION = new Dimension(0, 0);
-    
+
     /**
      * The maximum possible dimension
      */
-    private static final Dimension MAX_DIMENSION =
-        new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
+    private static final Dimension MAX_DIMENSION = new Dimension(
+            Integer.MAX_VALUE, Integer.MAX_VALUE);
 
     /**
-     * The cloned graph sits inside a clone container.
-     * This is initially an empty panel and of limitless size, allowing
-     * JSplitPane to resize the panel to any position.
-     * As soon as this panel is expanded a clone of the graph is generated
-     * and placed inside. If this panel is collapsed then the graph is
-     * removed and disposed of.
+     * The cloned graph sits inside a clone container. This is initially an
+     * empty panel and of limitless size, allowing JSplitPane to resize the
+     * panel to any position. As soon as this panel is expanded a clone of the
+     * graph is generated and placed inside. If this panel is collapsed then the
+     * graph is removed and disposed of.
      */
     private final JPanel CLONE_CONTAINER = new JPanel();
-    
+
     private JSplitPane splitPane = null;
-    
+
     /**
-     * A clone graph which is created or destroyed by reposition of
-     * the splitter.
+     * A clone graph which is created or destroyed by reposition of the
+     * splitter.
      */
     private JGraph clonedGraph;
 
     /**
      * Construct a new split graph pane containing a graph
-     * @param graph 
+     * 
+     * @param graph
      */
     public JSplitGraphPane(JGraph graph) {
         splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);

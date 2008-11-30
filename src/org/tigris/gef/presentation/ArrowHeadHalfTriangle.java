@@ -32,32 +32,33 @@ public class ArrowHeadHalfTriangle extends ArrowHead {
     static final long serialVersionUID = -7257932581787201038L;
 
     public void paint(Object g, Point start, Point end) {
-        int    xFrom, xTo, yFrom, yTo;
+        int xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
         Polygon triangle;
-    
-        xFrom  = start.x;
-        xTo   = end.x;
-        yFrom  = start.y;
-        yTo   = end.y;
-    
-        dx   	= (double)(xTo - xFrom);
-        dy   	= (double)(yTo - yFrom);
-        denom 	= dist(dx, dy);
-        if (denom == 0) return;
-    
-        cos = arrow_height/denom;
-        sin = arrow_width /denom;
-        x   = xTo - cos*dx;
-        y   = yTo - cos*dy;
-        int x2  = (int)(x + sin*dy);
-        int y2  = (int)(y - sin*dx);
-    
+
+        xFrom = start.x;
+        xTo = end.x;
+        yFrom = start.y;
+        yTo = end.y;
+
+        dx = (double) (xTo - xFrom);
+        dy = (double) (yTo - yFrom);
+        denom = dist(dx, dy);
+        if (denom == 0)
+            return;
+
+        cos = arrow_height / denom;
+        sin = arrow_width / denom;
+        x = xTo - cos * dx;
+        y = yTo - cos * dy;
+        int x2 = (int) (x + sin * dy);
+        int y2 = (int) (y - sin * dx);
+
         triangle = new Polygon();
         triangle.addPoint(xTo, yTo);
         triangle.addPoint(xFrom, yFrom);
         triangle.addPoint(x2, y2);
-    
+
         if (g instanceof Graphics) {
             Graphics graphics = (Graphics) g;
             graphics.setColor(arrowFillColor);

@@ -37,41 +37,47 @@ import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
-/** Cmd to save the current document to a binary file using Sun's
- *  ObjectSerialization library. The written file contains the Editor
- *  object and all objects reachable through instance variables of the
- *  Editor (e.g., the selections, the views, the contents of the
- *  views, the net-level description of the graph, etc.).  UI objects
- *  such as Windows, Frames, Panels, and Images are not stored because
- *  I have marked those instance variables as transient in the source
- *  code. <p>
- *
- *  One advantage of this approach to saving and loading is that
- *  developers using GEF can add subclasses (e.g., to NetNode) which
- *  introduce new instance variables, and those will be saved and
- *  loaded without the developers having to special load and save
- *  methods. However, make sure that you do not point to any AWT
- *  objects unless those instance variables are transient because those
- *  cannot be saved. <p>
- *
- *  Needs-More-Work: the files produced by a save are not really good
- *  for anything other than reloading into this tool, or another Java
- *  program that uses ObjectSerialization. At this time GEF provides no
- *  support for saving or loading textual representations of documents
- *  that could be used in other tools.<p>
+/**
+ * Cmd to save the current document to a binary file using Sun's
+ * ObjectSerialization library. The written file contains the Editor object and
+ * all objects reachable through instance variables of the Editor (e.g., the
+ * selections, the views, the contents of the views, the net-level description
+ * of the graph, etc.). UI objects such as Windows, Frames, Panels, and Images
+ * are not stored because I have marked those instance variables as transient in
+ * the source code.
+ * <p>
+ * 
+ * One advantage of this approach to saving and loading is that developers using
+ * GEF can add subclasses (e.g., to NetNode) which introduce new instance
+ * variables, and those will be saved and loaded without the developers having
+ * to special load and save methods. However, make sure that you do not point to
+ * any AWT objects unless those instance variables are transient because those
+ * cannot be saved.
+ * <p>
+ * 
+ * Needs-More-Work: the files produced by a save are not really good for
+ * anything other than reloading into this tool, or another Java program that
+ * uses ObjectSerialization. At this time GEF provides no support for saving or
+ * loading textual representations of documents that could be used in other
+ * tools.
+ * <p>
+ * 
  * @deprecated in 0.12.3 use SaveAction
- * @see CmdOpen */
+ * @see CmdOpen
+ */
 
 public class CmdSave extends Cmd implements FilenameFilter {
 
     private static final long serialVersionUID = -548213442545482573L;
-    
+
     public CmdSave() {
         super("Save");
     }
 
-    /** Only allow the user to select files that match the fiven
-     *  filename pattern. Needs-More-Work: this is not used yet. */
+    /**
+     * Only allow the user to select files that match the fiven filename
+     * pattern. Needs-More-Work: this is not used yet.
+     */
     public CmdSave(String filterPattern) {
         this();
         setArg("filterPattern", filterPattern);
@@ -81,8 +87,8 @@ public class CmdSave extends Cmd implements FilenameFilter {
         try {
             Editor ce = Globals.curEditor();
             // TODO Should use JFileChooser
-            FileDialog fd =
-                new FileDialog(ce.findFrame(), "Save Diagram", FileDialog.SAVE);
+            FileDialog fd = new FileDialog(ce.findFrame(), "Save Diagram",
+                    FileDialog.SAVE);
             fd.setFilenameFilter(this);
             fd.setDirectory(Globals.getLastDirectory());
             fd.setVisible(true);
@@ -107,12 +113,15 @@ public class CmdSave extends Cmd implements FilenameFilter {
         }
     }
 
-    /** Only let the user select files that match the filter. This does
-     *  not seem to be called under JDK 1.0.2 on solaris. I have not
-     *  finished this method, it currently accepts all filenames. <p>
-     *
-     *  Needs-More-Work: the source code for this method is duplicated in
-     *  CmdOpen#accept.  */
+    /**
+     * Only let the user select files that match the filter. This does not seem
+     * to be called under JDK 1.0.2 on solaris. I have not finished this method,
+     * it currently accepts all filenames.
+     * <p>
+     * 
+     * Needs-More-Work: the source code for this method is duplicated in
+     * CmdOpen#accept.
+     */
     public boolean accept(File dir, String name) {
         if (containsArg("filterPattern")) {
             // if pattern dosen't match, return false

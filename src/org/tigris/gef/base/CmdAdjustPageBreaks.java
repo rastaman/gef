@@ -29,10 +29,10 @@
 package org.tigris.gef.base;
 
 /**
- * An Cmd to modify the way that the PageBreaks Layer of the
- * current document looks.  For now it just cycles among a few
- * predefined looks.  Needs-More-Work: Should put up a PageBreaks
- * preference dialog box or use the property sheet.
+ * An Cmd to modify the way that the PageBreaks Layer of the current document
+ * looks. For now it just cycles among a few predefined looks. Needs-More-Work:
+ * Should put up a PageBreaks preference dialog box or use the property sheet.
+ * 
  * @deprecated in 0.12.3 use AdjustPageBreaksAction
  */
 
@@ -40,16 +40,19 @@ public class CmdAdjustPageBreaks extends Cmd {
 
     private static final long serialVersionUID = -3106275866568804593L;
 
-/** Construct a new CmdAdjustPageBreaks */
-  public CmdAdjustPageBreaks() {
-    super("AdjustPageBreaks");
-  }
+    /** Construct a new CmdAdjustPageBreaks */
+    public CmdAdjustPageBreaks() {
+        super("AdjustPageBreaks");
+    }
 
-  public void doIt() {
-    Editor ce = Globals.curEditor();
-    Layer pageBreaks = (Layer) ce.getLayerManager().findLayerNamed("PageBreaks");
-    if (pageBreaks != null) pageBreaks.adjust();
-  }
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        Layer pageBreaks = (Layer) ce.getLayerManager().findLayerNamed(
+                "PageBreaks");
+        if (pageBreaks != null)
+            pageBreaks.adjust();
+    }
 
-  public void undoIt() { }
+    public void undoIt() {
+    }
 } /* end class CmdAdjustPageBreaks */

@@ -25,6 +25,7 @@ package org.tigris.gef.base;
 
 /**
  * Factory to create a ModePopup instance
+ * 
  * @author Bob Tarling
  */
 public class ModePopupFactory implements ModeFactory {

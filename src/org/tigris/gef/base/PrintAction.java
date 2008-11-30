@@ -66,7 +66,7 @@ public class PrintAction extends AbstractAction implements Printable {
     private double pageX, pageY, pageWidth, pageHeight;
 
     private double diagramX, diagramY, diagramWidth, diagramHeight;
-    
+
     public PrintAction() {
         super();
     }
@@ -74,7 +74,8 @@ public class PrintAction extends AbstractAction implements Printable {
     /**
      * Creates a new PrintAction
      * 
-     * @param name The name of the action
+     * @param name
+     *                The name of the action
      */
     public PrintAction(String name, String diagramName) {
         this(name, diagramName, false);
@@ -83,8 +84,10 @@ public class PrintAction extends AbstractAction implements Printable {
     /**
      * Creates a new PrintAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
      */
     public PrintAction(String name, String diagramName, Icon icon) {
         this(name, icon, diagramName, false);
@@ -93,8 +96,10 @@ public class PrintAction extends AbstractAction implements Printable {
     /**
      * Creates a new PrintAction
      * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public PrintAction(String name, String diagramName, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -103,17 +108,21 @@ public class PrintAction extends AbstractAction implements Printable {
     /**
      * Creates a new PrintAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
-    public PrintAction(String name, Icon icon, String diagramName, boolean localize) {
+    public PrintAction(String name, Icon icon, String diagramName,
+            boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
     }
 
     /**
      * @deprecated in 0.12.3 The diagramname has never been used by PrintAction.
-     * This method will be removed.
+     *             This method will be removed.
      * @param diagramName
      */
     public void setDiagramName(String diagramName) {
@@ -157,7 +166,7 @@ public class PrintAction extends AbstractAction implements Printable {
         }
 
         Editor editor = Globals.curEditor();
-//        String diagramName = (String) getArg("diagramName");
+        // String diagramName = (String) getArg("diagramName");
 
         Graphics2D g2d = (Graphics2D) graphics;
 
@@ -209,13 +218,14 @@ public class PrintAction extends AbstractAction implements Printable {
             scale = Math.min(pageWidth / (double) (drawingArea.width + 1),
                     pageHeight / (double) (drawingArea.height + 1));
             if (scale < 1.0) {
-            	// the printing doesn't fit in a single page;
-            	// let's ask the user what to do
-                if (!promptFitToPage()){
-                	// the user chose to cancel the printing job: let's restore the
-                	// grid, then quit
-                	editor.setGridHidden(h);
-                	return NO_SUCH_PAGE;
+                // the printing doesn't fit in a single page;
+                // let's ask the user what to do
+                if (!promptFitToPage()) {
+                    // the user chose to cancel the printing job: let's restore
+                    // the
+                    // grid, then quit
+                    editor.setGridHidden(h);
+                    return NO_SUCH_PAGE;
                 }
             }
             if (fitDiagramToPage()) {
@@ -280,25 +290,26 @@ public class PrintAction extends AbstractAction implements Printable {
      * Pops up a dialog to ask the user whether to fit the exceeding diagrams to
      * page or to print multiple pages. The user can also cancel the print job.
      * 
-     * @return false if the user has chosen to cancel the printing, true otherwise
+     * @return false if the user has chosen to cancel the printing, true
+     *         otherwise
      */
     private boolean promptFitToPage() {
-        Object[] options = {"Fit to page", "Multiple Pages", "Cancel"};
+        Object[] options = { "Fit to page", "Multiple Pages", "Cancel" };
 
-        int n = JOptionPane.showOptionDialog(null, 
-        		"The diagram exceeds the current page size. Select option?", "Print", 
-        		JOptionPane.YES_NO_CANCEL_OPTION, 
-        		JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        int n = JOptionPane.showOptionDialog(null,
+                "The diagram exceeds the current page size. Select option?",
+                "Print", JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-        if(n == JOptionPane.CANCEL_OPTION) {
-        	return false;
-        } else { 
-        	if(n == JOptionPane.NO_OPTION) {
-	            setFitDiagramToPage(false);
-	        } else {
-	            setFitDiagramToPage(true);
-	        }
-        	return true;
+        if (n == JOptionPane.CANCEL_OPTION) {
+            return false;
+        } else {
+            if (n == JOptionPane.NO_OPTION) {
+                setFitDiagramToPage(false);
+            } else {
+                setFitDiagramToPage(true);
+            }
+            return true;
         }
     }
 }

@@ -56,7 +56,8 @@ public class SelectInvertAction extends AbstractAction {
     /**
      * Creates a new SelectInvertAction
      * 
-     * @param name The name of the action
+     * @param name
+     *                The name of the action
      */
     public SelectInvertAction(String name) {
         this(name, false);
@@ -65,8 +66,10 @@ public class SelectInvertAction extends AbstractAction {
     /**
      * Creates a new SelectInvertAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
      */
     public SelectInvertAction(String name, Icon icon) {
         this(name, icon, false);
@@ -75,8 +78,10 @@ public class SelectInvertAction extends AbstractAction {
     /**
      * Creates a new SelectInvertAction
      * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public SelectInvertAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -85,9 +90,12 @@ public class SelectInvertAction extends AbstractAction {
     /**
      * Creates a new SelectInvertAction
      * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param localize
+     *                Whether to localize the name or not
      */
     public SelectInvertAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);

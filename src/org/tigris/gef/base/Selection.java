@@ -38,18 +38,17 @@ import java.io.Serializable;
 import org.tigris.gef.presentation.*;
 
 /**
- * This class represents the "selection" object that is used when you
- * select one or more Figs in the drawing window. Selections handle
- * the display of handles or whatever graphics indicate that
- * something is selected, and they process events to manipulate the
- * selected Fig. 
- *
+ * This class represents the "selection" object that is used when you select one
+ * or more Figs in the drawing window. Selections handle the display of handles
+ * or whatever graphics indicate that something is selected, and they process
+ * events to manipulate the selected Fig.
+ * 
  * @see Fig
  * @author jrobbins
  */
 
-public abstract class Selection
-implements Serializable, MouseListener, MouseMotionListener, KeyListener {
+public abstract class Selection implements Serializable, MouseListener,
+        MouseMotionListener, KeyListener {
 
     /** The size of the little handle boxes. */
     public static final int HAND_SIZE = 6;
@@ -59,22 +58,24 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
     /**
      * The Fig that is selected.
-     */ 
+     */
     private Fig content;
 
     /** Construct a new selection. Empty, subclases can override */
     public Selection(Fig f) {
         if (null == f) {
-            throw new IllegalArgumentException("Cannot place a null Fig inside a Selection");
+            throw new IllegalArgumentException(
+                    "Cannot place a null Fig inside a Selection");
         }
         if (!f.isSelectable()) {
-            throw new IllegalArgumentException("The given Fig cannot be selected");
+            throw new IllegalArgumentException(
+                    "The given Fig cannot be selected");
         }
         content = f;
     }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    // //////////////////////////////////////////////////////////////
+    // accessors
 
     /**
      * Get the Fig that is selected
@@ -82,7 +83,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     public Fig getContent() {
         return content;
     }
-  
+
     /**
      * @deprecated a Selection should be immutable
      */
@@ -101,21 +102,21 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
         return f == content;
     }
 
-
-  ////////////////////////////////////////////////////////////////
-  // display methods
+    // //////////////////////////////////////////////////////////////
+    // display methods
 
     /**
      * Do nothing. Selections shoudl not appear in print outs.
      */
-    public void print(Graphics g) { }
+    public void print(Graphics g) {
+    }
 
     /**
-     * Abstract method to display the selection handles.
-     * TODO: make this method abstract
+     * Abstract method to display the selection handles. TODO: make this method
+     * abstract
      */
     public void paint(Graphics g) {
-        
+
     }
 
     /**
@@ -126,15 +127,17 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     }
 
     /**
-     * Reply the position of the Selection. That is defined to be the
-     * upper left corner of my bounding box.
+     * Reply the position of the Selection. That is defined to be the upper left
+     * corner of my bounding box.
      */
     public Point getLocation() {
         return content.getLocation();
     }
 
-    /** This selection object needs to be redrawn, register its damaged
-     *  area within the given Editor */
+    /**
+     * This selection object needs to be redrawn, register its damaged area
+     * within the given Editor
+     */
     public void damage() {
         content.damage();
     }
@@ -142,151 +145,170 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     /**
      * Reply true if the given point is inside this selection
      */
-    public final boolean contains(Point pnt) { return contains(pnt.x, pnt.y); }
+    public final boolean contains(Point pnt) {
+        return contains(pnt.x, pnt.y);
+    }
 
-  public boolean contains(int x, int y) {
-    if (content.contains(x, y)) return true;
-    Handle h = new Handle(-1);
-    hitHandle(x, y, 0, 0, h);
-    return (h.index != -1);
-  }
+    public boolean contains(int x, int y) {
+        if (content.contains(x, y))
+            return true;
+        Handle h = new Handle(-1);
+        hitHandle(x, y, 0, 0, h);
+        return (h.index != -1);
+    }
 
     /** Reply true if the given Rectangle is inside or overlapps me */
     public boolean hit(Rectangle r) {
-        if (content.hit(r)) return true;
+        if (content.hit(r))
+            return true;
         Handle h = new Handle(-1);
         hitHandle(r, h);
         return (h.index != -1);
     }
 
-  /** Find which handle the user clicked on, or return -1 if none. */
-  //public abstract int hitHandle(Rectangle r);
-  public abstract void hitHandle(Rectangle r, Handle h);
-  public final void hitHandle(int x, int y, int w, int h, Handle hdl) {
-    hitHandle(new Rectangle(x, y, w, h), hdl);
-  }
+    /** Find which handle the user clicked on, or return -1 if none. */
+    // public abstract int hitHandle(Rectangle r);
+    public abstract void hitHandle(Rectangle r, Handle h);
 
-  /** Tell the selected Fig to move to front or back, etc. */
-  public void reorder(int func, Layer lay) { lay.reorder(content, func); }
+    public final void hitHandle(int x, int y, int w, int h, Handle hdl) {
+        hitHandle(new Rectangle(x, y, w, h), hdl);
+    }
 
-//   /** Do nothing because alignment only makes sense for multiple
-//    * selections */
-//   public void align(int direction) { /* do nothing */ }
+    /** Tell the selected Fig to move to front or back, etc. */
+    public void reorder(int func, Layer lay) {
+        lay.reorder(content, func);
+    }
 
-//   public void align(Rectangle r, int direction, Editor ed) {
-//     _content.align(r, direction, ed);
-//   }
+    // /** Do nothing because alignment only makes sense for multiple
+    // * selections */
+    // public void align(int direction) { /* do nothing */ }
 
-  /** When the selection is told to move, move the selected
-   * Fig */
-  public void translate(int dx,int dy) { content.translate(dx, dy); }
+    // public void align(Rectangle r, int direction, Editor ed) {
+    // _content.align(r, direction, ed);
+    // }
 
     /**
-     * The bounding box of the selection is the bbox of the contained Fig
-     * with added space for the handles.
-     **/
-    public Rectangle getBounds() {
-        return new Rectangle(
-            content.getX() - HAND_SIZE/2,
-            content.getY() - HAND_SIZE/2,
-            content.getWidth() + HAND_SIZE,
-            content.getHeight() + HAND_SIZE);
+     * When the selection is told to move, move the selected Fig
+     */
+    public void translate(int dx, int dy) {
+        content.translate(dx, dy);
     }
 
     /**
-     * Returns my bounding box in the given Rectangle.  This avoids
-     * memory allocation.
+     * The bounding box of the selection is the bbox of the contained Fig with
+     * added space for the handles.
+     */
+    public Rectangle getBounds() {
+        return new Rectangle(content.getX() - HAND_SIZE / 2, content.getY()
+                - HAND_SIZE / 2, content.getWidth() + HAND_SIZE, content
+                .getHeight()
+                + HAND_SIZE);
+    }
+
+    /**
+     * Returns my bounding box in the given Rectangle. This avoids memory
+     * allocation.
      */
     public Rectangle getBounds(Rectangle r) {
         if (r == null) {
             return getBounds();
         }
-        r.setBounds(content.getX() - HAND_SIZE/2,
-              content.getY() - HAND_SIZE/2,
-              content.getWidth() + HAND_SIZE,
-              content.getHeight() + HAND_SIZE);
+        r.setBounds(content.getX() - HAND_SIZE / 2, content.getY() - HAND_SIZE
+                / 2, content.getWidth() + HAND_SIZE, content.getHeight()
+                + HAND_SIZE);
         return r;
     }
 
-  /** If the selection is being deleted, the selected object must be
-   * deleted also. This is different from just deselecting the
-   * selected Fig, to do that use one of the deselect operations in
-   * SelectionManager.
-   * @see SelectionManager#deselect */
-  public void delete() { content.removeFromDiagram(); }
-  public void dispose() { content.deleteFromModel(); }
+    /**
+     * If the selection is being deleted, the selected object must be deleted
+     * also. This is different from just deselecting the selected Fig, to do
+     * that use one of the deselect operations in SelectionManager.
+     * 
+     * @see SelectionManager#deselect
+     */
+    public void delete() {
+        content.removeFromDiagram();
+    }
 
-  /** Move one of the handles of a selected Fig. */
-  public abstract void dragHandle(int mx, int my, int an_x,int an_y, Handle h);
+    public void dispose() {
+        content.deleteFromModel();
+    }
 
-    /** Reply the bounding box of the selected Figs, does not
-     *  include space used by handles. */
-    public Rectangle getContentBounds() { return content.getBounds(); }
+    /** Move one of the handles of a selected Fig. */
+    public abstract void dragHandle(int mx, int my, int an_x, int an_y, Handle h);
 
-  ////////////////////////////////////////////////////////////////
-  // event handlers
+    /**
+     * Reply the bounding box of the selected Figs, does not include space used
+     * by handles.
+     */
+    public Rectangle getContentBounds() {
+        return content.getBounds();
+    }
 
-    /** Pass any events along to the selected Fig.
-     * Subclasses of Selection may reimplement this to add
-     * functionality.
+    // //////////////////////////////////////////////////////////////
+    // event handlers
+
+    /**
+     * Pass any events along to the selected Fig. Subclasses of Selection may
+     * reimplement this to add functionality.
      */
     public void keyTyped(KeyEvent ke) {
         if (content instanceof KeyListener) {
-            ((KeyListener)content).keyTyped(ke);
+            ((KeyListener) content).keyTyped(ke);
         }
     }
 
     public void keyPressed(KeyEvent ke) {
-	    if (content instanceof KeyListener) {
-		    ((KeyListener)content).keyPressed(ke);
+        if (content instanceof KeyListener) {
+            ((KeyListener) content).keyPressed(ke);
         }
     }
 
     public void keyReleased(KeyEvent ke) {
         if (content instanceof KeyListener) {
-            ((KeyListener)content).keyReleased(ke);
+            ((KeyListener) content).keyReleased(ke);
         }
     }
 
     public void mouseMoved(MouseEvent me) {
         if (content instanceof MouseMotionListener) {
-            ((MouseMotionListener)content).mouseMoved(me);
+            ((MouseMotionListener) content).mouseMoved(me);
         }
     }
 
     public void mouseDragged(MouseEvent me) {
         if (content instanceof MouseMotionListener) {
-            ((MouseMotionListener)content).mouseDragged(me);
+            ((MouseMotionListener) content).mouseDragged(me);
         }
     }
 
     public void mousePressed(MouseEvent me) {
         if (content instanceof MouseListener) {
-            ((MouseListener)content).mousePressed(me);
+            ((MouseListener) content).mousePressed(me);
         }
     }
 
     public void mouseReleased(MouseEvent me) {
         if (content instanceof MouseListener) {
-            ((MouseListener)content).mouseReleased(me);
+            ((MouseListener) content).mouseReleased(me);
         }
     }
 
     public void mouseClicked(MouseEvent me) {
         if (content instanceof MouseListener) {
-            ((MouseListener)content).mouseClicked(me);
+            ((MouseListener) content).mouseClicked(me);
         }
     }
 
     public void mouseEntered(MouseEvent me) {
         if (content instanceof MouseListener) {
-            ((MouseListener)content).mouseEntered(me);
+            ((MouseListener) content).mouseEntered(me);
         }
     }
 
     public void mouseExited(MouseEvent me) {
         if (content instanceof MouseListener) {
-            ((MouseListener)content).mouseExited(me);
+            ((MouseListener) content).mouseExited(me);
         }
     }
 } /* end class Selection */

@@ -58,9 +58,11 @@ import org.tigris.gef.undo.UndoManager;
 
 /**
  * A text pane for on screen editing of a FigText.
+ * 
  * @author jrobbins
  */
-public class FigTextEditor extends JTextPane implements PropertyChangeListener, DocumentListener, KeyListener, FocusListener, TextEditor {
+public class FigTextEditor extends JTextPane implements PropertyChangeListener,
+        DocumentListener, KeyListener, FocusListener, TextEditor {
 
     private static final long serialVersionUID = 7350660058167121420L;
     private FigText figText;
@@ -78,9 +80,9 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         setVisible(true);
         figText = ft;
         final Editor ce = Globals.curEditor();
-        
-        drawingPanel = (JPanel)ce.getJComponent();
-        UndoManager.getInstance().startChain(); 
+
+        drawingPanel = (JPanel) ce.getJComponent();
+        UndoManager.getInstance().startChain();
         figText.firePropChange("editing", false, true);
         figText.addPropertyChangeListener(this);
         // walk up and add to glass pane
@@ -99,9 +101,9 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
 
         final Color figTextBackgroundColor = ft.getFillColor();
         final Color myBackground;
-        if(_makeBrighter && !figTextBackgroundColor.equals(Color.white)) {
+        if (_makeBrighter && !figTextBackgroundColor.equals(Color.white)) {
             myBackground = figTextBackgroundColor.brighter();
-        } else if(_backgroundColor != null) {
+        } else if (_backgroundColor != null) {
             myBackground = _backgroundColor;
         } else {
             myBackground = figTextBackgroundColor;
@@ -112,27 +114,28 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         setBorder(_border);
 
         final double scale = ce.getScale();
-        bbox.x = (int)Math.round(bbox.x * scale);
-        bbox.y = (int)Math.round(bbox.y * scale);
+        bbox.x = (int) Math.round(bbox.x * scale);
+        bbox.y = (int) Math.round(bbox.y * scale);
 
-        if(scale > 1) {
-            bbox.width = (int)Math.round(bbox.width * scale);
-            bbox.height = (int)Math.round(bbox.height * scale);
+        if (scale > 1) {
+            bbox.width = (int) Math.round(bbox.width * scale);
+            bbox.height = (int) Math.round(bbox.height * scale);
         }
 
         bbox = SwingUtilities.convertRectangle(drawingPanel, bbox, layeredPane);
 
         // bounds will be overwritten later in updateFigText anyway...
-        setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width + _extraSpace * 2, bbox.height + _extraSpace * 2);
+        setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width
+                + _extraSpace * 2, bbox.height + _extraSpace * 2);
         layeredPane.add(this, JLayeredPane.POPUP_LAYER, 0);
         final String text = ft.getTextFriend();
-        
+
         setText(text);
 
         addKeyListener(this);
         requestFocus();
         getDocument().addDocumentListener(this);
-		ce.setActiveTextEditor(this);
+        ce.setActiveTextEditor(this);
         setSelectionStart(0);
         setSelectionEnd(getDocument().getLength());
         MutableAttributeSet attr = new SimpleAttributeSet();
@@ -151,11 +154,8 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         addFocusListener(this);
     }
 
-    public static void configure(
-            final int extraSpace,
-            final Border b, 
-            final boolean makeBrighter, 
-            final Color backgroundColor) {
+    public static void configure(final int extraSpace, final Border b,
+            final boolean makeBrighter, final Color backgroundColor) {
         _extraSpace = extraSpace;
         _border = b;
         _makeBrighter = makeBrighter;
@@ -172,16 +172,16 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         }
         updateFigText();
         final FigText t = figText;
-        
+
         cancelEditingInternal();
-        
+
         t.firePropChange("editing", true, false);
         final Editor ce = Globals.curEditor();
         // This will cause a recursive call back to us, but things
         // are organized so it won't be infinite recursion.
         ce.setActiveTextEditor(null);
     }
-    
+
     public void cancelEditing() {
         if (figText == null) {
             return;
@@ -192,9 +192,8 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     }
 
     /**
-     * Exit editing mode.  Code which is common to both 
-     * cancelEditing() and endEditing().  It undoes everything
-     * which was done in init().
+     * Exit editing mode. Code which is common to both cancelEditing() and
+     * endEditing(). It undoes everything which was done in init().
      */
     private void cancelEditingInternal() {
         removeFocusListener(this);
@@ -210,8 +209,8 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         drawingPanel.requestFocus();
         figText = null;
     }
-    
-    ////////////////////////////////////////////////////////////////
+
+    // //////////////////////////////////////////////////////////////
     // event handlers for KeyListener implementaion
     public void keyTyped(KeyEvent ke) {
     }
@@ -225,28 +224,27 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
      * have applied the key to the underlying document.
      */
     public void keyPressed(KeyEvent ke) {
-        if(ke.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
             if (figText.getReturnAction() == FigText.END_EDITING) {
                 endEditing();
                 ke.consume();
             }
-        } else if(ke.getKeyCode() == KeyEvent.VK_TAB) {
+        } else if (ke.getKeyCode() == KeyEvent.VK_TAB) {
             if (figText.getTabAction() == FigText.END_EDITING) {
                 endEditing();
                 ke.consume();
             }
-        } else if(ke.getKeyCode() == KeyEvent.VK_F2) {
+        } else if (ke.getKeyCode() == KeyEvent.VK_F2) {
             endEditing();
             ke.consume();
-        } else if(ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+        } else if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
             // needs-more-work: should revert to orig text.
             cancelEditing();
             ke.consume();
         }
     }
 
-
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // event handlers for DocumentListener implementaion
 
     public void insertUpdate(DocumentEvent e) {
@@ -261,17 +259,16 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         updateFigText();
     }
 
-
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // internal utility methods
 
     protected void updateFigText() {
         if (figText == null) {
             return;
         }
-        
+
         String text = getText();
-        
+
         figText.setTextFriend(text, getGraphics());
 
         if (figText.getReturnAction() == FigText.INSERT && figText.isWordWrap()) {
@@ -281,24 +278,25 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
         Rectangle bbox = figText.getBounds();
         Editor ce = Globals.curEditor();
         double scale = ce.getScale();
-        bbox.x = (int)Math.round(bbox.x * scale);
-        bbox.y = (int)Math.round(bbox.y * scale);
+        bbox.x = (int) Math.round(bbox.x * scale);
+        bbox.y = (int) Math.round(bbox.y * scale);
 
-        if(scale > 1) {
-            bbox.width = (int)Math.round(bbox.width * scale);
-            bbox.height = (int)Math.round(bbox.height * scale);
+        if (scale > 1) {
+            bbox.width = (int) Math.round(bbox.width * scale);
+            bbox.height = (int) Math.round(bbox.height * scale);
         }
 
         bbox = SwingUtilities.convertRectangle(drawingPanel, bbox, layeredPane);
-        
-        setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width + _extraSpace * 2, bbox.height + _extraSpace * 2);
+
+        setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width
+                + _extraSpace * 2, bbox.height + _extraSpace * 2);
         setFont(figText.getFont());
     }
 
     /**
      * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
      */
-	public void focusGained(FocusEvent e) {
+    public void focusGained(FocusEvent e) {
     }
 
     /**
@@ -307,7 +305,7 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener, 
     public void focusLost(FocusEvent e) {
         endEditing();
     }
-    
+
     public FigText getFigText() {
         return figText;
     }

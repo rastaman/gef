@@ -34,25 +34,25 @@ import org.tigris.gef.presentation.FigGroup;
 import org.xml.sax.SAXException;
 
 /**
- * The handler for elements that represent FigGroup-derived objects,
- * including FigNodes.
+ * The handler for elements that represent FigGroup-derived objects, including
+ * FigNodes.
+ * 
  * @author Michael A. MacDonald
  */
-public class FigGroupHandler
-	extends BaseHandler
-	implements Container {
+public class FigGroupHandler extends BaseHandler implements Container {
     /**
      * The Fig with the group.
      */
     private FigGroup group;
 
     /**
-     * @param parser The PGMLStackParser for the diagram that contains this
-     * FigGroup
-     * @param theGroup The object corresponding to the element being parsed
+     * @param parser
+     *                The PGMLStackParser for the diagram that contains this
+     *                FigGroup
+     * @param theGroup
+     *                The object corresponding to the element being parsed
      */
-    public FigGroupHandler(PGMLStackParser parser,
-                            FigGroup theGroup) {
+    public FigGroupHandler(PGMLStackParser parser, FigGroup theGroup) {
         super(parser);
         group = theGroup;
     }
@@ -65,15 +65,15 @@ public class FigGroupHandler
     }
 
     /**
-     * If the object being parsed is a FigNode, add the owner of the object
-     * to the collection of node owners in the diagram associated with
-     * the PGMLStackParser object.
-     *
-     * @see org.xml.sax.ContentHandler#endElement(
-     *         java.lang.String, java.lang.String, java.lang.String)
+     * If the object being parsed is a FigNode, add the owner of the object to
+     * the collection of node owners in the diagram associated with the
+     * PGMLStackParser object.
+     * 
+     * @see org.xml.sax.ContentHandler#endElement( java.lang.String,
+     *      java.lang.String, java.lang.String)
      */
     public void endElement(String uri, String localname, String qname)
-        throws SAXException {
+            throws SAXException {
         if (group instanceof FigNode) {
             Object owner = group.getOwner();
             List nodes = getPGMLStackParser().getDiagram().getNodes();
@@ -85,12 +85,12 @@ public class FigGroupHandler
     }
 
     /**
-     * Add the object represented by a sub-element to this group.
-     * If a sub-element represents a Fig, the Fig is added to this group's
-     * Fig collection.  If a sub-element represents a String, it is
-     * a <em>private</em> element that identifies the enclosing Fig of
-     * this group, so set the enclosing Fig.
-     *
+     * Add the object represented by a sub-element to this group. If a
+     * sub-element represents a Fig, the Fig is added to this group's Fig
+     * collection. If a sub-element represents a String, it is a
+     * <em>private</em> element that identifies the enclosing Fig of this
+     * group, so set the enclosing Fig.
+     * 
      * @see org.tigris.gef.persistence.pgml.Container#addObject(java.lang.Object)
      */
     public void addObject(Object toAdd) {
@@ -99,8 +99,8 @@ public class FigGroupHandler
         }
         // Handle private string
         if (toAdd instanceof String) {
-            StringTokenizer st2 =
-                new StringTokenizer((String) toAdd, "=\"' \t\n");
+            StringTokenizer st2 = new StringTokenizer((String) toAdd,
+                    "=\"' \t\n");
             while (st2.hasMoreElements()) {
                 String t = st2.nextToken();
                 String v = "no such fig";

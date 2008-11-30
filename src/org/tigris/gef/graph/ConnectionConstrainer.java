@@ -13,18 +13,15 @@ import java.util.Map;
 abstract public class ConnectionConstrainer {
 
     /**
-     * A map of valid connections keyed by the connection type.
-     * The constructor builds this from the data in the VALID_CONNECTIONS array
+     * A map of valid connections keyed by the connection type. The constructor
+     * builds this from the data in the VALID_CONNECTIONS array
      */
     protected Map _validConnectionMap = new HashMap();
 
-    public boolean isConnectionValid(
-            Object edgeType,
-            Object fromElement,
+    public boolean isConnectionValid(Object edgeType, Object fromElement,
             Object toElement) {
         // Get the list of valid model item pairs for the given connection type
-        ArrayList validItems =
-            (ArrayList) _validConnectionMap.get(edgeType);
+        ArrayList validItems = (ArrayList) _validConnectionMap.get(edgeType);
         if (validItems == null) {
             return false;
         }
@@ -34,23 +31,22 @@ abstract public class ConnectionConstrainer {
         while (it.hasNext()) {
             Class[] modeElementPair = (Class[]) it.next();
             if (modeElementPair[0].isInstance(fromElement)
-                && modeElementPair[1].isInstance(toElement)) 
-            {
+                    && modeElementPair[1].isInstance(toElement)) {
                 return true;
             }
         }
         return false;
     }
-    
+
     protected void buildValidConnectionMap(Object[][] validConnections) {
         // A list of valid connections between elements, the
         // connection type first and then the elements to be connected
-        
+
         Object connection = null;
         for (int i = 0; i < validConnections.length; ++i) {
             connection = validConnections[i][0];
-            ArrayList validItems =
-                (ArrayList) _validConnectionMap.get(connection);
+            ArrayList validItems = (ArrayList) _validConnectionMap
+                    .get(connection);
             if (validItems == null) {
                 validItems = new ArrayList();
                 _validConnectionMap.put(connection, validItems);
@@ -80,10 +76,10 @@ abstract public class ConnectionConstrainer {
             }
         }
     }
+
     protected void addValidConnection(Class edgeClass, Class portClass) {
         Object connection = edgeClass;
-        ArrayList validItems =
-            (ArrayList) _validConnectionMap.get(connection);
+        ArrayList validItems = (ArrayList) _validConnectionMap.get(connection);
         if (validItems == null) {
             validItems = new ArrayList();
             _validConnectionMap.put(connection, validItems);
@@ -93,10 +89,10 @@ abstract public class ConnectionConstrainer {
         modeElementPair[1] = portClass;
         validItems.add(modeElementPair);
     }
-    
-    protected void addValidConnection(Class edgeClass, Class portClass1, Class portClass2) {
-        ArrayList validItems =
-            (ArrayList) _validConnectionMap.get(edgeClass);
+
+    protected void addValidConnection(Class edgeClass, Class portClass1,
+            Class portClass2) {
+        ArrayList validItems = (ArrayList) _validConnectionMap.get(edgeClass);
         if (validItems == null) {
             validItems = new ArrayList();
             _validConnectionMap.put(edgeClass, validItems);

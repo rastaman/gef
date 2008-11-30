@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: PropSheet.java
 // Interfaces: PropSheet
 // Original Author: jrobbins@ics.uci.edu
@@ -41,13 +38,14 @@ import java.lang.reflect.Method;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-/** Class that defines the interface for several different kinds of
- *  panels that can edit a group of properties. The only subclass
- *  supplied with GEF is PropSheetCategory, but others could be
- *  defined. */
+/**
+ * Class that defines the interface for several different kinds of panels that
+ * can edit a group of properties. The only subclass supplied with GEF is
+ * PropSheetCategory, but others could be defined.
+ */
 
 public class PropSheet extends JPanel implements PropertyChangeListener {
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // instance variables
 
     /** The object being edited. */
@@ -58,7 +56,6 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
     // //protected Hashtable _propertyDescriptors = new Hashtable();
     protected Hashtable _pdsEditors = new Hashtable();
     protected Hashtable _editorsPds = new Hashtable();
-
 
     /** True iff every change shold be immeadiatly carried out. */
     protected boolean _autoApply = true;
@@ -71,31 +68,29 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
     protected long _lastUpdateTime = System.currentTimeMillis();
     public static final int MIN_UPDATE = 200;
 
-
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constructors
 
     public PropSheet() {
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // accessors
 
-
     public void setSelection(Object s) {
-        if(_sel == s)
+        if (_sel == s)
             return;
-        if(_sel instanceof Fig)
-            ((Fig)_sel).removePropertyChangeListener(this);
+        if (_sel instanceof Fig)
+            ((Fig) _sel).removePropertyChangeListener(this);
         _sel = s;
-        if(_sel instanceof Fig)
-            ((Fig)_sel).addPropertyChangeListener(this);
+        if (_sel instanceof Fig)
+            ((Fig) _sel).addPropertyChangeListener(this);
         updateComponents();
     }
 
     public void setAutoApply(boolean aa) {
         _autoApply = aa;
-        if(_autoApply)
+        if (_autoApply)
             apply();
     }
 
@@ -113,7 +108,7 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
 
     public void setVisible(boolean b) {
         super.setVisible(b);
-        if(!b)
+        if (!b)
             setSelection(null);
     }
 
@@ -125,37 +120,41 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
         _propertiesFont = f;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // storing properties
 
-    /** When the user changes a value in a widget, record that fact
-     * until the next apply (which may be done immeadiatly). */
+    /**
+     * When the user changes a value in a widget, record that fact until the
+     * next apply (which may be done immeadiatly).
+     */
     public void store(PropertyDescriptor pd, Object value) {
-        if(pd == null || value == null)
+        if (pd == null || value == null)
             return;
         _pendingStores.put(pd, value);
-        if(_autoApply)
+        if (_autoApply)
             apply();
     }
 
-    /** Take all property changes that have been stored and actually
-     * change the state of the selected object. */
+    /**
+     * Take all property changes that have been stored and actually change the
+     * state of the selected object.
+     */
     public void apply() {
         try {
             _ignorePropChanges = true;
-            if(_sel != null) {
+            if (_sel != null) {
                 Enumeration pending = _pendingStores.keys();
-                while(pending.hasMoreElements()) {
-                    PropertyDescriptor pd = (PropertyDescriptor)pending.nextElement();
+                while (pending.hasMoreElements()) {
+                    PropertyDescriptor pd = (PropertyDescriptor) pending
+                            .nextElement();
                     applyProperty(pd, _pendingStores.get(pd));
                 }
             }
-            //_sel.put(_pendingStores);
-            if(_sel instanceof Fig)
-                ((Fig)_sel).endTrans();
+            // _sel.put(_pendingStores);
+            if (_sel instanceof Fig)
+                ((Fig) _sel).endTrans();
             _pendingStores.clear();
-        }
-        finally {
+        } finally {
             updateComponents();
             _ignorePropChanges = false;
         }
@@ -163,23 +162,23 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
 
     protected void applyProperty(PropertyDescriptor pd, Object value) {
         try {
-            Object args[] = {value};
+            Object args[] = { value };
             args[0] = value;
             Method setter = pd.getWriteMethod();
             setter.invoke(_sel, args);
-        }
-        catch(InvocationTargetException ex) {
-            if(ex.getTargetException() instanceof PropertyVetoException) {
-                System.out.println("Vetoed; because: " + ex.getTargetException().getMessage());
-            }
-            else
-                System.out.println("InvocationTargetException while updating " + pd.getName() + "\n" + ex.getTargetException().toString());
-        }
-        catch(Exception ex) {
-            System.out.println("Unexpected exception while updating " + pd.getName() + "\n" + ex.toString());
+        } catch (InvocationTargetException ex) {
+            if (ex.getTargetException() instanceof PropertyVetoException) {
+                System.out.println("Vetoed; because: "
+                        + ex.getTargetException().getMessage());
+            } else
+                System.out.println("InvocationTargetException while updating "
+                        + pd.getName() + "\n"
+                        + ex.getTargetException().toString());
+        } catch (Exception ex) {
+            System.out.println("Unexpected exception while updating "
+                    + pd.getName() + "\n" + ex.toString());
         }
     }
-
 
     /** Abandon any stored changes that have not been applied yet. */
     public void revert() {
@@ -187,8 +186,7 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
         updateComponents();
     }
 
-
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // notifications and updates
 
     public void updateComponents() {
@@ -199,42 +197,40 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
     }
 
     /** The selected object may have changed one of its properties. */
-//   public void propertyChange(PropertyChangeEvent pce) {
-//     // special case for bounding box, because too many updates make dragging
-//     // choppy
-//     Object arg = null;
-//     Object src = pce.getSource();
-//     if (src == _sel && arg instanceof PropertyDescriptor) {
-//       String propName = ((PropertyDescriptor)arg).getName();
-//       long now = System.currentTimeMillis();
-//       if ("bounds".equals(propName) && _lastUpdateTime + MIN_UPDATE > now)
-// 	return;
-//       updateComponent((PropertyDescriptor)arg);
-//       _lastUpdateTime = now;
-//     }
-//   }
-
+    // public void propertyChange(PropertyChangeEvent pce) {
+    // // special case for bounding box, because too many updates make dragging
+    // // choppy
+    // Object arg = null;
+    // Object src = pce.getSource();
+    // if (src == _sel && arg instanceof PropertyDescriptor) {
+    // String propName = ((PropertyDescriptor)arg).getName();
+    // long now = System.currentTimeMillis();
+    // if ("bounds".equals(propName) && _lastUpdateTime + MIN_UPDATE > now)
+    // return;
+    // updateComponent((PropertyDescriptor)arg);
+    // _lastUpdateTime = now;
+    // }
+    // }
     public void propertyChange(PropertyChangeEvent e) {
-        if(_ignorePropChanges)
-            return; //HACK!
+        if (_ignorePropChanges)
+            return; // HACK!
         // special case for bounding box, because too many updates make dragging
         // choppy
         String pName = e.getPropertyName();
         Object src = e.getSource();
-        if(src == _sel && !_ignorePropChanges) {
+        if (src == _sel && !_ignorePropChanges) {
             long now = System.currentTimeMillis();
-            //if ("bounds".equals(pName) && _lastUpdateTime + MIN_UPDATE > now)
-            if(_lastUpdateTime + MIN_UPDATE > now) {
+            // if ("bounds".equals(pName) && _lastUpdateTime + MIN_UPDATE > now)
+            if (_lastUpdateTime + MIN_UPDATE > now) {
                 return;
             }
-            updateComponents(); //needs-more-work: narrow to sender?
+            updateComponents(); // needs-more-work: narrow to sender?
             // pd?
             _lastUpdateTime = now;
-        }
-        else {
-            PropertyDescriptor pd = (PropertyDescriptor)_editorsPds.get(src);
-            if(pd != null)
-                store(pd, ((PropertyEditor)src).getValue());
+        } else {
+            PropertyDescriptor pd = (PropertyDescriptor) _editorsPds.get(src);
+            if (pd != null)
+                store(pd, ((PropertyEditor) src).getValue());
         }
     }
 

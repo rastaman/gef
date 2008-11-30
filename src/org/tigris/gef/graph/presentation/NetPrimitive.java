@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: NetPrimitive.java
 // Classes: NetPrimitive
 // Original Author: jrobbins@ics.uci.edu
@@ -33,63 +30,70 @@ package org.tigris.gef.graph.presentation;
 
 import java.beans.*;
 
-/** Abstract superclass for all Net-level objects. I currently
- *  anticipate exactly 4 subclasses: NetNode, NetPort, NetEdge, and
- *  NetList. <p>
- *
- * The classes that subclass from this class are all used by
- * DefaulGraphModel.  You can also define your own GraphModel with
- * your own application-specific objects for nodes, ports, and
- * edges.<p>
- *
+/**
+ * Abstract superclass for all Net-level objects. I currently anticipate exactly
+ * 4 subclasses: NetNode, NetPort, NetEdge, and NetList.
+ * <p>
+ * 
+ * The classes that subclass from this class are all used by DefaulGraphModel.
+ * You can also define your own GraphModel with your own application-specific
+ * objects for nodes, ports, and edges.
+ * <p>
+ * 
  * This class may be removed from future versions of GEF.
- *
- * @see DefaultGraphModel */
+ * 
+ * @see DefaultGraphModel
+ */
 
 public abstract class NetPrimitive implements java.io.Serializable {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    // //////////////////////////////////////////////////////////////
+    // instance variables
 
-  protected PropertyChangeSupport _changeSup = new PropertyChangeSupport(this);
-  protected boolean _highlight = false;
-  
-  /** Construct a new net-level object, currently does nothing */
-  public NetPrimitive() { }
+    protected PropertyChangeSupport _changeSup = new PropertyChangeSupport(this);
+    protected boolean _highlight = false;
 
-  /** Draw the user's attention to any and all visualizations of this
-   *  net-level object. */
-  public boolean getHighlight() { return _highlight; }
-  
-  public void setHighlight(boolean b) {
-    boolean old = _highlight;
-    _highlight = b;
-    firePropertyChange("highlight", old, _highlight);
-  }
+    /** Construct a new net-level object, currently does nothing */
+    public NetPrimitive() {
+    }
 
-  public abstract String getId();
+    /**
+     * Draw the user's attention to any and all visualizations of this net-level
+     * object.
+     */
+    public boolean getHighlight() {
+        return _highlight;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // notifications and updates
+    public void setHighlight(boolean b) {
+        boolean old = _highlight;
+        _highlight = b;
+        firePropertyChange("highlight", old, _highlight);
+    }
 
-  public void addPropertyChangeListener(PropertyChangeListener l) {
-    _changeSup.addPropertyChangeListener(l);
-  }
+    public abstract String getId();
 
-  public void removePropertyChangeListener(PropertyChangeListener l) {
-    _changeSup.removePropertyChangeListener(l);
-  }
+    // //////////////////////////////////////////////////////////////
+    // notifications and updates
 
-  public void firePropertyChange(String pName, Object oldV, Object newV) {
-    _changeSup.firePropertyChange(pName, oldV, newV);
-  }
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        _changeSup.addPropertyChangeListener(l);
+    }
 
-  public void firePropertyChange(String pName, boolean oldV, boolean newV) {
-    _changeSup.firePropertyChange(pName,
-				  oldV ? Boolean.TRUE : Boolean.FALSE,
-				  newV ? Boolean.TRUE : Boolean.FALSE);
-  }
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        _changeSup.removePropertyChangeListener(l);
+    }
 
-  public void firePropertyChange(String pName, int oldV, int newV) {
-    _changeSup.firePropertyChange(pName, new Integer(oldV), new Integer(newV));
-  }
+    public void firePropertyChange(String pName, Object oldV, Object newV) {
+        _changeSup.firePropertyChange(pName, oldV, newV);
+    }
+
+    public void firePropertyChange(String pName, boolean oldV, boolean newV) {
+        _changeSup.firePropertyChange(pName, oldV ? Boolean.TRUE
+                : Boolean.FALSE, newV ? Boolean.TRUE : Boolean.FALSE);
+    }
+
+    public void firePropertyChange(String pName, int oldV, int newV) {
+        _changeSup.firePropertyChange(pName, new Integer(oldV), new Integer(
+                newV));
+    }
 } /* end class NetPrimitive */

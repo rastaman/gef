@@ -44,7 +44,7 @@ import org.tigris.gef.util.Localizer;
 public class AlignAction extends UndoableAction {
 
     private static final long serialVersionUID = 4982051206522858526L;
-    
+
     /* Constants specifying the type of alignment requested. */
     public static final int ALIGN_TOPS = 0;
     public static final int ALIGN_BOTTOMS = 1;
@@ -56,7 +56,7 @@ public class AlignAction extends UndoableAction {
     public static final int ALIGN_V_CENTERS = 6;
 
     public static final int ALIGN_TO_GRID = 7;
-    
+
     private List figs;
 
     /**
@@ -65,35 +65,47 @@ public class AlignAction extends UndoableAction {
     private int direction;
 
     private Map boundsByFig;
-    
-    /** 
+
+    /**
      * Construct a new CmdAlign.
-     * @param dir The desired alignment direction, one of the constants
-     * listed above.
+     * 
+     * @param dir
+     *                The desired alignment direction, one of the constants
+     *                listed above.
      */
     public AlignAction(int dir) {
-        super(Localizer.localize("GefBase", "Align" + wordFor(dir))); //needs-more-work: direction
+        super(Localizer.localize("GefBase", "Align" + wordFor(dir))); // needs-more-work:
+                                                                        // direction
         direction = dir;
     }
 
     public AlignAction(int dir, List figs) {
-        super(Localizer.localize("GefBase", "Align" + wordFor(dir))); //needs-more-work: direction
+        super(Localizer.localize("GefBase", "Align" + wordFor(dir))); // needs-more-work:
+                                                                        // direction
         direction = dir;
         this.figs = figs;
     }
 
     private static String wordFor(int d) {
         switch (d) {
-        case ALIGN_TOPS: return "Tops";
-        case ALIGN_BOTTOMS: return "Bottoms";
-        case ALIGN_LEFTS: return "Lefts";
-        case ALIGN_RIGHTS: return "Rights";
-        
-        case ALIGN_CENTERS: return "Centers";
-        case ALIGN_H_CENTERS: return "HorizontalCenters";
-        case ALIGN_V_CENTERS: return "VerticalCenters";
-        
-        case ALIGN_TO_GRID: return "ToGrid";
+        case ALIGN_TOPS:
+            return "Tops";
+        case ALIGN_BOTTOMS:
+            return "Bottoms";
+        case ALIGN_LEFTS:
+            return "Lefts";
+        case ALIGN_RIGHTS:
+            return "Rights";
+
+        case ALIGN_CENTERS:
+            return "Centers";
+        case ALIGN_H_CENTERS:
+            return "HorizontalCenters";
+        case ALIGN_V_CENTERS:
+            return "VerticalCenters";
+
+        case ALIGN_TO_GRID:
+            return "ToGrid";
         }
         return "";
     }
@@ -102,7 +114,7 @@ public class AlignAction extends UndoableAction {
 
         super.actionPerformed(e);
         List targets = new ArrayList();
-        
+
         Editor ce = Globals.curEditor();
         if (figs == null) {
             SelectionManager sm = ce.getSelectionManager();
@@ -111,16 +123,17 @@ public class AlignAction extends UndoableAction {
                 return;
             }
             targets.addAll(sm.getFigs());
-          } else {
-              targets.addAll(figs);
-          }
+        } else {
+            targets.addAll(figs);
+        }
         int size = targets.size();
-        if (size == 0) return;
+        if (size == 0)
+            return;
         Rectangle bbox = ((Fig) targets.get(0)).getBounds();
         for (int i = 1; i < size; i++) {
             bbox.add(((Fig) targets.get(i)).getBounds());
         }
-    
+
         boundsByFig = new HashMap(size);
         for (int i = 0; i < size; i++) {
             Fig f = (Fig) targets.get(i);

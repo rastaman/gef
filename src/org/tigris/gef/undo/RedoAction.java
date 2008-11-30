@@ -36,10 +36,12 @@ import javax.swing.Icon;
  * 
  * @author mvw@tigris.org
  */
-public class RedoAction extends AbstractAction implements PropertyChangeListener {
-    
+public class RedoAction extends AbstractAction implements
+        PropertyChangeListener {
+
     /**
      * Construct the redo action with a display name
+     * 
      * @param name
      */
     public RedoAction(String name) {
@@ -47,9 +49,10 @@ public class RedoAction extends AbstractAction implements PropertyChangeListener
         UndoManager.getInstance().addPropertyChangeListener(this);
         setEnabled(false);
     }
-    
+
     /**
      * Construct the redo action with a display name and icon.
+     * 
      * @param name
      * @param icon
      */
@@ -65,13 +68,13 @@ public class RedoAction extends AbstractAction implements PropertyChangeListener
     public void actionPerformed(ActionEvent e) {
         UndoManager.getInstance().redo();
     }
-    
+
     /**
      * When the undo stack is down to zero we are disabled.
      */
     public void propertyChange(PropertyChangeEvent event) {
         if ("canRedo".equals(event.getPropertyName())) {
-            setEnabled ("true".equals(event.getNewValue()));
+            setEnabled("true".equals(event.getNewValue()));
         }
     }
 }

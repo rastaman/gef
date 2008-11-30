@@ -35,12 +35,11 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class OCLEvaluator {
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constants
     public static String OCL_START = "<ocl>";
     public static String OCL_END = "</ocl>";
@@ -61,17 +60,17 @@ public class OCLEvaluator {
         return evalToString(self, expr, ", ");
     }
 
-    protected synchronized String evalToString(Object self, String expr, String sep)
-            throws ExpansionException {
+    protected synchronized String evalToString(Object self, String expr,
+            String sep) throws ExpansionException {
         _scratchBindings.put("self", self);
         java.util.List values = eval(_scratchBindings, expr);
         _strBuf.setLength(0);
         Iterator iter = values.iterator();
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             String v = iter.next().toString();
-            if(v.length() > 0) {
+            if (v.length() > 0) {
                 _strBuf.append(v);
-                if(iter.hasNext()) {
+                if (iter.hasNext()) {
                     _strBuf.append(sep);
                 }
             }
@@ -81,7 +80,7 @@ public class OCLEvaluator {
     }
 
     protected List eval(Map bindings, String expr) throws ExpansionException {
-        
+
         int firstPos = expr.indexOf(".");
         if (firstPos < 0) {
             firstPos = expr.length();
@@ -89,104 +88,113 @@ public class OCLEvaluator {
         Object target = bindings.get(expr.substring(0, firstPos));
         Vector targets;
 
-        if (target instanceof Vector)  {
+        if (target instanceof Vector) {
             targets = (Vector) target;
         } else {
             targets = new Vector();
             targets.addElement(target);
         }
-        
+
         if (expr.equals("self")) {
             return targets;
         }
-        
+
         String prop = expr.substring(firstPos);
         List items = eval(bindings, prop, targets);
         return items;
     } // end of eval()
-    
-    private List eval(Map bindings, String expr, List targets) throws ExpansionException {
+
+    private List eval(Map bindings, String expr, List targets)
+            throws ExpansionException {
         String partExpr = expr;
         try {
-            while(partExpr.length() > 0) {
+            while (partExpr.length() > 0) {
                 List v = new ArrayList();
                 int firstPos = partExpr.indexOf(".");
                 int secPos = partExpr.indexOf(".", firstPos + 1);
                 String property;
-                if(secPos == -1) {    // <expr>::= ".<property>"
+                if (secPos == -1) { // <expr>::= ".<property>"
                     property = partExpr.substring(firstPos + 1);
                     partExpr = "";
-                } else {    // <expr>::= ".<property>.<expr>"
+                } else { // <expr>::= ".<property>.<expr>"
                     property = partExpr.substring(firstPos + 1, secPos);
-                    partExpr = partExpr.substring(secPos);    //+1
+                    partExpr = partExpr.substring(secPos); // +1
                 }
-    
+
                 int numElements = targets.size();
-                for(int i = 0; i < numElements; i++) {
+                for (int i = 0; i < numElements; i++) {
                     v.add(evaluateProperty(targets.get(i), property));
                 }
-                
+
                 targets = new Vector(flatten(v));
                 // the results of evaluating a property may result in a List
             }
         } catch (Exception e) {
             throw new ExpansionException(
-                    "Exception while expanding the expression " + expr + " (" + partExpr + ")" , e);
+                    "Exception while expanding the expression " + expr + " ("
+                            + partExpr + ")", e);
         }
-    
+
         return targets;
-    }    // end of eval()
+    } // end of eval()
 
     /**
      * Return the first character of a string converted to upper case
-     * @param s The string to convert
+     * 
+     * @param s
+     *                The string to convert
      * @return the converted string
      */
     private String toTitleCase(String s) {
-        if(s.length() > 0) {
+        if (s.length() > 0) {
             return toUpperCase(s.charAt(0)) + s.substring(1, s.length());
         } else {
             return s;
         }
-    }    // end of toTitleCase
+    } // end of toTitleCase
 
     /**
      * Convert a character to upper case
+     * 
      * @param c
      * @return the upper case equivilent of the input or the input
      */
     private char toUpperCase(char c) {
         final int pos = "abcdefghijklmnopqrstuvwxyz".indexOf(c);
-        if (pos == -1) return c;
+        if (pos == -1)
+            return c;
         return ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(pos));
     }
 
     /**
-     * Attempt to retrieve a named property from a target
-     * object.
+     * Attempt to retrieve a named property from a target object.
+     * 
      * @param target
      * @param property
      * @return the property value.
      */
-    private Object evaluateProperty(Object target, String property) throws ExpansionException {
-        if(target == null) {
+    private Object evaluateProperty(Object target, String property)
+            throws ExpansionException {
+        if (target == null) {
             return null;
         }
-        
+
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Looking for property '" + property + "' on " + target.getClass().getName());
+            LOG.debug("Looking for property '" + property + "' on "
+                    + target.getClass().getName());
         }
 
         String collectionRange = null;
-        
+
         int rangePos = property.indexOf('[');
         if (rangePos >= 0) {
             collectionRange = property.substring(rangePos);
-            property = property.substring(0,rangePos);
+            property = property.substring(0, rangePos);
         }
 
         // First try and find a getter method in the form getProperty()
-        Method method = getMethod(target.getClass(), "get" + toTitleCase(property));
+        Method method = getMethod(target.getClass(), "get"
+                + toTitleCase(property));
         if (method != null) {
             return invokeMethod(method, target, collectionRange);
         }
@@ -196,15 +204,18 @@ public class OCLEvaluator {
         if (method != null) {
             return invokeMethod(method, target, collectionRange);
         }
-        
-        // Then try and find a method in the form Property() TODO: Not good. This allows bad coding style
+
+        // Then try and find a method in the form Property() TODO: Not good.
+        // This allows bad coding style
         method = getMethod(target.getClass(), toTitleCase(property));
         if (method != null) {
-            LOG.warn("Reference to a method with bad naming convention - " + toTitleCase(property));
+            LOG.warn("Reference to a method with bad naming convention - "
+                    + toTitleCase(property));
             return invokeMethod(method, target, collectionRange);
         }
-        
-        // We have tried all method forms so lets now try just getting the property
+
+        // We have tried all method forms so lets now try just getting the
+        // property
         if (LOG.isDebugEnabled()) {
             LOG.debug("Looking for variable '" + property + "'");
         }
@@ -212,31 +223,33 @@ public class OCLEvaluator {
         try {
             f = target.getClass().getField(property);
             return convertCollection(f.get(target), collectionRange);
-        } catch(Exception e) {
-            LOG.error("Failed to get field " + property + " on " + target.getClass().getName(), e);
+        } catch (Exception e) {
+            LOG.error("Failed to get field " + property + " on "
+                    + target.getClass().getName(), e);
             return null;
         }
-    }    // end of evaluateProperty
-    
-    private Object invokeMethod(Method method, Object target, String collectionRange) throws ExpansionException {
+    } // end of evaluateProperty
+
+    private Object invokeMethod(Method method, Object target,
+            String collectionRange) throws ExpansionException {
 
         if (method != null) {
             try {
-                Object o = method.invoke(target, null); // getter methods take no args =>  null
+                Object o = method.invoke(target, null); // getter methods take
+                                                        // no args => null
                 return convertCollection(o, collectionRange);
             } catch (Exception e) {
                 throw new ExpansionException(e);
             }
         }
-        
+
         return null;
     }
 
     /**
-     * Copy every item from the given list to a new list.
-     * If the item to copy is itslef a list then each item is taken out
-     * of that (recursively) so that the end list contains only
-     * non-lists.
+     * Copy every item from the given list to a new list. If the item to copy is
+     * itslef a list then each item is taken out of that (recursively) so that
+     * the end list contains only non-lists.
      */
     private List flatten(List v) {
         List accum = new ArrayList();
@@ -245,16 +258,15 @@ public class OCLEvaluator {
     }
 
     /**
-     * Copy the object o into the given list.
-     * If the object is itself a list then each item is taken out
-     * of that (recursively) so that the end list contains only
-     * non-lists.
+     * Copy the object o into the given list. If the object is itself a list
+     * then each item is taken out of that (recursively) so that the end list
+     * contains only non-lists.
      */
     private void flattenInto(Object o, List accum) {
-        
-        if(o instanceof List) {
-            List oList = (List)o;
-            for (Iterator it = oList.iterator(); it.hasNext(); ) {
+
+        if (o instanceof List) {
+            List oList = (List) o;
+            for (Iterator it = oList.iterator(); it.hasNext();) {
                 Object p = it.next();
                 flattenInto(p, accum);
             }
@@ -263,32 +275,33 @@ public class OCLEvaluator {
         }
     }
 
-    /** 
+    /**
      * If an object is a collection then return it as an ArrayList otherwise
-     * return it unchanged.
-     * An optional range argument can be provided which will pull out a
-     * sub-collection in that range.
+     * return it unchanged. An optional range argument can be provided which
+     * will pull out a sub-collection in that range.
      * 
-     * @param o the object
-     * @param range the range to extract from the collection in the form
-     *              [start,end]
+     * @param o
+     *                the object
+     * @param range
+     *                the range to extract from the collection in the form
+     *                [start,end]
      * @return the original object or ArrayList
      */
     private static Object convertCollection(Object o, String range) {
         if (!(o instanceof Collection) && !(o instanceof Object[])) {
             return o;
         }
-        
+
         List list;
-        
+
         if (o instanceof Object[]) {
-            list = Arrays.asList((Object[])o);
-        } else if(o instanceof List) {
-            list = (List)o;
+            list = Arrays.asList((Object[]) o);
+        } else if (o instanceof List) {
+            list = (List) o;
         } else {
-            list = new ArrayList((Collection)o);
+            list = new ArrayList((Collection) o);
         }
-        
+
         if (range != null) {
             StringTokenizer st = new StringTokenizer(range, "[,]");
             int start = getValue(st.nextToken(), list);
@@ -298,16 +311,19 @@ public class OCLEvaluator {
             }
             list = list.subList(start, end);
         }
-        
+
         return list;
     }
-    
+
     /**
      * Gets a range value from a string. The string either contains a number or
-     * an asterisk. Either the number is returned or the asterisk returns
-     * the number of items in the given list.
-     * @param range a numberic value or *
-     * @param list the List from which the range refers.
+     * an asterisk. Either the number is returned or the asterisk returns the
+     * number of items in the given list.
+     * 
+     * @param range
+     *                a numberic value or *
+     * @param list
+     *                the List from which the range refers.
      * @return the range value
      */
     private static final int getValue(String range, List list) {
@@ -317,20 +333,21 @@ public class OCLEvaluator {
             return Integer.parseInt(range);
         }
     }
-    
-    
+
     /**
      * Get the Method object from a class which has the given name.
+     * 
      * @param targetClass
      * @param methodName
      * @return the Method
-     * @throws ExpansionException if no such method exists
+     * @throws ExpansionException
+     *                 if no such method exists
      */
     private Method getMethod(Class targetClass, String methodName) {
-        
+
         Method m[] = targetClass.getMethods();
-        
-        for (int i=0; i < m.length; ++i) {
+
+        for (int i = 0; i < m.length; ++i) {
             if (m[i].getParameterTypes().length == 0) {
                 if (m[i].getName().equals(methodName)) {
                     return m[i];
@@ -338,8 +355,8 @@ public class OCLEvaluator {
                 }
             }
         }
-        
+
         return null;
     }
-    
+
 }

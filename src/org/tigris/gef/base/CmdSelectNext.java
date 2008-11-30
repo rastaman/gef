@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdSelectNext.java
 // Classes: CmdSelectNext
 // Original Author: jrobbins@ics.uci.edu
@@ -35,22 +32,24 @@ import org.tigris.gef.presentation.Fig;
 
 import java.util.List;
 
-/** Cmd to select the next (or previous) Fig in the
- *  editor's current view.  This is very convienent for moving among
- *  lots of small Figs.  It also provides a simple example
- *  of an Cmd that is bound to a key.
+/**
+ * Cmd to select the next (or previous) Fig in the editor's current view. This
+ * is very convienent for moving among lots of small Figs. It also provides a
+ * simple example of an Cmd that is bound to a key.
+ * 
  * @deprecated in 0.12.3 use SelectNextAction
- * @see org.tigris.gef.graph.presentation.JGraph#initKeys() */
+ * @see org.tigris.gef.graph.presentation.JGraph#initKeys()
+ */
 
 public class CmdSelectNext extends Cmd {
 
     private static final long serialVersionUID = -5038323715965138457L;
-    
+
     public static final String DIR = "Direction";
     public static final String DIR_NEXT = "Next";
     public static final String DIR_PREV = "Previous";
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constructors
 
     public CmdSelectNext() {
@@ -66,15 +65,15 @@ public class CmdSelectNext extends Cmd {
         setArg(DIR, d);
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // Cmd API
 
     public void doIt() {
         Selection curSel;
         Fig newFig = null;
         int offset = 1;
-        String dir = (String)getArg(DIR);
-        if(DIR_PREV.equals(dir))
+        String dir = (String) getArg(DIR);
+        if (DIR_PREV.equals(dir))
             offset = -1;
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
@@ -82,18 +81,18 @@ public class CmdSelectNext extends Cmd {
         int diagramSize = diagramContents.size();
         int newIndex = diagramSize + 1;
 
-        if(sm.size() == 0)
+        if (sm.size() == 0)
             newIndex = 0;
-        else if(sm.size() == 1) {
+        else if (sm.size() == 1) {
             Fig curFig;
-            curSel = (Selection)sm.selections().firstElement();
+            curSel = (Selection) sm.selections().firstElement();
             curFig = curSel.getContent();
             int curIndex = diagramContents.indexOf(curFig);
             newIndex = (curIndex + offset + diagramSize) % diagramSize;
         }
-        if(diagramSize > newIndex)
-            newFig = (Fig)diagramContents.get(newIndex);
-        if(newFig != null)
+        if (diagramSize > newIndex)
+            newFig = (Fig) diagramContents.get(newIndex);
+        if (newFig != null)
             ce.getSelectionManager().select(newFig);
     }
 

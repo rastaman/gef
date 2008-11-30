@@ -26,6 +26,7 @@ package org.tigris.gef.persistence.pgml;
 
 /**
  * An exception to be thrown by the PGMLStackParser
+ * 
  * @author Bob Tarling
  */
 public class PgmlParserException extends Exception {
@@ -40,16 +41,20 @@ public class PgmlParserException extends Exception {
     }
 
     /**
-     * Constructor 
-     * @param message the message
+     * Constructor
+     * 
+     * @param message
+     *                the message
      */
     public PgmlParserException(String message) {
         super(message);
     }
 
     /**
-     * @param message the message
-     * @param c the cause of the exception
+     * @param message
+     *                the message
+     * @param c
+     *                the cause of the exception
      */
     public PgmlParserException(String message, Throwable c) {
         super(message);
@@ -57,7 +62,8 @@ public class PgmlParserException extends Exception {
     }
 
     /**
-     * @param c the cause of the exception
+     * @param c
+     *                the cause of the exception
      */
     public PgmlParserException(Throwable c) {
         super();
@@ -85,8 +91,7 @@ public class PgmlParserException extends Exception {
     /**
      * @see java.lang.Throwable#printStackTrace(java.io.PrintStream)
      */
-    public void printStackTrace(java.io.PrintStream ps)
-    {
+    public void printStackTrace(java.io.PrintStream ps) {
         super.printStackTrace(ps);
         if (cause != null) {
             ps.println("Caused by:");
@@ -97,8 +102,7 @@ public class PgmlParserException extends Exception {
     /**
      * @see java.lang.Throwable#printStackTrace(java.io.PrintWriter)
      */
-    public void printStackTrace(java.io.PrintWriter pw)
-    {
+    public void printStackTrace(java.io.PrintWriter pw) {
         super.printStackTrace(pw);
         if (cause != null) {
             pw.println("Caused by:");

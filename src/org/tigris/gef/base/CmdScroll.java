@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: CmdScroll.java
 // Classes: CmdSroll
 // Original Author: jrobbins@ics.uci.edu
@@ -32,59 +29,74 @@
 package org.tigris.gef.base;
 
 /**
- * Cmd scroll the view.  Needs-More-Work: not implemented yet.
+ * Cmd scroll the view. Needs-More-Work: not implemented yet.
+ * 
  * @deprecated in 0.12.3 use ScrollAction
  */
 
 public class CmdScroll extends Cmd {
     private static final long serialVersionUID = -7306747105045822502L;
-    
-  public static final int LEFT = 1;
-  public static final int RIGHT = 2;
-  public static final int UP = 3;
-  public static final int DOWN = 4;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    public static final int LEFT = 1;
+    public static final int RIGHT = 2;
+    public static final int UP = 3;
+    public static final int DOWN = 4;
 
-  private int _direction;
-  private int _magnitude;
+    // //////////////////////////////////////////////////////////////
+    // instance variables
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    private int _direction;
+    private int _magnitude;
 
-  public CmdScroll(int dir) {
-    super("Scroll" + wordFor(dir));
-    _direction = dir;
-    _magnitude = 16; // Needs-More-Work: prefs
-  }
+    // //////////////////////////////////////////////////////////////
+    // constructor
 
-  protected static String wordFor(int d) {
-    switch (d) {
-    case LEFT: return "Left";
-    case RIGHT: return "Right";
-    case UP: return "Up";
-    case DOWN: return "Down";
+    public CmdScroll(int dir) {
+        super("Scroll" + wordFor(dir));
+        _direction = dir;
+        _magnitude = 16; // Needs-More-Work: prefs
     }
-    return "";
-  }
-  
-  /** Scroll the view of the current editor in the given direction.
-   *  Needs-More-Work: not implemented yet.  */
-  public void doIt() {
-      int deltaX = 0, deltaY = 0;
-      // Needs-More-Work
-      switch (_direction) {
-        case LEFT: deltaX = _magnitude; break;
-        case RIGHT: deltaX = 0 - _magnitude; break;
-        case UP: deltaY = _magnitude; break;
-        case DOWN: deltaY = 0 - _magnitude; break;
-      }
-      // Needs-More-Work: now do something with deltas...
-      System.out.println("Scrolling by " + deltaX + ", " + deltaY);
-  }
 
-  public void undoIt() {
-    System.out.println("Cannot undo CmdScroll, yet.");
-  }
+    protected static String wordFor(int d) {
+        switch (d) {
+        case LEFT:
+            return "Left";
+        case RIGHT:
+            return "Right";
+        case UP:
+            return "Up";
+        case DOWN:
+            return "Down";
+        }
+        return "";
+    }
+
+    /**
+     * Scroll the view of the current editor in the given direction.
+     * Needs-More-Work: not implemented yet.
+     */
+    public void doIt() {
+        int deltaX = 0, deltaY = 0;
+        // Needs-More-Work
+        switch (_direction) {
+        case LEFT:
+            deltaX = _magnitude;
+            break;
+        case RIGHT:
+            deltaX = 0 - _magnitude;
+            break;
+        case UP:
+            deltaY = _magnitude;
+            break;
+        case DOWN:
+            deltaY = 0 - _magnitude;
+            break;
+        }
+        // Needs-More-Work: now do something with deltas...
+        System.out.println("Scrolling by " + deltaX + ", " + deltaY);
+    }
+
+    public void undoIt() {
+        System.out.println("Cannot undo CmdScroll, yet.");
+    }
 } /* end class CmdScroll */

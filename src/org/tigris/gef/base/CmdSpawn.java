@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CmdSpawn.java
 // Classes: CmdSpawn
 // Original Author: ics125 spring 1996
@@ -34,30 +32,37 @@ import java.awt.*;
 
 import org.tigris.gef.graph.presentation.*;
 
-/** Cmd to open a new editor on the same document as in the current
- *  editor.  Works by making a new JGraphFrame with a clone of the
- *  current editor. The argument "dimension" may be set to th desired
- *  size of the new window.
+/**
+ * Cmd to open a new editor on the same document as in the current editor. Works
+ * by making a new JGraphFrame with a clone of the current editor. The argument
+ * "dimension" may be set to th desired size of the new window.
+ * 
  * @deprecated in 0.12.3 use SpawnAction
  * @see Editor
- * @see JGraphFrame */
+ * @see JGraphFrame
+ */
 
 public class CmdSpawn extends Cmd {
 
     private static final long serialVersionUID = 1229387464393448165L;
 
-  public CmdSpawn() { super("SpawnEditor"); }
+    public CmdSpawn() {
+        super("SpawnEditor");
+    }
 
-  public void doIt() {
-    Editor ce = Globals.curEditor();
-    Editor ed = (Editor) ce.clone();
-    String title = (String) getArg("title", "new window");
-    JGraphFrame jgf = new JGraphFrame(title, ed);
-    // use clone because ce may be of a subclass of Editor
-    Object d = getArg("dimension");
-    if (d instanceof Dimension) jgf.setSize((Dimension)d);
-    jgf.setVisible(true);
-  }
+    public void doIt() {
+        Editor ce = Globals.curEditor();
+        Editor ed = (Editor) ce.clone();
+        String title = (String) getArg("title", "new window");
+        JGraphFrame jgf = new JGraphFrame(title, ed);
+        // use clone because ce may be of a subclass of Editor
+        Object d = getArg("dimension");
+        if (d instanceof Dimension)
+            jgf.setSize((Dimension) d);
+        jgf.setVisible(true);
+    }
 
-  public void undoIt() { System.out.println("Cannot undo CmdSpawn"); }
+    public void undoIt() {
+        System.out.println("Cannot undo CmdSpawn");
+    }
 } /* end class CmdSpawn */

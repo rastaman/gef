@@ -45,13 +45,15 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
 /**
- * @deprecated since v0.12.4. Use org.tigris.gef.persistence.export.SvgWriter instead.
+ * @deprecated since v0.12.4. Use org.tigris.gef.persistence.export.SvgWriter
+ *             instead.
  */
 public class SVGWriter extends Graphics {
 
     private SvgWriter writer;
-    
-    public SVGWriter(OutputStream stream, Rectangle drawingArea) throws IOException, Exception {
+
+    public SVGWriter(OutputStream stream, Rectangle drawingArea)
+            throws IOException, Exception {
         writer = new SvgWriter(stream, drawingArea);
     }
 
@@ -73,7 +75,7 @@ public class SVGWriter extends Graphics {
 
     /**
      * Get the current color for drawing operations.
-     *
+     * 
      * @return The current color for drawing operations.
      */
     public Color getColor() {
@@ -82,13 +84,14 @@ public class SVGWriter extends Graphics {
 
     /**
      * Set the current color for drawing operations.
-     *
-     * @param c The new color for drawing operations.
+     * 
+     * @param c
+     *                The new color for drawing operations.
      */
     public void setColor(Color c) {
         writer.setColor(c);
     }
-    
+
     public void setPaintMode() {
         writer.setPaintMode();
     }
@@ -121,24 +124,32 @@ public class SVGWriter extends Graphics {
         return writer.drawImage(img, x, y, observer);
     }
 
-    public boolean drawImage(Image img, int x, int y, int w, int h, ImageObserver observer) {
+    public boolean drawImage(Image img, int x, int y, int w, int h,
+            ImageObserver observer) {
         return writer.drawImage(img, x, y, w, h, observer);
     }
 
-    public boolean drawImage(Image img, int x, int y, Color bgcolor, ImageObserver observer) {
+    public boolean drawImage(Image img, int x, int y, Color bgcolor,
+            ImageObserver observer) {
         return writer.drawImage(img, x, y, bgcolor, observer);
     }
 
-    public boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer) {
+    public boolean drawImage(Image img, int x, int y, int width, int height,
+            Color bgcolor, ImageObserver observer) {
         return writer.drawImage(img, x, y, width, height, bgcolor, observer);
     }
 
-    public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
-        return writer.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
+    public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
+            int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
+        return writer.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2,
+                observer);
     }
 
-    public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer) {
-        return writer.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgcolor, observer);
+    public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
+            int sx1, int sy1, int sx2, int sy2, Color bgcolor,
+            ImageObserver observer) {
+        return writer.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2,
+                bgcolor, observer);
     }
 
     public void drawRect(int x, int y, int w, int h) {
@@ -168,6 +179,7 @@ public class SVGWriter extends Graphics {
     public void fillArc(int x, int y, int w, int h, int startAngle, int arcAngle) {
         writer.fillArc(x, y, w, h, startAngle, arcAngle);
     }
+
     public void drawRoundRect(int x, int y, int w, int h, int arcw, int arch) {
         writer.drawRoundRect(x, y, w, h, arcw, arch);
     }
@@ -181,7 +193,7 @@ public class SVGWriter extends Graphics {
     }
 
     public void drawPolygon(Polygon poly) {
-       writer.drawPolygon(poly);
+        writer.drawPolygon(poly);
     }
 
     public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) {
@@ -230,19 +242,25 @@ public class SVGWriter extends Graphics {
 
     /**
      * Draw a string at a given position.
-     *
-     * @param t The string to draw.
-     * @param x The horizontal position of the text.
-     * @param y The vertical position of the text.
+     * 
+     * @param t
+     *                The string to draw.
+     * @param x
+     *                The horizontal position of the text.
+     * @param y
+     *                The vertical position of the text.
      */
     public void drawString(String t, int x, int y) {
         writer.drawString(t, x, y);
     }
 
-    // if you want to compile this with jdk1.1, you have to comment out this method.
-    // if you want to compile this with jdk1.2, you MUST NOT comment out this method.
+    // if you want to compile this with jdk1.1, you have to comment out this
+    // method.
+    // if you want to compile this with jdk1.2, you MUST NOT comment out this
+    // method.
     // Did sun make a good job implementing jdk1.2? :-(((
-    public void drawString(java.text.AttributedCharacterIterator aci, int i1, int i2) {
+    public void drawString(java.text.AttributedCharacterIterator aci, int i1,
+            int i2) {
         writer.drawString(aci, i1, i2);
     }
 

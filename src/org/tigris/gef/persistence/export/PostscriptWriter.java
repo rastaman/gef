@@ -5,7 +5,6 @@ import java.util.Hashtable;
 import java.awt.*;
 import java.awt.image.*;
 
-
 public class PostscriptWriter extends Graphics2D {
 
     private PrintWriter p;
@@ -250,7 +249,7 @@ public class PostscriptWriter extends Graphics2D {
 
         int[] pixels = new int[iw * ih];
         PixelGrabber pg = new PixelGrabber(img, 0, 0, iw, ih, pixels, 0, iw);
-        //	pg.setColorModel(Toolkit.getDefaultToolkit().getColorModel());
+        // pg.setColorModel(Toolkit.getDefaultToolkit().getColorModel());
         try {
             pg.grabPixels();
         } catch (InterruptedException e) {

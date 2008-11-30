@@ -50,61 +50,64 @@ public class ToolBar extends JToolBar implements MouseListener {
 
     /**
      * Add a new JButton which dispatches the action.
-     *
-     * @param a the Action object to add as a new menu item
+     * 
+     * @param a
+     *                the Action object to add as a new menu item
      */
     public JButton add(Action a) {
-        String name = (String)a.getValue(Action.NAME);
-        Icon icon = (Icon)a.getValue(Action.SMALL_ICON);
+        String name = (String) a.getValue(Action.NAME);
+        Icon icon = (Icon) a.getValue(Action.SMALL_ICON);
         return add(a, name, icon);
     }
 
     public JButton add(Action a, String name, String iconResourceStr) {
         Icon icon = ResourceLoader.lookupIconResource(iconResourceStr, name);
-        //System.out.println(icon);
+        // System.out.println(icon);
         return add(a, name, icon);
     }
 
     public JButton add(Action a, String name, Icon icon) {
-//     JButton b = new JButton(icon);
-//     if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
-//       _modeButtons.addElement(b);
-//     b.setToolTipText(name + " ");
-//     b.setEnabled(a.isEnabled());
-//     b.addActionListener(a);
-//     add(b);
-//     if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
-//       _lockable.addElement(b);
-//     PropertyChangeListener actionPropertyChangeListener =
-//       createActionChangeListener(b);
-// 	if ( actionPropertyChangeListener != null ) {
-// 		a.addPropertyChangeListener(actionPropertyChangeListener);
-// 	}
-//     b.addMouseListener(this);
-//     // needs-more-work: should buttons appear stuck down while action executes?
-//     return b;
+        // JButton b = new JButton(icon);
+        // if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
+        // _modeButtons.addElement(b);
+        // b.setToolTipText(name + " ");
+        // b.setEnabled(a.isEnabled());
+        // b.addActionListener(a);
+        // add(b);
+        // if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
+        // _lockable.addElement(b);
+        // PropertyChangeListener actionPropertyChangeListener =
+        // createActionChangeListener(b);
+        // if ( actionPropertyChangeListener != null ) {
+        // a.addPropertyChangeListener(actionPropertyChangeListener);
+        // }
+        // b.addMouseListener(this);
+        // // needs-more-work: should buttons appear stuck down while action
+        // executes?
+        // return b;
 
         JButton b = super.add(a);
         b.setName(null);
         b.setText(null);
         b.setIcon(icon);
         b.setToolTipText(name + " ");
-        if(a instanceof CmdSetMode || a instanceof CmdCreateNode)
+        if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
             _modeButtons.addElement(b);
-        if(a instanceof CmdSetMode || a instanceof CmdCreateNode)
+        if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
             _lockable.addElement(b);
         b.addMouseListener(this);
-        // needs-more-work: should buttons appear stuck down while action executes?
+        // needs-more-work: should buttons appear stuck down while action
+        // executes?
         return b;
     }
 
     public Component add(Component comp) {
-        if(comp instanceof JButton) {
-            JButton button = (JButton)comp;
+        if (comp instanceof JButton) {
+            JButton button = (JButton) comp;
             Action action = button.getAction();
-            if(action instanceof CmdSetMode || action instanceof CmdCreateNode)
+            if (action instanceof CmdSetMode || action instanceof CmdCreateNode)
                 _modeButtons.addElement(button);
-            if(action instanceof CmdSetMode || action instanceof CmdCreateNode)
+            if (action instanceof CmdSetMode || action instanceof CmdCreateNode)
                 _lockable.addElement(button);
             button.addMouseListener(this);
         }
@@ -112,14 +115,14 @@ public class ToolBar extends JToolBar implements MouseListener {
     }
 
     public JToggleButton addToggle(Action a) {
-        String name = (String)a.getValue(Action.NAME);
-        Icon icon = (Icon)a.getValue(Action.SMALL_ICON);
+        String name = (String) a.getValue(Action.NAME);
+        Icon icon = (Icon) a.getValue(Action.SMALL_ICON);
         return addToggle(a, name, icon);
     }
 
     public JToggleButton addToggle(Action a, String name, String iconResourceStr) {
         Icon icon = ResourceLoader.lookupIconResource(iconResourceStr, name);
-        //System.out.println(icon);
+        // System.out.println(icon);
         return addToggle(a, name, icon);
     }
 
@@ -131,11 +134,13 @@ public class ToolBar extends JToolBar implements MouseListener {
         add(b);
         PropertyChangeListener actionPropertyChangeListener = createActionToggleListener(b);
         a.addPropertyChangeListener(actionPropertyChangeListener);
-        // needs-more-work: should buttons appear stuck down while action executes?
+        // needs-more-work: should buttons appear stuck down while action
+        // executes?
         return b;
     }
 
-    public JToggleButton addToggle(Action a, String name, String upRes, String downRes) {
+    public JToggleButton addToggle(Action a, String name, String upRes,
+            String downRes) {
         ImageIcon upIcon = ResourceLoader.lookupIconResource(upRes, name);
         ImageIcon downIcon = ResourceLoader.lookupIconResource(downRes, name);
         JToggleButton b = new JToggleButton(upIcon);
@@ -146,12 +151,13 @@ public class ToolBar extends JToolBar implements MouseListener {
         add(b);
         PropertyChangeListener actionPropertyChangeListener = createActionToggleListener(b);
         a.addPropertyChangeListener(actionPropertyChangeListener);
-        // needs-more-work: should buttons appear stuck down while action executes?
+        // needs-more-work: should buttons appear stuck down while action
+        // executes?
         return b;
     }
 
-
-    public ButtonGroup addRadioGroup(String name1, ImageIcon oneUp, ImageIcon oneDown, String name2, ImageIcon twoUp, ImageIcon twoDown) {
+    public ButtonGroup addRadioGroup(String name1, ImageIcon oneUp,
+            ImageIcon oneDown, String name2, ImageIcon twoUp, ImageIcon twoDown) {
         JRadioButton b1 = new JRadioButton(oneUp, true);
         b1.setSelectedIcon(oneDown);
         b1.setToolTipText(name1 + " ");
@@ -167,12 +173,12 @@ public class ToolBar extends JToolBar implements MouseListener {
         add(b1);
         add(b2);
 
-        //     JPanel p = new JPanel();
-        //     p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
-        //     p.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-        //     p.add(b1);
-        //     p.add(b2);
-        //     add(p);
+        // JPanel p = new JPanel();
+        // p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+        // p.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+        // p.add(b1);
+        // p.add(b2);
+        // add(p);
 
         ButtonGroup bg = new ButtonGroup();
         bg.add(b1);
@@ -194,18 +200,16 @@ public class ToolBar extends JToolBar implements MouseListener {
 
         public void propertyChange(PropertyChangeEvent e) {
             String propertyName = e.getPropertyName();
-            if(e.getPropertyName().equals(Action.NAME)) {
-                String text = (String)e.getNewValue();
+            if (e.getPropertyName().equals(Action.NAME)) {
+                String text = (String) e.getNewValue();
                 button.setText(text);
                 button.repaint();
-            }
-            else if(propertyName.equals("enabled")) {
-                Boolean enabledState = (Boolean)e.getNewValue();
+            } else if (propertyName.equals("enabled")) {
+                Boolean enabledState = (Boolean) e.getNewValue();
                 button.setEnabled(enabledState.booleanValue());
                 button.repaint();
-            }
-            else if(e.getPropertyName().equals(Action.SMALL_ICON)) {
-                Icon icon = (Icon)e.getNewValue();
+            } else if (e.getPropertyName().equals(Action.SMALL_ICON)) {
+                Icon icon = (Icon) e.getNewValue();
                 button.setIcon(icon);
                 button.invalidate();
                 button.repaint();
@@ -213,9 +217,7 @@ public class ToolBar extends JToolBar implements MouseListener {
         }
     }
 
-
-
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // MouseListener implementation
 
     public void mouseEntered(MouseEvent me) {
@@ -232,34 +234,32 @@ public class ToolBar extends JToolBar implements MouseListener {
 
     public void mouseClicked(MouseEvent me) {
         Object src = me.getSource();
-        if(isModeButton(src)) {
+        if (isModeButton(src)) {
             unpressAllButtonsExcept(src);
             Editor ce = Globals.curEditor();
-            if(ce != null)
+            if (ce != null)
                 ce.finishMode();
             Globals.setSticky(false);
         }
-        if(me.getClickCount() >= 2) {
-            if(!(src instanceof JButton))
+        if (me.getClickCount() >= 2) {
+            if (!(src instanceof JButton))
                 return;
-            JButton b = (JButton)src;
-            if(canLock(b)) {
+            JButton b = (JButton) src;
+            if (canLock(b)) {
                 b.getModel().setPressed(true);
                 b.getModel().setArmed(true);
                 b.setBackground(selectedBack);
                 Globals.setSticky(true);
             }
-        }
-        else if(me.getClickCount() == 1) {
-            if(src instanceof JButton && isModeButton(src)) {
-                JButton b = (JButton)src;
+        } else if (me.getClickCount() == 1) {
+            if (src instanceof JButton && isModeButton(src)) {
+                JButton b = (JButton) src;
                 b.setFocusPainted(false);
                 b.getModel().setPressed(true);
                 b.setBackground(selectedBack);
             }
         }
     }
-
 
     protected boolean canLock(Object b) {
         return _lockable.contains(b);
@@ -271,34 +271,34 @@ public class ToolBar extends JToolBar implements MouseListener {
 
     protected void unpressAllButtonsExcept(Object src) {
         int size = getComponentCount();
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             Component c = getComponent(i);
-            if(!(c instanceof JButton))
+            if (!(c instanceof JButton))
                 continue;
-            if(c == src)
+            if (c == src)
                 continue;
-            ((JButton)c).getModel().setArmed(false);
-            ((JButton)c).getModel().setPressed(false);
-            ((JButton)c).setBackground(buttonBack);
+            ((JButton) c).getModel().setArmed(false);
+            ((JButton) c).getModel().setPressed(false);
+            ((JButton) c).setBackground(buttonBack);
         }
     }
 
     public void unpressAllButtons() {
         int size = getComponentCount();
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             Component c = getComponent(i);
-            if(!(c instanceof JButton))
+            if (!(c instanceof JButton))
                 continue;
-            ((JButton)c).getModel().setArmed(false);
-            ((JButton)c).getModel().setPressed(false);
-            ((JButton)c).setBackground(buttonBack);
+            ((JButton) c).getModel().setArmed(false);
+            ((JButton) c).getModel().setPressed(false);
+            ((JButton) c).setBackground(buttonBack);
         }
         // press the first button (usually ModeSelect)
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             Component c = getComponent(i);
-            if(!(c instanceof JButton))
+            if (!(c instanceof JButton))
                 continue;
-            JButton select = (JButton)c;
+            JButton select = (JButton) c;
             select.getModel().setArmed(true);
             select.getModel().setPressed(true);
             select.setBackground(selectedBack);

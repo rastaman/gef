@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: ModeCreateFigInk.java
 // Classes: ModeCreateFigInk
 // Original Author: ics125 spring 1996
@@ -34,67 +32,77 @@ import java.awt.event.MouseEvent;
 
 import org.tigris.gef.presentation.*;
 
-/** A Mode to interpert user input while creating a FigInk. When
- *  creating a FigInk, new points are being added on mouseDragged, and
- *  a single mouseReleased ends the Mode.  A new point is added
- *  whenever the mouse moves a minimum distance. */
+/**
+ * A Mode to interpert user input while creating a FigInk. When creating a
+ * FigInk, new points are being added on mouseDragged, and a single
+ * mouseReleased ends the Mode. A new point is added whenever the mouse moves a
+ * minimum distance.
+ */
 
 public class ModeCreateFigInk extends ModeCreate {
 
     private static final long serialVersionUID = -4480520433643756752L;
 
-  /** the minium distance that the mouse must move before a new point
-   *  is added. */
-  public static final int MIN_DELTA = 4;
+    /**
+     * the minium distance that the mouse must move before a new point is added.
+     */
+    public static final int MIN_DELTA = 4;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    // //////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The position of the last point that was added. */
-  protected int _lastX, _lastY;
+    /** The position of the last point that was added. */
+    protected int _lastX, _lastY;
 
-  ////////////////////////////////////////////////////////////////
-  // Mode API
+    // //////////////////////////////////////////////////////////////
+    // Mode API
 
-  public String instructions() { return "Drag to draw a stream of ink"; }
-
-  ////////////////////////////////////////////////////////////////
-  // ModeCreate API
-
-  /** Create a new FigInk instance based on the given mouse down
-   *  event and the state of the parent Editor. */
-  public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-    FigInk p = new FigInk(snapX, snapY);
-    _lastX = snapX; _lastY = snapY;
-    return p;
-  }
-
-  protected void creationDrag(int x, int y) { }
-
-  ////////////////////////////////////////////////////////////////
-  // Event handlers
-
-  /** Dragging adds points to the ink. */
-  public void mouseDragged(MouseEvent me) {
-    if (me.isConsumed()) return;
-    int x = me.getX(), y = me.getY();
-    FigInk ink = (FigInk)_newItem;
-    if (!nearLast(x, y)) {
-      editor.damageAll(); // startTrans?
-      ink.addPoint(x, y);
-      editor.damageAll(); // endTrans?
-      _lastX = x; _lastY = y;
+    public String instructions() {
+        return "Drag to draw a stream of ink";
     }
-    me.consume();
-  }
 
-  /** Internal function to test if the current point is so close to
-   *  the last point that it should not be added to the ink. */
-  protected boolean nearLast(int x, int y) {
-    return x > _lastX - MIN_DELTA &&
-      x < _lastX + MIN_DELTA &&
-      y > _lastY - MIN_DELTA &&
-      y < _lastY + MIN_DELTA;
-  }
+    // //////////////////////////////////////////////////////////////
+    // ModeCreate API
+
+    /**
+     * Create a new FigInk instance based on the given mouse down event and the
+     * state of the parent Editor.
+     */
+    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+        FigInk p = new FigInk(snapX, snapY);
+        _lastX = snapX;
+        _lastY = snapY;
+        return p;
+    }
+
+    protected void creationDrag(int x, int y) {
+    }
+
+    // //////////////////////////////////////////////////////////////
+    // Event handlers
+
+    /** Dragging adds points to the ink. */
+    public void mouseDragged(MouseEvent me) {
+        if (me.isConsumed())
+            return;
+        int x = me.getX(), y = me.getY();
+        FigInk ink = (FigInk) _newItem;
+        if (!nearLast(x, y)) {
+            editor.damageAll(); // startTrans?
+            ink.addPoint(x, y);
+            editor.damageAll(); // endTrans?
+            _lastX = x;
+            _lastY = y;
+        }
+        me.consume();
+    }
+
+    /**
+     * Internal function to test if the current point is so close to the last
+     * point that it should not be added to the ink.
+     */
+    protected boolean nearLast(int x, int y) {
+        return x > _lastX - MIN_DELTA && x < _lastX + MIN_DELTA
+                && y > _lastY - MIN_DELTA && y < _lastY + MIN_DELTA;
+    }
 } /* end class ModeCreateFigInk */
-

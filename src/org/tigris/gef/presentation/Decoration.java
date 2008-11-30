@@ -70,7 +70,7 @@ public abstract class Decoration implements java.io.Serializable {
     }
 
     public abstract void paint(Object g, Point start, Point end);
-    
+
     /** return the approximate arc length of the path in pixel units */
     public int getLineLength(Point one, Point two) {
         int dxdx = (two.x - one.x) * (two.x - one.x);
@@ -85,9 +85,8 @@ public abstract class Decoration implements java.io.Serializable {
         if (len == 0) {
             return one;
         }
-        return new Point(
-            one.x + ((two.x - one.x) * p) / len,
-            one.y + ((two.y - one.y) * p) / len);
+        return new Point(one.x + ((two.x - one.x) * p) / len, one.y
+                + ((two.y - one.y) * p) / len);
     }
 
     public double dist(int x0, int y0, int x1, int y1) {
@@ -101,21 +100,21 @@ public abstract class Decoration implements java.io.Serializable {
     public double dist(double dx, double dy) {
         return Math.sqrt(dx * dx + dy * dy);
     }
-    
+
     public int getWidth() {
         return arrow_width;
     }
-    
+
     public int getHeight() {
         return arrow_width;
     }
-    
+
     public void setWidth(int w) {
         arrow_width = w;
     }
-    
+
     public void setHeight(int h) {
         arrow_height = h;
     }
-    
+
 } /* end class Decoration */

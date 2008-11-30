@@ -13,36 +13,35 @@ import java.awt.image.ImageObserver;
 import java.io.IOException;
 import java.io.OutputStream;
 
-
 /**
- * @deprecated since v0.12.4. Use org.tigris.gef.persistence.export.PostScriptWriter instead.
+ * @deprecated since v0.12.4. Use
+ *             org.tigris.gef.persistence.export.PostScriptWriter instead.
  */
 public class PostscriptWriter extends Graphics2D {
 
-    private org.tigris.gef.persistence.export.PostscriptWriter psWriter; 
-        
- 
+    private org.tigris.gef.persistence.export.PostscriptWriter psWriter;
+
     public PostscriptWriter(String filename) throws IOException {
-        psWriter = new org.tigris.gef.persistence.export.PostscriptWriter
-            (filename);
+        psWriter = new org.tigris.gef.persistence.export.PostscriptWriter(
+                filename);
     }
 
     public PostscriptWriter(String filename, Rectangle boundingBox)
             throws IOException {
-        psWriter = new org.tigris.gef.persistence.export.PostscriptWriter
-        (filename, boundingBox);
+        psWriter = new org.tigris.gef.persistence.export.PostscriptWriter(
+                filename, boundingBox);
     }
 
     public PostscriptWriter(OutputStream stream) throws IOException {
-        psWriter = new org.tigris.gef.persistence.export.PostscriptWriter
-        (stream);
+        psWriter = new org.tigris.gef.persistence.export.PostscriptWriter(
+                stream);
 
     }
 
     public PostscriptWriter(OutputStream stream, Rectangle bb)
             throws IOException {
-        psWriter = new org.tigris.gef.persistence.export.PostscriptWriter
-        (stream, bb);
+        psWriter = new org.tigris.gef.persistence.export.PostscriptWriter(
+                stream, bb);
     }
 
     public Graphics create() {
@@ -130,14 +129,15 @@ public class PostscriptWriter extends Graphics2D {
 
     public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
             int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
-        return psWriter.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
+        return psWriter.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2,
+                observer);
     }
 
     public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
             int sx1, int sy1, int sx2, int sy2, Color bgcolor,
             ImageObserver observer) {
-        return psWriter.drawImage(img, dx1, dy1, dx2, 
-                dy2, sx1, sy1, sx2, sy2, bgcolor, observer);
+        return psWriter.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2,
+                bgcolor, observer);
     }
 
     public void drawRect(int x, int y, int w, int h) {
@@ -282,7 +282,7 @@ public class PostscriptWriter extends Graphics2D {
     }
 
     public void drawString(String str, float param, float param2) {
-       psWriter.drawString(str, param, param2);
+        psWriter.drawString(str, param, param2);
     }
 
     public void fill(java.awt.Shape shape) {

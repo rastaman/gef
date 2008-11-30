@@ -44,10 +44,11 @@ public class PgmlUtility {
 
     /**
      * Get the PGML description of a color. If possible this is a text
-     * description otherwise it is in red green blue integer format seperated
-     * by spaces.
+     * description otherwise it is in red green blue integer format seperated by
+     * spaces.
      * 
-     * @param color The color to convert to PGML style
+     * @param color
+     *                The color to convert to PGML style
      * @return a string representing the color in pgml format
      */
     public static String getColor(Color color) {
@@ -57,77 +58,78 @@ public class PgmlUtility {
         }
         return color.getRed() + " " + color.getGreen() + " " + color.getBlue();
     }
-    
+
     /**
      * Get a color name for a color or null if this is some custom color.
+     * 
      * @param color
      * @return the color name or null.
      */
     private static String getColorName(Color color) {
-        
+
         String colorName = null;
-        
+
         if (color.equals(Color.white)) {
             colorName = "white";
-        } else if(color.equals(Color.black)) {
+        } else if (color.equals(Color.black)) {
             colorName = "black";
-        } else if(color.equals(Color.red)) {
+        } else if (color.equals(Color.red)) {
             colorName = "red";
-        } else if(color.equals(Color.green)) {
+        } else if (color.equals(Color.green)) {
             colorName = "green";
-        } else if(color.equals(Color.blue)) {
+        } else if (color.equals(Color.blue)) {
             colorName = "blue";
         }
-        
+
         return colorName;
     }
-    
+
     /**
      * Translate the visibility flag of a Fig to the PGML "visibility" attribute
-     * value.
-     * The PGML values are 0=hidden and 1=shown.
-     * If not specified then 1 is the default so we return null for this to
-     * prevent redundent data being written to PGML.
+     * value. The PGML values are 0=hidden and 1=shown. If not specified then 1
+     * is the default so we return null for this to prevent redundent data being
+     * written to PGML.
      * 
-     * @param f The Fig
+     * @param f
+     *                The Fig
      * @return "0"=hidden, null=shown
      */
     public static String getVisibility(Fig f) {
-        if (f.isVisible()) return null;
+        if (f.isVisible())
+            return null;
         return "0";
     }
-    
+
     /**
-     * Translate the dashed flag of a Fig to the PGML "dashed" attribute
-     * value.
+     * Translate the dashed flag of a Fig to the PGML "dashed" attribute value.
      * 
-     * @param f The Fig
+     * @param f
+     *                The Fig
      * @return 0=not dashed, 1=dashed
      */
     public static int getDashed(Fig f) {
-        return (f.getDashed()) ?  1 : 0;
+        return (f.getDashed()) ? 1 : 0;
     }
-    
+
     /**
-     * Translate the filled flag of a Fig to the PGML "filled" attribute
-     * value.
+     * Translate the filled flag of a Fig to the PGML "filled" attribute value.
      * 
-     * @param f The Fig
+     * @param f
+     *                The Fig
      * @return 0=not filled, 1=filled
      */
     public static int getFilled(Fig f) {
-        return (f.getFilled()) ?  1 : 0;
+        return (f.getFilled()) ? 1 : 0;
     }
-    
+
     /**
-     * Get all contents of a layer other than the
-     * edges.
+     * Get all contents of a layer other than the edges.
      */
     public static List getContentsNoEdges(Layer lay) {
         List contents = lay.getContents();
         int size = contents.size();
         ArrayList list = new ArrayList(size);
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             Object o = contents.get(i);
             if (!(o instanceof FigEdge)) {
                 list.add(o);
@@ -137,31 +139,32 @@ public class PgmlUtility {
     }
 
     /**
-     * Generate an identifier for this Fig which is unique within the 
-     * diagram.
-     * @param f the Fig to generate the id for
+     * Generate an identifier for this Fig which is unique within the diagram.
+     * 
+     * @param f
+     *                the Fig to generate the id for
      * @return a unique string
      */
     public static String getId(Fig f) {
         if (f == null) {
             throw new IllegalArgumentException("A fig must be supplied");
         }
-        if(f.getGroup() != null) {
+        if (f.getGroup() != null) {
             String groupId = f.getGroup().getId();
-            if(f.getGroup() instanceof FigGroup) {
+            if (f.getGroup() instanceof FigGroup) {
                 FigGroup group = (FigGroup) f.getGroup();
                 return groupId + "." + ((List) group.getFigs()).indexOf(f);
             } else if (f.getGroup() instanceof FigEdge) {
                 FigEdge edge = (FigEdge) f.getGroup();
-                return groupId + "." +
-                    (((List) edge.getPathItemFigs()).indexOf(f) + 1);
+                return groupId + "."
+                        + (((List) edge.getPathItemFigs()).indexOf(f) + 1);
             } else {
                 return groupId + ".0";
             }
         }
 
         Layer layer = f.getLayer();
-        if(layer == null) {
+        if (layer == null) {
             return "LAYER_NULL";
         }
 

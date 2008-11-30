@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // From Sun's Beanbox
 // Support for a PropertyEditor that uses text.
 
@@ -36,42 +34,45 @@ import java.beans.*;
 
 class PropertyText extends JTextField implements KeyListener {
 
-  public PropertyText(PropertyEditor pe) {
-    super();
-    editor = pe;
-    String s = pe.getAsText();
-    if (s != null) setText(s);
-    addKeyListener(this);
-  }
-
-  public void repaint() {
-    super.repaint();
-  }
-  
-  public Dimension getMinimumSize() {
-    return new Dimension(80, 20);
-  }
-
-  public Dimension getPreferredSize() {
-    return new Dimension(80, 20);
-  }
-
-  //----------------------------------------------------------------------
-  // Keyboard listener methods.
-  
-  public void keyReleased(KeyEvent ke) {
-    //super.keyReleased(ke);
-    try {
-      editor.setAsText(getText());
-    } catch (IllegalArgumentException ex) {
-      // Quietly ignore.
+    public PropertyText(PropertyEditor pe) {
+        super();
+        editor = pe;
+        String s = pe.getAsText();
+        if (s != null)
+            setText(s);
+        addKeyListener(this);
     }
-  }
 
-  public void keyPressed(KeyEvent ke) { } //super.keyPressed(ke); 
-  
-  public void keyTyped(KeyEvent ke) { } //super.keyTyped(ke); 
-  
-  //----------------------------------------------------------------------
-  private PropertyEditor editor;
+    public void repaint() {
+        super.repaint();
+    }
+
+    public Dimension getMinimumSize() {
+        return new Dimension(80, 20);
+    }
+
+    public Dimension getPreferredSize() {
+        return new Dimension(80, 20);
+    }
+
+    // ----------------------------------------------------------------------
+    // Keyboard listener methods.
+
+    public void keyReleased(KeyEvent ke) {
+        // super.keyReleased(ke);
+        try {
+            editor.setAsText(getText());
+        } catch (IllegalArgumentException ex) {
+            // Quietly ignore.
+        }
+    }
+
+    public void keyPressed(KeyEvent ke) {
+    } // super.keyPressed(ke);
+
+    public void keyTyped(KeyEvent ke) {
+    } // super.keyTyped(ke);
+
+    // ----------------------------------------------------------------------
+    private PropertyEditor editor;
 }

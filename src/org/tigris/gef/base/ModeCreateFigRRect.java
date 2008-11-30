@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: ModeCreateFigRRect.java
 // Classes: ModeCreateFigRRect
 // Original Author: jrobbins@ics.uci.edu
@@ -34,23 +32,25 @@ import java.awt.event.MouseEvent;
 
 import org.tigris.gef.presentation.*;
 
-/** A Mode to interpert user input while creating a FigRRect. All of
- *  the actual event handling is inherited from ModeCreate. This class
- *  just implements the differences needed to make it specific to
- *  RRects. */
+/**
+ * A Mode to interpert user input while creating a FigRRect. All of the actual
+ * event handling is inherited from ModeCreate. This class just implements the
+ * differences needed to make it specific to RRects.
+ */
 
 public class ModeCreateFigRRect extends ModeCreate {
-    
+
     private static final long serialVersionUID = 7375344602565163799L;
 
-    public String instructions() { return "Drag to define a rounded rectangle"; }
+    public String instructions() {
+        return "Drag to define a rounded rectangle";
+    }
 
     /**
-     * Create a new FigRect instance based on the given mouse down
-     * event and the state of the parent Editor.
+     * Create a new FigRect instance based on the given mouse down event and the
+     * state of the parent Editor.
      */
     public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
         return new FigRRect(snapX, snapY, 0, 0);
     }
 } /* end class ModeCreateFigRRect */
-

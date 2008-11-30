@@ -36,19 +36,20 @@ import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.undo.UndoManager;
 
-/** A Mode to interpret user input while creating an edge.  Basically
- *  mouse down starts creating an edge from a source port Fig, mouse
- *  motion paints a rubberband line, mouse up finds the destination port
- *  and finishes creating the edge and makes an FigEdge and sends
- *  it to the back of the Layer.
- *
- *  The argument "edgeClass" determines the type if edge to suggest
- *  that the Editor's GraphModel construct.  The GraphModel is
- *  responsible for acutally making an edge in the underlying model
- *  and connecting it to other model elements. */
+/**
+ * A Mode to interpret user input while creating an edge. Basically mouse down
+ * starts creating an edge from a source port Fig, mouse motion paints a
+ * rubberband line, mouse up finds the destination port and finishes creating
+ * the edge and makes an FigEdge and sends it to the back of the Layer.
+ * 
+ * The argument "edgeClass" determines the type if edge to suggest that the
+ * Editor's GraphModel construct. The GraphModel is responsible for acutally
+ * making an edge in the underlying model and connecting it to other model
+ * elements.
+ */
 
 public class ModeCreatePolyEdge extends ModeCreateEdge {
-    
+
     private static final long serialVersionUID = 1991680308906935894L;
 
     /** The NetPort where the arc is paintn from */
@@ -69,32 +70,37 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
     protected Handle _handle = new Handle(-1);
 
     private static Log LOG = LogFactory.getLog(ModeCreatePolyEdge.class);
-    
-    ////////////////////////////////////////////////////////////////
+
+    // //////////////////////////////////////////////////////////////
     // constructor
 
     public ModeCreatePolyEdge() {
         super();
-        if (LOG.isDebugEnabled()) LOG.debug("Created ModeCreatePolyEdge");
-    }
-    public ModeCreatePolyEdge(Editor par) {
-        super(par);
-        if (LOG.isDebugEnabled()) LOG.debug("Created ModeCreatePolyEdge for Editor");
+        if (LOG.isDebugEnabled())
+            LOG.debug("Created ModeCreatePolyEdge");
     }
 
-    ////////////////////////////////////////////////////////////////
+    public ModeCreatePolyEdge(Editor par) {
+        super(par);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Created ModeCreatePolyEdge for Editor");
+    }
+
+    // //////////////////////////////////////////////////////////////
     // Mode API
 
     public String instructions() {
         return "Drag to define an edge to another port";
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // ModeCreate API
 
-    /** Create the new item that will be drawn. In this case I would
-     *  rather create the FigEdge when I am done. Here I just
-     *  create a rubberband FigLine to show during dragging. */
+    /**
+     * Create the new item that will be drawn. In this case I would rather
+     * create the FigEdge when I am done. Here I just create a rubberband
+     * FigLine to show during dragging.
+     */
     public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
         FigPoly p = new FigPoly(snapX, snapY);
         p.setLineColor(Globals.getPrefs().getRubberbandColor());
@@ -106,43 +112,53 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
         return p;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // event handlers
 
-    /** On mousePressed determine what port the user is dragging from.
-     *  The mousePressed event is sent via ModeSelect. */
+    /**
+     * On mousePressed determine what port the user is dragging from. The
+     * mousePressed event is sent via ModeSelect.
+     */
     public void mousePressed(MouseEvent me) {
         if (me.isConsumed()) {
-            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but rejected as already consumed");
+            if (LOG.isDebugEnabled())
+                LOG
+                        .debug("MousePressed detected but rejected as already consumed");
             return;
         }
-        
+
         UndoManager.getInstance().addMementoLock(this);
         int x = me.getX(), y = me.getY();
-        //Editor editor = Globals.curEditor();
+        // Editor editor = Globals.curEditor();
         Fig underMouse = editor.hit(x, y);
         if (underMouse == null) {
-            //System.out.println("bighit");
+            // System.out.println("bighit");
             underMouse = editor.hit(x - 16, y - 16, 32, 32);
         }
         if (underMouse == null && _npoints == 0) {
             done();
             me.consume();
-            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but nothing under mouse - consumed anyway");
+            if (LOG.isDebugEnabled())
+                LOG
+                        .debug("MousePressed detected but nothing under mouse - consumed anyway");
             return;
         }
         if (!(underMouse instanceof FigNode) && _npoints == 0) {
             done();
             me.consume();
-            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but not on a FigNode - consumed anyway");
+            if (LOG.isDebugEnabled())
+                LOG
+                        .debug("MousePressed detected but not on a FigNode - consumed anyway");
             return;
         }
-        if (sourceFigNode == null) { //_npoints == 0) {
+        if (sourceFigNode == null) { // _npoints == 0) {
             sourceFigNode = (FigNode) underMouse;
             startPort = sourceFigNode.deepHitPort(x, y);
         }
         if (startPort == null) {
-            if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but not on a port - consumed anyway");
+            if (LOG.isDebugEnabled())
+                LOG
+                        .debug("MousePressed detected but not on a port - consumed anyway");
             done();
             me.consume();
             return;
@@ -152,14 +168,17 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
         if (_npoints == 0) {
             createFig(me);
         }
-        if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected and processed by ancestor - consumed");
+        if (LOG.isDebugEnabled())
+            LOG
+                    .debug("MousePressed detected and processed by ancestor - consumed");
         me.consume();
     }
 
-    /** On mouseReleased, find the destination port, ask the GraphModel
-     *  to connect the two ports.  If that connection is allowed, then
-     *  construct a new FigEdge and add it to the Layer and send it to
-     *  the back. */
+    /**
+     * On mouseReleased, find the destination port, ask the GraphModel to
+     * connect the two ports. If that connection is allowed, then construct a
+     * new FigEdge and add it to the Layer and send it to the back.
+     */
     public void mouseReleased(MouseEvent me) {
         if (me.isConsumed()) {
             return;
@@ -171,7 +190,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
         }
 
         UndoManager.getInstance().startChain();
-        
+
         int x = me.getX(), y = me.getY();
         Fig f = editor.hit(x, y);
         if (f == null) {
@@ -181,7 +200,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
         if (!(graphModel instanceof MutableGraphModel)) {
             f = null;
         }
-        
+
         MutableGraphModel mutableGraphModel = (MutableGraphModel) graphModel;
         // needs-more-work: potential class cast exception
 
@@ -204,14 +223,15 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
                 if (foundPort == startPort && _npoints >= 4) {
                     p.setSelfLoop(true);
                 }
-                //_npoints = 0;
+                // _npoints = 0;
                 editor.damageAll();
-                //editor.getSelectionManager().select(p);
+                // editor.getSelectionManager().select(p);
                 p.setComplete(true);
 
                 Class edgeClass = (Class) getArg("edgeClass");
                 if (edgeClass != null)
-                    newEdge = mutableGraphModel.connect(startPort, foundPort, edgeClass);
+                    newEdge = mutableGraphModel.connect(startPort, foundPort,
+                            edgeClass);
                 else
                     newEdge = mutableGraphModel.connect(startPort, foundPort);
 
@@ -239,9 +259,10 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
                     }
                     editor.damageAll();
 
-                    // if the new edge implements the MouseListener interface it has to receive the mouseReleased() event
+                    // if the new edge implements the MouseListener interface it
+                    // has to receive the mouseReleased() event
                     if (fe instanceof MouseListener) {
-                         ((MouseListener) fe).mouseReleased(me);
+                        ((MouseListener) fe).mouseReleased(me);
                     }
 
                     // set the new edge in place
@@ -251,7 +272,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
                     if (destFigNode != null) {
                         destFigNode.updateEdges();
                     }
-                    
+
                     endAttached(fe);
                 }
                 done();
@@ -273,14 +294,15 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
         me.consume();
     }
 
-//    protected void endAttached(FigEdge fe) {
-//    	if (wasGenerateMementos) {
-//        	UndoManager.getInstance().addMemento(new CreatePolyEdgeMemento(editor,newEdge,fe));
-//        }
-//        UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
-//        
-//    }
-    
+    // protected void endAttached(FigEdge fe) {
+    // if (wasGenerateMementos) {
+    // UndoManager.getInstance().addMemento(new
+    // CreatePolyEdgeMemento(editor,newEdge,fe));
+    // }
+    // UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
+    //        
+    // }
+
     public void mouseMoved(MouseEvent me) {
         mouseDragged(me);
     }
@@ -309,10 +331,9 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
 
     /** Internal function to see if the user clicked twice on the same spot. */
     protected boolean nearLast(int x, int y) {
-        return x > _lastX - Editor.GRIP_SIZE
-            && x < _lastX + Editor.GRIP_SIZE
-            && y > _lastY - Editor.GRIP_SIZE
-            && y < _lastY + Editor.GRIP_SIZE;
+        return x > _lastX - Editor.GRIP_SIZE && x < _lastX + Editor.GRIP_SIZE
+                && y > _lastY - Editor.GRIP_SIZE
+                && y < _lastY + Editor.GRIP_SIZE;
     }
 
     public void done() {
@@ -326,7 +347,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
         startPortFig = null;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // key events
 
     public void keyTyped(KeyEvent ke) {
@@ -336,6 +357,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
             ke.consume();
         }
     }
+
     /**
      * @return the FigNode at the source of the edge draw
      */
@@ -378,7 +400,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
     protected Object getNewEdge() {
         return newEdge;
     }
-    
+
     protected void setNewEdge(Object edge) {
         newEdge = edge;
     }

@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 // File: Handle.java
 // Classes: Handle
 // Original Author: jrobbins@ics.uci.edu
@@ -33,11 +30,13 @@ package org.tigris.gef.presentation;
 
 import java.awt.Cursor;
 
-/** This class stores the index of the handle that the user is dragging. I
- *  originally used a simple int, but some dragHandle() methods need to change
- *  the index because new handles can be added during a drag.
- *
- * @see FigPoly#moveVertex */
+/**
+ * This class stores the index of the handle that the user is dragging. I
+ * originally used a simple int, but some dragHandle() methods need to change
+ * the index because new handles can be added during a drag.
+ * 
+ * @see FigPoly#moveVertex
+ */
 
 public class Handle {
 
@@ -57,24 +56,28 @@ public class Handle {
     public static final int SOUTH = 6;
     /** The handle in the southeast corner of a FigNode */
     public static final int SOUTHEAST = 7;
-    
-  ////////////////////////////////////////////////////////////////
-  // instance variables
 
-  /** Index of the handle on some Fig that was clicked on. */
-  public int index;
+    // //////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** Instructions to be shown when the user's mouse is hovering over
-   *  or is dragging this handle */
-  public String instructions = " ";
+    /** Index of the handle on some Fig that was clicked on. */
+    public int index;
 
-  /** Mouse cursor Cursor while hovering or dragging */
-  public Cursor cursor = null;
+    /**
+     * Instructions to be shown when the user's mouse is hovering over or is
+     * dragging this handle
+     */
+    public String instructions = " ";
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    /** Mouse cursor Cursor while hovering or dragging */
+    public Cursor cursor = null;
 
-  /** Make a new Handle with the given handle index. */
-  public Handle(int ind) { index = ind; }
+    // //////////////////////////////////////////////////////////////
+    // constructors
+
+    /** Make a new Handle with the given handle index. */
+    public Handle(int ind) {
+        index = ind;
+    }
 
 } /* end class Handle */

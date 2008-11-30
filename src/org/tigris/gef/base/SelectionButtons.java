@@ -47,11 +47,11 @@ import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
 
 /**
- *
+ * 
  * @author jrobbins
  */
 public abstract class SelectionButtons extends SelectionResize {
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constants
     private static final int IMAGE_SIZE = 22;
     private static final int MARGIN = 2;
@@ -62,64 +62,69 @@ public abstract class SelectionButtons extends SelectionResize {
      */
     private static final int MAX_PLACINGS = 1;
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // static variables
     private static int numButtonClicks = 0;
-    
+
     /**
-     * The bool showRapidButtons is only false if the user selected 
-     * to never show the buttons. The user can not do this currently.
+     * The bool showRapidButtons is only false if the user selected to never
+     * show the buttons. The user can not do this currently.
      */
     private static boolean showRapidButtons = true;
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // instance variables
-    
+
     /** True if the buttons on selection are currently shown. */
     private boolean paintButtons = true;
     private int pressedButton = -1;
 
     /**
-     * Counter for counting the number of times there has been a try to place
-     * a fig.
+     * Counter for counting the number of times there has been a try to place a
+     * fig.
      */
     private int placeCounter = 0;
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constructors
 
     /**
      * Construct a new SelectionWButtons for the given Fig.
-     *
-     * @param f The given Fig.
+     * 
+     * @param f
+     *                The given Fig.
      */
     public SelectionButtons(Fig f) {
         super(f);
         paintButtons = showRapidButtons;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // static accessors
 
     /**
-     * Toggle ShowRapidButtons. Use this to switch off the displaying 
-     * of the rapid buttons completely. This may be used for a user setting,
-     * although the benefit of switching them of is debatable. 
-     * See also issue 2492.
+     * Toggle ShowRapidButtons. Use this to switch off the displaying of the
+     * rapid buttons completely. This may be used for a user setting, although
+     * the benefit of switching them of is debatable. See also issue 2492.
      */
     public static void toggleShowRapidButtons() {
         showRapidButtons = !showRapidButtons;
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // interaction utility methods
 
     /**
-     * @param x x of the selection button icon
-     * @param y y of the selection button icon
-     * @param w width of the selection button icon
-     * @param h height of the selection button icon
-     * @param r outer rectangle of the fig
+     * @param x
+     *                x of the selection button icon
+     * @param y
+     *                y of the selection button icon
+     * @param w
+     *                width of the selection button icon
+     * @param h
+     *                height of the selection button icon
+     * @param r
+     *                outer rectangle of the fig
      * @return true if the selection button above the fig was clicked
      */
     public boolean hitAbove(int x, int y, int w, int h, Rectangle r) {
@@ -127,11 +132,16 @@ public abstract class SelectionButtons extends SelectionResize {
     }
 
     /**
-     * @param x x  of the selection button icon
-     * @param y y of the selection button icon
-     * @param w width of the selection button icon
-     * @param h height of the selection button icon
-     * @param r outer rectangle of the fig
+     * @param x
+     *                x of the selection button icon
+     * @param y
+     *                y of the selection button icon
+     * @param w
+     *                width of the selection button icon
+     * @param h
+     *                height of the selection button icon
+     * @param r
+     *                outer rectangle of the fig
      * @return true if the selection button below the fig was clicked
      */
     public boolean hitBelow(int x, int y, int w, int h, Rectangle r) {
@@ -139,11 +149,16 @@ public abstract class SelectionButtons extends SelectionResize {
     }
 
     /**
-     * @param x x of the selection button icon
-     * @param y y of the selection button icon
-     * @param w width of the selection button icon
-     * @param h height of the selection button icon
-     * @param r outer rectangle of the fig
+     * @param x
+     *                x of the selection button icon
+     * @param y
+     *                y of the selection button icon
+     * @param w
+     *                width of the selection button icon
+     * @param h
+     *                height of the selection button icon
+     * @param r
+     *                outer rectangle of the fig
      * @return true if the selection button left from the fig was clicked
      */
     public boolean hitLeft(int x, int y, int w, int h, Rectangle r) {
@@ -151,11 +166,16 @@ public abstract class SelectionButtons extends SelectionResize {
     }
 
     /**
-     * @param x x of the selection button icon
-     * @param y y of the selection button icon
-     * @param w width of the selection button icon
-     * @param h height of the selection button icon
-     * @param r outer rectangle of the fig
+     * @param x
+     *                x of the selection button icon
+     * @param y
+     *                y of the selection button icon
+     * @param w
+     *                width of the selection button icon
+     * @param h
+     *                height of the selection button icon
+     * @param r
+     *                outer rectangle of the fig
      * @return true if the selection button right from the fig was clicked
      */
     public boolean hitRight(int x, int y, int w, int h, Rectangle r) {
@@ -163,29 +183,32 @@ public abstract class SelectionButtons extends SelectionResize {
     }
 
     /**
-     * @param x x of rectangle 2
-     * @param y y of rectangle 2
-     * @param w width of rectangle 2
-     * @param h height of rectangle 2
-     * @param r rectangle 1
+     * @param x
+     *                x of rectangle 2
+     * @param y
+     *                y of rectangle 2
+     * @param w
+     *                width of rectangle 2
+     * @param h
+     *                height of rectangle 2
+     * @param r
+     *                rectangle 1
      * @return true if rectangle 1 intersects with the rectangle 2
      */
     public boolean intersectsRect(Rectangle r, int x, int y, int w, int h) {
-        return !(
-		 (r.x + r.width <= x)
-		 || (r.y + r.height <= y)
-		 || (r.x >= x + w)
-		 || (r.y >= y + h));
+        return !((r.x + r.width <= x) || (r.y + r.height <= y)
+                || (r.x >= x + w) || (r.y >= y + h));
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // display methods
 
     /**
-     * Paint the handles at the four corners and midway along each edge
-     * of the bounding box.
-     *
-     * @param g The Graphics where we paint this.
+     * Paint the handles at the four corners and midway along each edge of the
+     * bounding box.
+     * 
+     * @param g
+     *                The Graphics where we paint this.
      */
     public void paint(Graphics g) {
         super.paint(g);
@@ -202,73 +225,91 @@ public abstract class SelectionButtons extends SelectionResize {
     }
 
     /**
-     * Paint the handles at the four corners and midway along each edge
-     * of the bounding box.
-     *
-     * @param g The Graphics where to paint the buttons.
+     * Paint the handles at the four corners and midway along each edge of the
+     * bounding box.
+     * 
+     * @param g
+     *                The Graphics where to paint the buttons.
      */
     public abstract void paintButtons(Graphics g);
 
     /**
-     * @param i the icon to be painted
-     * @param g the graphics to draw on
-     * @param x x for the icon
-     * @param y y for the icon
-     * @param hi the button identifier
+     * @param i
+     *                the icon to be painted
+     * @param g
+     *                the graphics to draw on
+     * @param x
+     *                x for the icon
+     * @param y
+     *                y for the icon
+     * @param hi
+     *                the button identifier
      */
     public void paintButtonAbove(Icon i, Graphics g, int x, int y, int hi) {
-        paintButton(
-		    i,
-		    g,
-		    x - i.getIconWidth() / 2,
-		    y - i.getIconHeight() - MARGIN,
-		    hi);
+        paintButton(i, g, x - i.getIconWidth() / 2, y - i.getIconHeight()
+                - MARGIN, hi);
     }
 
     /**
-     * @param i the icon to be painted
-     * @param g the graphics to draw on
-     * @param x x for the icon
-     * @param y y for the icon
-     * @param hi the button identifier
+     * @param i
+     *                the icon to be painted
+     * @param g
+     *                the graphics to draw on
+     * @param x
+     *                x for the icon
+     * @param y
+     *                y for the icon
+     * @param hi
+     *                the button identifier
      */
     public void paintButtonBelow(Icon i, Graphics g, int x, int y, int hi) {
         paintButton(i, g, x - i.getIconWidth() / 2, y + MARGIN, hi);
     }
 
     /**
-     * @param i the icon to be painted
-     * @param g the graphics to draw on
-     * @param x x for the icon
-     * @param y y for the icon
-     * @param hi the button identifier
+     * @param i
+     *                the icon to be painted
+     * @param g
+     *                the graphics to draw on
+     * @param x
+     *                x for the icon
+     * @param y
+     *                y for the icon
+     * @param hi
+     *                the button identifier
      */
     public void paintButtonLeft(Icon i, Graphics g, int x, int y, int hi) {
-        paintButton(
-		    i,
-		    g,
-		    x - i.getIconWidth() - MARGIN,
-		    y - i.getIconHeight() / 2,
-		    hi);
+        paintButton(i, g, x - i.getIconWidth() - MARGIN, y - i.getIconHeight()
+                / 2, hi);
     }
 
     /**
-     * @param i the icon to be painted
-     * @param g the graphics to draw on
-     * @param x x for the icon
-     * @param y y for the icon
-     * @param hi the button identifier
+     * @param i
+     *                the icon to be painted
+     * @param g
+     *                the graphics to draw on
+     * @param x
+     *                x for the icon
+     * @param y
+     *                y for the icon
+     * @param hi
+     *                the button identifier
      */
     public void paintButtonRight(Icon i, Graphics g, int x, int y, int hi) {
         paintButton(i, g, x + MARGIN, y - i.getIconHeight() / 2, hi);
     }
 
     /**
-     * @param i the icon to be painted
-     * @param g the graphics to draw on
-     * @param x x for the icon
-     * @param y y for the icon
-     * @param hi the button identifier
+     * @param i
+     *                the icon to be painted
+     * @param g
+     *                the graphics to draw on
+     * @param x
+     *                x for the icon
+     * @param y
+     *                y for the icon
+     * @param hi
+     *                the button identifier
      */
     public void paintButton(Icon i, Graphics g, int x, int y, int hi) {
         int w = i.getIconWidth() + 4;
@@ -303,21 +344,23 @@ public abstract class SelectionButtons extends SelectionResize {
      */
     public Rectangle getBounds() {
         Fig content = getContent();
-        return new Rectangle(
-                 content.getX() - IMAGE_SIZE * 2,
-                 content.getY() - IMAGE_SIZE * 2,
-                 content.getWidth() + IMAGE_SIZE * 4,
-			     content.getHeight() + IMAGE_SIZE * 4);
+        return new Rectangle(content.getX() - IMAGE_SIZE * 2, content.getY()
+                - IMAGE_SIZE * 2, content.getWidth() + IMAGE_SIZE * 4, content
+                .getHeight()
+                + IMAGE_SIZE * 4);
     }
 
-    /** Dont show buttons while the user is moving the Class.  Called
-     *  from FigClass when it is translated. */
+    /**
+     * Dont show buttons while the user is moving the Class. Called from
+     * FigClass when it is translated.
+     */
     public void hideButtons() {
         paintButtons = false;
     }
 
     /**
-     * @param buttonCode the button identifier
+     * @param buttonCode
+     *                the button identifier
      */
     public void buttonClicked(int buttonCode) {
         Fig content = getContent();
@@ -338,20 +381,17 @@ public abstract class SelectionButtons extends SelectionResize {
         if (!mgm.canAddNode(newNode))
             return;
         GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
-        LayerPerspective lay =
-            (LayerPerspective) ce.getLayerManager().getActiveLayer();
+        LayerPerspective lay = (LayerPerspective) ce.getLayerManager()
+                .getActiveLayer();
         Fig newFC = null;
         if (buttonCode != 14) {
             newFC = renderer.getFigNodeFor(gm, lay, newNode, null);
         }
 
         // calculate the position of the newly created fig.
-        Rectangle outputRect =
-            new Rectangle(
-			  Math.max(0, content.getX() - 200),
-			  Math.max(0, content.getY() - 200),
-			  content.getWidth() + 400,
-			  content.getHeight() + 400);
+        Rectangle outputRect = new Rectangle(Math.max(0, content.getX() - 200),
+                Math.max(0, content.getY() - 200), content.getWidth() + 400,
+                content.getHeight() + 400);
 
         // handle the case that it is not a self association
         if (buttonCode >= 10 && buttonCode <= 13) {
@@ -391,11 +431,8 @@ public abstract class SelectionButtons extends SelectionResize {
         } else {
             newFC = content;
             Point fcCenter = content.getCenter();
-            Point centerRight =
-                new Point(
-			  (int) (fcCenter.x
-				 + content.getSize().getWidth() / 2),
-			  fcCenter.y);
+            Point centerRight = new Point((int) (fcCenter.x + content.getSize()
+                    .getWidth() / 2), fcCenter.y);
 
             int yoffset = (int) ((content.getSize().getHeight() / 2));
             edgeShape.addPoint(fcCenter.x, fcCenter.y);
@@ -408,11 +445,16 @@ public abstract class SelectionButtons extends SelectionResize {
         // create the new edge (modelelement) between newNode and the
         // owner of _content
         Object newEdge = null;
-        if (buttonCode == 10) newEdge = createEdgeAbove(mgm, newNode);
-        else if (buttonCode == 11) newEdge = createEdgeUnder(mgm, newNode);
-        else if (buttonCode == 12) newEdge = createEdgeLeft(mgm, newNode);
-        else if (buttonCode == 13) newEdge = createEdgeRight(mgm, newNode);
-        else if (buttonCode == 14) newEdge = createEdgeToSelf(mgm);
+        if (buttonCode == 10)
+            newEdge = createEdgeAbove(mgm, newNode);
+        else if (buttonCode == 11)
+            newEdge = createEdgeUnder(mgm, newNode);
+        else if (buttonCode == 12)
+            newEdge = createEdgeLeft(mgm, newNode);
+        else if (buttonCode == 13)
+            newEdge = createEdgeRight(mgm, newNode);
+        else if (buttonCode == 14)
+            newEdge = createEdgeToSelf(mgm);
 
         // place the edge on the layer and update the diagram
         FigEdge fe = (FigEdge) lay.presentationFor(newEdge);
@@ -430,7 +472,7 @@ public abstract class SelectionButtons extends SelectionResize {
 
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // event handlers
 
     /**
@@ -483,28 +525,29 @@ public abstract class SelectionButtons extends SelectionResize {
     }
 
     /**
-     * Places a fig on the canvas in the correct position. Takes a
-     * coordinate pair x,y and a rectangle that should be avoided
-     * because there can be other figures. If the place action results
-     * in x.y coordinates for the fig to place that are not allowed
-     * (beyond the borders of the diagram), the operation is repeated
-     * with corrected parameters. If it is not possible to add the fig
-     * because there are allready to many figs, false is returned and
-     * the fig is not added.
-     * @param figToPlace The figure one wishes to place on a diagram
-     * @param layerToPlaceOn The layer that contains the figs
-     * @param x The x coordinate where one wishes to place the fig
-     * @param y The y coordinate where one wishes to place the fig
-     * @param bumpRect The rectangle that should be avoided since
-     * there can be other figs.
+     * Places a fig on the canvas in the correct position. Takes a coordinate
+     * pair x,y and a rectangle that should be avoided because there can be
+     * other figures. If the place action results in x.y coordinates for the fig
+     * to place that are not allowed (beyond the borders of the diagram), the
+     * operation is repeated with corrected parameters. If it is not possible to
+     * add the fig because there are allready to many figs, false is returned
+     * and the fig is not added.
+     * 
+     * @param figToPlace
+     *                The figure one wishes to place on a diagram
+     * @param layerToPlaceOn
+     *                The layer that contains the figs
+     * @param x
+     *                The x coordinate where one wishes to place the fig
+     * @param y
+     *                The y coordinate where one wishes to place the fig
+     * @param bumpRect
+     *                The rectangle that should be avoided since there can be
+     *                other figs.
      * @return boolean false if the fig is not placed.
      */
-    protected boolean placeFig(
-			       Fig figToPlace,
-			       LayerPerspective layerToPlaceOn,
-			       int x,
-			       int y,
-			       Rectangle bumpRect) {
+    protected boolean placeFig(Fig figToPlace, LayerPerspective layerToPlaceOn,
+            int x, int y, Rectangle bumpRect) {
         if (placeCounter > MAX_PLACINGS) {
             return false;
         }
@@ -514,54 +557,44 @@ public abstract class SelectionButtons extends SelectionResize {
         layerToPlaceOn.bumpOffOtherNodesIn(figToPlace, bumpRect, false, false);
         Fig content = getContent();
         if (figToPlace.getX() < 0) {
-            return placeFig(
-			    figToPlace,
-			    layerToPlaceOn,
-			    content.getX() + content.getWidth() + figToPlace.getWidth() + 100,
-			    figToPlace.getY(),
-			    bumpRect);
+            return placeFig(figToPlace, layerToPlaceOn, content.getX()
+                    + content.getWidth() + figToPlace.getWidth() + 100,
+                    figToPlace.getY(), bumpRect);
         } else if (figToPlace.getX() + figToPlace.getWidth() >= 6000) {
-            return placeFig(
-			    figToPlace,
-			    layerToPlaceOn,
-			    (content.getX() - figToPlace.getWidth() - 100),
-			    figToPlace.getY(),
-			    bumpRect);
+            return placeFig(figToPlace, layerToPlaceOn, (content.getX()
+                    - figToPlace.getWidth() - 100), figToPlace.getY(), bumpRect);
         } else if (figToPlace.getY() + figToPlace.getHeight() >= 6000) {
-            return placeFig(
-			    figToPlace,
-			    layerToPlaceOn,
-			    figToPlace.getX(),
-			    (content.getY() - figToPlace.getHeight() - 100),
-			    bumpRect);
+            return placeFig(figToPlace, layerToPlaceOn, figToPlace.getX(),
+                    (content.getY() - figToPlace.getHeight() - 100), bumpRect);
         } else if (figToPlace.getY() < 0) {
-            return placeFig(
-			    figToPlace,
-			    layerToPlaceOn,
-			    figToPlace.getX(),
-			    content.getY() + content.getHeight() + figToPlace.getHeight() + 100,
-			    bumpRect);
+            return placeFig(figToPlace, layerToPlaceOn, figToPlace.getX(),
+                    content.getY() + content.getHeight()
+                            + figToPlace.getHeight() + 100, bumpRect);
         }
         return true;
     }
 
     /**
      * Implementors should return a new node for adding via the buttons.
-     *
-     * @param buttonCode the code (identifier) for the selection button
-     *                   that was hit
+     * 
+     * @param buttonCode
+     *                the code (identifier) for the selection button that was
+     *                hit
      * @return a newly created UML element
      */
     protected abstract Object getNewNode(int buttonCode);
 
     /**
-     * Subclasses should override this method if they want to provide
-     * a quickbutton above the _content fig. This method returns the
-     * edge (modelelement) that should be drawn in the case such a
-     * quickbutton was pressed.
-     * @param gm the graphmodel
-     * @param newNode The node (modelelement) created by pressing the
-     * quickbutton
+     * Subclasses should override this method if they want to provide a
+     * quickbutton above the _content fig. This method returns the edge
+     * (modelelement) that should be drawn in the case such a quickbutton was
+     * pressed.
+     * 
+     * @param gm
+     *                the graphmodel
+     * @param newNode
+     *                The node (modelelement) created by pressing the
+     *                quickbutton
      * @return Object The new edge
      */
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
@@ -569,13 +602,16 @@ public abstract class SelectionButtons extends SelectionResize {
     }
 
     /**
-     * Subclasses should override this method if they want to provide
-     * a quickbutton at the left of the _content fig. This method
-     * returns the edge (modelelement) that should be drawn in the
-     * case such a quickbutton was pressed.
-     * @param gm the graphmodel
-     * @param newNode The node (modelelement) created by pressing the
-     * quickbutton
+     * Subclasses should override this method if they want to provide a
+     * quickbutton at the left of the _content fig. This method returns the edge
+     * (modelelement) that should be drawn in the case such a quickbutton was
+     * pressed.
+     * 
+     * @param gm
+     *                the graphmodel
+     * @param newNode
+     *                The node (modelelement) created by pressing the
+     *                quickbutton
      * @return Object The new edge
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
@@ -583,13 +619,16 @@ public abstract class SelectionButtons extends SelectionResize {
     }
 
     /**
-     * Subclasses should override this method if they want to provide
-     * a quickbutton at the right of the _content fig. This method
-     * returns the edge (modelelement) that should be drawn in the
-     * case such a quickbutton was pressed.
-     * @param gm the graphmodel
-     * @param newNode The node (modelelement) created by pressing the
-     * quickbutton
+     * Subclasses should override this method if they want to provide a
+     * quickbutton at the right of the _content fig. This method returns the
+     * edge (modelelement) that should be drawn in the case such a quickbutton
+     * was pressed.
+     * 
+     * @param gm
+     *                the graphmodel
+     * @param newNode
+     *                The node (modelelement) created by pressing the
+     *                quickbutton
      * @return Object The new edge
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
@@ -597,13 +636,16 @@ public abstract class SelectionButtons extends SelectionResize {
     }
 
     /**
-     * Subclasses should override this method if they want to provide
-     * a quickbutton under the _content fig. This method returns the
-     * edge (modelelement) that should be drawn in the case such a
-     * quickbutton was pressed.
-     * @param gm the graphmodel
-     * @param newNode The node (modelelement) created by pressing the
-     * quickbutton
+     * Subclasses should override this method if they want to provide a
+     * quickbutton under the _content fig. This method returns the edge
+     * (modelelement) that should be drawn in the case such a quickbutton was
+     * pressed.
+     * 
+     * @param gm
+     *                the graphmodel
+     * @param newNode
+     *                The node (modelelement) created by pressing the
+     *                quickbutton
      * @return Object The new edge
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
@@ -611,11 +653,13 @@ public abstract class SelectionButtons extends SelectionResize {
     }
 
     /**
-     * Subclasses should override this method if they want to provide
-     * a quickbutton for selfassociation. This method returns the edge
-     * (modelelement) that should be drawn in the case such a
-     * quickbutton was pressed.
-     * @param gm the graphmodel
+     * Subclasses should override this method if they want to provide a
+     * quickbutton for selfassociation. This method returns the edge
+     * (modelelement) that should be drawn in the case such a quickbutton was
+     * pressed.
+     * 
+     * @param gm
+     *                the graphmodel
      * @return Object The new edge
      */
     protected Object createEdgeToSelf(MutableGraphModel gm) {
@@ -623,7 +667,8 @@ public abstract class SelectionButtons extends SelectionResize {
     }
 
     /**
-     * @param paint The _paintButtons to set.
+     * @param paint
+     *                The _paintButtons to set.
      */
     protected void setPaintButtons(boolean paint) {
         this.paintButtons = paint;
@@ -637,7 +682,8 @@ public abstract class SelectionButtons extends SelectionResize {
     }
 
     /**
-     * @param pressed the identifier for the pressed Button
+     * @param pressed
+     *                the identifier for the pressed Button
      */
     protected void setPressedButton(int pressed) {
         this.pressedButton = pressed;

@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: FigRRect.java
 // Classes: FigRRect
 // Original Author: ics125 spring 1996
@@ -40,41 +38,44 @@ import org.tigris.gef.properties.*;
 public class FigRRect extends FigRect {
 
     private static final long serialVersionUID = -4984437962118691063L;
-    
+
     protected int _radius = 16;
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // static initializer
     static {
         PropCategoryManager.categorizeProperty("Geometry", "cornerRadius");
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // constructors
-
 
     /** Construct a new FigRRect w/ the given position and size */
     public FigRRect(int x, int y, int w, int h) {
         super(x, y, w, h);
     }
 
-    /** Construct a new FigRRect w/ the given position, size, line color,
-     * and fill color*/
-    public FigRRect(int x, int y, int w, int h,Color lineColor,Color fillColor) {
+    /**
+     * Construct a new FigRRect w/ the given position, size, line color, and
+     * fill color
+     */
+    public FigRRect(int x, int y, int w, int h, Color lineColor, Color fillColor) {
         super(x, y, w, h, lineColor, fillColor);
     }
 
-    /** get and set the "roundness" of the corners.
-     * USED by PGML.tee
+    /**
+     * get and set the "roundness" of the corners. USED by PGML.tee
      */
     public int getCornerRadius() {
         return _radius;
     }
-    public void setCornerRadius(int r) { _radius = r; }
+
+    public void setCornerRadius(int r) {
+        _radius = r;
+    }
 
     /**
-     * Paint this FigRRect.
-     * Dashed lines aren't currently handled.
+     * Paint this FigRRect. Dashed lines aren't currently handled.
      */
     public void paint(Graphics g) {
         if (_filled && _fillColor != null) {
@@ -92,15 +93,16 @@ public class FigRRect extends FigRect {
 
     /**
      * Paint a filled rounded rectangle (with a narrow line or no line)
+     * 
      * @param g
      */
     private void drawFilledRRect(Graphics g) {
-        //assert _lineWidth == 0 || _lineWidth == 1 || _lineColor == null
-        //assert filled && filledColor != null
+        // assert _lineWidth == 0 || _lineWidth == 1 || _lineColor == null
+        // assert filled && filledColor != null
         // Do the actual fill color
         g.setColor(_fillColor);
         g.fillRoundRect(_x, _y, _w, _h, _radius, _radius);
-        
+
         if (_lineColor != null && _lineWidth == 1) {
             // If we're filled with a narrow border then draw
             // the border over the already filled area.
@@ -111,31 +113,28 @@ public class FigRRect extends FigRect {
 
     /**
      * Paint a filled rounded rectangle with a wide line
+     * 
      * @param g
      */
     private void drawFilledRRectWithWideLine(Graphics g) {
-        //assert _lineWidth > 1 && _lineColor != null
-        //assert filled && filledColor != null
+        // assert _lineWidth > 1 && _lineColor != null
+        // assert filled && filledColor != null
         // If we're filled with a wide border then fill
         // the entire rectangle with the border color and then
         // recalculate area for the actual fill.
-        int lineWidth2 = _lineWidth*2;
+        int lineWidth2 = _lineWidth * 2;
         g.setColor(_lineColor);
         g.fillRoundRect(_x, _y, _w, _h, _radius, _radius);
-        
+
         // Do the actual fill color
         g.setColor(_fillColor);
-        g.fillRoundRect(
-                _x + _lineWidth,
-                _y + _lineWidth,
-                _w - lineWidth2,
-                _h - lineWidth2,
-                _radius,
-                _radius);
+        g.fillRoundRect(_x + _lineWidth, _y + _lineWidth, _w - lineWidth2, _h
+                - lineWidth2, _radius, _radius);
     }
-    
+
     /**
      * Paint an unfilled rounded rectangle (with a narrow line or no line)
+     * 
      * @param g
      */
     private void drawEmptyRRect(Graphics g) {
@@ -149,6 +148,7 @@ public class FigRRect extends FigRect {
 
     /**
      * Paint an unfilled rounded rectangle with a wide line
+     * 
      * @param g
      */
     private void drawEmptyRRectWithWideLine(Graphics g) {
@@ -160,7 +160,7 @@ public class FigRRect extends FigRect {
             int ww = _w;
             int hh = _h;
             g.setColor(_lineColor);
-            for (int i=0; i < _lineWidth; ++i) {
+            for (int i = 0; i < _lineWidth; ++i) {
                 g.drawRoundRect(xx++, yy++, ww, hh, _radius, _radius);
                 ww -= 2;
                 hh -= 2;
