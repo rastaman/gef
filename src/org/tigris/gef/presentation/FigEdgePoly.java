@@ -58,11 +58,14 @@ public class FigEdgePoly extends FigEdge {
      * 
      */
     private static final long serialVersionUID = -5534202173807357676L;
+    
     /**
      * True if the edge has been laid out automatically once. It will not be
      * done automatically again since the user may have edited the edge and I
-     * dont want to undo that work.
+     * don't want to undo that work.
+     * @deprecated in 0.13 use getter/setter
      */
+    @Deprecated
     protected boolean _initiallyLaidOut;
 
     /**
