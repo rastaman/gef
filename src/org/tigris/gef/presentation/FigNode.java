@@ -114,7 +114,7 @@ public class FigNode extends FigGroup implements GraphNode, MouseListener {
     /**
      * A list of FigEdges that need to be rerouted when this FigNode moves.
      */
-    private ArrayList figEdges = new ArrayList();
+    private ArrayList<FigEdge> figEdges = new ArrayList<FigEdge>();
 
     private int shadowSize = 0;
 
@@ -220,19 +220,20 @@ public class FigNode extends FigGroup implements GraphNode, MouseListener {
         figEdges.remove(fe);
     }
 
-    public Collection getFigEdges(Collection c) {
-        if (c == null)
+    public Collection<FigEdge> getFigEdges(Collection<FigEdge> c) {
+        if (c == null) {
             return figEdges;
+        }
         c.addAll(figEdges);
         return c;
     }
 
-    public List getFigEdges() {
-        return (List) (figEdges.clone());
+    public List<FigEdge> getFigEdges() {
+        return (List<FigEdge>) (figEdges.clone());
     }
 
-    public List getEdges() {
-        return (List) (figEdges.clone());
+    public List<FigEdge> getEdges() {
+        return (List<FigEdge>) (figEdges.clone());
     }
 
     /**
