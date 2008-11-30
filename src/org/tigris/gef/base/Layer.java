@@ -83,47 +83,49 @@ public abstract class Layer implements java.io.Serializable {
     // instance variables
 
     /** The name of the layer as it should appear in a menu. */
-    private String _name = "aLayer";
+    private String name = "aLayer";
 
     /** The type of FigNodes that should appear in this layer. */
-    private String _type = "aLayer";
+    private String type = "aLayer";
 
     /**
      * Does the user not want to see this Layer right now? Needs-More-Work.
      */
-    private boolean _hidden = false;
+    private boolean hidden = false;
 
     /**
      * Is this Layer demphasized by making everything in it gray?
      * Needs-More-Work.
      */
-    private boolean _grayed = false;
+    private boolean grayed = false;
 
     /**
      * Is this Layer locked so that the user can not modify it? Needs-More-Work.
      */
-    private boolean _locked = false;
+    private boolean locked = false;
 
     /**
      * Should this layer alwys stay on top (i.e. always be the active layer)?
      */
-    private boolean _alwaysOnTop = false;
+    private boolean alwaysOnTop = false;
     /**
      * The current zooming scale this layer is displayed in
      */
-    private double _scale = 1;
+    private double scale = 1;
 
     /**
      * Should the user be able to hide, lock, or gray this layer?
      * Needs-More-Work.
+     * @deprecated use getOnMenu
      */
+    @Deprecated
     protected boolean _onMenu = false;
 
     /**
      * A list of the Editors that are displaying this Layer. Use addEditor(),
      * removeEditor() and getEditors() to access this.
      */
-    private transient List _editors = new ArrayList();
+    private transient List editors = new ArrayList();
 
     // //////////////////////////////////////////////////////////////
     // constructors
@@ -137,13 +139,13 @@ public abstract class Layer implements java.io.Serializable {
 
     /** Construct a new layer with the given name. */
     public Layer(String name) {
-        _name = name;
+        this.name = name;
     }
 
     /** Construct a new layer with the given name and type. */
     public Layer(String name, String type) {
-        _name = name;
-        _type = type;
+        this.name = name;
+        this.type = type;
     }
 
     // TODO - I'd query whether this is the best way to write a clone
@@ -161,15 +163,15 @@ public abstract class Layer implements java.io.Serializable {
         } catch (java.lang.InstantiationException ignore) {
             return null;
         }
-        lay._name = _name;
-        lay._type = _type;
-        lay._onMenu = _onMenu;
-        lay._grayed = _grayed;
-        lay.setHidden(_hidden);
-        lay.setGrayed(_grayed);
-        lay.setScale(_scale);
-        lay.setLocked(_locked);
-        lay.setAlwaysOnTop(_alwaysOnTop);
+        lay.name = this.name;
+        lay.type = this.type;
+        lay._onMenu = this._onMenu;
+        lay.grayed = this.grayed;
+        lay.setHidden(this.hidden);
+        lay.setGrayed(this.grayed);
+        lay.setScale(this.scale);
+        lay.setLocked(this.locked);
+        lay.setAlwaysOnTop(this.alwaysOnTop);
         return lay;
     }
 
@@ -178,58 +180,58 @@ public abstract class Layer implements java.io.Serializable {
 
     /** Reply a string useful for debugging */
     public String toString() {
-        return super.toString() + "[" + _name + "]";
+        return super.toString() + "[" + name + "]";
     }
 
     /** Get and set methods */
     public String getName() {
-        if (_name == null)
+        if (name == null)
             return "";
-        return _name;
+        return name;
     }
 
     public void setName(String n) {
-        _name = n;
+        name = n;
     }
 
     public void setHidden(boolean b) {
-        _hidden = b;
+        hidden = b;
     }
 
     public boolean getHidden() {
-        return _hidden;
+        return hidden;
     }
 
     public void setGrayed(boolean b) {
-        _grayed = b;
+        grayed = b;
     }
 
     public boolean getGrayed() {
-        return _grayed;
+        return grayed;
     }
 
     public void setLocked(boolean b) {
-        _locked = b;
+        locked = b;
     }
 
     public boolean getLocked() {
-        return _locked;
+        return locked;
     }
 
     public void setAlwaysOnTop(boolean onTop) {
-        _alwaysOnTop = onTop;
+        alwaysOnTop = onTop;
     }
 
     public boolean isAlwaysOnTop() {
-        return _alwaysOnTop;
+        return alwaysOnTop;
     }
 
     public void setScale(double scale) {
-        _scale = scale;
+        scale = scale;
     }
 
     public double getScale() {
-        return _scale;
+        return scale;
     }
 
     public void setOnMenu(boolean b) {
@@ -285,7 +287,7 @@ public abstract class Layer implements java.io.Serializable {
 
     /** Return the list of Editors that are showing this Layer. */
     public List getEditors() {
-        return new ArrayList(_editors);
+        return new ArrayList(editors);
     }
 
     /**
@@ -350,11 +352,11 @@ public abstract class Layer implements java.io.Serializable {
      * kinds of node FigNodes will be added to that view.
      */
     public String getPerspectiveType() {
-        return _type;
+        return type;
     }
 
     public void setPerspectiveType(String t) {
-        _type = t;
+        type = t;
     }
 
     /**
@@ -401,12 +403,14 @@ public abstract class Layer implements java.io.Serializable {
      * here if the Layer is not hidden.
      */
     public void paint(Graphics g, FigPainter painter) {
-        if (_hidden)
+        if (hidden) {
             return;
-        if (!_grayed)
+        }
+        if (!grayed) {
             paintContents(g, painter);
-        else
+        } else {
             paintGrayContents(g);
+        }
     }
 
     /**
@@ -460,12 +464,12 @@ public abstract class Layer implements java.io.Serializable {
      * Editors showing this Layer that they should record the damage.
      */
     public void damageAll() {
-        if (_editors == null)
+        if (editors == null)
             return;
 
-        int count = _editors.size();
+        int count = editors.size();
         for (int editorIndex = 0; editorIndex < count; ++editorIndex) {
-            Editor editor = (Editor) _editors.get(editorIndex);
+            Editor editor = (Editor) editors.get(editorIndex);
             editor.damageAll();
         }
     }
@@ -475,38 +479,42 @@ public abstract class Layer implements java.io.Serializable {
      * deselect the Fig.
      */
     public void deleted(Fig f) {
-        if (_editors == null)
+        if (editors == null) {
             return;
+        }
 
-        int editorCount = _editors.size();
+        int editorCount = editors.size();
         for (int editorIndex = 0; editorIndex < editorCount; ++editorIndex) {
-            Editor editor = (Editor) _editors.get(editorIndex);
+            Editor editor = (Editor) editors.get(editorIndex);
             editor.removed(f);
         }
     }
 
     /** Ask all Editors to completely redraw their display. */
     public void refreshEditors() {
-        if (_editors == null)
+        if (editors == null) {
             return;
-        int editorCount = _editors.size();
+        }
+        int editorCount = editors.size();
         for (int editorIndex = 0; editorIndex < editorCount; ++editorIndex) {
-            Editor editor = (Editor) _editors.get(editorIndex);
+            Editor editor = (Editor) editors.get(editorIndex);
             editor.damageAll();
         }
     }
 
     /** Add an Editor to the list of Editors showing this Layer. */
     public void addEditor(Editor ed) {
-        if (_editors == null)
-            _editors = new ArrayList();
-        _editors.add(ed);
+        if (editors == null) {
+            editors = new ArrayList();
+        }
+        editors.add(ed);
     }
 
     public void removeEditor(Editor ed) {
-        if (_editors == null)
+        if (editors == null) {
             return;
-        _editors.remove(ed);
+        }
+        editors.remove(ed);
     }
 
     public void preSave() {
