@@ -1,11 +1,10 @@
-GEF vers 0.12.3 - 3 Jan 2007
+GEF vers 0.13 milestone 1 - 23 Nov 2008
 
 Resolved Issues
 ===============
 
-35  Drop VectorSet
-171 Missing Cancel button on diagram exceeds the page dialog box
-289 UndoManager not in "UndoInProgress" mode when needed
-291 Provide a CmdCreateNode constructor taking an icon
-292 ModeModify does not restrict to snap
-294 Undo of Fig Placement/Removal
+319 Fig Constructor calls setOwner() with null
+320 FigEdge.intersects broken - causes redraw failures
+321 Update SvgWriter to SVG 1.1
+324 Allow painting of path item connections
+325 Provide default editor modes
