@@ -106,12 +106,12 @@ public abstract class Fig implements GraphicElement, Cloneable,
      * The Layer that this Fig is in. Each Fig can be in exactly one Layer, but
      * there can be multiple Editors on a given Layer.
      */
-    private transient Layer _layer = null;
+    private transient Layer layer = null;
 
     /**
      * True if this object is locked and cannot be moved by the user.
      */
-    private boolean _locked = false;
+    private boolean locked = false;
 
     /**
      * Owners are underlying objects that "own" the graphical Fig's that
@@ -122,7 +122,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
      * @see FigNode#setOwner
      * @see FigNode#bindPort
      */
-    private transient Object _owner;
+    private transient Object owner;
 
     /**
      * X coordinate of the Fig's bounding box. It is the responsibility of
@@ -151,7 +151,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
     /**
      * Name of the resource being basis to this figs localization.
      */
-    private String _resource = "";
+    private String resource = "";
 
     /**
      * Outline color of fig object.
@@ -165,6 +165,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
 
     /**
      * Thickness of line around object, for now limited to 0 or 1.
+     * @deprecated will become private use getLineWidth()
      */
     int _lineWidth = 1;
 
@@ -272,7 +273,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
      *             have different locales.
      */
     public void setResource(String resource) {
-        _resource = resource;
+        this.resource = resource;
     }
 
     /**
@@ -280,7 +281,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
      *             have different locales.
      */
     public String getResource() {
-        return _resource;
+        return resource;
     }
 
     // --------------------------------
@@ -752,9 +753,9 @@ public abstract class Fig implements GraphicElement, Cloneable,
             annotation.removeFromDiagram();
         }
 
-        if (_layer != null) {
-            Layer oldLayer = _layer;
-            _layer.remove(this);
+        if (layer != null) {
+            Layer oldLayer = layer;
+            layer.remove(this);
             oldLayer.deleted(this);
         }
 
@@ -1216,7 +1217,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
     }
 
     final public Layer getLayer() {
-        return _layer;
+        return layer;
     }
 
     /**
@@ -1229,7 +1230,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
     }
 
     final public boolean getLocked() {
-        return _locked;
+        return locked;
     }
 
     /**
@@ -1250,7 +1251,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
      * Return the model element that this Fig represents. USED BY PGML.tee
      */
     public Object getOwner() {
-        return _owner;
+        return owner;
     }
 
     /**
@@ -1301,24 +1302,15 @@ public abstract class Fig implements GraphicElement, Cloneable,
         return "";
     }
 
-    /**
-     * Returns the single flag of the Fig
-     * 
-     * @deprecated 0.11.1 I can find no use for this.
-     */
-    final public boolean getSingle() {
-        return false;
-    }
-
     /** Returns the size of the Fig. */
     public Dimension getSize() {
         return new Dimension(_w, _h);
     }
 
     public String getTipString(MouseEvent me) {
-        if (_owner == null)
+        if (owner == null)
             return toString();
-        return _owner.toString();
+        return owner.toString();
     }
 
     final public Rectangle getTrapRect() {
@@ -1683,8 +1675,8 @@ public abstract class Fig implements GraphicElement, Cloneable,
      * USED BY PGML.tee
      */
     public void setEnclosingFig(Fig f) {
-        if (f != null && f != getEnclosingFig() && _layer != null) {
-            _layer.bringInFrontOf(this, f);
+        if (f != null && f != getEnclosingFig() && layer != null) {
+            layer.bringInFrontOf(this, f);
             damage();
         }
     }
@@ -1709,8 +1701,8 @@ public abstract class Fig implements GraphicElement, Cloneable,
      * "layer".
      */
     public void setLayer(Layer lay) {
-        firePropChange("layer", _layer, lay);
-        _layer = lay;
+        firePropChange("layer", layer, lay);
+        layer = lay;
     }
 
     /**
@@ -1818,8 +1810,8 @@ public abstract class Fig implements GraphicElement, Cloneable,
      * PropertyChangeEvent "locked".
      */
     final public void setLocked(boolean b) {
-        firePropChange("locked", _locked, b);
-        _locked = b;
+        firePropChange("locked", locked, b);
+        locked = b;
     }
 
     public void setNumPoints(int npoints) {
@@ -1829,8 +1821,8 @@ public abstract class Fig implements GraphicElement, Cloneable,
      * Sets the owner object of this Fig. Fires PropertyChangeEvent "owner"
      */
     public void setOwner(Object own) {
-        firePropChange("owner", _owner, own);
-        _owner = own;
+        firePropChange("owner", owner, own);
+        owner = own;
     }
 
     /** Get and set the points along a path for Figs that are path-like. */
