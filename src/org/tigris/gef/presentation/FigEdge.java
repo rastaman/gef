@@ -8,7 +8,6 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
@@ -46,25 +45,32 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     /**
      * True if the FigEdge should be drawn from the nearest point of each port
      * Fig.
+     * @deprecated in 0.13 will be made private, use getter/setter
      */
     protected boolean _useNearest = false;
 
-    /** True when the FigEdgde should be drawn highlighted. */
+    /** True when the FigEdgde should be drawn highlighted.
+     * @deprecated in 0.13 will be made private, use getter/setter
+     */
     protected boolean _highlight = false;
 
-    /** The ArrowHead at the start of the line */
+    /** The ArrowHead at the start of the line
+     * @deprecated in 0.13 will be made private, use getter/setter
+     */
     protected ArrowHead _arrowHeadStart = ArrowHeadNone.TheInstance;
 
-    /** The ArrowHead at the end of the line */
+    /** The ArrowHead at the end of the line
+     * @deprecated in 0.13 will be made private, use getter/setter
+     */
     protected ArrowHead _arrowHeadEnd = ArrowHeadNone.TheInstance;
 
     /**
      * The items that are accumulated along the path, a vector.
      * 
-     * @deprecated use getPathItems()
+     * @deprecated in 0.13 will become private use getPathItems()
      */
     @Deprecated
-    protected Vector _pathItems = new Vector();
+    protected Vector<PathItem> _pathItems = new Vector<PathItem>();
 
     private class PathItem implements java.io.Serializable {
 
