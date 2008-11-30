@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
@@ -185,7 +186,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
 
                 public String toString() {
                     return (isStartChain() ? "*" : " ")
-                            + "ComputeRouteMemento " + points;
+                            + "ComputeRouteMemento " + Arrays.toString(points);
                 }
             };
             UndoManager.getInstance().addMemento(memento);

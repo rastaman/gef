@@ -114,7 +114,7 @@ public class PropSheetCategory extends PropSheet {
     }
 
     public void setCategory(String cat) {
-        if (cat == _category)
+        if (_category.equals(cat))
             return;
         _category = cat;
         setTabName(cat);

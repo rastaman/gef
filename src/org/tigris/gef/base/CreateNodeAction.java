@@ -180,6 +180,7 @@ public class CreateNodeAction extends UndoableAction implements GraphFactory {
         Object newNode;
         Object nodeType = getArg("className", DEFAULT_NODE_CLASS);
         if (nodeType instanceof Action) {
+            // TODO: This is a NPE. What is the purpose of this?
             Action a = null;
             a.actionPerformed(null);
             newNode = a.getValue("node");
