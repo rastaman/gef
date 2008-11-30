@@ -53,9 +53,9 @@ public class FigGroup extends Fig {
     /**
      * The Fig's contained in this FigGroup
      */
-    private List figs;
+    private List<Fig> figs;
 
-    private int _extraFrameSpace = 0;
+    private int extraFrameSpace = 0;
 
     /** Color of the actual text characters. */
     private Color textColor = Color.black;
@@ -85,11 +85,11 @@ public class FigGroup extends Fig {
     /** Construct a new FigGroup that holds no Figs. */
     public FigGroup() {
         super();
-        figs = Collections.synchronizedList(new ArrayList());
+        figs = Collections.synchronizedList(new ArrayList<Fig>());
     }
 
     /** Construct a new FigGroup that holds the given Figs. */
-    public FigGroup(final List figs) {
+    public FigGroup(final List<Fig> figs) {
         super();
         this.figs = Collections.synchronizedList(figs);
         calcBounds();
@@ -131,7 +131,7 @@ public class FigGroup extends Fig {
      * @param figs
      *                Collection of figs to be added.
      */
-    public void addFigs(Collection figs) {
+    public void addFigs(Collection<Fig> figs) {
         Iterator figIter = figs.iterator();
         while (figIter.hasNext()) {
             addFig((Fig) figIter.next());
@@ -184,7 +184,7 @@ public class FigGroup extends Fig {
         _x = boundingBox.x;
         _y = boundingBox.y;
         _w = boundingBox.width;
-        _h = boundingBox.height + _extraFrameSpace;
+        _h = boundingBox.height + extraFrameSpace;
     }
 
     /**
@@ -224,15 +224,10 @@ public class FigGroup extends Fig {
     // accessors
 
     /**
-     * Reply an Enumeration of the Figs contained in this FigGroup.
-     * 
-     * @deprecated 0.11 use iterator()
+     * Reply an Iterator of the Figs contained in this FigGroup.
+     * @deprecated use getFigs() and create your own iterator.
      */
-    public Enumeration elements() {
-        return new Vector(this.figs).elements();
-    }
-
-    /** Reply an Iterator of the Figs contained in this FigGroup. */
+    @Deprecated
     public Iterator iterator() {
         return this.figs.iterator();
     }
@@ -266,7 +261,7 @@ public class FigGroup extends Fig {
      * 
      * @return the figs of this group USED BY PGML.tee
      */
-    public List getFigs() {
+    public List<Fig> getFigs() {
         return Collections.unmodifiableList(this.figs);
     }
 
@@ -330,7 +325,7 @@ public class FigGroup extends Fig {
      * @return num of pixel used for extra spacing.
      */
     public int getExtraFrameSpace() {
-        return _extraFrameSpace;
+        return extraFrameSpace;
     }
 
     /** Returns true if any Fig in the group hits the given rect. */
@@ -627,7 +622,7 @@ public class FigGroup extends Fig {
      *                Num of pixels added as additional spacing
      */
     public void setExtraFrameSpace(int extraSpace) {
-        _extraFrameSpace = extraSpace;
+        extraFrameSpace = extraSpace;
     }
 
     /** Translate all the Fig in the list by the given offset. */
