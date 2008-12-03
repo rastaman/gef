@@ -57,14 +57,14 @@ public class AlignAction extends UndoableAction {
 
     public static final int ALIGN_TO_GRID = 7;
 
-    private List figs;
+    private List<Fig> figs;
 
     /**
      * Specification of the type of alignment requested
      */
     private int direction;
 
-    private Map boundsByFig;
+    private Map<Fig, Rectangle> boundsByFig;
 
     /**
      * Construct a new CmdAlign.
@@ -79,7 +79,7 @@ public class AlignAction extends UndoableAction {
         direction = dir;
     }
 
-    public AlignAction(int dir, List figs) {
+    public AlignAction(int dir, List<Fig> figs) {
         super(Localizer.localize("GefBase", "Align" + wordFor(dir))); // needs-more-work:
                                                                         // direction
         direction = dir;
@@ -113,7 +113,7 @@ public class AlignAction extends UndoableAction {
     public void actionPerformed(ActionEvent e) {
 
         super.actionPerformed(e);
-        List targets = new ArrayList();
+        List<Fig> targets = new ArrayList<Fig>();
 
         Editor ce = Globals.curEditor();
         if (figs == null) {
@@ -134,7 +134,7 @@ public class AlignAction extends UndoableAction {
             bbox.add(((Fig) targets.get(i)).getBounds());
         }
 
-        boundsByFig = new HashMap(size);
+        boundsByFig = new HashMap<Fig, Rectangle>(size);
         for (int i = 0; i < size; i++) {
             Fig f = (Fig) targets.get(i);
             boundsByFig.put(f, f.getBounds());

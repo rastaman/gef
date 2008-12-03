@@ -27,13 +27,24 @@
 // $Id$
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import java.io.Serializable;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.event.EventListenerList;
 
@@ -68,7 +79,7 @@ public class SelectionManager implements Serializable, KeyListener,
     /**
      * The collection of Selection instances
      */
-    private List<Selection> _selections = new ArrayList<Selection>();
+    private List<Selection> selections = new ArrayList<Selection>();
     private Editor _editor;
     private EventListenerList _listeners = new EventListenerList();
     private DragMemento dragMemento;
@@ -106,12 +117,12 @@ public class SelectionManager implements Serializable, KeyListener,
 
     /** Add a new selection to the collection of selections */
     protected void addSelection(Selection s) {
-        _selections.add(s);
+        selections.add(s);
     }
 
     protected void addFig(Fig f) {
         if (f.isSelectable()) {
-            _selections.add(makeSelectionFor(f));
+            selections.add(makeSelectionFor(f));
         }
     }
 
@@ -123,19 +134,19 @@ public class SelectionManager implements Serializable, KeyListener,
     }
 
     protected void removeAllElements() {
-        _selections.clear();
+        selections.clear();
     }
 
     protected void removeSelection(Selection s) {
         if (s != null) {
-            _selections.remove(s);
+            selections.remove(s);
         }
     }
 
     protected void removeFig(Fig f) {
         Selection s = findSelectionFor(f);
         if (s != null) {
-            _selections.remove(s);
+            selections.remove(s);
         }
     }
 
@@ -264,7 +275,7 @@ public class SelectionManager implements Serializable, KeyListener,
      * Reply true if the given selection instance is part of my collection
      */
     public boolean contains(Selection s) {
-        return _selections.contains(s);
+        return selections.contains(s);
     }
 
     /**
@@ -278,7 +289,7 @@ public class SelectionManager implements Serializable, KeyListener,
      * @return true if any Selection is locked
      */
     public boolean getLocked() {
-        for (Selection sel : _selections) {
+        for (Selection sel : selections) {
             if (sel.getLocked()) {
                 return true;
             }
@@ -292,7 +303,7 @@ public class SelectionManager implements Serializable, KeyListener,
      * holds only Selection instances and each of those holds one Fig
      */
     public int size() {
-        return _selections.size();
+        return selections.size();
     }
 
     /**
@@ -300,19 +311,35 @@ public class SelectionManager implements Serializable, KeyListener,
      */
     @Deprecated
     public Vector selections() {
-        return new Vector(_selections);
+        return new Vector(selections);
     }
 
     public List<Selection> getSelections() {
-        return _selections;
+        return selections;
     }
 
-    /** Reply the collection of all selected Fig's */
-    public Vector getFigs() {
-        Vector figs = new Vector(_selections.size());
-        int selCount = _selections.size();
+    /**
+     * Reply the collection of all selected Fig's
+     * @deprecated in 0.13 use getSelectedFigs
+     */
+    public Vector<Fig> getFigs() {
+        Vector<Fig> figs = new Vector<Fig>(selections.size());
+        int selCount = selections.size();
         for (int i = 0; i < selCount; ++i) {
-            figs.addElement(((Selection) _selections.get(i)).getContent());
+            figs.addElement(((Selection) selections.get(i)).getContent());
+        }
+
+        return figs;
+    }
+
+    /**
+     * Reply the collection of all selected Fig's
+     */
+    public List<Fig> getSelectedFigs() {
+        List<Fig> figs = new ArrayList<Fig>(selections.size());
+        int selCount = selections.size();
+        for (int i = 0; i < selCount; ++i) {
+            figs.add(((Selection) selections.get(i)).getContent());
         }
 
         return figs;
@@ -337,10 +364,10 @@ public class SelectionManager implements Serializable, KeyListener,
 
     /** End a transaction that damages all selected Fig's */
     public void endTrans() {
-        int selSize = _selections.size();
+        int selSize = selections.size();
         List affected = new ArrayList();
         for (int i = 0; i < selSize; ++i) {
-            Selection s = (Selection) _selections.get(i);
+            Selection s = (Selection) selections.get(i);
             addEnclosed(affected, s.getContent());
         }
 
@@ -353,7 +380,7 @@ public class SelectionManager implements Serializable, KeyListener,
 
     /** Paint all selection objects */
     public void paint(Graphics g) {
-        for (Selection sel : _selections) {
+        for (Selection sel : selections) {
             sel.paint(g);
         }
     }
@@ -363,14 +390,14 @@ public class SelectionManager implements Serializable, KeyListener,
      * should be damageAll.
      */
     public void damage() {
-        for (Selection sel : _selections) {
+        for (Selection sel : selections) {
             sel.damage();
         }
     }
 
     /** Reply true iff the given point is inside one of the selected Fig's */
     public boolean contains(int x, int y) {
-        for (Selection sel : _selections) {
+        for (Selection sel : selections) {
             if (sel.contains(x, y)) {
                 return true;
             }
@@ -383,7 +410,7 @@ public class SelectionManager implements Serializable, KeyListener,
      * Reply true iff the given point is inside one of the selected Fig's
      */
     public boolean hit(Rectangle r) {
-        for (Selection sel : _selections) {
+        for (Selection sel : selections) {
             if (sel.hit(r)) {
                 return true;
             }
@@ -393,13 +420,13 @@ public class SelectionManager implements Serializable, KeyListener,
     }
 
     public Rectangle getBounds() {
-        int size = _selections.size();
+        int size = selections.size();
         if (size == 0) {
             return new Rectangle(0, 0, 0, 0);
         }
 
-        Rectangle r = _selections.get(0).getBounds();
-        for (Selection sel : _selections) {
+        Rectangle r = selections.get(0).getBounds();
+        for (Selection sel : selections) {
             r.add(sel.getBounds());
         }
 
@@ -408,7 +435,7 @@ public class SelectionManager implements Serializable, KeyListener,
 
     public Rectangle getContentBounds() {
         Rectangle r = null;
-        Iterator<Selection> it = _selections.iterator();
+        Iterator<Selection> it = selections.iterator();
         if (it.hasNext()) {
             r = it.next().getContentBounds();
         } else {
@@ -431,7 +458,7 @@ public class SelectionManager implements Serializable, KeyListener,
      * 
      */
     public Point getLocation() {
-        int size = _selections.size();
+        int size = selections.size();
         if (size < 1) {
             return new Point(0, 0);
         }
@@ -441,7 +468,7 @@ public class SelectionManager implements Serializable, KeyListener,
         int lowestY = Integer.MAX_VALUE;
         Point pt = null;
         for (int i = 0; i < size; i++) {
-            sel = (Selection) _selections.get(i);
+            sel = (Selection) selections.get(i);
             pt = sel.getLocation();
             if (pt.getX() < lowestX) {
                 lowestX = (int) pt.getX();
@@ -476,7 +503,7 @@ public class SelectionManager implements Serializable, KeyListener,
      * When Manager selections are sent to back, each of them is sent to back.
      */
     public void reorder(int func, Layer lay) {
-        for (Selection sel : _selections) {
+        for (Selection sel : selections) {
             sel.reorder(func, lay);
         }
     }
@@ -487,8 +514,8 @@ public class SelectionManager implements Serializable, KeyListener,
         Vector nonMovingEdges = new Vector();
         Vector movingEdges = new Vector();
         Vector nodes = new Vector();
-        int selSize = _selections.size();
-        for (Selection sel : _selections) {
+        int selSize = selections.size();
+        for (Selection sel : selections) {
             addEnclosed(affected, sel.getContent());
         }
 
@@ -560,9 +587,9 @@ public class SelectionManager implements Serializable, KeyListener,
         _draggingNonMovingEdges = new ArrayList();
         _draggingOthers = new ArrayList();
 
-        int selectionCount = _selections.size();
+        int selectionCount = selections.size();
         for (int selectionIndex = 0; selectionIndex < selectionCount; ++selectionIndex) {
-            Selection selection = (Selection) _selections.get(selectionIndex);
+            Selection selection = (Selection) selections.get(selectionIndex);
             addEnclosed(draggingFigs, selection.getContent());
         }
 
@@ -777,7 +804,7 @@ public class SelectionManager implements Serializable, KeyListener,
     /* needs-more-work: should take on more of this responsibility */
     public void hitHandle(Rectangle r, Handle h) {
         if (size() == 1) {
-            _selections.get(0).hitHandle(r, h);
+            selections.get(0).hitHandle(r, h);
         } else {
             h.index = -1;
         }
@@ -793,12 +820,12 @@ public class SelectionManager implements Serializable, KeyListener,
             return;
         }
 
-        Selection sel = _selections.get(0);
+        Selection sel = selections.get(0);
         sel.dragHandle(mx, my, an_x, an_y, h);
     }
 
     public void cleanUp() {
-        for (Selection sel : _selections) {
+        for (Selection sel : selections) {
             Fig f = sel.getContent();
             f.cleanUp();
         }
@@ -806,8 +833,8 @@ public class SelectionManager implements Serializable, KeyListener,
 
     /** When a multiple selection are deleted, each selection is deleted */
     public void removeFromGraph() {
-        // TODO: Why we cannot operate on the list itself?
-        List<Selection> sels = new ArrayList<Selection>(_selections);
+        // TODO: Why are we not operating on the list itself?
+        List<Selection> sels = new ArrayList<Selection>(selections);
         for (Selection sel : sels) {
             sel.delete();
         }
@@ -818,7 +845,7 @@ public class SelectionManager implements Serializable, KeyListener,
      */
     public void dispose() {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> sels = new ArrayList<Selection>(_selections);
+        List<Selection> sels = new ArrayList<Selection>(selections);
         for (Selection s : sels) {
             Fig f = s.getContent();
             Object o = f.getOwner();
@@ -866,7 +893,7 @@ public class SelectionManager implements Serializable, KeyListener,
      */
     public void keyTyped(KeyEvent ke) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !ke.isConsumed()) {
             sels.next().keyTyped(ke);
@@ -875,7 +902,7 @@ public class SelectionManager implements Serializable, KeyListener,
 
     public void keyReleased(KeyEvent ke) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !ke.isConsumed()) {
             sels.next().keyReleased(ke);
@@ -885,7 +912,7 @@ public class SelectionManager implements Serializable, KeyListener,
 
     public void keyPressed(KeyEvent ke) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !ke.isConsumed()) {
             sels.next().keyPressed(ke);
@@ -894,7 +921,7 @@ public class SelectionManager implements Serializable, KeyListener,
 
     public void mouseMoved(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseMoved(me);
@@ -903,7 +930,7 @@ public class SelectionManager implements Serializable, KeyListener,
 
     public void mouseDragged(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseDragged(me);
@@ -912,7 +939,7 @@ public class SelectionManager implements Serializable, KeyListener,
 
     public void mouseClicked(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseClicked(me);
@@ -921,7 +948,7 @@ public class SelectionManager implements Serializable, KeyListener,
 
     public void mousePressed(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mousePressed(me);
@@ -930,7 +957,7 @@ public class SelectionManager implements Serializable, KeyListener,
 
     public void mouseReleased(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseReleased(me);
@@ -939,7 +966,7 @@ public class SelectionManager implements Serializable, KeyListener,
 
     public void mouseExited(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseExited(me);
@@ -948,7 +975,7 @@ public class SelectionManager implements Serializable, KeyListener,
 
     public void mouseEntered(MouseEvent me) {
         // TODO: Why we cannot operate on the list itself?
-        List<Selection> list = new ArrayList<Selection>(_selections);
+        List<Selection> list = new ArrayList<Selection>(selections);
         Iterator<Selection> sels = list.iterator();
         while (sels.hasNext() && !me.isConsumed()) {
             sels.next().mouseEntered(me);
@@ -997,7 +1024,7 @@ public class SelectionManager implements Serializable, KeyListener,
      * Determines and returns the first common superclass of all selected items.
      */
     public Class findCommonSuperClass() {
-        Iterator selectionIter = _selections.iterator();
+        Iterator selectionIter = selections.iterator();
         Map superclasses = new HashMap();
         int maxCount = 0;
         Class maxClass = null;
@@ -1040,7 +1067,7 @@ public class SelectionManager implements Serializable, KeyListener,
             }
         }
 
-        if (maxCount == _selections.size()) {
+        if (maxCount == selections.size()) {
             return maxClass;
         } else {
             return Fig.class;
@@ -1056,7 +1083,7 @@ public class SelectionManager implements Serializable, KeyListener,
      * @return The first selected object being instance of the designated type.
      */
     public Object findFirstSelectionOfType(Class type) {
-        Iterator selectionIter = _selections.iterator();
+        Iterator selectionIter = selections.iterator();
         while (selectionIter.hasNext()) {
             Object selectionObj = ((Selection) selectionIter.next())
                     .getContent();
@@ -1219,12 +1246,12 @@ public class SelectionManager implements Serializable, KeyListener,
         ArrayList prevSelections;
 
         public SelectionMemento() {
-            prevSelections = new ArrayList(_selections);
+            prevSelections = new ArrayList(selections);
         }
 
         public void undo() {
-            ArrayList curSelections = new ArrayList(_selections);
-            _selections = prevSelections;
+            ArrayList curSelections = new ArrayList(selections);
+            selections = prevSelections;
             prevSelections = curSelections;
             _editor.damageAll();
         }

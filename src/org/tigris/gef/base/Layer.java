@@ -32,6 +32,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -105,7 +106,7 @@ public abstract class Layer implements java.io.Serializable {
     private boolean locked = false;
 
     /**
-     * Should this layer alwys stay on top (i.e. always be the active layer)?
+     * Should this layer always stay on top (i.e. always be the active layer)?
      */
     private boolean alwaysOnTop = false;
     /**
@@ -125,7 +126,7 @@ public abstract class Layer implements java.io.Serializable {
      * A list of the Editors that are displaying this Layer. Use addEditor(),
      * removeEditor() and getEditors() to access this.
      */
-    private transient List editors = new ArrayList();
+    private transient List<Editor> editors = new ArrayList<Editor>();
 
     // //////////////////////////////////////////////////////////////
     // constructors
@@ -286,8 +287,8 @@ public abstract class Layer implements java.io.Serializable {
     }
 
     /** Return the list of Editors that are showing this Layer. */
-    public List getEditors() {
-        return new ArrayList(editors);
+    public List<Editor> getEditors() {
+        return Collections.unmodifiableList(new ArrayList<Editor>(editors));
     }
 
     /**
