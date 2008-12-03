@@ -28,7 +28,11 @@
 
 package org.tigris.gef.base;
 
-import java.awt.datatransfer.*; // Clipboard, Transferable, DataFlavor, etc.
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.util.Enumeration; // To store the scribble in.
 import java.util.Vector;
 
