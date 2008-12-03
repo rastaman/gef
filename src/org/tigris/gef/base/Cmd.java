@@ -28,9 +28,15 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import org.tigris.gef.util.Localizer;
 import org.tigris.gef.util.ResourceLoader;
@@ -57,8 +63,15 @@ import org.tigris.gef.util.ResourceLoader;
 public abstract class Cmd extends AbstractAction implements
         java.io.Serializable {
 
-    /** Arguments that configure the Cmd instance. */
+    // Arguments that configure the Cmd instance.
+    /**
+     * @deprecated in 0.13 will become private use getArg()
+     */
     protected Hashtable _args;
+    
+    /**
+     * @deprecated in 0.13 will become private use getResource()
+     */
     protected String _resource;
 
     /** Construct a new Cmd with the given arguments */
