@@ -54,7 +54,8 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
 
     private static final long serialVersionUID = -4746215260464595235L;
 
-    public static Class DEFAULT_NODE_CLASS = org.tigris.gef.graph.presentation.NetNode.class;
+    public static Class<?> DEFAULT_NODE_CLASS =
+        org.tigris.gef.graph.presentation.NetNode.class;
 
     private static Log LOG = LogFactory.getLog(CmdCreateNode.class);
 
@@ -93,22 +94,19 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
      * FigNode, and set the global sticky mode boolean to the given value. This
      * allows the user to place several nodes rapidly.
      */
-    public CmdCreateNode(Class nodeClass, boolean sticky, String resource,
+    public CmdCreateNode(Class<?> nodeClass, boolean sticky, String resource,
             String name) {
         this(nodeClass, resource, name);
         setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
     }
 
-    public CmdCreateNode(Class nodeClass, boolean sticky, String name) {
+    public CmdCreateNode(Class<?> nodeClass, boolean sticky, String name) {
         this(nodeClass, name);
         setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
     }
 
-    // //////////////////////////////////////////////////////////////
-    // Cmd API
-
     /**
-     * Actually instanciate the NetNode and FigNode objects and set the global
+     * Actually instantiate the NetNode and FigNode objects and set the global
      * next mode to ModePlace
      */
     public void doIt() {
