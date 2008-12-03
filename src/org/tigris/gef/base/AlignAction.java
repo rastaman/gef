@@ -122,7 +122,7 @@ public class AlignAction extends UndoableAction {
                 Globals.showStatus("Cannot Modify Locked Objects");
                 return;
             }
-            targets.addAll(sm.getFigs());
+            targets.addAll(sm.getSelectedFigs());
         } else {
             targets.addAll(figs);
         }
