@@ -1,4 +1,4 @@
-// %1032800241201:org.tigris.gef.base%
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -23,9 +23,12 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.tigris.gef.base;
 
-import java.awt.*;
-
-import java.beans.*;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -58,17 +61,29 @@ public class Diagram implements Serializable, GraphListener {
 
     private static final long serialVersionUID = 4847606736320428403L;
 
-    // //////////////////////////////////////////////////////////////
-    // instance variables
+    /**
+     * @deprecated in 0.13 will become private use getter/setter
+     */
+    @Deprecated
     protected String _name = "no title set";
+    /**
+     * @deprecated in 0.13 will become private use getter/setter
+     */
+    @Deprecated
     protected String _comments = "(no comments given)";
-    private LayerPerspective _layer;
+    private LayerPerspective layer;
+    /**
+     * @deprecated in 0.13 will become private use getter/setter
+     */
+    @Deprecated
     protected transient ToolBar _toolBar;
-    private transient Vector vetoListeners;
-    private transient PropertyChangeSupport _changeSupport;
+    private transient Vector<VetoableChangeListener> vetoListeners;
+    private transient PropertyChangeSupport changeSupport;
+    // TODO: Sounds like this isn't needed any more
     // In JDK < 1.4 there is no way to get all listener from the
     // PropertyChangeSupport, so we keep a list here
-    private Set _propertyChangeListeners = new HashSet();
+    private Set<PropertyChangeListener> propertyChangeListeners = 
+        new HashSet<PropertyChangeListener>();
 
     /**
      * The bean property name denoting the scale factor. Value is a Double in
@@ -95,10 +110,10 @@ public class Diagram implements Serializable, GraphListener {
     }
 
     public Diagram(String name, GraphModel graphModel, LayerPerspective layer) {
-        _changeSupport = new PropertyChangeSupport(this);
+        changeSupport = new PropertyChangeSupport(this);
         _name = name;
-        _layer = layer;
-        _layer.setDiagram(this);
+        this.layer = layer;
+        this.layer.setDiagram(this);
         setGraphModel(graphModel);
     }
 
@@ -145,7 +160,7 @@ public class Diagram implements Serializable, GraphListener {
 
         String oldName = _name;
         _name = name;
-        _changeSupport.firePropertyChange(NAME_KEY, oldName, name);
+        changeSupport.firePropertyChange(NAME_KEY, oldName, name);
     }
 
     public void setShowSingleMultiplicity(boolean enable) {
@@ -192,16 +207,16 @@ public class Diagram implements Serializable, GraphListener {
     }
 
     public LayerPerspective getLayer() {
-        return _layer;
+        return layer;
     }
 
     protected void setLayer(LayerPerspective layer) {
         if (layer != null) {
             layer.setDiagram(this);
-        } else if (_layer != null) {
-            _layer.setDiagram(null);
+        } else if (this.layer != null) {
+            this.layer.setDiagram(null);
         }
-        _layer = layer;
+        this.layer = layer;
     }
 
     public int countContained(List owners) {
@@ -296,57 +311,57 @@ public class Diagram implements Serializable, GraphListener {
     // //////////////////////////////////////////////////////////////
     // accessors on the Layer
     public void add(Fig f) {
-        _layer.add(f);
+        layer.add(f);
     }
 
     public void remove(Fig f) {
-        _layer.remove(f);
+        layer.remove(f);
     }
 
     public void removeAll(Fig f) {
-        _layer.removeAll();
+        layer.removeAll();
     }
 
     public Enumeration elements() {
-        Enumeration result = _layer.elements();
+        Enumeration result = layer.elements();
 
         return result;
     }
 
     public Fig hit(Rectangle r) {
-        return _layer.hit(r);
+        return layer.hit(r);
     }
 
     public Enumeration elementsIn(Rectangle r) {
-        return _layer.elementsIn(r);
+        return layer.elementsIn(r);
     }
 
     public Fig presentationFor(Object obj) {
-        return _layer.presentationFor(obj);
+        return layer.presentationFor(obj);
     }
 
     public List presentationsFor(Object obj) {
-        return _layer.presentationsFor(obj);
+        return layer.presentationsFor(obj);
     }
 
     public void sendToBack(Fig f) {
-        _layer.sendToBack(f);
+        layer.sendToBack(f);
     }
 
     public void bringForward(Fig f) {
-        _layer.bringForward(f);
+        layer.bringForward(f);
     }
 
     public void sendBackward(Fig f) {
-        _layer.sendBackward(f);
+        layer.sendBackward(f);
     }
 
     public void bringToFront(Fig f) {
-        _layer.bringToFront(f);
+        layer.bringToFront(f);
     }
 
     public void reorder(Fig f, int function) {
-        _layer.reorder(f, function);
+        layer.reorder(f, function);
     }
 
     // //////////////////////////////////////////////////////////////
@@ -394,22 +409,22 @@ public class Diagram implements Serializable, GraphListener {
     // //////////////////////////////////////////////////////////////
     // VetoableChangeSupport
     public void preSave() {
-        _layer.preSave();
+        layer.preSave();
     }
 
     public void postSave() {
-        _layer.postSave();
+        layer.postSave();
     }
 
     public void postLoad() {
-        _layer.postLoad();
+        layer.postLoad();
     }
 
     public synchronized void addVetoableChangeListener(
             VetoableChangeListener listener) {
 
         if (vetoListeners == null)
-            vetoListeners = new Vector();
+            vetoListeners = new Vector<VetoableChangeListener>();
 
         vetoListeners.removeElement(listener);
         vetoListeners.addElement(listener);
@@ -484,40 +499,40 @@ public class Diagram implements Serializable, GraphListener {
     // beans property change event handling
     //
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        _changeSupport.addPropertyChangeListener(l);
-        _propertyChangeListeners.add(l);
+        changeSupport.addPropertyChangeListener(l);
+        propertyChangeListeners.add(l);
     }
 
     public void addPropertyChangeListener(String propertyName,
             PropertyChangeListener l) {
-        _changeSupport.addPropertyChangeListener(propertyName, l);
-        _propertyChangeListeners.add(l);
+        changeSupport.addPropertyChangeListener(propertyName, l);
+        propertyChangeListeners.add(l);
     }
 
     public void removePropertyChangeListener(PropertyChangeListener l) {
         removePropertyChangeListenerInt(l);
-        _propertyChangeListeners.remove(l);
+        propertyChangeListeners.remove(l);
     }
 
     private void removePropertyChangeListenerInt(PropertyChangeListener l) {
-        _changeSupport.removePropertyChangeListener(l);
+        changeSupport.removePropertyChangeListener(l);
     }
 
     public void removePropertyChangeListener(String propertyName,
             PropertyChangeListener l) {
-        _changeSupport.removePropertyChangeListener(propertyName, l);
-        _propertyChangeListeners.remove(l);
+        changeSupport.removePropertyChangeListener(propertyName, l);
+        propertyChangeListeners.remove(l);
     }
 
     public void firePropertyChange(String propertyName, Object oldValue,
             Object newValue) {
-        _changeSupport.firePropertyChange(propertyName, oldValue, newValue);
+        changeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
 
     // hardcore: called when diagram should be removed - especially when project
     // is removed. Per.
     public void remove() {
-        for (Iterator iterator = _propertyChangeListeners.iterator(); iterator
+        for (Iterator iterator = propertyChangeListeners.iterator(); iterator
                 .hasNext();) {
             PropertyChangeListener listener = (PropertyChangeListener) iterator
                     .next();
