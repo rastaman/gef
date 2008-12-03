@@ -33,6 +33,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.PrintGraphics;
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.List;
 
 import org.tigris.gef.presentation.*;
@@ -82,8 +83,8 @@ public class LayerPageBreaks extends Layer {
         _pageSize = d;
     }
 
-    public List getContents() {
-        return null;
+    public List<Fig> getContents() {
+        return Collections.emptyList();
     }
 
     public Fig presentationFor(Object obj) {

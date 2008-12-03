@@ -35,6 +35,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.PrintGraphics;
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -135,8 +136,8 @@ public class LayerGrid extends Layer {
     // //////////////////////////////////////////////////////////////
     // accessors
 
-    public List getContents() {
-        return null;
+    public List<Fig> getContents() {
+        return Collections.emptyList();
     }
 
     public Fig presentationFor(Object obj) {

@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -248,7 +249,7 @@ public abstract class Layer implements java.io.Serializable {
      * 
      * @return the figs
      */
-    abstract public List getContents();
+    abstract public List<Fig> getContents();
 
     /**
      * USED BY SVG.tee && PGML.tee
@@ -314,6 +315,9 @@ public abstract class Layer implements java.io.Serializable {
     public void removeAll() {
     }
 
+    /**
+     * @deprecated in 0.13 use getContents and build your own iterator
+     */
     public Enumeration elements() {
         return EnumerationEmpty.theInstance();
     }

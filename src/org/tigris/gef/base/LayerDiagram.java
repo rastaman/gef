@@ -34,7 +34,8 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Iterator;
 
-import org.apache.commons.logging.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPainter;
@@ -51,22 +52,19 @@ public class LayerDiagram extends Layer {
     private static final long serialVersionUID = 6193765162314431069L;
 
     /** The Fig's that are contained in this layer. */
-    private List _contents = new ArrayList();
+    private List<Fig> contents = new ArrayList<Fig>();
 
     /** A counter so that layers have default names like 'One', 'Two', ... */
-    private static int _nextLayerNumbered = 1;
+    private static int nextLayerNumbered = 1;
 
     private static final Log LOG = LogFactory.getLog(LayerDiagram.class);
-
-    // //////////////////////////////////////////////////////////////
-    // constuctors and related methods
 
     /**
      * Construct a new LayerDiagram with a default name and do not put it on the
      * Layer's menu.
      */
     public LayerDiagram() {
-        this("Layer" + numberWordFor(_nextLayerNumbered++));
+        this("Layer" + numberWordFor(nextLayerNumbered++));
     }
 
     /**
@@ -76,11 +74,11 @@ public class LayerDiagram extends Layer {
      */
     public LayerDiagram(String name) {
         super(name);
-        _onMenu = true;
+        setOnMenu(true);
     }
 
     public Enumeration elements() {
-        return Collections.enumeration(_contents);
+        return Collections.enumeration(contents);
     }
 
     /** A utility function to give the spelled-out word for numbers. */
@@ -137,8 +135,8 @@ public class LayerDiagram extends Layer {
                     "Attempted to add a null fig to a LayerDiagram");
         }
 
-        _contents.remove(f); // act like a set
-        _contents.add(f);
+        contents.remove(f); // act like a set
+        contents.add(f);
         f.setLayer(this);
         f.endTrans();
     }
@@ -158,8 +156,8 @@ public class LayerDiagram extends Layer {
                     "Attempted to insert a null fig to a LayerDiagram");
         }
 
-        _contents.remove(f); // act like a set
-        _contents.add(index, f);
+        contents.remove(f); // act like a set
+        contents.add(index, f);
         f.setLayer(this);
         f.endTrans();
     }
@@ -179,12 +177,12 @@ public class LayerDiagram extends Layer {
                     "Attempted to find the index of a null fig in a LayerDiagram");
         }
 
-        return _contents.indexOf(f);
+        return contents.indexOf(f);
     }
 
     /** Remove the given Fig from this layer. */
     public void remove(Fig f) {
-        _contents.remove(f);
+        contents.remove(f);
         f.endTrans();
         f.setLayer(null);
     }
@@ -196,14 +194,14 @@ public class LayerDiagram extends Layer {
      * @return
      */
     public boolean contains(Fig f) {
-        return _contents.contains(f);
+        return contents.contains(f);
     }
 
     /**
      * Reply the contents of this layer. Do I really want to do this?
      */
-    public List getContents() {
-        return Collections.unmodifiableList(_contents);
+    public List<Fig> getContents() {
+        return Collections.unmodifiableList(contents);
     }
 
     /**
@@ -214,8 +212,8 @@ public class LayerDiagram extends Layer {
     public Fig hit(Rectangle r) {
 
         /* search backward so that highest item is found first */
-        for (int i = _contents.size() - 1; i >= 0; i--) {
-            Fig f = (Fig) _contents.get(i);
+        for (int i = contents.size() - 1; i >= 0; i--) {
+            Fig f = (Fig) contents.get(i);
             if (f.hit(r)) {
                 return f;
             }
@@ -226,12 +224,12 @@ public class LayerDiagram extends Layer {
 
     /** Delete all Fig's from this layer. */
     public void removeAll() {
-        for (int i = _contents.size() - 1; i >= 0; i--) {
-            Fig f = (Fig) _contents.get(i);
+        for (int i = contents.size() - 1; i >= 0; i--) {
+            Fig f = (Fig) contents.get(i);
             f.setLayer(null);
         }
 
-        _contents.clear();
+        contents.clear();
         // notify?
     }
 
@@ -260,9 +258,9 @@ public class LayerDiagram extends Layer {
      * null if there is none.
      */
     public Fig presentationFor(Object obj) {
-        int figCount = _contents.size();
+        int figCount = contents.size();
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig fig = (Fig) _contents.get(figIndex);
+            Fig fig = (Fig) contents.get(figIndex);
             if (fig.getOwner() == obj) {
                 return fig;
             }
@@ -277,9 +275,9 @@ public class LayerDiagram extends Layer {
      */
     public List presentationsFor(Object obj) {
         ArrayList presentations = new ArrayList();
-        int figCount = _contents.size();
+        int figCount = contents.size();
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig fig = (Fig) _contents.get(figIndex);
+            Fig fig = (Fig) contents.get(figIndex);
             if (fig.getOwner() == obj) {
                 presentations.add(fig);
             }
@@ -290,9 +288,9 @@ public class LayerDiagram extends Layer {
 
     public int presentationCountFor(Object obj) {
         int count = 0;
-        int figCount = _contents.size();
+        int figCount = contents.size();
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
-            Fig fig = (Fig) _contents.get(figIndex);
+            Fig fig = (Fig) contents.get(figIndex);
             if (fig.getOwner() == obj) {
                 count++;
             }
@@ -315,9 +313,9 @@ public class LayerDiagram extends Layer {
      */
     public void paintContents(Graphics g, FigPainter painter) {
         Rectangle clipBounds = g.getClipBounds();
-        Iterator figsIter;
-        synchronized (_contents) {
-            figsIter = (new ArrayList(_contents)).iterator();
+        Iterator<Fig> figsIter;
+        synchronized (contents) {
+            figsIter = (new ArrayList<Fig>(contents)).iterator();
         }
         while (figsIter.hasNext()) {
             Fig fig = (Fig) figsIter.next();
@@ -336,14 +334,14 @@ public class LayerDiagram extends Layer {
 
     /** Reorder the given Fig in this layer. */
     public void sendToBack(Fig f) {
-        _contents.remove(f);
-        _contents.add(0, f);
+        contents.remove(f);
+        contents.add(0, f);
     }
 
     /** Reorder the given Fig in this layer. */
     public void bringToFront(Fig f) {
-        _contents.remove(f);
-        _contents.add(f);
+        contents.remove(f);
+        contents.add(f);
     }
 
     /**
@@ -352,32 +350,32 @@ public class LayerDiagram extends Layer {
      * Maybe...
      */
     public void sendBackward(Fig f) {
-        int i = _contents.indexOf(f);
+        int i = contents.indexOf(f);
         if (i == -1 || i == 0) {
             return;
         }
 
-        Object prevFig = _contents.get(i - 1);
-        _contents.set(i, prevFig);
-        _contents.set(i - 1, f);
+        final Fig prevFig = contents.get(i - 1);
+        contents.set(i, prevFig);
+        contents.set(i - 1, f);
     }
 
     /** Reorder the given Fig in this layer. */
     public void bringForward(Fig f) {
-        int i = _contents.indexOf(f);
-        if (i == -1 || i == _contents.size() - 1) {
+        int i = contents.indexOf(f);
+        if (i == -1 || i == contents.size() - 1) {
             return;
         }
 
-        Object nextFig = _contents.get(i + 1);
-        _contents.set(i, nextFig);
-        _contents.set(i + 1, f);
+        final Fig nextFig = this.contents.get(i + 1);
+        contents.set(i, nextFig);
+        contents.set(i + 1, f);
     }
 
     /** Reorder the given Fig in this layer. */
     public void bringInFrontOf(Fig f1, Fig f2) {
-        int i1 = _contents.indexOf(f1);
-        int i2 = _contents.indexOf(f2);
+        int i1 = this.contents.indexOf(f1);
+        int i2 = this.contents.indexOf(f2);
         if (i1 == -1) {
             return;
         }
@@ -390,12 +388,12 @@ public class LayerDiagram extends Layer {
             return;
         }
 
-        _contents.remove(f1);
-        _contents.add(i2, f1);
-        // Object frontFig = _contents.elementAt(i1);
-        // Object backFig = _contents.elementAt(i2);
-        // _contents.setElementAt(frontFig, i2);
-        // _contents.setElementAt(backFig, i1);
+        this.contents.remove(f1);
+        this.contents.add(i2, f1);
+        // Object frontFig = this.contents.elementAt(i1);
+        // Object backFig = this.contents.elementAt(i2);
+        // this.contents.setElementAt(frontFig, i2);
+        // this.contents.setElementAt(backFig, i1);
     }
 
     /** Reorder the given Fig in this layer. */
@@ -422,8 +420,8 @@ public class LayerDiagram extends Layer {
 
     public void preSave() {
         validate();
-        for (int i = 0; i < _contents.size(); i++) {
-            Fig f = (Fig) _contents.get(i);
+        for (int i = 0; i < this.contents.size(); i++) {
+            Fig f = (Fig) this.contents.get(i);
             f.preSave();
         }
     }
@@ -432,33 +430,36 @@ public class LayerDiagram extends Layer {
      * Scan the contents of the layer before a save takes place to validate its
      * state is legal.
      */
-    private void validate() {
-        for (int i = _contents.size() - 1; i >= 0; --i) {
-            Fig f = (Fig) _contents.get(i);
+    private boolean validate() {
+        for (int i = this.contents.size() - 1; i >= 0; --i) {
+            Fig f = (Fig) this.contents.get(i);
             if (f.isRemoveStarted()) {
                 // TODO: Once JRE1.4 is minimum support we should use assertions
                 LOG.error("A fig has been found that should have been removed "
                         + f.toString());
-                _contents.remove(i);
+                this.contents.remove(i);
+                return false;
             } else if (f.getLayer() != this) {
                 // TODO: Once JRE1.4 is minimum support we should use assertions
                 LOG
                         .error("A fig has been found that doesn't refer back to the correct layer "
                                 + f.toString() + " - " + f.getLayer());
                 f.setLayer(this);
+                return false;
             }
         }
+        return true;
     }
 
     public void postSave() {
-        for (int i = 0; i < _contents.size(); i++) {
-            ((Fig) _contents.get(i)).postSave();
+        for (int i = 0; i < this.contents.size(); i++) {
+            ((Fig) this.contents.get(i)).postSave();
         }
     }
 
     public void postLoad() {
-        for (int i = 0; i < _contents.size(); i++) {
-            ((Fig) _contents.get(i)).postLoad();
+        for (int i = 0; i < this.contents.size(); i++) {
+            ((Fig) this.contents.get(i)).postLoad();
         }
     }
 }

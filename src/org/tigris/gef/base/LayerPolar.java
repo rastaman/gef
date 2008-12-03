@@ -32,6 +32,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.List;
 
 import org.tigris.gef.presentation.Fig;
@@ -124,8 +125,8 @@ public class LayerPolar extends Layer {
         return _bgColor;
     }
 
-    public List getContents() {
-        return null;
+    public List<Fig> getContents() {
+        return Collections.emptyList();
     }
 
     public Fig presentationFor(Object obj) {
