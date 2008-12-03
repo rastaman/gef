@@ -54,7 +54,7 @@ public class CmdOpenWindow extends Cmd {
     public void doIt() {
         String className = (String) getArg("className");
         Frame window;
-        Class clazz;
+        Class<?> clazz;
         if (className != null) {
             Globals.showStatus("Opening window for " + className);
             try {
