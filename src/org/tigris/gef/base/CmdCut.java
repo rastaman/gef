@@ -28,7 +28,10 @@
 
 package org.tigris.gef.base;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.tigris.gef.presentation.*;
@@ -48,17 +51,17 @@ public class CmdCut extends Cmd {
         System.out.println("[CmdCut] doIt");
         Editor ce = Globals.curEditor();
         SelectionManager selectionManager = ce.getSelectionManager();
-        Vector copiedElements = selectionManager.selections();
-        Vector figs = new Vector();
-        Enumeration copies = copiedElements.elements();
-        while (copies.hasMoreElements()) {
-            Selection s = (Selection) copies.nextElement();
+        List<Selection> copiedElements = selectionManager.getSelections();
+        List<Fig> figs = new ArrayList<Fig>();
+        Iterator<Selection> copies = copiedElements.iterator();
+        while (copies.hasNext()) {
+            Selection s = copies.next();
             Fig f = s.getContent();
             if (f instanceof FigEdge)
                 continue;
             // needs-more-work: add support for cut-and-paste of edges
             f = (Fig) f.clone();
-            figs.addElement(f);
+            figs.add(f);
         }
         Globals.clipBoard = figs;
         selectionManager.removeFromGraph();

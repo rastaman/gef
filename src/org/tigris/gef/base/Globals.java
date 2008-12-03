@@ -106,7 +106,7 @@ public class Globals {
      * Until jdk 1.2, this will be our clipboard TODO we have now gone beyond
      * JDK1.2
      */
-    public static Vector clipBoard;
+    public static List clipBoard;
 
     public static boolean pastable = false;
 

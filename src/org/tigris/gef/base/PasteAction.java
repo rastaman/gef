@@ -30,6 +30,7 @@ package org.tigris.gef.base;
 import java.awt.event.ActionEvent;
 import java.beans.VetoableChangeListener;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.Icon;
@@ -101,9 +102,9 @@ public class PasteAction extends UndoableAction {
         super.actionPerformed(e);
         SelectionManager sm = Globals.curEditor().getSelectionManager();
         Vector figs = new Vector();
-        Enumeration cb = Globals.clipBoard.elements();
-        while (cb.hasMoreElements()) {
-            Fig f = (Fig) cb.nextElement();
+        Iterator cb = Globals.clipBoard.iterator();
+        while (cb.hasNext()) {
+            Fig f = (Fig) cb.next();
             Editor ce = Globals.curEditor();
             int gridSze = ((GuideGrid) ce.getGuide()).gridSize();
             // Point p = f.getLocation();
