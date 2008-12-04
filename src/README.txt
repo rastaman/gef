@@ -8,3 +8,11 @@ Resolved Issues
 321 Update SvgWriter to SVG 1.1
 324 Allow painting of path item connections
 325 Provide default editor modes
+
+
+GEF vers 0.13 milestone 2 - 4 Dec 2008
+
+Resolved Issues
+===============
+
+328 Svg DOCTYPE should be optional
