@@ -53,7 +53,7 @@ import org.tigris.gef.presentation.Handle;
  * 
  * Needs-More-Work: this mode has more responsibility than just making
  * selections, it has become the "main mode" of the editor and it has taken
- * resposibility for switching to other modes. I should probably implement a
+ * responsibility for switching to other modes. I should probably implement a
  * "UIDialog" class that would have a state machine that describes the various
  * transitions between UI modes.
  * <p>
@@ -325,7 +325,7 @@ public class ModeSelect extends FigModifyingModeImpl {
 
     /**
      * Set the Editor's Mode to ModeModify. Needs-More-Work: This should not be
-     * in ModeSelect, I wanted to move it to ModeModify, but it is too tighly
+     * in ModeSelect, I wanted to move it to ModeModify, but it is too tightly
      * integrated with ModeSelect.
      */
     protected void gotoModifyMode(MouseEvent me) {
@@ -343,7 +343,7 @@ public class ModeSelect extends FigModifyingModeImpl {
     /**
      * Determine if a mouse event was to toggle selection of multiple items. On
      * a Mac this is by Command-Click. On a non-mac this is by Ctrl-Click. There
-     * seems to be no platform independant way of determining this.
+     * seems to be no platform independent way of determining this.
      */
     private boolean isMultiSelectTrigger(MouseEvent me) {
         // If the control key is down and this is not a popup trigger then
