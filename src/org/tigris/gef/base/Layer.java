@@ -229,7 +229,7 @@ public abstract class Layer implements java.io.Serializable {
     }
 
     public void setScale(double scale) {
-        scale = scale;
+        this.scale = scale;
     }
 
     public double getScale() {
