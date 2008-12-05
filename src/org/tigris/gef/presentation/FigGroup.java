@@ -88,8 +88,10 @@ public class FigGroup extends Fig {
         figs = Collections.synchronizedList(new ArrayList<Fig>());
     }
 
-    /** Construct a new FigGroup that holds the given Figs. */
-    public FigGroup(final List<Fig> figs) {
+    /**
+     * Construct a new FigGroup that holds the given Figs.
+     */
+    public FigGroup (List figs) {
         super();
         this.figs = Collections.synchronizedList(figs);
         calcBounds();
@@ -258,11 +260,13 @@ public class FigGroup extends Fig {
 
     /**
      * Get the child figs that make up this group.
+     * USED BY PGML.tee
+     * TODO: How do we move this to List<Fig> without breaking ArgoUML?
      * 
-     * @return the figs of this group USED BY PGML.tee
+     * @return the figs of this group
      */
-    public List<Fig> getFigs() {
-        return Collections.unmodifiableList(this.figs);
+    public List getFigs() {
+        return Collections.unmodifiableList(figs);
     }
 
     public Font getFont() {
