@@ -127,10 +127,20 @@ public class SelectionManager implements Serializable, KeyListener,
         }
     }
 
+    /**
+     * @deprecated in 0.13 use addFigs
+     */
+    @Deprecated
     protected void addAllFigs(Collection c) {
         Iterator it = c.iterator();
         while (it.hasNext()) {
             addFig((Fig) it.next());
+        }
+    }
+
+    protected void addFigs(Collection<Fig> figs) {
+        for (Fig f : figs) {
+            addFig(f);
         }
     }
 
@@ -220,6 +230,11 @@ public class SelectionManager implements Serializable, KeyListener,
         fireSelectionChanged();
     }
 
+    /**
+     * @deprecated in 0.13 use selectFigs
+     * @param items
+     */
+    @Deprecated
     public void select(Collection items) {
         if (UndoManager.getInstance().isGenerateMementos()) {
             UndoManager.getInstance().addMemento(new SelectionMemento());
@@ -227,6 +242,17 @@ public class SelectionManager implements Serializable, KeyListener,
         allDamaged();
         removeAllElements();
         addAllFigs(items);
+        allDamaged();
+        fireSelectionChanged();
+    }
+
+    public void selectFigs(Collection<Fig> items) {
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(new SelectionMemento());
+        }
+        allDamaged();
+        removeAllElements();
+        addFigs(items);
         allDamaged();
         fireSelectionChanged();
     }
