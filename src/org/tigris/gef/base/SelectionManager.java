@@ -138,7 +138,7 @@ public class SelectionManager implements Serializable, KeyListener,
         }
     }
 
-    protected void addFigs(Collection<Fig> figs) {
+    protected void addFigs(Collection<? extends Fig> figs) {
         for (Fig f : figs) {
             addFig(f);
         }
@@ -246,7 +246,7 @@ public class SelectionManager implements Serializable, KeyListener,
         fireSelectionChanged();
     }
 
-    public void selectFigs(Collection<Fig> items) {
+    public void selectFigs(Collection<? extends Fig> items) {
         if (UndoManager.getInstance().isGenerateMementos()) {
             UndoManager.getInstance().addMemento(new SelectionMemento());
         }
