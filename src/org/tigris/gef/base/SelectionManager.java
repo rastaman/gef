@@ -772,11 +772,9 @@ public class SelectionManager implements Serializable, KeyListener,
         }
 
         if (layer != null) {
-            List editors = layer.getEditors();
-            int editorCount = editors.size();
+            List<Editor> editors = layer.getEditors();
             Rectangle dirtyRegionScaled = new Rectangle();
-            for (int editorIndex = 0; editorIndex < editorCount; ++editorIndex) {
-                Editor editor = (Editor) editors.get(editorIndex);
+            for (Editor editor : editors) {
                 double editorScale = editor.getScale();
                 dirtyRegionScaled.x = (int) Math.floor(dirtyRegion.x
                         * editorScale);
