@@ -33,11 +33,15 @@ import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.util.Enumeration; // To store the scribble in.
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.tigris.gef.presentation.*;
 
+/**
+ * Copies the selected Figs to the clipboard. This does not copy the owners
+ */
 public class CmdCopy extends Cmd {
 
     private static final long serialVersionUID = -7316080407001846501L;
@@ -48,17 +52,18 @@ public class CmdCopy extends Cmd {
 
     public void doIt() {
         Editor ce = Globals.curEditor();
-        Vector copiedElements = ce.getSelectionManager().selections();
-        Vector figs = new Vector();
-        Enumeration copies = copiedElements.elements();
-        while (copies.hasMoreElements()) {
-            Selection s = (Selection) copies.nextElement();
+        List<Selection> copiedElements =
+            ce.getSelectionManager().getSelections();
+        List<Fig> figs = new ArrayList<Fig>();
+        Iterator<Selection> copies = copiedElements.iterator();
+        while (copies.hasNext()) {
+            Selection s = copies.next();
             Fig f = s.getContent();
             if (f instanceof FigEdge)
                 continue;
             // needs-more-work: add support for cut-and-paste of edges
             f = (Fig) f.clone();
-            figs.addElement(f);
+            figs.add(f);
         }
         Globals.clipBoard = figs;
     }

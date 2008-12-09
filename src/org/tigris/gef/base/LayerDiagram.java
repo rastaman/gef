@@ -238,9 +238,7 @@ public class LayerDiagram extends Layer {
      * null if there is none in this layer.
      */
     public FigNode getPortFig(Object port) {
-        Enumeration figs = elements();
-        while (figs.hasMoreElements()) {
-            Fig f = (Fig) figs.nextElement();
+        for (Fig f : getContents()) {
             if (f instanceof FigNode) {
                 FigNode fn = (FigNode) f;
                 Fig port_fig = fn.getPortFig(port);

@@ -163,9 +163,19 @@ public class Diagram implements Serializable, GraphListener {
         changeSupport.firePropertyChange(NAME_KEY, oldName, name);
     }
 
+    /**
+     * @deprecated this has nothing to do with GEF. Looks like some ArgoUML
+     * code has crept in here.
+     * @param enable
+     */
     public void setShowSingleMultiplicity(boolean enable) {
     }
 
+    /**
+     * @deprecated this has nothing to do with GEF. Looks like some ArgoUML
+     * code has crept in here.
+     * @param enable
+     */
     public boolean getShowSingleMultiplicity() {
         return false;
     }
@@ -272,12 +282,10 @@ public class Diagram implements Serializable, GraphListener {
         // needs-more-work: should just do getGraphModel().getNodes()
         // but that is not updated when the diagram is loaded
         List nodes = new ArrayList();
-        List figs = getLayer().getContents();
-        Iterator it = figs.iterator();
-        while (it.hasNext()) {
-            Object fig = it.next();
+        List<? extends Fig> figs = getLayer().getContents();
+        for (Fig fig : figs) {
             if (fig instanceof FigNode) {
-                nodes.add(((FigNode) fig).getOwner());
+                nodes.add(fig.getOwner());
             }
         }
 
@@ -293,16 +301,12 @@ public class Diagram implements Serializable, GraphListener {
         // needs-more-work: should just do getGraphModel().getEdges()
         // but that is not updated when the diagram is loaded
         List edges = new ArrayList();
-        List figs = getLayer().getContents();
+        final List<? extends Fig> figs = getLayer().getContents();
 
-        Iterator it = figs.iterator();
-        while (it.hasNext()) {
-            Object fig = it.next();
-            if ((fig instanceof FigEdge)
-                    && (null != ((FigEdge) fig).getOwner())) // Some figs
-                                                                // might not
-                                                                // have a owner?
-                edges.add(((FigEdge) fig).getOwner());
+        for (final Fig fig : figs) {
+            if (fig instanceof FigEdge && fig.getOwner() != null) {
+                edges.add(fig.getOwner());
+            }
         }
 
         return edges;

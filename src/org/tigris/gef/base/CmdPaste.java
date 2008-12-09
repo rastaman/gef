@@ -28,12 +28,11 @@
 
 package org.tigris.gef.base;
 
-import java.beans.*;
-import java.util.Enumeration;
+import java.beans.VetoableChangeListener;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.VetoableChangeEventSource;
 
 /**
