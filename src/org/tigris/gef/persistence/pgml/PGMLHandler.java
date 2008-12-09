@@ -104,6 +104,7 @@ public class PGMLHandler extends BaseHandler implements Container {
             clsName = diagDescr.substring(0, bar);
             initStr = diagDescr.substring(bar + 1);
         }
+        clsName = getPGMLStackParser().translateType(clsName);
 
         try {
             Class cls = Class.forName(clsName);
