@@ -46,7 +46,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.Localizer;
 
 /**
- * Cmd to Print a diagram. Only works under JDK 1.2 and above.
+ * Action to Print a diagram.
  * 
  * @author Eugenio Alvarez
  */
@@ -160,7 +160,7 @@ public class PrintAction extends AbstractAction implements Printable {
         fitDiagramToPage = b;
     }
 
-    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) {
+    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
         if (pageIndex >= maxPageIndex) {
             return NO_SUCH_PAGE;
         }
@@ -225,7 +225,7 @@ public class PrintAction extends AbstractAction implements Printable {
                     // the
                     // grid, then quit
                     editor.setGridHidden(h);
-                    return NO_SUCH_PAGE;
+                    throw new PrinterException();
                 }
             }
             if (fitDiagramToPage()) {
