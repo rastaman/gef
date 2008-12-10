@@ -366,6 +366,27 @@ public abstract class FigEdge extends Fig implements GraphEdge {
 
         return figs;
     }
+    
+    /**
+     * Gets the PathItemPlacementStrategy for the given fig.
+     * The given fig must be one of the pathItem figs, otherwise null will be
+     * returned.
+     * @param fig The fig to look for.
+     * @return The PathItemPlacementStrategy for fig.
+     */
+    public PathItemPlacementStrategy getPathItemPlacementStrategy(Fig fig) {
+    for (PathItem pi : _pathItems) {
+        Fig f = getPathItemFig(pi);
+        if (fig.equals(f)) {
+        return pi.getPathItemPlacementStrategy();
+        }
+    }
+    // Something bad has happened if we get here, it means the fig that 
+    // we were asked to look for was not on a PathItem.
+    //System.out.println("Could not find PathItemPlacementStrategy for fig '"
+    //    + fig + "'.");
+    return null;
+    }
 
     /**
      * Return the vector of path items on this FigEdge.

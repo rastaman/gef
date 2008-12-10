@@ -70,7 +70,18 @@ public abstract class PathConv implements PathItemPlacementStrategy,
         applyOffsetAmount(p1, p2, offset, res);
         return res;
     }
-
+  
+  /**
+   * Used when manually adjusting a previously created PathConv object (e.g.
+   * while dragging the Fig which this PathConv object anchors).
+   * The actual decision about which parameters to set (e.g. angles/offset) 
+   * is up to the implementation of this method.
+   * @param newPoint The new location of the anchored Fig.
+   */
+  public void setPoint(Point newPoint) {
+      
+  }
+  
     protected void applyOffsetAmount(Point p1, Point p2, int offset, Point res) {
         // slope of the line we're finding the normal to
         // is slope, and the normal is the negative reciprocal
