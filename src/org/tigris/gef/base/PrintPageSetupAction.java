@@ -60,6 +60,16 @@ public class PrintPageSetupAction extends AbstractAction {
     /**
      * Creates a new PrintPageSetupAction
      * 
+     * @param printAction
+     *                The action to be printed
+     */
+    public PrintPageSetupAction(PrintAction printAction) {
+        this("Page Setup", printAction, false);
+    }
+
+    /**
+     * Creates a new PrintPageSetupAction
+     * 
      * @param name
      *                The name of the action
      * @param icon
