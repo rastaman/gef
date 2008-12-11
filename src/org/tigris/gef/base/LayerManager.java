@@ -33,6 +33,7 @@ import org.tigris.gef.presentation.FigPainter;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ArrayList;
@@ -49,14 +50,14 @@ public class LayerManager implements java.io.Serializable {
     private static final long serialVersionUID = -4133017459593099807L;
 
     /** The Layer's contained within this LayerManager. */
-    protected List _layers = new ArrayList();
+    private List<Layer> _layers = new ArrayList<Layer>();
 
     /**
      * In most editors one Layer is the active layer and all mouse clicks go to
      * the contents of that layer. For now I assume this, but I would like to
      * avoid this assumption in the future.
      */
-    protected Layer _activeLayer;
+    private Layer _activeLayer;
 
     /**
      * Should only the active layer be repainted?
@@ -68,6 +69,10 @@ public class LayerManager implements java.io.Serializable {
      */
     private boolean _paintLayers = true;
 
+    /**
+     * @deprecated in 0.13 will become private use getEditor()
+     */
+    @Deprecated
     public Editor _editor = null;
 
     // //////////////////////////////////////////////////////////////
@@ -169,15 +174,21 @@ public class LayerManager implements java.io.Serializable {
      * contained in this layer, reply the contents of my active layer. Maybe
      * this should really reply _all_ the contents of all layers.
      */
-    public List getContents() {
-        return (_activeLayer == null) ? null : _activeLayer.getContents();
+    public List<Fig> getContents() {
+        if (_activeLayer == null) {
+            return Collections.emptyList();
+        } else {
+            return _activeLayer.getContents();
+        }
     }
 
     /**
      * When an editor or some tool wants to look at all the Figs that are
      * contained in this layer, reply the contents of my active layer. Maybe
      * this should really reply _all_ the contents of all layers.
+     * @deprecated use getContents with no args
      */
+    @Deprecated
     public List getContents(List oldList) {
         return (_activeLayer == null) ? null : _activeLayer.getContents();
     }
@@ -243,12 +254,18 @@ public class LayerManager implements java.io.Serializable {
             _activeLayer.removeAll();
     }
 
-    /** See comments above, this message is passed to my active layer. */
+    /**
+     * See comments above, this message is passed to my active layer.
+     * @deprecated in 0.13 use getFigs()
+     */
+    @Deprecated
     public Enumeration elements() {
         return (_activeLayer == null) ? null : _activeLayer.elements();
     }
 
-    /** See comments above, this message is passed to my active layer. */
+    /**
+     * See comments above, this message is passed to my active layer.
+     */
     public Fig hit(Rectangle r) {
         return (_activeLayer == null) ? null : _activeLayer.hit(r);
     }

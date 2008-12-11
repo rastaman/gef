@@ -417,9 +417,18 @@ public class Editor implements Serializable, MouseListener,
     // methods related to adding, removing, and accessing Figs
     // shown in the editor
 
-    /** Returns a collection of all Figs in the layer currently being edited. */
+    /**
+     * Returns an enumeration of all Figs in the layer currently being edited.
+     * @deprecated in 0.13 use getFigs()
+     */
+    @Deprecated
     public Enumeration figs() {
         return _layerManager.elements();
+    }
+
+    /** Returns a list of all Figs in the layer currently being edited. */
+    public List<Fig> getFigs() {
+        return _layerManager.getContents();
     }
 
     /** Add a Fig to the diagram being edited. */

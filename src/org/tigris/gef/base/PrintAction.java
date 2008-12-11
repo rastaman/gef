@@ -35,8 +35,8 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -63,9 +63,15 @@ public class PrintAction extends AbstractAction implements Printable {
     private double scale;
     private int nCol;
 
-    private double pageX, pageY, pageWidth, pageHeight;
+    private double pageX;
+    private double pageY;
+    private double pageWidth;
+    private double pageHeight;
 
-    private double diagramX, diagramY, diagramWidth, diagramHeight;
+    private double diagramX;
+    private double diagramY;
+    private double diagramWidth;
+    private double diagramHeight;
 
     public PrintAction() {
         super();
@@ -120,14 +126,6 @@ public class PrintAction extends AbstractAction implements Printable {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
     }
 
-    /**
-     * @deprecated in 0.12.3 The diagramname has never been used by PrintAction.
-     *             This method will be removed.
-     * @param diagramName
-     */
-    public void setDiagramName(String diagramName) {
-    }
-
     public void actionPerformed(ActionEvent arg0) {
         PrinterJob printerJob = getPrinterJob();
 
@@ -173,18 +171,18 @@ public class PrintAction extends AbstractAction implements Printable {
         Rectangle drawingArea = null;
 
         SelectionManager sm = editor.getSelectionManager();
-        Vector selectedFigs = sm.getFigs();
-        Enumeration iter = null;
+        List<Fig> selectedFigs = sm.getSelectedFigs();
+        Iterator<Fig> iter = null;
 
         if (selectedFigs.size() > 0) {
-            iter = selectedFigs.elements();
+            iter = selectedFigs.iterator();
         } else {
-            iter = editor.figs();
+            iter = editor.getFigs().iterator();
             drawingArea = new Rectangle();
         } // end else if
 
-        while (iter.hasMoreElements()) {
-            Fig fig = (Fig) iter.nextElement();
+        while (iter.hasNext()) {
+            Fig fig = iter.next();
             Rectangle rect = fig.getBounds();
             if (drawingArea == null) {
                 drawingArea = new Rectangle(rect);
