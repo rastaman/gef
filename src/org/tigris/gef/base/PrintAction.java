@@ -299,7 +299,8 @@ public class PrintAction extends AbstractAction implements Printable {
                 "Print", JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-        if (n == JOptionPane.CANCEL_OPTION) {
+        if (n == JOptionPane.CANCEL_OPTION
+                || (n == JOptionPane.CLOSED_OPTION)) {
             return false;
         } else {
             if (n == JOptionPane.NO_OPTION) {
