@@ -66,18 +66,18 @@ import java.util.List;
  * supporting dialogs and frames are implemented in their own classes.
  * <p>
  * 
- * An Editor's LayerManager has a stack of Layer's. Normally Layers contain
+ * An Editor's LayerManager has a stack of Layers. Normally Layers contain
  * Figs. Some Figs are linked to NetPrimitives. When Figs are selected the
  * SelectionManager holds a Selection object. The behavior of the Editor is
  * determined by its current Mode. The Editor's ModeManager keeps track of all
- * the active Modes. Modes interpert user input events and decide how to change
+ * the active Modes. Modes interpret user input events and decide how to change
  * the state of the diagram. The Editor acts as a shell for executing Commands
  * that modify the document or the Editor itself.
  * <p>
  * 
- * When Figs change visible state (e.g., color, size, or postition) they tell
+ * When Figs change visible state (e.g. color, size, or postition) they tell
  * their Layer that they are damageAll and need to be repainted. The Layer tells
- * all Editors that are editing that
+ * all Editors that are editing the Fig.
  * 
  * A major goal of GEF is to make it easy to extend the framework for
  * application to a specific domain. It is very important that new functionality
@@ -782,6 +782,7 @@ public class Editor implements Serializable, MouseListener,
     /**
      * Scales the mouse coordinates (which match the drawing scale) back to the
      * model scale.
+     * @see #setScale(double)
      */
     protected MouseEvent translateMouseEvent(MouseEvent me) {
         double xp = me.getX();
@@ -794,6 +795,7 @@ public class Editor implements Serializable, MouseListener,
     /**
      * Scales the mouse coordinates (which match the model scale) back to the
      * drawing scale.
+     * @see #setScale(double)
      */
     public MouseEvent retranslateMouseEvent(MouseEvent me) {
         double xp = me.getX();
