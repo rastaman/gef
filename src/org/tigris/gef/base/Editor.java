@@ -68,14 +68,14 @@ import java.util.List;
  * 
  * An Editor's LayerManager has a stack of Layers. Normally Layers contain
  * Figs. Some Figs are linked to NetPrimitives. When Figs are selected the
- * SelectionManager holds a Selection object. The behavior of the Editor is
+ * SelectionManager holds a Selection object. The behaviour of the Editor is
  * determined by its current Mode. The Editor's ModeManager keeps track of all
  * the active Modes. Modes interpret user input events and decide how to change
  * the state of the diagram. The Editor acts as a shell for executing Commands
  * that modify the document or the Editor itself.
  * <p>
  * 
- * When Figs change visible state (e.g. color, size, or postition) they tell
+ * When Figs change visible state (e.g. color, size, or position) they tell
  * their Layer that they are damageAll and need to be repainted. The Layer tells
  * all Editors that are editing the Fig.
  * 
@@ -771,7 +771,7 @@ public class Editor implements Serializable, MouseListener,
         _modeManager.addModeChangeListener(listener);
     }
 
-    /** Stop notifing listener of mode changes. */
+    /** Stop notifying listener of mode changes. */
     public void removeModeChangeListener(ModeChangeListener listener) {
         _modeManager.removeModeChangeListener(listener);
     }
