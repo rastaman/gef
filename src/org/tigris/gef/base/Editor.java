@@ -784,7 +784,7 @@ public class Editor implements Serializable, MouseListener,
      * model scale.
      * @see #setScale(double)
      */
-    protected MouseEvent translateMouseEvent(MouseEvent me) {
+    public MouseEvent translateMouseEvent(MouseEvent me) {
         double xp = me.getX();
         double yp = me.getY();
         me.translatePoint((int) Math.round((xp / _scale) - me.getX()),
