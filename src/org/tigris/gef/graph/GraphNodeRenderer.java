@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,8 +49,8 @@ public interface GraphNodeRenderer extends java.io.Serializable {
      * @param node
      *                the model element from which to create the FigNode
      * @param attributeMap
-     *                an optional map of attributes to style the fig. return the
-     *                new FigNode
+     *                an optional map of attributes to style the fig. 
+     * @return the new FigNode
      */
     FigNode getFigNodeFor(GraphModel graphmodel, Layer layer, Object node,
             Map attributeMap);
