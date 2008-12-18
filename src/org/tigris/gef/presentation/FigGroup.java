@@ -32,7 +32,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * A FigGroup is a collection of Figs to all be treated as a single item
@@ -155,7 +160,7 @@ public class FigGroup extends Fig {
     /**
      * Accumulate a bounding box for all the Figs in the group. This method is
      * called by many parts of the framework and may cause some performance
-     * problems. It is possible to suppress this mthod by calling
+     * problems. It is possible to suppress this method by calling
      * suppressCalcBounds(true). Be sure to call calcBounds as soon as this
      * suppression is turned off again.
      */
