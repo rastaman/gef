@@ -40,7 +40,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- * A FigGroup is a collection of Figs to all be treated as a single item
+ * A FigGroup is a collection of Figs to all be treated as a single item. <p>
+ * 
+ * Any Fig can be in one FigGroup only.
  * 
  * @author Jason Robbins
  */
@@ -197,7 +199,9 @@ public class FigGroup extends Fig {
     /**
      * Returns the bounds of the given subfig. This method can be overwritten in
      * order to use different strategies on determining the overall bounds of
-     * the FigGroup.
+     * the FigGroup. <p>
+     * 
+     * This does not get called for the first Fig in the Group!
      * 
      * @param subFig
      *                Subfig of this group to calculate the bounds for.
