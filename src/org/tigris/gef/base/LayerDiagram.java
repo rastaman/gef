@@ -198,10 +198,25 @@ public class LayerDiagram extends Layer {
     }
 
     /**
-     * Reply the contents of this layer. Do I really want to do this?
+     * Reply the contents of this layer.
      */
     public List<Fig> getContents() {
         return Collections.unmodifiableList(contents);
+    }
+
+    /**
+     * Reply the contents of this layer that are of the given type.
+     * @param figClass the type of Figs required
+     * @return the figs
+     */
+    public List<? extends Fig> getContents(Class<? extends Fig> figClass) {
+        List<Fig> list = new ArrayList<Fig>(contents.size());
+        for (Fig f : contents) {
+            if (f.getClass().isAssignableFrom(figClass)) {
+                list.add(f);
+            }
+        }
+        return Collections.unmodifiableList(list);
     }
 
     /**

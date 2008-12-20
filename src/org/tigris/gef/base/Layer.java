@@ -252,6 +252,16 @@ public abstract class Layer implements java.io.Serializable {
     abstract public List<Fig> getContents();
 
     /**
+     * Reply the contents of this layer that are of the given type.
+     * @param figClass the type of Figs required
+     * @return the figs
+     */
+    public List<? extends Fig> getContents(Class<? extends Fig> figClass) {
+        return Collections.emptyList();
+    }
+
+
+    /**
      * USED BY SVG.tee && PGML.tee
      * 
      * @deprecated use PgmlUtility.getContentsNoEdges
