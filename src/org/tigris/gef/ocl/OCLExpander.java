@@ -163,7 +163,7 @@ public class OCLExpander {
     private void expandLine(PrintWriter pw, String line, Object target,
             String prefix, String suffix, int lineNo) throws ExpansionException {
         // if no embedded expression then output line else
-        // then loop over all values of expr and call recursively for each resul
+        // then loop over all values of expr and call recursively for each result
         int startTagPos = line.indexOf(OCL_START, 0);
         int endTagPos = line.indexOf(OCL_END, 0);
         if (startTagPos == -1 || endTagPos == -1) { // no embedded expr's
@@ -342,7 +342,7 @@ public class OCLExpander {
      * <p>
      * If an <i>expressionpart</i> returns a collection or an array then the
      * range of the items returned can be restricted by specifying a required
-     * range as a comma seperated start and end values. These values can be
+     * range by comma separated start and end values. These values can be
      * integer numbers with 0 representing the first item. An last item can be
      * represented by *.
      * 
@@ -364,7 +364,7 @@ public class OCLExpander {
      * @param bindings A map of expression part to object bindings. This is
      * expected to be prepopulated with "self" bound to the main target object.
      * @param expr The expression to evaluate.
-     * @return A list of resulting items that satisy the expression.
+     * @return A list of resulting items that satisfy the expression.
      * 
      * @throws ExpansionException on any error.
      */
