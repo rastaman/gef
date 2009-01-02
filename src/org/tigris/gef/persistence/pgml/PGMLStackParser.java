@@ -132,7 +132,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
     }
 
     /**
-     * Read a diagram from an input stream with a user-specificed ContentHandler
+     * Read a diagram from an input stream with a user-specified ContentHandler
      * as the initial ContentHandler for the SAX parser. This allows the caller
      * to completely control the processing of the PGML file.
      * 
