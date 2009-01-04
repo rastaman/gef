@@ -120,6 +120,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <property name="docs.dir" value="../docs"/>
     <property name="lib.dir" value="../lib"/>
     <property name="obj.dir" value="../lib"/>
+  	<property name="tools.dir" value="../tools"/>
     <property name="dist.dir" value="../dist"/>
 
     <property name="manifest" value="org/tigris/gef/manifest.mf"/>
@@ -136,7 +137,19 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <property name="logger.configuration.name" value="log4j.configuration"/>
     <property name="logger.configuration.value" value="log4j.properties"/>
     
-
+	<property name="tests.src" value="../tests"/>
+	<property name="tests.build" value="${build.dir}/tests"/>
+	<property name="tests.report" value="${build.dir}/tests-reports" />
+	<path id="tests.compile.classpath">
+		<pathelement path="${build.dest}"/>
+		<pathelement location="${tools.dir}/junit-3.8.1/junit.jar"/>
+	</path>
+	<path id="tests.run.classpath">
+		<pathelement path="${tests.build}"/>			
+		<path refid="tests.compile.classpath" />
+		<pathelement location="${lib.dir}/commons-logging.jar"/>
+	</path>
+	<property name="tests.pattern" value="**/**Test.java" />
   </target>
 
   <!-- =================================================================== -->
@@ -157,7 +170,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <echo message="   dist      --> generates the GEF distribution as .tar.gz and .zip"/>
     <echo message="   dist-src  --> generates the GEF source distribution as .tar.gz and .zip"/>
     <echo message="   clean     --> cleans up the directory"/>
-    <echo message="   run       --> run instuction on where to find demos"/>
+    <echo message="   tests     --> run the JUnit tests"/>  	
+    <echo message="   run       --> run instruction on where to find demos"/>
     <echo message="   usage     --> show this message (default)"/>
     <echo message=""/>
     <echo message=" See the comments inside the build.xml file for more details."/>
@@ -329,6 +343,33 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
        </classpath>
      </javadoc>
   </target>
+
+	<target name="compile-tests" depends="compile,init">
+		<!-- create directories -->
+		<mkdir dir="${tests.build}" />
+
+		<javac srcdir="${tests.src}" destdir="${tests.build}">
+			<classpath>
+				<path refid="tests.compile.classpath" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="tests" depends="compile-tests" 
+		description="Runs JUnit tests">
+		<mkdir dir="${tests.report}" />
+		<junit printSummary="on" fork="false" haltonfailure="true">
+			<formatter type="xml" />
+			<classpath>
+				<path refid="tests.run.classpath" />
+			</classpath>
+			<batchtest todir="${tests.report}">
+				<fileset dir="${tests.src}">
+					<include name="${tests.pattern}" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
 </project>
 
 <!-- End of file -->
