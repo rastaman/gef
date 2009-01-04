@@ -32,7 +32,7 @@ import org.tigris.gef.presentation.Fig;
 
 import junit.framework.TestCase;
 
-public class TestModeManager extends TestCase {
+public class ModeManagerTest extends TestCase {
 
     private Editor editor;
     
