@@ -678,8 +678,10 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         routeFig.setDashed(d);
     }
 
-    /** Set the ArrowHead at the end of this FigEdge. */
-    final public void setDestArrowHead(ArrowHead newArrow) {
+    /**
+     * Set the ArrowHead at the end of this FigEdge.
+     */
+    public void setDestArrowHead(ArrowHead newArrow) {
         _arrowHeadEnd = newArrow;
     }
 
@@ -782,7 +784,7 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     }
 
     /** Set the ArrowHead at the start of this FigEdge. */
-    final public void setSourceArrowHead(ArrowHead newArrow) {
+    public void setSourceArrowHead(ArrowHead newArrow) {
         _arrowHeadStart = newArrow;
     }
 
