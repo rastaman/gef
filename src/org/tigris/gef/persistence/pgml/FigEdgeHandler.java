@@ -88,8 +88,8 @@ public class FigEdgeHandler extends BaseHandler implements Container {
      * 
      * Three types of contained elements are supported: FigLine or FigPoly
      * become the Fig associated with this FigEdge; String valued elements
-     * (i.e., <em>private</em> elements) are themselves parsed to determin the
-     * source and destination PortFig's for this FigEdge.
+     * (i.e., <em>private</em> elements) are themselves parsed to determine the
+     * source and destination PortFigs for this FigEdge.
      * 
      * @see org.tigris.gef.persistence.pgml.Container#addObject(java.lang.Object)
      */
