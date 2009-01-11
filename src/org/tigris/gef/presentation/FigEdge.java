@@ -733,8 +733,14 @@ public abstract class FigEdge extends Fig implements GraphEdge {
      */
     public void setLineColor(Color c) {
         routeFig.setLineColor(c);
-        getSourceArrowHead().setLineColor(c);
-        getDestArrowHead().setLineColor(c);
+        setArrowColor(getSourceArrowHead(), c);
+        setArrowColor(getDestArrowHead(), c);
+    }
+    
+    private void setArrowColor(ArrowHead arrow, Color c) {
+        if (arrow != null){
+            arrow.setLineColor(c);
+        }        
     }
 
     final public void setLineWidth(int w) {
