@@ -1,3 +1,33 @@
+GEF vers 0.13 milestone 4 - 11 Jan 2009
+
+Resolved Issues
+===============
+
+335	setLineColor throws a NullPointerException if the source or
+
+
+
+GEF vers 0.13 milestone 3 - 11 Dec 2008
+
+Resolved Issues
+===============
+
+329	Layer.setScale does nothing
+332	Call PGMLStackParser.translateType with diagram
+333	Enhance API for PathItemPlacementStrategy
+334	closing the dialog does not cancel, but "Fit to page"
+
+
+
+GEF vers 0.13 milestone 2 - 4 Dec 2008
+
+Resolved Issues
+===============
+
+328 Svg DOCTYPE should be optional
+
+
+
 GEF vers 0.13 milestone 1 - 23 Nov 2008
 
 Resolved Issues
@@ -9,23 +39,3 @@ Resolved Issues
 324 Allow painting of path item connections
 325 Provide default editor modes
 326	Drop xerces etc from build
-
-
-GEF vers 0.13 milestone 2 - 4 Dec 2008
-
-Resolved Issues
-===============
-
-328 Svg DOCTYPE should be optional
-
-
-GEF vers 0.13 milestone 3 - 11 Dec 2008
-
-Resolved Issues
-===============
-
-
-329	DEFECT	P1	All	issues@gef	RESOLV	FIXE	Layer.setScale does nothing
-332	DEFECT	P2	All	issues@gef	RESOLV	FIXE	Call PGMLStackParser.translateType with diagram
-333	ENHANC	P3	All	dthompson	RESOLV	FIXE	Enhance API for PathItemPlacementStrategy
-334	DEFECT	P3	All	issues@gef	RESOLV	FIXE	closing the dialog does not cancel, but "Fit to page"
