@@ -1497,15 +1497,6 @@ public abstract class Fig implements GraphicElement, Cloneable,
     abstract public void paint(Graphics g);
 
     /**
-     * Method to paint this Fig. By default it paints an "empty"
-     * 
-     * @deprecated use paint(Graphics)
-     */
-    final public void paint(Object g) {
-        paint((Graphics) g);
-    };
-
-    /**
      * Method to paint this Fig. By default it paints an "empty" space,
      * subclasses should override this method.
      */
