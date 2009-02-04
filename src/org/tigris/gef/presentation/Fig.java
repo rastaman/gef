@@ -1313,7 +1313,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
         return owner.toString();
     }
 
-    final public Rectangle getTrapRect() {
+    public Rectangle getTrapRect() {
         return getBounds();
     }
 
