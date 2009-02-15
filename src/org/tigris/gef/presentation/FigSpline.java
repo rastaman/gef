@@ -25,6 +25,7 @@ package org.tigris.gef.presentation;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.BitSet;
 
@@ -211,10 +212,11 @@ public class FigSpline extends FigPoly {
 
         xp = (x1 + xb) / 2;
         yp = (y1 + yb) / 2;
+        int lineWidth = getLineWidth();
         if (Math.abs(xa - xp) + Math.abs(ya - yp) > SPLINE_THRESH) {
             drawBezier(g, filled, fillColor, curve, x1, y1, xa, ya, xb, yb);
         } else {
-            g.drawLine(x1, y1, xb, yb);
+            drawLine(g, lineWidth, x1, y1, xb, yb);
             curve.addPoint(xb, yb);
         }
         xp = (x3 + xb) / 2;
@@ -222,8 +224,17 @@ public class FigSpline extends FigPoly {
         if (Math.abs(xc - xp) + Math.abs(yc - yp) > SPLINE_THRESH) {
             drawBezier(g, filled, fillColor, curve, xb, yb, xc, yc, x3, y3);
         } else {
-            g.drawLine(xb, yb, x3, y3);
+            drawLine(g, lineWidth, xb, yb, x3, y3);
             curve.addPoint(x3, y3);
+        }
+    }
+    
+    private void drawLine(Graphics g, int lineWidth, int x1, int y1, int x2, int y2) {
+        if (g instanceof Graphics2D && getDashed()) {
+            drawDashedLine(g, lineWidth, x1, y1, x2, y2, 0, _dashes,
+                    _dashPeriod);
+        } else {
+            g.drawLine(x1, y1, x2, y2);
         }
     }
 
