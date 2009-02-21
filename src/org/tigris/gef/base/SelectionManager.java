@@ -91,21 +91,21 @@ public class SelectionManager implements Serializable, KeyListener,
     /**
      * All of the nodes being dragged
      */
-    private List _draggingNodes;
+    private List<FigNode> _draggingNodes;
     /**
      * All the edges that have both ends attached to nodes that are being
      * dragged (they will also be dragged).
      */
-    private List _draggingMovingEdges;
+    private List<FigEdge> _draggingMovingEdges;
     /**
      * Edges that only have one end attached to an edge being dragged (they will
      * be reshaped)
      */
-    private List _draggingNonMovingEdges;
+    private List<FigEdge> _draggingNonMovingEdges;
     /**
      * Other Figs that are being dragged (ie primitives)
      */
-    private List _draggingOthers;
+    private List<Fig> _draggingOthers;
 
     // //////////////////////////////////////////////////////////////
     // constructor
@@ -702,9 +702,8 @@ public class SelectionManager implements Serializable, KeyListener,
         Rectangle figBounds = _dragLeftMostFig.getBounds();
         dx = Math.max(-_dragLeftMostFig.getX(), dx);
         dy = Math.max(-_dragTopMostFig.getY(), dy);
-        int nodeCount = _draggingNodes.size();
-        for (int i = 0; i < nodeCount; ++i) {
-            FigNode figNode = (FigNode) _draggingNodes.get(i);
+        
+        for (FigNode figNode : _draggingNodes) {
             figNode.getBounds(figBounds);
             dirtyRegion.add(figBounds.x, figBounds.y);
             dirtyRegion.add(figBounds.x + dx, figBounds.y + dy);
@@ -718,9 +717,7 @@ public class SelectionManager implements Serializable, KeyListener,
             // figNode.translateAnnotations();
         }
 
-        int otherCount = _draggingOthers.size();
-        for (int i = 0; i < otherCount; ++i) {
-            Fig fig = (Fig) _draggingOthers.get(i);
+        for (Fig fig : _draggingOthers) {
             fig.getBounds(figBounds);
             dirtyRegion.add(figBounds.x, figBounds.y);
             dirtyRegion.add(figBounds.x + dx, figBounds.y + dy);
@@ -732,9 +729,7 @@ public class SelectionManager implements Serializable, KeyListener,
             fig.translateAnnotations();
         }
 
-        int movingEdgeCount = _draggingMovingEdges.size();
-        for (int i = 0; i < movingEdgeCount; i++) {
-            FigEdge figEdge = (FigEdge) _draggingMovingEdges.get(i);
+        for (FigEdge figEdge : _draggingMovingEdges) {
             figEdge.getBounds(figBounds);
             dirtyRegion.add(figBounds.x, figBounds.y);
             dirtyRegion.add(figBounds.x + dx, figBounds.y + dy);
@@ -746,9 +741,7 @@ public class SelectionManager implements Serializable, KeyListener,
             figEdge.translateAnnotations();
         }
 
-        int nonMovingEdgeCount = _draggingNonMovingEdges.size();
-        for (int i = 0; i < nonMovingEdgeCount; i++) {
-            FigEdge figEdge = (FigEdge) _draggingNonMovingEdges.get(i);
+        for (FigEdge figEdge : _draggingNonMovingEdges) {
             figEdge.getBounds(figBounds);
             dirtyRegion.add(figBounds);
             figEdge.computeRoute();
@@ -772,12 +765,12 @@ public class SelectionManager implements Serializable, KeyListener,
         }
 
         if (layer != null) {
-            List editors = layer.getEditors();
-            int editorCount = editors.size();
-            Rectangle dirtyRegionScaled = new Rectangle();
+            final List<Editor> editors = layer.getEditors();
+            final int editorCount = editors.size();
+            final Rectangle dirtyRegionScaled = new Rectangle();
             for (int editorIndex = 0; editorIndex < editorCount; ++editorIndex) {
-                Editor editor = (Editor) editors.get(editorIndex);
-                double editorScale = editor.getScale();
+                final Editor editor = (Editor) editors.get(editorIndex);
+                final double editorScale = editor.getScale();
                 dirtyRegionScaled.x = (int) Math.floor(dirtyRegion.x
                         * editorScale);
                 dirtyRegionScaled.y = (int) Math.floor(dirtyRegion.y
