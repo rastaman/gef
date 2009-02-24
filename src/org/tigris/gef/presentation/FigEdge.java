@@ -847,6 +847,14 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         routeFig.stuffPointAlongPerimeter(dist, res);
     }
 
+    /**
+     * This is used by the SelectionManager and ModeDrag to move an edge
+     * because its attached node has been dragged or pushed.
+     * TODO: The difference in usage between this and translateImpl is not
+     * clear. Can we move this to some controller class?
+     * @param dx
+     * @param dy
+     */
     final public void translateEdge(final int dx, final int dy) {
         routeFig.translate(dx, dy);
         calcBounds();
