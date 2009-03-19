@@ -391,7 +391,10 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                     LayerManager lm = ce.getLayerManager();
                     fe = (FigEdge) lm.getActiveLayer().presentationFor(newEdge);
                     _newItem.setLineColor(Color.black);
+                    // TODO: This shouldn't be resetting the color
                     fe.setLineColor(Color.black);
+                    // TODO: This replaces the routeFig that we initialized at
+                    // construction time
                     fe.setFig(_newItem);
                     fe.setSourcePortFig(startPortFig);
                     fe.setSourceFigNode(sourceFigNode);
