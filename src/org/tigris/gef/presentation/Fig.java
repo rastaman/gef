@@ -2091,31 +2091,31 @@ public abstract class Fig implements GraphicElement, Cloneable,
         return removeStarted;
     }
 
-	protected Stroke getDefaultStroke(int lineWidth) {
-		float[] dashes = null;
-		if (getDashed()) {
-			dashes = _dashes;
-		}
-		return getDefaultStroke(lineWidth, dashes, 0);
-	}
+    protected Stroke getDefaultStroke(int lineWidth) {
+        float[] dashes = null;
+        if (getDashed()) {
+            dashes = _dashes;
+        }
+        return getDefaultStroke(lineWidth, dashes, 0);
+    }
 
-	protected Stroke getDefaultStroke(float lineWidth, float[] dashes,
-			float phase) {
-		return new BasicStroke(lineWidth, BasicStroke.CAP_SQUARE,
+    protected Stroke getDefaultStroke(float lineWidth, float[] dashes,
+            float phase) {
+        return new BasicStroke(lineWidth, BasicStroke.CAP_SQUARE,
 				BasicStroke.JOIN_MITER, 10.0f, dashes, (float) phase);
-	}
+    }
 	
-	/**
-	 * Get the default paint.  Currently it's just the fill color.
-	 * 
-	 * @return the Paint to use
-	 */
-	protected Paint getDefaultPaint(Color fillColor, Color lineColor, int x,
-			int y, int w, int h) {
-		Paint p = fillColor; // solid fill
+    /**
+     * Get the default paint.  Currently it's just the fill color.
+     * 
+     * @return the Paint to use
+     */
+    protected Paint getDefaultPaint(Color fillColor, Color lineColor, int x,
+            int y, int w, int h) {
+        Paint p = fillColor; // solid fill
 		// simple vertical gradient
-		p = new GradientPaint(new Point2D.Float(x, y), fillColor,
-				new Point2D.Float(x, y + h), fillColor.darker() /*lineColor*/);
+//		p = new GradientPaint(new Point2D.Float(x, y), fillColor,
+//				new Point2D.Float(x, y + h), fillColor.darker() /*lineColor*/);
 		// diagonal stripey cyclic gradient
 //		p = new GradientPaint(new Point2D.Float(x, y), lineColor,
 //				new Point2D.Float(x + 20, y + 20), fillColor, true);
@@ -2123,7 +2123,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
 //		BufferedImage img = ;
 //		p = new TexturePaint(img, 
 //				new Rectangle(0, 0, img.getWidth(), img.getHeight()));
-		return p;
-	}
+        return p;
+    }
 
 } /* end class Fig */
