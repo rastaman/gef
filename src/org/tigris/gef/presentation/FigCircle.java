@@ -21,41 +21,20 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-// Copyright (c) 1996-99 The Regents of the University of California. All
-// Rights Reserved. Permission to use, copy, modify, and distribute this
-// software and its documentation without fee, and without a written
-// agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
-// documentation are copyrighted by The Regents of the University of
-// California. The software program and documentation are supplied "AS
-// IS", without any accompanying services from The Regents. The Regents
-// does not warrant that the operation of the program will be
-// uninterrupted or error-free. The end-user understands that the program
-// was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.tigris.gef.presentation;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Stroke;
+import java.awt.geom.Ellipse2D;
 
 /**
  * Primitive Fig for displaying circles and ovals.
- * @author ics125
+ * @author ics125 spring 1996
  */
 public class FigCircle extends Fig {
 
@@ -111,27 +90,10 @@ public class FigCircle extends Fig {
     /** Draw this FigCircle. */
     public void paint(Graphics g) {
 
-        final boolean dashed = getDashed();
-        final int lineWidth = getLineWidth();
+    	final int lineWidth = getLineWidth();
 
-        if (dashed && (g instanceof Graphics2D)) {
-            Graphics2D g2d = (Graphics2D) g;
-            Stroke oldStroke = g2d.getStroke();
-            float[] dash = { 10.0f, 10.0f };
-            Stroke stroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
-                    BasicStroke.JOIN_MITER, 1.0f, dash, 0.0f);
-            g2d.setStroke(stroke);
-            if (_filled && _fillColor != null) {
-                g2d.setColor(_fillColor);
-                g2d.fillOval(_x, _y, _w, _h);
-            }
-
-            if (lineWidth > 0 && _lineColor != null) {
-                g2d.setColor(_lineColor);
-                g2d.drawOval(_x, _y, _w - lineWidth, _h - lineWidth);
-            }
-
-            g2d.setStroke(oldStroke);
+        if (g instanceof Graphics2D) {
+            paint((Graphics2D) g);
         } else if (_filled && _fillColor != null) {
             if (lineWidth > 0 && _lineColor != null) {
                 g.setColor(_lineColor);
@@ -148,6 +110,27 @@ public class FigCircle extends Fig {
             g.drawOval(_x, _y, _w, _h);
         }
     }
+
+	private void paint(Graphics2D g2) {
+		final int lineWidth = getLineWidth();
+		Stroke oldStroke = g2.getStroke();
+		Paint oldPaint = g2.getPaint();
+		g2.setStroke(getDefaultStroke(lineWidth));
+		if (_filled && _fillColor != null) {
+		    g2.setPaint(getDefaultPaint(_fillColor, _lineColor, _x, _y,
+					_w, _h));
+		    g2.fill(new Ellipse2D.Float(_x + lineWidth, _y + lineWidth, 
+		    		_w - (2 * lineWidth), _h - (2 * lineWidth)));
+		}
+
+		if (lineWidth > 0 && _lineColor != null) {
+		    g2.setPaint(_lineColor);
+		    g2.draw(new Ellipse2D.Float(_x, _y, _w, _h));
+		}
+
+		g2.setStroke(oldStroke);
+		g2.setPaint(oldPaint);
+	}
 
     public void appendSvg(StringBuffer sb) {
         sb.append("<ellipse id='").append(getId()).append("'");

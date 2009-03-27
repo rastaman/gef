@@ -28,13 +28,11 @@
 
 package org.tigris.gef.presentation;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Stroke;
 
 import org.tigris.gef.base.Geometry;
 
@@ -347,16 +345,23 @@ public class FigLine extends Fig {
         final Color lineColor = getLineColor();
         final boolean dashed = getDashed();
 
-        if (lineWidth <= 0)
+        if (lineWidth <= 0) {
             return;
+        }
 
         if (dashed) {
             g.setColor(lineColor);
             drawDashedLine(g, lineWidth, _x1, _y1, _x2, _y2, 0, _dashes,
                     _dashPeriod);
         } else {
-            g.setColor(lineColor);
-            g.drawLine(_x1, _y1, _x2, _y2);
+        	if (g instanceof Graphics2D) {
+        		Graphics2D g2 = (Graphics2D) g;
+        		// dashes == null gives solid line
+                drawDashedLine(g2, lineWidth, _x1, _y1, _x2, _y2, 0, null, 1);
+        	} else {
+        		g.setColor(lineColor);
+        		g.drawLine(_x1, _y1, _x2, _y2);
+        	}
         }
 
     }

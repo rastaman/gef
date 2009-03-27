@@ -26,16 +26,19 @@ package org.tigris.gef.presentation;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
-
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
@@ -52,18 +55,14 @@ import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.di.GraphicElement;
-
 import org.tigris.gef.graph.GraphEdgeHooks;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
 import org.tigris.gef.graph.MutableGraphSupport;
-
 import org.tigris.gef.properties.PropCategoryManager;
-
 import org.tigris.gef.ui.PopupGenerator;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
-
 import org.tigris.gef.util.Localizer;
 
 /**
@@ -164,7 +163,10 @@ public abstract class Fig implements GraphicElement, Cloneable,
     Color _fillColor = Color.white;
 
     /**
-     * Thickness of line around object, for now limited to 0 or 1.
+     * Thickness of object's border.  This is included in the overall
+     * size of the object, so the size of the interior is smaller by
+     * 2 * lineWidth in each dimension.
+     * 
      * @deprecated will become private use getLineWidth()
      */
     int _lineWidth = 1;
@@ -804,39 +806,49 @@ public abstract class Fig implements GraphicElement, Cloneable,
     // }
     //
 
-    public void drawRect(Object graphicsContext, boolean filled,
+    public void drawRect(Graphics g, boolean filled,
             Color fillColor, int lineWidth, Color lineColor, int x, int y,
             int w, int h, boolean dashed, float dashes[], int dashPeriod) {
-        Graphics g = (Graphics) graphicsContext;
-        if (filled && fillColor != null) {
-            int xx = x;
-            int yy = y;
-            int ww = w;
-            int hh = h;
-            if (lineColor != null) {
-                if (lineWidth > 1 && !dashed) {
-                    int lineWidth2 = lineWidth * 2;
-                    g.setColor(lineColor);
-                    g.fillRect(xx, yy, ww, hh);
-                    xx += lineWidth;
-                    yy += lineWidth;
-                    ww -= lineWidth2;
-                    hh -= lineWidth2;
-                }
-            }
-            g.setColor(fillColor);
-            g.fillRect(xx, yy, ww, hh);
-            if (lineColor != null) {
+
+    	if (filled && fillColor != null) {
+    		if (g instanceof Graphics2D) {
+    			Graphics2D g2 = (Graphics2D) g;
+    			Paint oldPaint = g2.getPaint();  
+    			g2.setPaint(getDefaultPaint(fillColor, lineColor, x, y, w, h));
+    			g2.fill(new Rectangle2D.Float(x + lineWidth, y + lineWidth,
+    					w - 2 * lineWidth, h - 2 * lineWidth));
+    			g2.setPaint(oldPaint);
+    		} else {
+    			int xx = x;
+    			int yy = y;
+    			int ww = w;
+    			int hh = h;
+    			if (lineColor != null) {
+    				if (lineWidth > 1 && !dashed) {
+    					int lineWidth2 = lineWidth * 2;
+    					g.setColor(lineColor);
+    					g.fillRect(xx, yy, ww, hh);
+    					xx += lineWidth;
+    					yy += lineWidth;
+    					ww -= lineWidth2;
+    					hh -= lineWidth2;
+    				}
+    			}
+    			g.setColor(fillColor);
+    			g.fillRect(xx, yy, ww, hh);
+    			if (lineColor != null) {
                 if (lineWidth == 1 || dashed) {
-                    paintRectLine(g, xx, yy, ww, hh, lineWidth, lineColor,
-                            dashed, dashes, dashPeriod);
-                }
-            }
+    					paintRectLine(g, xx, yy, ww, hh, lineWidth, lineColor,
+    							dashed, dashes, dashPeriod);
+    				}
+    			}
+    		}
         } else {
             paintRectLine(g, x, y, w, h, lineWidth, lineColor, dashed, dashes,
                     dashPeriod);
         }
     }
+
 
     /**
      * Paint the line of a rectangle without any fill. Manages line width and
@@ -856,27 +868,38 @@ public abstract class Fig implements GraphicElement, Cloneable,
      *                The linewidth of the rectangle
      */
     private void paintRectLine(Graphics g, int x, int y, int w, int h,
-            int lineWidth, Color lineColor, boolean dashed, float dashes[],
-            int dashPeriod) {
-        if (lineWidth > 0 && lineColor != null) {
-            g.setColor(lineColor);
-            if (lineWidth == 1) {
-                paintRectLine(g, x, y, w, h, dashed, lineWidth, dashes,
-                        dashPeriod);
-            } else {
-                int xx = x;
-                int yy = y;
-                int hh = h;
-                int ww = w;
+			int lineWidth, Color lineColor, boolean dashed, float dashes[],
+			int dashPeriod) {
+		if (g instanceof Graphics2D) {
+			Graphics2D g2 = (Graphics2D) g;
+			Paint oldPaint = g2.getPaint();
+			g2.setPaint(lineColor);
+			Stroke oldStroke = g2.getStroke();
+			g2.setStroke(getDefaultStroke(lineWidth, dashes, 0));
+			g2.draw(new Rectangle2D.Float(x, y, w, h));
+			g2.setStroke(oldStroke);
+			g2.setPaint(oldPaint);
+		} else {
+			if (lineWidth > 0 && lineColor != null) {
+				g.setColor(lineColor);
+				if (lineWidth == 1) {
+					paintRectLine(g, x, y, w, h, dashed, lineWidth, dashes,
+							dashPeriod);
+				} else {
+					int xx = x;
+					int yy = y;
+					int hh = h;
+					int ww = w;
 
-                for (int i = 0; i < lineWidth; ++i) {
-                    paintRectLine(g, xx++, yy++, ww, hh, dashed, lineWidth,
-                            dashes, dashPeriod);
-                    ww -= 2;
-                    hh -= 2;
-                }
-            }
-        }
+					for (int i = 0; i < lineWidth; ++i) {
+						paintRectLine(g, xx++, yy++, ww, hh, dashed, lineWidth,
+								dashes, dashPeriod);
+						ww -= 2;
+						hh -= 2;
+					}
+				}
+			}
+		}
     }
 
     private void paintRectLine(Graphics g, int x, int y, int w, int h,
@@ -901,13 +924,13 @@ public abstract class Fig implements GraphicElement, Cloneable,
                 dashPeriod);
     }
 
-    public int drawDashedLine(Object graphicsContext, int lineWidth, int x1,
+    public int drawDashedLine(Graphics g, int lineWidth, int x1,
             int y1, int x2, int y2, int phase, float[] dashes, int dashPeriod) {
-        if (graphicsContext instanceof Graphics2D) {
-            return drawDashedLineG2D((Graphics2D) graphicsContext, lineWidth,
+        if (g instanceof Graphics2D) {
+            return drawDashedLineG2D((Graphics2D) g, lineWidth,
                     phase, x1, y1, x2, y2, dashes, dashPeriod);
         }
-        Graphics g = (Graphics) graphicsContext;
+
         // Fall back on the old inefficient method of drawing dashed
         // lines. This is required until SVGWriter is converted to
         // extend Graphics2D
@@ -959,22 +982,19 @@ public abstract class Fig implements GraphicElement, Cloneable,
                                                             // error of
                                                             // 0.5pixels max. .
                                                             // Seems acceptable.
-        Graphics2D g2D = (Graphics2D) g;
-        Stroke originalStroke = g2D.getStroke(); // we need this to restore
+
+        Stroke originalStroke = g.getStroke(); // we need this to restore
                                                     // the original stroke
                                                     // afterwards
 
-        BasicStroke dashedStroke = new BasicStroke(lineWidth,
-                BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f, dashes,
-                (float) phase);
-        // (float width, int cap, int join, float miterlimit, float[] dash,
-        // float dash_phase)
-        g2D.setStroke(dashedStroke);
-        g2D.drawLine(x1, y1, x2, y2);
-        g2D.setStroke(originalStroke); // undo the manipulation of g
+        Stroke dashedStroke = getDefaultStroke(lineWidth, dashes, phase);
+        g.setStroke(dashedStroke);
+        g.draw(new Line2D.Float(x1, y1, x2, y2));
+        g.setStroke(originalStroke); // undo the manipulation of g
 
         return (length + phase) % dashPeriod;
     }
+
 
     final public void firePropChange(String propName, int oldV, int newV) {
         firePropChange(propName, new Integer(oldV), new Integer(newV));
@@ -1499,6 +1519,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
     /**
      * Method to paint this Fig. By default it paints an "empty" space,
      * subclasses should override this method.
+     * TODO: Deprecate?  Appears unused
      */
     abstract public void appendSvg(StringBuffer sb);
 
@@ -2069,5 +2090,40 @@ public abstract class Fig implements GraphicElement, Cloneable,
     final public boolean isRemoveStarted() {
         return removeStarted;
     }
+
+	protected Stroke getDefaultStroke(int lineWidth) {
+		float[] dashes = null;
+		if (getDashed()) {
+			dashes = _dashes;
+		}
+		return getDefaultStroke(lineWidth, dashes, 0);
+	}
+
+	protected Stroke getDefaultStroke(float lineWidth, float[] dashes,
+			float phase) {
+		return new BasicStroke(lineWidth, BasicStroke.CAP_SQUARE,
+				BasicStroke.JOIN_MITER, 10.0f, dashes, (float) phase);
+	}
+	
+	/**
+	 * Get the default paint.  Currently it's just the fill color.
+	 * 
+	 * @return the Paint to use
+	 */
+	protected Paint getDefaultPaint(Color fillColor, Color lineColor, int x,
+			int y, int w, int h) {
+		Paint p = fillColor; // solid fill
+		// simple vertical gradient
+		p = new GradientPaint(new Point2D.Float(x, y), fillColor,
+				new Point2D.Float(x, y + h), fillColor.darker() /*lineColor*/);
+		// diagonal stripey cyclic gradient
+//		p = new GradientPaint(new Point2D.Float(x, y), lineColor,
+//				new Point2D.Float(x + 20, y + 20), fillColor, true);
+		// Texture paint
+//		BufferedImage img = ;
+//		p = new TexturePaint(img, 
+//				new Rectangle(0, 0, img.getWidth(), img.getHeight()));
+		return p;
+	}
 
 } /* end class Fig */

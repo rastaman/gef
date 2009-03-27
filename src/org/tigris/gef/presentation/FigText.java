@@ -28,23 +28,29 @@
 
 package org.tigris.gef.presentation;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.tigris.gef.persistence.export.FontUtility;
-import org.tigris.gef.properties.PropCategoryManager;
-import org.tigris.gef.undo.Memento;
-import org.tigris.gef.undo.UndoManager;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.event.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.StringTokenizer;
 
 import javax.swing.JLabel;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.tigris.gef.persistence.export.FontUtility;
+import org.tigris.gef.properties.PropCategoryManager;
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
 
 /**
  * This class handles painting and editing text Fig's in a LayerDiagram.
@@ -709,7 +715,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     /**
-     * Paint the FigText. Distingusih between linewidth=1 and >1 If <linewidth>
+     * Paint the FigText. Distinguish between linewidth=1 and >1 If <linewidth>
      * is equal 1, then paint a single rectangle Otherwise paint <linewidth>
      * nested rectangles, whereas every rectangle is painted of 4 connecting
      * lines.
@@ -725,10 +731,15 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
         int lineWidth = getLineWidth();
 
-        if (getFilled()) {
-            g.setColor(getFillColor());
-            g.fillRect(_x, _y, _w, _h);
-        }
+        if (isFilled()) {
+        	if (g instanceof Graphics2D) {
+        		Graphics2D g2 = (Graphics2D) g;
+        		
+        	} else {
+				g.setColor(getFillColor());
+				g.fillRect(_x, _y, _w, _h);
+			}
+		}
         if (lineWidth > 0) {
             g.setColor(getLineColor());
             // test linewidth

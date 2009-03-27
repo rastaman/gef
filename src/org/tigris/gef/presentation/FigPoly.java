@@ -31,9 +31,14 @@ import org.tigris.gef.base.Geometry;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +51,8 @@ import java.util.List;
  * used to represent polylines such as FigEdgeRectilinear.
  */
 public class FigPoly extends Fig {
+
+    private static final float MITER_LIMIT = 10.0f;
 
     private static final long serialVersionUID = -4809619139509617929L;
 
@@ -536,30 +543,82 @@ public class FigPoly extends Fig {
     public void paint(Graphics g) {
 
         if (_filled && _fillColor != null) {
-            g.setColor(_fillColor);
-            g.fillPolygon(_xpoints, _ypoints, _npoints);
+            if (g instanceof Graphics2D) {
+                Graphics2D g2 = (Graphics2D) g;
+                // TODO: Move this out of paint for performance
+                Shape poly = new Polygon(getXs(), getYs(), getNumPoints());
+                Rectangle bb = poly.getBounds();
+                Paint oldPaint = g2.getPaint();
+                g2.setPaint(getDefaultPaint(_fillColor, _lineColor, bb.x, bb.y,
+						bb.width, bb.height));
+                g2.fill(poly);
+                g2.setPaint(oldPaint);
+       	    } else {
+                g.setColor(_fillColor);
+                g.fillPolygon(_xpoints, _ypoints, _npoints);
+       	    }
         }
 
-        if (_lineWidth > 0 && _lineColor != null) {
+        if (getLineWidth() > 0 && _lineColor != null) {
             g.setColor(_lineColor);
-
-            if (getDashed())
-                drawDashedPerimeter(g, _lineWidth, _npoints, _xpoints,
-                        _ypoints, _dashes, _dashPeriod);
-            else
-                g.drawPolyline(_xpoints, _ypoints, _npoints);
+            if (g instanceof Graphics2D) {
+                float[] dashes = null;
+                if (getDashed()) {
+                    dashes = _dashes;
+                }
+                drawPolyLine((Graphics2D) g, (float) getLineWidth(), _npoints,
+                        _xpoints, _ypoints, dashes, 0f);
+            } else {
+                if (getDashed()) {
+                    drawDashedPerimeter(g, getLineWidth(), _npoints, _xpoints,
+                            _ypoints, _dashes, _dashPeriod);
+                } else {
+                    g.drawPolyline(_xpoints, _ypoints, _npoints);
+                }
+            }
         }
     }
 
     private void drawDashedPerimeter(Graphics g, int lineWidth, int pointCount,
             int xPoints[], int yPoints[], float dashes[], int dashPeriod) {
+    	
+    	if (g instanceof Graphics2D) {
+            drawPolyLine((Graphics2D) g, (float) lineWidth, pointCount,
+                    xPoints, yPoints, dashes, 0f);
+            return;
+    	}
         int phase = 0;
-
         for (int i = 1; i < pointCount; i++) {
             phase = drawDashedLine(g, lineWidth, xPoints[i - 1],
                     yPoints[i - 1], xPoints[i], yPoints[i], phase, dashes,
                     dashPeriod);
         }
+    }
+
+    /**
+     * Draw a polyline
+     * @param g2 graphics context
+     * @param width line width
+     * @param pointCount number of points in line
+     * @param xPoints array of X coordinates
+     * @param yPoints array of Y coordinates
+     * @param dashes array of dash lengths
+     */
+    private void drawPolyLine(Graphics2D g2, float width, int pointCount,
+            int[] xPoints,
+            int[] yPoints, float[] dashes, float dash_phase) {
+
+        GeneralPath gp = new GeneralPath();
+        gp.reset();
+        gp.moveTo((float) xPoints[0], (float) yPoints[0]);
+        for (int i = 1; i < pointCount; i++) {
+            gp.lineTo((float) xPoints[i], (float) yPoints[i]);
+        }
+
+        Stroke originalStroke = g2.getStroke();
+        g2.setStroke(getDefaultStroke(width, dashes, dash_phase));
+        g2.draw(gp);
+        g2.setStroke(originalStroke);
     }
 
     public void appendSvg(StringBuffer sb) {
