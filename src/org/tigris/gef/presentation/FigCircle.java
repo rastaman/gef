@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Copyright (c) 1996,2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,6 +34,7 @@ import java.awt.geom.Ellipse2D;
 
 /**
  * Primitive Fig for displaying circles and ovals.
+ * 
  * @author ics125 spring 1996
  */
 public class FigCircle extends Fig {
@@ -87,7 +88,7 @@ public class FigCircle extends Fig {
     // //////////////////////////////////////////////////////////////
     // display methods
 
-    /** Draw this FigCircle. */
+    /* Draw this FigCircle. */
     public void paint(Graphics g) {
 
     	final int lineWidth = getLineWidth();
@@ -111,26 +112,26 @@ public class FigCircle extends Fig {
         }
     }
 
-	private void paint(Graphics2D g2) {
-		final int lineWidth = getLineWidth();
-		Stroke oldStroke = g2.getStroke();
-		Paint oldPaint = g2.getPaint();
-		g2.setStroke(getDefaultStroke(lineWidth));
-		if (_filled && _fillColor != null) {
-		    g2.setPaint(getDefaultPaint(_fillColor, _lineColor, _x, _y,
-					_w, _h));
-		    g2.fill(new Ellipse2D.Float(_x + lineWidth, _y + lineWidth, 
-		    		_w - (2 * lineWidth), _h - (2 * lineWidth)));
-		}
+    private void paint(Graphics2D g2) {
+        final int lineWidth = getLineWidth();
+        Stroke oldStroke = g2.getStroke();
+        Paint oldPaint = g2.getPaint();
+        g2.setStroke(getDefaultStroke(lineWidth));
+        if (_filled && _fillColor != null) {
+            g2.setPaint(getDefaultPaint(_fillColor, _lineColor, _x, _y,
+                    _w, _h));
+            g2.fill(new Ellipse2D.Float(_x + lineWidth, _y + lineWidth, 
+                    _w - (2 * lineWidth), _h - (2 * lineWidth)));
+        }
 
-		if (lineWidth > 0 && _lineColor != null) {
-		    g2.setPaint(_lineColor);
-		    g2.draw(new Ellipse2D.Float(_x, _y, _w, _h));
-		}
+        if (lineWidth > 0 && _lineColor != null) {
+            g2.setPaint(_lineColor);
+            g2.draw(new Ellipse2D.Float(_x, _y, _w, _h));
+        }
 
-		g2.setStroke(oldStroke);
-		g2.setPaint(oldPaint);
-	}
+        g2.setStroke(oldStroke);
+        g2.setPaint(oldPaint);
+    }
 
     public void appendSvg(StringBuffer sb) {
         sb.append("<ellipse id='").append(getId()).append("'");

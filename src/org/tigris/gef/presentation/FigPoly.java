@@ -1,5 +1,5 @@
-// %1030542919702:org.tigris.gef.presentation%
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996,2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,10 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-// File: FigPoly.java
-// Classes: FigPoly
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
+
 package org.tigris.gef.presentation;
 
 import org.tigris.gef.base.Geometry;
@@ -49,6 +46,8 @@ import java.util.List;
  * a number of handles that cannot be moved by user dragging. A FigPoly is not
  * closed unless the last point equals the first point. Thus, FigPolys can be
  * used to represent polylines such as FigEdgeRectilinear.
+ * 
+ * @author jrobbins@ics.uci.edu
  */
 public class FigPoly extends Fig {
 
@@ -447,8 +446,8 @@ public class FigPoly extends Fig {
     /**
      * USED BY PGML.tee
      */
-    public List getPointsList() {
-        ArrayList res = new ArrayList(_npoints);
+    public List<Point> getPointsList() {
+        List<Point> res = new ArrayList<Point>(_npoints);
 
         for (int i = 0; i < _npoints; i++) {
             res.add(new Point(_xpoints[i], _ypoints[i]));
@@ -550,13 +549,13 @@ public class FigPoly extends Fig {
                 Rectangle bb = poly.getBounds();
                 Paint oldPaint = g2.getPaint();
                 g2.setPaint(getDefaultPaint(_fillColor, _lineColor, bb.x, bb.y,
-						bb.width, bb.height));
+                        bb.width, bb.height));
                 g2.fill(poly);
                 g2.setPaint(oldPaint);
-       	    } else {
+            } else {
                 g.setColor(_fillColor);
                 g.fillPolygon(_xpoints, _ypoints, _npoints);
-       	    }
+            }
         }
 
         if (getLineWidth() > 0 && _lineColor != null) {
@@ -610,9 +609,9 @@ public class FigPoly extends Fig {
 
         GeneralPath gp = new GeneralPath();
         gp.reset();
-        gp.moveTo((float) xPoints[0], (float) yPoints[0]);
+        gp.moveTo(xPoints[0], yPoints[0]);
         for (int i = 1; i < pointCount; i++) {
-            gp.lineTo((float) xPoints[i], (float) yPoints[i]);
+            gp.lineTo(xPoints[i], yPoints[i]);
         }
 
         Stroke originalStroke = g2.getStroke();
@@ -622,9 +621,10 @@ public class FigPoly extends Fig {
     }
 
     public void appendSvg(StringBuffer sb) {
-        sb.append("<path id='").append(getId()).append("' class='").append(
-                getClass().getName()).append(
-                "' style='fill:none; stroke-width:").append(getLineWidth())
+        sb.append("<path id='").append(getId()).append("' class='")
+                .append(getClass().getName())
+                .append("' style='fill:none; stroke-width:")
+                .append(getLineWidth())
                 .append("; stroke:rgb(").append(getLineColor().getRed())
                 .append(",").append(getLineColor().getGreen()).append(',')
                 .append(getLineColor().getBlue()).append(" ;' d='");

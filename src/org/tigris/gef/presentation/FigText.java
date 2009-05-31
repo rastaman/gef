@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996,2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -20,11 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: FigText.java
-// Classes: FigText
-// Original Author: ics125 spring 1996
-// $Id$
 
 package org.tigris.gef.presentation;
 
@@ -54,6 +50,8 @@ import org.tigris.gef.undo.UndoManager;
 
 /**
  * This class handles painting and editing text Fig's in a LayerDiagram.
+ * 
+ * @author ics125 spring 1996
  */
 
 public class FigText extends Fig implements KeyListener, MouseListener {
@@ -732,14 +730,14 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         int lineWidth = getLineWidth();
 
         if (isFilled()) {
-        	if (g instanceof Graphics2D) {
-        		Graphics2D g2 = (Graphics2D) g;
-        		
-        	} else {
-				g.setColor(getFillColor());
-				g.fillRect(_x, _y, _w, _h);
-			}
-		}
+            if (g instanceof Graphics2D) {
+                Graphics2D g2 = (Graphics2D) g;
+                // TODO: Noop - does something belong here?
+            } else {
+                g.setColor(getFillColor());
+                g.fillRect(_x, _y, _w, _h);
+            }
+        }
         if (lineWidth > 0) {
             g.setColor(getLineColor());
             // test linewidth
