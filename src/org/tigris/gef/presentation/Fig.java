@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996,2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,6 @@ package org.tigris.gef.presentation;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
@@ -35,7 +34,6 @@ import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -75,7 +73,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
         java.io.Serializable, PropertyChangeListener, PopupGenerator {
 
     /** The smallest size that the user can drag this Fig. */
-    public final int MIN_SIZE = 4;
+    public static final int MIN_SIZE = 4;
 
     /** The size of the dashes drawn when the Fig is dashed. */
     private static final String[] DASHED_CHOICES = { "Solid", "Dashed",
@@ -222,7 +220,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
     // geometric manipulations
 
     /** Margin between this Fig and automatically routed arcs. */
-    public final int BORDER = 8;
+    public static final int BORDER = 8;
 
     /**
      * Most subclasses will not use this constructor, it is only useful for
@@ -678,6 +676,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
         }
         if (lay != null) {
             lay.damageAll();
+//            lay.damaged(this); 
         }
     }
 
@@ -1057,7 +1056,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
         return Geometry.ptClosestTo(getBounds(), anotherPt);
     }
 
-    /** Get the dashed attribute * */
+    /** Get the dashed attribute */
     public boolean getDashed() {
         return (_dashes != null);
     }

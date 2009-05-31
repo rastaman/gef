@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996,2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigCube.java
-// Classes: FigCube
-// Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
-
 package org.tigris.gef.presentation;
 
 import java.awt.Color;
@@ -34,6 +30,8 @@ import java.io.Serializable;
 
 /**
  * This class is needed to paint cubes (the only 3dim Element in UML)
+ * 
+ * @author 5eichler@informatik.uni-hamburg.de
  */
 public class FigCube extends Fig implements Serializable {
 
@@ -94,8 +92,8 @@ public class FigCube extends Fig implements Serializable {
 
     public void appendSvg(StringBuffer sb) {
         sb.append("<rect id='").append(getId()).append("' x='").append(getX())
-                .append("' y='").append(getY()).append("' width='").append(
-                        getWidth()).append("' height='").append(getHeight())
+                .append("' y='").append(getY()).append("' width='")
+                .append(getWidth()).append("' height='").append(getHeight())
                 .append("'");
         appendSvgStyle(sb);
         sb.append(" />");

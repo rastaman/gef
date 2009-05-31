@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996,2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigRect.java
-// Classes: FigRect
-// Original Author: ics125 spring 1996
-// $Id$
-
 package org.tigris.gef.presentation;
 
 import org.tigris.gef.presentation.Fig;
@@ -36,8 +32,11 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Primitive Fig to paint rectangles on a LayerDiagram. */
-
+/**
+ * Primitive Fig to paint rectangles on a LayerDiagram.
+ * 
+ * @author ics125 spring 1996
+ */
 public class FigDiamond extends Fig {
 
     private static final long serialVersionUID = -5625367072029450739L;
@@ -76,8 +75,8 @@ public class FigDiamond extends Fig {
      * 
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
-    public List getGravityPoints() {
-        ArrayList ret = new ArrayList(4);
+    public List<Point> getGravityPoints() {
+        ArrayList<Point> ret = new ArrayList<Point>(4);
         ret.add(new Point(_x + _w / 2, _y));
         ret.add(new Point(_x + _w, _y + _h / 2));
         ret.add(new Point(_x + _w / 2, _y + _h));
@@ -100,7 +99,7 @@ public class FigDiamond extends Fig {
         ys[2] = _y + _h;
         xs[3] = _x;
         ys[3] = _y + _h / 2;
-        Graphics g = (Graphics) graphicContext;
+        Graphics g = graphicContext;
         if (_filled && getFillColor() != null) {
             g.setColor(getFillColor());
             g.fillPolygon(xs, ys, 4);
@@ -112,9 +111,10 @@ public class FigDiamond extends Fig {
     }
 
     public void appendSvg(StringBuffer sb) {
-        sb.append("<path id='").append(getId()).append("' class='").append(
-                getClass().getName()).append(
-                "' style='fill:none; stroke-width:").append(getLineWidth())
+        sb.append("<path id='").append(getId()).append("' class='")
+                .append(getClass().getName())
+                .append("' style='fill:none; stroke-width:")
+                .append(getLineWidth())
                 .append("; stroke:rgb(").append(getLineColor().getRed())
                 .append(",").append(getLineColor().getGreen()).append(',')
                 .append(getLineColor().getBlue()).append(" ;' d='");
