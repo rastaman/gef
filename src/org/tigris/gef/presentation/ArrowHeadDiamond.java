@@ -28,7 +28,10 @@
 
 package org.tigris.gef.presentation;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
 
 /** Draws a Diamond at the end of a FigEdge. */
 
@@ -49,14 +52,14 @@ public class ArrowHeadDiamond extends ArrowHead {
 
     public ArrowHeadDiamond(Color line, Color fill) {
         super(line, fill);
-        arrow_height = 20;
-        arrow_width = 5;
+        setHeight(20);
+        setWidth(5);
     }
 
     // //////////////////////////////////////////////////////////////
     // display methods
 
-    public void paint(Object g, Point start, Point end) {
+    public void paint(Graphics g, Point start, Point end) {
         int xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
         Polygon diamond;
@@ -72,8 +75,8 @@ public class ArrowHeadDiamond extends ArrowHead {
         if (denom == 0)
             return;
 
-        cos = (arrow_height / 2) / denom;
-        sin = arrow_width / denom;
+        cos = (getHeight() / 2) / denom;
+        sin = getWidth() / denom;
         x = xTo - cos * dx;
         y = yTo - cos * dy;
         int x1 = (int) (x - sin * dy);
@@ -81,7 +84,7 @@ public class ArrowHeadDiamond extends ArrowHead {
         int x2 = (int) (x + sin * dy);
         int y2 = (int) (y - sin * dx);
 
-        Point topPoint = pointAlongLine(end, start, arrow_height);
+        Point topPoint = pointAlongLine(end, start, getHeight());
 
         // System.out.println(" ! diamond = topP=" + topPoint + " end=" + end);
 
@@ -92,14 +95,11 @@ public class ArrowHeadDiamond extends ArrowHead {
         diamond.addPoint(topPoint.x, topPoint.y);
         diamond.addPoint(x2, y2);
 
-        if (g instanceof Graphics) {
-            Graphics graphics = (Graphics) g;
-            graphics.setColor(arrowFillColor);
-            graphics.fillPolygon(diamond);
-            graphics.setColor(arrowLineColor);
-            graphics.drawPolygon(diamond);
-
-        }
+        Graphics graphics = (Graphics) g;
+        graphics.setColor(getFillColor());
+        graphics.fillPolygon(diamond);
+        graphics.setColor(getLineColor());
+        graphics.drawPolygon(diamond);
     }
 
 } /* end class ArrowHeadDiamond */

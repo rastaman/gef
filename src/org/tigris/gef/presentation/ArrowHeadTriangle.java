@@ -40,7 +40,7 @@ public class ArrowHeadTriangle extends ArrowHead {
 
     private static final long serialVersionUID = -438086672038929101L;
 
-    public void paint(Object g, Point start, Point end) {
+    public void paint(Graphics g, Point start, Point end) {
         int xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
         Polygon triangle;
@@ -56,8 +56,8 @@ public class ArrowHeadTriangle extends ArrowHead {
         if (denom <= 0.01)
             return;
 
-        cos = arrow_height / denom;
-        sin = arrow_width / denom;
+        cos = getHeight() / denom;
+        sin = getWidth() / denom;
         x = xTo - cos * dx;
         y = yTo - cos * dy;
         int x1 = (int) (x - sin * dy);
@@ -72,9 +72,9 @@ public class ArrowHeadTriangle extends ArrowHead {
 
         if (g instanceof Graphics) {
             Graphics graphics = (Graphics) g;
-            graphics.setColor(arrowFillColor);
+            graphics.setColor(getFillColor());
             graphics.fillPolygon(triangle);
-            graphics.setColor(arrowLineColor);
+            graphics.setColor(getLineColor());
             graphics.drawPolygon(triangle);
         }
     }

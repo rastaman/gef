@@ -28,7 +28,8 @@
 
 package org.tigris.gef.presentation;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.*;
 
 /** Abstract class to draw arrow heads on the ends of FigEdges. */
@@ -53,7 +54,7 @@ public class ArrowHeadComposite extends ArrowHead {
         _arrowHeads.addElement(ah);
     }
 
-    public void paint(Object g, Point start, Point end) {
+    public void paint(Graphics g, Point start, Point end) {
         System.out
                 .println("paint3 in ArrowHeadComposite should never be called");
     }
@@ -62,8 +63,8 @@ public class ArrowHeadComposite extends ArrowHead {
         int size = _arrowHeads.size();
         for (int i = 0; i < size; i++) {
             ArrowHead ah = (ArrowHead) _arrowHeads.elementAt(i);
-            ah.paint(g, path.pointAlongPerimeter((i + 1) * arrow_height * 2),
-                    path.pointAlongPerimeter(i * arrow_height * 2));
+            ah.paint(g, path.pointAlongPerimeter((i + 1) * getHeight() * 2),
+                    path.pointAlongPerimeter(i * getHeight() * 2));
         }
     }
 
@@ -73,8 +74,8 @@ public class ArrowHeadComposite extends ArrowHead {
         for (int i = 0; i < size; i++) {
             ArrowHead ah = (ArrowHead) _arrowHeads.elementAt(i);
             ah.paint(g, path.pointAlongPerimeter(len - 1 - (i + 1)
-                    * arrow_height * 2), path.pointAlongPerimeter(len - 1 - i
-                    * arrow_height * 2));
+                    * getHeight() * 2), path.pointAlongPerimeter(len - 1 - i
+                    * getHeight() * 2));
         }
     }
 } /* end class ArrowHeadComposite */

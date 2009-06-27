@@ -28,7 +28,8 @@
 
 package org.tigris.gef.presentation;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Point;
 
 /** Draws no arrow head at the end of a FigEdge. */
 public class ArrowHeadNone extends ArrowHead {
@@ -36,7 +37,7 @@ public class ArrowHeadNone extends ArrowHead {
     private static final long serialVersionUID = -5863903990732263244L;
     public static ArrowHeadNone TheInstance = new ArrowHeadNone();
 
-    public void paint(Object g, Point start, Point end) {
+    public void paint(Graphics g, Point start, Point end) {
     }
 
 } /* end class ArrowHeadNone */

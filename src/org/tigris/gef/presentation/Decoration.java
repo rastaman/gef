@@ -29,6 +29,7 @@
 package org.tigris.gef.presentation;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 
 /**
@@ -36,14 +37,10 @@ import java.awt.Point;
  */
 
 public abstract class Decoration implements java.io.Serializable {
-    /** @deprecated - use set/getWidth() */
-    protected int arrow_width = 7;
-    /** @deprecated - use set/getHeight() */
-    protected int arrow_height = 12;
-    /** @deprecated - use set/getLineColor() */
-    protected Color arrowLineColor = Color.black;
-    /** @deprecated - use set/getFillColor() */
-    protected Color arrowFillColor = Color.black;
+    private int arrowWidth = 7;
+    private int arrowHeight = 12;
+    private Color arrowLineColor = Color.black;
+    private Color arrowFillColor = Color.black;
 
     public Decoration() {
     }
@@ -69,7 +66,14 @@ public abstract class Decoration implements java.io.Serializable {
         arrowFillColor = newColor;
     }
 
-    public abstract void paint(Object g, Point start, Point end);
+    public abstract void paint(Graphics g, Point start, Point end);
+    
+    /**
+     * @deprecated use paint(Graphics, start, end)
+     */
+    public final void paint(Object g, Point start, Point end) {
+        paint((Graphics) g, start, end);
+    }
 
     /** return the approximate arc length of the path in pixel units */
     public int getLineLength(Point one, Point two) {
@@ -102,19 +106,19 @@ public abstract class Decoration implements java.io.Serializable {
     }
 
     public int getWidth() {
-        return arrow_width;
+        return arrowWidth;
     }
 
     public int getHeight() {
-        return arrow_width;
+        return arrowHeight;
     }
 
     public void setWidth(int w) {
-        arrow_width = w;
+        arrowWidth = w;
     }
 
     public void setHeight(int h) {
-        arrow_height = h;
+        arrowHeight = h;
     }
 
 } /* end class Decoration */

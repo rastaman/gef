@@ -23,15 +23,17 @@
 
 package org.tigris.gef.presentation;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
 
-/** Draws a triangluar arrow head at the end of a FigEdge */
+/** Draws a triangular arrow head at the end of a FigEdge */
 
 public class ArrowHeadHalfTriangle extends ArrowHead {
 
     static final long serialVersionUID = -7257932581787201038L;
 
-    public void paint(Object g, Point start, Point end) {
+    public void paint(Graphics g, Point start, Point end) {
         int xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
         Polygon triangle;
@@ -47,8 +49,8 @@ public class ArrowHeadHalfTriangle extends ArrowHead {
         if (denom == 0)
             return;
 
-        cos = arrow_height / denom;
-        sin = arrow_width / denom;
+        cos = getHeight() / denom;
+        sin = getWidth() / denom;
         x = xTo - cos * dx;
         y = yTo - cos * dy;
         int x2 = (int) (x + sin * dy);
@@ -61,9 +63,9 @@ public class ArrowHeadHalfTriangle extends ArrowHead {
 
         if (g instanceof Graphics) {
             Graphics graphics = (Graphics) g;
-            graphics.setColor(arrowFillColor);
+            graphics.setColor(getFillColor());
             graphics.fillPolygon(triangle);
-            graphics.setColor(arrowLineColor);
+            graphics.setColor(getLineColor());
             graphics.drawPolygon(triangle);
         }
     }

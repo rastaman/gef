@@ -28,15 +28,16 @@
 
 package org.tigris.gef.presentation;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Point;
 
-/** Draws a triangluar arrow head at the end of a FigEdge */
+/** Draws a triangular arrow head at the end of a FigEdge */
 
 public class ArrowHeadGreater extends ArrowHead {
 
     private static final long serialVersionUID = 4300767437944516708L;
 
-    public void paint(Object g, Point start, Point end) {
+    public void paint(Graphics g, Point start, Point end) {
         int xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
 
@@ -52,8 +53,8 @@ public class ArrowHeadGreater extends ArrowHead {
             return;
         }
 
-        cos = arrow_height / denom;
-        sin = arrow_width / denom;
+        cos = getHeight() / denom;
+        sin = getWidth() / denom;
         x = xTo - cos * dx;
         y = yTo - cos * dy;
         int x1 = (int) (x - sin * dy);
@@ -61,12 +62,9 @@ public class ArrowHeadGreater extends ArrowHead {
         int x2 = (int) (x + sin * dy);
         int y2 = (int) (y - sin * dx);
 
-        if (g instanceof Graphics) {
-            Graphics graphics = (Graphics) g;
-            graphics.setColor(arrowLineColor);
-            graphics.drawLine(x1, y1, xTo, yTo);
-            graphics.drawLine(x2, y2, xTo, yTo);
-        }
+        Graphics graphics = (Graphics) g;
+        graphics.setColor(getLineColor());
+        graphics.drawLine(x1, y1, xTo, yTo);
+        graphics.drawLine(x2, y2, xTo, yTo);
     }
-
 }
