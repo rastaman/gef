@@ -38,7 +38,7 @@ public class ArrowHeadGreater extends ArrowHead {
 
     private static final long serialVersionUID = 4300767437944516708L;
 
-    public void paint(Graphics g, Point start, Point end, Color lineColor) {
+    public void paint(Graphics g, Point start, Point end, Color lineColor, Color fillColor) {
         int xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
 

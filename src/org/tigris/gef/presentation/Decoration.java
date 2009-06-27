@@ -66,7 +66,7 @@ public abstract class Decoration implements java.io.Serializable {
         arrowFillColor = newColor;
     }
 
-    public abstract void paint(Graphics g, Point start, Point end, Color lineColor);
+    public abstract void paint(Graphics g, Point start, Point end, Color lineColor, Color fillColor);
     
     /**
      * @deprecated use paint(Graphics, start, end)

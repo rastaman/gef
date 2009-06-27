@@ -63,7 +63,8 @@ public abstract class ArrowHead extends Decoration {
             paint(g2, 
                     new Point(xs[1], ys[1]), 
                     new Point(xs[0], ys[0]), 
-                    path.getLineColor());
+                    path.getLineColor(),
+                    path.getFillColor());
             g2.setStroke(oldStroke);
         } else {
             int[] xs = path.getXs();
@@ -71,7 +72,8 @@ public abstract class ArrowHead extends Decoration {
             paint((Graphics) g, 
                     new Point(xs[1], ys[1]), 
                     new Point(xs[0], ys[0]), 
-                    path.getLineColor());
+                    path.getLineColor(),
+                    path.getFillColor());
         }
     }
 
@@ -90,7 +92,8 @@ public abstract class ArrowHead extends Decoration {
             paint(g2,
                     new Point(xs[pointCount - 2], ys[pointCount - 2]),
                     new Point(xs[pointCount - 1], ys[pointCount - 1]),
-                    path.getLineColor());
+                    path.getLineColor(),
+                    path.getFillColor());
             g2.setStroke(oldStroke);
         } else {
             int pointCount = path.getNumPoints();
@@ -99,7 +102,8 @@ public abstract class ArrowHead extends Decoration {
             paint((Graphics) g, 
                     new Point(xs[pointCount - 2], ys[pointCount - 2]),
                     new Point(xs[pointCount - 1], ys[pointCount - 1]), 
-                    path.getLineColor());
+                    path.getLineColor(),
+                    path.getFillColor());
         }
     }
 } /* end class ArrowHead */

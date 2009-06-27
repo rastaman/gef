@@ -63,7 +63,8 @@ public class ArrowHeadDiamond extends ArrowHead {
             final Graphics g,
             final Point start,
             final Point end,
-            final Color lineColor) {
+            final Color lineColor,
+            final Color fillColor) {
         double denom, x, y, dx, dy, cos, sin;
         Polygon diamond;
 

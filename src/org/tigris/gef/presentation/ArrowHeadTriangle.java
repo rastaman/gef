@@ -41,7 +41,12 @@ public class ArrowHeadTriangle extends ArrowHead {
 
     private static final long serialVersionUID = -438086672038929101L;
 
-    public void paint(Graphics g, Point start, Point end, Color lineColor) {
+    public void paint(
+            final Graphics g,
+            final Point start, 
+            final Point end, 
+            final Color lineColor, 
+            final Color fillColor) {
         int xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
         Polygon triangle;
@@ -72,7 +77,7 @@ public class ArrowHeadTriangle extends ArrowHead {
         triangle.addPoint(x2, y2);
 
         Graphics graphics = (Graphics) g;
-        graphics.setColor(getFillColor());
+        graphics.setColor(fillColor);
         graphics.fillPolygon(triangle);
         graphics.setColor(lineColor);
         graphics.drawPolygon(triangle);

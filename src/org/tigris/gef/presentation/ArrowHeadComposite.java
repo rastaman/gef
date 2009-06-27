@@ -55,7 +55,12 @@ public class ArrowHeadComposite extends ArrowHead {
         _arrowHeads.addElement(ah);
     }
 
-    public void paint(Graphics g, Point start, Point end, Color lineColor) {
+    public void paint(
+            final Graphics g,
+            final Point start,
+            final Point end,
+            final Color lineColor,
+            final Color fillColor) {
         System.out
                 .println("paint3 in ArrowHeadComposite should never be called");
     }
@@ -67,7 +72,8 @@ public class ArrowHeadComposite extends ArrowHead {
             ah.paint((Graphics) g, 
                     path.pointAlongPerimeter((i + 1) * getHeight() * 2),
                     path.pointAlongPerimeter(i * getHeight() * 2),
-                    path.getLineColor());
+                    path.getLineColor(),
+                    path.getFillColor());
         }
     }
 
@@ -79,7 +85,8 @@ public class ArrowHeadComposite extends ArrowHead {
             ah.paint((Graphics) g, 
                     path.pointAlongPerimeter(len - 1 - (i + 1) * getHeight() * 2), 
                     path.pointAlongPerimeter(len - 1 - i * getHeight() * 2),
-                    path.getLineColor());
+                    path.getLineColor(),
+                    path.getFillColor());
         }
     }
 } /* end class ArrowHeadComposite */
