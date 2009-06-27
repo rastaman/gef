@@ -28,6 +28,7 @@
 
 package org.tigris.gef.presentation;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
@@ -37,7 +38,7 @@ public class ArrowHeadGreater extends ArrowHead {
 
     private static final long serialVersionUID = 4300767437944516708L;
 
-    public void paint(Graphics g, Point start, Point end) {
+    public void paint(Graphics g, Point start, Point end, Color lineColor) {
         int xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
 
@@ -63,7 +64,7 @@ public class ArrowHeadGreater extends ArrowHead {
         int y2 = (int) (y - sin * dx);
 
         Graphics graphics = (Graphics) g;
-        graphics.setColor(getLineColor());
+        graphics.setColor(lineColor);
         graphics.drawLine(x1, y1, xTo, yTo);
         graphics.drawLine(x2, y2, xTo, yTo);
     }

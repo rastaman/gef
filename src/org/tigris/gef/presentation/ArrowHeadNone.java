@@ -28,6 +28,7 @@
 
 package org.tigris.gef.presentation;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
@@ -37,7 +38,7 @@ public class ArrowHeadNone extends ArrowHead {
     private static final long serialVersionUID = -5863903990732263244L;
     public static ArrowHeadNone TheInstance = new ArrowHeadNone();
 
-    public void paint(Graphics g, Point start, Point end) {
+    public void paint(Graphics g, Point start, Point end, Color lineColor) {
     }
 
 } /* end class ArrowHeadNone */

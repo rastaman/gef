@@ -66,14 +66,14 @@ public abstract class Decoration implements java.io.Serializable {
         arrowFillColor = newColor;
     }
 
-    public abstract void paint(Graphics g, Point start, Point end);
+    public abstract void paint(Graphics g, Point start, Point end, Color lineColor);
     
     /**
      * @deprecated use paint(Graphics, start, end)
      */
-    public final void paint(Object g, Point start, Point end) {
-        paint((Graphics) g, start, end);
-    }
+//    public final void paint(Object g, Point start, Point end) {
+//        paint((Graphics) g, start, end);
+//    }
 
     /** return the approximate arc length of the path in pixel units */
     public int getLineLength(Point one, Point two) {

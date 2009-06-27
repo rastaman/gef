@@ -30,6 +30,7 @@ package org.tigris.gef.presentation;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
@@ -55,12 +56,18 @@ public abstract class ArrowHead extends Decoration {
             g2.setStroke(new BasicStroke(path.getLineWidth()));
             int[] xs = path.getXs();
             int[] ys = path.getYs();
-            paint(g2, new Point(xs[1], ys[1]), new Point(xs[0], ys[0]));
+            paint(g2, 
+                    new Point(xs[1], ys[1]), 
+                    new Point(xs[0], ys[0]), 
+                    path.getLineColor());
             g2.setStroke(oldStroke);
         } else {
             int[] xs = path.getXs();
             int[] ys = path.getYs();
-            paint(g, new Point(xs[1], ys[1]), new Point(xs[0], ys[0]));
+            paint((Graphics) g, 
+                    new Point(xs[1], ys[1]), 
+                    new Point(xs[0], ys[0]), 
+                    path.getLineColor());
         }
     }
 
@@ -72,15 +79,19 @@ public abstract class ArrowHead extends Decoration {
             int[] xs = path.getXs();
             int[] ys = path.getYs();
             int pointCount = path.getNumPoints();
-            paint(g2, new Point(xs[pointCount - 2], ys[pointCount - 2]),
-                    new Point(xs[pointCount - 1], ys[pointCount - 1]));
+            paint(g2,
+                    new Point(xs[pointCount - 2], ys[pointCount - 2]),
+                    new Point(xs[pointCount - 1], ys[pointCount - 1]),
+                    path.getLineColor());
             g2.setStroke(oldStroke);
         } else {
             int pointCount = path.getNumPoints();
             int[] xs = path.getXs();
             int[] ys = path.getYs();
-            paint(g, new Point(xs[pointCount - 2], ys[pointCount - 2]),
-                    new Point(xs[pointCount - 1], ys[pointCount - 1]));
+            paint((Graphics) g, 
+                    new Point(xs[pointCount - 2], ys[pointCount - 2]),
+                    new Point(xs[pointCount - 1], ys[pointCount - 1]), 
+                    path.getLineColor());
         }
     }
 } /* end class ArrowHead */

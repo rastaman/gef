@@ -59,7 +59,7 @@ public class ArrowHeadDiamond extends ArrowHead {
     // //////////////////////////////////////////////////////////////
     // display methods
 
-    public void paint(Graphics g, Point start, Point end) {
+    public void paint(Graphics g, Point start, Point end, Color lineColor) {
         int xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
         Polygon diamond;

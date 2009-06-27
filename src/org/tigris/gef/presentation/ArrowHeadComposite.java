@@ -28,6 +28,7 @@
 
 package org.tigris.gef.presentation;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.*;
@@ -54,7 +55,7 @@ public class ArrowHeadComposite extends ArrowHead {
         _arrowHeads.addElement(ah);
     }
 
-    public void paint(Graphics g, Point start, Point end) {
+    public void paint(Graphics g, Point start, Point end, Color lineColor) {
         System.out
                 .println("paint3 in ArrowHeadComposite should never be called");
     }
@@ -63,8 +64,10 @@ public class ArrowHeadComposite extends ArrowHead {
         int size = _arrowHeads.size();
         for (int i = 0; i < size; i++) {
             ArrowHead ah = (ArrowHead) _arrowHeads.elementAt(i);
-            ah.paint(g, path.pointAlongPerimeter((i + 1) * getHeight() * 2),
-                    path.pointAlongPerimeter(i * getHeight() * 2));
+            ah.paint((Graphics) g, 
+                    path.pointAlongPerimeter((i + 1) * getHeight() * 2),
+                    path.pointAlongPerimeter(i * getHeight() * 2),
+                    getLineColor());
         }
     }
 
@@ -73,9 +76,10 @@ public class ArrowHeadComposite extends ArrowHead {
         int size = _arrowHeads.size();
         for (int i = 0; i < size; i++) {
             ArrowHead ah = (ArrowHead) _arrowHeads.elementAt(i);
-            ah.paint(g, path.pointAlongPerimeter(len - 1 - (i + 1)
-                    * getHeight() * 2), path.pointAlongPerimeter(len - 1 - i
-                    * getHeight() * 2));
+            ah.paint((Graphics) g, 
+                    path.pointAlongPerimeter(len - 1 - (i + 1) * getHeight() * 2), 
+                    path.pointAlongPerimeter(len - 1 - i * getHeight() * 2),
+                    getLineColor());
         }
     }
 } /* end class ArrowHeadComposite */

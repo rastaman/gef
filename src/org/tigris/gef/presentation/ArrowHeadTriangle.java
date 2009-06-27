@@ -28,6 +28,7 @@
 
 package org.tigris.gef.presentation;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
@@ -40,7 +41,7 @@ public class ArrowHeadTriangle extends ArrowHead {
 
     private static final long serialVersionUID = -438086672038929101L;
 
-    public void paint(Graphics g, Point start, Point end) {
+    public void paint(Graphics g, Point start, Point end, Color lineColor) {
         int xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
         Polygon triangle;
@@ -70,13 +71,11 @@ public class ArrowHeadTriangle extends ArrowHead {
         triangle.addPoint(x1, y1);
         triangle.addPoint(x2, y2);
 
-        if (g instanceof Graphics) {
-            Graphics graphics = (Graphics) g;
-            graphics.setColor(getFillColor());
-            graphics.fillPolygon(triangle);
-            graphics.setColor(getLineColor());
-            graphics.drawPolygon(triangle);
-        }
+        Graphics graphics = (Graphics) g;
+        graphics.setColor(getFillColor());
+        graphics.fillPolygon(triangle);
+        graphics.setColor(lineColor);
+        graphics.drawPolygon(triangle);
     }
 
 } /* end class ArrowHeadTriangle */
