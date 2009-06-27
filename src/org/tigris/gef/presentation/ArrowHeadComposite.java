@@ -60,18 +60,18 @@ public class ArrowHeadComposite extends ArrowHead {
                 .println("paint3 in ArrowHeadComposite should never be called");
     }
 
-    public void paintAtHead(Object g, Fig path) {
+    public void paintAtHead(Graphics g, Fig path) {
         int size = _arrowHeads.size();
         for (int i = 0; i < size; i++) {
             ArrowHead ah = (ArrowHead) _arrowHeads.elementAt(i);
             ah.paint((Graphics) g, 
                     path.pointAlongPerimeter((i + 1) * getHeight() * 2),
                     path.pointAlongPerimeter(i * getHeight() * 2),
-                    getLineColor());
+                    path.getLineColor());
         }
     }
 
-    public void paintAtTail(Object g, Fig path) {
+    public void paintAtTail(Graphics g, Fig path) {
         int len = path.getPerimeterLength();
         int size = _arrowHeads.size();
         for (int i = 0; i < size; i++) {
@@ -79,7 +79,7 @@ public class ArrowHeadComposite extends ArrowHead {
             ah.paint((Graphics) g, 
                     path.pointAlongPerimeter(len - 1 - (i + 1) * getHeight() * 2), 
                     path.pointAlongPerimeter(len - 1 - i * getHeight() * 2),
-                    getLineColor());
+                    path.getLineColor());
         }
     }
 } /* end class ArrowHeadComposite */

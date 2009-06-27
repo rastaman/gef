@@ -59,15 +59,18 @@ public class ArrowHeadDiamond extends ArrowHead {
     // //////////////////////////////////////////////////////////////
     // display methods
 
-    public void paint(Graphics g, Point start, Point end, Color lineColor) {
-        int xFrom, xTo, yFrom, yTo;
+    public void paint(
+            final Graphics g,
+            final Point start,
+            final Point end,
+            final Color lineColor) {
         double denom, x, y, dx, dy, cos, sin;
         Polygon diamond;
 
-        xFrom = start.x;
-        xTo = end.x;
-        yFrom = start.y;
-        yTo = end.y;
+        final int xFrom = start.x;
+        final int xTo = end.x;
+        final int yFrom = start.y;
+        final int yTo = end.y;
 
         dx = (double) (xTo - xFrom);
         dy = (double) (yTo - yFrom);
@@ -86,8 +89,6 @@ public class ArrowHeadDiamond extends ArrowHead {
 
         Point topPoint = pointAlongLine(end, start, getHeight());
 
-        // System.out.println(" ! diamond = topP=" + topPoint + " end=" + end);
-
         // needs-more-work: should avoid alloacting new objects in paint
         diamond = new Polygon();
         diamond.addPoint(xTo, yTo);
@@ -98,7 +99,7 @@ public class ArrowHeadDiamond extends ArrowHead {
         Graphics graphics = (Graphics) g;
         graphics.setColor(getFillColor());
         graphics.fillPolygon(diamond);
-        graphics.setColor(getLineColor());
+        graphics.setColor(lineColor);
         graphics.drawPolygon(diamond);
     }
 

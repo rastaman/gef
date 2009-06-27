@@ -49,7 +49,11 @@ public abstract class ArrowHead extends Decoration {
         super(line, fill);
     }
 
-    public void paintAtHead(Object g, Fig path) {
+    final public void paintAtHead(Object g, Fig path) {
+        paintAtHead((Graphics) g, path);
+    }
+
+    public void paintAtHead(Graphics g, Fig path) {
         if (g instanceof Graphics2D) {
             Graphics2D g2 = (Graphics2D) g;
             Stroke oldStroke = g2.getStroke();
@@ -71,7 +75,11 @@ public abstract class ArrowHead extends Decoration {
         }
     }
 
-    public void paintAtTail(Object g, Fig path) {
+    final public void paintAtTail(Object g, Fig path) {
+        paintAtTail((Graphics) g, path);
+    }
+
+    public void paintAtTail(Graphics g, Fig path) {
         if (g instanceof Graphics2D) {
             Graphics2D g2 = (Graphics2D) g;
             Stroke oldStroke = g2.getStroke();
