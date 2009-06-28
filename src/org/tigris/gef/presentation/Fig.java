@@ -869,16 +869,18 @@ public abstract class Fig implements GraphicElement, Cloneable,
     private void paintRectLine(Graphics g, int x, int y, int w, int h,
 			int lineWidth, Color lineColor, boolean dashed, float dashes[],
 			int dashPeriod) {
-		if (g instanceof Graphics2D) {
-			Graphics2D g2 = (Graphics2D) g;
-			Paint oldPaint = g2.getPaint();
-			g2.setPaint(lineColor);
-			Stroke oldStroke = g2.getStroke();
-			g2.setStroke(getDefaultStroke(lineWidth, dashes, 0));
-			g2.draw(new Rectangle2D.Float(x, y, w, h));
-			g2.setStroke(oldStroke);
-			g2.setPaint(oldPaint);
-		} else {
+        // TODO This causes an underline in the association label of ArgoUML
+        // Disabling until cause is known.
+//		if (g instanceof Graphics2D) {
+//			Graphics2D g2 = (Graphics2D) g;
+//			Paint oldPaint = g2.getPaint();
+//			g2.setPaint(lineColor);
+//			Stroke oldStroke = g2.getStroke();
+//			g2.setStroke(getDefaultStroke(lineWidth, dashes, 0));
+//			g2.draw(new Rectangle2D.Float(x, y, w, h));
+//			g2.setStroke(oldStroke);
+//			g2.setPaint(oldPaint);
+//		} else {
 			if (lineWidth > 0 && lineColor != null) {
 				g.setColor(lineColor);
 				if (lineWidth == 1) {
@@ -898,7 +900,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
 					}
 				}
 			}
-		}
+//		}
     }
 
     private void paintRectLine(Graphics g, int x, int y, int w, int h,
