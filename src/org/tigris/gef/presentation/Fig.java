@@ -805,43 +805,65 @@ public abstract class Fig implements GraphicElement, Cloneable,
     // }
     //
 
-    public void drawRect(Graphics g, boolean filled,
-            Color fillColor, int lineWidth, Color lineColor, int x, int y,
-            int w, int h, boolean dashed, float dashes[], int dashPeriod) {
+    public void drawRect(
+            final Graphics g,
+            final boolean filled,
+            final Color fillColor,
+            final int lineWidth,
+            final Color lineColor,
+            final int x,
+            final int y,
+            final int w,
+            final int h,
+            final boolean dashed,
+            final float dashes[],
+            final int dashPeriod) {
 
     	if (filled && fillColor != null) {
-    		if (g instanceof Graphics2D) {
-    			Graphics2D g2 = (Graphics2D) g;
-    			Paint oldPaint = g2.getPaint();  
-    			g2.setPaint(getDefaultPaint(fillColor, lineColor, x, y, w, h));
-    			g2.fill(new Rectangle2D.Float(x + lineWidth, y + lineWidth,
-    					w - 2 * lineWidth, h - 2 * lineWidth));
-    			g2.setPaint(oldPaint);
-    		} else {
-    			int xx = x;
-    			int yy = y;
-    			int ww = w;
-    			int hh = h;
-    			if (lineColor != null) {
-    				if (lineWidth > 1 && !dashed) {
-    					int lineWidth2 = lineWidth * 2;
-    					g.setColor(lineColor);
-    					g.fillRect(xx, yy, ww, hh);
-    					xx += lineWidth;
-    					yy += lineWidth;
-    					ww -= lineWidth2;
-    					hh -= lineWidth2;
-    				}
-    			}
-    			g.setColor(fillColor);
+            // TODO This causes loss of border edges in various FigNodes
+    	    // in ArgoUML. See sequence diagram and deployment diagrams.
+            // Disabling until cause is known.
+//            if (g instanceof Graphics2D) {
+//                Graphics2D g2 = (Graphics2D) g;
+//                Paint oldPaint = g2.getPaint();  
+//                g2.setPaint(getDefaultPaint(fillColor, lineColor, x, y, w, h));
+//                g2.fill(new Rectangle2D.Float(x + lineWidth, y + lineWidth,
+//                w - 2 * lineWidth, h - 2 * lineWidth));
+//                g2.setPaint(oldPaint);
+//            } else {
+                int xx = x;
+                int yy = y;
+                int ww = w;
+                int hh = h;
+                if (lineColor != null) {
+    		    if (lineWidth > 1 && !dashed) {
+    			int lineWidth2 = lineWidth * 2;
+    			g.setColor(lineColor);
     			g.fillRect(xx, yy, ww, hh);
-    			if (lineColor != null) {
-                if (lineWidth == 1 || dashed) {
-    					paintRectLine(g, xx, yy, ww, hh, lineWidth, lineColor,
-    							dashed, dashes, dashPeriod);
-    				}
-    			}
+    			xx += lineWidth;
+    			yy += lineWidth;
+    			ww -= lineWidth2;
+    			hh -= lineWidth2;
+    		    }
+    	        }
+    	        g.setColor(fillColor);
+    	        g.fillRect(xx, yy, ww, hh);
+    	        if (lineColor != null) {
+                    if (lineWidth == 1 || dashed) {
+    	                paintRectLine(
+    			        g, 
+    			        xx, 
+    			        yy, 
+    			        ww, 
+    			        hh, 
+    			        lineWidth, 
+    			        lineColor,
+    				dashed, 
+    				dashes, 
+    				dashPeriod);
+    		    }
     		}
+//    	    }
         } else {
             paintRectLine(g, x, y, w, h, lineWidth, lineColor, dashed, dashes,
                     dashPeriod);
