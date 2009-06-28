@@ -71,9 +71,20 @@ public class FigRect extends Fig implements Serializable {
     // painting methods
 
     /** Paint this FigRect */
-    public void paint(Graphics g) {
-        drawRect(g, isFilled(), getFillColor(), getLineWidth(), getLineColor(), getX(), getY(), getWidth(),
-                getHeight(), getDashed(), _dashes, _dashPeriod);
+    public void paint(final Graphics g) {
+        drawRect(
+                g, 
+                isFilled(), 
+                getFillColor(), 
+                getLineWidth(), 
+                getLineColor(), 
+                getX(), 
+                getY(), 
+                getWidth(),
+                getHeight(), 
+                getDashed(), 
+                _dashes, 
+                _dashPeriod);
     }
 
     public void appendSvg(StringBuffer sb) {
