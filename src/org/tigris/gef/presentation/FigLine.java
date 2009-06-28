@@ -354,14 +354,16 @@ public class FigLine extends Fig {
             drawDashedLine(g, lineWidth, _x1, _y1, _x2, _y2, 0, _dashes,
                     _dashPeriod);
         } else {
-        	if (g instanceof Graphics2D) {
-        		Graphics2D g2 = (Graphics2D) g;
-        		// dashes == null gives solid line
-                drawDashedLine(g2, lineWidth, _x1, _y1, _x2, _y2, 0, null, 1);
-        	} else {
-        		g.setColor(lineColor);
-        		g.drawLine(_x1, _y1, _x2, _y2);
-        	}
+            // TODO: This causes loss of separators between compartments
+            // in FigClass in ArgoUML. Reverting till cause is known.
+//            if (g instanceof Graphics2D) {
+//                Graphics2D g2 = (Graphics2D) g;
+//                // dashes == null gives solid line
+//                drawDashedLine(g2, lineWidth, _x1, _y1, _x2, _y2, 0, null, 1);
+//            } else {
+                g.setColor(lineColor);
+                g.drawLine(_x1, _y1, _x2, _y2);
+//            }
         }
 
     }
