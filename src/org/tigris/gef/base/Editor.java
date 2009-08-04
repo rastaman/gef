@@ -170,7 +170,7 @@ public class Editor implements Serializable, MouseListener,
     private transient boolean _shouldPaint = true;
 
     /** The swing panel that the Editor draws to. */
-    private transient JComponent _jComponent;
+    private transient JComponent jComponent;
 
     /** The width of the swing panel before scaling. */
     private transient int _naturalComponentWidth;
@@ -213,7 +213,7 @@ public class Editor implements Serializable, MouseListener,
     }
 
     public Editor(GraphModel gm, JComponent jComponent, Layer lay) {
-        _jComponent = jComponent;
+        this.jComponent = jComponent;
         defineLayers(gm, lay);
 
         // Push the default modes onto the mode stack (or those configured
@@ -344,7 +344,7 @@ public class Editor implements Serializable, MouseListener,
     public void setScale(double scale) {
         _scale = scale;
         _layerManager.setScale(_scale);
-        _jComponent.setPreferredSize(new Dimension(
+        jComponent.setPreferredSize(new Dimension(
                 (int) (_naturalComponentWidth * _scale),
                 (int) (_naturalComponentHeight * _scale)));
         damageAll();
@@ -582,14 +582,16 @@ public class Editor implements Serializable, MouseListener,
     /**
      * Mark the entire visible area of this Editor as damageAll. Currently
      * called when a LayerGrid is adjusted. This will be useful for
-     * ActionRefresh if I get around to it. Also some Actions may perfer to do
+     * ActionRefresh if I get around to it. Also some Actions may prefer to do
      * this instead of keeping track of all modified objects, but only in cases
      * where most of the visible area is expected to change anyway.
      */
     public void damageAll() {
-        Rectangle r = _jComponent.getVisibleRect();
-        _jComponent.revalidate();
-        _jComponent.repaint(r.x, r.y, r.width, r.height);
+        if (jComponent != null) {
+            Rectangle r = jComponent.getVisibleRect();
+            jComponent.revalidate();
+            jComponent.repaint(r.x, r.y, r.width, r.height);
+        }
     }
 
     // //////////////////////////////////////////////////////////////
@@ -661,11 +663,11 @@ public class Editor implements Serializable, MouseListener,
     // Frame and panel related methods
 
     public JComponent getJComponent() {
-        return _jComponent;
+        return jComponent;
     }
 
     public void setJComponent(JComponent c) {
-        _jComponent = c;
+        jComponent = c;
         _peer_component = null;
     }
 
@@ -681,7 +683,7 @@ public class Editor implements Serializable, MouseListener,
      * to open a dialog box.
      */
     public Frame findFrame() {
-        Component c = _jComponent;
+        Component c = jComponent;
         while (c != null && !(c instanceof Frame))
             c = c.getParent();
         return (Frame) c;
@@ -696,10 +698,10 @@ public class Editor implements Serializable, MouseListener,
      * diagram on the system clipboard.
      */
     public Image createImage(int w, int h) {
-        if (_jComponent == null)
+        if (jComponent == null)
             return null;
         if (_peer_component == null) {
-            _peer_component = _jComponent;
+            _peer_component = jComponent;
             while (_peer_component instanceof JComponent)
                 // getPeer() is deprecated
                 _peer_component = _peer_component.getParent();
@@ -717,9 +719,9 @@ public class Editor implements Serializable, MouseListener,
      * be visible because LayerGrid covers the entire drawing area.
      */
     public Color getBackground() {
-        if (_jComponent == null)
+        if (jComponent == null)
             return Color.lightGray;
-        return _jComponent.getBackground();
+        return jComponent.getBackground();
     }
 
     public void setActiveTextEditor(FigTextEditor fte) {
@@ -745,11 +747,11 @@ public class Editor implements Serializable, MouseListener,
     public void drawingSizeChanged(Dimension dim) {
         _naturalComponentWidth = dim.width;
         _naturalComponentHeight = dim.height;
-        if (_jComponent != null) {
-            _jComponent.setPreferredSize(new Dimension(
+        if (jComponent != null) {
+            jComponent.setPreferredSize(new Dimension(
                     (int) (_naturalComponentWidth * _scale),
                     (int) (_naturalComponentHeight * _scale)));
-            _jComponent.revalidate();
+            jComponent.revalidate();
         }
     }
 
@@ -908,11 +910,11 @@ public class Editor implements Serializable, MouseListener,
             String tip = _curFig.getTipString(me);
             if (tip != null && tip.length() > 0 && !tip.endsWith(" "))
                 tip += " ";
-            if (tip != null && (_jComponent instanceof JComponent)) {
-                _jComponent.setToolTipText(tip);
+            if (tip != null && (jComponent instanceof JComponent)) {
+                jComponent.setToolTipText(tip);
             }
         } else
-            _jComponent.setToolTipText(null); // was ""
+            jComponent.setToolTipText(null); // was ""
 
         if (_canSelectElements) {
             _selectionManager.mouseMoved(me);
