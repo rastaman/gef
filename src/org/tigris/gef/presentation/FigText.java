@@ -730,13 +730,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         int lineWidth = getLineWidth();
 
         if (isFilled()) {
-            if (g instanceof Graphics2D) {
-                Graphics2D g2 = (Graphics2D) g;
-                // TODO: Noop - does something belong here?
-            } else {
-                g.setColor(getFillColor());
-                g.fillRect(_x, _y, _w, _h);
-            }
+            g.setColor(getFillColor());
+            g.fillRect(_x, _y, _w, _h);
         }
         if (lineWidth > 0) {
             g.setColor(getLineColor());
