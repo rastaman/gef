@@ -230,9 +230,13 @@ public class OCLEvaluator {
         }
     } // end of evaluateProperty
 
-    private Object invokeMethod(Method method, Object target,
-            String collectionRange) throws ExpansionException {
+    private Object invokeMethod(
+            final Method method,
+            final Object target,
+            final String collectionRange) throws ExpansionException {
 
+        method.setAccessible(true);
+        
         if (method != null) {
             try {
                 Object o = method.invoke(target, null); // getter methods take
