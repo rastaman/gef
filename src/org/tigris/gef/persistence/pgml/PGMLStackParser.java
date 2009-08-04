@@ -598,6 +598,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
                 // LOG.info("Look for a constructor that takes Object, int, int,
                 // int, int");
                 for (int i = 0; i < constructors.length; ++i) {
+                    constructors[i].setAccessible(true);
                     if (constructors[i].getParameterTypes().length == 5
                             && constructors[i].getParameterTypes()[0]
                                     .equals(Object.class)
