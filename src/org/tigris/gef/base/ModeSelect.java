@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,7 +45,9 @@ import org.tigris.gef.presentation.Handle;
 /**
  * This class implements a Mode that interprets user input as selecting one or
  * more Figs. Clicking on a Fig will select it. Shift-clicking will toggle
- * whether it is selected. Dragging in open space will draw a selection
+ * whether it is selected. Control-clicking will toggle
+ * whether it is selected.  Alt-clicking will start the broom (ModeBroom).
+ * Dragging in open space will draw a selection
  * rectangle. Dragging on a Fig will switch to ModeModify. Dragging from a port
  * will switch to ModeCreateEdge. ModeSelect paints itself by displaying its
  * selection rectangle if any.
@@ -116,9 +118,17 @@ public class ModeSelect extends FigModifyingModeImpl {
             return;
         }
 
-        if (me.isAltDown()) {
+        int onmask = MouseEvent.BUTTON1_DOWN_MASK
+            | MouseEvent.ALT_DOWN_MASK;
+        int offmask = MouseEvent.BUTTON2_DOWN_MASK 
+            | MouseEvent.BUTTON3_DOWN_MASK
+            | MouseEvent.CTRL_DOWN_MASK;
+        /* The broom uses the shift key to adapt its functionality, 
+         * so it is not checked here.*/
+        if ((me.getModifiersEx() & (onmask | offmask)) == onmask) {
+            gotoBroomMode(me);
             if (LOG.isDebugEnabled())
-                LOG.debug("MousePressed but rejected as alt key pressed");
+                LOG.debug("MousePressed with alt key pressed");
             return;
         }
 
@@ -131,20 +141,13 @@ public class ModeSelect extends FigModifyingModeImpl {
             return;
         }
 
-        if (me.isShiftDown()) {
-            gotoBroomMode(me);
-            if (LOG.isDebugEnabled())
-                LOG.debug("MousePressed with shift key so gone to broom mode");
-            // TODO should we not consume here?
-            return;
-        }
-
         int x = me.getX();
         int y = me.getY();
         selectAnchor = new Point(x, y);
         selectRect.setBounds(x, y, 0, 0);
-        toggleSelection = (me.isControlDown() && !me.isPopupTrigger())
-                || me.isMetaDown();
+        toggleSelection = ((me.isControlDown() || me.isShiftDown()) 
+                && !me.isPopupTrigger())
+                    || me.isMetaDown();
         SelectionManager sm = editor.getSelectionManager();
         Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
 

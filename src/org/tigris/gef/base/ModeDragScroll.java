@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -109,7 +109,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements
      * Instructions for the user.
      */
     public String instructions() {
-        return "Drag with mouse to scroll, hold down SHIFT to speed up movement";
+        return "Drag with middle mouse button to scroll, hold down SHIFT to speed up movement";
     }
 
     /**
@@ -118,22 +118,20 @@ public class ModeDragScroll extends FigModifyingModeImpl implements
      * @param me
      */
     public void mousePressed(MouseEvent me) {
-        boolean isAltDown = (me.isAltDown() || me.isAltGraphDown());
-        boolean isOtherDown = me.isMetaDown() || me.isControlDown(); // SHIFT
-                                                                        // speeds
-                                                                        // up
-                                                                        // movement
-        boolean button1 = ((me.getModifiers() & MouseEvent.BUTTON1_MASK) != 0);
-        boolean button2 = ((me.getModifiers() & MouseEvent.BUTTON2_MASK) != 0);
+        int onmask = MouseEvent.BUTTON2_DOWN_MASK;
+        int offmask = MouseEvent.ALT_DOWN_MASK 
+            | MouseEvent.CTRL_DOWN_MASK;
+        /* The shift key is used to modify the dragScroll functionality, 
+         * so it is not checked here.*/
+        boolean buttonCondition =  (me.getModifiersEx() & (onmask | offmask)) == onmask;
 
-        // Note JDK bug: for middle mouse button isAltDown() always returns
-        // true.
-        // (JDK 1.4 introduced ALT_DOWN_MASK to fix the bug.)
-        boolean buttonCondition = (button1 && isAltDown && !isOtherDown)
-                || (button2 && !isOtherDown);
-
-        // if only mouse button1 is pressed, activate the auto scrolling
-        simpleDrag = !buttonCondition && button1;
+        // if only mouse button1 is pressed, activate the auto scrolling        
+        onmask = MouseEvent.BUTTON1_DOWN_MASK;
+        offmask = MouseEvent.BUTTON2_DOWN_MASK 
+            | MouseEvent.BUTTON3_DOWN_MASK 
+            | MouseEvent.SHIFT_DOWN_MASK 
+            | MouseEvent.CTRL_DOWN_MASK;
+        simpleDrag =  (me.getModifiersEx() & (onmask | offmask)) == onmask;
 
         if (!buttonCondition) {
             // if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but
