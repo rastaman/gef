@@ -32,12 +32,12 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-
 import java.util.Enumeration;
 import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.Handle;
@@ -47,6 +47,7 @@ import org.tigris.gef.presentation.Handle;
  * more Figs. Clicking on a Fig will select it. Shift-clicking will toggle
  * whether it is selected. Control-clicking will toggle
  * whether it is selected.  Alt-clicking will start the broom (ModeBroom).
+ * Alt-Gr-clicking also invokes the broom.
  * Dragging in open space will draw a selection
  * rectangle. Dragging on a Fig will switch to ModeModify. Dragging from a port
  * will switch to ModeCreateEdge. ModeSelect paints itself by displaying its
@@ -120,12 +121,15 @@ public class ModeSelect extends FigModifyingModeImpl {
 
         int onmask = MouseEvent.BUTTON1_DOWN_MASK
             | MouseEvent.ALT_DOWN_MASK;
+        int onmask2 = MouseEvent.BUTTON1_DOWN_MASK
+            | MouseEvent.ALT_GRAPH_DOWN_MASK;
         int offmask = MouseEvent.BUTTON2_DOWN_MASK 
             | MouseEvent.BUTTON3_DOWN_MASK
             | MouseEvent.CTRL_DOWN_MASK;
         /* The broom uses the shift key to adapt its functionality, 
          * so it is not checked here.*/
-        if ((me.getModifiersEx() & (onmask | offmask)) == onmask) {
+        if (((me.getModifiersEx() & (onmask | offmask)) == onmask)
+                || ((me.getModifiersEx() & (onmask2 | offmask)) == onmask2)){
             gotoBroomMode(me);
             if (LOG.isDebugEnabled())
                 LOG.debug("MousePressed with alt key pressed");
