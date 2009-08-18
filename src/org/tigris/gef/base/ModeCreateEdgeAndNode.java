@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,6 +36,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphNodeRenderer;
@@ -45,6 +46,7 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
+import org.tigris.gef.util.Localizer;
 
 /**
  * A Mode to interpret user input while creating an edge. Basically mouse down
@@ -205,7 +207,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
      * @see org.tigris.gef.base.FigModifyingMode#instructions()
      */
     public String instructions() {
-        return "Drag to define an edge (and a new node)";
+        return Localizer.localize("GefBase", "ModeCreateEdgeAndNodeInstructions");
     }
 
     // //////////////////////////////////////////////////////////////

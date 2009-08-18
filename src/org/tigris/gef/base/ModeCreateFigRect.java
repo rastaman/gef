@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,9 @@ package org.tigris.gef.base;
 
 import java.awt.event.MouseEvent;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.util.Localizer;
 
 /**
  * A Mode to interpert user input while creating a FigRect. All of the actual
@@ -42,7 +44,7 @@ public class ModeCreateFigRect extends ModeCreate {
     private static final long serialVersionUID = 2881047174758002300L;
 
     public String instructions() {
-        return "Drag to define a rectangle";
+        return Localizer.localize("GefBase", "ModeCreateFigRectInstructions");
     }
 
     /**

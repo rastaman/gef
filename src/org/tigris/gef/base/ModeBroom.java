@@ -1,5 +1,5 @@
 // %1034862399516:org.tigris.gef.base%
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,10 +27,13 @@
 // $Id$
 package org.tigris.gef.base;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -40,10 +43,12 @@ import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.util.Localizer;
 
 public class ModeBroom extends FigModifyingModeImpl {
 
     private static final long serialVersionUID = -6846688672699867345L;
+    private static final String resource = "GefBase";
 
     private final int DIRECTION_UNDEFINED = 0;
     private final int DIRECTION_UPWARD = 1;
@@ -526,24 +531,26 @@ public class ModeBroom extends FigModifyingModeImpl {
         }
 
         if (_distributeMode == DISTRIBUTE_EVEN_SPACE) {
-            _hint = "Space evenly";
+            _hint = "BroomSpaceEvenly";
         } else if (_distributeMode == DISTRIBUTE_PACK) {
-            _hint = "Pack tightly";
+            _hint = "BroomPackTightly";
         } else if (_distributeMode == DISTRIBUTE_SPREAD) {
-            _hint = "Spread out";
+            _hint = "BroomSpreadOut";
         } else if (_distributeMode == DISTRIBUTE_ORIG) {
-            _hint = "Original";
+            _hint = "BroomOriginal";
         } else {
             _hint = "(internal prog error)";
         }
 
         if (doCentering) {
-            _hint += " + center";
+            _hint += "Center";
         }
 
         if (alignToGrid) {
-            _hint += " + snap";
+            _hint += "Snap";
         }
+        
+        _hint = Localizer.localize(resource, _hint);
 
         _distributeMode = (_distributeMode + 1) % 4;
     }
@@ -570,7 +577,7 @@ public class ModeBroom extends FigModifyingModeImpl {
      * this mode starts.
      */
     public String instructions() {
-        return "Push objects around. Return toggles pulling. Space key distributes.";
+        return Localizer.localize(resource, "BroomInstructions");
     }
 
     // //////////////////////////////////////////////////////////////

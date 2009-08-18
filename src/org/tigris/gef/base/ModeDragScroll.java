@@ -32,13 +32,15 @@ import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JViewport;
+
+import org.tigris.gef.util.Localizer;
 
 /**
  * A Mode that allows the user to scroll the Editor by clicking and dragging
@@ -109,7 +111,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements
      * Instructions for the user.
      */
     public String instructions() {
-        return "Drag with middle mouse button to scroll, hold down SHIFT to speed up movement";
+        return Localizer.localize("GefBase", "ModeDragScrollInstructions");
     }
 
     /**

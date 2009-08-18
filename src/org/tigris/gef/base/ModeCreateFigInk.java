@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,10 +30,12 @@ package org.tigris.gef.base;
 
 import java.awt.event.MouseEvent;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigInk;
+import org.tigris.gef.util.Localizer;
 
 /**
- * A Mode to interpert user input while creating a FigInk. When creating a
+ * A Mode to interpret user input while creating a FigInk. When creating a
  * FigInk, new points are being added on mouseDragged, and a single
  * mouseReleased ends the Mode. A new point is added whenever the mouse moves a
  * minimum distance.
@@ -58,7 +60,7 @@ public class ModeCreateFigInk extends ModeCreate {
     // Mode API
 
     public String instructions() {
-        return "Drag to draw a stream of ink";
+        return Localizer.localize("GefBase", "ModeCreateFigInkInstructions");
     }
 
     // //////////////////////////////////////////////////////////////

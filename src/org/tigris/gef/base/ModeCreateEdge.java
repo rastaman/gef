@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,22 +28,29 @@
 
 package org.tigris.gef.base;
 
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
 
-import org.apache.commons.logging.*;
-import org.tigris.gef.graph.*;
-import org.tigris.gef.presentation.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
+import org.tigris.gef.util.Localizer;
 
 /**
  * A Mode to interpret user input while creating an edge. Basically mouse down
  * starts creating an edge from a source port Fig, mouse motion paints a
- * rubberband line, mouse up finds the destination port and finishes creating
+ * rubber-band line, mouse up finds the destination port and finishes creating
  * the edge and makes an FigEdge and sends it to the back of the Layer.
  * 
  * The argument "edgeClass" determines the type if edge to suggest that the
- * Editor's GraphModel construct. The GraphModel is responsible for acutally
+ * Editor's GraphModel construct. The GraphModel is responsible for actually
  * making an edge in the underlying model and connecting it to other model
  * elements.
  */
@@ -85,7 +92,7 @@ public class ModeCreateEdge extends ModeCreate {
     // Mode API
 
     public String instructions() {
-        return "Drag to define an edge to another port";
+        return Localizer.localize("GefBase", "ModeCreateEdgeInstructions");
     }
 
     // //////////////////////////////////////////////////////////////

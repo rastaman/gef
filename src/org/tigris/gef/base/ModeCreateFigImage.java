@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,13 +28,16 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigImage;
+import org.tigris.gef.util.Localizer;
 
 /**
- * A Mode to interpert user input while creating a FigImage. All of the actual
+ * A Mode to interpret user input while creating a FigImage. All of the actual
  * event handling is inherited from ModeCreate. This class just implements the
  * differences needed to make it specific to images.
  */
@@ -62,7 +65,7 @@ public class ModeCreateFigImage extends ModeCreate {
     // Mode API
 
     public String instructions() {
-        return "Click to place an image";
+        return Localizer.localize("GefBase", "ModeCreateFigImageInstructions");
     }
 
     // //////////////////////////////////////////////////////////////

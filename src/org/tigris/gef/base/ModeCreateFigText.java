@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,10 +30,12 @@ package org.tigris.gef.base;
 
 import java.awt.event.MouseEvent;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.util.Localizer;
 
 /**
- * A Mode to interpert user input while creating a FigText. All of the actual
+ * A Mode to interpret user input while creating a FigText. All of the actual
  * event handling is inherited from ModeCreate. This class just implements the
  * differences needed to make it specific to text.
  */
@@ -49,7 +51,7 @@ public class ModeCreateFigText extends ModeCreate {
     }
 
     public String instructions() {
-        return "Drag to define a text rectangle, then type";
+        return Localizer.localize("GefBase", "ModeCreateFigTextInstructions");
     }
 
     /**

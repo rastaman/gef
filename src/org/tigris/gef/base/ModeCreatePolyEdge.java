@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,13 +28,24 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-import org.apache.commons.logging.*;
-import org.tigris.gef.graph.*;
-import org.tigris.gef.presentation.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.Handle;
 import org.tigris.gef.undo.UndoManager;
+import org.tigris.gef.util.Localizer;
 
 /**
  * A Mode to interpret user input while creating an edge. Basically mouse down
@@ -90,7 +101,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
     // Mode API
 
     public String instructions() {
-        return "Drag to define an edge to another port";
+        return Localizer.localize("GefBase", "ModeCreatePolyEdgeInstructions");
     }
 
     // //////////////////////////////////////////////////////////////

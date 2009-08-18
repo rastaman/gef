@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,6 +32,7 @@ import java.awt.event.MouseEvent;
 
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigSpline;
+import org.tigris.gef.util.Localizer;
 
 /**
  * A Mode to interpert user input while creating a FigSpline. All of the actual
@@ -43,7 +44,7 @@ public class ModeCreateFigSpline extends ModeCreateFigPoly {
     private static final long serialVersionUID = 5038274770338930599L;
 
     public String instructions() {
-        return "Click to add a point; Double-click to finish";
+        return Localizer.localize("GefBase", "ModeCreateFigSplineInstructions");
     }
 
     // //////////////////////////////////////////////////////////////
