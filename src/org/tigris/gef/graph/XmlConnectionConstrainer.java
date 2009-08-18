@@ -6,6 +6,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
+ * See issue 105.
  * 
  * @author Bob Tarling
  * @since 25-May-2004
