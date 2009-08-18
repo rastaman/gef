@@ -29,7 +29,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -37,18 +37,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-import java.io.Serializable;
 
 import org.tigris.gef.graph.GraphController;
 import org.tigris.gef.graph.GraphEvent;
 import org.tigris.gef.graph.GraphListener;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.presentation.DefaultGraphModel;
-
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
-
 import org.tigris.gef.ui.PaletteFig;
 import org.tigris.gef.ui.ToolBar;
 
@@ -165,7 +162,7 @@ public class Diagram implements Serializable, GraphListener {
 
     /**
      * @deprecated this has nothing to do with GEF. Looks like some ArgoUML
-     * code has crept in here.
+     * code has crept in here. Since GEF0.13.1M1. See issue 331.
      * @param enable
      */
     public void setShowSingleMultiplicity(boolean enable) {
@@ -173,7 +170,7 @@ public class Diagram implements Serializable, GraphListener {
 
     /**
      * @deprecated this has nothing to do with GEF. Looks like some ArgoUML
-     * code has crept in here.
+     * code has crept in here. Since GEF0.13.1M1. See issue 331.
      * @param enable
      */
     public boolean getShowSingleMultiplicity() {
