@@ -34,7 +34,6 @@ import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
@@ -190,6 +189,10 @@ public abstract class Fig implements GraphicElement, Cloneable,
 
     protected boolean _allowsSaving = true;
 
+    /**
+     * @deprecated by mvw in GEF0.13.1M2. Use SelectionManager instead. 
+     * See issue 146. This value is never set.
+     * */
     private transient boolean _selected = false;
 
     /**
@@ -1515,6 +1518,8 @@ public abstract class Fig implements GraphicElement, Cloneable,
      * Returns the current selection state for this item
      * 
      * @return True, if the item is currently selected, otherwise false.
+     * @deprecated by mvw in GEF0.13.1M2. Use SelectionManager instead. 
+     * See issue 146. This value is never set.
      */
     final public boolean isSelected() {
         return _selected;
