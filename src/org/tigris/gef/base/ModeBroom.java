@@ -34,9 +34,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Collection;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.Vector;
 
 import org.tigris.gef.graph.MutableGraphSupport;
@@ -67,7 +65,7 @@ public class ModeBroom extends FigModifyingModeImpl {
     // //////////////////////////////////////////////////////////////
     // instance variables
     private Point _start = new Point(0, 0);
-    private Vector _LastTouched = new Vector();
+    private Vector<Fig> _LastTouched = new Vector<Fig>();
     private int x1;
     private int y1;
     private int x2;
@@ -264,8 +262,8 @@ public class ModeBroom extends FigModifyingModeImpl {
         }
 
         if (_movable) {
-            Vector nonMovingEdges = new Vector();
-            Vector movingEdges = new Vector();
+            Vector<FigEdge> nonMovingEdges = new Vector<FigEdge>();
+            Vector<FigEdge> movingEdges = new Vector<FigEdge>();
             for (i = 0; i < _nTouched; i++) {
                 Fig f = _touched[i];
                 int newX = x;
@@ -312,10 +310,7 @@ public class ModeBroom extends FigModifyingModeImpl {
                 if (f instanceof FigNode) {
                     FigNode fn = (FigNode) f;
                     fn.superTranslate(dx, dy);
-                    Collection figEdges = fn.getFigEdges(null);
-                    Iterator it = figEdges.iterator();
-                    while (it.hasNext()) {
-                        FigEdge fe = (FigEdge) it.next();
+                    for (FigEdge fe :  fn.getFigEdges(null)) {
                         if (nonMovingEdges.contains(fe)
                                 && !movingEdges.contains(fe)) {
                             movingEdges.addElement(fe);
@@ -363,7 +358,7 @@ public class ModeBroom extends FigModifyingModeImpl {
         editor.damaged(_bigDamageRect);
         editor.damaged(_selectRect);
         if (_LastTouched.size() > 0) {
-            editor.getSelectionManager().select(_LastTouched);
+            editor.getSelectionManager().selectFigs(_LastTouched);
         }
 
         _draw = false;
@@ -465,7 +460,7 @@ public class ModeBroom extends FigModifyingModeImpl {
     // actions
     public void doDistibute(boolean alignToGrid, boolean doCentering) {
         _movable = false;
-        Vector figs = _LastTouched;
+        Vector<Fig> figs = _LastTouched;
         if (figs == null) {
             figs = touching();
         }
@@ -493,12 +488,13 @@ public class ModeBroom extends FigModifyingModeImpl {
         // }
         if (_distributeMode == DISTRIBUTE_ORIG) {
             for (int i = 0; i < size; i++) {
-                Fig f = (Fig) figs.elementAt(i);
+                Fig f = figs.elementAt(i);
                 if (_dir == DIRECTION_UPWARD || _dir == DIRECTION_DOWNWARD) {
                     f.setLocation(_origX[i], f.getY());
                 } else {
                     f.setLocation(f.getX(), _origY[i]);
                 }
+                f.endTrans();
             }
         } else {
             DistributeAction d = new DistributeAction(request, figs);
@@ -555,8 +551,8 @@ public class ModeBroom extends FigModifyingModeImpl {
         _distributeMode = (_distributeMode + 1) % 4;
     }
 
-    public Vector touching() {
-        Vector figs = new Vector(_nTouched);
+    public Vector<Fig> touching() {
+        Vector<Fig> figs = new Vector<Fig>(_nTouched);
         for (int i = 0; i < _nTouched; i++) {
             if (_touched[i].getBounds().intersects(_selectRect)) {
                 if (!(_touched[i] instanceof FigEdge)) {
