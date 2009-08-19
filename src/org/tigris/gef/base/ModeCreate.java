@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,15 +28,18 @@
 
 package org.tigris.gef.base;
 
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.tigris.gef.di.GraphElement;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
-
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 /**
  * Abstract superclass for all Mode's that create new Figs. This class factors
@@ -134,7 +137,7 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
     /**
      * On mouse drag, resize the new item as the user moves the mouse. Maybe the
      * Fig createDrag() method should be removed and I should call dragHandle().
-     * That would elimiate one method from each oif several classes, but
+     * That would eliminate one method from each of several classes, but
      * dragging during creation is not really the same thing as dragging after
      * creation....
      * <p>
@@ -198,11 +201,11 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
             snapY = snapPt.y;
         }
         if (anchorX == snapX && anchorY == snapY)
-            ((Fig) _newItem).createDrag(anchorX, anchorY, x + _defaultWidth, y
+            _newItem.createDrag(anchorX, anchorY, x + _defaultWidth, y
                     + _defaultHeight, snapX + _defaultWidth, snapY
                     + _defaultHeight);
         else {
-            ((Fig) _newItem).createDrag(anchorX, anchorY, x, y, snapX, snapY);
+            _newItem.createDrag(anchorX, anchorY, x, y, snapX, snapY);
             _defaultWidth = snapX - anchorX;
             _defaultHeight = snapY - anchorY;
         }
@@ -227,7 +230,7 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
     // ModeCreate API
 
     /**
-     * Abstact method to construct a new Fig to be added to the Editor.
+     * Abstract method to construct a new Fig to be added to the Editor.
      * Typically, subclasses will make a new instance of some Fig based on the
      * given mouse down event and the state of the parent Editor (specifically,
      * its default graphical attributes).
