@@ -55,7 +55,7 @@ import org.tigris.gef.util.Localizer;
  * the edge and makes an FigEdge and sends it to the back of the Layer.
  * 
  * The argument "edgeClass" determines the type if edge to suggest that the
- * Editor's GraphModel construct. The GraphModel is responsible for acutally
+ * Editor's GraphModel construct. The GraphModel is responsible for actually
  * making an edge in the underlying model and connecting it to other model
  * elements.
  * 
@@ -76,7 +76,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     // instance variables
 
     /**
-     * The NetPort where the arc is paintn from.
+     * The NetPort where the arc is painted from.
      */
     private Object startPort;
 
@@ -126,7 +126,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
      * The constructor.
      * <p>
      * 
-     * Preferrably use the constructor
+     * Preferably use the constructor
      * {@link #ModeCreateEdgeAndNode(Editor, Object, boolean, SelectionButtons)}
      * below, since it allows a better mechanism to create the node.
      * 
@@ -314,10 +314,10 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                 mgm.addNode(newNode);
                 Fig encloser = null;
                 Rectangle bbox = fn.getBounds();
-                List otherFigs = lay.getContents();
-                Iterator others = otherFigs.iterator();
+                List<Fig> otherFigs = lay.getContents();
+                Iterator<Fig> others = otherFigs.iterator();
                 while (others.hasNext()) {
-                    Fig otherFig = (Fig) others.next();
+                    Fig otherFig = others.next();
                     if (!(otherFig instanceof FigNode)) {
                         continue;
                     }
