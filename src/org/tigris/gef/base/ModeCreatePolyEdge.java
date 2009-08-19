@@ -63,7 +63,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
 
     private static final long serialVersionUID = 1991680308906935894L;
 
-    /** The NetPort where the arc is paintn from */
+    /** The NetPort where the arc is painted from */
     private Object startPort;
 
     /** The Fig that presents the starting NetPort */

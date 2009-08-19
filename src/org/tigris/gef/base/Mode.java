@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,9 +31,9 @@ package org.tigris.gef.base;
 import java.util.Hashtable;
 
 /**
- * This is the base interface for all modes in gef. A Mode is responsible for
+ * This is the base interface for all modes in GEF. A Mode is responsible for
  * handling most of the events that come to the Editor. A Mode defines a context
- * for interperting those events. Systems using GEF can define their own Modes
+ * for interpreting those events. Systems using GEF can define their own Modes
  * by subclassing from FigModifyingMode.
  * 
  * @see ModeImpl

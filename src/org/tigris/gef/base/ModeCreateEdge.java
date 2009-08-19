@@ -59,7 +59,7 @@ public class ModeCreateEdge extends ModeCreate {
 
     private static final long serialVersionUID = -3551773848229016093L;
 
-    /** The NetPort where the arc is paintn from */
+    /** The NetPort where the arc is painted from */
     private Object startPort;
 
     /** The Fig that presents the starting NetPort */

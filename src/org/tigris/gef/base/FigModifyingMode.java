@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,9 +24,10 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
+import java.awt.Cursor;
+import java.awt.Graphics;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
 
 /**
  * This is the basic interface for all Modes that are manipulating the visual
@@ -72,7 +73,7 @@ public interface FigModifyingMode extends Mode {
      */
     public void paint(Graphics g);
 
-    /** Just calls paint(g) bt default. */
+    /** Just calls paint(g) by default. */
     public void print(Graphics g);
 
     /**
