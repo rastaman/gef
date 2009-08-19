@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,8 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CmdDistribute.java
-// Classes: CmdDistribute
+// Original class name: CmdDistribute
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -38,9 +37,8 @@ import org.tigris.gef.undo.UndoableAction;
 import org.tigris.gef.util.Localizer;
 
 /**
- * A Cmd to align 2 or more objects relative to each other.
+ * An Action to align 2 or more objects relative to each other.
  */
-
 public class DistributeAction extends UndoableAction {
 
     private static final long serialVersionUID = 3630014084522093432L;
@@ -55,11 +53,11 @@ public class DistributeAction extends UndoableAction {
     /** Specification of the type of distribution requested */
     private int _request;
     private Rectangle _bbox = null;
-    private List figs;
+    private List<Fig> figs;
     private Integer gap;
 
     /**
-     * Construct a new CmdDistribute.
+     * Construct a new DistributeAction.
      * 
      * @param r
      *                The desired alignment direction, one of the constants
@@ -70,7 +68,7 @@ public class DistributeAction extends UndoableAction {
         _request = r;
     }
 
-    public DistributeAction(int r, List figs) {
+    public DistributeAction(int r, List<Fig> figs) {
         this(r);
         this.figs = figs;
     }
@@ -104,7 +102,7 @@ public class DistributeAction extends UndoableAction {
     public void actionPerformed(ActionEvent e) {
 
         super.actionPerformed(e);
-        List targets = new ArrayList();
+        List<Fig> targets = new ArrayList<Fig>();
 
         Editor ce = Globals.curEditor();
         int packGap = 8;
@@ -117,7 +115,7 @@ public class DistributeAction extends UndoableAction {
                 Globals.showStatus("Cannot Modify Locked Objects");
                 return;
             }
-            targets.addAll(sm.getFigs());
+            targets.addAll(sm.getSelectedFigs());
         } else {
             targets.addAll(figs);
         }
@@ -128,7 +126,7 @@ public class DistributeAction extends UndoableAction {
             return;
 
         // find the bbox of all selected objects
-        Fig f = (Fig) targets.get(0);
+        Fig f = targets.get(0);
         if (_bbox == null) {
             _bbox = f.getBounds();
             leftMostCenter = _bbox.x + _bbox.width / 2;
@@ -136,7 +134,7 @@ public class DistributeAction extends UndoableAction {
             topMostCenter = _bbox.y + _bbox.height / 2;
             bottomMostCenter = _bbox.y + _bbox.height / 2;
             for (int i = 1; i < size; i++) {
-                f = (Fig) targets.get(i);
+                f = targets.get(i);
                 Rectangle r = f.getBounds();
                 _bbox.add(r);
                 leftMostCenter = Math.min(leftMostCenter, r.x + r.width / 2);
@@ -150,7 +148,7 @@ public class DistributeAction extends UndoableAction {
         // find the sum of the widths and heights of all selected objects
         int totalWidth = 0, totalHeight = 0;
         for (int i = 0; i < size; i++) {
-            f = (Fig) targets.get(i);
+            f = targets.get(i);
             totalWidth += f.getWidth();
             totalHeight += f.getHeight();
         }
@@ -191,8 +189,8 @@ public class DistributeAction extends UndoableAction {
         // when we set the coordinates
         for (int i = 0; i < size; i++) {
             for (int j = i + 1; j < size; j++) {
-                Fig fi = (Fig) targets.get(i);
-                Fig fj = (Fig) targets.get(j);
+                Fig fi = targets.get(i);
+                Fig fj = targets.get(j);
                 if (_request == H_SPACING || _request == H_CENTERS
                         || _request == H_PACK) {
                     if (fi.getX() > fj.getX()) {
@@ -205,7 +203,7 @@ public class DistributeAction extends UndoableAction {
         }
 
         for (int i = 0; i < size; i++) {
-            f = (Fig) targets.get(i);
+            f = targets.get(i);
             switch (_request) {
             case H_SPACING:
             case H_PACK:
@@ -233,12 +231,15 @@ public class DistributeAction extends UndoableAction {
     public void undoIt() {
     }
 
-    protected void swap(List v, int i, int j) {
-        Object temp = v.get(i);
+    protected void swap(List<Fig> v, int i, int j) {
+        Fig temp = v.get(i);
         v.add(i, v.get(j));
         v.add(j, temp);
     }
 
+    /**
+     * @return the resulting bounding box after were done
+     */
     public Rectangle getBoundingBox() {
         return _bbox;
     }
