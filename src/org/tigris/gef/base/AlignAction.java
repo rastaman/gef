@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,8 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CmdAlign.java
-// Classes: CmdAlign
+// Original class name: CmdAlign
 // Original Author: ics125 spring 1996
 // $Id$
 
@@ -39,8 +38,9 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.undo.UndoableAction;
 import org.tigris.gef.util.Localizer;
 
-/** An Cmd to align 2 or more objects relative to each other. */
-
+/** 
+ * An Action to align 2 or more objects relative to each other. 
+ */
 public class AlignAction extends UndoableAction {
 
     private static final long serialVersionUID = 4982051206522858526L;
@@ -129,14 +129,14 @@ public class AlignAction extends UndoableAction {
         int size = targets.size();
         if (size == 0)
             return;
-        Rectangle bbox = ((Fig) targets.get(0)).getBounds();
+        Rectangle bbox = targets.get(0).getBounds();
         for (int i = 1; i < size; i++) {
-            bbox.add(((Fig) targets.get(i)).getBounds());
+            bbox.add(targets.get(i).getBounds());
         }
 
         boundsByFig = new HashMap<Fig, Rectangle>(size);
         for (int i = 0; i < size; i++) {
-            Fig f = (Fig) targets.get(i);
+            Fig f = targets.get(i);
             boundsByFig.put(f, f.getBounds());
             f.align(bbox, direction, ce);
             f.endTrans();
