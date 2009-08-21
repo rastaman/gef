@@ -739,14 +739,12 @@ public class FigText extends Fig implements KeyListener, MouseListener {
                 // paint single rectangle
                 g.drawRect(_x, _y, _w - lineWidth, _h - lineWidth);
             } else {
-                // paint linewidth rectangles
-                for (int i = 0; i < lineWidth; i++) {
-                    // a rectangle is painted as four connecting lines
-                    g.drawLine(_x + i, _y + i, _x + _w - i, _y + i);
-                    g.drawLine(_x + _w - i, _y + i, _x + _w - i, _y + _h - i);
-                    g.drawLine(_x + _w - i, _y + _h - i, _x + i, _y + _h - i);
-                    g.drawLine(_x + i, _y + _h - i, _x + i, _y + i);
-                }
+                // paint 4 rectangles without overlap,
+                // just like Graphics.drawRect():
+                g.fillRect(_x, _y, _w - lineWidth, lineWidth);
+                g.fillRect(_x + _w - lineWidth, _y, lineWidth, _h - lineWidth);
+                g.fillRect(_x + lineWidth, _y + _h - lineWidth, _w - lineWidth, lineWidth);
+                g.fillRect(_x, _y + lineWidth, lineWidth, _h - lineWidth);
             }
         }
         if (_font != null) {
