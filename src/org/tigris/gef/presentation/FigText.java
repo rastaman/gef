@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996,2009 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -111,8 +110,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     private boolean _underline = false;
 
     /**
-     * True if word wrap is to take place when editing multiline text. False by
-     * default (for backwards compatability)
+     * True if word wrap is to take place when editing multi-line text. False by
+     * default (for backwards compatibility)
      */
     private boolean wordWrap = false;
 
@@ -584,7 +583,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     /**
-     * Set the give string to be the current string of this fig. Update the
+     * Sets the given string to be the current string of this fig. Update the
      * current font and font metrics first.
      * 
      * @param str
@@ -616,7 +615,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     /**
-     * Set the give string to be the current string of this fig. Update the
+     * Sets the given string to be the current string of this fig. Update the
      * current font and font metrics first.
      * 
      * @param str
@@ -713,10 +712,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     /**
-     * Paint the FigText. Distinguish between linewidth=1 and >1 If <linewidth>
-     * is equal 1, then paint a single rectangle Otherwise paint <linewidth>
-     * nested rectangles, whereas every rectangle is painted of 4 connecting
-     * lines.
+     * Paint the FigText. Distinguish between linewidth=1 and >1. 
+     * If the linewidth is equal to 1, then paint a single rectangle.
+     * Otherwise paint linewidth nested rectangles, whereas every rectangle 
+     * is painted as 4 connecting lines.
      */
     public void paint(Graphics g) {
         if (!(isVisible())) {
@@ -740,7 +739,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
                 // paint single rectangle
                 g.drawRect(_x, _y, _w - lineWidth, _h - lineWidth);
             } else {
-                // paint <linewidth rectangles
+                // paint linewidth rectangles
                 for (int i = 0; i < lineWidth; i++) {
                     // a rectangle is painted as four connecting lines
                     g.drawLine(_x + i, _y + i, _x + _w - i, _y + i);
@@ -867,6 +866,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         return cornersHit > 0;
     }
 
+    /**
+     * @return the distance between the baseline of adjacent lines of text
+     */
     public int getMinimumHeight() {
         if (_fm != null)
             return _fm.getHeight();
@@ -907,16 +909,13 @@ public class FigText extends Fig implements KeyListener, MouseListener {
                 overallW = Math.max(chunkW, overallW);
             }
         }
-        // _lineHeight = _fm.getHeight();
-        // int maxDescent = _fm.getMaxDescent();
         if (_fm == null) {
             _lineHeight = _font.getSize();
         } else {
             _lineHeight = _fm.getHeight();
         }
-        int maxDescent = 0;
         int overallH = (_lineHeight + _lineSpacing) * numLines + _topMargin
-                + _botMargin + maxDescent;
+                + _botMargin;
         overallH = Math.max(overallH, getMinimumHeight());
         overallW = Math.max(MIN_TEXT_WIDTH, overallW + _leftMargin
                 + _rightMargin);
