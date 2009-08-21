@@ -49,6 +49,17 @@ import org.tigris.gef.undo.UndoManager;
 
 /**
  * This class handles painting and editing text Fig's in a LayerDiagram.
+ * <p>
+ * Within a text fig's outer dimensions, 
+ * there is a colored border with a certain width (0 or more),
+ * an internal margin between the text and the border,
+ * and the text area itself. 
+ * <p>
+ * The internal margin and the text area are both colored in the text-fill color.
+ * <p>
+ * The fill-color inherited from the Fig class is used to draw the whole figure,
+ * i.e. including the border. Hence it is only visible if either the border 
+ * or the text area are transparent. 
  * 
  * @author ics125 spring 1996
  */
@@ -712,26 +723,31 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     /**
-     * Paint the FigText. Distinguish between linewidth=1 and >1. 
-     * If the linewidth is equal to 1, then paint a single rectangle.
-     * Otherwise paint linewidth nested rectangles, whereas every rectangle 
-     * is painted as 4 connecting lines.
+     * Paint the FigText. 
+     * This comprises <ul>
+     * <li>the color of the whole box of the Fig if it is filled, 
+     * <li>the border colour (which has a linewidth of 1 or more), 
+     * <li>the text background colour if textfill is true, 
+     * <li>and the text itself.
+     * </ul>
      */
     public void paint(Graphics g) {
         if (!(isVisible())) {
             return;
         }
 
-        int chunkX = _x + _leftMargin;
-        int chunkY = _y + _topMargin;
         StringTokenizer lines;
-
         int lineWidth = getLineWidth();
 
+        /* Paint the fill colour of the box. This only becomes visible
+         * when either the border or the text area are transparent: */
         if (isFilled()) {
             g.setColor(getFillColor());
             g.fillRect(_x, _y, _w, _h);
         }
+        
+        /* Paint the line border at the inner edge of the box 
+         * with the correct line-width and colour: */
         if (lineWidth > 0) {
             g.setColor(getLineColor());
             // test linewidth
@@ -747,46 +763,27 @@ public class FigText extends Fig implements KeyListener, MouseListener {
                 g.fillRect(_x, _y + lineWidth, lineWidth, _h - lineWidth);
             }
         }
+
+        /* Paint the fill colour of the text area, 
+         * which is everything inside the border: */
+        if (_textFilled) {
+            g.setColor(textFillColor);
+            g.fillRect(_x + lineWidth, _y + lineWidth, _w - 2 * lineWidth, _h - 2 * lineWidth);
+        }
+
+        /* Paint the text: */
         if (_font != null) {
             g.setFont(_font);
         }
 
         _fm = g.getFontMetrics(_font);
         int chunkH = _fm.getHeight() + _lineSpacing;
-        chunkY = _y + _topMargin + chunkH;
-
-        // TODO: StringTokenizer is not very efficient and we are possibly
-        // iterating through the same infomation twice.
-        // Can we improve this?
-        if (_textFilled) {
-            g.setColor(textFillColor);
-            lines = new StringTokenizer(_curText, "" + HARD_RETURN
-                    + SOFT_RETURN, true);
-            while (lines.hasMoreTokens()
-                    && chunkY <= getHeight() + getY() + _topMargin - _botMargin) {
-                String curLine = lines.nextToken();
-                int chunkW = _fm.stringWidth(curLine);
-                switch (_justification) {
-                case JUSTIFY_LEFT:
-                    break;
-                case JUSTIFY_CENTER:
-                    chunkX = _x + (_w - chunkW) / 2;
-                    break;
-                case JUSTIFY_RIGHT:
-                    chunkX = _x + _w - chunkW - _rightMargin;
-                    break;
-                }
-                if (curLine.charAt(0) == HARD_RETURN
-                        || curLine.charAt(0) == SOFT_RETURN)
-                    chunkY += chunkH;
-                else
-                    g.fillRect(chunkX, chunkY - chunkH, chunkW, chunkH);
-            }
-        }
 
         g.setColor(_textColor);
-        chunkX = _x + _leftMargin;
-        chunkY = _y + _topMargin + chunkH;
+        int chunkX = _x + _leftMargin + lineWidth;
+        // The first line of text has its "baseline" y coordinate at the "ascent" position
+        int chunkY = _y + _topMargin + lineWidth + _fm.getAscent();
+
         lines = new StringTokenizer(_curText, "" + HARD_RETURN + SOFT_RETURN,
                 true);
         while (lines.hasMoreTokens()
@@ -797,10 +794,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             case JUSTIFY_LEFT:
                 break;
             case JUSTIFY_CENTER:
-                chunkX = _x + (_w - chunkW) / 2;
+                chunkX = _x  + _leftMargin + lineWidth + (_w - _leftMargin - _rightMargin - (2 * lineWidth) - chunkW) / 2;
                 break;
             case JUSTIFY_RIGHT:
-                chunkX = _x + _w - chunkW;
+                chunkX = _x  + _w - lineWidth - _rightMargin - chunkW;
                 break;
             }
             if (isHardReturn(curLine) || isSoftReturn(curLine)) {
@@ -893,6 +890,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         if (_font == null) {
             return;
         }
+
+        /* Calculate the width based on the widest line of a multi-line text: */
         int overallW = 0;
         int numLines = 1;
         StringTokenizer lines = new StringTokenizer(_curText, "" + HARD_RETURN
@@ -912,19 +911,22 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         } else {
             _lineHeight = _fm.getHeight();
         }
-        int overallH = (_lineHeight + _lineSpacing) * numLines + _topMargin
-                + _botMargin;
+        /* Calculate the height based on the number of lines: */
+        int overallH = (_lineHeight + _lineSpacing) * numLines;
+
+        /* Now force minimum dimensions for the text: */
         overallH = Math.max(overallH, getMinimumHeight());
-        overallW = Math.max(MIN_TEXT_WIDTH, overallW + _leftMargin
-                + _rightMargin);
+        overallW = Math.max(overallW, MIN_TEXT_WIDTH);
+
+        /* Now add the areas around the text to return the complete size: */
+        overallH = overallH + _topMargin + _botMargin + 2 * getLineWidth();
+        overallW = overallW + _leftMargin + _rightMargin + 2 * getLineWidth();
         d.width = overallW;
         d.height = overallH;
-        // System.out.println("FigText.minimumSize: " + getText() + " = " +
-        // overallW + " / " + overallH);
     }
 
     // //////////////////////////////////////////////////////////////
-    // event handlers: KeyListener implemtation
+    // event handlers: KeyListener implementation
 
     /**
      * When the user presses a key when a FigText is selected, that key should
@@ -1016,7 +1018,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         }
 
         _lineHeight = _fm.getHeight();
-        int maxDescent = _fm.getMaxDescent();
+        int maxDescent = 0; //_fm.getMaxDescent();
 
         int overallW = 0;
         int numLines = 1;
