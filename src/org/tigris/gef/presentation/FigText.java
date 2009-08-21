@@ -794,7 +794,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             case JUSTIFY_LEFT:
                 break;
             case JUSTIFY_CENTER:
-                chunkX = _x  + _leftMargin + lineWidth + (_w - _leftMargin - _rightMargin - (2 * lineWidth) - chunkW) / 2;
+                chunkX = _x  + _leftMargin + (_w - _leftMargin - _rightMargin - chunkW) / 2;
                 break;
             case JUSTIFY_RIGHT:
                 chunkX = _x  + _w - lineWidth - _rightMargin - chunkW;
@@ -1018,8 +1018,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         }
 
         _lineHeight = _fm.getHeight();
-        int maxDescent = 0; //_fm.getMaxDescent();
 
+        /* Calculate the width based on the widest line of a multi-line text: */
         int overallW = 0;
         int numLines = 1;
         StringTokenizer lines = new StringTokenizer(_curText, "" + HARD_RETURN
@@ -1027,15 +1027,25 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         while (lines.hasMoreTokens()) {
             String curLine = lines.nextToken();
             int chunkW = _fm.stringWidth(curLine);
-            if (isHardReturn(curLine) || isSoftReturn(curLine))
+            if (curLine.charAt(0) == HARD_RETURN
+                    || curLine.charAt(0) == SOFT_RETURN) {
                 numLines++;
-            else
+            } else {
                 overallW = Math.max(chunkW, overallW);
-        }
-        int overallH = (_lineHeight + _lineSpacing) * numLines + _topMargin
-                + _botMargin + maxDescent;
-        overallW = Math.max(MIN_TEXT_WIDTH, overallW + _leftMargin
-                + _rightMargin);
+            }
+        }    
+
+        /* Calculate the height based on the number of lines: */
+        int overallH = (_lineHeight + _lineSpacing) * numLines;
+
+        /* Now force minimum dimensions for the text: */
+        overallH = Math.max(overallH, getMinimumHeight());
+        overallW = Math.max(overallW, MIN_TEXT_WIDTH);
+
+        /* Now add the areas around the text to return the complete size: */
+        overallH = overallH + _topMargin + _botMargin + 2 * getLineWidth();
+        overallW = overallW + _leftMargin + _rightMargin + 2 * getLineWidth();
+
         if (_editMode) {
             switch (_justification) {
             case JUSTIFY_LEFT:
@@ -1052,6 +1062,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
                 break;
             }
         }
+
         _w = _expandOnly ? Math.max(_w, overallW) : overallW;
         _h = _expandOnly ? Math.max(_h, overallH) : overallH;
     }
