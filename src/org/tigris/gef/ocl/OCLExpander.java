@@ -409,11 +409,10 @@ public class OCLExpander {
                     }
                     newValues.add(o);
                 }
-            } catch (ClassNotFoundException e) {
-                throw new ExpansionException(e);
-            } catch (IllegalAccessException e) {
-                throw new ExpansionException(e);
-            } catch (InvocationTargetException e) {
+            } catch (Exception e) {
+                if (e instanceof ExpansionException) {
+                    throw (ExpansionException) e;
+                }
                 throw new ExpansionException(e);
             }
 
