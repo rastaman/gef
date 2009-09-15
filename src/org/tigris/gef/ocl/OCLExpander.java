@@ -395,7 +395,17 @@ public class OCLExpander {
 
                     Object o = it.next();
 
-                    Method m = getMethod(clazz, o.getClass(), methodName);
+                    final Class<?> argClass;
+                    if (o == null) {
+                        // TODO: For now if we have a null value argument
+                        // object then we assume it is of type Object. We need
+                        // a better solution so that the template can specify
+                        // a class to cast to.
+                        argClass = java.lang.Object.class;
+                    } else {
+                        argClass = o.getClass();
+                    }
+                    Method m = getMethod(clazz, argClass, methodName);
                     if (!Modifier.isStatic(m.getModifiers())) {
                         throw new ExpansionException("The method "
                                 + m.toString() + " was expected to be static");
