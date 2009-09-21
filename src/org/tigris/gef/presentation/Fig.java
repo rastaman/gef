@@ -959,7 +959,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
 
         // Fall back on the old inefficient method of drawing dashed
         // lines. This is required until SVGWriter is converted to
-        // extend Graphics2D
+        // extend Graphics2D. This ignores the line width.
         int segStartX;
         int segStartY;
         int segEndX;
@@ -1134,7 +1134,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
     }
 
     public boolean isFilled() {
-        return getFilled();
+        return _filled;
     }
 
     /**
