@@ -1,6 +1,6 @@
 package org.tigris.gef.presentation;
 
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -78,6 +78,8 @@ public class FigGroup extends Fig {
      * TextColor.
      */
     private boolean textFilled = false;
+    
+    private Font font = new Font("TimesRoman", Font.PLAIN, 10);
 
     /**
      * Normally the bounds of the FigGroup is calculated whenever a Fig is
@@ -279,33 +281,15 @@ public class FigGroup extends Fig {
     }
 
     public Font getFont() {
-        int size = this.figs.size();
-        for (int i = 0; i < size; i++) {
-            Object ft = this.figs.get(i);
-            if (ft instanceof FigText)
-                return ((FigText) ft).getFont();
-        }
-        return null;
+        return font;
     }
 
     public String getFontFamily() {
-        int size = this.figs.size();
-        for (int i = 0; i < size; i++) {
-            Object ft = this.figs.get(i);
-            if (ft instanceof FigText)
-                return ((FigText) ft).getFontFamily();
-        }
-        return "Serif";
+        return font.getFamily();
     }
 
     public int getFontSize() {
-        int size = this.figs.size();
-        for (int i = 0; i < size; i++) {
-            Object ft = this.figs.get(i);
-            if (ft instanceof FigText)
-                return ((FigText) ft).getFontSize();
-        }
-        return 10;
+        return font.getSize();
     }
 
     // public Color getLineColor() {
@@ -510,32 +494,27 @@ public class FigGroup extends Fig {
     }
 
     public void setFont(Font f) {
+        firePropChange("font", font, f);
         int size = this.figs.size();
         for (int i = 0; i < size; i++) {
             Object ft = this.figs.get(i);
             if (ft instanceof FigText) {
                 ((FigText) ft).setFont(f);
+            } else if (ft instanceof FigGroup) {
+                ((FigGroup) ft).setFont(f);
             }
         }
+        font = f;
     }
 
     public void setFontFamily(String s) {
-        int size = this.figs.size();
-        for (int i = 0; i < size; i++) {
-            Object ft = this.figs.get(i);
-            if (ft instanceof FigText) {
-                ((FigText) ft).setFontFamily(s);
-            }
-        }
+        Font f = new Font(s, font.getStyle(), font.getSize());
+        setFont(f);
     }
 
-    public void setFontSize(int s) {
-        int size = this.figs.size();
-        for (int i = 0; i < size; i++) {
-            Object ft = this.figs.get(i);
-            if (ft instanceof FigText)
-                ((FigText) ft).setFontSize(s);
-        }
+    public void setFontSize(int size) {
+        Font f = new Font(font.getFamily(), font.getStyle(), size);
+        setFont(f);
     }
 
     // //////////////////////////////////////////////////////////////
