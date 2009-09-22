@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -354,16 +354,19 @@ public class FigLine extends Fig {
             drawDashedLine(g, lineWidth, _x1, _y1, _x2, _y2, 0, _dashes,
                     _dashPeriod);
         } else {
-            // TODO: This causes loss of separators between compartments
-            // in FigClass in ArgoUML. Reverting till cause is known.
-//            if (g instanceof Graphics2D) {
-//                Graphics2D g2 = (Graphics2D) g;
-//                // dashes == null gives solid line
-//                drawDashedLine(g2, lineWidth, _x1, _y1, _x2, _y2, 0, null, 1);
-//            } else {
+            if (g instanceof Graphics2D) {
+                /* In this case, line-width is supported. */
+                /* TODO: This used to cause loss of separators between 
+                 * compartments in FigClass in ArgoUML. That problem has 
+                 * been solved, but there may still be unexpected results. */
+                Graphics2D g2 = (Graphics2D) g;
+                // dashes == null gives solid line
+                drawDashedLine(g2, lineWidth, _x1, _y1, _x2, _y2, 0, null, 1);
+            } else {
+                /* In this case, line-width is NOT supported. */
                 g.setColor(lineColor);
                 g.drawLine(_x1, _y1, _x2, _y2);
-//            }
+            }
         }
 
     }
