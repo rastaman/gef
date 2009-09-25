@@ -157,7 +157,7 @@ public class FigCircle extends Fig {
     /** 
      * Calculate the border point of the ellipse that is on the edge 
      * between the center and the point given by the parameter. <p>
-     * We use a coordinate system with the center at the center of the 
+     * We use a coordinate system with (0, 0) at the center of the 
      * ellipse, this to keep the formulas understandable.
      * 
      *  rx is the horizontal radius of the ellipse, 
