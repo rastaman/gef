@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996,2009 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -154,18 +154,41 @@ public class FigCircle extends Fig {
         return distSquared <= 1.01;
     }
 
-    /** Calculate border point of elipse */
+    /** 
+     * Calculate the border point of the ellipse that is on the edge 
+     * between the center and the point given by the parameter. <p>
+     * We use a coordinate system with the center at the center of the 
+     * ellipse, this to keep the formulas understandable.
+     * 
+     *  rx is the horizontal radius of the ellipse, 
+     *  ry is the vertical radius of the ellipse. <p>
+     *  The left top of the ellipse is at (_x, _y), hence the center 
+     *  is at (_x + rx, _y + ry). <p>
+     *  The formula for any point (x,y) on the centered ellipse is:<p> 
+     *  x²/rx² + y²/ry² = 1 <p>
+     *  
+     *  The given point is at (dx, dy) in the coordinate system with the 
+     *  center at the center of the ellipse. <p>
+     *  The formula for any point (x, y) on the line from (dx, dy) to the 
+     *  center is: <p>
+     *  x/y = dx/dy   <p>
+     *  
+     *  Some mathematics now leads to the following: <p>
+     *  dd = ry² dx² + rx² dy²    <p>
+     *  mu = rx ry sqrt(dd)     <p>
+     *  And the result is the point (mu dx, mu dy), which we translate to
+     *  the original coordinate system.
+     */
     public Point connectionPoint(Point anotherPt) {
         double rx = _w / 2;
         double ry = _h / 2;
-        double dx = anotherPt.x - _x;
-        double dy = anotherPt.y - _y;
+        double dx = anotherPt.x - (_x  + rx );
+        double dy = anotherPt.y - (_y  + ry );
         double dd = ry * ry * dx * dx + rx * rx * dy * dy;
         double mu = rx * ry / Math.sqrt(dd);
         Point res = new Point((int) (mu * dx + _x + rx),
                 (int) (mu * dy + _y + ry));
-        // System.out.println("connectionPoint(p) returns
-        // "+res.x+','+res.y+')');
         return res;
     }
+
 } /* end class FigCircle */
