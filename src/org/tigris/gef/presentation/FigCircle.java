@@ -126,7 +126,8 @@ public class FigCircle extends Fig {
 
         if (lineWidth > 0 && _lineColor != null) {
             g2.setPaint(_lineColor);
-            g2.draw(new Ellipse2D.Float(_x, _y, _w, _h));
+            g2.draw(new Ellipse2D.Float(_x + lineWidth / 2, _y + lineWidth / 2, 
+                    _w - lineWidth, _h - lineWidth));
         }
 
         g2.setStroke(oldStroke);
