@@ -839,7 +839,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
                 int ww = w;
                 int hh = h;
                 if (lineColor != null) {
-    		    if (lineWidth > 1 && !dashed) {
+    		    if (lineWidth > 1 && !dashed && lineColor != fillColor) {
     			int lineWidth2 = lineWidth * 2;
     			g.setColor(lineColor);
     			g.fillRect(xx, yy, ww, hh);
@@ -851,7 +851,7 @@ public abstract class Fig implements GraphicElement, Cloneable,
     	        }
     	        g.setColor(fillColor);
     	        g.fillRect(xx, yy, ww, hh);
-    	        if (lineColor != null) {
+    	        if (lineColor != null && lineColor != fillColor) {
                     if (lineWidth == 1 || dashed) {
     	                paintRectLine(
     			        g, 
