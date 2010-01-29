@@ -409,7 +409,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
             StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
             String clsName = translateType(st.nextToken());
             elementInstance = constructFig(clsName, href,
-                    getBounds(clsNameBounds));
+                    getBounds(clsNameBounds), attributes);
             if (elementInstance instanceof HandlerFactory) {
                 return ((HandlerFactory) elementInstance).getHandler(stack,
                         container, uri, localname, qname, attributes);
@@ -588,7 +588,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * @return The Fig
      * @throws SAXException
      */
-    protected Fig constructFig(String className, String href, Rectangle bounds)
+    protected Fig constructFig(String className, String href, Rectangle bounds, Attributes attributes)
             throws SAXException {
         try {
             Class figClass = Class.forName(className);
