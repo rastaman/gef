@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2010 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,12 +32,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.Icon;
 
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.base.ModeManager;
-import org.tigris.gef.base.ModeModify;
-import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.graph.MutableGraphModel;
@@ -359,6 +353,9 @@ public abstract class SelectionButtons extends SelectionResize {
     }
 
     /**
+     * Remark: We avoid creating a new node when none is required, 
+     * i.e. when creating a selfassociation (buttonCode == 14).
+     * 
      * @param buttonCode
      *                the button identifier
      */
@@ -367,7 +364,10 @@ public abstract class SelectionButtons extends SelectionResize {
         if (buttonCode >= 10)
             numButtonClicks++;
         // get a new node (modelelement) that should be added
-        Object newNode = getNewNode(buttonCode);
+        Object newNode = null;
+        if (buttonCode != 14) {
+            newNode = getNewNode(buttonCode);
+        }
 
         // get the graphmodel
         Editor ce = Globals.curEditor();
@@ -378,8 +378,11 @@ public abstract class SelectionButtons extends SelectionResize {
 
         // check if it is possible to add the fig for the new node and
         // create it if possible
-        if (!mgm.canAddNode(newNode))
-            return;
+        if (buttonCode != 14) {
+            if (!mgm.canAddNode(newNode)) {
+                return;
+            }
+        }
         GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
         LayerPerspective lay = (LayerPerspective) ce.getLayerManager()
                 .getActiveLayer();
