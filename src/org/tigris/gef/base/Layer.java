@@ -39,7 +39,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import org.tigris.gef.di.GraphicElement;
+import org.tigris.gef.di.GraphEdge;
+import org.tigris.gef.di.GraphElement;
+import org.tigris.gef.di.GraphNode;
+import org.tigris.gef.di.DiagramElement;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigPainter;
@@ -260,6 +263,39 @@ public abstract class Layer implements java.io.Serializable {
         return Collections.emptyList();
     }
 
+    public List<DiagramElement> getDiagramElements() {
+        List<Fig> contents = getContents();
+        List<DiagramElement> list = new ArrayList<DiagramElement>(contents.size());
+        for (Fig f : contents) {
+            list.add(f);
+        }
+        
+        return list;
+    }
+
+    public List<GraphEdge> getGraphEdges() {
+        List<Fig> contents = getContents();
+        List<GraphEdge> list = new ArrayList<GraphEdge>(contents.size() *8 / 10);
+        for (Fig f : contents) {
+            if (f instanceof GraphEdge) {
+                list.add((GraphEdge) f);
+            }
+        }
+        
+        return list;
+    }
+
+    public List<GraphNode> getGraphNodes() {
+        List<Fig> contents = getContents();
+        List<GraphNode> list = new ArrayList<GraphNode>(contents.size() *8 / 10);
+        for (Fig f : contents) {
+            if (f instanceof GraphNode) {
+                list.add((GraphNode) f);
+            }
+        }
+        
+        return list;
+    }
 
     /**
      * USED BY SVG.tee && PGML.tee
@@ -314,11 +350,11 @@ public abstract class Layer implements java.io.Serializable {
     public void remove(Fig f) {
     }
 
-    public void add(GraphicElement f) {
+    public void add(DiagramElement f) {
         add((Fig) f);
     }
 
-    public void remove(GraphicElement f) {
+    public void remove(DiagramElement f) {
         remove((Fig) f);
     }
 

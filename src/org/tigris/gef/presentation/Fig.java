@@ -51,7 +51,8 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.base.SelectionManager;
-import org.tigris.gef.di.GraphicElement;
+import org.tigris.gef.di.GraphElement;
+import org.tigris.gef.di.DiagramElement;
 import org.tigris.gef.graph.GraphEdgeHooks;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
@@ -68,7 +69,7 @@ import org.tigris.gef.util.Localizer;
  * figure. Fig's are Diagram elements that can be placed in any LayerDiagram.
  * Fig's are also used to define the look of FigNodes on NetNodes.
  */
-public abstract class Fig implements GraphicElement, Cloneable,
+public abstract class Fig implements DiagramElement, Cloneable,
         java.io.Serializable, PropertyChangeListener, PopupGenerator {
 
     /** The smallest size that the user can drag this Fig. */

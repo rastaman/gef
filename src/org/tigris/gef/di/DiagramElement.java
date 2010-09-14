@@ -24,16 +24,12 @@
 
 package org.tigris.gef.di;
 
-import java.awt.Rectangle;
-
 /**
  * An interface to be implemented by connectable figs.
  */
-public interface GraphicElement {
+public interface DiagramElement {
 
     public String getId();
-
-    public Rectangle routingRect();
 
     public Object getOwner();
 }

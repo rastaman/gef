@@ -25,7 +25,7 @@ import org.tigris.gef.undo.UndoManager;
 /**
  * Abstract Fig class for representing edges between ports.
  */
-public abstract class FigEdge extends Fig implements GraphEdge {
+public abstract class FigEdge extends Fig implements Highlightable, GraphEdge {
 
     /** Fig presenting the edge's from-port . */
     private Fig sourcePortFig;
@@ -467,11 +467,11 @@ public abstract class FigEdge extends Fig implements GraphEdge {
         return sourceFigNode;
     }
 
-    final public GraphNode getSourceNode() {
+    final public GraphNode getSourceGraphNode() {
         return sourceFigNode;
     }
 
-    final public GraphNode getDestNode() {
+    final public GraphNode getDestGraphNode() {
         return destFigNode;
     }
 
@@ -810,16 +810,16 @@ public abstract class FigEdge extends Fig implements GraphEdge {
     }
 
     /**
-     * Set the GraphNode reprenting this FigEdge's from-node.
+     * Set the GraphNode representing this FigEdge's from-node.
      */
-    public void setSourceNode(GraphNode node) {
+    public void setSourceGraphNode(GraphNode node) {
         setSourceFigNode((FigNode) node);
     }
 
     /**
      * Set the GraphNode reprenting this FigEdge's to-node.
      */
-    public void setDestNode(GraphNode node) {
+    public void setDestGraphNode(GraphNode node) {
         setDestFigNode((FigNode) node);
     }
 

@@ -24,6 +24,7 @@
 
 package org.tigris.gef.di;
 
+import java.awt.Rectangle;
 import java.util.List;
 
 /**
@@ -31,5 +32,6 @@ import java.util.List;
  */
 public interface GraphNode extends GraphElement {
 
-    List getEdges();
+    List<GraphEdge> getGraphEdges();
+    Rectangle getNodeBounds();
 }

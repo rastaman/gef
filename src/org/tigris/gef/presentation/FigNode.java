@@ -31,6 +31,7 @@ package org.tigris.gef.presentation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.di.GraphEdge;
 import org.tigris.gef.di.GraphNode;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.GraphPortHooks;
@@ -58,7 +59,7 @@ import java.util.List;
 /**
  * Class to present a node (such as a NetNode) in a diagram.
  */
-public class FigNode extends FigGroup implements GraphNode, MouseListener {
+public class FigNode extends FigGroup implements Highlightable, GraphNode, MouseListener {
 
     private static final long serialVersionUID = 5312194520189613781L;
 
@@ -232,8 +233,8 @@ public class FigNode extends FigGroup implements GraphNode, MouseListener {
         return (List<FigEdge>) (figEdges.clone());
     }
 
-    public List<FigEdge> getEdges() {
-        return (List<FigEdge>) (figEdges.clone());
+    public List<GraphEdge> getGraphEdges() {
+        return (List<GraphEdge>) (figEdges.clone());
     }
 
     /**
@@ -740,6 +741,10 @@ public class FigNode extends FigGroup implements GraphNode, MouseListener {
      */
     public void forceRepaintShadow() {
         forceRepaint = true;
+    }
+
+    public Rectangle getNodeBounds() {
+        return getBounds();
     }
 
 }
