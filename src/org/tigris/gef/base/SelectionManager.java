@@ -42,9 +42,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.event.EventListenerList;
@@ -91,7 +93,7 @@ public class SelectionManager implements Serializable, KeyListener,
     /**
      * All of the nodes being dragged
      */
-    private List<FigNode> _draggingNodes;
+    private Collection<FigNode> _draggingNodes;
     /**
      * All the edges that have both ends attached to nodes that are being
      * dragged (they will also be dragged).
@@ -610,7 +612,7 @@ public class SelectionManager implements Serializable, KeyListener,
         // us. So make sure generate mementos is turned off during drag.
 
         List draggingFigs = new ArrayList();
-        _draggingNodes = new ArrayList();
+        _draggingNodes = new HashSet();
         _draggingMovingEdges = new ArrayList();
         _draggingNonMovingEdges = new ArrayList();
         _draggingOthers = new ArrayList();
@@ -643,11 +645,10 @@ public class SelectionManager implements Serializable, KeyListener,
             }
         }
 
-        List topLeftList = (_draggingNodes.size() > 0 ? _draggingNodes
+        Collection topLeftList = (_draggingNodes.size() > 0 ? _draggingNodes
                 : _draggingOthers);
-        int s = topLeftList.size();
-        for (int i = 0; i < s; ++i) {
-            Fig fig = (Fig) topLeftList.get(i);
+        for (Object o : topLeftList) {
+            Fig fig = (Fig) o;
             if (_dragLeftMostFig == null
                     || fig.getX() < _dragLeftMostFig.getX()) {
                 _dragLeftMostFig = fig;
@@ -666,7 +667,7 @@ public class SelectionManager implements Serializable, KeyListener,
 
     }
 
-    private void addDragDependents(List draggingNodes, FigNode figNode) {
+    private void addDragDependents(Collection draggingNodes, FigNode figNode) {
         if (figNode.getDragDependencies() != null) {
             Iterator it = figNode.getDragDependencies().iterator();
             while (it.hasNext()) {
@@ -1142,7 +1143,7 @@ public class SelectionManager implements Serializable, KeyListener,
 
     class DragMemento extends Memento {
 
-        List draggingNodes;
+        Collection draggingNodes;
         List draggingOthers;
         List bounds;
 
@@ -1150,7 +1151,7 @@ public class SelectionManager implements Serializable, KeyListener,
         List nonMovingEdges;
         List points;
 
-        public DragMemento(List draggingNodes, List draggingOthers,
+        public DragMemento(Collection draggingNodes, List draggingOthers,
                 List movingEdges, List nonMovingEdges) {
             bounds = new ArrayList(draggingNodes.size() + draggingOthers.size());
 
