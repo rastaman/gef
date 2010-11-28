@@ -223,13 +223,15 @@ public class SelectionManager implements Serializable, KeyListener,
     }
 
     public void deselectAll() {
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(new SelectionMemento());
+        if (getSelections().size() > 0) {
+            if (UndoManager.getInstance().isGenerateMementos()) {
+                UndoManager.getInstance().addMemento(new SelectionMemento());
+            }
+            Rectangle damagedArea = this.getBounds(); // too much area
+            removeAllElements();
+            _editor.damaged(damagedArea);
+            fireSelectionChanged();
         }
-        Rectangle damagedArea = this.getBounds(); // too much area
-        removeAllElements();
-        _editor.damaged(damagedArea);
-        fireSelectionChanged();
     }
 
     /**
