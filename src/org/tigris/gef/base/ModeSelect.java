@@ -254,7 +254,6 @@ public class ModeSelect extends FigModifyingModeImpl {
                 LOG.debug("MouseReleased but rejected as meta key down");
             return;
         }
-        editor.translateMouseEvent(me);
 
         int x = me.getX();
         int y = me.getY();
