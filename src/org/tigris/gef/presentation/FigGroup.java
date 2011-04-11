@@ -39,6 +39,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.tigris.gef.di.DiagramElement;
+
 /**
  * A FigGroup is a collection of Figs to all be treated as a single item. <p>
  * 
@@ -60,7 +62,7 @@ public class FigGroup extends Fig {
     /**
      * The Fig's contained in this FigGroup
      */
-    private List<Fig> figs;
+    private List<DiagramElement> figs;
 
     private int extraFrameSpace = 0;
 
@@ -94,7 +96,7 @@ public class FigGroup extends Fig {
     /** Construct a new FigGroup that holds no Figs. */
     public FigGroup() {
         super();
-        figs = Collections.synchronizedList(new ArrayList<Fig>());
+        figs = Collections.synchronizedList(new ArrayList<DiagramElement>());
     }
 
     /**
@@ -272,7 +274,7 @@ public class FigGroup extends Fig {
     /**
      * Get the child figs that make up this group.
      * USED BY PGML.tee
-     * TODO: How do we move this to List<Fig> without breaking ArgoUML?
+     * @deprecated in 0.13.1 use getDiagramElements
      * 
      * @return the figs of this group
      */
@@ -280,6 +282,11 @@ public class FigGroup extends Fig {
         return Collections.unmodifiableList(figs);
     }
 
+    public List<DiagramElement> getDiagramElements() {
+        return Collections.unmodifiableList(figs);
+    }
+    
+    
     public Font getFont() {
         return font;
     }
