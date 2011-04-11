@@ -60,6 +60,7 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.base.SelectNearAction;
 import org.tigris.gef.base.ZoomAction;
+import org.tigris.gef.di.DiagramElement;
 import org.tigris.gef.event.GraphSelectionListener;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.ConnectionConstrainer;
@@ -68,7 +69,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
-import org.tigris.gef.presentation.FigTextEditor;
 import org.tigris.gef.presentation.TextEditor;
 
 /**
@@ -506,10 +506,19 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
     }
 
     /** Select a collection of Figs. */
+    public void select(Collection<DiagramElement> items) {
+        editor.getSelectionManager().selectFigs(items);
+    }
+
+    /**
+     * Select a collection of Figs.
+     * @deprecated in GEF 0.13.1 use select(Collection<DiagramElement>);
+     */
     public void select(Vector items) {
         editor.getSelectionManager().select(items);
     }
 
+    
     /** Toggle the selection of a collection of Figs. */
     public void toggleItems(Vector items) {
         editor.getSelectionManager().toggle(items);
