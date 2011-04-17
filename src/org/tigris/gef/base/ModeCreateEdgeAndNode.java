@@ -24,7 +24,6 @@
 
 package org.tigris.gef.base;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -67,13 +66,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
      */
     private static final Log LOG = LogFactory
             .getLog(ModeCreateEdgeAndNode.class);
-    // //////////////////////////////////////////////////////////////
-    // static variables
-    private static int dragsToExisting = 0;
-    private static int dragsToNew = 0;
-
-    // //////////////////////////////////////////////////////////////
-    // instance variables
 
     /**
      * The NetPort where the arc is painted from.
@@ -286,7 +278,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         // TODO: potential class cast exception
         if (f == null) {
             LOG.debug("make new node");
-            dragsToNew++;
             Object newNode = null;
             SelectionButtons sb = (SelectionButtons) getArg("nodeCreator");
             if (sb != null) {
@@ -340,8 +331,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                 f = fn;
                 f.setLocation(x - f.getWidth() / 2, y - f.getHeight() / 2);
             }
-        } else {
-            dragsToExisting++;
         }
         if (f instanceof FigNode) {
             FigNode destFigNode = (FigNode) f;
@@ -392,11 +381,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
                     LayerManager lm = ce.getLayerManager();
                     fe = (FigEdge) lm.getActiveLayer().presentationFor(newEdge);
-                    _newItem.setLineColor(Color.black);
-                    // TODO: This shouldn't be resetting the color
-                    fe.setLineColor(Color.black);
-                    // TODO: This replaces the routeFig that we initialized at
-                    // construction time
                     fe.setFig(_newItem);
                     fe.setSourcePortFig(startPortFig);
                     fe.setSourceFigNode(sourceFigNode);
