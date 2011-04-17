@@ -35,6 +35,7 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.tigris.gef.graph.MutableGraphSupport;
@@ -376,9 +377,9 @@ public class ModeBroom extends FigModifyingModeImpl {
         _addRect.setBounds(_lastX1, _lastY1, _lastX2 - _lastX1, _lastY2
                 - _lastY1);
         _addRect.add(_selectRect);
-        Enumeration figs = editor.figs();
-        iterateFigs: while (figs.hasMoreElements()) {
-            Fig f = (Fig) figs.nextElement();
+        Iterator figs = editor.getFigs().iterator();
+        iterateFigs: while (figs.hasNext()) {
+            Fig f = (Fig) figs.next();
             Rectangle figBounds = f.getBounds();
             if (_addRect.intersects(figBounds)) {
                 if (_dir == DIRECTION_LEFTWARD

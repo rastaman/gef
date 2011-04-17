@@ -38,7 +38,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -130,17 +130,17 @@ public class CmdPrint extends Cmd implements Printable {
 
         SelectionManager sm = editor.getSelectionManager();
         Vector selectedFigs = sm.getFigs();
-        Enumeration iter = null;
+        Iterator iter = null;
 
         if (selectedFigs.size() > 0) {
-            iter = selectedFigs.elements();
+            iter = selectedFigs.iterator();
         } else {
-            iter = editor.figs();
+            iter = editor.getFigs().iterator();
             drawingArea = new Rectangle();
         } // end else if
 
-        while (iter.hasMoreElements()) {
-            Fig fig = (Fig) iter.nextElement();
+        while (iter.hasNext()) {
+            Fig fig = (Fig) iter.next();
             Rectangle rect = fig.getBounds();
             if (drawingArea == null) {
                 drawingArea = new Rectangle(rect);

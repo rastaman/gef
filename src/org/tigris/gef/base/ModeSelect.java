@@ -33,6 +33,7 @@ import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.commons.logging.Log;
@@ -260,9 +261,9 @@ public class ModeSelect extends FigModifyingModeImpl {
         showSelectRect = false;
         Vector selectList = new Vector();
         Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
-        Enumeration figs = editor.figs();
-        while (figs.hasMoreElements()) {
-            Fig f = (Fig) figs.nextElement();
+        Iterator figs = editor.getFigs().iterator();
+        while (figs.hasNext()) {
+            Fig f = (Fig) figs.next();
             if (f.isSelectable()
                     && ((!toggleSelection && selectRect.isEmpty() && f
                             .hit(hitRect)) || (!selectRect.isEmpty() && f
@@ -272,9 +273,9 @@ public class ModeSelect extends FigModifyingModeImpl {
         }
 
         if (!selectRect.isEmpty() && selectList.isEmpty()) {
-            figs = editor.figs();
-            while (figs.hasMoreElements()) {
-                Fig f = (Fig) figs.nextElement();
+            figs = editor.getFigs().iterator();
+            while (figs.hasNext()) {
+                Fig f = (Fig) figs.next();
                 if (f.isSelectable() && f.intersects(selectRect)) {
                     selectList.addElement(f);
                 }

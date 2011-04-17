@@ -55,7 +55,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.*;
 import java.io.Serializable;
-import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -417,15 +416,6 @@ public class Editor implements Serializable, MouseListener,
     // methods related to adding, removing, and accessing Figs
     // shown in the editor
 
-    /**
-     * Returns an enumeration of all Figs in the layer currently being edited.
-     * @deprecated in 0.13 use getFigs()
-     */
-    @Deprecated
-    public Enumeration figs() {
-        return _layerManager.elements();
-    }
-
     /** Returns a list of all Figs in the layer currently being edited. */
     public List<Fig> getFigs() {
         return _layerManager.getContents();
@@ -602,7 +592,7 @@ public class Editor implements Serializable, MouseListener,
      * mode.
      * 
      */
-    public synchronized void paint(Graphics g) {
+    public void paint(Graphics g) {
         if (!shouldPaint())
             return;
 
@@ -619,7 +609,7 @@ public class Editor implements Serializable, MouseListener,
         }
     }
 
-    public synchronized void print(Graphics g) {
+    public void print(Graphics g) {
         getLayerManager().paint(g);
     }
 
