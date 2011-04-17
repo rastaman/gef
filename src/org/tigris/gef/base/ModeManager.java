@@ -63,12 +63,12 @@ public class ModeManager implements Serializable, MouseListener,
      * critical part of the system and should be faster, use an array instead of
      * a Vector.
      */
-    private Vector<FigModifyingMode> _modes = new Vector<FigModifyingMode>();
+    private Vector<FigModifyingMode> modes = new Vector<FigModifyingMode>();
 
     /** The Editor that owns this ModeManager. */
     public Editor editor;
 
-    protected EventListenerList _listeners = new EventListenerList();
+    private EventListenerList _listeners = new EventListenerList();
 
     private static Log LOG = LogFactory.getLog(ModeManager.class);
 
@@ -95,10 +95,10 @@ public class ModeManager implements Serializable, MouseListener,
 
     /** Reply the top (first) Mode. */
     public FigModifyingMode top() {
-        if (_modes.isEmpty())
+        if (modes.isEmpty())
             return null;
         else
-            return _modes.lastElement();
+            return modes.lastElement();
     }
 
     /**
@@ -110,14 +110,14 @@ public class ModeManager implements Serializable, MouseListener,
             throw new IllegalArgumentException("You cannot push a null mode.");
         }
         if (!includes(newMode.getClass())) {
-            _modes.addElement(newMode);
+            modes.addElement(newMode);
             fireModeChanged();
         }
     }
 
     /** Remove the topmost Mode if it can exit. */
     public FigModifyingMode pop() {
-        if (_modes.isEmpty()) {
+        if (modes.isEmpty()) {
             return null;
         }
         FigModifyingMode res = top();
@@ -125,7 +125,7 @@ public class ModeManager implements Serializable, MouseListener,
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Removing mode " + res);
             }
-            _modes.removeElement(res);
+            modes.removeElement(res);
             fireModeChanged();
         }
         return res;
@@ -133,14 +133,14 @@ public class ModeManager implements Serializable, MouseListener,
 
     /** Remove all Modes that can exit. */
     public void popAll() {
-        while (!_modes.isEmpty() && top().canExit()) {
-            _modes.removeElement(top());
+        while (!modes.isEmpty() && top().canExit()) {
+            modes.removeElement(top());
         }
         fireModeChanged();
     }
 
     public boolean includes(Class<? extends FigModifyingMode> modeClass) {
-        for (FigModifyingMode m : _modes) {
+        for (FigModifyingMode m : modes) {
             if (m.getClass() == modeClass) {
                 return true;
             }
@@ -152,8 +152,8 @@ public class ModeManager implements Serializable, MouseListener,
      * Finish all modes immediately.
      */
     public void leaveAll() {
-        for (int i = _modes.size() - 1; i >= 0; --i) {
-            FigModifyingModeImpl m = ((FigModifyingModeImpl) _modes.get(i));
+        for (int i = modes.size() - 1; i >= 0; --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl) modes.get(i));
             m.leave();
         }
     }
@@ -164,16 +164,16 @@ public class ModeManager implements Serializable, MouseListener,
     /** Pass events to all modes in order, until one consumes it. */
     public void keyTyped(KeyEvent ke) {
         checkModeTransitions(ke);
-        for (int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
-            FigModifyingModeImpl m = ((FigModifyingModeImpl) _modes.get(i));
+        for (int i = modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl) modes.get(i));
             m.keyTyped(ke);
         }
     }
 
     /** Pass events to all modes in order, until one consumes it. */
     public void keyReleased(KeyEvent ke) {
-        for (int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
-            FigModifyingModeImpl m = ((FigModifyingModeImpl) _modes.get(i));
+        for (int i = modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl) modes.get(i));
             m.keyReleased(ke);
         }
     }
@@ -183,11 +183,11 @@ public class ModeManager implements Serializable, MouseListener,
         // Executing keyPressed of a Mode may in fact remove other modes
         // from the stack. So it is necessary each time to check that a mode
         // is still on the stack before calling it.
-        Vector<FigModifyingMode> modes = (Vector<FigModifyingMode>) _modes
+        Vector<FigModifyingMode> modesCopy = (Vector<FigModifyingMode>) modes
                 .clone();
-        for (int i = modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
-            FigModifyingModeImpl m = ((FigModifyingModeImpl) modes.get(i));
-            if (_modes.contains(m)) {
+        for (int i = modesCopy.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl) modesCopy.get(i));
+            if (modes.contains(m)) {
                 m.keyPressed(ke);
             }
         }
@@ -195,16 +195,16 @@ public class ModeManager implements Serializable, MouseListener,
 
     /** Pass events to all modes in order, until one consumes it. */
     public void mouseMoved(MouseEvent me) {
-        for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
-            FigModifyingModeImpl m = ((FigModifyingModeImpl) _modes.get(i));
+        for (int i = modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
+            FigModifyingModeImpl m = ((FigModifyingModeImpl) modes.get(i));
             m.mouseMoved(me);
         }
     }
 
     /** Pass events to all modes in order, until one consumes it. */
     public void mouseDragged(MouseEvent me) {
-        for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
-            FigModifyingModeImpl m = ((FigModifyingModeImpl) _modes.get(i));
+        for (int i = modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
+            FigModifyingModeImpl m = ((FigModifyingModeImpl) modes.get(i));
             m.mouseDragged(me);
         }
     }
@@ -212,8 +212,8 @@ public class ModeManager implements Serializable, MouseListener,
     /** Pass events to all modes in order, until one consumes it. */
     public void mouseClicked(MouseEvent me) {
         checkModeTransitions(me);
-        for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
-            FigModifyingModeImpl m = ((FigModifyingModeImpl) _modes.get(i));
+        for (int i = modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl) modes.get(i));
             m.mouseClicked(me);
         }
     }
@@ -221,11 +221,12 @@ public class ModeManager implements Serializable, MouseListener,
     /** Pass events to all modes in order, until one consumes it. */
     public void mousePressed(MouseEvent me) {
         checkModeTransitions(me);
-        for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
-            if (LOG.isDebugEnabled())
+        for (int i = modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("MousePressed testing mode "
-                        + _modes.get(i).getClass().getName());
-            FigModifyingModeImpl m = ((FigModifyingModeImpl) _modes.get(i));
+                        + modes.get(i).getClass().getName());
+            }
+            FigModifyingModeImpl m = ((FigModifyingModeImpl) modes.get(i));
             m.mousePressed(me);
         }
     }
@@ -233,8 +234,8 @@ public class ModeManager implements Serializable, MouseListener,
     /** Pass events to all modes in order, until one consumes it. */
     public void mouseReleased(MouseEvent me) {
         checkModeTransitions(me);
-        for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
-            FigModifyingModeImpl m = ((FigModifyingModeImpl) _modes.get(i));
+        for (int i = modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
+            FigModifyingModeImpl m = ((FigModifyingModeImpl) modes.get(i));
             m.mouseReleased(me);
         }
         // fireModeChanged();
@@ -242,16 +243,16 @@ public class ModeManager implements Serializable, MouseListener,
 
     /** Pass events to all modes in order, until one consumes it. */
     public void mouseEntered(MouseEvent me) {
-        for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
-            FigModifyingModeImpl m = ((FigModifyingModeImpl) _modes.get(i));
+        for (int i = modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl) modes.get(i));
             m.mouseEntered(me);
         }
     }
 
     /** Pass events to all modes in order, until one consumes it. */
     public void mouseExited(MouseEvent me) {
-        for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
-            FigModifyingModeImpl m = ((FigModifyingModeImpl) _modes.get(i));
+        for (int i = modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+            FigModifyingModeImpl m = ((FigModifyingModeImpl) modes.get(i));
             m.mouseExited(me);
         }
     }
@@ -276,23 +277,23 @@ public class ModeManager implements Serializable, MouseListener,
                     && ((FigNode) underMouse).isDragConnectable()) {
                 Object startPort = ((FigNode) underMouse).hitPort(x, y);
                 if (startPort != null) {
-                    if (LOG.isDebugEnabled())
-                        LOG
-                                .debug("ModeManager mousepressed detected on a draggable port");
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("ModeManager mousepressed detected on a draggable port");
+                    }
                     // user clicked on a port, now drag an edge
-                    FigModifyingModeImpl createArc = (FigModifyingModeImpl) new ModeCreateEdge(
-                            editor);
+                    FigModifyingModeImpl createArc =
+                        (FigModifyingModeImpl) new ModeCreateEdge(editor);
                     push(createArc);
                     createArc.mousePressed(me);
                 } else {
-                    if (LOG.isDebugEnabled())
-                        LOG
-                                .debug("ModeManager mousepressed detected but not on a port");
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("ModeManager mousepressed detected but not on a port");
+                    }
                 }
             } else {
-                if (LOG.isDebugEnabled())
-                    LOG
-                            .debug("ModeManager mousepressed detected but not on a port dragable node");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("ModeManager mousepressed detected but not on a port dragable node");
+                }
             }
         }
     }
@@ -313,8 +314,9 @@ public class ModeManager implements Serializable, MouseListener,
         ModeChangeEvent e = null;
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == ModeChangeListener.class) {
-                if (e == null)
-                    e = new ModeChangeEvent(editor, _modes);
+                if (e == null) {
+                    e = new ModeChangeEvent(editor, modes);
+                }
                 // needs-more-work: should copy vector, use JGraph as src?
                 ((ModeChangeListener) listeners[i + 1]).modeChange(e);
             }
@@ -326,7 +328,7 @@ public class ModeManager implements Serializable, MouseListener,
 
     /** Paint each mode in the stack: bottom to top. */
     public void paint(Graphics g) {
-        for (FigModifyingMode m : _modes) {
+        for (FigModifyingMode m : modes) {
             m.paint(g);
         }
     }
@@ -335,7 +337,7 @@ public class ModeManager implements Serializable, MouseListener,
      * @return the number of modes in the stack.
      */
     public int count() {
-        return _modes.size();
+        return modes.size();
     }
 
 }
