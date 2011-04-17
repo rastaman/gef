@@ -46,11 +46,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.event.EventListenerList;
 
+import org.tigris.gef.di.DiagramElement;
 import org.tigris.gef.event.GraphSelectionEvent;
 import org.tigris.gef.event.GraphSelectionListener;
 
@@ -83,7 +83,7 @@ public class SelectionManager implements Serializable, KeyListener,
      * The collection of Selection instances
      */
     private List<Selection> selections = new ArrayList<Selection>();
-    private Editor _editor;
+    private Editor editor;
     private EventListenerList _listeners = new EventListenerList();
     private DragMemento dragMemento;
 
@@ -112,13 +112,15 @@ public class SelectionManager implements Serializable, KeyListener,
     // //////////////////////////////////////////////////////////////
     // constructor
     public SelectionManager(Editor ed) {
-        _editor = ed;
+        editor = ed;
     }
 
     // //////////////////////////////////////////////////////////////
     // accessors
 
-    /** Add a new selection to the collection of selections */
+    /**
+     * Add a new selection to the collection of selections
+     */
     protected void addSelection(Selection s) {
         selections.add(s);
     }
@@ -140,9 +142,9 @@ public class SelectionManager implements Serializable, KeyListener,
         }
     }
 
-    protected void addFigs(Collection<? extends Fig> figs) {
-        for (Fig f : figs) {
-            addFig(f);
+    protected void addFigs(Collection<? extends DiagramElement> figs) {
+        for (DiagramElement f : figs) {
+            addFig((Fig) f);
         }
     }
 
@@ -165,8 +167,8 @@ public class SelectionManager implements Serializable, KeyListener,
 
     protected void allDamaged() {
         Rectangle bounds = this.getBounds();
-        _editor.scaleRect(bounds);
-        _editor.damaged(bounds);
+        editor.scaleRect(bounds);
+        editor.damaged(bounds);
     }
 
     public void select(Fig f) {
@@ -176,7 +178,7 @@ public class SelectionManager implements Serializable, KeyListener,
         allDamaged();
         removeAllElements();
         addFig(f);
-        _editor.damageAll();
+        editor.damageAll();
         fireSelectionChanged();
     }
 
@@ -191,7 +193,7 @@ public class SelectionManager implements Serializable, KeyListener,
             UndoManager.getInstance().addMemento(new SelectionMemento());
         }
         addFig(fig);
-        _editor.damageAll();
+        editor.damageAll();
         fireSelectionChanged();
     }
 
@@ -202,7 +204,7 @@ public class SelectionManager implements Serializable, KeyListener,
         }
         if (containsFig(f)) {
             removeFig(f);
-            _editor.damageAll();
+            editor.damageAll();
             fireSelectionChanged();
         }
     }
@@ -211,14 +213,14 @@ public class SelectionManager implements Serializable, KeyListener,
         if (UndoManager.getInstance().isGenerateMementos()) {
             UndoManager.getInstance().addMemento(new SelectionMemento());
         }
-        _editor.damageAll();
+        editor.damageAll();
         if (containsFig(f)) {
             removeFig(f);
         } else {
             addFig(f);
         }
 
-        _editor.damageAll();
+        editor.damageAll();
         fireSelectionChanged();
     }
 
@@ -229,7 +231,7 @@ public class SelectionManager implements Serializable, KeyListener,
             }
             Rectangle damagedArea = this.getBounds(); // too much area
             removeAllElements();
-            _editor.damaged(damagedArea);
+            editor.damaged(damagedArea);
             fireSelectionChanged();
         }
     }
@@ -250,7 +252,7 @@ public class SelectionManager implements Serializable, KeyListener,
         fireSelectionChanged();
     }
 
-    public void selectFigs(Collection<? extends Fig> items) {
+    public void selectFigs(Collection<? extends DiagramElement> items) {
         if (UndoManager.getInstance().isGenerateMementos()) {
             UndoManager.getInstance().addMemento(new SelectionMemento());
         }
@@ -772,8 +774,8 @@ public class SelectionManager implements Serializable, KeyListener,
             final int editorCount = editors.size();
             final Rectangle dirtyRegionScaled = new Rectangle();
             for (int editorIndex = 0; editorIndex < editorCount; ++editorIndex) {
-                final Editor editor = (Editor) editors.get(editorIndex);
-                final double editorScale = editor.getScale();
+                final Editor ed = (Editor) editors.get(editorIndex);
+                final double editorScale = ed.getScale();
                 dirtyRegionScaled.x = (int) Math.floor(dirtyRegion.x
                         * editorScale);
                 dirtyRegionScaled.y = (int) Math.floor(dirtyRegion.y
@@ -782,7 +784,7 @@ public class SelectionManager implements Serializable, KeyListener,
                         * editorScale) + 1;
                 dirtyRegionScaled.height = (int) Math.floor(dirtyRegion.height
                         * editorScale) + 1;
-                editor.damaged(dirtyRegionScaled);
+                ed.damaged(dirtyRegionScaled);
             }
         } else {
             System.out.println("Selection manager: layer is null");
@@ -1023,7 +1025,7 @@ public class SelectionManager implements Serializable, KeyListener,
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == GraphSelectionListener.class) {
                 if (e == null) {
-                    e = new GraphSelectionEvent(_editor, getFigs());
+                    e = new GraphSelectionEvent(editor, getFigs());
                 }
 
                 // needs-more-work: should copy vector, use JGraph as src?
@@ -1277,7 +1279,7 @@ public class SelectionManager implements Serializable, KeyListener,
             ArrayList curSelections = new ArrayList(selections);
             selections = prevSelections;
             prevSelections = curSelections;
-            _editor.damageAll();
+            editor.damageAll();
         }
 
         public void redo() {
