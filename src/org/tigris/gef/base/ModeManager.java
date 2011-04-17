@@ -111,7 +111,7 @@ public class ModeManager implements Serializable, MouseListener,
         }
         if (!includes(newMode.getClass())) {
             _modes.addElement(newMode);
-            // fireModeChanged();
+            fireModeChanged();
         }
     }
 
@@ -133,8 +133,10 @@ public class ModeManager implements Serializable, MouseListener,
 
     /** Remove all Modes that can exit. */
     public void popAll() {
-        while (!_modes.isEmpty() && top().canExit())
+        while (!_modes.isEmpty() && top().canExit()) {
             _modes.removeElement(top());
+        }
+        fireModeChanged();
     }
 
     public boolean includes(Class<? extends FigModifyingMode> modeClass) {
