@@ -817,10 +817,12 @@ public class Editor implements Serializable, MouseListener,
         Globals.curEditor(this);
 
         // setUnderMouse(me);
+        if (_canSelectElements) {
+            _selectionManager.mouseClicked(me);
+        }
         if (_curFig instanceof MouseListener)
             ((MouseListener) _curFig).mouseClicked(me);
         if (_canSelectElements) {
-            _selectionManager.mouseClicked(me);
             _modeManager.mouseClicked(me);
         }
     }
