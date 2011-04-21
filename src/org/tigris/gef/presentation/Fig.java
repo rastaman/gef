@@ -124,24 +124,28 @@ public abstract class Fig implements DiagramElement, Cloneable,
     /**
      * X coordinate of the Fig's bounding box. It is the responsibility of
      * subclasses to make sure this value is ALWAYS up-to-date.
+     * @deprecated in 0.13.4 use getX, getBounds or getLocation.
      */
     protected int _x;
 
     /**
      * Y coordinate of the Fig's bounding box. It is the responsibility of
      * subclasses to make sure this value is ALWAYS up-to-date.
+     * @deprecated in 0.13.4 use getY, getBounds or getLocation.
      */
     protected int _y;
 
     /**
      * Width of the Fig's bounding box. It is the responsibility of subclasses
      * to make sure this value is ALWAYS up-to-date.
+     * @deprecated in 0.13.4 use getWidth, getBounds or getSize.
      */
     protected int _w;
 
     /**
      * Height of the Fig's bounding box. It is the responsibility of subclasses
      * to make sure this value is ALWAYS up-to-date.
+     * @deprecated in 0.13.4 use getWidth, getBounds or getSize.
      */
     protected int _h;
 
@@ -152,11 +156,13 @@ public abstract class Fig implements DiagramElement, Cloneable,
 
     /**
      * Outline color of fig object.
+     * @deprecated in 0.13.4 use getLineColor/setLineColor.
      */
     Color _lineColor = Color.black;
 
     /**
      * Fill color of fig object.
+     * @deprecated in 0.13.4 use getFillColor/setFillColor.
      */
     Color _fillColor = Color.white;
 
