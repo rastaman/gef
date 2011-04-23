@@ -206,7 +206,7 @@ public class FigGroup extends Fig {
      * a parent and it will no longer fit that parent then control is
      * delegated to that parent.
      */
-    protected void layout() {
+    public void layout() {
         if (getGroup() != null
                 && (getBounds().height < getMinimumSize().height
                         || getBounds().width < getMinimumSize().width)) {
