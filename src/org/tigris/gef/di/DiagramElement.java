@@ -24,12 +24,16 @@
 
 package org.tigris.gef.di;
 
+import java.awt.Dimension;
+
 /**
  * An interface to be implemented by connectable figs.
  */
 public interface DiagramElement {
 
-    public String getId();
+    String getId();
 
-    public Object getOwner();
+    Object getOwner();
+    
+    Dimension getMinimumSize();
 }
