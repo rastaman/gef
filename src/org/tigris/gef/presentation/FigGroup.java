@@ -201,24 +201,6 @@ public class FigGroup extends Fig {
     }
     
     /**
-     * This is called to rearrange the contents of the Fig when a childs
-     * minimum size means it will no longer fit. If this group also has
-     * a parent and it will no longer fit that parent then control is
-     * delegated to that parent.
-     */
-    public void layout() {
-        if (getGroup() != null
-                && (getBounds().height < getMinimumSize().height
-                        || getBounds().width < getMinimumSize().width)) {
-            ((FigGroup) getGroup()).layout();
-        } else {
-            int maxw = Math.max(getWidth(), getMinimumSize().width);
-            int maxh = Math.max(getHeight(), getMinimumSize().height);
-            setSize(maxw, maxh);
-        }
-    }
-
-    /**
      * Returns the bounds of the given subfig. This method can be overwritten in
      * order to use different strategies on determining the overall bounds of
      * the FigGroup. <p>
