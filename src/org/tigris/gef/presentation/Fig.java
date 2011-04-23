@@ -179,7 +179,10 @@ public abstract class Fig implements DiagramElement, Cloneable,
     protected int _dashStyle = 0;
     protected int _dashPeriod = 0;
 
-    /** True if the object should fill in its area. */
+    /**
+     * True if the object should fill in its area.
+     * @deprecated will become private use getLineWidth()
+     */
     protected boolean _filled = true;
 
     /**
