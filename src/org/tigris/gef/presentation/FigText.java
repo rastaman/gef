@@ -322,6 +322,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     public void setUnderline(boolean b) {
+        if (getUnderline() == b) {
+            return;
+        }
         firePropChange("underline", _underline, b);
         _underline = b;
     }
@@ -331,6 +334,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     public void setJustification(int align) {
+        if (_justification == align) {
+            return;
+        }        
         firePropChange("justification", getJustification(), align);
         _justification = align;
     }
@@ -440,6 +446,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     public void setItalic(boolean b) {
+        if (getItalic() == b) {
+            return;
+        }
         int style = (getBold() ? Font.BOLD : 0) + (b ? Font.ITALIC : 0);
         Font f = new Font(_font.getFamily(), style, _font.getSize());
         setFont(f);
@@ -450,6 +459,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     public void setBold(boolean b) {
+        if (getBold() == b) {
+            return;
+        }
         int style = (b ? Font.BOLD : 0) + (getItalic() ? Font.ITALIC : 0);
         setFont(new Font(_font.getFamily(), style, _font.getSize()));
     }
