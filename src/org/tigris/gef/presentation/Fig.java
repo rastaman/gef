@@ -51,7 +51,6 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.base.SelectionManager;
-import org.tigris.gef.di.GraphElement;
 import org.tigris.gef.di.DiagramElement;
 import org.tigris.gef.graph.GraphEdgeHooks;
 import org.tigris.gef.graph.GraphNodeHooks;
@@ -78,16 +77,19 @@ public abstract class Fig implements DiagramElement, Cloneable,
     /** The size of the dashes drawn when the Fig is dashed. */
     private static final String[] DASHED_CHOICES = { "Solid", "Dashed",
             "LongDashed", "Dotted", "DotDash" };
+
     private static final float[][] DASH_ARRAYS = { null, { 5.0f, 5.0f },
             { 15.0f, 5.0f }, { 3.0f, 10.0f }, { 3.0f, 6.0f, 10.0f, 6.0f } }; // opaque,
-                                                                                // transparent,
-                                                                                // [opaque,
-                                                                                // transparent]
+
+    // transparent,
+    // [opaque,
+    // transparent]
     private static final int[] DASH_PERIOD = { 0, 10, 20, 13, 25, }; // the
-                                                                        // sum
-                                                                        // of
-                                                                        // each
-                                                                        // subarray
+
+    // sum
+    // of
+    // each
+    // subarray
 
     /**
      * Indicates whether this fig can be moved
@@ -124,6 +126,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     /**
      * X coordinate of the Fig's bounding box. It is the responsibility of
      * subclasses to make sure this value is ALWAYS up-to-date.
+     * 
      * @deprecated in 0.13.4 use getX, getBounds or getLocation.
      */
     protected int _x;
@@ -131,6 +134,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     /**
      * Y coordinate of the Fig's bounding box. It is the responsibility of
      * subclasses to make sure this value is ALWAYS up-to-date.
+     * 
      * @deprecated in 0.13.4 use getY, getBounds or getLocation.
      */
     protected int _y;
@@ -138,6 +142,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     /**
      * Width of the Fig's bounding box. It is the responsibility of subclasses
      * to make sure this value is ALWAYS up-to-date.
+     * 
      * @deprecated in 0.13.4 use getWidth, getBounds or getSize.
      */
     protected int _w;
@@ -145,6 +150,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     /**
      * Height of the Fig's bounding box. It is the responsibility of subclasses
      * to make sure this value is ALWAYS up-to-date.
+     * 
      * @deprecated in 0.13.4 use getWidth, getBounds or getSize.
      */
     protected int _h;
@@ -156,31 +162,45 @@ public abstract class Fig implements DiagramElement, Cloneable,
 
     /**
      * Outline color of fig object.
+     * 
      * @deprecated in 0.13.4 use getLineColor/setLineColor.
      */
     Color _lineColor = Color.black;
 
     /**
      * Fill color of fig object.
+     * 
      * @deprecated in 0.13.4 use getFillColor/setFillColor.
      */
     Color _fillColor = Color.white;
 
     /**
-     * Thickness of object's border.  This is included in the overall
-     * size of the object, so the size of the interior is smaller by
-     * 2 * lineWidth in each dimension.
+     * Thickness of object's border. This is included in the overall size of the
+     * object, so the size of the interior is smaller by 2 * lineWidth in each
+     * dimension.
      * 
-     * @deprecated will become private use getLineWidth()
+     * @deprecated will become private use set/getLineWidth()
      */
     int _lineWidth = 1;
 
+    /**
+     * @deprecated in 0.13.4 use getDashes
+     */
     protected float[] _dashes = null;
+
+    /**
+     * @deprecated this is not used
+     */
     protected int _dashStyle = 0;
+
+    /**
+     * @deprecated in 0.13.4 use getDashePeriod
+     */
     protected int _dashPeriod = 0;
 
     /**
      * True if the object should fill in its area.
+     * 
      * @deprecated will become private use getLineWidth()
      */
     protected boolean _filled = true;
@@ -197,11 +217,14 @@ public abstract class Fig implements DiagramElement, Cloneable,
      */
     private boolean visible = true;
 
+    /**
+     * @deprecated this is not used
+     */
     protected boolean _allowsSaving = true;
 
     /**
-     * @deprecated by mvw in GEF0.13.1M2. Use SelectionManager instead. 
-     * See issue 146. This value is never set.
+     * @deprecated by mvw in GEF0.13.1M2. Use SelectionManager instead. See
+     *             issue 146. This value is never set.
      * */
     private transient boolean _selected = false;
 
@@ -215,8 +238,6 @@ public abstract class Fig implements DiagramElement, Cloneable,
     // //////////////////////////////////////////////////////////////
     // static initializer
     static {
-        // needs-more-work: get rect editor to work
-        // PropCategoryManager.categorizeProperty("Geometry", "bounds");
         PropCategoryManager.categorizeProperty("Geometry", "x");
         PropCategoryManager.categorizeProperty("Geometry", "y");
         PropCategoryManager.categorizeProperty("Geometry", "width");
@@ -300,7 +321,9 @@ public abstract class Fig implements DiagramElement, Cloneable,
     // --------------------------------
     // annotation related
     protected AnnotationStrategy an = NoAnnotationStrategy.getInstance();
+
     protected boolean annotationStatus = false;
+
     protected Fig annotationOwner;
 
     // specifies the AnnotationOwner
@@ -448,11 +471,9 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * Align this Fig with the given rectangle. Some subclasses may need to know
      * the editor that initiated this action.
      * 
-     * @param r
-     *                the rectangle to align to.
+     * @param r the rectangle to align to.
      * @param direction
-     * @param ed
-     *                the editor that initiated this action.
+     * @param ed the editor that initiated this action.
      */
     final public void align(Rectangle r, int direction, Editor ed) {
         Rectangle bbox = getBounds();
@@ -536,7 +557,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
 
     /**
      * @deprecated in 0.11.1 use
-     *             org.tigris.gef.persistence.pgml.PgmlUtility.getClassNameAndBounds(Fig)
+     *             org.tigris.gef.persistence.pgml.PgmlUtility.getClassNameAndBounds
+     *             (Fig)
      */
     // USED BY PGML.tee
     public String classNameAndBounds() {
@@ -689,7 +711,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
         }
         if (lay != null) {
             lay.damageAll();
-//            lay.damaged(this); 
+            // lay.damaged(this);
         }
     }
 
@@ -723,8 +745,11 @@ public abstract class Fig implements DiagramElement, Cloneable,
             class FigRemoveMemento extends Memento {
 
                 Layer lay;
+
                 Fig fig;
+
                 Fig encFig;
+
                 boolean vis;
 
                 public FigRemoveMemento(Fig f) {
@@ -737,8 +762,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
                 public void undo() {
                     UndoManager.getInstance().addMementoLock(this);
                     fig.setEnclosingFig(encFig);
-                    if (lay != null)
-                        lay.add(fig);
+                    if (lay != null) lay.add(fig);
                     fig.visible = vis;
                     UndoManager.getInstance().removeMementoLock(this);
                 }
@@ -818,124 +842,99 @@ public abstract class Fig implements DiagramElement, Cloneable,
     // }
     //
 
-    public void drawRect(
-            final Graphics g,
-            final boolean filled,
-            final Color fillColor,
-            final int lineWidth,
-            final Color lineColor,
-            final int x,
-            final int y,
-            final int w,
-            final int h,
-            final boolean dashed,
-            final float dashes[],
-            final int dashPeriod) {
+    public void drawRect(final Graphics g, final boolean filled,
+            final Color fillColor, final int lineWidth, final Color lineColor,
+            final int x, final int y, final int w, final int h,
+            final boolean dashed, final float dashes[], final int dashPeriod) {
 
-    	if (filled && fillColor != null) {
+        if (filled && fillColor != null) {
             // TODO This causes loss of border edges in various FigNodes
-    	    // in ArgoUML. See sequence diagram and deployment diagrams.
+            // in ArgoUML. See sequence diagram and deployment diagrams.
             // Disabling until cause is known.
-//            if (g instanceof Graphics2D) {
-//                Graphics2D g2 = (Graphics2D) g;
-//                Paint oldPaint = g2.getPaint();  
-//                g2.setPaint(getDefaultPaint(fillColor, lineColor, x, y, w, h));
-//                g2.fill(new Rectangle2D.Float(x + lineWidth, y + lineWidth,
-//                w - 2 * lineWidth, h - 2 * lineWidth));
-//                g2.setPaint(oldPaint);
-//            } else {
-                int xx = x;
-                int yy = y;
-                int ww = w;
-                int hh = h;
-                if (lineColor != null) {
-    		    if (lineWidth > 1 && !dashed && lineColor != fillColor) {
-    			int lineWidth2 = lineWidth * 2;
-    			g.setColor(lineColor);
-    			g.fillRect(xx, yy, ww, hh);
-    			xx += lineWidth;
-    			yy += lineWidth;
-    			ww -= lineWidth2;
-    			hh -= lineWidth2;
-    		    }
-    	        }
-    	        g.setColor(fillColor);
-    	        g.fillRect(xx, yy, ww, hh);
-    	        if (lineColor != null && lineColor != fillColor) {
-                    if (lineWidth == 1 || dashed) {
-    	                paintRectLine(
-    			        g, 
-    			        xx, 
-    			        yy, 
-    			        ww, 
-    			        hh, 
-    			        lineWidth, 
-    			        lineColor,
-    				dashed, 
-    				dashes, 
-    				dashPeriod);
-    		    }
-    		}
-//    	    }
+            // if (g instanceof Graphics2D) {
+            // Graphics2D g2 = (Graphics2D) g;
+            // Paint oldPaint = g2.getPaint();
+            // g2.setPaint(getDefaultPaint(fillColor, lineColor, x, y, w, h));
+            // g2.fill(new Rectangle2D.Float(x + lineWidth, y + lineWidth,
+            // w - 2 * lineWidth, h - 2 * lineWidth));
+            // g2.setPaint(oldPaint);
+            // } else {
+            int xx = x;
+            int yy = y;
+            int ww = w;
+            int hh = h;
+            if (lineColor != null) {
+                if (lineWidth > 1 && !dashed && lineColor != fillColor) {
+                    int lineWidth2 = lineWidth * 2;
+                    g.setColor(lineColor);
+                    g.fillRect(xx, yy, ww, hh);
+                    xx += lineWidth;
+                    yy += lineWidth;
+                    ww -= lineWidth2;
+                    hh -= lineWidth2;
+                }
+            }
+            g.setColor(fillColor);
+            g.fillRect(xx, yy, ww, hh);
+            if (lineColor != null && lineColor != fillColor) {
+                if (lineWidth == 1 || dashed) {
+                    paintRectLine(g, xx, yy, ww, hh, lineWidth, lineColor,
+                            dashed, dashes, dashPeriod);
+                }
+            }
+            // }
         } else {
             paintRectLine(g, x, y, w, h, lineWidth, lineColor, dashed, dashes,
                     dashPeriod);
         }
     }
 
-
     /**
      * Paint the line of a rectangle without any fill. Manages line width and
      * dashed lines.
      * 
-     * @param g
-     *                The Graphics object
-     * @param x
-     *                The x co-ordinate of the rectangle
-     * @param y
-     *                The y co-ordinate of the rectangle
-     * @param w
-     *                The width of the rectangle
-     * @param h
-     *                The height of the rectangle
-     * @param lwidth
-     *                The linewidth of the rectangle
+     * @param g The Graphics object
+     * @param x The x co-ordinate of the rectangle
+     * @param y The y co-ordinate of the rectangle
+     * @param w The width of the rectangle
+     * @param h The height of the rectangle
+     * @param lwidth The linewidth of the rectangle
      */
     private void paintRectLine(Graphics g, int x, int y, int w, int h,
-			int lineWidth, Color lineColor, boolean dashed, float dashes[],
-			int dashPeriod) {
+            int lineWidth, Color lineColor, boolean dashed, float dashes[],
+            int dashPeriod) {
         // TODO This causes an underline in the association label of ArgoUML
         // Disabling until cause is known.
-//		if (g instanceof Graphics2D) {
-//			Graphics2D g2 = (Graphics2D) g;
-//			Paint oldPaint = g2.getPaint();
-//			g2.setPaint(lineColor);
-//			Stroke oldStroke = g2.getStroke();
-//			g2.setStroke(getDefaultStroke(lineWidth, dashes, 0));
-//			g2.draw(new Rectangle2D.Float(x, y, w, h));
-//			g2.setStroke(oldStroke);
-//			g2.setPaint(oldPaint);
-//		} else {
-			if (lineWidth > 0 && lineColor != null) {
-				g.setColor(lineColor);
-				if (lineWidth == 1) {
-					paintRectLine(g, x, y, w, h, dashed, lineWidth, dashes,
-							dashPeriod);
-				} else {
-					int xx = x;
-					int yy = y;
-					int hh = h;
-					int ww = w;
+        // if (g instanceof Graphics2D) {
+        // Graphics2D g2 = (Graphics2D) g;
+        // Paint oldPaint = g2.getPaint();
+        // g2.setPaint(lineColor);
+        // Stroke oldStroke = g2.getStroke();
+        // g2.setStroke(getDefaultStroke(lineWidth, dashes, 0));
+        // g2.draw(new Rectangle2D.Float(x, y, w, h));
+        // g2.setStroke(oldStroke);
+        // g2.setPaint(oldPaint);
+        // } else {
+        if (lineWidth > 0 && lineColor != null) {
+            g.setColor(lineColor);
+            if (lineWidth == 1) {
+                paintRectLine(g, x, y, w, h, dashed, lineWidth, dashes,
+                        dashPeriod);
+            } else {
+                int xx = x;
+                int yy = y;
+                int hh = h;
+                int ww = w;
 
-					for (int i = 0; i < lineWidth; ++i) {
-						paintRectLine(g, xx++, yy++, ww, hh, dashed, lineWidth,
-								dashes, dashPeriod);
-						ww -= 2;
-						hh -= 2;
-					}
-				}
-			}
-//		}
+                for (int i = 0; i < lineWidth; ++i) {
+                    paintRectLine(g, xx++, yy++, ww, hh, dashed, lineWidth,
+                            dashes, dashPeriod);
+                    ww -= 2;
+                    hh -= 2;
+                }
+            }
+        }
+        // }
     }
 
     private void paintRectLine(Graphics g, int x, int y, int w, int h,
@@ -960,11 +959,11 @@ public abstract class Fig implements DiagramElement, Cloneable,
                 dashPeriod);
     }
 
-    public int drawDashedLine(Graphics g, int lineWidth, int x1,
-            int y1, int x2, int y2, int phase, float[] dashes, int dashPeriod) {
+    public int drawDashedLine(Graphics g, int lineWidth, int x1, int y1,
+            int x2, int y2, int phase, float[] dashes, int dashPeriod) {
         if (g instanceof Graphics2D) {
-            return drawDashedLineG2D((Graphics2D) g, lineWidth,
-                    phase, x1, y1, x2, y2, dashes, dashPeriod);
+            return drawDashedLineG2D((Graphics2D) g, lineWidth, phase, x1, y1,
+                    x2, y2, dashes, dashPeriod);
         }
 
         // Fall back on the old inefficient method of drawing dashed
@@ -1014,14 +1013,14 @@ public abstract class Fig implements DiagramElement, Cloneable,
         int dxdx = (x2 - x1) * (x2 - x1);
         int dydy = (y2 - y1) * (y2 - y1);
         int length = (int) (Math.sqrt(dxdx + dydy) + 0.5); // This causes a
-                                                            // smaller rounding
-                                                            // error of
-                                                            // 0.5pixels max. .
-                                                            // Seems acceptable.
+        // smaller rounding
+        // error of
+        // 0.5pixels max. .
+        // Seems acceptable.
 
         Stroke originalStroke = g.getStroke(); // we need this to restore
-                                                    // the original stroke
-                                                    // afterwards
+        // the original stroke
+        // afterwards
 
         Stroke dashedStroke = getDefaultStroke(lineWidth, dashes, phase);
         g.setStroke(dashedStroke);
@@ -1030,7 +1029,6 @@ public abstract class Fig implements DiagramElement, Cloneable,
 
         return (length + phase) % dashPeriod;
     }
-
 
     final public void firePropChange(String propName, int oldV, int newV) {
         firePropChange(propName, new Integer(oldV), new Integer(newV));
@@ -1066,11 +1064,10 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * Stores the Rectangle that completely encloses this Fig into "return
      * value" <b>r</b> and return <b>r</b>. If r is <code>null</code> a new
      * <code>Rectangle</code> is allocated. This version of
-     * <code>getBounds</code> is useful if the caller wants to avoid
-     * allocating a new <code>Rectangle</code> object on the heap.
+     * <code>getBounds</code> is useful if the caller wants to avoid allocating
+     * a new <code>Rectangle</code> object on the heap.
      * 
-     * @param r
-     *                the return value, modified to the components bounds
+     * @param r the return value, modified to the components bounds
      * @return r
      */
     public Rectangle getBounds(Rectangle r) {
@@ -1085,8 +1082,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * Overrule this if you have a non-rectangular shape, and want the edge to
      * be able to attach to locations on line-segments.
      * 
-     * @param anotherPt
-     *                the point (usually outside the fig) to connet to
+     * @param anotherPt the point (usually outside the fig) to connet to
      * @return a point on the border of this
      */
     public Point getClosestPoint(Point anotherPt) {
@@ -1096,6 +1092,14 @@ public abstract class Fig implements DiagramElement, Cloneable,
     /** Get the dashed attribute */
     public boolean getDashed() {
         return (_dashes != null);
+    }
+    
+    public float[] getDashes() {
+        return _dashes;
+    }
+
+    public int getDashPeriod() {
+        return _dashPeriod;
     }
 
     /**
@@ -1364,8 +1368,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     }
 
     public String getTipString(MouseEvent me) {
-        if (owner == null)
-            return toString();
+        if (owner == null) return toString();
         return owner.toString();
     }
 
@@ -1382,8 +1385,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
      */
     // USED BY PGML.tee
     final public int getVisState() {
-        if (isVisible())
-            return 1;
+        if (isVisible()) return 1;
         return 0;
     }
 
@@ -1434,13 +1436,11 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * mouse point so that small objects and lines are easier to select. If the
      * fig is invisible this method always returns false.
      * 
-     * @param r
-     *                the rectangular hit area
+     * @param r the rectangular hit area
      * @return true if the hit rectangle strikes this fig
      */
     public boolean hit(Rectangle r) {
-        if (!isVisible() || !isSelectable())
-            return false;
+        if (!isVisible() || !isSelectable()) return false;
         int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
         if (_filled) {
             return cornersHit > 0;
@@ -1452,7 +1452,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     public void insertPoint(int i, int x, int y) {
     }
 
-    /**
+/**
      * Reply true if the object intersects the given rectangle. Used for
      * selective redrawing and by ModeSelect to select all Figs that are partly
      * within the selection rectangle.
@@ -1465,7 +1465,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
                 || (r.x > _x + _w) || (r.y > _y + _h));
     }
 
-    /**
+/**
      * Reply true if the object's perimeter intersects the given rectangle. Used
      * for selective redrawing and by ModeSelect to select all Figs that are
      * partly within the selection rectangle.
@@ -1528,8 +1528,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * Returns the current selection state for this item
      * 
      * @return True, if the item is currently selected, otherwise false.
-     * @deprecated by mvw in GEF0.13.1M2. Use SelectionManager instead. 
-     * See issue 146. This value is never set.
+     * @deprecated by mvw in GEF0.13.1M2. Use SelectionManager instead. See
+     *             issue 146. This value is never set.
      */
     final public boolean isSelected() {
         return _selected;
@@ -1556,8 +1556,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
 
     /**
      * Method to paint this Fig. By default it paints an "empty" space,
-     * subclasses should override this method.
-     * TODO: Deprecate?  Appears unused
+     * subclasses should override this method. TODO: Deprecate? Appears unused
      */
     abstract public void appendSvg(StringBuffer sb);
 
@@ -1642,20 +1641,6 @@ public abstract class Fig implements DiagramElement, Cloneable,
     }
 
     /**
-     * @deprecated in 0.11.1 This method is not used.
-     */
-    final public boolean savingAllowed() {
-        return _allowsSaving;
-    }
-
-    /**
-     * @deprecated in 0.11.1 This method is not used.
-     */
-    final public void setSavingAllowed(boolean newValue) {
-        _allowsSaving = newValue;
-    }
-
-    /**
      * Set the bounds of this Fig. Fires PropertyChangeEvent "bounds". This
      * method can be undone by performing UndoAction.
      */
@@ -1668,8 +1653,11 @@ public abstract class Fig implements DiagramElement, Cloneable,
             if (UndoManager.getInstance().isGenerateMementos()) {
                 Memento memento = new Memento() {
                     int oldX = _x;
+
                     int oldY = _y;
+
                     int oldWidth = _w;
+
                     int oldHeight = _h;
 
                     public void undo() {
@@ -1761,11 +1749,9 @@ public abstract class Fig implements DiagramElement, Cloneable,
      */
     public void setFillColor(Color col) {
         if (col == null) {
-            if (_fillColor == null)
-                return;
+            if (_fillColor == null) return;
         } else {
-            if (col.equals(_fillColor))
-                return;
+            if (col.equals(_fillColor)) return;
         }
 
         if (col != null) {
@@ -1795,11 +1781,9 @@ public abstract class Fig implements DiagramElement, Cloneable,
      */
     public void setLineColor(Color col) {
         if (col == null) {
-            if (_lineColor == null)
-                return;
+            if (_lineColor == null) return;
         } else {
-            if (col.equals(_lineColor))
-                return;
+            if (col.equals(_lineColor)) return;
         }
         if (col != null) {
             firePropChange("lineColor", _lineColor, col);
@@ -1817,8 +1801,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * (hendrik@freiheit.com, 2003-02-05). Fires PropertyChangeEvent
      * "lineWidth".
      * 
-     * @param w
-     *                The new lineWidth value
+     * @param w The new lineWidth value
      */
     public void setLineWidth(int w) {
         int newLW = Math.max(0, w);
@@ -1921,8 +1904,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * use setBounds(int x, int y, int width, int height). Calling a single
      * method will be far more efficient in changing bounds.
      * 
-     * @param width
-     *                The new width.
+     * @param width The new width.
      */
     final public void setWidth(int w) {
         setBounds(_x, _y, w, _h);
@@ -1937,8 +1919,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * use setBounds(int x, int y, int width, int height). Calling a single
      * method will be far more efficient in changing bounds.
      * 
-     * @param height
-     *                The new height.
+     * @param height The new height.
      */
     final public void setHeight(int h) {
         setBounds(_x, _y, _w, h);
@@ -1953,8 +1934,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * height use setBounds(int x, int y, int width, int height). Calling a
      * single method will be far more efficient in changing bounds.
      * 
-     * @param x
-     *                The new x co-ordinate
+     * @param x The new x co-ordinate
      */
     final public void setX(int x) {
         setBounds(x, _y, _w, _h);
@@ -1972,8 +1952,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * height use setBounds(int x, int y, int width, int height). Calling a
      * single method will be far more efficient in changing bounds.
      * 
-     * @param y
-     *                The new y co-ordinate
+     * @param y The new y co-ordinate
      */
     final public void setY(int y) {
         setBounds(_x, y, _w, _h);
@@ -2018,10 +1997,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * subclasses should extend translateImpl The method is undoable by
      * performing the UndoAction.
      * 
-     * @param dx
-     *                the x offset
-     * @param dy
-     *                the y offset
+     * @param dx the x offset
+     * @param dy the y offset
      */
     public void translate(final int dx, final int dy) {
         if (dx == 0 && dy == 0) {
@@ -2032,8 +2009,11 @@ public abstract class Fig implements DiagramElement, Cloneable,
             class TranslateMemento extends Memento {
 
                 int oldX;
+
                 int oldY;
+
                 int oldWidth;
+
                 int oldHeight;
 
                 TranslateMemento(int currentX, int currentY, int currentWidth,
@@ -2099,8 +2079,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * Set the visible status of the fig
      */
     public void setVisible(boolean visible) {
-        if (this.visible == visible)
-            return;
+        if (this.visible == visible) return;
         MutableGraphSupport.enableSaveAction();
         this.visible = visible;
     }
@@ -2108,8 +2087,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     /**
      * Set whether this Fig can be resized
      * 
-     * @param resizable
-     *                true to make this Fig resizable
+     * @param resizable true to make this Fig resizable
      */
     public void setResizable(boolean resizable) {
         this.resizable = resizable;
@@ -2118,8 +2096,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     /**
      * Set whether this Fig can be moved
      * 
-     * @param movable
-     *                true to make this Fig movable
+     * @param movable true to make this Fig movable
      */
     public void setMovable(boolean movable) {
         this.movable = movable;
@@ -2140,27 +2117,27 @@ public abstract class Fig implements DiagramElement, Cloneable,
     protected Stroke getDefaultStroke(float lineWidth, float[] dashes,
             float phase) {
         return new BasicStroke(lineWidth, BasicStroke.CAP_SQUARE,
-				BasicStroke.JOIN_MITER, 10.0f, dashes, (float) phase);
+                BasicStroke.JOIN_MITER, 10.0f, dashes, (float) phase);
     }
-	
+
     /**
-     * Get the default paint.  Currently it's just the fill color.
+     * Get the default paint. Currently it's just the fill color.
      * 
      * @return the Paint to use
      */
     protected Paint getDefaultPaint(Color fillColor, Color lineColor, int x,
             int y, int w, int h) {
         Paint p = fillColor; // solid fill
-		// simple vertical gradient
-//		p = new GradientPaint(new Point2D.Float(x, y), fillColor,
-//				new Point2D.Float(x, y + h), fillColor.darker() /*lineColor*/);
-		// diagonal stripey cyclic gradient
-//		p = new GradientPaint(new Point2D.Float(x, y), lineColor,
-//				new Point2D.Float(x + 20, y + 20), fillColor, true);
-		// Texture paint
-//		BufferedImage img = ;
-//		p = new TexturePaint(img, 
-//				new Rectangle(0, 0, img.getWidth(), img.getHeight()));
+        // simple vertical gradient
+        // p = new GradientPaint(new Point2D.Float(x, y), fillColor,
+        // new Point2D.Float(x, y + h), fillColor.darker() /*lineColor*/);
+        // diagonal stripey cyclic gradient
+        // p = new GradientPaint(new Point2D.Float(x, y), lineColor,
+        // new Point2D.Float(x + 20, y + 20), fillColor, true);
+        // Texture paint
+        // BufferedImage img = ;
+        // p = new TexturePaint(img,
+        // new Rectangle(0, 0, img.getWidth(), img.getHeight()));
         return p;
     }
 
