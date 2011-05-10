@@ -36,6 +36,8 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
@@ -1376,6 +1378,18 @@ public abstract class Fig implements DiagramElement, Cloneable,
         return getBounds();
     }
 
+    /**
+     * Get the rectangle bounds of each area in this Fig that can trap and
+     * enclose a FigNode.
+     * @return the list of Rectangles
+     */
+    public List<Rectangle> getTrapRects() {
+        ArrayList<Rectangle> rects = new ArrayList<Rectangle>(1); 
+        rects.add(getTrapRect());
+        return rects;
+    }
+
+    
     public boolean getUseTrapRect() {
         return false;
     }

@@ -419,36 +419,32 @@ public class ModeModify extends FigModifyingModeImpl {
                     continue;
                 }
 
-                // TODO: Change this block to loop through multiple
-                // trapRects
-                Rectangle trap = otherFig.getTrapRect();
-                if (trap == null) {
-                    continue;
-                }
+                for (Rectangle trap : otherFig.getTrapRects()) {
+                    if (trap == null) {
+                        continue;
+                    }
 
-                if (!trap.intersects(figBounds)) {
-                    continue;
-                }
+                    if (!trap.intersects(figBounds)) {
+                        continue;
+                    }
 
-                if ((trap.contains(figBounds.x, figBounds.y) && trap.contains(
-                        figBounds.x + figBounds.width, figBounds.y
-                                + figBounds.height))) {
-                    draggedOntoCanvas = false;
-                    encloser = otherFig;
-                    continue;
-                }
+                    if ((trap.contains(figBounds.x, figBounds.y) && trap.contains(
+                            figBounds.x + figBounds.width, figBounds.y
+                                    + figBounds.height))) {
+                        draggedOntoCanvas = false;
+                        encloser = otherFig;
+                        continue;
+                    }
 
-                if ((figBounds.contains(trap.x, trap.y) && figBounds.contains(
-                        trap.x + trap.width, trap.y + trap.height))) {
-                    continue;
-                }
+                    if ((figBounds.contains(trap.x, trap.y) && figBounds.contains(
+                            trap.x + trap.width, trap.y + trap.height))) {
+                        continue;
+                    }
 
-                _highlightTrap = trap;
-                damageHighlightTrap();
-                
-                // TODO: end of block
-                
-                return false;
+                    _highlightTrap = trap;
+                    damageHighlightTrap();
+                    return false;
+                }
             }
             
             if (draggedOntoCanvas) {
