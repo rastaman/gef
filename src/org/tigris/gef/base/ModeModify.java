@@ -33,6 +33,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -365,44 +366,52 @@ public class ModeModify extends FigModifyingModeImpl {
         editor.damaged(r);
     }
 
+    /**
+     * Tests if the drag is legal regarding overlap with the bounds of any
+     * enclosers.
+     * @param dx
+     * @param dy
+     * @param selectionManager
+     * @return
+     */
     private boolean legal(int dx, int dy, SelectionManager selectionManager) {
         damageHighlightTrap();
 
         _highlightTrap = null;
-        List figs = selectionManager.getDraggableFigs();
-        int figCount = figs.size();
+        List<FigNode> draggingFigNodes = getNodes(selectionManager.getDraggableFigs());
+        int figCount = draggingFigNodes.size();
         Rectangle figBounds = new Rectangle();
         boolean draggedOntoCanvas = true;
         Fig encloser = null;
-        Fig selectedFig = null;
+        Fig draggedFig = null;
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
-            selectedFig = (Fig) figs.get(figIndex);
-            boolean selectedUseTrap = selectedFig.getUseTrapRect();
-            if (!(selectedFig instanceof FigNode)) {
-                continue;
-            }
+            draggedFig = (Fig) draggingFigNodes.get(figIndex);
 
-            selectedFig.getBounds(figBounds);
+            draggedFig.getBounds(figBounds);
             figBounds.x += dx;
             figBounds.y += dy;
-            Layer lay = selectedFig.getLayer();
-            List otherFigs = lay.getContents();
-            Iterator it = otherFigs.iterator();
-            while (it.hasNext()) {
-                Fig otherFig = (Fig) it.next();
-                if (!(otherFig instanceof FigNode)) {
+            
+            Layer lay = draggedFig.getLayer();
+            List<FigNode> figsInLayer = getNodes(lay.getContents());
+            for (Fig otherFig : figsInLayer) {
+
+                if (!draggedFig.getUseTrapRect() && !otherFig.getUseTrapRect()) {
+                    // If neither the item being dragged or the item testing for
+                    // overlap is an encloser then ignore and check next one
                     continue;
                 }
 
-                if (!selectedUseTrap && !otherFig.getUseTrapRect()) {
+                if (draggingFigNodes.contains(otherFig)) {
+                    // If the item being tested for overlap is also being
+                    // dragged then ignore as nothing has changed for this.
                     continue;
                 }
 
-                if (figs.contains(otherFig)) {
-                    continue;
-                }
-
-                if (otherFig.getEnclosingFig() == selectedFig) {
+                if (otherFig.getEnclosingFig() == draggedFig) {
+                    // If the item being tested for overlap already encloses
+                    // the dragged Fig then ignore.
+                    // TODO: DO we really want to do this? What if we're bing
+                    // dragged out of the encloser?
                     continue;
                 }
 
@@ -410,6 +419,8 @@ public class ModeModify extends FigModifyingModeImpl {
                     continue;
                 }
 
+                // TODO: Change this block to loop through multiple
+                // trapRects
                 Rectangle trap = otherFig.getTrapRect();
                 if (trap == null) {
                     continue;
@@ -434,25 +445,46 @@ public class ModeModify extends FigModifyingModeImpl {
 
                 _highlightTrap = trap;
                 damageHighlightTrap();
+                
+                // TODO: end of block
+                
                 return false;
             }
+            
+            if (draggedOntoCanvas) {
+                // If it isn't dragged into any fig but into diagram canvas (null
+                // encloser).
+                if (!((MutableGraphSupport) graphModel).isEnclosable(
+                        ((FigNode) draggedFig).getOwner(), null)) {
+                    return false;
+                }
+            } else {
+                // If it is dragged into any fig.
+                if (!((MutableGraphSupport) graphModel).isEnclosable(
+                        ((FigNode) draggedFig).getOwner(), ((FigNode) encloser)
+                                .getOwner())) {
+                    return false;
+                }
+            }
         }
-
-        if (!(selectedFig instanceof FigNode)) {
-            return true;
+        
+        
+        return true;
+    }
+    
+    /**
+     * Given a list of Figs returns only those that are FigNode instances
+     * @param figs
+     * @return
+     */
+    private List<FigNode> getNodes(List<Fig> figs) {
+        ArrayList<FigNode> results = new ArrayList<FigNode>(figs.size());
+        for (Fig f : figs) {
+            if (f instanceof FigNode) {
+                results.add((FigNode) f);
+            }
         }
-
-        if (draggedOntoCanvas) {
-            // If it isn't dragged into any fig but into diagram canvas (null
-            // encloser).
-            return (((MutableGraphSupport) graphModel).isEnclosable(
-                    ((FigNode) selectedFig).getOwner(), null));
-        } else {
-            // If it is dragged into any fig.
-            return (((MutableGraphSupport) graphModel).isEnclosable(
-                    ((FigNode) selectedFig).getOwner(), ((FigNode) encloser)
-                            .getOwner()));
-        }
+        return results;
     }
 }
 
