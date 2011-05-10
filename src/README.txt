@@ -1,3 +1,11 @@
+GEF ver 0.13.5 - 10 May 2011
+
+Resolved Issues
+===============
+
+359 Allow multiple trapRects
+
+
 GEF ver 0.13.4 - 17 Apr 2011
 
 Resolved Issues
