@@ -349,8 +349,8 @@ public class FigLine extends Fig {
             return;
         }
 
+        g.setColor(lineColor);
         if (dashed) {
-            g.setColor(lineColor);
             drawDashedLine(g, lineWidth, _x1, _y1, _x2, _y2, 0, _dashes,
                     _dashPeriod);
         } else {
@@ -364,7 +364,6 @@ public class FigLine extends Fig {
                 drawDashedLine(g2, lineWidth, _x1, _y1, _x2, _y2, 0, null, 1);
             } else {
                 /* In this case, line-width is NOT supported. */
-                g.setColor(lineColor);
                 g.drawLine(_x1, _y1, _x2, _y2);
             }
         }
