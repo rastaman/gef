@@ -43,6 +43,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
+/**
+ * @deprecated use SVGGraphics2D from Apache Batik
+ */
+@Deprecated
 public class SvgWriter extends Graphics {
 
     /**

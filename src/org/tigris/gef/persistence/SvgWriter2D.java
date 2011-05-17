@@ -119,6 +119,7 @@ import org.tigris.gef.presentation.Fig;
  * 
  * @author Tom Morris <tfmorris@gmail.com>
  * @author Andreas Rueckert <a_rueckert@gmx.net>
+ * @deprecated since v0.13.3. Use SVGGraphics2D from Apache Batik
  */
 public class SvgWriter2D extends Graphics2D {
 

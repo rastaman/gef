@@ -45,8 +45,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
 /**
- * @deprecated since v0.12.4. Use org.tigris.gef.persistence.export.SvgWriter
- *             instead.
+ * @deprecated since v0.12.4. Use SVGGraphics2D from Apache Batik
  */
 public class SVGWriter extends Graphics {
 
