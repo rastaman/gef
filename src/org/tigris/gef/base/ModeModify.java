@@ -419,7 +419,7 @@ public class ModeModify extends FigModifyingModeImpl {
                     continue;
                 }
 
-                for (Rectangle trap : otherFig.getTrapRects()) {
+                for (Rectangle trap : otherFig.getTrapRects(draggedFig)) {
                     if (trap == null) {
                         continue;
                     }

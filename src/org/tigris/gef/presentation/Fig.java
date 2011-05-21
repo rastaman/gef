@@ -37,13 +37,10 @@ import java.awt.geom.Line2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
-
 import javax.swing.JMenu;
-
 import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.CmdReorder;
 import org.tigris.gef.base.Editor;
@@ -400,7 +397,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     // private
     // an move SelectionManager into this package?
     final public void translateAnnotations() {
-        // If this Fig is an annotaion itself, simply store the position at the
+        // If this Fig is an annotation itself, simply store the position at the
         // owner.
         if (this.isAnnotation()) {
             SelectionManager selectionManager = Globals.curEditor()
@@ -1383,7 +1380,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * enclose a FigNode.
      * @return the list of Rectangles
      */
-    public List<Rectangle> getTrapRects() {
+    public List<Rectangle> getTrapRects(Fig de) {
         ArrayList<Rectangle> rects = new ArrayList<Rectangle>(1); 
         rects.add(getTrapRect());
         return rects;
