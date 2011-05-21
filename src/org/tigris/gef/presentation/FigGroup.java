@@ -62,7 +62,7 @@ public class FigGroup extends Fig {
     /**
      * The Fig's contained in this FigGroup
      */
-    private List<DiagramElement> figs;
+    private List<Fig> figs;
 
     private int extraFrameSpace = 0;
 
@@ -96,7 +96,7 @@ public class FigGroup extends Fig {
     /** Construct a new FigGroup that holds no Figs. */
     public FigGroup() {
         super();
-        figs = Collections.synchronizedList(new ArrayList<DiagramElement>());
+        figs = Collections.synchronizedList(new ArrayList<Fig>());
     }
 
     /**
@@ -274,16 +274,15 @@ public class FigGroup extends Fig {
     /**
      * Get the child figs that make up this group.
      * USED BY PGML.tee
-     * @deprecated in 0.13.1 use getDiagramElements
      * 
      * @return the figs of this group
      */
-    public List getFigs() {
+    public List<Fig> getFigs() {
         return Collections.unmodifiableList(figs);
     }
-
+    
     public List<DiagramElement> getDiagramElements() {
-        return Collections.unmodifiableList(figs);
+        return Collections.unmodifiableList(new ArrayList<DiagramElement>(figs));
     }
     
     
@@ -477,9 +476,9 @@ public class FigGroup extends Fig {
     }
 
     /** Set the Figs in this group. Fires PropertyChange with "bounds". */
-    public void setFigs(List figs) {
+    public void setFigs(List<Fig> figs) {
         Rectangle oldBounds = getBounds();
-        this.figs = new ArrayList(figs);
+        this.figs = new ArrayList<Fig>(figs);
         calcBounds();
         firePropChange("bounds", oldBounds, getBounds());
     }
