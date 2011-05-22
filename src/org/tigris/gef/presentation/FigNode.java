@@ -72,6 +72,8 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
     private BufferedImage shadowImage;
     private int cachedWidth = -1;
     private int cachedHeight = -1;
+    
+    private List<Connector> connectors = new ArrayList<Connector>();
 
     /**
      * Set this to force a repaint of the shadow. Normally repainting only
@@ -700,8 +702,19 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
      * 
      * @return List of figs
      */
-    public List getDragDependencies() {
+    public List<? extends Fig> getDragDependencies() {
         return null;
+    }
+
+    /**
+     * Return a list of other Figs that must be forced to be dragged at the same
+     * time as this Fig or null if no dependent. By default this returns null,
+     * override in concrete class as required.
+     * 
+     * @return List of figs
+     */
+    public List<Connector> getConnectors() {
+        return connectors;
     }
 
     /**
