@@ -1,5 +1,4 @@
-package org.tigris.gef.presentation;
-
+// $Id$
 // Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -26,7 +25,8 @@ package org.tigris.gef.presentation;
 // File: FigGroup.java
 // Classes: FigGroup
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
+
+package org.tigris.gef.presentation;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -102,7 +102,7 @@ public class FigGroup extends Fig {
     /**
      * Construct a new FigGroup that holds the given Figs.
      */
-    public FigGroup (List figs) {
+    public FigGroup (List<Fig> figs) {
         super();
         this.figs = Collections.synchronizedList(figs);
         calcBounds();
@@ -132,7 +132,7 @@ public class FigGroup extends Fig {
             if (group != null) {
                 ((FigGroup) group).removeFig(fig);
             }
-            this.figs.add(fig);
+            figs.add(fig);
             fig.setGroup(this);
             calcBounds();
         }
@@ -158,7 +158,7 @@ public class FigGroup extends Fig {
      * @param figs
      *                Collection of figs to be set.
      */
-    public void setFigs(Collection figs) {
+    public void setFigs(Collection<Fig> figs) {
         this.figs.clear();
         addFigs(figs);
     }
