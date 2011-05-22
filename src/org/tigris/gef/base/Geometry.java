@@ -44,61 +44,92 @@ public class Geometry {
      * Rectangle that is closest to the given point.
      */
     public static void ptClosestTo(Rectangle r, Point p, Point res) {
-        int x1 = Math.min(r.x, r.x + r.width);
-        int y1 = Math.min(r.y, r.y + r.height);
-        int x2 = Math.max(r.x, r.x + r.width);
-        int y2 = Math.max(r.y, r.y + r.height);
-        int c = 0;
+        
+        final int NORTHWEST = 0;
+        final int NORTH = 1;
+        final int NORTHEAST = 2;
+        final int WEST = 3;
+        final int CENTER = 4;
+        final int EAST = 5;
+        final int SOUTHWEST = 6;
+        final int SOUTH = 7;
+        final int SOUTHEAST = 8;
+        
+        int x1 = Math.min(r.x, r.x + (r.width - 1));
+        int y1 = Math.min(r.y, r.y + (r.height - 1));
+        int x2 = Math.max(r.x, r.x + (r.width - 1));
+        int y2 = Math.max(r.y, r.y + (r.height - 1));
+        int c;
         if (p.x < x1) {
-            c = 0;
+            c = NORTHWEST;
         } else if (p.x > x2) {
-            c = 2;
+            c = NORTHEAST;
         } else {
-            c = 1;
+            c = NORTH;
         }
 
-        if (p.y < y1) {
-            c += 0;
-        } else if (p.y > y2) {
+        if (p.y > y2) {
             c += 6;
-        } else {
+        } else if (p.y > y1) {
             c += 3;
+            if (c == CENTER) {
+                int westDist = p.x - x1;
+                int eastDist = x2 - p.x;
+                int northDist = p.y - y1;
+                int southDist = y2 - p.y;
+                int shortDist;
+                if (westDist < eastDist) {
+                    shortDist = westDist;
+                    c = WEST;
+                } else {
+                    shortDist = eastDist;
+                    c = EAST;
+                }
+                if (northDist < shortDist) {
+                    shortDist = northDist;
+                    c = NORTH;
+                }
+                if (southDist < shortDist) {
+                    shortDist = southDist;
+                    c = SOUTH;
+                }
+            }
         }
 
         switch (c) {
-        case 0:
+        case NORTHWEST:
             res.x = x1;
             res.y = y1;
             return; // above, left
-        case 1:
+        case NORTH:
             res.x = p.x;
             res.y = y1;
             return; // above
-        case 2:
+        case NORTHEAST:
             res.x = x2;
             res.y = y1;
             return; // above, right
-        case 3:
+        case WEST:
             res.x = x1;
             res.y = p.y;
             return; // left
-        case 4:
+        case CENTER:
             res.x = p.x;
             res.y = p.y;
             return; // inside rect
-        case 5:
+        case EAST:
             res.x = x2;
             res.y = p.y;
             return; // right
-        case 6:
+        case SOUTHWEST:
             res.x = x1;
             res.y = y2;
             return; // below, left
-        case 7:
+        case SOUTH:
             res.x = p.x;
             res.y = y2;
             return; // below
-        case 8:
+        case SOUTHEAST:
             res.x = x2;
             res.y = y2;
             return; // below right
