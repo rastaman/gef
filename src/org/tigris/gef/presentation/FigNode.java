@@ -30,6 +30,7 @@ package org.tigris.gef.presentation;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.di.GraphEdge;
 import org.tigris.gef.di.GraphNode;
@@ -213,6 +214,31 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
      */
     public void addFigEdge(FigEdge fe) {
         figEdges.add(fe);
+    }
+    
+    /**
+     * Add a new connector to this node
+     * @param connector the connector to add.
+     */
+    public void addConnector(Connector connector) {
+        connectors.add(connector);
+        Fig connectorFig = (Fig) connector;
+        Point centre = new Point(
+                connectorFig.getX() + connectorFig.getHalfWidth(),
+                connectorFig.getY() + connectorFig.getHalfHeight());
+        Point attachPoint = getClosestPoint(centre);
+        connectorFig.setLocation(
+                attachPoint.x - connectorFig.getHalfWidth(),
+                attachPoint.y - connectorFig.getHalfHeight());
+        connector.setGraphNode(this);
+    }
+    
+    /**
+     * Remove a connector from this node
+     * @param connector the connector to remove.
+     */
+    public void removeConnector(Connector connector) {
+        connectors.remove(connector);
     }
 
     /**
