@@ -100,15 +100,19 @@ public class FigRRect extends FigRect {
         // assert _lineWidth == 0 || _lineWidth == 1 || _lineColor == null
         // assert filled && filledColor != null
         // Do the actual fill color
-        g.setColor(_fillColor);
-        g.fillRoundRect(_x, _y, _w, _h, _radius, _radius);
-
+        int delta = 0;
         if (_lineColor != null && _lineWidth == 1) {
             // If we're filled with a narrow border then draw
             // the border over the already filled area.
             g.setColor(_lineColor);
             g.drawRoundRect(_x, _y, _w, _h, _radius, _radius);
+            delta = 1;
         }
+        
+        g.setColor(_fillColor);
+        g.fillRoundRect(_x+delta, _y+delta, _w-delta*2, _h-delta*2, _radius, _radius);
+
+        
     }
 
     /**
