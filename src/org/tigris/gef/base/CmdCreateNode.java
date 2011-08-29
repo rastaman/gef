@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2011 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,10 +35,14 @@ import javax.swing.ImageIcon;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.tigris.gef.graph.GraphFactory;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeHooks;
 import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.graph.presentation.NetNode;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.util.Localizer;
 
 /**
  * This Cmd is executed it makes the new objects as per its arguments, and then
@@ -119,7 +123,7 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
         String instructions = null;
         Object actionName = getValue(javax.swing.Action.NAME);
         if (actionName != null) {
-            instructions = "Click to place " + actionName.toString();
+            instructions = Localizer.localize("GefBase", "ClickToPlace") + " " + actionName.toString();
         }
         Mode placeMode = new ModePlace(this, instructions);
 
