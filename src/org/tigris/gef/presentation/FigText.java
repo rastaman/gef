@@ -908,6 +908,11 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         int numLines = 1;
         StringTokenizer lines = new StringTokenizer(_curText, "" + HARD_RETURN
                 + SOFT_RETURN, true);
+        
+        if (_fm == null) {
+            _fm = new JLabel().getFontMetrics(_font);
+        }
+        
         while (lines.hasMoreTokens()) {
             String curLine = lines.nextToken();
             int chunkW = _fm.stringWidth(curLine);
