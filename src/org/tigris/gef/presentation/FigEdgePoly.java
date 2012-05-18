@@ -117,7 +117,7 @@ public class FigEdgePoly extends FigEdge {
                         .getPoint(p.getNumPoints() - 2));
                 srcPt = sourcePortFig.connectionPoint(dstPt);
                 dstPt = destPortFig.connectionPoint(srcPt);
-            } else {
+            } else if (p.getNumPoints() > 2) {
                 srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
                 dstPt = destPortFig.connectionPoint(p
                         .getPoint(p.getNumPoints() - 2));
