@@ -24,6 +24,7 @@
 
 package org.tigris.gef.base;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -381,7 +382,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
                     LayerManager lm = ce.getLayerManager();
                     fe = (FigEdge) lm.getActiveLayer().presentationFor(newEdge);
+                    Color c = fe.getLineColor(); //get the original color - issue argouml 6441
                     fe.setFig(_newItem);
+                    fe.setLineColor(c); // overwrite the rubberbanding color
                     fe.setSourcePortFig(startPortFig);
                     fe.setSourceFigNode(sourceFigNode);
                     fe.setDestPortFig(destPortFig);
