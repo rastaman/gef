@@ -31,6 +31,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.EventObject;
 import java.util.List;
 import java.util.Iterator;
 
@@ -50,6 +51,8 @@ import org.tigris.gef.presentation.FigPainter;
 public class LayerDiagram extends Layer {
 
     private static final long serialVersionUID = 6193765162314431069L;
+
+    private List<LayerListener> listeners = new ArrayList<LayerListener>();
 
     /** The Fig's that are contained in this layer. */
     private List<Fig> contents = new ArrayList<Fig>();
@@ -135,10 +138,15 @@ public class LayerDiagram extends Layer {
                     "Attempted to add a null fig to a LayerDiagram");
         }
 
-        contents.remove(f); // act like a set
-        contents.add(f);
-        f.setLayer(this);
-        f.endTrans();
+        if (!contents.contains(f)) {
+            contents.remove(f); // act like a set
+            contents.add(f);
+            f.setLayer(this);
+            f.endTrans();
+            for (LayerListener listener : listeners) {
+                listener.figAdded(new EventObject(f));
+            }
+        }
     }
 
     /**
@@ -156,10 +164,17 @@ public class LayerDiagram extends Layer {
                     "Attempted to insert a null fig to a LayerDiagram");
         }
 
-        contents.remove(f); // act like a set
-        contents.add(index, f);
-        f.setLayer(this);
-        f.endTrans();
+        if (contents.indexOf(f) != index) {
+            boolean fireEvent = !contents.remove(f); // act like a set
+            contents.add(index, f);
+            f.setLayer(this);
+            f.endTrans();
+            if (fireEvent) {
+                for (LayerListener listener : listeners) {
+                    listener.figAdded(new EventObject(f));
+                }
+            }
+        }
     }
 
     /**
@@ -182,9 +197,14 @@ public class LayerDiagram extends Layer {
 
     /** Remove the given Fig from this layer. */
     public void remove(Fig f) {
-        contents.remove(f);
-        f.endTrans();
-        f.setLayer(null);
+        if (contents.contains(f)) {
+            contents.remove(f);
+            f.endTrans();
+            f.setLayer(null);
+            for (LayerListener listener : listeners) {
+                listener.figRemoved(new EventObject(f));
+            }
+        }
     }
 
     /**
@@ -475,4 +495,13 @@ public class LayerDiagram extends Layer {
             ((Fig) this.contents.get(i)).postLoad();
         }
     }
+    
+    public void addLayerListener(LayerListener listener) {
+        listeners.add(listener);
+    }
+    
+    public void removeLayerListener(LayerListener listener) {
+        listeners.remove(listener);
+    }
+   
 }
