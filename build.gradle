@@ -1,0 +1,35 @@
+apply plugin: 'java'
+apply plugin: 'java-library-distribution'
+
+group='org.tigris.gef'
+version='0.13.9M1'
+
+sourceSets {
+	main {
+		java {
+			srcDirs 'src'
+		}
+	}
+	test {
+		java {
+			srcDirs 'tests'
+		}
+	}
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+  compile 'commons-logging:commons-logging:1.1.1'
+  compile 'junit:junit:4.11'
+}
+
+task sourceZip(type: Zip) {
+    classifier = 'src'
+    from projectDir
+    include 'src/**/*'
+    include 'tests/**/*'
+    include 'build.gradle'
+}
