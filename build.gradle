@@ -1,14 +1,51 @@
+/* 
+ * Copyright (c) 2014, Bob Tarling and other contributors
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without 
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *  o Redistributions of source code must retain the above copyright notice, 
+ *    this list of conditions and the following disclaimer.
+ *  o Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *  o The names of the contributors may not be used to endorse or promote 
+ *    products derived from this software without specific prior written 
+ *    permission.
+ *    
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED 
+ *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER 
+ *  OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ *  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+ *  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ *  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 apply plugin: 'java'
 apply plugin: 'java-library-distribution'
 
 group='org.tigris.gef'
 version='0.13.9M1'
 
+sourceCompatibility=1.6
+targetCompatibility=1.6
+
 sourceSets {
 	main {
 		java {
 			srcDirs 'src'
 		}
+	    resources {
+	    	// GEF mixes resource files in with source. Maybe we'll separate this in future
+	    	// and remove this from build
+	        srcDir 'src'
+	    }	
 	}
 	test {
 		java {
@@ -22,8 +59,8 @@ repositories {
 }
 
 dependencies {
-  compile 'commons-logging:commons-logging:1.1.1'
-  compile 'junit:junit:4.11'
+    compile 'commons-logging:commons-logging:1.1.1'
+    testCompile 'junit:junit:4.11'
 }
 
 task sourceZip(type: Zip) {
